@@ -1,0 +1,22 @@
+HTTrack3.49-2+htsswf+htsjava launched on Sun, 13 Aug 2017 10:02:47 at http://themehelite.com/themeforest/panorama/index.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar
+(winhttrack -qwC2%Ps2u1%s%uN0%I0p3DaK0H0%kf2A25000%f#f -F "Mozilla/4.5 (compatible; HTTrack 3.0x; Windows 98)" -%F "<!-- Mirrored from %s%s by HTTrack Website Copier/3.x [XR&CO'2014], %s -->" -%l "en, *" http://themehelite.com/themeforest/panorama/index.html -O1 "D:\Moji projekti (programiranje)\ERONEL SDK PROJECTS\WebSite\WebsiteCo\sd" +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -mime:application/foobar )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+10:06:40	Warning: 	Retry after error -4 (Incorrect length (195980 Bytes, 324194 expected)) at link cdn.themehelite.com/themeforest/panorama/img/about-1.jpg (from themehelite.com/themeforest/panorama/index.html)
+10:06:40	Warning: 	Retry after error -4 (No data (connection closed)) at link cdn.themehelite.com/themeforest/panorama/js/dialogFx.js (from themehelite.com/themeforest/panorama/index.html)
+10:07:38	Warning: 	File not parsed, looks like binary: themehelite.com/themeforest/panorama/fonts/fontawesome-webfont.woff2?v=4.6.3
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.eot (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.eot? (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.woff2 (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.woff (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.ttf (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/fonts/glyphicons-halflings-regular.svg (from themehelite.com/themeforest/panorama/css/bootstrap.min.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/img/loader.gif (from themehelite.com/themeforest/panorama/css/swipebox.css)
+10:07:40	Error: 	"Not Found" (404) at link themehelite.com/themeforest/panorama/css/mCSB_buttons.png (from themehelite.com/themeforest/panorama/css/jquery.mCustomScrollbar.css)
+
+HTTrack Website Copier/3.49-2 mirror complete in 4 minutes 53 seconds : 67 links scanned, 56 files written (8354379 bytes overall) [7822404 bytes received at 26697 bytes/sec], 722495 bytes transferred using HTTP compression in 22 files, ratio 23%, 1.8 requests per connection
+(8 errors, 3 warnings, 0 messages)

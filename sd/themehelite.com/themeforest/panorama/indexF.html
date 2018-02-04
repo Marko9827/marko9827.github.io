@@ -83,9 +83,9 @@
         <li>
             <a class="open-info" data-target="contact-anchor">Contact</a>
         </li>
-        <!--<li class="social-menu">
+        <li class="social-menu">
             <a href="#" target="_blank"><i class="fa fa-facebook"></i> <span>Facebook</span></a>
-        </li>-->
+        </li>
         <li class="social-menu">
             <a href="https://twitter.com/markoni62595164" target="_blank"><i class="fa fa-twitter"></i> <span>Twitter</span></a>
         </li>
@@ -112,7 +112,7 @@
             <p class="subtitle">Freelance Developer/Photographer from Serbia/Belgrade</p>
             <a class="color-btn" onclick="onShot1()">See my work photos + video</a>
             <a class="color-btn" onclick="OnMap()">See my work</a>
-            <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
+            <a class="color-btn" onclick="OnMap()">CV</a>
             <a class="color-btn" onclick="CF()">Full Screen</a>
         </div>
         <script>
@@ -152,7 +152,31 @@
             <!--<a class="action-btn before-click" href="https://link-to-your-picture.jpg/" download="https://link-to-your-picture.jpg"><i class="fa fa-download" aria-hidden="true"></i></a>
             <a class="action-btn before-click"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>-->
         </div>
-    
+        <div id="somedialog_1" class="dialog">
+            <div class="dialog__overlay"></div>
+            <div class="dialog__content">
+                <div class="dialog-inner">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6 col-xs-12">
+                                <h4>Panoramic Mountain</h4>
+                                <p>Lorem ipsum Enim pariatur exercitation anim velit ut aliquip do irure id culpa reprehenderit nisi eiusmod Excepteur incididunt dolore ad adipisicing consequat irure fugiat labore occaecat ad elit qui ullamco magna aute ea dolore ea laborum nisi laboris dolor pariatur incididunt velit pariatur quis aute minim dolor reprehenderit in pariatur amet sit et est aute sunt id consequat amet nostrud non exercitation laboris Excepteur ex anim sint adipisicing enim id anim dolore do sint.</p>
+                            </div>
+                            <div class="col-lg-5 col-lg-offset-1 col-sm-6 col-sm-offset-0 col-xs-12 col-xs-offset-0 details">
+                                <h5><i class="fa fa-camera" aria-hidden="true"></i> About</h5>
+                                <p>Shot on August 20, 2016 by <a href="#" target="_blank">Johnny Dopp</a>, freelance photographer for 4 years. Awarded as best nature photographer in 2015. Lorem ipsum Nulla aliqua aute ut aliquip qui aliqua occaecat irure labore ullamco sed id anim Duis exercitation dolor enim eu anim.</p>
+                                <h5><i class="fa fa-expand" aria-hidden="true"></i> Details</h5>
+                                <p>
+                                    3442 x 2592 pixels / 10.9 MB / Aspect Ratio: 1721:1296<br>
+                                    Lorem ipsum Dolor tempor enim dolor quis amet.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="close-content" data-dialog-close><i class="icon ion-android-close"></i></button>
+            </div>
+        </div>
     </div>
     <div class="section" id="section3">
         <div id="carousel-1" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -194,7 +218,31 @@
                 </p><!--
                 <a data-dialog="somedialog_2" class="action-btn trigger before-click">More Informations</a> -->
                 </div>
-     
+            <div id="somedialog_2" class="dialog">
+                <div class="dialog__overlay"></div>
+                <div class="dialog__content">
+                    <div class="dialog-inner">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-xs-12">
+                                    <h4>Serbia/Belgrade/Ada Ciganlija</h4>
+                                    <p>Lorem ipsum Enim pariatur exercitation anim velit ut aliquip do irure id culpa reprehenderit nisi eiusmod Excepteur incididunt dolore ad adipisicing consequat irure fugiat labore occaecat ad elit qui ullamco magna aute ea dolore ea laborum nisi laboris dolor pariatur incididunt velit pariatur quis aute minim dolor reprehenderit in pariatur amet sit et est aute sunt id consequat amet nostrud non exercitation laboris Excepteur ex anim sint adipisicing enim id anim dolore do sint.</p>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1 col-sm-6 col-sm-offset-0 col-xs-12 col-xs-offset-0 details">
+                                    <h5><i class="fa fa-camera" aria-hidden="true"></i> About</h5>
+                                    <p>Shot on August 20, 2016 by <a href="#" target="_blank">Johnny Dopp</a>, freelance photographer for 10 years. Awarded as best nature photographer in 2015. Lorem ipsum Nulla aliqua aute ut aliquip qui aliqua occaecat irure labore ullamco sed id anim Duis exercitation dolor enim eu anim.</p>
+                                    <h5><i class="fa fa-expand" aria-hidden="true"></i> Details</h5>
+                                    <p>
+                                        3442 x 2592 pixels / 10.9 MB / Aspect Ratio: 1721:1296<br>
+                                        Lorem ipsum Dolor tempor enim dolor quis amet.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="close-content" data-dialog-close><i class="icon ion-android-close"></i></button>
+                </div>
+            </div>
         </div>
 
 
@@ -228,8 +276,35 @@
                     <i class="fa fa-camera" aria-hidden="true"></i> Photo by <a class="open-info" data-target="about-anchor">Marko Nikolić</a><br>
                     <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia / Zemun
                 </p>
-              </div>
-
+                <a data-dialog="somedialog_3" class="action-btn trigger before-click">More Informations</a>
+                <a class="action-btn before-click" href="https://link-to-your-picture.jpg/" download="https://link-to-your-picture.jpg/"><i class="fa fa-download" aria-hidden="true"></i></a>
+                <a class="action-btn before-click"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>
+            </div>
+            <div id="somedialog_3" class="dialog">
+                <div class="dialog__overlay"></div>
+                <div class="dialog__content">
+                    <div class="dialog-inner">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-xs-12">
+                                    <h4>Panoramic Mountain</h4>
+                                    <p>Lorem ipsum Enim pariatur exercitation anim velit ut aliquip do irure id culpa reprehenderit nisi eiusmod Excepteur incididunt dolore ad adipisicing consequat irure fugiat labore occaecat ad elit qui ullamco magna aute ea dolore ea laborum nisi laboris dolor pariatur incididunt velit pariatur quis aute minim dolor reprehenderit in pariatur amet sit et est aute sunt id consequat amet nostrud non exercitation laboris Excepteur ex anim sint adipisicing enim id anim dolore do sint.</p>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1 col-sm-6 col-sm-offset-0 col-xs-12 col-xs-offset-0 details">
+                                    <h5><i class="fa fa-camera" aria-hidden="true"></i> About</h5>
+                                    <p>Shot on August 20, 2016 by <a href="#" target="_blank">Johnny Dopp</a>, freelance photographer for 10 years. Awarded as best nature photographer in 2015. Lorem ipsum Nulla aliqua aute ut aliquip qui aliqua occaecat irure labore ullamco sed id anim Duis exercitation dolor enim eu anim.</p>
+                                    <h5><i class="fa fa-expand" aria-hidden="true"></i> Details</h5>
+                                    <p>
+                                        3442 x 2592 pixels / 10.9 MB / Aspect Ratio: 1721:1296<br>
+                                        Lorem ipsum Dolor tempor enim dolor quis amet.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="close-content" data-dialog-close><i class="icon ion-android-close"></i></button>
+                </div>
+            </div>
         </div>
 
 
@@ -287,7 +362,31 @@
     <a class="action-btn before-click" href="https://link-to-your-picture.jpg/" download="https://link-to-your-picture.jpg/"><i class="fa fa-download" aria-hidden="true"></i></a>
     <a class="action-btn before-click"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>-->
             </div>
-    
+            <div id="somedialog_4" class="dialog">
+                <div class="dialog__overlay"></div>
+                <div class="dialog__content">
+                    <div class="dialog-inner">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-6 col-sm-6 col-xs-12">
+                                    <h4>Panoramic Mountain</h4>
+                                    <p>Lorem ipsum Enim pariatur exercitation anim velit ut aliquip do irure id culpa reprehenderit nisi eiusmod Excepteur incididunt dolore ad adipisicing consequat irure fugiat labore occaecat ad elit qui ullamco magna aute ea dolore ea laborum nisi laboris dolor pariatur incididunt velit pariatur quis aute minim dolor reprehenderit in pariatur amet sit et est aute sunt id consequat amet nostrud non exercitation laboris Excepteur ex anim sint adipisicing enim id anim dolore do sint.</p>
+                                </div>
+                                <div class="col-lg-5 col-lg-offset-1 col-sm-6 col-sm-offset-0 col-xs-12 col-xs-offset-0 details">
+                                    <h5><i class="fa fa-camera" aria-hidden="true"></i> About</h5>
+                                    <p>Shot on August 20, 2016 by <a href="#" target="_blank">Johnny Dopp</a>, freelance photographer for 10 years. Awarded as best nature photographer in 2015. Lorem ipsum Nulla aliqua aute ut aliquip qui aliqua occaecat irure labore ullamco sed id anim Duis exercitation dolor enim eu anim.</p>
+                                    <h5><i class="fa fa-expand" aria-hidden="true"></i> Details</h5>
+                                    <p>
+                                        3442 x 2592 pixels / 10.9 MB / Aspect Ratio: 1721:1296<br>
+                                        Lorem ipsum Dolor tempor enim dolor quis amet.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="close-content" data-dialog-close><i class="icon ion-android-close"></i></button>
+                </div>
+            </div>
         </div>
         <div class="section" id="section9">
             <div class="global-overlay"></div>
@@ -302,7 +401,16 @@
                 <a class="action-btn before-click" href="https://www.instagram.com/p/BUSOfCyBHSA/?taken-by=nikoliccc02" target="_blank">View on Instagram   <i class="fa fa-instagram" aria-hidden="true"></i></a>
                 <!--<a class="action-btn before-click"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>-->
             </div>
-  
+    <div id="somedialog_5" class="dialog">
+        <div class="dialog__overlay"></div>
+        <div class="dialog__content">
+            <div class="dialog-inner col-lg-6 col-sm-8 col-xs-12">
+                <h4>Panoramic Mountain</h4>
+                <p>Lorem ipsum Enim pariatur exercitation anim velit ut aliquip do irure id culpa reprehenderit nisi eiusmod Excepteur incididunt dolore ad adipisicing consequat irure fugiat labore occaecat ad elit qui ullamco magna aute ea dolore ea laborum nisi laboris dolor pariatur incididunt velit pariatur quis aute minim dolor reprehenderit in pariatur amet sit et est aute sunt id consequat amet nostrud non exercitation laboris Excepteur ex anim sint adipisicing enim id anim dolore do sint et veniam voluptate cupidatat aliqua nisi minim ex ut consequat velit Ut sint qui deserunt occaecat veniam enim reprehenderit laborum velit dolore ea est ullamco cupidatat do ut voluptate in nulla enim dolor adipisicing.</p>
+            </div>
+            <button class="close-content" data-dialog-close><i class="icon ion-android-close"></i></button>
+        </div>
+    </div>
 
          </div>
         <div class="section" id="section10">
@@ -320,9 +428,19 @@
         </div>
     </div>
     <div id="info">
-        <h2 id="about-anchor">Know more about me...<br><small></small></h2>
+        <h2 id="about-anchor">Know more about me...<br><small>A glimpse of crazyness</small></h2>
         <div id="carousel-2" class="carousel carousel-fade">
-        
+            <!--<div class="carousel-inner"> data-ride="carousel"
+        <div class="item active">
+            <img src="../../../cdn.themehelite.com/themeforest/panorama/img/about-1.jpg" alt="" class="img-responsive">
+        </div>
+        <div class="item">
+            <img src="../../../cdn.themehelite.com/themeforest/panorama/img/about-2.jpg" alt="" class="img-responsive">
+        </div>
+        <div class="item">
+            <img src="../../../cdn.themehelite.com/themeforest/panorama/img/about-3.jpg" alt="" class="img-responsive">
+        </div>
+    </div>-->
             <div id="Slika">
 
                 <div id="slika1">
@@ -332,7 +450,7 @@
             </div>
             <style>
                 #Slika {
-                    padding-top: 0px;
+                    padding-top: 70px;
                     padding-left: 15px;
                     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.10);
                     height: 100%;
@@ -356,73 +474,45 @@
                             margin-top: 10px;
                         }
             </style>
-        
+            <a class="left carousel-control" href="#carousel-2" data-slide="prev">
+                <i class="fa fa-long-arrow-left" aria-hidden="true"></i>
+            </a>
+            <a class="right carousel-control" href="#carousel-2" data-slide="next">
+                <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+            </a>
         </div>
-        <div class="row">
-            <!--<div class="col-xs-12 col-sm-12 col-lg-6">
-        <p>Lorem ipsum Eu adipisicing magna cillum proident qui aliqua elit sit occaecat amet sunt sit ullamco enim aliquip incididunt eu quis Excepteur in qui cupidatat non cupidatat qui ad ea officia deserunt sunt anim do in consectetur et anim do aliqua occaecat.</p>
-    </div>
-    <div class="col-xs-12 col-sm-12 col-lg-6">
-        <p>Lorem ipsum Eu adipisicing magna cillum proident qui aliqua elit sit occaecat amet sunt sit ullamco enim aliquip incididunt eu quis Excepteur in qui cupidatat non cupidatat qui ad ea officia deserunt sunt anim do in consectetur et anim do aliqua occaecat.</p>
-    </div>-->
-
-            <div class="intro">
-
-                <p>Programmer, Desinger</p>
-
-                <h2>Creo</h2>
-               <p> In Creo know perfectly that I do I passed 3 years of training in high school I stayed another year, perfects the house for Creo.
-                </p>
-                <h2>Other</h2>
-                    <p>Web, Windows, Mobile (Android, Windows) when I was a kid I always thought in the development of their applications. Today I make them successful.
-                    Android itself salvadao medium (Android SDK)
-
-                    </p>
-                    <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
-
-</div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-lg-6">
+                    <p>Lorem ipsum Eu adipisicing magna cillum proident qui aliqua elit sit occaecat amet sunt sit ullamco enim aliquip incididunt eu quis Excepteur in qui cupidatat non cupidatat qui ad ea officia deserunt sunt anim do in consectetur et anim do aliqua occaecat.</p>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-lg-6">
+                    <p>Lorem ipsum Eu adipisicing magna cillum proident qui aliqua elit sit occaecat amet sunt sit ullamco enim aliquip incididunt eu quis Excepteur in qui cupidatat non cupidatat qui ad ea officia deserunt sunt anim do in consectetur et anim do aliqua occaecat.</p>
+                </div>
+            </div>
             <span class="separator"></span>
             <h2 id="clients-anchor">My skills...<small>Trusted by 700+ of the World's Leading Brands</small></h2>
-            <p>Android</p>
-            <p>
-                Web Development
-            </p>
-            <p>
-                Photography
-            </p>
-            <p>
-                Windows Desktop
-            </p>
-            <p>
-                3D Modelling
-            </p>
-            <p>C# Programming</p>
-            <p>Website Design/Programming/SEO</p>
-            <p>It security</p>
-
-
-
+            <p>Lorem ipsum Eu adipisicing magna cillum proident qui aliqua elit sit occaecat amet sunt sit ullamco enim aliquip incididunt eu quis Excepteur in qui cupidatat non cupidatat qui ad ea officia deserunt sunt anim do in consectetur et anim do aliqua occaecat adipisicing mollit elit ut quis irure consequat dolore eiusmod amet dolore incididunt Duis non ullamco id dolore commodo officia anim minim velit...</p>
             <div id="carouselClients" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="item active">
                         <div class="row">
-
+                          
                             <div class="col-lg-3 col-sm-3 col-xs-6">
-                                <a onclick="onGIT()"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-4.png" alt="Image" class="img-responsive"></a>
+                                <a href="https://marko9827.github.io/" target="_blank"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-4.png" alt="Image" class="img-responsive"></a>
                             </div>
                         </div>
                     </div>
                     <div class="item">
                         <div class="row">
                             <!--<div class="col-lg-3 col-sm-3 col-xs-6">
-                        <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-1.png" alt="Image" class="img-responsive"></a>
-                    </div>
-                    <div class="col-lg-3 col-sm-3 col-xs-6">
-                        <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-2.png" alt="Image" class="img-responsive"></a>
-                    </div>
-                    <div class="col-lg-3 col-sm-3 col-xs-6">
-                        <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-3.png" alt="Image" class="img-responsive"></a>
-                    </div>-->
+                                <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-1.png" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-lg-3 col-sm-3 col-xs-6">
+                                <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-2.png" alt="Image" class="img-responsive"></a>
+                            </div>
+                            <div class="col-lg-3 col-sm-3 col-xs-6">
+                                <a href="#x"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-3.png" alt="Image" class="img-responsive"></a>
+                            </div>-->
                             <div class="col-lg-3 col-sm-3 col-xs-6">
                                 <a href="https://marko9827.github.io/"><img src="../../../cdn.themehelite.com/themeforest/panorama/img/client-4.png" alt="Image" class="img-responsive"></a>
                             </div>
@@ -437,25 +527,33 @@
             <span class="separator"></span>
             <h2 id="contact-anchor">Get in touch with me<br><small>Booking / Meeting / Freelancing</small></h2>
             <div class="info-contact row">
-
+                <div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
+                    <div class="contact-item">
+                        <i class="fa fa-phone"></i>
+                        <p>
+                            Guest: <a href="tel:(888)837-23X421">(888) 837-23X421</a><br>
+                            Pro: <a href="tel:(808)847-746X35">(808) 847-746X35</a>
+                        </p>
+                    </div>
+                </div>
                 <div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
                     <div class="contact-item">
                         <i class="fa fa-location-arrow"></i>
                         <p>
-                            Serbia/Belgrade/Surčin<br>
-
+                            1020 Santa Monica Blvd,<br>
+                            Santa Monica, CA
                         </p>
                     </div>
                 </div>
-                <!--<div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
-            <div class="contact-item">
-                <i class="fa fa-keyboard-o"></i>
-                <p>
-                    <a href="mailto:marko.super@gmail.com">howdy@example.com</a><br>
-                    <a href="mailto:your-email-pro@good.com">h.pro@example.com</a>
-                </p>
-            </div>
-        </div>-->
+                <div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
+                    <div class="contact-item">
+                        <i class="fa fa-keyboard-o"></i>
+                        <p>
+                            <a href="mailto:your-email@good.com">howdy@example.com</a><br>
+                            <a href="mailto:your-email-pro@good.com">h.pro@example.com</a>
+                        </p>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-lg-12">
@@ -498,10 +596,10 @@
                                 <span class="sub-text">* Required fields</span>
                             </div>
                             <!--<div class="col-xs-12 col-sm-12 col-lg-12">
-                        <input type="checkbox" id="ios" name="newsletter" value="Yes" checked>
-                        <label for="ios" class="ios button"></label>
-                        <label class="check-news">I want to receive your Weekly Newsletter.</label>
-                    </div>-->
+                                <input type="checkbox" id="ios" name="newsletter" value="Yes" checked>
+                                <label for="ios" class="ios button"></label>
+                                <label class="check-news">I want to receive your Weekly Newsletter.</label>
+                            </div>-->
                         </div>
                         <button type="submit" id="valid-form" class="btn btn-color">Send my Message</button>
                     </form>
@@ -555,16 +653,8 @@
         }
 
         function iders() {
-            //      window.location.href = 'indexRS.html';
-            alert("coming soon...");
+            window.location.href = 'indexRS.html';
         }
-
-        function onGIT() {
-            window.location.href = 'https://marko9827.github.io/', '_blank');
-        }
-
-        }
-
 
 
         function OnMap() {

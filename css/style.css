@@ -150,7 +150,7 @@ table {
 
         #loading #preloader span {
             position: absolute;
-            border: 2px solid #6534ff;
+            border: 2px solid #556c82;
             -webkit-backface-visibility: hidden;
             -webkit-border-radius: 50%;
             -moz-border-radius: 50%;
@@ -365,7 +365,7 @@ a {
 
     a:hover {
         text-decoration: none !important;
-        color: #e5c100;
+        color: rgba(85, 108, 130, 0.79);
         outline: none !important
     }
 
@@ -1033,7 +1033,7 @@ sup {
         }
 
             #info .carousel-fade .carousel-control:hover {
-                color: #6534ff
+                color: #556c82;
             }
 
             #info .carousel-fade .carousel-control.left {
@@ -1087,7 +1087,7 @@ sup {
 
             #info .info-contact .item-contact .contact-item i {
                 font-size: 2em;
-                color: #6534ff
+                color: #556c82
             }
 
             #info .info-contact .item-contact .contact-item a {
@@ -1095,7 +1095,7 @@ sup {
             }
 
                 #info .info-contact .item-contact .contact-item a:hover {
-                    color: #6534ff
+                    color: #556c82
                 }
 
     #info #contact-form {
@@ -1103,7 +1103,7 @@ sup {
     }
 
         #info #contact-form .form-group:hover .icon-fields {
-            color: #6534ff
+            color: #556c82
         }
 
         #info #contact-form .icon-fields {
@@ -1117,7 +1117,7 @@ sup {
         }
 
             #info #contact-form .icon-fields.active {
-                color: #6534ff
+                color: #556c82
             }
 
         #info #contact-form .form-control {
@@ -1141,6 +1141,10 @@ sup {
             -ms-border-radius: 0;
             border-radius: 0
         }
+
+            #info #contact-form .form-control:hover {
+                border: 2px #556c82 solid;
+            }
 
             #info #contact-form .form-control::-webkit-input-placeholder {
                 font-family: Lora,"Helvetica Neue","Lucida Grande",Arial,Verdana,sans-serif;
@@ -1305,7 +1309,7 @@ sup {
             text-transform: uppercase;
             color: #fff;
             border: none;
-            background: #6534ff;
+            background: #556c82;
             -webkit-border-radius: 3px;
             -moz-border-radius: 3px;
             -ms-border-radius: 3px;
@@ -1314,7 +1318,7 @@ sup {
 
             #info #contact-form button#valid-form:hover {
                 color: #fff;
-                background: #784eff
+                background: #556c82
             }
 
     #info #block-answer {
@@ -1825,7 +1829,7 @@ sup {
     }
 
     .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
-        background-color: #6534ff
+        background-color: #556c82
     }
 
 .mCSB_scrollTools-left {
@@ -1933,7 +1937,7 @@ sup {
 
     .dialog .close-content:hover i {
         font-size: 3.5rem;
-        color: #6534ff
+        color: #556c82
     }
 
 .dialog.dialog--open .dialog-inner {
@@ -1999,8 +2003,8 @@ sup {
             margin-right: .5rem;
             padding: .8rem 1rem;
             text-align: center;
-            color: #784eff;
-            border: 1px solid #6534ff
+            color: #556c82;
+            border: 1px solid #556c82
         }
 
             .dialog .dialog-inner .details h5 i:before {
@@ -2301,7 +2305,7 @@ span.holdscroll {
     text-transform: uppercase;
     color: #fff;
     border: none;
-    background: #6534ff;
+    background: #556c82;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     -ms-border-radius: 3px;
@@ -2310,7 +2314,8 @@ span.holdscroll {
 
     .color-btn:hover {
         color: #fff;
-        background: #784eff
+        background: rgba(85, 108, 130, 0.79);
+        border: -2px solid #FF1D4D;
     }
 
 .open-close-menu {
@@ -2329,18 +2334,20 @@ span.holdscroll {
     opacity: 0;
     color: #fff;
     border: none;
-    background: transparent
+    background: transparent;
+
 }
 
     .open-close-menu i {
         display: inline-block;
         -webkit-transition: all .2s ease-in-out;
         -moz-transition: all .2s ease-in-out;
-        transition: all .2s ease-in-out
+        transition: all .2s ease-in-out;
+        overflow-x: scroll;
     }
 
     .open-close-menu:hover i {
-        color: #6534ff
+        color: #556c82;
     }
 
 .scroll-indicator {
@@ -3059,3 +3066,38 @@ span.holdscroll {
     }
 
 
+
+
+
+
+
+
+
+
+p::-moz-selection {
+    color: rgba(85, 108, 130, 0.79);
+}
+
+p::selection {
+    color: rgba(85, 108, 130, 0.79);
+}
+
+
+
+
+
+
+#dotty {
+    position: fixed;
+    top: 0;
+    left: 0
+}
+
+#FV_F {
+    margin-top: 50px;
+    width: 100%;
+    height: 100%;
+    bottom: initial;
+    border: 0px;
+    -webkit-margin-top-collapse: collapse;
+}

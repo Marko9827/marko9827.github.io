@@ -392,7 +392,48 @@
 
                 </p><br />
                 <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
+       <a class="color-btn" onclick="idemo()">Eronel SDK Demo</a>
 
+                <div class="col-xs-12 col-sm-12 col-lg-12" style="width: 100%;">
+                    <form id="contact-form" name="contact-form" method="POST" data-name="Contact Form">
+                        <div class="row" id="rowdemo">
+                            <div class="col-xs-12 col-sm-6 col-lg-6">
+                                <div class="form-group" id="FAE_F" style="display:none;  ">
+                                    <i class="fa fa-lock icon-fields"></i>
+                                    <input type="password" id="password" onkeydown="checkEnter(e)" onkeypress="checkEnter(e)" onkeyup="return false"  class="form form-control" placeholder="Please Pass*" onfocus='this.placeholder=""' onblur='this.placeholder="Type in the password!"' name="password" data-name="Name" required />
+                                </div>
+                            </div>
+                            <p id="demo"></p>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    function idemo() {
+                        document.getElementById("FAE_F").style.display = "block";
+
+                        if (document.getElementById("password").value == 'marko9827') {
+
+                            window.location.href = 'js/app32/index_html.html';
+                        } else {
+                            document.getElementById("FAE_F").style = "border: red;";
+                            //   alert('wrong password!!');
+                            return false;
+                        }
+
+
+                    }
+
+                    function myFunction() {
+
+                        return false;
+                    }
+
+                    function checkEnter(e) {
+                        e = e || event;
+                        var txtArea = /textarea/i.test((e.target || e.srcElement).tagName);
+                        return txtArea || (e.keyCode || e.which || e.charCode || 0) !== 13;
+                    }
+                </script>
             </div>
             <span class="separator"></span>
             <h2 id="clients-anchor">My skills...<small>Trusted by 700+ of the World's Leading Brands</small></h2>

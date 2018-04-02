@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html lang='en' class=''>
+<head>
+    <script src='//static.codepen.io/assets/editor/live/console_runner-ce3034e6bde3912cc25f83cccb7caa2b0f976196f2f2d52303a462c826d54a73.js'></script>
+    <script src='//static.codepen.io/assets/editor/live/css_live_reload_init-890dc39bb89183d4642d58b1ae5376a0193342f9aed88ea04330dc14c8d52f55.js'></script>
+    <meta charset='UTF-8'>
+    <meta name="robots" content="noindex">
+    <link rel="shortcut icon" type="image/x-icon" href="//static.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" type="" href="//static.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/melnik909/pen/QModrM" />
+
+
+    <style class="cp-pen-styles">
+                /* popup */
+
+                .popup {
+                    width: 100%;
+                    height: 100vh;
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    right: 0;
+                }
+
+                #popup-article:target {
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                }
+
+                .popup:before {
+                    content: "";
+                    -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+                    width: 100%;
+                    background-color: #fff;
+                    position: fixed;
+                    left: 0;
+                    top: 50%;
+                    will-change: height, top;
+                    -webkit-animation: open-animation .6s cubic-bezier(0.83, 0.04, 0, 1.16) .65s both;
+                    animation: open-animation .6s cubic-bezier(0.83, 0.04, 0, 1.16) .65s both;
+                }
+
+                .popup:after {
+                    content: "";
+                    width: 0;
+                    height: 2px;
+                    background-color: #f0f0f0;
+                    will-change: width, opacity;
+                    -webkit-animation: line-animation .6s cubic-bezier(0.83, 0.04, 0, 1.16) both;
+                    animation: line-animation .6s cubic-bezier(0.83, 0.04, 0, 1.16) both;
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    margin-top: -1px;
+                }
+
+                @-webkit-keyframes line-animation {
+
+                    0% {
+                        width: 0;
+                        opacity: 1;
+                    }
+
+                    99% {
+                        width: 100%;
+                        opacity: 1;
+                    }
+
+                    100% {
+                        width: 100%;
+                        opacity: 0;
+                    }
+                }
+
+                @keyframes line-animation {
+
+                    0% {
+                        width: 0;
+                        opacity: 1;
+                    }
+
+                    99% {
+                        width: 100%;
+                        opacity: 1;
+                    }
+
+                    100% {
+                        width: 100%;
+                        opacity: 0;
+                    }
+                }
+
+                @-webkit-keyframes open-animation {
+
+                    0% {
+                        height: 0;
+                        top: 50%;
+                    }
+
+                    100% {
+                        height: 100vh;
+                        top: 0;
+                    }
+                }
+
+                @keyframes open-animation {
+
+                    0% {
+                        height: 0;
+                        top: 50%;
+                    }
+
+                    100% {
+                        height: 100vh;
+                        top: 0;
+                    }
+                }
+
+                .popup__block {
+                    height: calc(100vh - 40px);
+                    padding: 5% 15%;
+                    -webkit-box-sizing: border-box;
+                    box-sizing: border-box;
+                    position: relative;
+                    margin: auto;
+                    overflow: auto;
+                    -webkit-animation: fade .5s ease-out 1.3s both;
+                    animation: fade .5s ease-out 1.3s both;
+                }
+
+                @-webkit-keyframes fade {
+
+                    0% {
+                        opacity: 0;
+                    }
+
+                    100% {
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes fade {
+
+                    0% {
+                        opacity: 0;
+                    }
+
+                    100% {
+                        opacity: 1;
+                    }
+                }
+
+                .popup__title {
+                    font-size: 2.5rem;
+                    margin: 0 0 1em;
+                }
+
+                .popup__close {
+                    width: 3.2rem;
+                    height: 3.2rem;
+                    text-indent: -9999px;
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    background-size: contain;
+                    background-image: url(data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMDAwMDAwIiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gICAgPHBhdGggZD0iTTE5IDYuNDFMMTcuNTkgNSAxMiAxMC41OSA2LjQxIDUgNSA2LjQxIDEwLjU5IDEyIDUgMTcuNTkgNi40MSAxOSAxMiAxMy40MSAxNy41OSAxOSAxOSAxNy41OSAxMy40MSAxMnoiLz4gICAgPHBhdGggZD0iTTAgMGgyNHYyNEgweiIgZmlsbD0ibm9uZSIvPjwvc3ZnPg==);
+                }
+
+
+                /*
+        * demo page
+        */
+
+                @media screen and (min-width: 768px) {
+
+                    html {
+                        font-size: 62.5%;
+                    }
+                }
+
+                @media screen and (max-width: 767px) {
+
+                    html {
+                        font-size: 50%;
+                    }
+                }
+
+                body {
+                    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+                    font-size: 1.6rem;
+                    color: #222;
+                    background-color: #512da8;
+                    margin: 0;
+                    -webkit-overflow-scrolling: touch;
+                    overflow-y: scroll;
+                }
+
+                p {
+                    margin: 0;
+                    line-height: 1.5;
+                }
+
+                    p:not(:last-child) {
+                        margin-bottom: 1.5rem;
+                    }
+
+                img {
+                    display: block;
+                    max-width: 100%;
+                }
+
+                a {
+                    text-decoration: none;
+                }
+
+                .open-popup {
+                    color: #fff;
+                    text-transform: uppercase;
+                    padding: 1rem 2rem;
+                    border: 1px solid;
+                }
+
+                .page {
+                    min-height: 100vh;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                }
+
+                .page__container {
+                    max-width: 1200px;
+                    padding-left: 1rem;
+                    padding-right: 1rem;
+                    margin: auto;
+                }
+    </style>
+</head>
+<body>
+
+    <div class="page">
+        <div class="page__container">
+            <a href="#popup-article" class="open-popup">open popup</a>
+        </div>
+    </div>
+    <div id="popup-article" class="popup">
+        <div class="popup__block">
+            <h1 class="popup__title">The my adventure in the France and photography with Tour De France</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eaque optio vitae in explicabo recusandae sit id sapiente excepturi tempore, nemo, nulla odio deleniti rerum nisi perferendis aut molestias! Incidunt nesciunt iusto praesentium! In at maiores quibusdam enim quis, quam!</p>
+            <p>Architecto magni dolores cumque tenetur nemo id aperiam, ratione temporibus at, consectetur totam, fuga et illo rerum earum dicta. Vitae ullam harum enim aliquid hic commodi voluptas cumque iste ex accusantium architecto doloremque reprehenderit, asperiores vero dolor, esse inventore dolorem.</p>
+            <p>Excepturi eaque, reprehenderit dolores, cum molestias repellendus in expedita. Placeat totam, quos pariatur quidem explicabo id harum ab voluptatum. Necessitatibus, aliquam! Dolorum voluptatem ut laudantium excepturi cumque, hic iure impedit ullam accusantium error natus recusandae, quia fuga quo voluptates officiis?</p>
+            <p>Dignissimos debitis eos necessitatibus accusantium natus voluptates illo blanditiis corporis minus. Repudiandae libero quae, illo error expedita consectetur possimus voluptate eum esse quam molestiae tempore dignissimos ipsam similique ab quod. Ea earum adipisci rem voluptatem aliquid voluptatum deleniti necessitatibus provident.</p>
+            <p>Dicta eum amet impedit maiores accusamus numquam saepe necessitatibus temporibus ut! Velit ducimus repellendus fuga repudiandae culpa voluptatibus delectus praesentium totam odit ratione, tenetur assumenda, labore esse et nostrum a, aut veritatis. Nihil, voluptas, impedit? Magnam dolorum, iure repellendus vitae.</p>
+            <p>Temporibus voluptatum voluptatibus iste, nam atque dignissimos quam labore sequi adipisci tempore exercitationem quos, libero, reprehenderit facere quasi soluta, itaque at eum cum possimus! Facilis, tempora soluta at quis. Nemo expedita voluptate esse nam ex odit, sequi eveniet quibusdam, dolores?</p>
+            <p>Praesentium laboriosam iste dolore cumque voluptatibus deleniti quia, delectus provident, illum aperiam, atque molestiae. Cum delectus, doloribus expedita eius veritatis assumenda deleniti veniam reprehenderit animi ut, eaque asperiores, dicta incidunt omnis repellendus dolorum enim inventore rerum voluptatem saepe error id.</p>
+            <a href="#" class="popup__close">close</a>
+        </div>
+    </div>
+
+
+
+</body>
+</html>

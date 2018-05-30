@@ -120,3 +120,144 @@ window.addEventListener('resize', function () {
         }
     }
 })
+
+
+
+/**/
+
+
+function onHome() {
+    window.location.href = '#Home';
+}
+function onShot1() {
+    window.location.href = '#Shot1';
+}
+
+function onShot2() {
+    window.location.href = '#Shot2';
+}
+
+function onShot3() {
+    window.location.href = '#Shot3';
+}
+
+function onMovie() {
+    window.location.href = '#Movie';
+}
+
+function OnShot5() {
+    window.location.href = '#Shot5';
+}
+function OnShot6() {
+    window.location.href = '#Shot6';
+}
+function OnShot7() {
+    window.location.href = '#Shot7';
+}
+function OnShot8() {
+    window.location.href = '#Shot8';
+}
+
+function iders() {
+    window.location.href = 'indexRS.html';
+    //alert("coming soon...");
+}
+
+function onGIT() {
+    window.location.href = 'https://eronelit.com', '_blank';
+}
+
+
+
+
+
+function OnMap() {
+    window.location.href = '#Map';
+}
+
+
+
+
+
+
+
+
+
+function idemo() {
+    document.getElementById("FAE_F").style.display = "block";
+
+    if (document.getElementById("password").value == 'marko9827') {
+
+        window.location.href = 'js/app32/index.html';
+    } else {
+        document.getElementById("FAE_F").style = "border: red;";
+        //   alert('wrong password!!');
+        alert("Wrong Password!");
+        return false;
+    }
+
+
+}
+
+function myFunction() {
+
+    return false;
+}
+
+function runScript(e) {
+    if (e.keyCode == 13) {
+        //var tb = document.getElementById("password");
+        //tb.value;
+        //return false;
+        document.getElementById("FAE_F").style.display = "block";
+
+        if (document.getElementById("password").value == 'marko9827') {
+
+            window.location.href = 'js/app32/index.html';
+        } else {
+            document.getElementById("FAE_F").style = "border: red;";
+            //   alert('wrong password!!');
+            alert("Wrong Password!");
+            return false;
+        }
+        return false;
+
+    }
+}
+
+
+window.location.href = '#Home';
+
+document.addEventListener("contextmenu", function (e) { e.preventDefault(); }, false);
+document.addEventListener("dragstart", function (e) { e.preventDefault() }, false);
+document.addEventListener("selectstart", function (e) { e.preventDefault() }, false);
+
+document.onkeypress = function (event) {
+    event = (event || window.event);
+    if (event.keyCode == 123) {
+        return false;
+    }
+}
+document.onmousedown = function (event) {
+    event = (event || window.event);
+    if (event.keyCode == 123) {
+        return false;
+    }
+}
+document.onkeydown = function (event) {
+    event = (event || window.event);
+    if (event.keyCode == 123) {
+        return false;
+    }
+}
+
+
+
+function KP1() {
+    $('form').bind("keypress", function (e) {
+        if (e.keyCode == 13) {
+            e.preventDefault();
+            return false;
+        }
+    });
+}

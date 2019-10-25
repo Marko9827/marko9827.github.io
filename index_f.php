@@ -58,7 +58,7 @@
     <li data-menuanchor="Movie" class="main-nav"> <a onclick="onMovie()"><i class="fa fa-video-camera"></i><span>Fantasy
           or Reality</span></a>
     </li> */ ?>
-    
+
     <li data-menuanchor="Shot5" class="main-nav"> <a onclick="OnShot5()">4 <span>Zemun [Photografy]</span></a>
 
       <?php /*  <!--</a><a onclick="onShot5()">5 <span>Numbers</span></a>--> */ ?>
@@ -103,6 +103,10 @@
         </li>
         <li class="social-menu"> <a target="_blank" href="https://instagram.com/nikoliccc02"><i class="fa fa-instagram"></i> <span>Instagram</span></a>
 
+        </li>
+
+        <li class="social-menu"> 
+          <a target="_blank" href="https://github.com/marko9827"><i class="fa fa-github"></i> <span>Github</span></a>
         </li>
       </ul>
     </li>
@@ -240,7 +244,7 @@
         <?php /*  <!-- <a data-dialog="somedialog_2" class="action-btn trigger before-click">More Informations</a> --> */ ?>
       </div>
     </div>
-   <?php /* <div class="section" id="section5">
+    <?php /* <div class="section" id="section5">
       <div class="global-overlay"></div>
       <a id="bgndVideo" class="player" data-property="{videoURL:'https://youtu.be/Wm_meEhlQ5Q',containment:'#section5',autoPlay:false, mute:false, startAt:0, stopAt:0, opacity:1}"></a>
       <div class="img-info">

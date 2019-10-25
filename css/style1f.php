@@ -961,6 +961,8 @@ sup {
     text-transform: uppercase
 }
 
+
+
 #menu #menu-link li a {
     font-weight: 700;
     display: block;
@@ -2630,6 +2632,16 @@ span.holdscroll.menu-opened {
 }
 
 @media only screen and (max-width: 1024px) {
+
+
+    #menu #menu-link .social-menu {
+        font-size: 30px;
+    }
+
+    #menu #menu-link .social-menu a {
+        
+    }
+
     #info {
         width: 100%
     }

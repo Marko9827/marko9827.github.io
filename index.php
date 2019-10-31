@@ -1,5 +1,12 @@
 <?php
 
+header('X-Frame-Options: SAMEORIGIN');
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
+
+
 if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
     $img_background_3_jpg = "./img/background-3.jpg";
@@ -55,22 +62,19 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
         include "js/js_s/rb/rb.php";
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-mr-m') !== false) {
+        header("Content-type: application/javascript");
 
         include "./Scripts/tmp/1query/m.php";
-    }
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-mr-h_old') !== false) {
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-mr-h_old') !== false) {
 
         include "./js/js_s/holder.min.php";
-    }
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm') !== false) {
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm') !== false) {
 
         include "./Scripts/tmp/1query/jquery-slim.min.php";
-    }
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm3') !== false) {
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm3') !== false) {
 
         include "./Scripts/tmp/1query/jquery-3.3.1.slim.min.php";
-    }
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-in-F_9') !== false) {
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-in-F_9') !== false) {
         include "js/js_s/popper.min.php";
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-9') !== false) {
         header("Content-type: text/css");
@@ -159,6 +163,24 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-5.jpg");
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-favicon') !== false) {
+        header("Content-type: image/x-icon");
+        header('Content-disposition: inline; filename="Eronelit background"');
+        readfile("./logo.ico");
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "fonts-D3") !== false) {
+        header('Content-type: font/woff');
+        header('Content-disposition: inline; filename="Eronelit font"');
+        readfile("./fonts/D3/DRF.woff");
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "fonts-D32") !== false) {
+        header('Content-type: font/woff2');
+        header('Content-disposition: inline; filename="Eronelit font"');
+        readfile("./fonts/D3/DRF2.woff2");
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-fai") !== false) {
+        header("Content-type: text/css");
+        include "./fonts/D3/D3.php";
+    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-js-fai") !== false) {
+        header("Content-type: application/javascript");
+        include "./Scripts/js_font_awesommme.php";
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_099925') !== false) {
 
 

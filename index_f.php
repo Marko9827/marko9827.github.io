@@ -4,17 +4,22 @@
 <head>
   <meta charset="utf-8">
   <title>Marko Nikolić - Portfolio</title>
-  <link rel="icon" href="logo.ico" type="image/ico" />
+  <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
   <meta name="description" content="This website for my PortFolio. ">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Marko Nikolic">
   <?php /*?>
-  <link rel="stylesheet" id="template_css" href="css/style1f.css"> */ ?>
+  <link rel="stylesheet" id="template_css" href="css/style1f.css"> *f/ ?>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
   <?php /*<link rel="stylesheet" href="css/fafa/css/materialdesingicons.css"> */ ?>
   <script type="text/javascript" src="./?marko-nikolic-portfolio-source=javascript-2?<?php echo time(); ?>"></script>
   <link rel="stylesheet" id="template_css" href="./?marko-nikolic-portfolio-source=stylesheet-9?<?php echo time(); ?>">
-  <link rel="stylesheet" href="fonts/D3/D3.css" />
+  <?php /* <link rel="stylesheet" href="fonts/D3/D3.css" /> *f/ ?>
+  <link rel="stylesheet" href="./Content/node_modules/@mdi/font/css/materialdesignicons.css" >
+    */ ?>
+  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>">
+  <script type="text/javascript" src="./?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
   <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-8?<?php echo time(); ?>">
   <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-7?<?php echo time(); ?>">
   <style>
@@ -36,7 +41,7 @@
       overflow-y: hidden;
     }
   </style>
-  <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon ion-navicon-round"></i>
+  <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i> 
 
   </button>
   <ul id="menu">
@@ -98,16 +103,21 @@
 <a href="#" target="_blank"><i class="fa fa-facebook"></i> <span>Facebook</span></a>
  
 </li>-->
- */ ?> <li class="social-menu"> <a href="https://twitter.com/markoni62595164" target="_blank"><i class="fa fa-twitter"></i> <span>Twitter</span></a>
+ */ ?> <li class="social-menu"> <a href="https://twitter.com/markoni62595164" target="_blank"><i class="fab fa-twitter"></i> <span>Twitter</span></a>
 
         </li>
-        <li class="social-menu"> <a target="_blank" href="https://instagram.com/nikoliccc02"><i class="fa fa-instagram"></i> <span>Instagram</span></a>
+        <li class="social-menu"> <a target="_blank" href="https://instagram.com/nikoliccc02"><i class="fab fa-instagram"></i> <span>Instagram</span></a>
 
         </li>
-
-        <li class="social-menu"> 
-          <a target="_blank" href="https://github.com/marko9827"><i class="fa fa-github"></i> <span>Github</span></a>
+        <li class="social-menu">
+          <a target="_blank" href="https://www.linkedin.com/in/markonikolic98/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a>
         </li>
+        <li class="social-menu">
+          <a target="_blank" href="https://github.com/marko9827"><i class="fab fa-github"></i> <span>Github</span></a>
+        </li>
+
+
+
       </ul>
     </li>
   </ul>
@@ -123,7 +133,12 @@
   <div id="pagepiling">
     <div class="section" id="section1">
       <div class="global-overlay">
-        <canvas id="dotty" width="100%" height="100%"></canvas>
+
+        <canvas id="dotty" width="0%" height="0%"></canvas>
+
+        <?php
+        // include "./include_javascript.php"; 
+        ?>
       </div>
       <div class="intro">
         <p id="menu_theme_red" onclick="menu_theme_red()">R</p>
@@ -145,10 +160,10 @@
 
         <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
 
-        <a class="color-btn" onclick="CF()">Full Screen</a>
+        <a class="color-btn" onclick="CF_click()">Full Screen</a>
 
       </div>
-      <script>
+      <?php /* <script>
         function CF() {
           if ((document.fullScreenElement && document.fullScreenElement !== null) ||
             (!document.mozFullScreen && !document.webkitIsFullScreen)) {
@@ -168,8 +183,10 @@
               document.webkitCancelFullScreen();
             }
           }
-        }
-      </script> <a class="scroll-indicator" onclick="onShot1()"><span></span>Scroll</a>
+        } 
+      </script> */ ?>
+
+      <a class="scroll-indicator" onclick="onShot1()"><span></span>Scroll</a>
 
     </div>
     <div class="section" id="section2">
@@ -392,7 +409,7 @@
 </div>--> */ ?>
       <div class="global-overlay">
         <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; */width:100%;height:100%;/* bottom: initial; */border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
-      </div>
+         </div>
     </div>
   </div>
   <div id="info">
@@ -480,9 +497,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
             </div>
           </form>
         </div>
-        <script type="text/javascript">
 
-        </script>
       </div> <span class="separator"></span>
 
 
@@ -611,7 +626,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
               </button>
 
-              <script type="text/javascript">
+              <?php /*              <script type="text/javascript">
                 function projects() {
 
                   window.location.href = '#Map';
@@ -624,7 +639,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
                   window.location.href = '#Home';
                 });
               </script>
-
+*/ ?>
             </h5>
 
           </div>
@@ -663,13 +678,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
               </button>
 
-              <script type="text/javascript">
-                function projects_cv() {
 
-
-
-                }
-              </script>
 
             </h5>
 
@@ -893,7 +902,7 @@ alt="Image" class="img-responsive"></a>
           </div>
         </div>
       </div>
-      <button class="close-content"><i class="icon ion-close-round"></i>
+      <button class="close-content"><i class="fas fa-times"></i>
 
       </button>
     </div>
@@ -902,25 +911,24 @@ alt="Image" class="img-responsive"></a>
     <?php /*  <!--<button id="myBtn" onclick="onHome()">f<i class="fa fa-arrow-circle-o-up"></i></button>--> */ ?>
     <p class="credit"> <a onclick="onHome()">TOP<i class="fa top"></i></a> | Copyright © 2014 - <?php echo date("Y"); ?>
       <a class="open-info" data-target="about-anchor">Marko Nikolić</a> | Serbia/Belgrade.</p>
-    <script type="text/javascript">
 
-    </script>
   </div> <span class="holdscroll"></span>
 
 
 
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-3?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-4?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-5?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-6?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-7?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-8?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-9?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-10?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-3?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-4?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-5?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-6?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-7?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-8?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-9?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-10?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-12?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-13?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-14?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-mr-m?<?php echo time(); ?>"></script>
   <?php /* <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-11?<?php echo time(); ?>"></script> */ ?>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-12?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-13?<?php echo time(); ?>"></script>
-  <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-14?<?php echo time(); ?>"></script>
   <?php /*          -->  <input style="display: none !important;" type="text" id="input" placeholder="type whatever" value="Marko Nikolić" title="type and press enter" />
 
  
@@ -1090,7 +1098,7 @@ alt="Image" class="img-responsive"></a>
         <!--[if lt IE 10]>
             <script type="text/javascript" src="js/placeholder.php?<?php echo time(); ?>"></script>
   <![endif]-->
-        */ ?>
+        *f/ ?>
   <script type="text/javascript">
     document.addEventListener("contextmenu", function(e) {
       e.preventDefault();
@@ -1121,7 +1129,7 @@ alt="Image" class="img-responsive"></a>
         }
       }
     };
-  </script>
+  </script> */ ?>
 </body>
 
 </html>

@@ -1,0 +1,162 @@
+#box {
+height: 230px;
+width: 500px;
+margin-left: auto;
+margin-right: auto;
+display: block;
+margin-top: 30px;
+box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 70px 0 rgba(0, 0, 0, 0.10);
+border-left: 4px solid #337ab7;
+background: linear-gradient(-30deg, white, #337ab733);
+color: #337ab7;
+text-align: center;
+
+}
+
+#box .box1 {
+font-family: D3;
+padding-top:50px;
+font-weight: normal;
+font-size:46px;
+text-shadow: 4px 4px silver;
+}
+
+.box2 h1{
+font-family: D3;
+padding-top:10px;
+font-weight: normal;
+font-size:46px;
+text-shadow: 4px 4px silver;
+}
+
+
+#cont{
+box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 70px 0 rgba(0, 0, 0, 0.10);
+border-left: 4px solid #337ab7;
+
+
+margin-left:15px;
+margin-right:15px;
+padding-bottom:1px;
+padding-top:1px;
+
+}
+
+
+#info_email{
+text-align:left;
+margin-left:29px;
+}
+
+
+#canvas {
+width: 200px;
+height: 200px;
+
+position:absolute;
+left:80px;
+top:50px;
+z-index:-1;
+}
+
+
+.font{
+font-family:arial;
+
+}
+
+p{
+font-family:arial;
+}
+
+.box2 h1{
+margin-top:-10px;
+}
+
+.separator{
+
+
+display: block;
+width: auto;
+height: 4px;
+margin-left:13px;
+margin-right:13px;
+margin-top:-15px;
+background: #337ab7;
+box-shadow: 0 0px 8px 0 #337ab7c7, 0 6px 3077px 0 #337ab700;
+border-radius: 100px;
+}
+
+
+#hrcod{
+position:absolute;
+width:140px;
+top:409px;
+left:420px;
+}
+
+
+
+body{
+margin:0px;
+width: 620px;
+padding-top:40px;
+}
+
+.f1{
+font-size:20px;
+}
+
+.fa-map-marker-alt{
+margin-right:2px;
+}
+
+.copyrig{
+position:fixed;
+top:0px;
+width:100%;
+background:#337ab7;
+color:white;
+text-align:center;
+box-shadow: 0 0px 8px 0 #337ab7c7, 0 6px 3077px 0 #337ab700;
+border-bottom:3px dashed white;
+
+}
+
+
+.copyrig1{
+position:fixed;
+bottom:0px;
+width:100%;
+background:#337ab7;
+border-top:3px dashed white;
+color:white;
+text-align:center;
+box-shadow: 0 0px 8px 0 #337ab7c7, 0 6px 3077px 0 #337ab700;
+
+
+}
+
+.fa-download{
+margin-right:4px;
+margin-top:6px;
+}
+
+
+
+#downloadfiler{
+color:white;
+text-decoration:none;
+
+}
+
+#downloadfiler:hover{
+
+color:silver;
+}
+
+#box,div{
+cursor:default;
+}
+
+ 

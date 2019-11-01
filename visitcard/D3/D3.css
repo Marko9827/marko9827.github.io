@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'D3';
+    src: url('DazzleShips-Regular.woff2') format('woff2'),
+        url('DazzleShips-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+

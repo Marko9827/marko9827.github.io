@@ -41,7 +41,11 @@
       overflow-y: hidden;
     }
   </style>
+<<<<<<< HEAD
   <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i>
+=======
+  <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i> 
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 
   </button>
   <ul id="menu">
@@ -408,9 +412,14 @@
 
 </div>--> */ ?>
       <div class="global-overlay">
+<<<<<<< HEAD
         <!-- <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; */width:100%;height:100%;/* bottom: initial; */border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
    --->
       </div>
+=======
+        <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; */width:100%;height:100%;/* bottom: initial; */border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
+         </div>
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
     </div>
   </div>
   <div id="info">
@@ -420,7 +429,11 @@
     <div id="carousel-2" class="carousel carousel-fade">
       <div id="Slika">
         <div id="slika1">
+<<<<<<< HEAD
           <img src="./?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
+=======
+          <img src="?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
         </div>
       </div>
       <?php    /*     <style>
@@ -483,7 +496,11 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
           applications. Today I make them successful. Android itself salvadao medium (Android SDK)</p>
         <br /> <a class="color-btn socialnew" href="https://www.linkedin.com/in/markonikolic98/" target="_blank"><i class="fa fa-instagram socialnew1"></i> Linkedin</a>
 
+<<<<<<< HEAD
         <?php /* <a class="color-btn btndemo" onkeypress="KP1()" onclick="idemo()">Eronel SDK Demo</a>
+=======
+        <a class="color-btn btndemo" onkeypress="KP1()" onclick="idemo()">Eronel SDK Demo</a>
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 
         <div class="col-xs-12 col-sm-12 col-lg-12" style="width: 100%;">
           <form id="contact-form" name="contact-form" method="POST" data-name="Contact Form">
@@ -498,7 +515,10 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
             </div>
           </form>
         </div>
+<<<<<<< HEAD
         */ ?>
+=======
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 
       </div> <span class="separator"></span>
 

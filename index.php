@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
 // header('X-Frame-Options: SAMEORIGIN');
+=======
+header('X-Frame-Options: SAMEORIGIN');
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
@@ -181,6 +185,7 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-js-fai") !== false) {
         header("Content-type: application/javascript");
         include "./Scripts/js_font_awesommme.php";
+<<<<<<< HEAD
 
 
 
@@ -209,10 +214,13 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], "javascript-no-13") !== false) {
         header("Content-type: application/javascript");
         include "./Scripts/jquery.mousewheel.min.php";
+=======
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_099925') !== false) {
 
 
         include "./projct.php";
+<<<<<<< HEAD
     }
     // - visitcard
     else if (strpos($_GET['marko-nikolic-portfolio-source'], 'visitcard') !== false) {
@@ -241,5 +249,9 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
        include "./index_f.php";
     }
 }else {
+=======
+    } else { }
+} else {
+>>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
     include "./index_f.php";
 }

@@ -3,11 +3,11 @@ Options -Indexes
 
 
 
-ErrorDocument 403 /root.php
-ErrorDocument 404 /root.php
-ErrorDocument 405 /root.php
-ErrorDocument 408 /root.php
-ErrorDocument 500 /root.php
-ErrorDocument 502 /root.php
-ErrorDocument 504 /root.php
-ErrorDocument 503 /root.php
+#ErrorDocument 403 /root.php
+#ErrorDocument 404 /root.php
+#ErrorDocument 405 /root.php
+#ErrorDocument 408 /root.php
+#ErrorDocument 500 /root.php
+#ErrorDocument 502 /root.php
+#ErrorDocument 504 /root.php
+#ErrorDocument 503 /root.php

@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "html-pdf": "^2.2.0",
+    "html-pdf": "^3.0.1",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^1.5.3"
   }

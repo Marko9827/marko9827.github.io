@@ -191,6 +191,9 @@ ob_start(function ($b) {
         <!--    <a class="color-btn" onclick="onShot1()">See my work [Photografy , photos + video]</a>
 -->
         <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener">My Linkedin</a>
+        <a class="color-btn" href="/?pages=cv-pdf" rel="noopener">My CV</a>
+        <a class="color-btn" href="/?pages=visitcard" rel="noopener">My Visit Card</a>
+
 
         <a class="color-btn" onclick="CF_click()">Full Screen</a>
 

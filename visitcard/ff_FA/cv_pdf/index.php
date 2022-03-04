@@ -89,7 +89,7 @@ ob_start(function ($b) {
                     <p class="main_label main_label_and_icon"><i class="fas fa-graduation-cap"></i> Education</p>
                     <span class="separator"></span>
                     <div id="cont1">
-                        <p id="info_email" class="info_email_code"><i class="fas fa-graduation-cap"></i><span>Singidunum University<br>Information Technology and Computing<br><?php //2017 ?></span></p>
+                        <p id="info_email" class="info_email_code"><i class="fas fa-graduation-cap"></i><span>Singidunum University<br>Information Technology and Computing<br>- Student<?php //2017 ?></span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-award"></i><span>Tehnicka Skola Novi Beograd<br>Modeling, Virtual Environments and Simulation<br><?php //2013 - 2017 ?></span></p>
                         <p></p>
                     </div>

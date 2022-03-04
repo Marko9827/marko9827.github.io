@@ -1,3 +1,9 @@
+<?php
+ob_start(function ($b) {
+  return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
+});
+
+?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js">
 
@@ -8,6 +14,7 @@
   <meta name="description" content="This website for my PortFolio. ">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Marko Nikolic">
+  <meta name="theme-color" content="#DAA520">
   <?php /*?>
   <link rel="stylesheet" id="template_css" href="css/style1f.css"> *f/ ?>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -20,7 +27,8 @@
     */ ?>
   <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>">
   <script type="text/javascript" src="./?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-8?<?php echo time(); ?>">
+
+  <?php /* <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-8?<?php echo time(); ?>"> */ ?>
   <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-7?<?php echo time(); ?>">
   <style>
     body {
@@ -30,10 +38,24 @@
     * {
       overflow: hidden;
     }
+
+    #info {
+      padding: 40px;
+    }
   </style>
 </head>
 
 <body id="fullsc">
+
+  <?php
+  if (!empty($_GET['pages'])) {
+    if (strpos($_GET['pages'], "v3") !== false) {
+      include "./projecttt.php";
+    }
+  }
+
+  ?>
+
   <style>
     body {
       overflow: hidden;
@@ -41,17 +63,14 @@
       overflow-y: hidden;
     }
   </style>
-<<<<<<< HEAD
-  <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i>
-=======
-  <button class="open-close-menu" id="small-screen-menu" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i> 
->>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
+  <button class="open-close-menu" id="small-screen-menu" title="Open Naw" onclick="&open"> <i class="icon fas fa-bars ion-navicon-round"></i>
 
   </button>
   <ul id="menu">
     <li data-menuanchor="Home" class="active main-nav"> <a onclick="onHome()"><i class="fa fa-home"></i></a>
 
     </li>
+    <?php /*
     <li data-menuanchor="Shot1" class="main-nav"> <a onclick="onShot1()">1 <span>Belgrade/Kalemegdan
           [Photografy]</span></a>
 
@@ -63,14 +82,11 @@
     <li data-menuanchor="Shot3" class="main-nav"> <a onclick="onShot3()">3 <span>Ada Ciganlija [Photografy]</span></a>
 
     </li>
-    <?php /*
-    <li data-menuanchor="Movie" class="main-nav"> <a onclick="onMovie()"><i class="fa fa-video-camera"></i><span>Fantasy
-          or Reality</span></a>
-    </li> */ ?>
+     
 
     <li data-menuanchor="Shot5" class="main-nav"> <a onclick="OnShot5()">4 <span>Zemun [Photografy]</span></a>
 
-      <?php /*  <!--</a><a onclick="onShot5()">5 <span>Numbers</span></a>--> */ ?>
+     
     </li>
     <li data-menuanchor="Shot6" class="main-nav"> <a onclick="OnShot6()">5 <span>More photos [Photografy]</span></a>
 
@@ -84,7 +100,7 @@
     <li data-menuanchor="Map" class="main-nav"> <a onclick="OnMap()"><i class="fa fa-industry"></i><span>See My Work
           [IT]</span></a>
 
-    </li>
+    </li> */ ?>
     <li id="menu-link">
       <ul>
         <?php /* <!-- <li>
@@ -92,7 +108,7 @@
 <a onclick="iders()">EN-|RS</a>
 
 </li> --> */ ?>
-        <li> <a class="open-info" <?php /*  onclick="window.location.href = '#about-anchor'; " */ ?> data-target="about-anchor">About</a>
+        <li> <a id="open_info_marko" class="open-info" <?php /*  onclick="window.location.href = '#about-anchor'; " */ ?> data-target="about-anchor">About</a>
 
         </li>
         <li> <a class="open-info" <?php /* onclick="window.location.href = '#clients-anchor'; " */ ?> data-target="clients-anchor">MY
@@ -107,17 +123,17 @@
 <a href="#" target="_blank"><i class="fa fa-facebook"></i> <span>Facebook</span></a>
  
 </li>-->
- */ ?> <li class="social-menu"> <a href="https://twitter.com/markoni62595164" target="_blank"><i class="fab fa-twitter"></i> <span>Twitter</span></a>
+ */ ?> <li class="social-menu"> <a href="https://twitter.com/markoni62595164" target="_blank" rel="noopener"><i class="fab fa-twitter"></i> .<span>Twitter</span></a>
 
         </li>
-        <li class="social-menu"> <a target="_blank" href="https://instagram.com/nikoliccc02"><i class="fab fa-instagram"></i> <span>Instagram</span></a>
+        <li class="social-menu"> <a href="https://instagram.com/nikoliccc02" target="_blank" rel="noopener"><i class="fab fa-instagram"></i> .<span>Instagram</span></a>
 
         </li>
         <li class="social-menu">
-          <a target="_blank" href="https://www.linkedin.com/in/markonikolic98/"><i class="fab fa-linkedin"></i> <span>Linkedin</span></a>
+          <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> .<span>Linkedin</span></a>
         </li>
         <li class="social-menu">
-          <a target="_blank" href="https://github.com/marko9827"><i class="fab fa-github"></i> <span>Github</span></a>
+          <a href="https://github.com/marko9827" target="_blank" rel="noopener"><i class="fab fa-github"></i> .<span>Github</span></a>
         </li>
 
 
@@ -138,8 +154,18 @@
     <div class="section" id="section1">
       <div class="global-overlay">
 
-        <canvas id="dotty" width="0%" height="0%"></canvas>
 
+        <canvas id="dotty" width="476" height="757"></canvas>
+        <?php /*  *f/ ?>
+      <div class="pass_view">
+<input type="checkbox" id="id-name--4" name="set-name" class="switch-input_4" style="margin: 0px !important; " onclick="if (!window.__cfRLUnblockHandlers) return false; id_name_4()">
+<label for="id-name--4" class="switch-label_4">
+<span class="toggle--on"></span>
+<span class="toggle--off"></span>
+</label>
+</div>
+<iframe id="dotty" width="476" height="757" src="http://localhost:4952/Apps/Eronelit_Maps/"></iframe>
+       */ ?>
         <?php
         // include "./include_javascript.php"; 
         ?>
@@ -158,11 +184,13 @@
 
         <h1 class="text-shadow1">Marko Nikolić</h1>
 
-        <p class="subtitle text-shadow1">Developer / Photographer from Serbia/Belgrade</p> <a class="color-btn" onclick="OnMap()">See my work [ IT ]</a>
+        <p class="subtitle text-shadow1">Full Stack Web Developer <br>From Serbia/Belgrade</p>
+        <a onclick="$('#menu #menu-link li #open_info_marko').click(); return false;" class="color-btn"><i class="fa fa-industry"></i><span>About me
+            [IT]</span></a>
 
-        <a class="color-btn" onclick="onShot1()">See my work [Photografy , photos + video]</a>
-
-        <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
+        <!--    <a class="color-btn" onclick="onShot1()">See my work [Photografy , photos + video]</a>
+-->
+        <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener">My Linkedin</a>
 
         <a class="color-btn" onclick="CF_click()">Full Screen</a>
 
@@ -190,7 +218,8 @@
         } 
       </script> */ ?>
 
-      <a class="scroll-indicator" onclick="onShot1()"><span></span>Scroll</a>
+      <?php // <a class="scroll-indicator" onclick="onShot1()"><span></span>Scroll</a> 
+      ?>
 
     </div>
     <div class="section" id="section2">
@@ -206,7 +235,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i>Belgrade/Kalemegdan</p> <a data-dialog="somedialog_1" class="action-btn trigger before-click">More Informations</a>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i>Belgrade/Kalemegdan
+        </p> <a data-dialog="somedialog_1" class="action-btn trigger before-click">More Informations</a>
 
         <?php /*    <!--<a class="action-btn before-click" href="https://link-to-your-picture.jpg/" download="https://link-to-your-picture.jpg"><i class="fa fa-download" aria-hidden="true"></i></a>
 
@@ -233,7 +263,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Belgrade/Surčin</p> <a onclick="OnShot6()" class="action-btn before-click" aria-hidden="false">More pictures at once</a>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Belgrade/Surčin
+        </p> <a onclick="OnShot6()" class="action-btn before-click" aria-hidden="false">More pictures at once</a>
 
         <?php /*   <!--<a class="action-btn before-click" id="carousel-1-left" href="#carousel-1"
                     data-slide="prev"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
@@ -261,7 +292,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija</p>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija
+        </p>
         <?php /*  <!-- <a data-dialog="somedialog_2" class="action-btn trigger before-click">More Informations</a> --> */ ?>
       </div>
     </div>
@@ -304,7 +336,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia / Zemun</p>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia / Zemun
+        </p>
       </div>
     </div>
     <div class="section" id="section7">
@@ -363,7 +396,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija</p> <a class="action-btn before-click" href="https://www.instagram.com/p/BUUX7DGhS2d/?taken-by=nikoliccc02" target="_blank">View on Instagram <i class="fa fa-instagram" aria-hidden="true"></i></a>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija
+        </p> <a class="action-btn before-click" href="https://www.instagram.com/p/BUUX7DGhS2d/?taken-by=nikoliccc02" target="_blank" rel="noopener">View on Instagram <i class="fa fa-instagram" aria-hidden="true"></i></a>
 
         <?php /*   <!--<a
                     data-dialog="somedialog_4" class="action-btn trigger before-click">More Informations</a>
@@ -386,7 +420,8 @@
 
             Nikolić</a>
 
-          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija</p>
+          <br> <i class="fa fa-location-arrow" aria-hidden="true"></i> Serbia/Belgrade/Ada Ciganlija
+        </p>
         <?php /*<!--<a data-dialog="somedialog_5" class="action-btn trigger before-click">More Informations</a>--> <a class="action-btn before-click" href="https://www.instagram.com/p/BUSOfCyBHSA/?taken-by=nikoliccc02" target="_blank">View on Instagram <i class="fa fa-instagram" aria-hidden="true"></i></a>
 
                 <!--<a class="action-btn before-click"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>-->
@@ -412,14 +447,12 @@
 
 </div>--> */ ?>
       <div class="global-overlay">
-<<<<<<< HEAD
-        <!-- <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; */width:100%;height:100%;/* bottom: initial; */border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
-   --->
+        <?php /*  <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; *f/width:100%;height:100%;/* bottom: initial; *f/border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
+     *f/ ?> <object data="./?marko-nikolic-portfolio-source=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;">
+          <embed id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"> </embed>
+          Error: Embedded data could not be displayed.
+        </object>  */ ?>
       </div>
-=======
-        <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; */width:100%;height:100%;/* bottom: initial; */border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
-         </div>
->>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
     </div>
   </div>
   <div id="info">
@@ -427,15 +460,25 @@
     <h2 id="about-anchor">Know more about me...<br><small></small></h2>
 
     <div id="carousel-2" class="carousel carousel-fade">
+
+      <a href="./?pages=cv-pdf" title="Preview my CV page. URL [ <?php echo $_SERVER['SERVER_NAME'] . "?pages=cv-pdf ]"; ?>" target="_blank">
+        <div id="img_profile_portfolio_cv_pdff">
+          <img src="./?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
+        </div>
+      </a>
+
+      <?php /* 
+      
+      
+      
+      
+      
+      
       <div id="Slika">
         <div id="slika1">
-<<<<<<< HEAD
           <img src="./?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
-=======
-          <img src="?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
->>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
         </div>
-      </div>
+      </div> */ ?>
       <?php    /*     <style>
         
 #Slika {
@@ -494,13 +537,14 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
         <p>Web, Windows, Mobile (Android, Windows) when I was a kid I always thought in the development of their
           applications. Today I make them successful. Android itself salvadao medium (Android SDK)</p>
-        <br /> <a class="color-btn socialnew" href="https://www.linkedin.com/in/markonikolic98/" target="_blank"><i class="fa fa-instagram socialnew1"></i> Linkedin</a>
+        <br />
+        <a class="color-btn socialnew" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener"><i class="fab fa-linkedin  socialnew1"></i> Linkedin</a>
+        <a class="color-btn socialnew" onclick="window.location.href = './?pages=cv-pdf';"><i class="fa fa-file socialnew1"></i> My CV </a>
+        <a class="color-btn socialnew" onclick="window.location.href = './?pages=visitcard';"><i class="fa fa-file socialnew1"></i> My Visit card </a>
 
-<<<<<<< HEAD
+
+
         <?php /* <a class="color-btn btndemo" onkeypress="KP1()" onclick="idemo()">Eronel SDK Demo</a>
-=======
-        <a class="color-btn btndemo" onkeypress="KP1()" onclick="idemo()">Eronel SDK Demo</a>
->>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 
         <div class="col-xs-12 col-sm-12 col-lg-12" style="width: 100%;">
           <form id="contact-form" name="contact-form" method="POST" data-name="Contact Form">
@@ -515,10 +559,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
             </div>
           </form>
         </div>
-<<<<<<< HEAD
         */ ?>
-=======
->>>>>>> 33a26b021ff799833ca98f08a616957ca2575e76
 
       </div> <span class="separator"></span>
 
@@ -624,7 +665,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
                 <br>
 
-                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">More Info (Linkedin)</a>
+                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener">More Info (Linkedin)</a>
 
 
 
@@ -692,14 +733,13 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
             <h5 class="mb-0">
 
-              <button class="btn btn-link " type="button" onclick="projects_cv()">
+              <button class="btn btn-link " type="button" onclick="window.location.href = './?pages=cv-pdf';">
 
                 Download CV.pdf <i class="fa fa-file-pdf"></i>
 
 
 
               </button>
-
 
 
             </h5>
@@ -820,10 +860,13 @@ alt="Image" class="img-responsive"></a>
 --> */ ?><span class="separator"></span>
 
 
-      <h2 id="contact-anchor">Get in touch with me<br><small>Booking / Meeting / Freelancing</small></h2>
+      <h2 id="contact-anchor">CONTACT<br>
+        <small>Developer / Photographer <br>From Serbia/Belgrade</p></small>
+      </h2>
+      <?php /*<small>Booking / Meeting / Freelancing</small></h2>
 
       <div class="info-contact row">
-        <div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
+     <?php /*   <div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
           <div class="contact-item"> <i class="fa fa-location-arrow"></i>
 
             <p>Serbia/Belgrade/Surčin
@@ -831,7 +874,7 @@ alt="Image" class="img-responsive"></a>
             </p>
           </div>
         </div>
-        <?php /*   <!--<div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
+           <!--<div class="col-xs-12 col-sm-4 col-lg-4 item-contact">
 
 <div class="contact-item">
 
@@ -848,10 +891,10 @@ alt="Image" class="img-responsive"></a>
 </div>
 
 </div>-->*/ ?>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-lg-12">
-          <form disabled id="contact-form" action="" method="post">
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-lg-12">
+        <?php /*    <form disabled id="contact-form" action="return false;" method="post">
             <div class="row">
               <div class="col-xs-12 col-sm-12 col-lg-12 display-none">
                 <div class="form-group">
@@ -859,8 +902,8 @@ alt="Image" class="img-responsive"></a>
                 </div>
               </div>
               <div class="col-xs-12 col-sm-6 col-lg-6">
-                <div class="form-group"> <i class="fa fa-user icon-fields"></i>
-
+                <div class="form-group">
+                 <i class="fa fa-user icon-fields"></i>
                   <input required id="name" class="form form-control" placeholder="Name*" onfocus='this.placeholder=""' onblur='this.placeholder="Name*"' name="name" data-name="Name" required>
                 </div>
               </div>
@@ -904,7 +947,7 @@ alt="Image" class="img-responsive"></a>
                   }
                 </style>
               </div>
-              <?php /*       <div class="col-xs-12 col-sm-12 col-lg-12">
+              <?php /f*       <div class="col-xs-12 col-sm-12 col-lg-12">
 
 <input type="checkbox" id="ios" name="newsletter" value="Yes" checked>
 
@@ -912,27 +955,26 @@ alt="Image" class="img-responsive"></a>
 
 <label class="check-news">I want to receive your Weekly Newsletter.</label>
 
-</div>*/ ?>
+</div>*f/ ?>
             </div>
-            <input type="submit" name="submit" disabled id="valid-form" class="btn btn-color">Send my Message</button>
+            <input type="submit" name="submit" id="valid-form" class="btn btn-color">Send my Message</button>
 
           </form>
           <p> There is currently no active form for upgrading! <br>
-            Contact me on my email! <a style="color:blue;" href="mailto:marko.supergun@gmail.com">marko.supergun@gmail.com</a></p>
-          <div id="block-answer">
-            <div id="answer"></div>
-          </div>
+          */ ?> <p><i class="fa fa-envelope icon-fields"></i> Contact me on my email! <a style="color:blue;" href="mailto:marko.supergun&#64;gmail.com">marko.supergun&#64;gmail.com</a></p>
+        <div id="block-answer">
+          <div id="answer"></div>
         </div>
       </div>
-      <button class="close-content"><i class="fas fa-times"></i>
-
-      </button>
     </div>
+    <div class="close-content"><i class="fas fa-times"></i></div>
+  </div>
   </div>
   <div class="copyright">
     <?php /*  <!--<button id="myBtn" onclick="onHome()">f<i class="fa fa-arrow-circle-o-up"></i></button>--> */ ?>
-    <p class="credit"> <a onclick="onHome()">TOP<i class="fa top"></i></a> | Copyright © 2014 - <?php echo date("Y"); ?>
-      <a class="open-info" data-target="about-anchor">Marko Nikolić</a> | Serbia/Belgrade.</p>
+    <p class="credit"> <a onclick="onHome()">TOP <i class="fas fa-arrow-up"></i></a> | Copyright © 2014 - <?php echo date("Y"); ?>
+      <a onclick="return false;" style="pointer-events:none !important;">Marko Nikolić</a> | Serbia/Belgrade.
+    </p>
 
   </div> <span class="holdscroll"></span>
 
@@ -943,13 +985,24 @@ alt="Image" class="img-responsive"></a>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-5?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-6?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-7?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-8?<?php echo time(); ?>"></script>
+  <?php /*
+     <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-8?<?php echo time(); ?>"></script>
+  */ ?>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-9?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-10?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-12?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-13?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-14?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-mr-m?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false">
+    // static -->
+
+    function open_link(link) {
+      window.open(link, '_blank');
+    }
+
+    // <-- static
+  </script>
   <?php /* <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-11?<?php echo time(); ?>"></script> */ ?>
   <?php /*          -->  <input style="display: none !important;" type="text" id="input" placeholder="type whatever" value="Marko Nikolić" title="type and press enter" />
 
@@ -1184,7 +1237,8 @@ alt="Image" class="img-responsive"></a>
 
   // You can also use header('Location: thank_you.php '); to redirect to another page.
 
-} else { }
+} else {
+}
 
 
 

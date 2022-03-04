@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - HTML 2 PDF Api</title>
+    
+    <style>
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+         font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 500; line-height: 1.1;
+        }
+
+        body {
+            font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+            font-size: 14px;
+            line-height: 1.428571429;
+            color: #333;
+            background-color: #fff;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        .container {
+            margin-right: auto;
+            margin-left: auto;
+        }
+                                         
+    </style>
+</head>
+<body>
+    <div class="container body-content">
+        
+
+
+<form action="/Account/LogOn?ReturnUrl=%2fpdf%3fapikey%3dABCD-1234%26value%3dhttp%253A%252F%252Fwww.google.com&amp;apikey=ABCD-1234&amp;value=http%3A%2F%2Fwww.google.com" method="post">    <div>
+        <label for="username">username</label>
+        <input id="username" name="username" type="text" value="" />
+    </div>
+    <div>
+        <label for="password">password</label>
+        <input id="password" name="password" type="password" />
+    </div>
+    <p>
+        <input type="submit" value="Log On" />
+    </p>
+</form>
+        <hr />
+        <footer>
+            <p>&copy; 2019 - HTML 2 PDF Rocket</p>
+        </footer>
+    </div>
+</body>
+</html>

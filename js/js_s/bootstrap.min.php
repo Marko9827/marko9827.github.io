@@ -1,6 +1,5 @@
 
-<? header("Content-type: application/javascript");  ?>
-
+ 
 /*!
  * Bootstrap v3.3.7 (https://getbootstrap.com)
  * Copyright 2011-2016 Twitter, Inc.

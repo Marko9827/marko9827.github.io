@@ -1,0 +1,25 @@
+{
+  "name": "marko_nikolic_portfolio",
+  "version": "1.0.0",
+  "description": "marko nikolic portfolio Allowed non-commercial use. For teaching purposes only and not for editing without the permission of the author!. Author linkedin : linkedin.com/in/markonikolic98/",
+  "main": "composer.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "portfolio"
+  },
+  "keywords": [
+    "marko",
+    "nikolic",
+    "marko",
+    "portfolio",
+    "github.com/marko9827"
+  ],
+  "author": "marko nikolic linkedin.com/in/markonikolic98",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^2.0.0"
+  }
+}

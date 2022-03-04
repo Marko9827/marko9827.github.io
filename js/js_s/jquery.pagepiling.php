@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 /*!
  * pagepiling.js 1.5.3
  *

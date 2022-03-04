@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 /*! jQuery UI - v1.9.2 - 2014-03-21
 * https://jqueryui.com
 * Includes: jquery.ui.effect.js

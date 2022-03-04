@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 function init() {
     var e = new google.maps.LatLng(48.856614, 2.352222),
         s = $(document).width() > 1024,

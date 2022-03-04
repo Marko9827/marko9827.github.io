@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 
 // threejs.org/license
 (function(m,na){"object"===typeof exports&&"undefined"!==typeof module?na(exports):"function"===typeof define&&define.amd?define(["exports"],na):na(m.THREE=m.THREE||{})})(this,function(m){function na(){}function D(a,b){this.x=a||0;this.y=b||0}function N(a,b,c,d,e,f,g,h,k,l){Object.defineProperty(this,"id",{value:lf++});this.uuid=R.generateUUID();this.name="";this.image=void 0!==a?a:N.DEFAULT_IMAGE;this.mipmaps=[];this.mapping=void 0!==b?b:N.DEFAULT_MAPPING;this.wrapS=void 0!==c?c:1001;this.wrapT=

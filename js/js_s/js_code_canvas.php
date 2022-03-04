@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 console.clear();
 
 var ww = window.innerWidth,

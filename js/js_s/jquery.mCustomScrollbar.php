@@ -1,5 +1,4 @@
-<? header("Content-type: application/javascript");  ?>
-
+ 
 !(function(e) {
   "undefined" != typeof module && module.exports
     ? (module.exports = e)
@@ -10,10 +9,10 @@
       o = "undefined" != typeof module && module.exports,
       a = "https:" == document.location.protocol ? "https:" : "http:",
       n =
-<?php /*
-        "cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js";
-  */ ?>
-  "./?marko-nikolic-portfolio-source=javascript-no-13";
+
+     <?php /*    "cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js";
+ 
+  "/*/ ?>"?marko-nikolic-portfolio-source=javascript-no-13";
         t ||
       (o
         ? require("jquery-mousewheel")($)

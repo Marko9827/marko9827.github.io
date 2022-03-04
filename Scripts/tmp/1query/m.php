@@ -68,3 +68,17 @@ $(".close-content").click();
 $(".close-content").click(function() {
 window.location.href = '#Home';
 });
+
+
+
+
+$("#section2").remove();
+$("#section3").remove();
+$("#section4").remove();
+$("#section5").remove();
+$("#section6").remove();
+$("#section7").remove();
+$("#section8").remove();
+$("#section9").remove();
+$("#section10").remove();
+ 

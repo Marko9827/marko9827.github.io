@@ -1,8 +1,3 @@
 # Marko Nikoliћ Portfolio
 
-NOVIJA VERZIJA NALAZI SE NA ERONELIT CLOUD SERVERU!!!
-
-
-> EDITOR  
-> 3D EDITOR
-> Integrisan AI!
+![README_files/readme_part1.png](README_files/readme_part1.png)

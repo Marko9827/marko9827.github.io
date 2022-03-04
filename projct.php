@@ -10,13 +10,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="../../../../favicon.ico">
+  <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>">
 
   <title>143</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap core CSS -->
-  <link href="Scripts/tmp/1query/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="fonts/D3/D3.css" />
+  <link href="./?marko-nikolic-portfolio-source=fgae-stylesheet?<?php echo time(); ?>" rel="stylesheet">
+  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
   <?php /*
   <!-- Custom styles for this template -->
   <link href="Scripts/tmp/1query/album.css" rel="stylesheet">
@@ -76,7 +76,7 @@ var color1;
 color1 = ['rgba(0, 134, 196,alp)', 'rgba(218, 165, 32,alp)', 'rgba(255,255,255,alp)'];
 /*ZNJ*/
 
-
+var dotty = document.getElementById("dotty");
 
 var w = dotty.width = window.innerWidth,
     h = dotty.height = window.innerHeight,
@@ -404,7 +404,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/img_fae.jpg" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-jpg=img_fae" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">When Eronel SDK connects to the brain ... All information about the status of an
                   organism is stored for analysis in Eronel JGA where the...
@@ -436,8 +436,8 @@ window.addEventListener('resize', function () {
                               </button>
                             </div>
                             <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/index.html"></iframe>
-                              When Eronel SDK connects to the brain ...
+                            <?php /*   <iframe class="iframe_modal_body_slider" src="Scripts/sliders/index.html"></iframe>
+                            */ ?>  When Eronel SDK connects to the brain ...
                               All information about the status of the organism is stored for analysis in Eronel JGA
                               where the Task Manager of all processes is done in Windows. Only processes for the
                               operation of organs, blood images and pressure are shown ...
@@ -463,7 +463,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/galaxy_slider2.jpg" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-jpg=galaxy_slider2" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
                   countless animations that provide space experience!
@@ -495,8 +495,8 @@ window.addEventListener('resize', function () {
                               </button>
                             </div>
                             <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/indexgalaxy.html"></iframe>
-                              Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
+                            <?php /*    <iframe class="iframe_modal_body_slider" src="Scripts/sliders/indexgalaxy.html"></iframe>
+                             */ ?> Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
                               countless animations that provide space experience!
                             </div>
                             <div class="modal-footer">
@@ -520,7 +520,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/dd1.png" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=dd1" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">
                   Eronelit OS is a commercial software that enables web site management through a presentation.
@@ -555,8 +555,8 @@ window.addEventListener('resize', function () {
                               </button>
                             </div>
                             <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/osinde.html"></iframe>
-                              Eronelit OS is a commercial software that enables web site management through a
+                            <?php /*  <iframe class="iframe_modal_body_slider" src="Scripts/sliders/osinde.html"></iframe>
+                            */ ?>  Eronelit OS is a commercial software that enables web site management through a
                               presentation.
                             </div>
                             <div class="modal-footer">
@@ -577,7 +577,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/AI1.png" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=AI1" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">Artificial intelligence (AI), sometimes called machine intelligence, is
                   intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans
@@ -610,8 +610,8 @@ window.addEventListener('resize', function () {
                               </button>
                             </div>
                             <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/AI.html"></iframe>
-                              Artificial intelligence (AI), sometimes called machine intelligence, is intelligence
+                            <?php /*    <iframe class="iframe_modal_body_slider" src="Scripts/sliders/AI.html"></iframe>
+                          */ ?>    Artificial intelligence (AI), sometimes called machine intelligence, is intelligence
                               demonstrated by machines, in contrast to the natural intelligence displayed by humans and
                               other animals. In computer science AI research is defined as the study of "intelligent
                               agents": any device that perceives its environment and takes actions that maximize its
@@ -648,7 +648,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/ftpimage.png" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=ftpimage" alt="Card image cap">
               <div class="card-body">
                 Eronelit FTP | FTP O/nline
                 <br>
@@ -685,8 +685,8 @@ window.addEventListener('resize', function () {
                             </button>
                           </div>
                           <div class="modal-body">
-                            <iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
-
+                          <?php /*  <iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
+*/ ?>
                             The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of
                             computer files between a client and server on a computer network.
 
@@ -713,7 +713,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/home_experiments.png" alt="Card image cap">
+              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=home_experiments" alt="Card image cap">
               <div class="card-body">
                 Eronelit Experiments
                 <br>
@@ -752,8 +752,8 @@ window.addEventListener('resize', function () {
 
                           </div>
                           <div class="modal-body">
-                            <iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
-                            <p>
+                            <?php /*<iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
+                          */ ?>  <p>
                               The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of
                               computer files between a client and server on a computer network.
 
@@ -815,7 +815,7 @@ window.addEventListener('resize', function () {
       }
     };
   </script>
-
+  <script  data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-3?<?php echo time(); ?>"></script>
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->

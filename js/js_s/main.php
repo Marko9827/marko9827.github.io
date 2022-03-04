@@ -1,5 +1,4 @@
-﻿<? header("Content-type: application/javascript");  ?>
-
+﻿ 
 document.addEventListener("contextmenu", function (e) {
     e.preventDefault();
 }, false);

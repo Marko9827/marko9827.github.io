@@ -1,6 +1,4 @@
-<?php header("Content-type: application/javascript");  
-?>
-
+ 
 /*!
 
 Holder - client side image placeholders

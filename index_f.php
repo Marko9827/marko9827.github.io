@@ -45,7 +45,7 @@ ob_start(function ($b) {
   </style>
 </head>
 
-<body id="fullsc">
+<body id="fullsc" data-nijev="">
 
   <?php
   if (!empty($_GET['pages'])) {
@@ -1205,6 +1205,18 @@ alt="Image" class="img-responsive"></a>
       }
     };
   </script> */ ?>
+  <div-p style="
+    display: flex;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    z-index: 33333;
+    width: 100%;
+    bottom: 9px;
+    pointer-events:none;
+">
+    <p style="background: var(--F_daa520d4_f);border-radius: 3px;padding: 5px 15px;display: block;margin: auto;">New modern design coming soon!</p>
+  </div-p>
 </body>
 
 </html>

@@ -9,6 +9,20 @@ define("SITE_HOST", "https://$_SERVER[HTTP_HOST]/");
 
 
 $actual_link = "https://" . $_SERVER['HTTP_HOST'];
+        $protocol = "https://";
+        define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
+         define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
+        define("API_URL", "https://api.eronelit.com/");
+        define("SITEURL", API_URL);
+        define("CDN",  SITE_HOST); //"https://cdn.eronelit.com/");//SITE_HOST);//"https://cdn.eronelit.com");
+        define("SOUND_API", "");
+        define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
+
+        define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
+
+        $cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+        $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
+
 
 
 ob_start(function ($b) {
@@ -31,12 +45,20 @@ ob_start(function ($b) {
     <!-- <meta name="viewport" content="width=device-width, user-scalable=no"> -->
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=pdf-cs1?<?php echo time(); ?>" />
 
-    <meta property="og:url" content="<?php echo $actual_link . "/?pages=cv-pdf" ?>" />
-    <meta property="og:type" content="article" />
-    <meta property="og:title" content="Marko Nikolić > Portfolio > CV" />
-    <meta property="og:description" content="Marko Nikolić CV PDF" />
-    <meta property="og:image" content="<?php echo SITE_HOST; ?>/?pages=cv-png" />
-
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@markoni62595164" />
+    <meta name="twitter:creator" content="@markoni62595164" />
+    <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+    <meta property="og:title" content="Marko Nikolić - Portfolio" />
+    <meta property="og:description" content="This website for my PortFolio." />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:locale" content="en_GB" />
 
     <?php /*  
  <script type="text/javascript" src="<?php echo SITE_HOST;?>/?pages=vc-js-5"></script>

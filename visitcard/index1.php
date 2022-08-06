@@ -4,7 +4,21 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]/");
+ $protocol = "https://";
+define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
+define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]");
+define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
+define("API_URL", "https://api.eronelit.com/");
+define("SITEURL", API_URL);
+define("CDN",  SITE_HOST); //"https://cdn.eronelit.com/");//SITE_HOST);//"https://cdn.eronelit.com");
+define("SOUND_API", "");
+define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
+
+define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
+
+$cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
+
 
 
 
@@ -30,7 +44,23 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
     <link rel="stylesheet" href="/?marko-nikolic-portfolio-source=source_934285_stylesheet?<?php echo time(); ?>" />
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js" as="script">
     <script src="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js"></script>
+    <meta property="og:type" content="website" />
+    <meta name="author" content="Marko Nikolic">
 
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@markoni62595164" />
+    <meta name="twitter:creator" content="@markoni62595164" />
+    <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+    <meta property="og:title" content="Marko Nikolić - Portfolio" />
+    <meta property="og:description" content="This website for my PortFolio." />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:locale" content="en_GB" />
     <?php /*  
  <script type="text/javascript" src="/?pages=vc-js-5"></script>
     <script type="text/javascript" src="/?pages=vc-js-4"></script>

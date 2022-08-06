@@ -1,0 +1,51 @@
+{
+    "short_name": "Marko Nikolic - portfolio",
+    "name": "Marko Nikolic - portfolio",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/pwa/128.icon.svg",
+            "type": "image/svg+xml",
+            "sizes": "128x128",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/pwa/192.icon.svg",
+            "type": "image/svg+xml",
+            "sizes": "192x192",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/pwa/512.icon.svg",
+            "type": "image/svg+xml",
+            "sizes": "512x512",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/pwa/510.icon.svg",
+            "type": "image/svg+xml",
+            "sizes": "510x510",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": "/",
+    "background_color": "#fff",
+    "display": "standalone",
+    "scope": "/",
+    "theme_color": "#fff",
+    "shortcuts": [
+        {
+            "name": "Marko Nikolic - portfolio",
+            "short_name": "Marko Nikolic - portfolio",
+            "description": "Marko Nikolic - portfolio",
+            "url": "/today?source=pwa",
+            "icons": [
+                {
+                    "src": "/pwa/192.icon.svg",
+                    "type": "image/svg+xml",
+                    "sizes": "192x192"
+                }
+            ]
+        }
+    ]
+}

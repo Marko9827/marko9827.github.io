@@ -1,4 +1,4 @@
-<div class="cursor"></div>
+<div class="cursor" style="opacity: 0;"></div>
 <style type="text/css">
     *{
         cursor: none !important;

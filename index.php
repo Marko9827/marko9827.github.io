@@ -350,6 +350,15 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
 
         include "./projct.php";
+    } 
+    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'media_source') !== false) {
+        $ppath = "$_SERVER[DOCUMENT_ROOT]/cinematic_3/cinematic_MainMenu.mp4";
+        $reqpath = $ppath;
+        header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
+        header('Accept-Ranges: bytes');
+        header('Content-Length:' . filesize($reqpath));
+        @readfile($reqpath);
+        exit();
     }
     // - visitcard
     else if (strpos($_GET['marko-nikolic-portfolio-source'], 'visitcard') !== false) {

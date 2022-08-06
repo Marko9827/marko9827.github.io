@@ -1,7 +1,7 @@
 <?php
 $protocol = "https://";
 define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
-define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]/");
+define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]");
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
 define("API_URL", "https://api.eronelit.com/");
 define("SITEURL", API_URL);
@@ -36,7 +36,7 @@ header(
   prefetch-src 'self';
   worker-src 'self'; report-uri https://" . SERVER_AJAXS . "/report-csp-endpoint;"
 );
-
+$rand = time();
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js">
@@ -44,11 +44,11 @@ header(
 <head>
     <meta charset="utf-8">
     <title>Marko Nikolić - Portfolio</title>
-    <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
+    <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <meta name="description" content="This website for my PortFolio. ">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="author" content="Marko Nikolic">
-    <meta name="theme-color" content="#DAA520">
+    <meta name="theme-color" content="#333">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
@@ -61,6 +61,26 @@ header(
     <link href="https://cdn.eronelit.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js"></script>
+
+    <meta property="og:type" content="website" />
+    <meta name="author" content="Marko Nikolic">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@markoni62595164" />
+    <meta name="twitter:creator" content="@markoni62595164" />
+    <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+    <meta property="og:title" content="Marko Nikolić - Portfolio" />
+    <meta property="og:description" content="This website for my PortFolio." />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1024">
+    <meta property="og:image:height" content="1024">
+    <meta property="og:locale" content="en_GB" />
+
     <style type="text/css">
         * {
             margin: 0;
@@ -607,10 +627,10 @@ header(
                 <div class="  box_shadow">New look under construction. <br>Coming Soon...</div>
                 <br><br>
                 <div id="buttons" class="box_shadow">
-                    <a onclick="pgloader('/?pages=cv-pdf');" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
+                    <a href="javascript:return false;"  onclick="pgloader('/?pages=cv-pdf');" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
                     <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin</a>
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
-                    <a onclick="pgloader('/?pages=visitcard')" onmouseover="bell_over(this);" onmouseout="bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
+                    <a href="javascript:return false;" onclick="pgloader('/?pages=visitcard')" onmouseover="bell_over(this);" title="Visit my Visit card" onmouseout="bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
 
                 </div>
             </spj>
@@ -678,9 +698,9 @@ header(
             </btns_r>
 
         </div_header>
-        <iframe src="" onload="pgloader('yes');" onmousemove="cursor_hide(this);" onmouseout="cursor_hide(this)"></iframe>
+        <iframe title="Ignoring me " src="" onload="pgloader('yes');" onmousemove="cursor_hide(this);" onmouseout="cursor_hide(this)"></iframe>
     </div>
-    <div class="cursor"></div>
+    <div class="cursor" style="opacity: 0;"></div>
 
 
 </body>

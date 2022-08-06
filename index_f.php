@@ -1,8 +1,14 @@
+
+
 <?php
+ 
 ob_start(function ($b) {
   return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
 });
 
+
+include "./welcomer.php";
+exit();
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js">

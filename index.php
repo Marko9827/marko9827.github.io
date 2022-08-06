@@ -22,6 +22,9 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
         header("Content-type: application/javascript");
 
         include "js/js_s/words.php";
+    } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'welcomer-pl') !== false) {
+        header("Content-type: application/javascript");
+        include "./welcomer_f.js";
     } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-14') !== false) {
         header("Content-type: application/javascript");
 
@@ -47,6 +50,7 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
         include "js/js_s/jquery.mCustomScrollbar.php";
     } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-9') !== false) {
+        header("Content-type: application/javascript");
 
         include "js/js_s/jquery.swipebox.php";
     } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-8') !== false) {

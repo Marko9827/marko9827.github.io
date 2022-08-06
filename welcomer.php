@@ -73,6 +73,7 @@ header(
             user-select: none;
             outline: none !important;
             overflow: hidden;
+            cursor: none !important;
         }
 
         :root {
@@ -286,7 +287,7 @@ header(
             z-index: 4;
             background: var(--white);
             transition: .3s;
-
+            opacity: 0;
 
 
         }
@@ -390,17 +391,24 @@ header(
             left: 0px;
             top: 0px;
             width: 100%;
-            height: 50px;
+            height: 51px;
             background: var(--white);
             display: inline-flex;
+            box-shadow: 0 0px 8px 0 rgb(0 0 0 / 20%), 0 6px 70px 0 rgb(0 0 0 / 10%);
+            z-index: 33;
         }
 
         div_header span {
 
             position: absolute;
             left: 50px;
-            top: 13px;
+            top: 12px;
             color: var(--primary);
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            right: 80px !important;
 
         }
 
@@ -438,6 +446,99 @@ header(
 
         btns_r i:last-child {
             padding: 0px;
+        }
+
+        div#clavs #logo_backscr_img {
+            border: 2px solid var(--primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50px;
+            padding: 4px;
+            position: absolute;
+            top: 7px;
+            left: 7px;
+
+        }
+
+        div#clavs svg,
+        div#clavs i,
+        div#clavs span {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            transition: .3s !important;
+        }
+
+        div_header #logo_backscr_img {
+            opacity: 0;
+            pointer-events: none !important;
+        }
+
+        .ld_completeld_complete #logo_backscr_img {
+            opacity: 1;
+        }
+
+        .ld_completeld_complete #reaload_page {
+            left: 50px;
+        }
+
+        .ld_completeld_complete span {
+            left: 80px;
+        }
+
+        .href_a_span {
+            display: none;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            #buttons {
+                display: grid;
+                margin: 0px;
+            }
+
+            #buttons a {
+                margin: 10px auto;
+                display: inline-flex;
+            }
+
+            .href_a_span {
+                display: block;
+            }
+        }
+
+        .href_a_span {
+            margin-left: 5px;
+        }
+
+        #buttons a i {
+            width: 25px;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 1000000000;
+            -webkit-transition: -webkit-transform 0.2s !important;
+            transition: -webkit-transform 0.2s !important;
+            -o-transition: transform 0.2s !important;
+            transition: transform 0.2s !important;
+            transition: transform 0.2s, -webkit-transform 0.2s !important;
+            -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.1)
+        }
+
+        .cursor_pc_show {
+            display: block !important
+        }
+
+        .cursor i {
+            color: white;
         }
     </style>
     <script nonce="<?php echo NONCE; ?>" src="/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
@@ -506,10 +607,10 @@ header(
                 <div class="  box_shadow">New look under construction. <br>Coming Soon...</div>
                 <br><br>
                 <div id="buttons" class="box_shadow">
-                    <a onclick="pgloader('/?pages=cv-pdf');" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my CV">My CV <i class="bi bi-file-earmark-person-fill"></i></a>
-                    <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i></a>
-                    <a href="https://github.com/Marko9827" target="_blank" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my Github profile"><i class="bi bi-github"></i></a>
-                    <a onclick="pgloader('/?pages=visitcard')" onmouseover="bell_over(this);" onmouseout="bell_out(this)">My Visitcard </a>
+                    <a onclick="pgloader('/?pages=cv-pdf');" onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
+                    <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin</a>
+                    <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
+                    <a onclick="pgloader('/?pages=visitcard')" onmouseover="bell_over(this);" onmouseout="bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
 
                 </div>
             </spj>
@@ -517,6 +618,55 @@ header(
     </hh_anim_start>
     <div id="clavs">
         <div_header>
+            <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+                <defs>
+                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                    </radialGradient>
+                </defs>
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
+                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)">
+                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
+                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
+                </rect>
+            </svg>
             <i id="reaload_page" title="Reload" onclick="reload_me(this);" class="bi bi-arrow-clockwise"></i>
             <svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
@@ -528,9 +678,9 @@ header(
             </btns_r>
 
         </div_header>
-        <iframe src="" onload="pgloader('yes');"></iframe>
+        <iframe src="" onload="pgloader('yes');" onmousemove="cursor_hide(this);" onmouseout="cursor_hide(this)"></iframe>
     </div>
-
+    <div class="cursor"></div>
 
 
 </body>

@@ -1,110 +1,255 @@
+class Welcomer  {
+    
+    constructor() {
+
+    }
+
+    TopLeft = {
+        y: 0,
+        x: 0
+    };
+
+    start(j) {
+        document.querySelector("iframe").addEventListener("load", function () {
+            // pgloader("yes");
+            console.log(1);
+        }); document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
+
+    };
+
+    bell_over(h) {
+
+        document.querySelector("#logo_backscr_img").classList.add("activeBell");
+    };
+    bell_out(o) {
+        document.querySelector("#logo_backscr_img").classList.remove("activeBell");
+
+    }
+    hide(elem) {
+        document.querySelectorAll(elem).forEach(function (v) {
+            v.classList.remove("show");
+            v.classList.add("hide");
+        });
+    };
+    show(elem) {
+        document.querySelectorAll(elem).forEach(function (v) {
+            v.classList.remove("hide");
+            v.classList.add("show");
+        });
+    };
+    pgloader(url = "") {
+
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe");
+        if (url == "yes") {
+            $(ljoader).show();
+            $(Vjideo_sjpinner).hide();
+            $("div_header span").html($("iframe").contents().find("title").html());
+            $("div_header").addClass("ld_completeld_complete");
+
+        } else {
+
+            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+            $("iframe").attr("src", url);
+            $("iframe").attr("data-temp-url", url);
+            try {
+                // document.querySelector("iframe").remove();
+            } catch (v) { }
+            // iframe.src = url;
+            // iframe.onload = pgloader("yes");
+            // div_header.appendChild(iframe);
+        }
+    }
+
+    f_blob(url = "") {
+        var xhr = new XMLHttpRequest();
+
+        xhr.open('GET', url);
+        xhr.onreadystatechange = handler;
+        xhr.responseType = 'blob';
+        xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+        xhr.send();
+
+        function handler() {
+            if (this.readyState === this.DONE) {
+                if (this.status === 200) {
+                    // this.response is a Blob, because we set responseType above
+                    var data_url = URL.createObjectURL(this.response);
+                    $("iframe").attr("src", data_url);
+                } else {
+                    console.error('no pdf :(');
+                }
+            }
+        }
+    };
+
+    reload_me(t = true) {
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe").src;
+
+        $(ljoader).hide();
+        $(Vjideo_sjpinner).show();
+        $("div_header span").html("Loading...");
+        $("div_header").removeClass("ld_completeld_complete");
+        if (t) {
+            $("iframe").attr("src", $("iframe").attr("data-temp-url"));
+        }
+        $("div_not").removeAttr("style");
+
+        $("#clavs iframe").removeAttr("style");
+        $("box_h").hide();
+    };
 
 
-bell_over = function (h) {
+    Hclose() {
+        hmm("Are you sure to close? You are only closing the built-in browser. You do not close the card.", function () {
+            $("#clavs").attr("style", "transform: translateY(-100%);");
+            setTimeout(function () {
+                $("iframe").attr("src", "");
+                $("iframe").removeAttr("style");
+            }, 1000);
+        });
+    };
+    share() {
+        if (navigator.share) {
+            navigator.share({
+                title: $("iframe").contents().find("title").text(),
+                text: "Shared from - " + window.location.origin,
+                url: $("iframe").attr("src")
+            })
+                .then(() => console.log('Successful share'))
+                .catch(error => console.log('Error sharing:', error));
+        }
+    }
+    hideCursor() {
+        $(".cursor").hide();
+    }
 
-    document.querySelector("#logo_backscr_img").classList.add("activeBell");
-};
-bell_out = function (o) {
-    document.querySelector("#logo_backscr_img").classList.remove("activeBell");
+    hmm(qust = "", call) {
+        $("div_not").attr("style", "top: 45px !important;");
+        // var answer = window.confirm(qust);
+        // if (answer) {
+        //     call();
+        //}
+        $("div_not div_panel span").text(qust);
+        $("#clavs iframe").css({
+            "filter": "grayscale(1) blur(2px)",
+            "pointer-events": "none"
+        });
+        $("box_h").show();
 
-}
-hide = function (elem) {
-    document.querySelectorAll(elem).forEach(function (v) {
-        v.classList.remove("show");
-        v.classList.add("hide");
-    });
-};
-show = function (elem) {
-    document.querySelectorAll(elem).forEach(function (v) {
-        v.classList.remove("hide");
-        v.classList.add("show");
-    });
-};
-pgloader = function (url = "") {
+        $("btns btn2").on("click", function () {
+            $("div_not").removeAttr("style");
 
-    var ljoader = document.querySelector("#reaload_page"),
-        Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
-        div_header = document.querySelector("div_header"),
-        iframe = document.createElement("iframe");
-    if (url == "yes") {
-        $(ljoader).show();
-        $(Vjideo_sjpinner).hide();
-        $("div_header span").html($("iframe").contents().find("title").html());
-        $("div_header").addClass("ld_completeld_complete");
+            $("#clavs iframe").removeAttr("style");
+            $("box_h").hide();
+        });
+        $("btns btn1").on("click", function () {
+            $("div_not").removeAttr("style");
+            $("box_h").hide();
 
-    } else {
+            call();
+        });
+    }
+    question_no() {
+        $("div_not").removeAttr("style");
 
-        document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-        $("iframe").attr("src", url);
-        $("iframe").attr("data-temp-url", url);
-        try {
-            // document.querySelector("iframe").remove();
-        } catch (v) { }
-        // iframe.src = url;
-        // iframe.onload = pgloader("yes");
-        // div_header.appendChild(iframe);
+        $("#clavs iframe").removeAttr("style");
+    };
+
+    cursor_hide() {
+        $(".cursor").hide();
+    }
+
+    cursor_show() {
+        $(".cursor").show();
+
+    }
+
+
+    url_blob(url = "") {
+        var blob = null;
+        var objectURL = null;
+        $.ajax({
+            url: url,
+            contentType: 'text/html ; charset=utf-8',
+            cache: false,
+            success: function (res) {
+                blob = new Blob([res], { type: "text/html" });
+                objectURL = URL.createObjectURL(blob);
+                $("iframe").attr("src", objectURL);
+            },
+            async: false
+        });
+    };
+
+
+
+    Img_cursor() {
+        cursor.css({
+            transform: "scale(2)",
+            "text-align": "center",
+            "font-size": "10px",
+            "padding": "uset", //1px",
+            "padding-top": "4px",
+            "cursor": "none",
+            "mix-blend-mode": "unset"
+        });
+    }
+
+
+    Img_no_cursor() {
+        cursor.css({
+            transform: "scale(1)",
+            "font-size": "unset",
+            "padding": "unset",
+            "padding-top": "unset",
+            "border-radius": "50%",
+            "mix-blend-mode": "difference",
+            "display": "unset"
+
+        });
+    }
+
+    txt_cursor() {
+        $("input[type='text'], textarea, input[type='search'], .trumbowyg-box .trumbowyg-editor" +
+            " , .invoice-box input").click(function () {
+                cursor.css({
+                    transform: "scale(0.1, 1.5)",
+                    "border-radius": "5px"
+                });
+                cursor.html("");
+
+            }).contextmenu(function () {
+                cursor.css({
+                    transform: "scale(0.1, 1.5)",
+                    "border-radius": "5px"
+                });
+                cursor.html("");
+
+            }).mouseenter(function () {
+                cursor.css({
+                    transform: "scale(0.1, 1.5)",
+                    "border-radius": "5px"
+                });
+                cursor.html("");
+
+            }).mouseleave(function () {
+                cursor.css({
+                    transform: "scale(1)",
+                    "border-radius": "50%",
+                    "mix-blend-mode": "difference"
+
+                });
+            });
     }
 }
 
-reload_me = function (t = true) {
-    var ljoader = document.querySelector("#reaload_page"),
-        Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
-        div_header = document.querySelector("div_header"),
-        iframe = document.createElement("iframe").src;
-
-    $(ljoader).hide();
-    $(Vjideo_sjpinner).show();
-    $("div_header span").html("Loading...");
-    $("div_header").removeClass("ld_completeld_complete");
-    if (t) {
-        $("iframe").attr("src", $("iframe").attr("data-temp-url"));
-    }
-};
-
-start = function () {
-    document.querySelector("iframe").addEventListener("load", function () {
-        // pgloader("yes");
-        console.log(1);
-    }); document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
-
-};
-Hclose = function () {
-    hmm("Are you sure to close? You are only closing the built-in browser. You do not close the card.", function () {
-        $("#clavs").attr("style", "transform: translateY(-100%);");
-        setTimeout(function () {
-            $("iframe").attr("src", "");
-        }, 1000);
-    });
-};
-share = function () {
-    if (navigator.share) {
-        navigator.share({
-            title: $("iframe").contents().find("title").text(),
-            text: "Shared from - " + window.location.origin,
-            url: $("iframe").attr("src")
-        })
-            .then(() => console.log('Successful share'))
-            .catch(error => console.log('Error sharing:', error));
-    }
-}
-hideCursor = function(){
-    $(".cursor").hide();
-}
-hmm = function (qust = "", call) {
-    var answer = window.confirm(qust);
-    if (answer) {
-        call();
-    }
-}
-
-cursor_hide = function () {
-    $(".cursor").hide();
-}
-
-cursor_show = function () {
-    $(".cursor").show();
-
-}
+var welcomer = new Welcomer();
 
 
 $(document).ready(function () {
@@ -127,48 +272,22 @@ $(document).ready(function () {
         var cursor = $(".cursor");
         cursor.addClass("cursor_pc_show");
 
-        function Img_cursor() {
-            cursor.css({
-                transform: "scale(2)",
-                "text-align": "center",
-                "font-size": "10px",
-                "padding": "uset", //1px",
-                "padding-top": "4px",
-                "cursor": "none",
-                "mix-blend-mode": "unset"
-            });
-        }
-        /*
-                function Img_drag() {
-                    transform: rotate(
-                        315deg
-                    );
-                }*/
-
-        function Img_no_cursor() {
-            cursor.css({
-                transform: "scale(1)",
-                "font-size": "unset",
-                "padding": "unset",
-                "padding-top": "unset",
-                "border-radius": "50%",
-                "mix-blend-mode": "difference",
-                "display": "unset"
-
-            });
-        }
 
         $(window).mousemove(function (e) {
             cursor.css({
                 top: e.clientY - cursor.height() / 2,
                 left: e.clientX - cursor.width() / 2
             });
-            
-        
-                
-            
+            welcomer.TopLeft = {
+                y: e.clientY - cursor.height() / 2,
+                x: e.clientX - cursor.width() / 2
+            };
+
+
+
+
         });
-         
+
         $(document)
             .mouseleave(function () {
                 cursor.css({
@@ -217,69 +336,69 @@ $(document).ready(function () {
 
 
         $("#side-menu li:last-child").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-sign-out-alt'></i>");
         }).mousemove(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-sign-out-alt'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-sign-out-alt'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
         $(".pdf-btn-info").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='far fa-file-pdf'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='far fa-file-pdf'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
 
         $("#side-menu li:first-child").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-home'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-home'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
 
         $(".select-selected-all, select").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-arrows-alt-v'></i>");
         }).click(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-arrows-alt-v'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-arrows-alt-v'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
 
         $(".save-btn-info").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-save'></i>");
         }).click(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-save'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-save'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
@@ -287,16 +406,16 @@ $(document).ready(function () {
 
         setInterval(function () {
             $(".container-galerry img").mousemove(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-file-image'></i>");
             }).contextmenu(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-file-image'></i>");
             }).mouseenter(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-file-image'></i>");
             }).mouseleave(function () {
-                Img_no_cursor();
+                welcomer.Img_no_cursor();
                 cursor.html("");
             });
         }, 1000);
@@ -307,75 +426,75 @@ $(document).ready(function () {
 
         $("input[type='password']").click(function () {
 
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-lock'></i>");
         }).contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-lock'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-lock'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
         setInterval(function () {
             $(".btn-danger, *[data-dismiss='modal'], *[onclick*='post_form_edit_cancel']").contextmenu(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-times'></i>");
             }).mouseenter(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-times'></i>");
             }).mouseleave(function () {
-                Img_no_cursor();
+                welcomer.Img_no_cursor();
                 cursor.html("");
             });
         }, 1000);
         $("input[type='file'] , .invoice-box table tr.top table td.title").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-upload'></i>");
         }).click(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-upload'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-upload'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
 
         $(".btn-success").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-pencil-alt'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-pencil-alt'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
 
         $(".col-xa-resizer").contextmenu(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-arrows-alt-h'></i>");
         }).mouseenter(function () {
-            Img_cursor();
+            welcomer.Img_cursor();
             cursor.html("<i class='fas fa-arrows-alt-h'></i>");
         }).mouseleave(function () {
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
         });
 
         setInterval(function () {
             $("iframe").mouseenter(function () {
-                Img_no_cursor();
+                welcomer.Img_no_cursor();
                 cursor.html("");
             }).mousemove(function () {
 
-                Img_no_cursor();
+                welcomer.Img_no_cursor();
                 cursor.html("");
 
             });
@@ -384,62 +503,22 @@ $(document).ready(function () {
 
         setInterval(function () {
             $(".plugin_status[href]").contextmenu(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-link'></i>");
             }).mouseenter(function () {
-                Img_cursor();
+                welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-link'></i>");
             }).mouseleave(function () {
-                Img_no_cursor();
+                welcomer.Img_no_cursor();
                 cursor.html("");
             });
         }, 1000);
-        /**
-         * 
-         * 
-         Možete kopirati moje ideje. Možete...
-         Ali imam potrebu da vas upozorim. Istraživanje i traženje moje veoma tajne tehnologije...
-         Je isto kao da kopate po pravoj istoriji čovečanstva. Istorija je veoma opasna stvar za budućnost ako ne znate da je čuvate!
-         Ali kakve to veze ima sa tehnologijom? Jednostavno ovo čovečanstvo danas nije spremno za nju...
-        
-         P.S Uvek ćete znati 0.1% . 
-         */
-        function txt_cursor() {
-            $("input[type='text'], textarea, input[type='search'], .trumbowyg-box .trumbowyg-editor" +
-                " , .invoice-box input").click(function () {
-                    cursor.css({
-                        transform: "scale(0.1, 1.5)",
-                        "border-radius": "5px"
-                    });
-                    cursor.html("");
 
-                }).contextmenu(function () {
-                    cursor.css({
-                        transform: "scale(0.1, 1.5)",
-                        "border-radius": "5px"
-                    });
-                    cursor.html("");
 
-                }).mouseenter(function () {
-                    cursor.css({
-                        transform: "scale(0.1, 1.5)",
-                        "border-radius": "5px"
-                    });
-                    cursor.html("");
-
-                }).mouseleave(function () {
-                    cursor.css({
-                        transform: "scale(1)",
-                        "border-radius": "50%",
-                        "mix-blend-mode": "difference"
-
-                    });
-                });
-        }
-        txt_cursor();
+        welcomer.txt_cursor();
         setInterval(function () {
 
-            txt_cursor();
+            welcomer.txt_cursor();
 
         }, 1000);
         $(window).mousedown(function () {
@@ -459,24 +538,24 @@ $(document).ready(function () {
 
     $("*[data-title]").mousemove(function () {
         $(".cursor").addClass("cursor-title");
-        Img_cursor();
+        welcomer.Img_cursor();
         cursor.html("<i class='fas fa-quote-right'></i> " + $(this).attr("data-title"));
 
     }).contextmenu(function () {
         $(".cursor").removeClass("cursor-title");
-        Img_no_cursor();
+        welcomer.Img_no_cursor();
         cursor.html("");
     }).mouseenter(function () {
         setTimeout(function () {
             $(".cursor").removeClass("cursor-title");
-            Img_no_cursor();
+            welcomer.Img_no_cursor();
             cursor.html("");
 
         }, 3000);
 
     }).mouseleave(function () {
         $(".cursor").removeClass("cursor-title");
-        Img_no_cursor();
+        welcomer.Img_no_cursor();
         cursor.html("");
     });
 

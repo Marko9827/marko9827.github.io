@@ -3,11 +3,17 @@ class Welcomer {
     constructor() {
         this.isMobile();
     }
-    #projects = [
+    domain = window.location.origin + "/?src=";
+    projects = [
         {
-            title: "",
-            description: "",
-            img: ""
+            title: "E-student",
+            description: "E-student, platforma za studente",
+            img: this.domain + "students"
+        },
+        {
+            title: "Echat",
+            description: "My social network",
+            img: this.domain + "echat"
         }
     ];
     cursor = $(".cursor");
@@ -25,7 +31,43 @@ class Welcomer {
         }
         return isMobile;
     }
+    projectsload() {
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs"),
+            div_not_i = 0,
+            div_not = document.querySelector("div_not");
 
+        $(ljoader).hide();
+        $(Vjideo_sjpinner).show();
+        document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+        $("iframe").hide();
+   
+        $("grider_viewer").show().removeAttr("style");
+        $("div_header").removeClass("ld_completeld_complete");
+        $("grider_viewer").html("");
+        this.projects.forEach(function (v) {
+            $("grider_viewer").append(`<project id-int="${div_not_i}">
+            <grider_box>
+            <p>${v.title}</p>
+               <p>${v.title}</p>
+                <img loading="lazy"  onload="welcomer.loaded_img(this);" src="${v.img}" alt="${v.title}">
+                       </grider_box>
+
+                </project>`);
+            div_not_i++;
+        });
+        $("div_header").addClass("ld_completeld_complete2");
+        $(ljoader).show();
+        $("div_header span").html("> Projects");
+        $(Vjideo_sjpinner).hide();
+    }
+    loaded_img(aer) {
+        $(aer).addClass("section_loadet_img");
+        $(aer).removeAttr("onload");
+    };
     start(j) {
         document.querySelector("iframe").addEventListener("load", function () {
             // pgloader("yes");
@@ -60,13 +102,18 @@ class Welcomer {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
-            iframe = document.createElement("iframe");
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs");
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
+
             $("div_header span").html($("iframe").contents().find("title").html());
+            $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
 
+        } else if (url == "projects") {
+            welcomer.projectsload();
         } else {
 
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
@@ -154,29 +201,32 @@ class Welcomer {
         //     call();
         //}
         $("div_not div_panel span").text(qust);
-        $("#clavs iframe").css({
-            "filter": "grayscale(1) blur(2px)",
-            "pointer-events": "none"
-        });
+        $("#clavs iframe, #clavs grider_viewer").addClass("gridesr_filter");
         $("box_h").show();
 
         $("btns btn2").on("click", function () {
             $("div_not").removeAttr("style");
+            var tl = $("div_header span").text();
+            $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
 
-            $("#clavs iframe").removeAttr("style");
+             
             $("box_h").hide();
+            
         });
         $("btns btn1").on("click", function () {
             $("div_not").removeAttr("style");
             $("box_h").hide();
+            $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
 
+            $("#clavs iframe").show();
+            $("#clavs grider_viewer").hide();
             call();
         });
     }
     question_no() {
         $("div_not").removeAttr("style");
 
-        $("#clavs iframe").removeAttr("style");
+        $("#clavs iframe, #clavs grider_viewer").removeAttr("style");
     };
 
     cursor_hide() {

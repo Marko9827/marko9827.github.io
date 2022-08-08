@@ -71,7 +71,7 @@ function error_page($status)
 if (!empty($_GET['ERROR'])) {
     error_page($_GET['ERROR']);
 } else {
-    error_page(403);
+    error_page(404);
 }
 
 ?>

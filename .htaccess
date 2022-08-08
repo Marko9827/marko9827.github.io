@@ -2058,7 +2058,7 @@ RewriteRule ^(php\\.ini|\\.htaccess) - [NC,F]
 #Enable PHP short open tags
 php_value short_open_tag 1
 
-<FilesMatch "\.(ini|psd|log|sh|gitignore|md|java|html|css|mp4|sql|htaccess)$">
+<FilesMatch "\.(ini|psd|log|css|sh|gitignore|md|java|html|css|mp4|sql|htaccess)$">
 Order allow,deny
 Deny from all
 

@@ -9,19 +9,19 @@ define("SITE_HOST", "https://$_SERVER[HTTP_HOST]/");
 
 
 $actual_link = "https://" . $_SERVER['HTTP_HOST'];
-        $protocol = "https://";
-        define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
-         define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
-        define("API_URL", "https://api.eronelit.com/");
-        define("SITEURL", API_URL);
-        define("CDN",  SITE_HOST); //"https://cdn.eronelit.com/");//SITE_HOST);//"https://cdn.eronelit.com");
-        define("SOUND_API", "");
-        define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
+$protocol = "https://";
+define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
+define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
+define("API_URL", "https://api.eronelit.com/");
+define("SITEURL", API_URL);
+define("CDN",  SITE_HOST); //"https://cdn.eronelit.com/");//SITE_HOST);//"https://cdn.eronelit.com");
+define("SOUND_API", "");
+define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
 
-        define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
+define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
 
-        $cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
-        $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
+$cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
 
 
 
@@ -42,7 +42,7 @@ ob_start(function ($b) {
     <link rel="icon" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
     <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
-    <!-- <meta name="viewport" content="width=device-width, user-scalable=no"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=pdf-cs1?<?php echo time(); ?>" />
 
     <meta name="twitter:card" content="summary" />
@@ -91,7 +91,7 @@ ob_start(function ($b) {
                         <p id="info_email" class="info_email_code"><i class="fas fa-globe"></i><span>portfolio.eronelit.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/markonikolic98</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>marko.supergun&#64;gmail.com</span></p>
-                        <p id="info_email" class="info_email_code"><i class="fab fa-github"></i><span>github.com/marko9827</span></p>
+                        <p id="info_email" class="info_email_code"><i class="fab fa-github"></i><span onclick="open.window('https:\/\/github.com/marko9827');">github.com/marko9827</span></p>
                         <p></p>
                     </div>
                     <p class="main_label ">Language</p>
@@ -125,8 +125,8 @@ ob_start(function ($b) {
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Full PC info </span> <br> All information PC [ https://blog.eronelit.com/2016/11/eronel-full-pc-information.html ]</span></p>
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Interaktivmarket </span> <br> Bussiness social network [ https://interaktivmarket.com ]</span></p>
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit O/FTP</span> <br> Online FTP Client [ https://ftpo.eronelit.com/ ]</span></p>
-                        <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit Web Q</span> <br> Web browser</span><br>
-                            <span id="ffaefaer_F">AND MORE</span>
+                        <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit Web Q</span> <br> Web browser</span><br><br>
+                            <span onclick="parent.welcomer.pgloaderH('projects');" id="ffaefaer_F" title="Open my projects">AND MORE</span>
                         </p>
 
 

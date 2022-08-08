@@ -4,7 +4,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
- $protocol = "https://";
+$protocol = "https://";
 define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
 define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]");
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
@@ -40,7 +40,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
     <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <link rel="stylesheet" href="/?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
     <script type="text/javascript" src="/?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
     <link rel="stylesheet" href="/?marko-nikolic-portfolio-source=source_934285_stylesheet?<?php echo time(); ?>" />
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js" as="script">
     <script src="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js"></script>

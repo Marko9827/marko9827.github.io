@@ -152,10 +152,10 @@ $rand = time();
                 <div class="  box_shadow">New look under construction. <br>Coming Soon...</div>
                 <br><br>
                 <div id="buttons" class="box_shadow">
-                    <a href="javascript: pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
+                    <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
                     <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin</a>
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
-                    <a href="javascript: pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
+                    <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
                     <!-- <a onmouseover="bell_over(this);" onmouseout="bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i> My projects</a> -->
 
                 </div>
@@ -225,6 +225,9 @@ $rand = time();
 
         </div_header>
         <box_h></box_h>
+        <grider_viewer class="gridsH grids">
+            
+        </grider_viewer>
         <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);" onmouseout="welcomer.cursor_hide(this)"></iframe>
         <div_not>
             <div_panel>

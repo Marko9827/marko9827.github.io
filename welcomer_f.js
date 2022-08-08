@@ -3,25 +3,93 @@ class Welcomer {
     constructor() {
         this.isMobile();
     }
-    domain = window.location.origin + "/?src=";
-    projects = [
+
+    domain = window.location.origin + "/rdlv/";
+    #projects = [
         {
             title: "E-student",
             description: "E-student, platforma za studente",
-            img: this.domain + "students"
+            img: this.domain + "students.svg",
+            href: "https://demo.eronelit.com/demo_34023591386511932414/",
+            type: true
+        },
+        {
+            title: "Search engine",
+            description: "My search engine ",
+            img: this.domain + "erq.png",
+            href: "https://search.eronelit.com/",
+            type: true
+
+        },
+        {
+            title: "Eronelit Dashboard",
+            description: "Eronelit Dashboard for server",
+            img: this.domain + "rlj.png",
+            href: "",
+            type: true
+        },
+        {
+            title: "DB Manager",
+            description: "Eronelit Dashboard - Plugin DB Manager",
+            img: this.domain + "rlj.png",
+            href: "",
+            type: true
         },
         {
             title: "Echat",
-            description: "My social network",
-            img: this.domain + "echat"
+            description: "My bussines, cloud gaming, Streaming social network",
+            img: this.domain + "rlj2.png",
+            href: "https://echat.eronelit.com/",
+            type: true
+        },
+        {
+            title: "Full PC Info",
+            description: "Get full pc info / New version coming soon!",
+            img: this.domain + "flj3.png",
+            href: window.location.origin + "/Eronel_Full_PC_information_.rar",
+            type: false
+        },
+        {
+            title: "Do not be angry man",
+            description: "Do not be angry man - GAME",
+            img: this.domain + "tema_bela.png",
+            href: "https://github.com/Marko9827/projekatZaFaks",
+            type: true
+        },
+        {
+            title: "Java http server",
+            description: "Simple java http static web server",
+            img: this.domain + "java-http-server.png",
+            href: "https://github.com/Marko9827/java-http-server",
+            type: true
         }
     ];
+    #history = [];
     cursor = $(".cursor");
     TopLeft = {
         y: 0,
         x: 0
     };
-    static_f
+    #get_from_datter(url) {
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function (v) { }
+        })
+    }
+    #url_params() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get("p");
+
+        if (myParam !== null) {
+            this.pgloader(window.location.origin + "/?pages=" + myParam);
+        }
+    }
+    url_params2() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get("p");
+        return window.location.origin + "/?p=" + myParam;
+    }
     isMobile() {
         var isMobile = false;
 
@@ -31,6 +99,7 @@ class Welcomer {
         }
         return isMobile;
     }
+
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -44,16 +113,35 @@ class Welcomer {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe").hide();
-   
+
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
-        this.projects.forEach(function (v) {
-            $("grider_viewer").append(`<project id-int="${div_not_i}">
+        this.#projects.forEach(function (v) {
+            var thi = "class='is_touch'",
+                p_open = "";
+            if (v.href !== "") {
+                if (v.type) {
+                    p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+               <i class="bi bi-link"></i> Open link
+               </p_open>`;
+                } else {
+                    p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+              <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+               </p_open>`;
+                }
+            }
+            if (welcomer.isMobile()) {
+
+                thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+
+            }
+            $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
             <grider_box>
             <p>${v.title}</p>
                <p>${v.title}</p>
-                <img loading="lazy"  onload="welcomer.loaded_img(this);" src="${v.img}" alt="${v.title}">
+                ${p_open}
+                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
                        </grider_box>
 
                 </project>`);
@@ -61,11 +149,40 @@ class Welcomer {
         });
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
-        $("div_header span").html("> Projects");
+        $("div_header span").html("Marko Nikolić - Portfolio > Projects");
         $(Vjideo_sjpinner).hide();
     }
-    loaded_img(aer) {
-        $(aer).addClass("section_loadet_img");
+    openWindow(i = 0) {
+        if (this.#projects[i].href !== "") {
+            const urls = this.#projects[i].href;
+            window.open(urls);
+            return "";
+            if (urls.includes("download")) {
+                window.open(urls);
+            } else {
+
+                $.get(urls, function (v) {
+                    var blob = new Blob([v], { type: "octet/stream" });
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement("a");
+
+                    a.href = url;
+
+                    a.download = url.replace("blob:" + window.location.origin, "") + ".rar";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+            }
+        }
+    }
+
+    openLink(kk) {
+        $("project").find("p_open").removeAttr("style");
+        $(`project[id-int="${kk}"]`).find("p_open").attr("style", "top: 45px !important;");
+    }
+    loaded_img(aer, id = 0) {
+
+        $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
         $(aer).removeAttr("onload");
     };
     start(j) {
@@ -73,17 +190,31 @@ class Welcomer {
             // pgloader("yes");
             console.log(1);
         });
+        document.querySelectorAll("script").forEach(function (v) {
+            try {
+                v.remove();
+            } catch (v) { }
+        });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
+        this.#url_params();
+        const application = new Application();
 
+        //Initialize the CircleContainer objects
+        application.initializeCircleContainers();
+
+        //Start the initial loop function for the first time
+        application.loop();
     };
 
     bell_over(h) {
 
         document.querySelector("#logo_backscr_img").classList.add("activeBell");
+        $("#canvas").attr("style", "opacity: 1;");
+
     };
     bell_out(o) {
         document.querySelector("#logo_backscr_img").classList.remove("activeBell");
-
+        $("#canvas").removeAttr("style");
     }
     hide(elem) {
         document.querySelectorAll(elem).forEach(function (v) {
@@ -98,6 +229,46 @@ class Welcomer {
         });
     };
     pgloader(url = "") {
+        if (url !== "yes") {
+            if (!url.includes(window.location.origin)) {
+                $("div_header").attr("data-url", window.location.origin + url);
+
+            } else {
+                $("div_header").attr("data-url", url);
+            }
+        }
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs");
+        if (url == "yes") {
+            $(ljoader).show();
+            $(Vjideo_sjpinner).hide();
+
+            $("div_header span").html($("iframe").contents().find("title").html());
+            $("div_header").removeClass("ld_completeld_complete2");
+            $("div_header").addClass("ld_completeld_complete");
+
+        } else if (url.includes("projects")) {
+            welcomer.projectsload();
+            $("div_header").attr("data-url", window.location.origin + "/?p=projects");
+
+        } else {
+
+            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+            $("iframe").attr("src", url);
+            $("iframe").attr("data-temp-url", url);
+            try {
+                // document.querySelector("iframe").remove();
+            } catch (v) { }
+            // iframe.src = url;
+            // iframe.onload = pgloader("yes");
+            // div_header.appendChild(iframe);
+        }
+    }
+
+    pgloaderH(url = "") {
 
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -127,7 +298,6 @@ class Welcomer {
             // div_header.appendChild(iframe);
         }
     }
-
     #f_blob(url = "") {
         var xhr = new XMLHttpRequest();
 
@@ -184,11 +354,13 @@ class Welcomer {
             navigator.share({
                 title: $("iframe").contents().find("title").text(),
                 text: "Shared from - " + window.location.origin,
-                url: $("iframe").attr("src")
+                url: $("div_header").attr("data-url")
             })
                 .then(() => console.log('Successful share'))
                 .catch(error => console.log('Error sharing:', error));
+            $("body").append(``);
         }
+
     }
     hideCursor() {
         $(".cursor").hide();
@@ -209,9 +381,9 @@ class Welcomer {
             var tl = $("div_header span").text();
             $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
 
-             
+
             $("box_h").hide();
-            
+
         });
         $("btns btn1").on("click", function () {
             $("div_not").removeAttr("style");
@@ -327,6 +499,7 @@ $(document).ready(function () {
 
     if (isMobile == true) {
         $(".cursor").remove();
+
     }
     if (isMobile == false) {
 
@@ -373,6 +546,7 @@ $(document).ready(function () {
                 });
             });
         setInterval(function () {
+
             $("iframe").hover(function () {
                 $(".cursor").hide();
             }).mouseleave(function () {
@@ -631,3 +805,132 @@ if ('serviceWorker' in navigator) {
         console.log('SW registration failed with error:', e);
     });
 }
+
+const TWO_PI = Math.PI * 2;
+
+class Application {
+    constructor() {
+        this.canvas = document.getElementById("canvas");
+        this.context = this.canvas.getContext("2d");
+        this.width = this.canvas.width = window.innerWidth;
+        this.height = this.canvas.height = window.innerHeight;
+        this.center = {
+            x: this.width / 2,
+            y: this.height / 2
+        };
+
+
+        this.circleContainers = [];
+
+        window.addEventListener('resize', () => this.resizeCanvas(), false);
+    }
+
+    resizeCanvas() {
+        this.width = this.canvas.width = window.innerWidth;
+        this.height = this.canvas.height = window.innerHeight;
+        this.center = {
+            x: this.width / 2,
+            y: this.height / 2
+        };
+
+
+        this.circleContainers = [];
+        this.initializeCircleContainers();
+    }
+
+    initializeCircleContainers() {
+        for (let x = 0; x < this.width + 100; x += 100) {
+            for (let y = 0; y < this.height + 100; y += 100) {
+                let circleContainer = new CircleContainer(this.context, x, y);
+
+                circleContainer.initializeCircles();
+                this.circleContainers.push(circleContainer);
+            }
+        }
+    }
+
+    update() {
+        for (let i = 0; i < this.circleContainers.length; i++) {
+            this.circleContainers[i].update();
+        }
+    }
+
+    render() {
+        this.context.clearRect(0, 0, this.width, this.height);
+
+        for (let i = 0; i < this.circleContainers.length; i++) {
+            this.circleContainers[i].render();
+        }
+    }
+
+    loop() {
+        this.update();
+        this.render();
+
+        window.requestAnimationFrame(() => this.loop());
+    }
+}
+
+
+class CircleContainer {
+    constructor(context, x, y) {
+        this.context = context;
+        this.position = { x, y };
+
+        this.numberOfCircles = 19;
+        this.circles = [];
+
+        this.baseRadius = 20;
+        this.bounceRadius = 150;
+        this.singleSlice = TWO_PI / this.numberOfCircles;
+    }
+
+    initializeCircles() {
+        for (let i = 0; i < this.numberOfCircles; i++) {
+            this.circles.push(new Circle(this.position.x, this.position.y + Math.random(), this.baseRadius, this.bounceRadius, i * this.singleSlice));
+        }
+    }
+
+    update() {
+        for (let i = 0; i < this.numberOfCircles; i++) {
+            this.circles[i].update(this.context);
+        }
+    }
+
+    render() {
+        for (let i = 0; i < this.numberOfCircles; i++) {
+            this.circles[i].render(this.context);
+        }
+    }
+}
+
+
+class Circle {
+    constructor(x, y, baseRadius, bounceRadius, angleCircle) {
+        this.basePosition = { x, y };
+        this.position = { x, y };
+        this.speed = 0.01;
+        this.baseSize = 10;
+        this.size = 10;
+        this.angle = x + y;
+        this.baseRadius = baseRadius;
+        this.bounceRadius = bounceRadius;
+        this.angleCircle = angleCircle;
+    }
+
+    update() {
+        this.position.x = this.basePosition.x + Math.cos(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
+        this.position.y = this.basePosition.y + Math.sin(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
+        this.size = Math.cos(this.angle) * 8 + this.baseSize;
+
+        this.angle += this.speed;
+    }
+
+    render(context) {
+        context.fillStyle = "hsl(195, 100%, " + this.size * 4 + "%)";
+        context.beginPath();
+        context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
+        context.fill();
+    }
+}
+

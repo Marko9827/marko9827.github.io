@@ -71,8 +71,7 @@ ErrorDocument 503 /ERROR_PG.php?ERROR=503
     order allow,deny
     deny from all
 </Files>
-Header set X-Content-Type-Options "nosniff"
-
+ 
 <Files *.html>
     order allow,deny
     deny from all

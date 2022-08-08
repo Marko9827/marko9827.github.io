@@ -45,7 +45,21 @@ $rand = time();
 
 <head>
     <meta charset="utf-8">
-    <title>Marko Nikolić - Portfolio</title>
+    <title><?php
+            if (!empty($_GET['p'])) {
+                if ($_GET['p'] == "cv-pdf") {
+                    echo "Marko Nikolić - Portfolio > CV";
+                } else if ($_GET['p'] == "visitcard") {
+                    echo "Marko Nikolić - Portfolio > Visitcard";
+                } else if ($_GET['p'] == "Projects") {
+                    echo "Marko Nikolić - Portfolio > Projects";
+                } else {
+                    echo "Marko Nikolić - Portfolio";
+                }
+            } else {
+                echo "Marko Nikolić - Portfolio";
+            }
+            ?></title>
     <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <meta name="description" content="This website for my PortFolio. ">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -241,8 +255,29 @@ $rand = time();
             </div_panel>
         </div_not>
     </div>
-    <div class="cursor" style="opacity: 0;"></div>
 
+    <canvas id="canvas">Your browser doesn't support canvas</canvas>
+
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">
+        <defs>
+            <filter id="shadowed-goo">
+
+                <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+                <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow" />
+                <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+                <feBlend in2="shadow" in="goo" result="goo" />
+                <feBlend in2="goo" in="SourceGraphic" result="mix" />
+            </filter>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                <feBlend in2="goo" in="SourceGraphic" result="mix" />
+            </filter>
+        </defs>
+    </svg>
+    <div class="cursor" style="opacity: 0;"></div>
 
 </body>
 

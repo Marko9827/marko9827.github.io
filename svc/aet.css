@@ -113,6 +113,7 @@ hh_anim_start spjin #logo_backscr_img {
 .activeBell {
     border-color: var(--primary_light) !important;
     padding: 0px !important;
+        background: rgb(255 255 255 / 69%) !important;
 }
 
 hh_anim_start #logo {
@@ -228,8 +229,8 @@ hh_anim_start .Vjideo_sjpinner {
 }
 
 #buttons a:hover {
-    background: vaR(--white);
-    color: var(--primary);
+    background: rgba(255 255 255 / 0.2); 
+       color: var(--primary);
 }
 
 #clavs {
@@ -280,6 +281,10 @@ hh_anim_start .Vjideo_sjpinner {
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
     enable-background: new 0 0 512 512 !important;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    transition: .3s;
 }
 
 .section_loadet_img {
@@ -289,7 +294,8 @@ hh_anim_start .Vjideo_sjpinner {
     opacity: 1 !important
 }
 
-#clavs grider_viewer img {
+#clavs grider_viewer img,
+#clavs grider_viewer div_hr {
     border-radius: 0px 0px 6px 6px !important;
     height: 100%;
     width: 100%;
@@ -298,9 +304,7 @@ hh_anim_start .Vjideo_sjpinner {
     padding: 0px !important;
     -webkit-box-shadow: 0 0 2px 0 rgb(0 0 0 / 20%), 0 1px 10px 0 rgb(0 0 0 / 10%) !important;
     box-shadow: 0 0 2px 0 rgb(0 0 0 / 20%), 0 1px 10px 0 rgb(0 0 0 / 10%) !important;
-    -webkit-transform: scale(0);
-    -ms-transform: scale(0);
-    transform: scale(0);
+
     opacity: 1;
     -webkit-transition: .3s;
     -o-transition: .3s;
@@ -326,7 +330,11 @@ hh_anim_start .Vjideo_sjpinner {
     width: 100%;
     text-align: center;
     padding: 5px;
-
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    padding: 5px 10px
 }
 
 svg.Vjideo_sjpinner {
@@ -680,7 +688,8 @@ box_h {
     box-sizing: border-box
 }
 
-.grids>div>img {
+.grids>div>img,
+.grids>div>div_hr {
     width: 100%;
     display: block;
     -o-object-fit: cover;
@@ -761,7 +770,81 @@ div_header.ld_completeld_complete2 #logo_backscr_img {
     left: 54px !important;
 }
 
-.ld_completeld_complete2 btns_r .bi-share {
+/* .ld_completeld_complete2 btns_r .bi-share { 
     opacity: 0;
     pointer-events: none;
+} */
+
+::-webkit-scrollbar {
+    width: 5px;
 }
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--white);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+p_open {
+    position: absolute;
+    top: -50px;
+    left: 10px;
+    text-align: center;
+    right: 10px;
+    background: var(--white);
+    border-radius: 4px;
+    padding: 5px 10px;
+    z-index: 1;
+    color: var(--primary);
+    width: fit-content;
+    margin: auto;
+    display: block;
+    transition: .3s;
+}
+
+
+#clavs grider_viewer .is_touch:hover p_open {
+    top: 45px !important;
+}
+
+#canvas {
+    position: absolute;
+    left: 0px;
+    width: 100%;
+    top: 0px;
+    height: 100%;
+    z-index: 1;
+    opacity: 0.2;
+    transition: .5s !important;
+}
+
+hh_anim_start {
+    background: transparent !important;
+}
+
+body {
+    background-color: hsl(195, 100%, 7%) !important;
+}
+
+#canvas {
+    margin: 0 auto;
+    display: block;
+    filter: url('#shadowed-goo');
+    pointer-events: none !important;
+ }
+
+
+hh_anim_start * {
+    color: white !important;
+    border-color: white !important;
+}
+

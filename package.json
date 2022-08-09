@@ -20,6 +20,8 @@
   "author": "marko nikolic linkedin.com/in/markonikolic98",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^2.0.0"
+    "gpu-info-nv": "^1.0.3",
+    "puppeteer": "^2.0.0",
+    "stats": "^1.0.0"
   }
 }

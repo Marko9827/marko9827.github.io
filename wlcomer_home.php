@@ -62,7 +62,7 @@ $rand = time();
             ?></title>
     <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <meta name="description" content="This website for my PortFolio. ">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
     <meta name="author" content="Marko Nikolic">
     <meta name="theme-color" content="#333">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -71,6 +71,7 @@ $rand = time();
 
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js" as="script">
+    <link rel="preload" as="font" href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2" crossorigin="anonymous">
 
     <link href=" https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -100,7 +101,16 @@ $rand = time();
     <?php /*
     <style type="text/css">
         include "./welcomer_f.css"; 
-    </style>*/ ?>
+    </style>*/
+    $token = bin2hex(random_bytes(64));
+    echo '<meta content="' . $token . '" name="csrf-param" />
+<meta content="' . $token . '" name="csrf-token" />';
+    $_SESSION['AuthV2-token'] = $token;
+
+
+    ?>
+
+
     <script nonce="<?php echo NONCE; ?>" src="/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
 
 </head>
@@ -173,7 +183,7 @@ $rand = time();
 
                     <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin</a>
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
-
+                    <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
                 </div>
             </spj>
         </spjin>
@@ -278,6 +288,27 @@ $rand = time();
         </defs>
     </svg>
     <div class="cursor" style="opacity: 0;"></div>
+    <info_box>
+        <info_msg onclick="$(this).removeClass('info_box_active');">
+            <dv_h></dv_h>
+            <info_div>
+                <img src="/favicon.svg" title="aefaef" />
+                <h4></h4>
+            </info_div>
+            <p></p>
+
+        </info_msg>
+    </info_box>
+    <?php /*<ul id="btns_bottom">
+
+        <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+        <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+        <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+        <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+
+    </ul>
+ */ ?>
+    <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
 
 </body>
 

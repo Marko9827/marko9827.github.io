@@ -2,7 +2,10 @@ class Welcomer {
 
     constructor() {
         this.isMobile();
+        this.fpsMeter();
     }
+    Dots_color = 195;
+    #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
     domain = window.location.origin + "/rdlv/";
     #projects = [
@@ -97,6 +100,8 @@ class Welcomer {
             /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(navigator.userAgent.substr(0, 4))) {
             isMobile = true;
         }
+        $("p-c").attr("data-title", "Your GPU: " + this.GPPU_ms());
+
         return isMobile;
     }
 
@@ -117,6 +122,51 @@ class Welcomer {
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
+        /*
+        const data2 = "H3024F";
+        $.ajax({
+            url: window.location.origin + "/?drc=" + data2,
+            type: "POST", 
+            dataType: 'json', 
+            data:{
+                dvlr:data2
+            },
+            success: function (vF) {
+                var div_not_i = 0;
+                $.each(vF, function (k, v) {
+                    var thi = "class='is_touch'",
+                        p_open = "";
+                    if (v.href !== "") {
+                        if (v.type) {
+                            p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+               <i class="bi bi-link"></i> Open link
+               </p_open>`;
+                        } else {
+                            p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+              <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+               </p_open>`;
+                        }
+                    }
+                    if (welcomer.isMobile()) {
+
+                        thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+
+                    }
+                    $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+            <grider_box>
+            <p>${v.title}</p>
+              
+                ${p_open}
+                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
+                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
+                       </grider_box>
+
+                </project>`);
+                    div_not_i++;
+                });
+            }
+        });
+        */
         this.#projects.forEach(function (v) {
             var thi = "class='is_touch'",
                 p_open = "";
@@ -139,8 +189,9 @@ class Welcomer {
             $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
             <grider_box>
             <p>${v.title}</p>
-               <p>${v.title}</p>
+              
                 ${p_open}
+                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
                 <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
                        </grider_box>
 
@@ -151,6 +202,29 @@ class Welcomer {
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Projects");
         $(Vjideo_sjpinner).hide();
+    }
+    infoVa(h = 0) {
+        try {
+            $("info_box h4").html($(`#clavs grider_viewer project[id-int="${h}"]`).attr("title"));
+            $("info_box info_msg p").html($(`#clavs grider_viewer project[id-int="${h}"]`).find("p").html());
+            $("info_box img").attr("src", $(`#clavs grider_viewer project[id-int="${h}"]`).find("img").attr("src"));
+            $("info_box").addClass("info_box_active");
+            $("dv_h").attr("style", `width:5%`);
+            var i = 0;
+            const int = setInterval(() => {
+                if ($("info_box").hasClass("info_box_active")) {
+                    $("dv_h").attr("style", `width: ${i}%`);
+                    if (i == 100) {
+                        clearInterval(int);
+                        $("info_box").removeClass("info_box_active");
+
+                    }
+
+                } i += 1;
+            }, 250);
+        } catch (v) {
+            alert(v);
+        }
     }
     openWindow(i = 0) {
         if (this.#projects[i].href !== "") {
@@ -186,6 +260,10 @@ class Welcomer {
         $(aer).removeAttr("onload");
     };
     start(j) {
+
+        if (!this.#isChrome) {
+            $("canvas").addClass("low_GPU")
+        }
         document.querySelector("iframe").addEventListener("load", function () {
             // pgloader("yes");
             console.log(1);
@@ -204,13 +282,19 @@ class Welcomer {
 
         //Start the initial loop function for the first time
         application.loop();
+
+
     };
 
     bell_over(h) {
 
         document.querySelector("#logo_backscr_img").classList.add("activeBell");
-        $("#canvas").attr("style", "opacity: 1;");
-
+        if (this.#isChrome) {
+            $("#canvas").attr("style", "opacity: 1; -webkit-filter: url('#shadowed-goo') !important; filter: url('#shadowed-goo') !important; transform: rotate(45deg) scale(2);");
+            //; transform: rotateX(75deg) scale(4)
+        } else {
+            $("#canvas").attr("style", "opacity: 1; -webkit-filter: unset !important; filter: unset !important ;  transform: rotate(45deg) scale(2);");
+        }
     };
     bell_out(o) {
         document.querySelector("#logo_backscr_img").classList.remove("activeBell");
@@ -230,8 +314,9 @@ class Welcomer {
     };
     pgloader(url = "") {
         if (url !== "yes") {
+            var hrl_url = url.replace("pages", "p");
             if (!url.includes(window.location.origin)) {
-                $("div_header").attr("data-url", window.location.origin + url);
+                $("div_header").attr("data-url", window.location.origin + hrl_url);
 
             } else {
                 $("div_header").attr("data-url", url);
@@ -350,9 +435,10 @@ class Welcomer {
         });
     };
     share() {
+        var hl = $("div_header").attr("data-url");
         if (navigator.share) {
             navigator.share({
-                title: $("iframe").contents().find("title").text(),
+                title: $("div_header span").text(),
                 text: "Shared from - " + window.location.origin,
                 url: $("div_header").attr("data-url")
             })
@@ -487,6 +573,107 @@ class Welcomer {
                 });
             });
     }
+
+    parentTitler(element, text) {
+        var offset = element.offset();
+
+        $('#anchorTitle').html("<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text)
+        .attr("style","opacity:1;");
+    }
+    showAnchorTitle(element, text) {
+
+        var offset = element.offset();
+        if ($('#anchorTitle').length > 0) {
+            $('#anchorTitle').html("<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text)
+            .attr("style", "opacity:1;");
+        } else {
+            parent.welcomer.parentTitler(element, text);
+        }
+        /*
+    $('#anchorTitle')
+        .css({
+            'top': (offset.top - element.outerHeight() - 4) + 'px',
+            'left': offset.left + 'px'
+        })
+        .html(text)
+        .show();*/
+    }
+
+    hideAnchorTitle() {
+        if ($('#anchorTitle').length > 0) {
+            $('#anchorTitle').removeAttr("style");
+        } else {
+            parent.welcomer.hideAnchorTitle();
+        }
+    }
+    fpsMeter() {
+        let prevTime = Date.now(),
+            frames = 0,
+            k = (performance || Date).now()
+
+        requestAnimationFrame(function loop() {
+            if (self.performance && self.performance.memory) {
+                const time = Date.now();
+                frames++;
+                if (time > prevTime + 1000) {
+                    let fps = Math.round((frames * 1000) / (time - prevTime));
+                    prevTime = time;
+                    frames = 0;
+                    if (parseInt(fps) < 20) {
+                        $("p-c").attr("style", "color:red;");
+                        welcomer.Dots_color = 3;
+                    } else {
+                        $("p-c").removeAttr("style");
+                        welcomer.Dots_color = 195;
+                    }
+                    $("p-c").html(`<i class="bi bi-pci-card"></i> ${fps}FPS`);
+                }
+
+                requestAnimationFrame(loop);
+            }
+        });
+    }
+
+    GPPU_ms() {
+        return this.getUnmaskedInfo().renderer;
+    }
+
+    getUnmaskedInfo() {
+        const gl = document.createElement('canvas').getContext('webgl');
+        if (!gl) {
+            return {
+                error: "no webgl",
+            };
+        }
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        return debugInfo ? {
+            vendor: gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL),
+            renderer: gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL),
+        } : {
+            error: "no WEBGL_debug_renderer_info",
+        };
+
+    }
+    get_events() {
+        $('*[title]:not(iframe), *[data-title]:not(iframe)').each(function () {
+
+            var a = $(this);
+
+            a.hover(
+                function () {
+                    welcomer.showAnchorTitle(a, a.data('title'));
+                },
+                function () {
+                    welcomer.hideAnchorTitle();
+                }
+            ).data('title', a.attr('title')).removeAttr('title');
+
+            a.mouseleave(function () {
+                welcomer.hideAnchorTitle();
+
+            });
+        });
+    }
 }
 
 var welcomer = new Welcomer();
@@ -494,14 +681,29 @@ var welcomer = new Welcomer();
 
 $(document).ready(function () {
 
+
+
+    $.ajaxSetup({
+        cache: true,
+        async: true,
+        global: true,
+        headers: {
+            "AuthV2-token": $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
     var isMobile = welcomer.isMobile();
 
 
     if (isMobile == true) {
         $(".cursor").remove();
-
+        $(".anchorTitle").remove();
     }
     if (isMobile == false) {
+
+        $('body').append('<div id="anchorTitle" class="anchorTitle"></div>');
+
+        welcomer.get_events();
 
 
         var cursor = $(".cursor");
@@ -514,8 +716,8 @@ $(document).ready(function () {
                 left: e.clientX - cursor.width() / 2
             });
             welcomer.TopLeft = {
-                y: e.clientY - cursor.height() / 2,
-                x: e.clientX - cursor.width() / 2
+                y: e.clientY - $('*[title]').height() / 2,
+                x: e.clientX - $('*[title]').width() / 2
             };
 
 
@@ -546,6 +748,9 @@ $(document).ready(function () {
                 });
             });
         setInterval(function () {
+
+            welcomer.get_events();
+
 
             $("iframe").hover(function () {
                 $(".cursor").hide();
@@ -927,10 +1132,61 @@ class Circle {
     }
 
     render(context) {
-        context.fillStyle = "hsl(195, 100%, " + this.size * 4 + "%)";
+        $("body").attr("style", `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`);
+        context.fillStyle = "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
         context.beginPath();
         context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
         context.fill();
     }
 }
+
+
+window.countFPS = (function () {
+    setInterval(function () {
+        var lastLoop = (new Date()).getMilliseconds();
+        var count = 1;
+        var fps = 0;
+
+        return function () {
+            var currentLoop = (new Date()).getMilliseconds();
+            if (lastLoop > currentLoop) {
+                fps = count;
+                count = 1;
+            } else {
+                count += 1;
+            }
+            lastLoop = currentLoop;
+            return fps;
+        };
+    }, 100);
+}());
+
+
+
+(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
+    var f = function () {
+        function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
+            a.preventDefault();
+            u(++l % c.children.length)
+        }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
+        if (self.performance && self.performance.memory)
+            var t = e(new f.Panel("MB", "#f08", "#201"));
+        u(0);
+        return {
+            REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
+                k = (performance || Date).now()
+            },
+            end: function () {
+                a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
+                    var d = performance.memory; t.update(d.usedJSHeapSize /
+                        1048576, d.jsHeapSizeLimit / 1048576)
+                } return c
+            }, update: function () { k = this.end() }, domElement: c, setMode: u
+        }
+    }; f.Panel = function (e, f, l) {
+        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
+        b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
+    }; return f
+});
+
 

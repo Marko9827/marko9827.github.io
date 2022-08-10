@@ -243,8 +243,13 @@ $rand = time();
             <svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
             </svg><span>Loading ...</span>
-            <btns_r>
+            <btns_i>
+                <input type="text" placeholder="Search project" data-hmm="search" onkeyup="welcomer.search_Kompjiler(this);" />
+                 <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i>
 
+            </btns_i>
+            <btns_r>
+                <i class="bi bi-search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);" title="Search project..."></i>
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>

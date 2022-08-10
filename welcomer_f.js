@@ -6,8 +6,9 @@ class Welcomer {
     }
     Dots_color = 195;
     #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-
+    #energyAnim = true;
     domain = window.location.origin + "/rdlv/";
+    div_not_i = 0;
     #projects = [
         {
             title: "E-student",
@@ -275,15 +276,15 @@ class Welcomer {
         });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
         this.#url_params();
-        const application = new Application();
+        if (this.#energyAnim) {
+            const application = new Application();
 
-        //Initialize the CircleContainer objects
-        application.initializeCircleContainers();
+            //Initialize the CircleContainer objects
+            application.initializeCircleContainers();
 
-        //Start the initial loop function for the first time
-        application.loop();
-
-
+            //Start the initial loop function for the first time
+            application.loop();
+        }
     };
 
     bell_over(h) {
@@ -451,7 +452,32 @@ class Welcomer {
     hideCursor() {
         $(".cursor").hide();
     }
+    #hmmQ(qust = "", call) {
+        $("div_not").attr("style", "top: 45px !important;");
 
+        $("div_not div_panel span").text(qust);
+        $("#clavs iframe, #clavs grider_viewer").addClass("gridesr_filter");
+        $("btns_i").attr("style","opacity: 0.4;pointer-events: none;");
+        $("box_h").show();
+
+        $("btns btn2").on("click", function () {
+            $("div_not").removeAttr("style");
+            $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
+
+            $("box_h").hide();
+            $("btns_i").removeAttr("style", "opacity: 0.4; pointer-events: none;");
+
+        });
+        $("btns btn1").on("click", function () {
+            $("div_not").removeAttr("style");
+            $("box_h").hide(); $("btns_i").removeAttr("style", "opacity: 0.4;pointer-events: none;");
+
+            $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
+
+            call();
+        });
+
+    }
     #hmm(qust = "", call) {
         $("div_not").attr("style", "top: 45px !important;");
         // var answer = window.confirm(qust);
@@ -516,7 +542,7 @@ class Welcomer {
 
 
     Img_cursor() {
-        this.cursor.css({
+        welcomer.cursor.css({
             transform: "scale(2)",
             "text-align": "center",
             "font-size": "10px",
@@ -529,7 +555,7 @@ class Welcomer {
 
 
     Img_no_cursor() {
-        this.cursor.css({
+        welcomer.cursor.css({
             transform: "scale(1)",
             "font-size": "unset",
             "padding": "unset",
@@ -540,32 +566,131 @@ class Welcomer {
 
         });
     }
+    cr(v) {
+        var thi = "class='is_touch'",
+            p_open = "";
+        if (v.href !== "") {
+            if (v.type) {
+                p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${welcomer.div_not_i});" >
+               <i class="bi bi-link"></i> Open link
+               </p_open>`;
+            } else {
+                p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${welcomer.div_not_i});" >
+              <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+               </p_open>`;
+            }
+        }
+        if (welcomer.isMobile()) {
 
+            thi = "onclick='welcomer.openLink(" + welcomer.div_not_i + ")'"
+
+        }
+        $("grider_viewer").append(`<project  ${thi} id-int="${welcomer.div_not_i}" title="${v.description}">
+            <grider_box>
+            <p>${v.title}</p>
+              
+                ${p_open}
+                <fiv><i onclick="welcomer.infoVa(${welcomer.div_not_i});" class="bi bi-info-circle"></i></fiv>
+                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${welcomer.div_not_i});" src="${v.img}" alt="${v.title}">
+                       </grider_box>
+
+                </project>`);
+        welcomer.div_not_i++;
+    }
+    compTxt(s) {
+        var div_not_i = 0;
+        $("grider_viewer").html("");
+        if (s == "") {
+            this.#projects.forEach(function (v) {
+                welcomer.cr(v);
+            });
+        } else {
+            this.#projects.forEach(function (v) {
+                if (v.title.indexOf(s) !== -1) {
+                    welcomer.div_not_i = 0;
+                    welcomer.cr(v);
+                    /*
+                    var thi = "class='is_touch'",
+                        p_open = "";
+                    if (v.href !== "") {
+                        if (v.type) {
+                            p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+                   <i class="bi bi-link"></i> Open link
+                   </p_open>`;
+                        } else {
+                            p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+                  <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+                   </p_open>`;
+                        }
+                    }
+                    if (welcomer.isMobile()) {
+    
+                        thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+    
+                    }
+                    $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+                <grider_box>
+                <p>${v.title}</p>
+                  
+                    ${p_open}
+                    <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
+                    <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
+                           </grider_box>
+    
+                    </project>`);
+                    div_not_i++;*/
+                }
+
+            });
+        }
+    }
+    search_Kompjiler(tt) {
+
+        const attr = $(tt).attr("data-hmm"),
+            hd = $("div_header"),
+            input = $("div_header input[type='text']").val();
+        if (attr) {
+            hd.addClass("ld_completeld_complete_search");
+ 
+        }
+        if (attr == "search") {
+            
+            welcomer.compTxt(input);
+        }
+        if (attr == "closeMe") {
+            this.#hmmQ("Close search?", function () {
+                hd.removeClass("ld_completeld_complete_search");
+                $("btns_i input[type='text']").val("");
+                new Welcomer().projectsload();
+
+            });
+        }
+    }
     txt_cursor() {
         $("input[type='text'], textarea, input[type='search'], .trumbowyg-box .trumbowyg-editor" +
             " , .invoice-box input").click(function () {
-                this.cursor.css({
+                welcomer.cursor.css({
                     transform: "scale(0.1, 1.5)",
                     "border-radius": "5px"
                 });
-                this.cursor.html("");
+                welcomer.cursor.html("");
 
             }).contextmenu(function () {
-                this.cursor.css({
+                welcomer.cursor.css({
                     transform: "scale(0.1, 1.5)",
                     "border-radius": "5px"
                 });
-                this.cursor.html("");
+                welcomer.cursor.html("");
 
             }).mouseenter(function () {
-                this.cursor.css({
+                welcomer.cursor.css({
                     transform: "scale(0.1, 1.5)",
                     "border-radius": "5px"
                 });
-                this.cursor.html("");
+                welcomer.cursor.html("");
 
             }).mouseleave(function () {
-                this.cursor.css({
+                welcomer.cursor.css({
                     transform: "scale(1)",
                     "border-radius": "50%",
                     "mix-blend-mode": "difference"
@@ -578,14 +703,14 @@ class Welcomer {
         var offset = element.offset();
 
         $('#anchorTitle').html("<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text)
-        .attr("style","opacity:1;");
+            .attr("style", "opacity:1;");
     }
     showAnchorTitle(element, text) {
 
         var offset = element.offset();
         if ($('#anchorTitle').length > 0) {
             $('#anchorTitle').html("<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text)
-            .attr("style", "opacity:1;");
+                .attr("style", "opacity:1;");
         } else {
             parent.welcomer.parentTitler(element, text);
         }
@@ -751,27 +876,27 @@ $(document).ready(function () {
 
             welcomer.get_events();
 
+            $("p-message , *[onclick], *[href], button, .btn, #open_image_for_title, .trumbowyg-button-pane button").contextmenu(function () {
+                cursor.css({
+                    transform: "scale(1.5)"
+                });
+            }).mouseenter(function () {
+                cursor.css({
+                    transform: "scale(1.5)"
+                });
+            }).mouseleave(function () {
+                cursor.css({
+                    transform: "scale(1)"
+                });
+            });
+
 
             $("iframe").hover(function () {
                 $(".cursor").hide();
             }).mouseleave(function () {
-                $("p-message , *[onclick], *[href], button, .btn, #open_image_for_title, .trumbowyg-button-pane button").contextmenu(function () {
-                    cursor.css({
-                        transform: "scale(1.5)"
-                    });
-                }).mouseenter(function () {
-                    cursor.css({
-                        transform: "scale(1.5)"
-                    });
-                }).mouseleave(function () {
-                    cursor.css({
-                        transform: "scale(1)"
-                    });
-                });
 
 
                 $(".cursor").show();
-
             });
         }, 1500);
 
@@ -1082,7 +1207,7 @@ class CircleContainer {
         this.context = context;
         this.position = { x, y };
 
-        this.numberOfCircles = 19;
+        this.numberOfCircles =  19;
         this.circles = [];
 
         this.baseRadius = 20;

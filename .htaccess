@@ -37,22 +37,9 @@ php_flag expose_php Off
 <Files .htaccess>
     order allow,deny
     deny from all
-</Files>
-<Files *.temp>
-    order allow,deny
-    deny from all
-</Files>
+</Files> 
 
-<Files *.zip>
-    order allow,deny
-    deny from all
-</Files>
-
-<Files *.html>
-    order allow,deny
-    deny from all
-</Files>
-
+ 
 ErrorDocument 404 /ERROR_PG.php?ERROR=404
 ErrorDocument 403 /ERROR_PG.php?ERROR=403
 ErrorDocument 500 /ERROR_PG.php?ERROR=500
@@ -72,10 +59,7 @@ ErrorDocument 503 /ERROR_PG.php?ERROR=503
     deny from all
 </Files>
  
-<Files *.html>
-    order allow,deny
-    deny from all
-</Files>
+ 
 
 <Files *.sql>
     order allow,deny
@@ -2057,9 +2041,15 @@ RewriteRule ^(php\\.ini|\\.htaccess) - [NC,F]
 #Enable PHP short open tags
 php_value short_open_tag 1
 
-<FilesMatch "\.(ini|psd|log|css|sh|gitignore|md|java|html|css|mp4|sql|htaccess)$">
+<FilesMatch "\.(ini|psd|log|css|sh|gitignore|md|java|css|mp4|sql|htaccess)$">
 Order allow,deny
 Deny from all
 
 </FilesMatch>
 
+
+
+
+<ifModule mod_headers.c>
+Header always set Content-Security-Policy "upgrade-insecure-requests;"
+</IfModule>

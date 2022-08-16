@@ -20,7 +20,10 @@
   "author": "marko nikolic linkedin.com/in/markonikolic98",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.6.2",
+    "ez-plus": "^1.2.1",
     "gpu-info-nv": "^1.0.3",
+    "jquery-zoom": "^1.7.21",
     "puppeteer": "^2.0.0",
     "stats": "^1.0.0"
   }

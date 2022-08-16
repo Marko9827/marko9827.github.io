@@ -5,22 +5,22 @@ define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]");
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
 define("API_URL", "https://api.eronelit.com/");
 define("SITEURL", API_URL);
-define("CDN",  SITE_HOST); //"https://cdn.eronelit.com/");//SITE_HOST);//"https://cdn.eronelit.com");
+
+define("CDN",  "https://cdn.eronelit.com/"); //SITE_HOST);//"https://cdn.eronelit.com");
 define("SOUND_API", "");
 define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
 
 define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
 
-$cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
-$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
+$urlCdn = "";
+
+$cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 
 ob_start(function ($b) {
     return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
 });
-
-header(
-    "Content-Security-Policy: 
-  frame-ancestors 'self';
+$csp = " frame-ancestors 'self';
   block-all-mixed-content;
   default-src 'self' $cdn_urls;
   script-src 'self'  $cdn_urls;
@@ -36,7 +36,9 @@ header(
   form-action 'self';
   media-src 'self' data: blob: $cdn_urls;
   prefetch-src 'self';
-  worker-src 'self'; report-uri https://" . SERVER_AJAXS . "/report-csp-endpoint;"
+  worker-src 'self'; report-uri https://" . SERVER_AJAXS . "/report-csp-endpoint;";
+header(
+    "Content-Security-Policy: $csp"
 );
 $rand = time();
 ?>
@@ -64,20 +66,11 @@ $rand = time();
     <meta name="description" content="This website for my PortFolio. ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
     <meta name="author" content="Marko Nikolic">
+
     <meta name="theme-color" content="#333">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-
-    <link rel="preload" href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-    <link rel="preload" href="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js" as="script">
-    <link rel="preload" as="font" href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2" crossorigin="anonymous">
-
-    <link href=" https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link href="https://cdn.eronelit.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script src="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js"></script>
 
     <meta property="og:type" content="website" />
     <meta name="author" content="Marko Nikolic">
@@ -98,6 +91,21 @@ $rand = time();
     <meta property="og:image:height" content="1024">
     <meta property="og:locale" content="en_GB" />
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
+
+
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+    <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
+
     <?php /*
     <style type="text/css">
         include "./welcomer_f.css"; 
@@ -110,8 +118,11 @@ $rand = time();
 
     ?>
 
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>" src="/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
+    <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
 
 </head>
 
@@ -173,9 +184,9 @@ $rand = time();
                         <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
                     </rect>
                 </svg>
-                <br><br>
+                <br class="hide_noy"><br class="hide_noy">
                 <div class="  box_shadow">New look under construction. <br>Coming Soon...</div>
-                <br><br>
+                <br class="hide_noy"><br>
                 <div id="buttons" class="box_shadow">
                     <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
                     <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i> My projects</a>
@@ -184,6 +195,8 @@ $rand = time();
                     <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" title="Look at my Linkedin profile"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin</a>
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
                     <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
+                    <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
+
                 </div>
             </spj>
         </spjin>
@@ -245,11 +258,11 @@ $rand = time();
             </svg><span>Loading ...</span>
             <btns_i>
                 <input type="text" placeholder="Search project" data-hmm="search" onkeyup="welcomer.search_Kompjiler(this);" />
-                 <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i>
+                <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i>
 
             </btns_i>
             <btns_r>
-                <i class="bi bi-search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);" title="Search project..."></i>
+                <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);" title="Search project..."></i>
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
@@ -259,6 +272,59 @@ $rand = time();
         <grider_viewer class="gridsH grids">
 
         </grider_viewer>
+        <?php /*
+        <pages>
+            <page>
+                <div class="container page_header">
+                    <div class="row-0">
+                        <div class="col-sm-1">
+                            <img src="/rdlv/students.svg" alt="aefeaf" />
+                        </div>
+                        <div class="col-sm-2">
+                            <h3>Echat</h3>
+                        
+                            <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
+                        <tags>
+                            <tag>Social</tag>
+                        </tags>
+                        </div>
+                    </div>
+                </div>
+                <headr>
+
+                </headr>
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                        <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
+                        </div>
+                        <div class="carousel-item ">
+                            <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
+                        </div>
+                        <div class="carousel-item ">
+                            <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
+                        </div>
+                        <div class="carousel-item ">
+                            <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </page>
+        </pages> */ ?>
         <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);" onmouseout="welcomer.cursor_hide(this)"></iframe>
         <div_not>
             <div_panel>
@@ -314,7 +380,6 @@ $rand = time();
     </ul>
  */ ?>
     <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
-
 </body>
 
 </html>

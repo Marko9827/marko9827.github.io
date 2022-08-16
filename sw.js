@@ -1,5 +1,5 @@
 
-var echat_v = "p-e-4104-22";
+var echat_v = "p-e-4104-24";
 var assets = [
 
     "/"];

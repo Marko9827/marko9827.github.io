@@ -4,6 +4,7 @@ class Welcomer {
         this.isMobile();
         this.fpsMeter();
     }
+    loop_active = true;
     Dots_color = 195;
     #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     #energyAnim = true;
@@ -15,7 +16,24 @@ class Welcomer {
             description: "E-student, platforma za studente",
             img: this.domain + "students.svg",
             href: "https://demo.eronelit.com/demo_34023591386511932414/",
-            type: true
+            type: true,
+            page: {
+                title: "",
+                description: "",
+                avalabile: [
+                    {
+                        title: "",
+                        icon: "",
+                        url: ""
+                    }
+                ],
+                album: [
+                    {
+                        image: "",
+                        title: ""
+                    }
+                ]
+            }
         },
         {
             title: "Search engine",
@@ -27,8 +45,8 @@ class Welcomer {
         },
         {
             title: "Eronelit Dashboard",
-            description: "Eronelit Dashboard for server",
-            img: this.domain + "rlj.png",
+            description: "Eronelit Dashboard for server like a WHM/Cpanel",
+            img: this.domain + "eronelit_dashboard.png",
             href: "",
             type: true
         },
@@ -36,6 +54,20 @@ class Welcomer {
             title: "DB Manager",
             description: "Eronelit Dashboard - Plugin DB Manager",
             img: this.domain + "rlj.png",
+            href: "",
+            type: true
+        },
+        {
+            title: "Invoice Manager",
+            description: "Eronelit Dashboard - Plugin Invoice manager",
+            img: this.domain + "eronelit_plugin_invoice.png",
+            href: "",
+            type: true
+        },
+        {
+            title: "IP Calculator",
+            description: "Eronelit Dashboard - Plugin IP Calculator",
+            img: this.domain + "eronelit_plugin_ip_calculator.png",
             href: "",
             type: true
         },
@@ -66,7 +98,14 @@ class Welcomer {
             img: this.domain + "java-http-server.png",
             href: "https://github.com/Marko9827/java-http-server",
             type: true
-        }
+        },
+        {
+            title: "Echat 3D Model SDK/viewer",
+            description: "Echat my Social network - 3D model animation viewer - Shared Post \n Supported: Blender, PTC Creo, Solidwork, Autocad, Alias Wavefront, Autodesk Filmbox, FBX, .3dc, .asc, .3ds, .abc, .dae, .zae, .igs, .iges, .las, .ply, glb. \n\n 3D model viewer TEST \n\n - BETA VERSION! \n\n        - PEGI 3",
+            img: this.domain + "echat_3d.png",
+            href: "https://echat.eronelit.com/?s=p&id=943703156",
+            type: true
+        },
     ];
     #history = [];
     cursor = $(".cursor");
@@ -123,51 +162,8 @@ class Welcomer {
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
-        /*
-        const data2 = "H3024F";
-        $.ajax({
-            url: window.location.origin + "/?drc=" + data2,
-            type: "POST", 
-            dataType: 'json', 
-            data:{
-                dvlr:data2
-            },
-            success: function (vF) {
-                var div_not_i = 0;
-                $.each(vF, function (k, v) {
-                    var thi = "class='is_touch'",
-                        p_open = "";
-                    if (v.href !== "") {
-                        if (v.type) {
-                            p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
-               <i class="bi bi-link"></i> Open link
-               </p_open>`;
-                        } else {
-                            p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
-              <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
-               </p_open>`;
-                        }
-                    }
-                    if (welcomer.isMobile()) {
 
-                        thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
 
-                    }
-                    $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
-            <grider_box>
-            <p>${v.title}</p>
-              
-                ${p_open}
-                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
-                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
-                       </grider_box>
-
-                </project>`);
-                    div_not_i++;
-                });
-            }
-        });
-        */
         this.#projects.forEach(function (v) {
             var thi = "class='is_touch'",
                 p_open = "";
@@ -192,8 +188,9 @@ class Welcomer {
             <p>${v.title}</p>
               
                 ${p_open}
-                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
-                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
+                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+                src="${v.img}" data-zoom-image="${v.img}" alt="${v.title}">
                        </grider_box>
 
                 </project>`);
@@ -204,7 +201,23 @@ class Welcomer {
         $("div_header span").html("Marko Nikolić - Portfolio > Projects");
         $(Vjideo_sjpinner).hide();
     }
+    closeMeIamSad(){
+        $(".zoomContainer, .zoomer_exit, #helper_id_helper, #helper_id_helper3").remove();
+    }
     infoVa(h = 0) {
+
+        const imgH = $(`project[id-int="${h}"] img`);
+  
+        imgH.ezPlus({
+            zoomType: 'inner',
+            containLensZoom: true,
+            speed:1
+        });
+        $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+        setTimeout(function(){
+        // $(".zoomContainer .zoomWindowContainer div").attr("style", `  background-position: center; background-repeat: no-repeat; cursor: inherit; overflow: hidden ; background-image: url(${imgH.attr("src")}); background-size: contain;`);
+            // $(".zoomContainer .zoomWindowContainer").html(`<img id="zoomWindowContainer_img" src="${imgH.attr("src")}" alt="ae">`);
+        },100);/*
         try {
             $("info_box h4").html($(`#clavs grider_viewer project[id-int="${h}"]`).attr("title"));
             $("info_box info_msg p").html($(`#clavs grider_viewer project[id-int="${h}"]`).find("p").html());
@@ -225,7 +238,7 @@ class Welcomer {
             }, 250);
         } catch (v) {
             alert(v);
-        }
+        }*/
     }
     openWindow(i = 0) {
         if (this.#projects[i].href !== "") {
@@ -263,11 +276,11 @@ class Welcomer {
     start(j) {
 
         if (!this.#isChrome) {
-            $("canvas").addClass("low_GPU")
+            //    $("canvas").addClass("low_GPU")
         }
         document.querySelector("iframe").addEventListener("load", function () {
             // pgloader("yes");
-            console.log(1);
+            
         });
         document.querySelectorAll("script").forEach(function (v) {
             try {
@@ -323,6 +336,7 @@ class Welcomer {
                 $("div_header").attr("data-url", url);
             }
         }
+        welcomer.loop_active = false;
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -429,6 +443,7 @@ class Welcomer {
     Hclose() {
         this.#hmm("Are you sure to close? You are only closing the built-in browser. You do not close the card.", function () {
             $("#clavs").attr("style", "transform: translateY(-100%);");
+            welcomer.loop_active = true;
             setTimeout(function () {
                 $("iframe").attr("src", "");
                 $("iframe").removeAttr("style");
@@ -457,7 +472,7 @@ class Welcomer {
 
         $("div_not div_panel span").text(qust);
         $("#clavs iframe, #clavs grider_viewer").addClass("gridesr_filter");
-        $("btns_i").attr("style","opacity: 0.4;pointer-events: none;");
+        $("btns_i").attr("style", "opacity: 0.4;pointer-events: none;");
         $("box_h").show();
 
         $("btns btn2").on("click", function () {
@@ -590,8 +605,8 @@ class Welcomer {
             <p>${v.title}</p>
               
                 ${p_open}
-                <fiv><i onclick="welcomer.infoVa(${welcomer.div_not_i});" class="bi bi-info-circle"></i></fiv>
-                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${welcomer.div_not_i});" src="${v.img}" alt="${v.title}">
+                <fiv><i onclick="welcomer.infoVa(${welcomer.div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+                <img loading="lazy"  data-zoom-image="${v.img}" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${welcomer.div_not_i});" src="${v.img}" alt="${v.title}">
                        </grider_box>
 
                 </project>`);
@@ -609,36 +624,8 @@ class Welcomer {
                 if (v.title.indexOf(s) !== -1) {
                     welcomer.div_not_i = 0;
                     welcomer.cr(v);
-                    /*
-                    var thi = "class='is_touch'",
-                        p_open = "";
-                    if (v.href !== "") {
-                        if (v.type) {
-                            p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
-                   <i class="bi bi-link"></i> Open link
-                   </p_open>`;
-                        } else {
-                            p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
-                  <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
-                   </p_open>`;
-                        }
-                    }
-                    if (welcomer.isMobile()) {
-    
-                        thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
-    
-                    }
-                    $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
-                <grider_box>
-                <p>${v.title}</p>
-                  
-                    ${p_open}
-                    <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle"></i></fiv>
-                    <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" src="${v.img}" alt="${v.title}">
-                           </grider_box>
-    
-                    </project>`);
-                    div_not_i++;*/
+
+
                 }
 
             });
@@ -651,10 +638,10 @@ class Welcomer {
             input = $("div_header input[type='text']").val();
         if (attr) {
             hd.addClass("ld_completeld_complete_search");
- 
+
         }
         if (attr == "search") {
-            
+
             welcomer.compTxt(input);
         }
         if (attr == "closeMe") {
@@ -760,7 +747,7 @@ class Welcomer {
     }
 
     GPPU_ms() {
-        return this.getUnmaskedInfo().renderer;
+        //return  this.getUnmaskedInfo().renderer;
     }
 
     getUnmaskedInfo() {
@@ -783,20 +770,35 @@ class Welcomer {
         $('*[title]:not(iframe), *[data-title]:not(iframe)').each(function () {
 
             var a = $(this);
+            if (welcomer.isMobile()) {
+                a.click(
+                    function () {
+                        welcomer.showAnchorTitle(a, a.data('title'));
+                    },
+                    function () {
+                        welcomer.hideAnchorTitle();
+                    }
+                ).data('title', a.attr('title')).removeAttr('title');
 
-            a.hover(
-                function () {
-                    welcomer.showAnchorTitle(a, a.data('title'));
-                },
-                function () {
+                $("*:not(a)").click(function () {
                     welcomer.hideAnchorTitle();
-                }
-            ).data('title', a.attr('title')).removeAttr('title');
 
-            a.mouseleave(function () {
-                welcomer.hideAnchorTitle();
+                });
+            } else {
+                a.hover(
+                    function () {
+                        welcomer.showAnchorTitle(a, a.data('title'));
+                    },
+                    function () {
+                        welcomer.hideAnchorTitle();
+                    }
+                ).data('title', a.attr('title')).removeAttr('title');
 
-            });
+                a.mouseleave(function () {
+                    welcomer.hideAnchorTitle();
+
+                });
+            }
         });
     }
 }
@@ -805,6 +807,7 @@ var welcomer = new Welcomer();
 
 
 $(document).ready(function () {
+
 
 
 
@@ -817,7 +820,7 @@ $(document).ready(function () {
         }
     });
 
-    var isMobile = welcomer.isMobile();
+    const isMobile = welcomer.isMobile();
 
 
     if (isMobile == true) {
@@ -1128,6 +1131,7 @@ $(document).ready(function () {
 
 });
 
+if(window.location.host == "portfolio.eronelit.com"){
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js').then(function (registration) {
         console.log('SW registration succeeded with scope:', registration.scope);
@@ -1135,7 +1139,7 @@ if ('serviceWorker' in navigator) {
         console.log('SW registration failed with error:', e);
     });
 }
-
+}
 const TWO_PI = Math.PI * 2;
 
 class Application {
@@ -1181,7 +1185,11 @@ class Application {
 
     update() {
         for (let i = 0; i < this.circleContainers.length; i++) {
-            this.circleContainers[i].update();
+            if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
+
+                this.circleContainers[i].update();
+
+            }
         }
     }
 
@@ -1189,15 +1197,20 @@ class Application {
         this.context.clearRect(0, 0, this.width, this.height);
 
         for (let i = 0; i < this.circleContainers.length; i++) {
-            this.circleContainers[i].render();
+            if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
+
+                this.circleContainers[i].render();
+            }
         }
     }
 
     loop() {
         this.update();
+
         this.render();
 
         window.requestAnimationFrame(() => this.loop());
+
     }
 }
 
@@ -1206,12 +1219,18 @@ class CircleContainer {
     constructor(context, x, y) {
         this.context = context;
         this.position = { x, y };
+        if (welcomer.isMobile()) {
+            this.numberOfCircles = 5;
+            this.bounceRadius = 80;
 
-        this.numberOfCircles =  19;
+        } else {
+            this.numberOfCircles = 19;
+            this.bounceRadius = 150;
+
+        }
         this.circles = [];
 
         this.baseRadius = 20;
-        this.bounceRadius = 150;
         this.singleSlice = TWO_PI / this.numberOfCircles;
     }
 
@@ -1313,5 +1332,4 @@ window.countFPS = (function () {
         b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
     }; return f
 });
-
 

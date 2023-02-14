@@ -358,6 +358,8 @@ class Welcomer {
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs");
 
+        
+
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
@@ -368,6 +370,7 @@ class Welcomer {
             $("div_header").addClass("ld_completeld_complete");
 
         } else if (url.includes("projects")) {
+            $("body").removeAttr("data-hmm");
             welcomer.projectsload();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
 
@@ -376,8 +379,8 @@ class Welcomer {
             $(Vjideo_sjpinner).show();
             $("div_header").removeClass("ld_completeld_complete");
             $("div_header").addClass("ld_completeld_complete2");
-
-
+ 
+            $("body").attr("data-hmm", "ld_completeld_complete3");
 
             $("div_header span").html("Marko Nikolić - Portfolio > Blog");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
@@ -385,9 +388,9 @@ class Welcomer {
             $("iframe").attr("data-temp-url", url);
             $("div_header").attr("data-url", window.location.origin + "/?p=blog");
        
-
+ 
         } else {
-
+            $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe").attr("src", url);
             $("iframe").attr("data-temp-url", url);

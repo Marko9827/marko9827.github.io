@@ -1472,4 +1472,8 @@ div#helper_id_helper3 p {
     font-size: 15px; 
 }
 
- 
+body[data-hmm="ld_completeld_complete3"] .F_bi_search {
+     display: none !important;
+ }
+
+

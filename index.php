@@ -25,6 +25,23 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
     } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'welcomer-pl') !== false) {
         header("Content-type: application/javascript");
         include "./welcomer_f.js";
+    }  else if (strpos($_GET['marko-nikolic-portfolio-source'], 'blog-rss') !== false) {
+              header("Content-type: text/plain");
+      if(!empty($_POST['what'])){
+        if($_POST['what'] == "blog"){
+              $url = "https://blog.eronelit.com/feeds/posts/default";
+        $fileContents= file_get_contents($url);
+    $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
+    $fileContents = trim(str_replace('"', "'", $fileContents));
+    $simpleXml = simplexml_load_string($fileContents);
+    $json = json_encode($simpleXml);
+    // echo $json; 
+    echo trim(base64_encode($json)," ");
+           
+        }else{ 
+        }
+      } else{  }
+    exit();
     } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-14') !== false) {
         header("Content-type: application/javascript");
 

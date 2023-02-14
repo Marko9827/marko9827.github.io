@@ -3,6 +3,7 @@ class Welcomer {
     constructor() {
         this.isMobile();
         this.fpsMeter();
+
     }
     loop_active = true;
     Dots_color = 195;
@@ -125,7 +126,11 @@ class Welcomer {
         const myParam = urlParams.get("p");
 
         if (myParam !== null) {
-            this.pgloader(window.location.origin + "/?pages=" + myParam);
+            if (myParam == "blog") {
+                this.pgloader("https://blog.eronelit.com");
+            } else {
+                this.pgloader(window.location.origin + "/?pages=" + myParam);
+            }
         }
     }
     url_params2() {
@@ -145,6 +150,39 @@ class Welcomer {
         return isMobile;
     }
 
+    decodeEntities(str) {
+        // this prevents any overhead from creating the object each time
+        let txt = document.createElement("textarea");
+
+        txt.innerHTML = str;
+
+        return txt.value;
+    }
+
+    blogljoad() {
+        const RSS_URL = "/?marko-nikolic-portfolio-source=blog-rss";
+        $.ajax({
+            url: RSS_URL,
+            type: "POST",
+            async: true,
+            data: {
+                what: "blog"
+            },
+            beforeSend: function () {
+                $("strV").remove();
+            },
+            success: function (v) {
+                /* IN TESTING      const c = JSON.parse(window.atob(`${v}`)); 
+                      console.log(c);
+                      $("body").append("<strV></strV>");
+                      for(var i = 0; i < c.entry.length; i++){
+                          $("strV").append(`${c.entry.content}`);
+          
+                      }
+                         */
+            }
+        })
+    }
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -201,44 +239,20 @@ class Welcomer {
         $("div_header span").html("Marko Nikolić - Portfolio > Projects");
         $(Vjideo_sjpinner).hide();
     }
-    closeMeIamSad(){
+    closeMeIamSad() {
         $(".zoomContainer, .zoomer_exit, #helper_id_helper, #helper_id_helper3").remove();
     }
     infoVa(h = 0) {
 
         const imgH = $(`project[id-int="${h}"] img`);
-  
+
         imgH.ezPlus({
             zoomType: 'inner',
             containLensZoom: true,
-            speed:1
+            speed: 1
         });
         $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
-        setTimeout(function(){
-        // $(".zoomContainer .zoomWindowContainer div").attr("style", `  background-position: center; background-repeat: no-repeat; cursor: inherit; overflow: hidden ; background-image: url(${imgH.attr("src")}); background-size: contain;`);
-            // $(".zoomContainer .zoomWindowContainer").html(`<img id="zoomWindowContainer_img" src="${imgH.attr("src")}" alt="ae">`);
-        },100);/*
-        try {
-            $("info_box h4").html($(`#clavs grider_viewer project[id-int="${h}"]`).attr("title"));
-            $("info_box info_msg p").html($(`#clavs grider_viewer project[id-int="${h}"]`).find("p").html());
-            $("info_box img").attr("src", $(`#clavs grider_viewer project[id-int="${h}"]`).find("img").attr("src"));
-            $("info_box").addClass("info_box_active");
-            $("dv_h").attr("style", `width:5%`);
-            var i = 0;
-            const int = setInterval(() => {
-                if ($("info_box").hasClass("info_box_active")) {
-                    $("dv_h").attr("style", `width: ${i}%`);
-                    if (i == 100) {
-                        clearInterval(int);
-                        $("info_box").removeClass("info_box_active");
-
-                    }
-
-                } i += 1;
-            }, 250);
-        } catch (v) {
-            alert(v);
-        }*/
+      
     }
     openWindow(i = 0) {
         if (this.#projects[i].href !== "") {
@@ -275,12 +289,13 @@ class Welcomer {
     };
     start(j) {
 
+
         if (!this.#isChrome) {
             //    $("canvas").addClass("low_GPU")
         }
         document.querySelector("iframe").addEventListener("load", function () {
             // pgloader("yes");
-            
+
         });
         document.querySelectorAll("script").forEach(function (v) {
             try {
@@ -342,9 +357,11 @@ class Welcomer {
             div_header = document.querySelector("div_header"),
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs");
+
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
+
 
             $("div_header span").html($("iframe").contents().find("title").html());
             $("div_header").removeClass("ld_completeld_complete2");
@@ -353,6 +370,21 @@ class Welcomer {
         } else if (url.includes("projects")) {
             welcomer.projectsload();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
+
+        } else if (url.includes("blog.eronelit.com")) {
+            $(ljoader).hide();
+            $(Vjideo_sjpinner).show();
+            $("div_header").removeClass("ld_completeld_complete");
+            $("div_header").addClass("ld_completeld_complete2");
+
+
+
+            $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+            $("iframe").attr("src", url);
+            $("iframe").attr("data-temp-url", url);
+            $("div_header").attr("data-url", window.location.origin + "/?p=blog");
+       
 
         } else {
 
@@ -545,6 +577,7 @@ class Welcomer {
             url: url,
             contentType: 'text/html ; charset=utf-8',
             cache: false,
+            async: true,
             success: function (res) {
                 blob = new Blob([res], { type: "text/html" });
                 objectURL = URL.createObjectURL(blob);
@@ -1131,14 +1164,14 @@ $(document).ready(function () {
 
 });
 
-if(window.location.host == "portfolio.eronelit.com"){
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').then(function (registration) {
-        console.log('SW registration succeeded with scope:', registration.scope);
-    }).catch(function (e) {
-        console.log('SW registration failed with error:', e);
-    });
-}
+if (window.location.host == "portfolio.eronelit.com") {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(function (registration) {
+            console.log('SW registration succeeded with scope:', registration.scope);
+        }).catch(function (e) {
+            console.log('SW registration failed with error:', e);
+        });
+    }
 }
 const TWO_PI = Math.PI * 2;
 

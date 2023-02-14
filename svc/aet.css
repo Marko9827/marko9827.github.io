@@ -573,6 +573,8 @@ div_header #logo_backscr_img {
 }
 
 .F_bi_search {
+    -webkit-transition: opacity .3s !important;
+    -o-transition: opacity .3s !important;
     transition: opacity .3s !important;
     opacity: 0 !important;
     pointer-events: none !important;
@@ -1215,6 +1217,8 @@ btns_i input[type="text"]:focus {
 
 .bodyUI canvas {
     position: unset !important;
+    -webkit-transform: scale(0.9);
+    -ms-transform: scale(0.9);
     transform: scale(0.9);
     border-radius: 10px;
     max-width: 500px;
@@ -1257,6 +1261,7 @@ div#carouselExampleIndicators,
 }
 
 .carousel-item img {
+    -o-object-fit: contain;
     object-fit: contain;
 }
 
@@ -1415,17 +1420,23 @@ div#helper_id_helper3 p {
     padding: 10px;
     display: block;
     margin: auto;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
     width: fit-content;
     text-align: center;
 }
 
 /* // */
 .page_header .row-0 {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
 }
 
 .page_header .col-sm-1 {
     width: 150px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
     height: fit-content;
 }
 
@@ -1444,8 +1455,21 @@ div#helper_id_helper3 p {
 .page_header .col-sm-2 p {
     font-size: 13px;
 }
-
-/* // */
+ 
 #buttons a .fa-deviantart {
-   margin-bottom: -3px;
+    margin-bottom: -3px;
 }
+
+#blogNewsBtn {
+    position: fixed;
+    left: 10px;
+    top: 10px;
+    z-index: 3 !important;
+    color: var(--white);
+    border: 2px solid var(--white);
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 15px; 
+}
+
+ 

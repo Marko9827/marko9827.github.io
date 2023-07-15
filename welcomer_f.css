@@ -1468,3 +1468,14 @@ div#helper_id_helper3 p {
     font-size: 10px;
     pointer-events: none !important;
 }
+
+.zoomContainer:not(:hover,:focus) * {
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: contain !important;
+    background-position: center !important;
+    margin:0px !important;
+    background-repeat: no-repeat !important;
+}

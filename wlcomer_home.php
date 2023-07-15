@@ -123,7 +123,31 @@ $rand = time();
 
     <script nonce="<?php echo NONCE; ?>" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
+    <?php if(!empty($_GET['tp'])){ 
+        if($_GET['tp'] == "m"){
+        ?>
+        <style type="text/css">
+          * {
+            pointer-events: none !important;
+        }
+        body *:not(canvas){
+    display:none;
+}
 
+</style>
+        <?php }  }?>
+        <style type="text/css">
+            .zoomContainer:not(:hover,:focus) * {
+    left: 0px !important;
+    top: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: contain !important;
+    background-position: center !important;
+    margin:0px !important;
+    background-repeat: no-repeat !important;
+}
+        </style>
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);">
@@ -197,7 +221,8 @@ $rand = time();
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
                     <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
                     <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
-
+                    <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
+" class="fab fa-telegram"></i> <span class="href_a_span">Telegram</span></a>
                 </div>
             </spj>
         </spjin>

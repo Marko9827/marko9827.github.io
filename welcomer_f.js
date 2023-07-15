@@ -101,13 +101,20 @@ class Welcomer {
             type: true
         },
         {
+            title: "Operating system",
+            description: "My operating system for all devices.",
+            img: this.domain + "os.png",
+            href: "",
+            type: true
+        },
+        {
             title: "Echat 3D Model SDK/viewer",
             description: "Echat my Social network - 3D model animation viewer - Shared Post \n Supported: Blender, PTC Creo, Solidwork, Autocad, Alias Wavefront, Autodesk Filmbox, FBX, .3dc, .asc, .3ds, .abc, .dae, .zae, .igs, .iges, .las, .ply, glb. \n\n 3D model viewer TEST \n\n - BETA VERSION! \n\n        - PEGI 3",
             img: this.domain + "echat_3d.png",
             href: "https://echat.eronelit.com/?s=p&id=943703156",
             type: true
         },
-    ];
+    ]; 
     #history = [];
     cursor = $(".cursor");
     TopLeft = {

@@ -136,7 +136,7 @@ exit();
 
         </li>
         <li class="social-menu">
-          <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> .<span>Linkedin</span></a>
+          <a href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank" rel="noopener"><i class="fab fa-linkedin"></i> .<span>Linkedin</span></a>
         </li>
         <li class="social-menu">
           <a href="https://github.com/marko9827" target="_blank" rel="noopener"><i class="fab fa-github"></i> .<span>Github</span></a>
@@ -196,7 +196,7 @@ exit();
 
         <!--    <a class="color-btn" onclick="onShot1()">See my work [Photografy , photos + video]</a>
 -->
-        <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener">My Linkedin</a>
+        <a class="color-btn" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank" rel="noopener">My Linkedin</a>
         <a class="color-btn" href="/?pages=cv-pdf" rel="noopener">My CV</a>
         <a class="color-btn" href="/?pages=visitcard" rel="noopener">My Visit Card</a>
 
@@ -547,7 +547,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
         <p>Web, Windows, Mobile (Android, Windows) when I was a kid I always thought in the development of their
           applications. Today I make them successful. Android itself salvadao medium (Android SDK)</p>
         <br />
-        <a class="color-btn socialnew" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener"><i class="fab fa-linkedin  socialnew1"></i> Linkedin</a>
+        <a class="color-btn socialnew" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank" rel="noopener"><i class="fab fa-linkedin  socialnew1"></i> Linkedin</a>
         <a class="color-btn socialnew" onclick="window.location.href = './?pages=cv-pdf';"><i class="fa fa-file socialnew1"></i> My CV </a>
         <a class="color-btn socialnew" onclick="window.location.href = './?pages=visitcard';"><i class="fa fa-file socialnew1"></i> My Visit card </a>
 
@@ -674,7 +674,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
                 <br>
 
-                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener">More Info (Linkedin)</a>
+                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank" rel="noopener">More Info (Linkedin)</a>
 
 
 

@@ -133,7 +133,7 @@
 
                 <a class="color-btn" onclick="onShot1()">See my work [Photografy , photos + video]</a>
 
-                <a class="color-btn" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">My Linkedin</a>
+                <a class="color-btn" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank">My Linkedin</a>
 
                 <a class="color-btn" onclick="CF()">Full Screen</a>
 
@@ -449,7 +449,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
                 <h2>Other</h2>
 
                 <p>Web, Windows, Mobile (Android, Windows) when I was a kid I always thought in the development of their applications. Today I make them successful. Android itself salvadao medium (Android SDK)</p>
-                <br /> <a class="color-btn socialnew" href="https://www.linkedin.com/in/markonikolic98/" target="_blank"><i class="fa fa-instagram socialnew1"></i> Linkedin</a>
+                <br /> <a class="color-btn socialnew" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank"><i class="fa fa-instagram socialnew1"></i> Linkedin</a>
 
                 <a class="color-btn btndemo" onkeypress="KP1()" onclick="idemo()">Eronel SDK Demo</a>
 
@@ -568,7 +568,7 @@ border-bottom: 4px rgba(218, 165, 32, 0.79) solid;
 
                                 <br>
 
-                                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/markonikolic98/" target="_blank">More Info (Linkedin)</a>
+                                <a class="color-btn btndemo btnlinkedin" href="https://www.linkedin.com/in/marko-nikolic-49385a283/" target="_blank">More Info (Linkedin)</a>
 
 
 

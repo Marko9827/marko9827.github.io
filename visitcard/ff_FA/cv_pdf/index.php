@@ -89,7 +89,7 @@ ob_start(function ($b) {
                         <p id="info_email" class="info_email_code"><i class="fas fa-heartbeat"></i><span>Born : 16/03/1998</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-map-marker-alt"></i><span>Serbia/Belgrade/Surčin</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-globe"></i><span>portfolio.eronelit.com</span></p>
-                        <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/markonikolic98</span></p>
+                        <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/marko-nikolic-49385a283</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>marko.supergun&#64;gmail.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-github"></i><span onclick="open.window('https:\/\/github.com/marko9827');">github.com/marko9827</span></p>
                         <p></p>
@@ -222,7 +222,7 @@ ob_start(function ($b) {
                 <div id="cont1">
                     <p id="info_email"><i class="fas fa-map-marker-alt"></i> Serbia/Belgrade/Surčin</p>
                     <p id="info_email"><i class="fas fa-globe"></i> portfolio.eronelit.com</p>
-                    <p id="info_email"><i class="fab fa-linkedin"></i> linkedin.com/in/markonikolic98</p>
+                    <p id="info_email"><i class="fab fa-linkedin"></i> linkedin.com/in/marko-nikolic-49385a283</p>
                     <p id="info_email"><i class="fas fa-at"></i> marko.supergun@gmail.com</p>
                     <p></p>
                 </div>

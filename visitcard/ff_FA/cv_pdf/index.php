@@ -66,6 +66,12 @@ ob_start(function ($b) {
     <script src="<?php echo SITE_HOST;?>/?marko-nikolic-portfolio-source=javascript-nfo-13"></script>
     */ ?>
     <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=js-feaie?<?php echo time(); ?>"></script>
+    <style type="text/css">  div#left_coll {
+    width: 280px;
+       min-width: 280px;
+    max-width: 280px;
+   
+}</style>
 </head>
 
 <body ondragstart="return false;" onselect="return false;" id="body">

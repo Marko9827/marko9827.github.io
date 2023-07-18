@@ -3,6 +3,8 @@ class Welcomer {
     constructor() {
         this.isMobile();
         this.fpsMeter();
+        // this.scroll_event();
+       
 
     }
     loop_active = true;
@@ -121,6 +123,50 @@ class Welcomer {
         y: 0,
         x: 0
     };
+    scroll_event(){
+        $("#buttons").on("scroll",function(e) {
+            e.preventDefault();
+          welcomer.scrolj();
+        });
+        $(".catascrollEchatTv_right").on("click", function(){
+            welcomer.bundleSuggestedS(1);
+        });
+        $(".catascrollEchatTv:not(.catascrollEchatTv_right)").on("click", function(){
+            welcomer.bundleSuggestedS("1");
+        });
+    }
+    scrolj() {
+        const catascrollEchatTv_right = document.querySelector(
+            ".catascrollEchatTv_right"
+          ),
+          catascrollEchatTv = document.querySelector(
+            ".catascrollEchatTv:not(.catascrollEchatTv_right)"
+          );
+    
+        if (document.querySelector("#buttons").scrollLeft > 150) {
+          if (catascrollEchatTv !== null) {
+            catascrollEchatTv.setAttribute("style", "transform:scale(1)");
+          }
+        } else {
+          if (catascrollEchatTv !== null) {
+            catascrollEchatTv.setAttribute("style", "transform:scale(0)");
+          }
+        }
+        const r = document.querySelector("#buttons");
+        if (r.offsetWidth + r.scrollLeft >= r.scrollWidth) {
+          catascrollEchatTv_right.setAttribute("style", "transform:scale(0)");
+        } else {
+          catascrollEchatTv_right.setAttribute("style", "transform:scale(1)");
+        }
+      }
+      bundleSuggestedS(n) {
+        if (n == "1") {
+          document.querySelector("#buttons").scrollLeft += 150;
+        } else {
+          document.querySelector("#buttons").scrollLeft -= 150;
+        }
+        welcomer.scrolj();
+      }
     #get_from_datter(url) {
         $.ajax({
             url: url,

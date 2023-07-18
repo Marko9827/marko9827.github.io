@@ -133,8 +133,8 @@ hh_anim_start spjin {
 hh_anim_start spj {
     display: block;
     margin: auto;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1)) !important;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
     enable-background: new 0 0 512 512 !important;
 }
 
@@ -1469,13 +1469,149 @@ div#helper_id_helper3 p {
     pointer-events: none !important;
 }
 
-.zoomContainer:not(:hover,:focus) * {
+.zoomContainer:not(:hover, :focus) * {
     left: 0px !important;
     top: 0px !important;
     width: 100% !important;
     height: 100% !important;
     background-size: contain !important;
     background-position: center !important;
-    margin:0px !important;
+    margin: 0px !important;
     background-repeat: no-repeat !important;
+}
+
+
+
+
+@media only screen and (max-width: 600px) {
+    .box_shadow_txtf sp {
+        margin: 0px 10px;
+    }
+
+    .box_shadow_txtf {
+        display: grid;
+        margin-bottom: 181px;
+    }
+
+    .box_shadow_txtf span {
+        margin: 0px 0px;
+    }
+
+    .box_shadow_txtf sp {
+        display: none;
+    }
+
+    #buttons {
+        position: fixed;
+        overflow-x: scroll;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        overflow-x: auto !important;
+        -ms-scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        -webkit-transition: margin-left 0.5s;
+        -o-transition: margin-left 0.5s;
+        scroll-behavior: smooth;
+        transition: margin-left 0.5s;
+        -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 25%, white 80%, transparent 100%);
+        mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+        z-index: 333333;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        width: -webkit-fill-available;
+    }
+
+    #buttons a {
+        scroll-snap-align: center;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        border-radius: 10px;
+        -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+        transform-origin: center center;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        transition: -webkit-transform 0.5s;
+        -webkit-transition: -webkit-transform 0.5s;
+        -o-transition: transform 0.5s;
+        transition: transform 0.5s;
+        transition: transform 0.5s, -webkit-transform 0.5s;
+        position: relative;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin: 0px 5px;
+    }
+
+    #buttons a i {
+        font-size: 40px !important;
+        width: 60px;
+        text-align: center;
+        height: 60px;
+        margin: 0px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    #buttons a span {
+        padding-top: 10px;
+        font-size: 13px !important;
+    }
+
+    hh_anim_start spj {
+        width: -webkit-fill-available;
+    }
+
+    #buttons a {
+        width: 150px !important;
+        height: 150px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    #buttons a {
+        display: grid !important;
+        text-align: center !important;
+        justify-content: center !important;
+        justify-items: center;
+        align-items: center !important;
+        align-content: center;
+    }
+
+    #buttons {
+        padding-block: 10px;
+    }
+
+    #buttons::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 30px !important;
+        height: 5px;
+    }
+
+    #buttons::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #buttons::-webkit-scrollbar-thumb {
+        background: white;
+    }
+
+    #buttons::-webkit-scrollbar-thumb:hover {
+        background: transparent;
+    }
 }

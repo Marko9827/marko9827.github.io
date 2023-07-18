@@ -1,0 +1,195 @@
+
+ 
+    .box_shadow_txtf sp {
+        margin: 0px 10px;
+    }
+    @media only screen and (max-width: 600px) {  
+    .box_shadow_txtf {
+        display: grid; 
+        margin-bottom: 181px !important;
+    } .box_shadow_txtf sp {
+        display: none;
+    }
+    }
+    .box_shadow_txtf { 
+        margin-bottom: 135px;
+    }
+    .box_shadow_txtf span {
+        margin: 0px 0px;
+    }
+
+    
+ 
+
+
+    #buttons {
+        position: fixed;
+        overflow-x: scroll;
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        overflow-x: auto !important;
+        -ms-scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        -webkit-transition: margin-left 0.5s;
+        -o-transition: margin-left 0.5s;
+        scroll-behavior: smooth;
+        transition: margin-left 0.5s;
+        -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 25%, white 80%, transparent 100%);
+        mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+        z-index: 333333;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        width: -webkit-fill-available;
+    }
+
+    #buttons a {
+        scroll-snap-align: center;
+        -ms-flex-negative: 0;
+        flex-shrink: 0;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        border-radius: 10px;
+        -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+        transform-origin: center center;
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        transition: -webkit-transform 0.5s;
+        -webkit-transition: -webkit-transform 0.5s;
+        -o-transition: transform 0.5s;
+        transition: transform 0.5s;
+        transition: transform 0.5s, -webkit-transform 0.5s;
+        position: relative;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin: 0px 5px;
+    }
+
+    #buttons a i {
+        font-size: 40px !important;
+        width: 60px;
+        text-align: center;
+        height: 60px;
+        margin: 0px !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+    }
+
+    #buttons a span {
+        padding-top: 10px;
+        font-size: 13px !important;
+    }
+
+    hh_anim_start spj {
+        width: -webkit-fill-available;
+    }
+
+    #buttons a {
+        width: 150px !important;
+        height: 150px;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        align-content: center;
+    }
+
+    #buttons a {
+        display: grid !important;
+        text-align: center !important;
+        justify-content: center !important;
+        justify-items: center;
+        align-items: center !important;
+        align-content: center;
+    }
+
+    #buttons {
+        padding-block: 10px;
+    }
+
+    #buttons::-webkit-scrollbar {
+        width: 4px;
+        border-radius: 30px !important;
+        height: 5px;
+    }
+
+    #buttons::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #buttons::-webkit-scrollbar-thumb {
+        background: white;
+    }
+
+    #buttons::-webkit-scrollbar-thumb:hover {
+        background: transparent;
+    }
+    .href_a_span {
+        display: unset !important;
+        margin: 0px !important;
+    }
+/* } */
+@media only screen and (min-width: 700px) {
+    div#buttons { 
+        width: 80%;
+        margin: auto;
+    }
+    }
+
+
+
+    arr_bundle {
+        /* position: fixed; */
+        /* bottom: 0px; */
+        display: inline-flex;
+        left: 0px;
+        right: 0px;
+        margin-top: 0px;
+        /* bottom: unset; */
+        z-index: 333333;
+        opacity: 1;
+        bottom: 0px;
+        /* z-index: 333; */
+        width: 80%;
+        margin: auto;
+        bottom: 0px;
+    }
+    
+    arr_bundle .catascrollEchatTv {
+        position: absolute;
+        bottom: 0px;
+        z-index: 33333333;
+        color: white;
+        font-size: 35px;
+        -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+        filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+        enable-background: new 0 0 512 512 !important;
+        margin: 0px;
+        -webkit-transition: .3s;
+        -o-transition: .3s;
+        transition: .3s;
+        opacity: 0.7;
+        padding: 4px;
+        margin-bottom: 63px;
+    }
+    
+    arr_bundle .catascrollEchatTv:hover {
+        opacity: 1
+    }
+    
+    arr_bundle .catascrollEchatTv_right {
+        right: 10%;
+    }
+    
+/* } */

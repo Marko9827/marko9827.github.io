@@ -148,10 +148,13 @@ $rand = time();
     margin:0px !important;
     background-repeat: no-repeat !important;
 }  
+
+
+<?php include "$_SERVER[DOCUMENT_ROOT]/css/document_root.css"; ?>
         </style>
 </head>
 
-<body oncontextmenu="return false;" onload="welcomer.start(this);">
+<body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
  
     <hh_anim_start>
 
@@ -210,15 +213,21 @@ $rand = time();
                     </rect>
                 </svg>
                 <br class="hide_noy"><br class="hide_noy">
-                <div class="  box_shadow">New look under construction. <br>Coming Soon...</div>
+                <div class="box_shadow_txtf  box_shadow"><span>Full stack Developer</span><sp>-</sp><span>Scientist theories/news</span><sp>-</sp><span>Writing books</span><sp>-</sp><span>Photographer</span></div>
                 <br class="hide_noy"><br>
-                <div id="buttons" class="box_shadow">
-                    <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i> My CV</a>
-                    <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i> My projects</a>
-                    <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i> My Visitcard </a>
-                    <a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i> Blog/News &#128512</a>
+                <arr_bundle>
+    <i  onclick="welcomer.bundleSuggestedS(1);" class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv" style="transform:scale(1)"></i>
+    <i onclick="welcomer.bundleSuggestedS('2');" class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i> 
+           
+
+    </arr_bundle>
+                <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"  >
+                    <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
+                    <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
+                    <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
+                    <a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i><span class="href_a_span">Blog/News &#128512</span></a>
  
-                    <a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span">My Linkedin (NEW)</a>
+                    <a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span"><span class="href_a_span">My Linkedin (NEW)</span></a>
                     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
                     <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
                     <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>

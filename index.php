@@ -254,7 +254,13 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/slika314.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-1') !== false) {
+    }  else if (strpos($_GET['marko-nikolic-portfolio-source'], 'svg_bckr_mask') !== false) {
+        header("Content-type: image/svg+xml");
+        // header('Content-disposition: inline; filename="Eronelit background"');
+        readfile("./img/svg_bckr_mask.svg");
+    } 
+     
+    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-1') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-1.jpg");

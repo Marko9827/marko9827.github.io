@@ -2,9 +2,10 @@ class Welcomer {
 
     constructor() {
         this.isMobile();
+
         this.fpsMeter();
         // this.scroll_event();
-       
+
 
     }
     loop_active = true;
@@ -13,6 +14,162 @@ class Welcomer {
     #energyAnim = true;
     domain = window.location.origin + "/rdlv/";
     div_not_i = 0;
+    cards_links = [
+        {
+            title: "My CV",
+            descr: "Look at my CV",
+            icon: "bi bi-file-earmark-person-fill",
+            href: {
+                f_u: "welcomer.pgloader('/?pages=cv-pdf');",
+                f: true,
+                target: ""
+            },
+            num: 0,
+            beta: false
+        },
+        {
+            title: "My projects",
+            descr: "Look at my Projects",
+            icon: "bi bi-box2-heart",
+            href: {
+                f_u: "welcomer.pgloader('projects');",
+                f: true,
+                target: ""
+            },
+            num:12,
+            beta: false
+        },
+        {
+            title: "My Visitcard",
+            descr: "Visit my Visit card",
+            icon: "bi bi-file-earmark-person-fill",
+            href: {
+                f_u: "welcomer.pgloader('/?pages=visitcard');",
+                f: true,
+                target: ""
+            },
+            num:0,
+            beta: false
+        },
+        {
+            title: "Blog/News &#128512",
+            descr: "Blog/News &#128512",
+            icon: "bi bi-rss",
+            href: {
+                f_u: "https://blog.eronelit.com/",
+                f: false,
+                target: "blank"
+            },
+            num:323,
+            beta: false
+        },
+        {
+            title: "My Linkedin (NEW)",
+            descr: "Look at my Linkedin profile (NEW)",
+            icon: "bi bi-linkedin",
+            href: {
+                f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
+                f: false,
+                target: "blank"
+            },
+            num:0,
+            beta: false
+        },
+        {
+            title: "My Github",
+            descr: "Look at my Github profile",
+            icon: "bi bi-github",
+            href: {
+                f_u: "https://github.com/Marko9827",
+                f: false,
+                target: "blank"
+            },
+            num:172,
+            beta: false
+        },
+        {
+            title: "My Instagram",
+            descr: "Look at my Instagram profile",
+            icon: "bi bi-instagram",
+            href: {
+                f_u: "https://www.instagram.com/nikoliccc02/",
+                f: false,
+                target: "blank"
+            },
+            num:2249,
+            beta: false
+        },
+        {
+            title: "My Deviantar",
+            descr: "Look at my Deviantart profile",
+            icon: "fab fa-deviantart",
+            href: {
+                f_u: "https://www.deviantart.com/marko9827",
+                f: false,
+                target: "blank"
+            },
+            num:37,
+            beta: false
+        },
+        {
+            title: "My Telegram channel",
+            descr: "Look at my Deviantart profile",
+            icon: "fab fa-telegram",
+            href: {
+                f_u: "https://t.me/nikoliccc02",
+                f: false,
+                target: "blank"
+            },
+            num:0,
+            beta: false
+        }
+    ];
+    generateGrid() {
+        var buttons_box_shadow = document.querySelector("div#buttons");
+           
+         
+        this.cards_links.forEach(function (v) {
+          const div = document.createElement("div"),
+            i = document.createElement("i"),
+            span = document.createElement("span"),
+            nnum = document.createElement("div");  
+            div.onclick = function () {
+                if (v.href.f) {
+                    eval(`${v.href.f_u}`);
+                } else {
+                    if (v.href.target = "self") {
+                        window.location.href = `${v.href.f_u}`;
+                    }
+                    if (v.href.target = "blank") {
+                        var a = document.createElement("a");
+                        a.href = v.href.f_u;
+                        a.target = "_blank";
+                        a.click();
+                    }
+                }
+            };
+             
+            div.onmouseover = function () {
+                welcomer.bell_over(div);
+            }
+            div.onmouseout = function () {
+                welcomer.bell_out(div);
+            }
+            div.classList.add("adiv");
+            div.title = v.descr;
+            i.setAttribute("class", v.icon);
+            span.classList.add("href_a_span");
+            span.innerHTML = v.title;
+            div.appendChild(i);
+            if(v.num > 0){
+                nnum.innerHTML = v.num;
+                nnum.setAttribute("class","nnum");
+                div.appendChild(nnum);   
+            }
+            div.appendChild(span);
+            buttons_box_shadow.appendChild(div);
+        }); 
+    }
     #projects = [
         {
             title: "E-student",
@@ -116,57 +273,57 @@ class Welcomer {
             href: "https://echat.eronelit.com/?s=p&id=943703156",
             type: true
         },
-    ]; 
+    ];
     #history = [];
     cursor = $(".cursor");
     TopLeft = {
         y: 0,
         x: 0
     };
-    scroll_event(){
-        $("#buttons").on("scroll",function(e) {
+    scroll_event() {
+        $("#buttons").on("scroll", function (e) {
             e.preventDefault();
-          welcomer.scrolj();
+            welcomer.scrolj();
         });
-        $(".catascrollEchatTv_right").on("click", function(){
+        $(".catascrollEchatTv_right").on("click", function () {
             welcomer.bundleSuggestedS(1);
         });
-        $(".catascrollEchatTv:not(.catascrollEchatTv_right)").on("click", function(){
+        $(".catascrollEchatTv:not(.catascrollEchatTv_right)").on("click", function () {
             welcomer.bundleSuggestedS("1");
         });
     }
     scrolj() {
         const catascrollEchatTv_right = document.querySelector(
             ".catascrollEchatTv_right"
-          ),
-          catascrollEchatTv = document.querySelector(
-            ".catascrollEchatTv:not(.catascrollEchatTv_right)"
-          );
-    
+        ),
+            catascrollEchatTv = document.querySelector(
+                ".catascrollEchatTv:not(.catascrollEchatTv_right)"
+            );
+
         if (document.querySelector("#buttons").scrollLeft > 150) {
-          if (catascrollEchatTv !== null) {
-            catascrollEchatTv.setAttribute("style", "transform:scale(1)");
-          }
+            if (catascrollEchatTv !== null) {
+                catascrollEchatTv.setAttribute("style", "transform:scale(1)");
+            }
         } else {
-          if (catascrollEchatTv !== null) {
-            catascrollEchatTv.setAttribute("style", "transform:scale(0)");
-          }
+            if (catascrollEchatTv !== null) {
+                catascrollEchatTv.setAttribute("style", "transform:scale(0)");
+            }
         }
         const r = document.querySelector("#buttons");
         if (r.offsetWidth + r.scrollLeft >= r.scrollWidth) {
-          catascrollEchatTv_right.setAttribute("style", "transform:scale(0)");
+            catascrollEchatTv_right.setAttribute("style", "transform:scale(0)");
         } else {
-          catascrollEchatTv_right.setAttribute("style", "transform:scale(1)");
+            catascrollEchatTv_right.setAttribute("style", "transform:scale(1)");
         }
-      }
-      bundleSuggestedS(n) {
+    }
+    bundleSuggestedS(n) {
         if (n == "1") {
-          document.querySelector("#buttons").scrollLeft += 150;
+            document.querySelector("#buttons").scrollLeft += 150;
         } else {
-          document.querySelector("#buttons").scrollLeft -= 150;
+            document.querySelector("#buttons").scrollLeft -= 150;
         }
         welcomer.scrolj();
-      }
+    }
     #get_from_datter(url) {
         $.ajax({
             url: url,
@@ -305,7 +462,7 @@ class Welcomer {
             speed: 1
         });
         $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
-      
+
     }
     openWindow(i = 0) {
         if (this.#projects[i].href !== "") {
@@ -366,6 +523,7 @@ class Welcomer {
             //Start the initial loop function for the first time
             application.loop();
         }
+        this.generateGrid();
     };
 
     bell_over(h) {
@@ -411,7 +569,7 @@ class Welcomer {
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs");
 
-        
+
 
         if (url == "yes") {
             $(ljoader).show();
@@ -432,7 +590,7 @@ class Welcomer {
             $(Vjideo_sjpinner).show();
             $("div_header").removeClass("ld_completeld_complete");
             $("div_header").addClass("ld_completeld_complete2");
- 
+
             $("body").attr("data-hmm", "ld_completeld_complete3");
 
             $("div_header span").html("Marko Nikolić - Portfolio > Blog");
@@ -440,8 +598,8 @@ class Welcomer {
             $("iframe").attr("src", url);
             $("iframe").attr("data-temp-url", url);
             $("div_header").attr("data-url", window.location.origin + "/?p=blog");
-       
- 
+
+
         } else {
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");

@@ -222,6 +222,7 @@ $rand = time();
 
     </arr_bundle>
                 <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"  >
+              <?php /*
                     <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
                     <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
                     <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
@@ -233,7 +234,9 @@ $rand = time();
                     <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
                     <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
 " class="fab fa-telegram"></i> <span class="href_a_span">Telegram</span></a>
-                </div>
+            
+*/?>
+            </div>
             </spj>
         </spjin>
     </hh_anim_start>

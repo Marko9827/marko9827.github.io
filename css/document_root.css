@@ -45,7 +45,8 @@
         width: -webkit-fill-available;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv {
         scroll-snap-align: center;
         -ms-flex-negative: 0;
         flex-shrink: 0;
@@ -74,7 +75,8 @@
         margin: 0px 5px;
     }
 
-    #buttons a i {
+    #buttons a i,
+    #buttons .adiv i {
         font-size: 40px !important;
         width: 60px;
         text-align: center;
@@ -86,7 +88,8 @@
         align-content: center;
     }
 
-    #buttons a span {
+    #buttons a span,
+    #buttons .adiv span {
         padding-top: 10px;
         font-size: 13px !important;
     }
@@ -95,7 +98,8 @@
         width: -webkit-fill-available;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv  {
         width: 150px !important;
         height: 150px;
         display: flex !important;
@@ -105,7 +109,8 @@
         align-content: center;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv  {
         display: grid !important;
         text-align: center !important;
         justify-content: center !important;
@@ -140,6 +145,11 @@
         margin: 0px !important;
     }
 /* } */
+@media only screen and (min-width: 700px) {
+    #buttons {
+        justify-content:space-between;
+    }
+    }
 @media only screen and (min-width: 700px) {
     div#buttons { 
         width: 80%;
@@ -191,5 +201,36 @@
     arr_bundle .catascrollEchatTv_right {
         right: 10%;
     }
+    #buttons a,
+    #buttons .adiv  {
+    padding: 4px 10px;
+    border: 2px solid var(--cdn_white);
+    color: var(--cdn_white);
+    border-radius: 4px;
+    margin: 0px 10px;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    font-size: 15px;
+}
+
+#buttons a .nnum,
+#buttons .adiv .nnum {
     
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background: transparent;
+    border-left: 2px solid var(--hard_white);
+    border-bottom: 2px solid var(--hard_white);
+    padding: 0px 5px;
+    font-size: 13px;
+    border-bottom-left-radius: 6px;
+    background: var(--primary_light);
+
+}
+#buttons a:hover ,
+#buttons .adiv:hover {
+    background:var(--primary_light);
+}
 /* } */

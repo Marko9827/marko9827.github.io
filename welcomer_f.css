@@ -218,7 +218,8 @@ hh_anim_start .Vjideo_sjpinner {
     margin-top: 15px;
 }
 
-#buttons a {
+#buttons a,
+#buttons .adiv {
     padding: 4px 10px;
     border: 2px solid var(--cdn_white);
     color: var(--cdn_white);
@@ -230,7 +231,8 @@ hh_anim_start .Vjideo_sjpinner {
     font-size: 15px;
 }
 
-#buttons a:hover {
+#buttons a:hover,
+#buttons .adiv:hover {
     background: rgba(255 255 255 / 0.2);
     color: var(--cdn_primary);
 }
@@ -545,7 +547,8 @@ div_header #logo_backscr_img {
         display: none;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv {
         margin: 10px auto;
         display: -webkit-inline-box;
         display: -ms-inline-flexbox;
@@ -589,7 +592,8 @@ div_header #logo_backscr_img {
     margin-left: 5px;
 }
 
-#buttons a i {
+#buttons a i,
+#buttons .adiv i {
     width: 25px;
 }
 
@@ -1524,7 +1528,8 @@ div#helper_id_helper3 p {
         width: -webkit-fill-available;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv {
         scroll-snap-align: center;
         -ms-flex-negative: 0;
         flex-shrink: 0;
@@ -1553,7 +1558,8 @@ div#helper_id_helper3 p {
         margin: 0px 5px;
     }
 
-    #buttons a i {
+    #buttons a i,
+    #buttons .adiv i {
         font-size: 40px !important;
         width: 60px;
         text-align: center;
@@ -1565,7 +1571,8 @@ div#helper_id_helper3 p {
         align-content: center;
     }
 
-    #buttons a span {
+    #buttons a span,
+    #buttons .adiv span {
         padding-top: 10px;
         font-size: 13px !important;
     }
@@ -1574,7 +1581,8 @@ div#helper_id_helper3 p {
         width: -webkit-fill-available;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv {
         width: 150px !important;
         height: 150px;
         display: flex !important;
@@ -1584,7 +1592,8 @@ div#helper_id_helper3 p {
         align-content: center;
     }
 
-    #buttons a {
+    #buttons a,
+    #buttons .adiv  {
         display: grid !important;
         text-align: center !important;
         justify-content: center !important;

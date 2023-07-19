@@ -234,3 +234,6 @@
     background:var(--primary_light);
 }
 /* } */
+#buttons .adiv {
+    margin: 0px 5px !important;
+}

@@ -1,14 +1,11 @@
 <?php
 
 // header('X-Frame-Options: SAMEORIGIN');
-header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-header("Access-Control-Allow-Origin: self");
+ 
+ header("Access-Control-Allow-Origin: *"); 
 
 
-
-if (!empty($_GET['marko-nikolic-portfolio-source'])) {
+if (!empty($_GET['mnps'])) {
 
     $img_background_3_jpg = "./img/background-3.jpg";
     $img_background_1_jpg = "./img/background-1.jpg";
@@ -18,14 +15,14 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
 
 
-    if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-15') !== false) {
+    if (strpos($_GET['mnps'], 'javascript-15') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/words.php";
-    } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'welcomer-pl') !== false) {
+    } else  if (strpos($_GET['mnps'], 'welcomer-pl') !== false) {
         header("Content-type: application/javascript");
         include "./welcomer_f.js";
-    }  else if (strpos($_GET['marko-nikolic-portfolio-source'], 'blog-rss') !== false) {
+    }  else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
               header("Content-type: text/plain");
       if(!empty($_POST['what'])){
         if($_POST['what'] == "blog"){
@@ -42,132 +39,132 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
         }
       } else{  }
     exit();
-    } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-14') !== false) {
+    } else  if (strpos($_GET['mnps'], 'javascript-14') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/f3924.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-13') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-13') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/301F942.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-no-12') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-no-12') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/map.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-12') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-12') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/contact-me.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-11') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-11') !== false) {
 
         include "js/js_s/jquery.mb.YTPlayer.php";
         header("Content-type: application/javascript");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-10') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-10') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/jquery.mCustomScrollbar.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-9') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-9') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/jquery.swipebox.php";
-    } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-8') !== false) {
+    } else  if (strpos($_GET['mnps'], 'javascript-8') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/dialogFx.php";
-    } else  if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-7') !== false) {
+    } else  if (strpos($_GET['mnps'], 'javascript-7') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/classie.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-6') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-6') !== false) {
         header("Content-type: application/javascript");
         include "js/js_s/jquery.pagepiling.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-5') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-5') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/bootstrap.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-4') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-4') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/jquery.easings.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-3') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-3') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/jquery.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-2') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-2') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/modernizr.custom.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-rb') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-rb') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/rb/rb.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-mr-m') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-mr-m') !== false) {
         header("Content-type: application/javascript");
 
         include "./Scripts/tmp/1query/m.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-mr-h_old') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-mr-h_old') !== false) {
         header("Content-type: application/javascript");
 
         include "./js/js_s/holder.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-jq-slm') !== false) {
         header("Content-type: application/javascript");
 
         include "./Scripts/tmp/1query/jquery-slim.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-jq-slm3') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-jq-slm3') !== false) {
         header("Content-type: application/javascript");
 
         include "./Scripts/tmp/1query/jquery-3.3.1.slim.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'javascript-in-F_9') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-in-F_9') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/popper.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-9') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-9') !== false) {
         header("Content-type: text/css");
         ob_start(function ($b) {
             return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
         });
         include "css/style1f.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-8') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-8') !== false) {
         header("Content-type: text/css");
         ob_start(function ($b) {
             return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
         });
         include "css/bootstrap.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-7') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-7') !== false) {
         header("Content-type: text/css");
         ob_start(function ($b) {
             return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
         });
         include "css/animate.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-6') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-6') !== false) {
         header("Content-type: text/css");
         ob_start(function ($b) {
             return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
         });
         include "css/swipebox.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-5') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-5') !== false) {
         header("Content-type: text/css");
         include "js/js_s/jquery.pagepiling.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-4') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-4') !== false) {
         header("Content-type: application/javascript");
         include "js/js_s/jquery.mCustomScrollbar.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-in-3') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-in-3') !== false) {
         header("Content-type: text/css");
         include "css/style_album.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-8') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-8') !== false) {
         header("Content-type: text/css");
         include "css/album.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'stylesheet-7') !== false) {
+    } else if (strpos($_GET['mnps'], 'stylesheet-7') !== false) {
         header("Content-type: text/css");
         include "css/modal_ostalo.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'fgae-stylesheet') !== false) {
+    } else if (strpos($_GET['mnps'], 'fgae-stylesheet') !== false) {
         header("Content-type: text/css");
         include "Scripts/tmp/1query/bootstrap.min.css";
     }
     // Scripts/tmp/1query/bootstrap.min.css
     // projct >
-    // ?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-pr-img') !== false) {
+    // ?mnps=image-in-pr-img&image-in-pr-img-s-png=
+    else if (strpos($_GET['mnps'], 'image-in-pr-img') !== false) {
         if (!empty($_GET['image-in-pr-img-s-png'])) {
             header('Content-type: image/png');
             header('Content-disposition: inline; filename="Eronelit background"');
@@ -182,149 +179,157 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
     // projct >
 
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-3') !== false) {
+    else if (strpos($_GET['mnps'], 'image-in-background-3') !== false) {
         header('Content-type: image/jpeg');
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("img/background-3.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-3-2') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-3-2') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("img/background-3-2.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-2') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-2') !== false) {
         header("content-type: image/jpg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("img/background-2.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-6') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-6') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-6.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-4') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-4') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-4.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-5') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-5') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-5.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-7') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-7') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-7.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-8') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-8') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-8.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-background-9') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-background-9') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/background-9.jpg");
     }
     // - -- ---
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-1') !== false) {
+    else if (strpos($_GET['mnps'], 'image-in-prjt-1') !== false) {
         header("Content-type: image/png");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/AI1.png");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-2') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-2') !== false) {
         header("Content-type: image/png");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/dd1.png");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-3') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-3') !== false) {
         header("Content-type: image/png");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/ftpimage.png");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-4') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-4') !== false) {
         header("Content-type: image/png");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/ftpimage.png");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-5') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-5') !== false) {
         header("Content-type: image/png");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/home_experiments.png");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-6') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-6') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/img_fae.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-prjt-7') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-prjt-7') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/galaxy_slider2.jpg");
     }
     // - -- ---
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-3140') !== false) {
+    else if (strpos($_GET['mnps'], 'image-3140') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/slika314.jpg");
-    }  else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-og') !== false) {
+    }  else if (strpos($_GET['mnps'], 'image-og') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./README_files/readme_part1.png");
-    }  else if (strpos($_GET['marko-nikolic-portfolio-source'], 'svg_bckr_mask') !== false) {
+    }   else if (strpos($_GET['mnps'], 'image-mask') !== false) {
+        header("Content-type: text/html"); 
+        include "./css/mask.php";
+    } else if (strpos($_GET['mnps'], 'image-s-mask') !== false) {
+        header("Content-type: image/svg+xml");
+        readfile("./img/svg_bckr_mask.svg");
+    }
+    
+      else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {
         header("Content-type: image/svg+xml");
         // header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/svg_bckr_mask.svg");
     } 
      
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-1') !== false) {
+    else if (strpos($_GET['mnps'], 'image-in-g-background-1') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-1.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-2') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-g-background-2') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-2.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-3') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-g-background-3') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-3.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-4') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-g-background-4') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-4.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-in-g-background-5') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-g-background-5') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-5.jpg");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'image-favicon') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-favicon') !== false) {
         header("Content-type: image/x-icon");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./logo.ico");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "fonts-D3") !== false) {
+    } else if (strpos($_GET['mnps'], "fonts-D3") !== false) {
         header('Content-type: font/woff');
         header('Content-disposition: inline; filename="Eronelit font"');
         readfile("./fonts/D3/DRF.woff");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "fonts-D32") !== false) {
+    } else if (strpos($_GET['mnps'], "fonts-D32") !== false) {
         header('Content-type: font/woff2');
         header('Content-disposition: inline; filename="Eronelit font"');
         readfile("./fonts/D3/DRF2.woff2");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-fai") !== false) {
+    } else if (strpos($_GET['mnps'], "stylesheet-fai") !== false) {
         header("Content-type: text/css");
         include "./fonts/D3/D3.php";
     }
     // - portfolio old
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], "portfolio-v3-old-s-h") !== false) {
+    else if (strpos($_GET['mnps'], "portfolio-v3-old-s-h") !== false) {
         include "./old_portfolio/index.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "portfolio-v3-old-s-s-stylesheet") !== false) {
+    } else if (strpos($_GET['mnps'], "portfolio-v3-old-s-s-stylesheet") !== false) {
         header("Content-type: text/css");
         include "./old_portfolio/css.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "portfolio-v3-old-s-s-script") !== false) {
+    } else if (strpos($_GET['mnps'], "portfolio-v3-old-s-s-script") !== false) {
         header("Content-type: application/javascript");
         include "./old_portfolio/script.php";
     }
     // - portfolio old
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-3") !== false) {
+    else if (strpos($_GET['mnps'], "stylesheet-3") !== false) {
         header("Content-type: text/css");
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-js-fai") !== false) {
+    } else if (strpos($_GET['mnps'], "stylesheet-js-fai") !== false) {
         header("Content-type: application/javascript");
 
         include "./Scripts/js_font_awesommme.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "jquery-2.2.4") !== false) {
+    } else if (strpos($_GET['mnps'], "jquery-2.2.4") !== false) {
         header("Content-type: application/javascript");
         include "./Scripts/jquery-2.2.4.min.php";
     }
     // -- arial font
 
 
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], "arial_font") !== false) {
+    else if (strpos($_GET['mnps'], "arial_font") !== false) {
 
         if (!empty($_GET['FGC_source'])) {
             header('Content-type: application/ttf');
@@ -341,19 +346,19 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
 
         // -
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-gg-fai") !== false) {
+    } else if (strpos($_GET['mnps'], "stylesheet-gg-fai") !== false) {
         header("Content-type: text/css");
         include "./fonts/BX/BX.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "stylesheet-js-fai") !== false) {
+    } else if (strpos($_GET['mnps'], "stylesheet-js-fai") !== false) {
         header("Content-type: application/javascript");
         include "./Scripts/js_font_awesommme.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "js-feaie") !== false) {
+    } else if (strpos($_GET['mnps'], "js-feaie") !== false) {
         header("Content-type: application/javascript");
         include "./visitcard/ff_FA/cv_pdf/html2canvas.min.php";
     }
 
     // - 
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], "FPCARGOsourceG") !== false) {
+    else if (strpos($_GET['mnps'], "FPCARGOsourceG") !== false) {
 
 
         if (!empty($_GET['FPCARGOsourceG0F1'])) {
@@ -366,19 +371,19 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
                 return false;
             }
         }
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "javascript-no-13") !== false) {
+    } else if (strpos($_GET['mnps'], "javascript-no-13") !== false) {
         header("Content-type: application/javascript");
 
         include "./Scripts/jquery.mousewheel.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], "javascript-nfo-13") !== false) {
+    } else if (strpos($_GET['mnps'], "javascript-nfo-13") !== false) {
         header("Content-type: application/javascript");
         include "./visitcard/html2canvas.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_099925') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_099925') !== false) {
 
 
         include "./projct.php";
     } 
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'media_source') !== false) {
+    else if (strpos($_GET['mnps'], 'media_source') !== false) {
         $ppath = "$_SERVER[DOCUMENT_ROOT]/cinematic_3/cinematic_MainMenu.mp4";
         $reqpath = $ppath;
         header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
@@ -388,28 +393,28 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
         exit();
     }
     // - visitcard
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'visitcard') !== false) {
+    else if (strpos($_GET['mnps'], 'visitcard') !== false) {
         include "./visitcard/index1.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_934285_stylesheet') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_934285_stylesheet') !== false) {
         header("Content-type: text/css");
         include "./visitcard/333234/style.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_9342805_javascript') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_9342805_javascript') !== false) {
         header("Content-type: application/javascript");
 
         include "./visitcard/333234/style.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_visitcard_FA032') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_visitcard_FA032') !== false) {
         header("Content-type: application/javascript");
 
         include "./visitcard/html2canvas.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_visitcard_FV032') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_visitcard_FV032') !== false) {
         header("Content-type: application/javascript");
 
         include "./visitcard/html2canvas.min.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_visitcard_FH032') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_visitcard_FH032') !== false) {
         header("Content-type: application/javascript");
 
         include "./visitcard/jquery-3.3.1.min_js.php";
-    } else if (strpos($_GET['marko-nikolic-portfolio-source'], 'source_9342805_generated_qr') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
         header("Content-type: image/svg+xml");
 
         include "./visitcard/qr-portfolio-erone.php";
@@ -425,7 +430,7 @@ if (!empty($_GET['marko-nikolic-portfolio-source'])) {
 
     // - pdf version
 
-    else if (strpos($_GET['marko-nikolic-portfolio-source'], 'pdf-cs1') !== false) {
+    else if (strpos($_GET['mnps'], 'pdf-cs1') !== false) {
         header("Content-type: text/css");
         include "./visitcard/ff_FA/cv_pdf/style.php";
     }

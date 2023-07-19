@@ -39,11 +39,11 @@ ob_start(function ($b) {
 
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex">
-    <link rel="icon" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
-    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
-    <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
+    <link rel="icon" href="<?php echo SITE_HOST; ?>/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
+    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?mnps=stylesheet-fai?<?php echo time(); ?>" />
+    <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?mnps=stylesheet-js-fai?<?php echo time(); ?>"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=pdf-cs1?<?php echo time(); ?>" />
+    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?mnps=pdf-cs1?<?php echo time(); ?>" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@markoni62595164" />
@@ -63,9 +63,9 @@ ob_start(function ($b) {
     <?php /*  
  <script type="text/javascript" src="<?php echo SITE_HOST;?>/?pages=vc-js-5"></script>
     <script type="text/javascript" src="<?php echo SITE_HOST;?>/?pages=vc-js-4"></script>
-    <script src="<?php echo SITE_HOST;?>/?marko-nikolic-portfolio-source=javascript-nfo-13"></script>
+    <script src="<?php echo SITE_HOST;?>/?mnps=javascript-nfo-13"></script>
     */ ?>
-    <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=js-feaie?<?php echo time(); ?>"></script>
+    <script type="text/javascript" src="<?php echo SITE_HOST; ?>/?mnps=js-feaie?<?php echo time(); ?>"></script>
     <style type="text/css">  div#left_coll {
     width: 280px;
        min-width: 280px;
@@ -87,7 +87,7 @@ ob_start(function ($b) {
                         <div id="ff"></div>
                         <div id="ff2"></div>
                     </div>
-                    <img id="cv_profile_img" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-3140" />
+                    <img id="cv_profile_img" src="<?php echo SITE_HOST; ?>/?mnps=image-3140" />
                     <p class="main_label">Contact</p>
                     <br>
                     <span class="separator seperator_white"></span>
@@ -224,7 +224,7 @@ ob_start(function ($b) {
             <?php /* <div id="box_back" class="box2 box_div_id">
                 <h1>Marko Nikolić</h1>
                 <span class="separator"></span>
-                 <img id="hrcod" src="<?php echo SITE_HOST;?>/?marko-nikolic-portfolio-source=source_9342805_generated_qr?<?php echo time(); ?>">
+                 <img id="hrcod" src="<?php echo SITE_HOST;?>/?mnps=source_9342805_generated_qr?<?php echo time(); ?>">
                 <div id="cont1">
                     <p id="info_email"><i class="fas fa-map-marker-alt"></i> Serbia/Belgrade/Surčin</p>
                     <p id="info_email"><i class="fas fa-globe"></i> portfolio.eronelit.com</p>
@@ -326,7 +326,7 @@ ob_start(function ($b) {
             var context = canvas.getContext('2d');
 
             base_image = new Image();
-            base_image.src = '<?php echo "./?marko-nikolic-portfolio-source=image-in-g-background-5"; ?>';
+            base_image.src = '<?php echo "./?mnps=image-in-g-background-5"; ?>';
             context.drawImage(base_image, 0, 0);
 
             // only jpeg is supported by jsPDF

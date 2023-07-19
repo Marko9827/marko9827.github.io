@@ -16,7 +16,7 @@ exit();
 <head>
   <meta charset="utf-8">
   <title>Marko Nikolić - Portfolio</title>
-  <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
+  <link rel="icon" href="./?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
   <meta name="description" content="This website for my PortFolio. ">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="author" content="Marko Nikolic">
@@ -26,16 +26,16 @@ exit();
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <?php /*<link rel="stylesheet" href="css/fafa/css/materialdesingicons.css"> */ ?>
-  <script type="text/javascript" src="./?marko-nikolic-portfolio-source=javascript-2?<?php echo time(); ?>"></script>
-  <link rel="stylesheet" id="template_css" href="./?marko-nikolic-portfolio-source=stylesheet-9?<?php echo time(); ?>">
+  <script type="text/javascript" src="./?mnps=javascript-2?<?php echo time(); ?>"></script>
+  <link rel="stylesheet" id="template_css" href="./?mnps=stylesheet-9?<?php echo time(); ?>">
   <?php /* <link rel="stylesheet" href="fonts/D3/D3.css" /> *f/ ?>
   <link rel="stylesheet" href="./Content/node_modules/@mdi/font/css/materialdesignicons.css" >
     */ ?>
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>">
-  <script type="text/javascript" src="./?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
+  <link rel="stylesheet" href="./?mnps=stylesheet-fai?<?php echo time(); ?>">
+  <script type="text/javascript" src="./?mnps=stylesheet-js-fai?<?php echo time(); ?>"></script>
 
-  <?php /* <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-8?<?php echo time(); ?>"> */ ?>
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-7?<?php echo time(); ?>">
+  <?php /* <link rel="stylesheet" href="./?mnps=stylesheet-8?<?php echo time(); ?>"> */ ?>
+  <link rel="stylesheet" href="./?mnps=stylesheet-7?<?php echo time(); ?>">
   <style>
     body {
       overflow: hidden;
@@ -456,9 +456,9 @@ exit();
 
 </div>--> */ ?>
       <div class="global-overlay">
-        <?php /*  <iframe id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="/* margin-top:50px; *f/width:100%;height:100%;/* bottom: initial; *f/border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
-     *f/ ?> <object data="./?marko-nikolic-portfolio-source=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;">
-          <embed id="F_slider_projcts" src="./?marko-nikolic-portfolio-source=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"> </embed>
+        <?php /*  <iframe id="F_slider_projcts" src="./?mnps=source_099925" style="/* margin-top:50px; *f/width:100%;height:100%;/* bottom: initial; *f/border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"></iframe>
+     *f/ ?> <object data="./?mnps=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;">
+          <embed id="F_slider_projcts" src="./?mnps=source_099925" style="width:100%;height:100%; border:0px;position: absolute;left: 0px;right: 0px;bottom: 0px;top: 50px;"> </embed>
           Error: Embedded data could not be displayed.
         </object>  */ ?>
       </div>
@@ -472,7 +472,7 @@ exit();
 
       <a href="./?pages=cv-pdf" title="Preview my CV page. URL [ <?php echo $_SERVER['SERVER_NAME'] . "?pages=cv-pdf ]"; ?>" target="_blank">
         <div id="img_profile_portfolio_cv_pdff">
-          <img src="./?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
+          <img src="./?mnps=image-3140?<?php echo time(); ?>" alt="loading..." />
         </div>
       </a>
 
@@ -485,7 +485,7 @@ exit();
       
       <div id="Slika">
         <div id="slika1">
-          <img src="./?marko-nikolic-portfolio-source=image-3140?<?php echo time(); ?>" alt="loading..." />
+          <img src="./?mnps=image-3140?<?php echo time(); ?>" alt="loading..." />
         </div>
       </div> */ ?>
       <?php    /*     <style>
@@ -989,20 +989,20 @@ alt="Image" class="img-responsive"></a>
 
 
 
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-3?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-4?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-5?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-6?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-7?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-3?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-4?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-5?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-6?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-7?<?php echo time(); ?>"></script>
   <?php /*
-     <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-8?<?php echo time(); ?>"></script>
+     <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-8?<?php echo time(); ?>"></script>
   */ ?>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-9?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-10?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-12?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-13?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-14?<?php echo time(); ?>"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-mr-m?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-9?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-10?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-12?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-13?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-14?<?php echo time(); ?>"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-mr-m?<?php echo time(); ?>"></script>
   <script type="text/javascript" data-cfasync="false">
     // static -->
 
@@ -1012,7 +1012,7 @@ alt="Image" class="img-responsive"></a>
 
     // <-- static
   </script>
-  <?php /* <script data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-11?<?php echo time(); ?>"></script> */ ?>
+  <?php /* <script data-cfasync="false" src="./?mnps=javascript-11?<?php echo time(); ?>"></script> */ ?>
   <?php /*          -->  <input style="display: none !important;" type="text" id="input" placeholder="type whatever" value="Marko Nikolić" title="type and press enter" />
 
  
@@ -1023,7 +1023,7 @@ alt="Image" class="img-responsive"></a>
 
 
 
-   <script   src="./?marko-nikolic-portfolio-source=javascript-15?<?php echo time(); ?>"></script>
+   <script   src="./?mnps=javascript-15?<?php echo time(); ?>"></script>
   <script type="text/javascript" src="js/js_s/map.php?<?php echo time(); ?>" async></script> *f/ ?>
 
 

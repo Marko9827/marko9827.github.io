@@ -282,7 +282,7 @@ function KP1() {
 function menu_theme_red()
 {
     opts.colors = ['rgba(218, 50, 32,alp)', 'rgba(107, 107, 107,alp)', 'rgba(255,255,255,alp)'];
-    document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=red";
+    document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=red";
 
     var element_themes = document.getElementById("themes_html");
     element_themes.classList.add("red");
@@ -300,7 +300,7 @@ function menu_theme_green()
     element_themes.classList.add("green");
     element_themes.classList.remove("blue");
 
-    document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=green";
+    document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=green";
  
 
 }
@@ -321,6 +321,6 @@ function menu_theme_blue(){
     element_themes.classList.add("blue");
     opts.colors = ['rgba(0, 134, 196,alp)', 'rgba(51, 122, 183,alp)', 'rgba(255,255,255,alp)'];
 
-    document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=blue";
+    document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=blue";
 
 }

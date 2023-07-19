@@ -10,13 +10,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>">
+  <link rel="icon" href="./?mnps=image-favicon?<?php echo time(); ?>">
 
   <title>143</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap core CSS -->
-  <link href="./?marko-nikolic-portfolio-source=fgae-stylesheet?<?php echo time(); ?>" rel="stylesheet">
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
+  <link href="./?mnps=fgae-stylesheet?<?php echo time(); ?>" rel="stylesheet">
+  <link rel="stylesheet" href="./?mnps=stylesheet-fai?<?php echo time(); ?>" />
   <?php /*
   <!-- Custom styles for this template -->
   <link href="Scripts/tmp/1query/album.css" rel="stylesheet">
@@ -283,7 +283,7 @@ window.addEventListener('resize', function () {
 
     function menu_theme_red() {
       opts.colors = ['rgba(218, 50, 32,alp)', 'rgba(107, 107, 107,alp)', 'rgba(255,255,255,alp)'];
-      document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=red";
+      document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=red";
 
       var element_themes = document.getElementById("themes_html");
       element_themes.classList.add("red");
@@ -300,7 +300,7 @@ window.addEventListener('resize', function () {
       element_themes.classList.add("green");
       element_themes.classList.remove("blue");
 
-      document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=green";
+      document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=green";
 
 
     }
@@ -321,14 +321,14 @@ window.addEventListener('resize', function () {
       element_themes.classList.add("blue");
       opts.colors = ['rgba(0, 134, 196,alp)', 'rgba(51, 122, 183,alp)', 'rgba(255,255,255,alp)'];
 
-      document.getElementById("F_slider_projcts").src = "./?marko-nikolic-portfolio-source=source_099925&theme_source=blue";
+      document.getElementById("F_slider_projcts").src = "./?mnps=source_099925&theme_source=blue";
 
     }
   </script>
 
 
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-8?<?php echo time(); ?>">
-  <link rel="stylesheet" href="./?marko-nikolic-portfolio-source=stylesheet-3?<?php echo time(); ?>">
+  <link rel="stylesheet" href="./?mnps=stylesheet-8?<?php echo time(); ?>">
+  <link rel="stylesheet" href="./?mnps=stylesheet-3?<?php echo time(); ?>">
 </head>
 
 <body onkeydown="return false;" onkeypress="return false;" onkeyup="return false;">
@@ -404,7 +404,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-jpg=img_fae" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-jpg=img_fae" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">When Eronel SDK connects to the brain ... All information about the status of an
                   organism is stored for analysis in Eronel JGA where the...
@@ -463,7 +463,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-jpg=galaxy_slider2" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-jpg=galaxy_slider2" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
                   countless animations that provide space experience!
@@ -520,7 +520,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=dd1" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-png=dd1" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">
                   Eronelit OS is a commercial software that enables web site management through a presentation.
@@ -577,7 +577,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=AI1" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-png=AI1" alt="Card image cap">
               <div class="card-body">
                 <p class="card-text">Artificial intelligence (AI), sometimes called machine intelligence, is
                   intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans
@@ -648,7 +648,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=ftpimage" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-png=ftpimage" alt="Card image cap">
               <div class="card-body">
                 Eronelit FTP | FTP O/nline
                 <br>
@@ -713,7 +713,7 @@ window.addEventListener('resize', function () {
 
           <div class="col-md-4 Csharp">
             <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="./?marko-nikolic-portfolio-source=image-in-pr-img&image-in-pr-img-s-png=home_experiments" alt="Card image cap">
+              <img class="card-img-top" src="./?mnps=image-in-pr-img&image-in-pr-img-s-png=home_experiments" alt="Card image cap">
               <div class="card-body">
                 Eronelit Experiments
                 <br>
@@ -815,19 +815,19 @@ window.addEventListener('resize', function () {
       }
     };
   </script>
-  <script  data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-3?<?php echo time(); ?>"></script>
+  <script  data-cfasync="false" src="./?mnps=javascript-3?<?php echo time(); ?>"></script>
   <!-- Bootstrap core JavaScript
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script type="text/javascript" <?php /* integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"*/ ?> data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-jq-slm3"></script>
+  <script type="text/javascript" <?php /* integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"*/ ?> data-cfasync="false" src="./?mnps=javascript-jq-slm3"></script>
   <script type="text/javascript">
-    window.jQuery || document.write('<script  type="text/javascript"  data-cfasync="false"  src="./?marko-nikolic-portfolio-source=javascript-jq-slm"><\/script>')
+    window.jQuery || document.write('<script  type="text/javascript"  data-cfasync="false"  src="./?mnps=javascript-jq-slm"><\/script>')
   </script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-in-F_9"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-5"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-mr-h_old"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-mr-m"></script>
-  <script type="text/javascript" data-cfasync="false" src="./?marko-nikolic-portfolio-source=javascript-14"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-in-F_9"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-5"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-mr-h_old"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-mr-m"></script>
+  <script type="text/javascript" data-cfasync="false" src="./?mnps=javascript-14"></script>
 
 
 

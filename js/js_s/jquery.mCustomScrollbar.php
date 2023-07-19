@@ -12,7 +12,7 @@
 
      <?php /*    "cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.min.js";
  
-  "/*/ ?>"?marko-nikolic-portfolio-source=javascript-no-13";
+  "/*/ ?>"?mnps=javascript-no-13";
         t ||
       (o
         ? require("jquery-mousewheel")($)

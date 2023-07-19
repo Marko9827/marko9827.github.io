@@ -6,7 +6,7 @@ if (!empty($_GET['q'])) { ?>
 <html lang="en">
 
 <head>
-  <link rel="icon" href="./?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
+  <link rel="icon" href="./?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
 
   <meta charset="UTF-8">
   <title>10|-|01</title>

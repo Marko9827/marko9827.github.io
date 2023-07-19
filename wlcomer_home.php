@@ -62,7 +62,7 @@ $rand = time();
                 echo "Marko Nikolić - Portfolio";
             }
             ?></title>
-    <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
+    <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
     <meta name="description" content="This website for my PortFolio. ">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
     <meta name="author" content="Marko Nikolic">
@@ -82,10 +82,10 @@ $rand = time();
     <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
     <meta property="og:title" content="Marko Nikolić - Portfolio" />
     <meta property="og:description" content="This website for my PortFolio." />
-    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1024">
@@ -121,7 +121,7 @@ $rand = time();
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>" src="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=welcomer-pl" type="text/javascript"></script>
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo SITE_HOST; ?>/?mnps=welcomer-pl" type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
     <?php if(!empty($_GET['tp'])){ 
         if($_GET['tp'] == "m"){
@@ -308,6 +308,7 @@ $rand = time();
             </btns_r>
 
         </div_header>
+        <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
         <box_h></box_h>
         <grider_viewer class="gridsH grids">
 
@@ -365,7 +366,7 @@ $rand = time();
                 </div>
             </page>
         </pages> */ ?>
-        <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);" onmouseout="welcomer.cursor_hide(this)"></iframe>
+        <iframe title="Ignoring me " src="" onload="try{ welcomer.pgloader('yes'); } catch(v){}" onmousemove="try{ welcomer.cursor_hide(this); } catch(v){}" onmouseout="try{ welcomer.cursor_hide(this); } catch(v){}"></iframe>
         <div_not>
             <div_panel>
                 <span></span>
@@ -403,7 +404,7 @@ $rand = time();
         <info_msg onclick="$(this).removeClass('info_box_active');">
             <dv_h></dv_h>
             <info_div>
-                <img src="/favicon.svg" title="aefaef" />
+                <img src="/favicon.svg" alt="for Testing" title="aefaef" />
                 <h4></h4>
             </info_div>
             <p></p>

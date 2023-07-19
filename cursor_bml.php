@@ -29,4 +29,4 @@
         color: white;
     }
 </style>
-<script src="/?marko-nikolic-portfolio-source=welcomer-pl"></script>
+<script src="/?mnps=welcomer-pl"></script>

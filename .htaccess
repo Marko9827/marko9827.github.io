@@ -2057,3 +2057,7 @@ Deny from all
 <ifModule mod_headers.c>
 Header always set Content-Security-Policy "upgrade-insecure-requests;"
 </IfModule>
+
+Header unset Expect-CT
+
+Header set Access-Control-Allow-Methods "GET" 

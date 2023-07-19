@@ -37,11 +37,11 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
     <meta charset="utf-8">
     <meta name="robots" content="noindex">
     <meta name="googlebot" content="noindex">
-    <link rel="icon" href="/?marko-nikolic-portfolio-source=image-favicon?<?php echo time(); ?>" type="image/ico" />
-    <link rel="stylesheet" href="/?marko-nikolic-portfolio-source=stylesheet-fai?<?php echo time(); ?>" />
-    <script type="text/javascript" src="/?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
+    <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
+    <link rel="stylesheet" href="/?mnps=stylesheet-fai?<?php echo time(); ?>" />
+    <script type="text/javascript" src="/?mnps=stylesheet-js-fai?<?php echo time(); ?>"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-    <link rel="stylesheet" href="/?marko-nikolic-portfolio-source=source_934285_stylesheet?<?php echo time(); ?>" />
+    <link rel="stylesheet" href="/?mnps=source_934285_stylesheet?<?php echo time(); ?>" />
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js" as="script">
     <script src="https://cdn.eronelit.com/node_modules/jquery/dist/jquery.min.js"></script>
     <meta property="og:type" content="website" />
@@ -64,7 +64,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
     <?php /*  
  <script type="text/javascript" src="/?pages=vc-js-5"></script>
     <script type="text/javascript" src="/?pages=vc-js-4"></script>
-    <script src="/?marko-nikolic-portfolio-source=javascript-nfo-13"></script>
+    <script src="/?mnps=javascript-nfo-13"></script>
     */ ?>
     <style type="text/css">
         ::-webkit-scrollbar {
@@ -95,7 +95,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
             <div id="box_back" class="box2 box_div_id">
                 <h1>Marko Nikolić</h1>
                 <span class="separator"></span>
-                <img id="hrcod" src="/?marko-nikolic-portfolio-source=source_9342805_generated_qr?<?php echo time(); ?>">
+                <img id="hrcod" src="/?mnps=source_9342805_generated_qr?<?php echo time(); ?>">
                 <div id="cont1">
                     <p id="info_email"><i class="fas fa-map-marker-alt"></i> Serbia/Belgrade/Surčin</p>
                     <p id="info_email"><i class="fas fa-globe"></i> portfolio.eronelit.com</p>
@@ -203,7 +203,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
             var context = canvas.getContext('2d');
 
             base_image = new Image();
-            base_image.src = '<?php echo "./?marko-nikolic-portfolio-source=image-in-g-background-5"; ?>';
+            base_image.src = '<?php echo "./?mnps=image-in-g-background-5"; ?>';
             context.drawImage(base_image, 0, 0);
 
             // only jpeg is supported by jsPDF

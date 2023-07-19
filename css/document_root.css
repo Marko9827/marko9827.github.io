@@ -240,3 +240,32 @@
 hh_anim_start spjin #logo_backscr_img{
     background: transparent !important;
 }
+
+.iframe_mask{
+    
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    z-index: 1;
+    -webkit-mask-image: url(/?mnps=image-s-mask);
+    mask-image: url(/?mnps=image-s-mask);
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    mask-size: cover;
+    -webkit-mask-size: cover;
+    pointer-events: none !important;
+}
+#clavs grider_viewer {
+    z-index: 1;
+    background: transparent !important;
+}
+
+#clavs{
+    background: white !important;
+}

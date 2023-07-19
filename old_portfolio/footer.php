@@ -1,7 +1,7 @@
 <footer>
-    <script type="text/javascript" src="./?marko-nikolic-portfolio-source=portfolio-v3-old-s-s-script?<?php echo time(); ?>"></script>
-    <script type="text/javascript" src="./?marko-nikolic-portfolio-source=stylesheet-js-fai?<?php echo time(); ?>"></script>
-    <script type="text/javascript" src="./?marko-nikolic-portfolio-source=jquery-2.2.4?<?php echo time(); ?>"></script>
+    <script type="text/javascript" src="./?mnps=portfolio-v3-old-s-s-script?<?php echo time(); ?>"></script>
+    <script type="text/javascript" src="./?mnps=stylesheet-js-fai?<?php echo time(); ?>"></script>
+    <script type="text/javascript" src="./?mnps=jquery-2.2.4?<?php echo time(); ?>"></script>
     <script id="rendered-js">
         $(function() {
             $(".accordion > .accordion-item.is-active").children(".accordion-panel").slideDown();

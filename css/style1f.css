@@ -1,8 +1,8 @@
- @import url(./?marko-nikolic-portfolio-source=stylesheet-in-8);
- @import url(./?marko-nikolic-portfolio-source=stylesheet-in-7);
- @import url(./?marko-nikolic-portfolio-source=stylesheet-in-6);
- @import url(./?marko-nikolic-portfolio-source=stylesheet-in-4);
- @import url(./?marko-nikolic-portfolio-source=stylesheet-in-5);
+ @import url(./?mnps=stylesheet-in-8);
+ @import url(./?mnps=stylesheet-in-7);
+ @import url(./?mnps=stylesheet-in-6);
+ @import url(./?mnps=stylesheet-in-4);
+ @import url(./?mnps=stylesheet-in-5);
  @import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:300,400,600,700|Lora:400,400i,700,700i|Lato:400,300,700|Raleway:300,400,500,700");
  :root {
      --gold-color: #DAA520;
@@ -1519,19 +1519,19 @@
  }
 
  .section#section3 .carousel .carousel-inner .item:nth-child(2) {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-3") center;
+     background: url("./?mnps=image-in-background-3") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  .section#section3 .carousel .carousel-inner .item:nth-child(3) {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-2") center;
+     background: url("./?mnps=image-in-background-2") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  .section#section3 .carousel .carousel-inner .item:nth-child(4) {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-3-2") center;
+     background: url("./?mnps=image-in-background-3-2") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
@@ -1641,25 +1641,25 @@
  }
 
  .section .vertical-gallery:nth-child(1) .vertical-photo {
-     background: url("./?marko-nikolic-portfolio-source=image-in-g-background-1") center;
+     background: url("./?mnps=image-in-g-background-1") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  .section .vertical-gallery:nth-child(2) .vertical-photo {
-     background: url("./?marko-nikolic-portfolio-source=image-in-g-background-2") center;
+     background: url("./?mnps=image-in-g-background-2") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  .section .vertical-gallery:nth-child(3) .vertical-photo {
-     background: url("./?marko-nikolic-portfolio-source=image-in-g-background-3") center;
+     background: url("./?mnps=image-in-g-background-3") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  .section .vertical-gallery:nth-child(4) .vertical-photo {
-     background: url("./?marko-nikolic-portfolio-source=image-in-g-background-4") center;
+     background: url("./?mnps=image-in-g-background-4") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
@@ -1710,37 +1710,37 @@
  }
 
  #section2, #menu li.main-nav:nth-child(2)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-2") center;
+     background: url("./?mnps=image-in-background-2") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #menu li.main-nav:nth-child(3)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-3") center;
+     background: url("./?mnps=image-in-background-3") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #section4, #menu li.main-nav:nth-child(4)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-4") center;
+     background: url("./?mnps=image-in-background-4") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #menu li.main-nav:nth-child(5)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-5") center;
+     background: url("./?mnps=image-in-background-5") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #section6, #menu li.main-nav:nth-child(6)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-6") center;
+     background: url("./?mnps=image-in-background-6") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #menu li.main-nav:nth-child(7)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-7") center;
+     background: url("./?mnps=image-in-background-7") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
@@ -1750,13 +1750,13 @@
  }
 
  #section8, #menu li.main-nav:nth-child(8)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-8") center;
+     background: url("./?mnps=image-in-background-8") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
 
  #section9, #menu li.main-nav:nth-child(9)::after {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-9") center;
+     background: url("./?mnps=image-in-background-9") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }
@@ -2308,7 +2308,7 @@
  }
 
  .youtube-background-mobile {
-     background: url("./?marko-nikolic-portfolio-source=image-in-background-7") center;
+     background: url("./?mnps=image-in-background-7") center;
      background-size: cover;
      image-rendering: crisp-edges;
  }

@@ -82,10 +82,10 @@ $rand = time();
     <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
     <meta property="og:title" content="Marko Nikolić - Portfolio" />
     <meta property="og:description" content="This website for my PortFolio." />
-    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
-    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
-    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
-    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
+    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?marko-nikolic-portfolio-source=image-og&v=<?php echo time(); ?>" />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1024">
@@ -213,6 +213,7 @@ $rand = time();
                     </rect>
                 </svg>
                 <br class="hide_noy"><br class="hide_noy">
+                <h3>Marko Nikolić</h3>
                 <div class="box_shadow_txtf  box_shadow"><span>Full stack Developer</span><sp>-</sp><span>Scientist theories/news</span><sp>-</sp><span>Writing books</span><sp>-</sp><span>Photographer</span></div>
                 <br class="hide_noy"><br>
                 <arr_bundle>

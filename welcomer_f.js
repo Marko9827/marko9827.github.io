@@ -112,6 +112,18 @@ class Welcomer {
             beta: false
         },
         {
+            title: "Gallery - Photos",
+            descr: "My photos gallery | Comming soon",
+            icon: "bi bi-images",
+            href: {
+                f_u: "",
+                f: false,
+                target: "blank"
+            },
+            num:37,
+            beta: true
+        },
+        {
             title: "My Telegram channel",
             descr: "Look at my Deviantart profile",
             icon: "fab fa-telegram",
@@ -134,6 +146,7 @@ class Welcomer {
             span = document.createElement("span"),
             nnum = document.createElement("div");  
             div.onclick = function () {
+                if(!v.beta){
                 if (v.href.f) {
                     eval(`${v.href.f_u}`);
                 } else {
@@ -147,6 +160,7 @@ class Welcomer {
                         a.click();
                     }
                 }
+            }
             };
              
             div.onmouseover = function () {
@@ -163,6 +177,11 @@ class Welcomer {
             div.appendChild(i);
             if(v.num > 0){
                 nnum.innerHTML = v.num;
+                nnum.setAttribute("class","nnum");
+                div.appendChild(nnum);   
+            }
+            if(v.beta){
+                nnum.innerHTML = "Beta";
                 nnum.setAttribute("class","nnum");
                 div.appendChild(nnum);   
             }

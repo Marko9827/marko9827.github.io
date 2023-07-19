@@ -75,17 +75,20 @@ ob_start(function ($b) {
 <script type="text/javascript">
     
 
-    onload_img = function(d){
+    onload_img = async function (d) {
 
 const img = new Image();
 img.src = d.getAttribute("data-load-src");
-img.onload = function(){
-    d.src = img.src; 
+img.onload = async function () {
+    const H = URL.createObjectURL(await fetch(img.src).then(function(v){ return v.blob() }));
+    d.src = H;
     d.removeAttribute("style");
 
     d.removeAttribute("onload");
+    
 }
 }
+
 </script>
 </head>
 

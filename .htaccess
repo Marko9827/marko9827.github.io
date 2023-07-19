@@ -13,6 +13,14 @@ Options All -Indexes
     order allow,deny
     deny from all
 </Files>
+<Files *.png>
+    order allow,deny
+    deny from all
+</Files>
+<Files *.jpg>
+    order allow,deny
+    deny from all
+</Files>
 <Files *.mp4>
     order allow,deny
     deny from all

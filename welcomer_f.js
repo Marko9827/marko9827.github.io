@@ -12,7 +12,7 @@ class Welcomer {
     Dots_color = 195;
     #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
     #energyAnim = true;
-    domain = window.location.origin + "/rdlv/";
+    domain = window.location.origin + "/?mnps=dbe&q=";
     div_not_i = 0;
     #cards_links = [
         {
@@ -36,7 +36,7 @@ class Welcomer {
                 f: true,
                 target: ""
             },
-            num:12,
+            num: 12,
             beta: false
         },
         {
@@ -48,7 +48,7 @@ class Welcomer {
                 f: true,
                 target: ""
             },
-            num:0,
+            num: 0,
             beta: false
         },
         {
@@ -60,7 +60,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:323,
+            num: 323,
             beta: false
         },
         {
@@ -72,7 +72,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:0,
+            num: 0,
             beta: false
         },
         {
@@ -84,7 +84,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:172,
+            num: 172,
             beta: false
         },
         {
@@ -96,7 +96,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:2249,
+            num: 2249,
             beta: false
         },
         {
@@ -108,7 +108,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:37,
+            num: 37,
             beta: false
         },
         {
@@ -120,7 +120,7 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:37,
+            num: 37,
             beta: true
         },
         {
@@ -132,37 +132,37 @@ class Welcomer {
                 f: false,
                 target: "blank"
             },
-            num:0,
+            num: 0,
             beta: false
         }
     ];
     generateGrid() {
         var buttons_box_shadow = document.querySelector("div#buttons");
-           
-         
+
+
         this.#cards_links.forEach(function (v) {
-          const div = document.createElement("div"),
-            i = document.createElement("i"),
-            span = document.createElement("span"),
-            nnum = document.createElement("div");  
+            const div = document.createElement("div"),
+                i = document.createElement("i"),
+                span = document.createElement("span"),
+                nnum = document.createElement("div");
             div.onclick = function () {
-                if(!v.beta){
-                if (v.href.f) {
-                    eval(`${v.href.f_u}`);
-                } else {
-                    if (v.href.target = "self") {
-                        window.location.href = `${v.href.f_u}`;
-                    }
-                    if (v.href.target = "blank") {
-                        var a = document.createElement("a");
-                        a.href = v.href.f_u;
-                        a.target = "_blank";
-                        a.click();
+                if (!v.beta) {
+                    if (v.href.f) {
+                        eval(`${v.href.f_u}`);
+                    } else {
+                        if (v.href.target = "self") {
+                            window.location.href = `${v.href.f_u}`;
+                        }
+                        if (v.href.target = "blank") {
+                            var a = document.createElement("a");
+                            a.href = v.href.f_u;
+                            a.target = "_blank";
+                            a.click();
+                        }
                     }
                 }
-            }
             };
-             
+
             div.onmouseover = function () {
                 welcomer.bell_over(div);
             }
@@ -175,19 +175,19 @@ class Welcomer {
             span.classList.add("href_a_span");
             span.innerHTML = v.title;
             div.appendChild(i);
-            if(v.num > 0){
+            if (v.num > 0) {
                 nnum.innerHTML = v.num;
-                nnum.setAttribute("class","nnum");
-                div.appendChild(nnum);   
+                nnum.setAttribute("class", "nnum");
+                div.appendChild(nnum);
             }
-            if(v.beta){
+            if (v.beta) {
                 nnum.innerHTML = "Beta";
-                nnum.setAttribute("class","nnum");
-                div.appendChild(nnum);   
+                nnum.setAttribute("class", "nnum");
+                div.appendChild(nnum);
             }
             div.appendChild(span);
             buttons_box_shadow.appendChild(div);
-        }); 
+        });
     }
     #projects = [
         {
@@ -426,7 +426,7 @@ class Welcomer {
         $(ljoader).hide();
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-        $("iframe").hide(); 
+        $("iframe").hide();
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
@@ -516,6 +516,7 @@ class Welcomer {
     loaded_img(aer, id = 0) {
 
         $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
+        this.toblob(aer);
         $(aer).removeAttr("onload");
     };
     start(j) {
@@ -605,8 +606,8 @@ class Welcomer {
             $("body").removeAttr("data-hmm");
             welcomer.projectsload();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
-                    $("iframe.iframe_mask").removeAttr("style");
-                    $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+            $("iframe.iframe_mask").removeAttr("style");
+            $("div_header span").html("Marko Nikolić - Portfolio > Projects");
 
         } else if (url.includes("blog.eronelit.com")) {
             $(ljoader).hide();
@@ -628,8 +629,8 @@ class Welcomer {
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-           $("#clavs grider_viewer").hide();
-        $("iframe.iframe_mask").hide();
+            $("#clavs grider_viewer").hide();
+            $("iframe.iframe_mask").hide();
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
@@ -888,6 +889,15 @@ class Welcomer {
 
                 </project>`);
         welcomer.div_not_i++;
+    }
+    toblob(d) { 
+        const img = new Image();
+        img.src = d.getAttribute("src");
+        img.onload = async function () {
+         const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
+         d.src = H;
+         d.setAttribute("data-zoom-image",H);
+        }
     }
     compTxt(s) {
         var div_not_i = 0;

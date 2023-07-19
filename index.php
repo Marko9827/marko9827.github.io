@@ -414,7 +414,21 @@ if (!empty($_GET['mnps'])) {
         header("Content-type: application/javascript");
 
         include "./visitcard/jquery-3.3.1.min_js.php";
-    } else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
+    } 
+    
+    else if ($_GET['mnps'] == 'dbe') {
+        if (!empty($_GET['q'])) {
+            if (strpos($_GET['q'], ".png") !== false) {
+                header("Content-type: image/png");
+            } elseif (strpos($_GET['q'], ".svg") !== false) {
+                header("Content-type: image/svg+xml");
+            } else {
+            }
+            readfile("$_SERVER[DOCUMENT_ROOT]/rdlv/$_GET[q]");
+        }
+    } 
+    
+    else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
         header("Content-type: image/svg+xml");
 
         include "./visitcard/qr-portfolio-erone.php";

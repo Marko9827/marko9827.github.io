@@ -412,6 +412,8 @@ class Welcomer {
             }
         })
     }
+    loader_svg = "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=";
+
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -424,8 +426,7 @@ class Welcomer {
         $(ljoader).hide();
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-        $("iframe").hide();
-        $("iframe.iframe_mask").show();
+        $("iframe").hide(); 
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
@@ -596,7 +597,7 @@ class Welcomer {
             $(Vjideo_sjpinner).hide();
 
 
-            $("div_header span").html($("iframe").contents().find("title").html());
+            $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
 
@@ -604,6 +605,8 @@ class Welcomer {
             $("body").removeAttr("data-hmm");
             welcomer.projectsload();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
+                    $("iframe.iframe_mask").removeAttr("style");
+                    $("div_header span").html("Marko Nikolić - Portfolio > Projects");
 
         } else if (url.includes("blog.eronelit.com")) {
             $(ljoader).hide();
@@ -615,16 +618,18 @@ class Welcomer {
 
             $("div_header span").html("Marko Nikolić - Portfolio > Blog");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe").attr("src", url);
-            $("iframe").attr("data-temp-url", url);
+            $("iframe:not(.iframe_mask)").attr("src", url);
+            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("div_header").attr("data-url", window.location.origin + "/?p=blog");
 
 
         } else {
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe").attr("src", url);
-            $("iframe").attr("data-temp-url", url);
+            $("iframe:not(.iframe_mask)").attr("src", url);
+            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
+           $("#clavs grider_viewer").hide();
+        $("iframe.iframe_mask").hide();
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
@@ -632,6 +637,11 @@ class Welcomer {
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
         }
+        /*
+        if(url.includes("cv-pdf")){
+            $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
+        }
+        */
     }
 
     pgloaderH(url = "") {
@@ -678,7 +688,7 @@ class Welcomer {
                 if (this.status === 200) {
                     // this.response is a Blob, because we set responseType above
                     var data_url = URL.createObjectURL(this.response);
-                    $("iframe").attr("src", data_url);
+                    $("iframe:not(.iframe_mask)").attr("src", data_url);
                 } else {
                     console.error('no pdf :(');
                 }
@@ -697,7 +707,7 @@ class Welcomer {
         $("div_header span").html("Loading...");
         $("div_header").removeClass("ld_completeld_complete");
         if (t) {
-            $("iframe").attr("src", $("iframe").attr("data-temp-url"));
+            $("iframe:not(.iframe_mask)").attr("src", $("iframe:not(.iframe_mask)").attr("data-temp-url"));
         }
         $("div_not").removeAttr("style");
 
@@ -711,8 +721,8 @@ class Welcomer {
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
             setTimeout(function () {
-                $("iframe").attr("src", "");
-                $("iframe").removeAttr("style");
+                $("iframe:not(.iframe_mask)").attr("src", "");
+                $("iframe:not(.iframe_mask)").removeAttr("style");
             }, 1000);
         });
     };
@@ -815,7 +825,7 @@ class Welcomer {
             success: function (res) {
                 blob = new Blob([res], { type: "text/html" });
                 objectURL = URL.createObjectURL(blob);
-                $("iframe").attr("src", objectURL);
+                $("iframe:not(.iframe_mask)").attr("src", objectURL);
             },
             async: false
         });

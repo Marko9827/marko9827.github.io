@@ -366,7 +366,7 @@ $rand = time();
                 </div>
             </page>
         </pages> */ ?>
-        <iframe title="Ignoring me " src="" onload="try{ welcomer.pgloader('yes'); } catch(v){}" onmousemove="try{ welcomer.cursor_hide(this); } catch(v){}" onmouseout="try{ welcomer.cursor_hide(this); } catch(v){}"></iframe>
+        <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);" onmouseout="try{ welcomer.cursor_hide(this); } catch(v){}"></iframe>
         <div_not>
             <div_panel>
                 <span></span>

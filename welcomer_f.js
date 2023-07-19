@@ -36,7 +36,7 @@ class Welcomer {
                 f: true,
                 target: ""
             },
-            num: 12,
+            num: 13,
             beta: false
         },
         {
@@ -282,6 +282,13 @@ class Welcomer {
             title: "Operating system",
             description: "My operating system for all devices.",
             img: this.domain + "os.png",
+            href: "",
+            type: true
+        },  
+        {
+            title: "EchaTv[Echat] - Streaming Platform",
+            description: "My video Streaming platform [Tiktok, Instagram, Youtube].",
+            img: this.domain + "echatv.png",
             href: "",
             type: true
         },

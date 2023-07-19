@@ -21,6 +21,8 @@ if (!empty($_GET['mnps'])) {
         include "js/js_s/words.php";
     } else  if (strpos($_GET['mnps'], 'welcomer-pl') !== false) {
         header("Content-type: application/javascript");
+        $f = time();
+        echo " /* $f */ ";
         include "./welcomer_f.js";
     }  else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
               header("Content-type: text/plain");

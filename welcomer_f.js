@@ -14,7 +14,7 @@ class Welcomer {
     #energyAnim = true;
     domain = window.location.origin + "/rdlv/";
     div_not_i = 0;
-    cards_links = [
+    #cards_links = [
         {
             title: "My CV",
             descr: "Look at my CV",
@@ -128,7 +128,7 @@ class Welcomer {
         var buttons_box_shadow = document.querySelector("div#buttons");
            
          
-        this.cards_links.forEach(function (v) {
+        this.#cards_links.forEach(function (v) {
           const div = document.createElement("div"),
             i = document.createElement("i"),
             span = document.createElement("span"),

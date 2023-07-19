@@ -114,10 +114,10 @@ background-image: url(<?php echo $string_base64_no_rs; ?>);
 
 
 .box_div_id {
-    height: 1392px;
+    height:1407px;
     width: 680px;
-    min-height: 1392px;
-    max-height: 1346px;
+    min-height: 1407px;
+    max-height: 1407px;
     min-width: 680px;
     max-width: 680px;
     margin-left: auto;
@@ -655,4 +655,9 @@ if ($tablet_browser > 0) {
 /*
 ?>
 padding-bottom: 35px; */ ?>
+}
+
+
+#skills_div {
+    margin-top: 670px !important;
 }

@@ -1,3 +1,5 @@
+'use strict';
+
 class Welcomer {
 
     constructor() {
@@ -47,6 +49,18 @@ class Welcomer {
                 f_u: "welcomer.pgloader('/?pages=visitcard');",
                 f: true,
                 target: ""
+            },
+            num: 0,
+            beta: false
+        },
+        {
+            title: "Contact me",
+            descr: "Contact me",
+            icon: "bi bi-inbox",
+            href: {
+                f_u: "welcomer.cp();",
+                f: true,
+                target: "blank"
             },
             num: 0,
             beta: false
@@ -134,19 +148,8 @@ class Welcomer {
             },
             num: 0,
             beta: false
-        },
-        {
-            title: "Contact me",
-            descr: "Contact me",
-            icon: "bi bi-inbox",
-            href: {
-                f_u: "welcomer.cp();",
-                f: true,
-                target: "blank"
-            },
-            num: 0,
-            beta: false
         }
+         
     ];
     cp() {
         const df = document.querySelector(".contanct_frm"),
@@ -157,13 +160,14 @@ class Welcomer {
             df.classList.remove("open");
             this.rnd = 0;
         } else {
+            this.send_again();
             if (document.body.offsetWidth < 700) {
 
                 welcomer.bell_out("");
                 document.body.classList.add("open_f");
             }
-            document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - I'm not a robot.`);
-
+            document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - Type and hit enter.`);
+            document.querySelector(".contanct_frm #norobot").value = "";
             this.rnd = f1 + f2;
             df.classList.add("open");
         }
@@ -173,6 +177,13 @@ class Welcomer {
         return regex.test(email);
     };
     is_empty = false;
+    norobot() {
+        var f = false;
+        if (parseInt(document.getElementById("norobot").value) == this.rnd) {
+            f = true;
+        }
+        return f;
+    }
     checkisempty() {
         try {
             var is_empty = false;
@@ -196,7 +207,7 @@ class Welcomer {
                 is_empty = false;
             }
             if (this.validateEmail(document.querySelector(".contanct_frm #lname").value)) {
-                if (document.getElementById("norobot").value == this.rnd) {
+                if (this.norobot()) {
                     if (is_empty) {
                         document.querySelector(".contanct_frm").classList.add("cants");
                     } else {
@@ -214,35 +225,47 @@ class Welcomer {
             this.is_empty = is_empty;
         } catch (v) { }
     }
-    async send_email_c() {
+    send_again(){
+        document.querySelector(".contanct_frm #fname").value = "";
+        document.querySelector(".contanct_frm #lname").value  = "";
+        document.querySelector(".contanct_frm textarea").value = "";
+        document.querySelector(".contanct_frm #norobot").value = "";
+        document.querySelector(".contanct_frm").classList.remove("cants");
+        document.querySelector(".contanct_frm form").classList.remove("send_yes");
+    }
+    send_email_c() {
 
-        const
+        var
+            contanct_frm = document.querySelector(".contanct_frm "),
             fld_form = document.querySelector(".contanct_frm form"),
             fld_name = document.querySelector(".contanct_frm #fname").value,
             fld_email = document.querySelector(".contanct_frm #lname").value,
             fld_msg = document.querySelector(".contanct_frm textarea").value,
             restm = document.querySelector(".contanct_frm form p.msg"),
-        send_email = await fetch('/?mnps=contacts', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                n: fld_name,
-                e: fld_email,
-                m: fld_msg
-            })
-        });
-        const res = await send_email.text();
-        var rest = "";
-        if (res == "yes") {
-            rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span>Click here</span>.';
-        } else {
-            rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span>Click here</span>.';
+            xhr = new XMLHttpRequest(),
+            data = new FormData();
+        data.append("fn", window.btoa(fld_name));
+        data.append("fe", window.btoa(fld_email));
+        data.append("fm", window.btoa(fld_msg));
+
+
+        xhr.open('POST', '/?mnps=contacts', true);
+        xhr.onload = function () {
+
+            const res = this.responseText;
+            var rest = "";        
+            document.querySelector(".contanct_frm").classList.remove("cants");
+
+            if (res == "yes") {
+               
+                rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span onclick="welcomer.send_again();">Click here</span>.';
+            } else {
+                rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';
+            }
+            restm.innerHTML = rest;
+            fld_form.classList.add("send_yes");
         }
-        restm.innerHTML = rest;
-        fld_form.classList.add("send_yes");
+        xhr.send(data);
     }
     rnd = 0;
     generateGrid() {
@@ -263,7 +286,7 @@ class Welcomer {
             document.querySelector(".contanct_frm #norobot").addEventListener("keydown", function () {
                 welcomer.checkisempty();
             });
-            document.querySelector(".contanct_frm #sendbtn").addEventListener("click", function(){
+            document.querySelector(".contanct_frm #sendbtn").addEventListener("click", function () {
                 welcomer.send_email_c();
             });
         } catch (v) { }

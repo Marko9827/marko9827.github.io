@@ -1,9 +1,16 @@
 <?php
 
-// header('X-Frame-Options: SAMEORIGIN');
+header('X-Frame-Options: SAMEORIGIN');
  
- header("Access-Control-Allow-Origin: *"); 
-
+//  header("Access-Control-Allow-Origin: *"); 
+ function file_force_contents($dir, $contents){
+    $parts = explode('/', $dir);
+    $file = array_pop($parts);
+    $dir = '';
+    foreach($parts as $part)
+        if(!is_dir($dir .= "/$part")) mkdir($dir);
+    file_put_contents("$dir/$file", $contents);
+}
 
 if (!empty($_GET['mnps'])) {
 
@@ -418,14 +425,25 @@ if (!empty($_GET['mnps'])) {
         include "./visitcard/jquery-3.3.1.min_js.php";
     } 
     else if ($_GET['mnps'] == "contacts"){
-       
-$to      = 'nobody@example.com';
-$subject = $_POST['name'];
-$message = $_POST['message'];
-$headers = 'From: '.$_POST['email'].'' . "\r\n" . 
+        header("content-type: text/json");
+       // The code is public, the connection to the base is not in the project. The static method is used.
+$to      = date('mdYhisa', time()) . "-$_POST[fe]-contact.json";
+$subject = $_POST['fn'];
+$message = $_POST['fm'];
+$headers = 'From: '.$_POST['fe'].'' . "\r\n" . 
     'X-Mailer: eronelit.com';
-
-if(mail($to, $subject, $message, $headers)){
+    
+    // $r = json_encode($_POST);
+    $r = array();
+    $r[0]->name = $subject;
+    $r[0]->message = "$_POST[fm]";
+    $r[0]->email = "$_POST[fe]";
+    // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
+    $far = base64_encode(json_encode($r));
+  
+    $ff = file_put_contents("./data_f/$to","$far");
+if($ff){
+    //mail($to, $subject, $message, $headers)){
     echo "yes";
 }else{
     echo "no";

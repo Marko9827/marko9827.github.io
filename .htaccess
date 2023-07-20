@@ -1,5 +1,9 @@
 Options All -Indexes
  
+RewriteEngine on
+
+RewriteRule ^data_f/?$ - [F]
+
 
 <Files *.sql>
     order allow,deny

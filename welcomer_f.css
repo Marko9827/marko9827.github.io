@@ -636,6 +636,7 @@ div_not {
     -o-transition: .3s;
     transition: .3s;
     top: -150px;
+    opacity: 0;
 }
 
 div_not div_panel {

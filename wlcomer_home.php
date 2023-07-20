@@ -377,7 +377,7 @@ $rand = time();
             </div_panel>
         </div_not>
     </div>
-
+    <?php include "./scripts/contact.php"; ?>
     <canvas id="canvas">Your browser doesn't support canvas</canvas>
 
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">

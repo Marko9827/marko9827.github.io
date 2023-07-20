@@ -140,15 +140,45 @@ class Welcomer {
             descr: "Contact me",
             icon: "bi bi-inbox",
             href: {
-                f_u: "https://t.me/nikoliccc02",
-                f: false,
+                f_u: "welcomer.cp();",
+                f: true,
                 target: "blank"
             },
             num: 0,
             beta: false
         }
     ];
+    cp() {
+        var df = document.querySelector(".contanct_frm");
+        if (df.classList.contains("open")) {
+            document.body.classList.remove("open_f");
+            df.classList.remove("open");
+        } else {
+            if (document.body.offsetWidth < 700) {
+                
+                welcomer.bell_out("");
+                document.body.classList.add("open_f");
+            }
+            df.classList.add("open");
+        }
+    }
     generateGrid() {
+        document.querySelector(".contanct_frm h5 .closec").addEventListener("click", function () {
+            welcomer.cp();
+        });
+        document.body.onresize = function(){
+            var df = document.querySelector(".contanct_frm");
+        if (df.classList.contains("open")) {
+            if (document.body.offsetWidth < 700) {
+                document.body.classList.add("open_f");
+                welcomer.bell_out("");
+
+            }else{
+                document.body.classList.remove("open_f");
+
+            }
+        }
+        }
         var buttons_box_shadow = document.querySelector("div#buttons");
 
 
@@ -296,7 +326,7 @@ class Welcomer {
             img: this.domain + "os.png",
             href: "",
             type: true
-        },  
+        },
         {
             title: "EchaTv[Echat] - Streaming Platform",
             description: "My video Streaming platform [Tiktok, Instagram, Youtube].",
@@ -530,7 +560,7 @@ class Welcomer {
 
     openLink(kk) {
         $("project").find("p_open").removeAttr("style");
-        $(`project[id-int="${kk}"]`).find("p_open").attr("style", "top: 45px !important;");
+        $(`project[id-int="${kk}"]`).find("p_open").attr("style", "top: 45px !important; opacity: 1 !important;");
     }
     loaded_img(aer, id = 0) {
 
@@ -764,7 +794,7 @@ class Welcomer {
         $(".cursor").hide();
     }
     #hmmQ(qust = "", call) {
-        $("div_not").attr("style", "top: 45px !important;");
+        $("div_not").attr("style", "top: 45px !important; opacity: 1 !important;");
 
         $("div_not div_panel span").text(qust);
         $("#clavs iframe, #clavs grider_viewer").addClass("gridesr_filter");
@@ -790,7 +820,7 @@ class Welcomer {
 
     }
     #hmm(qust = "", call) {
-        $("div_not").attr("style", "top: 45px !important;");
+        $("div_not").attr("style", "top: 45px !important; opacity: 1 !important;");
         // var answer = window.confirm(qust);
         // if (answer) {
         //     call();
@@ -909,13 +939,13 @@ class Welcomer {
                 </project>`);
         welcomer.div_not_i++;
     }
-    toblob(d) { 
+    toblob(d) {
         const img = new Image();
         img.src = d.getAttribute("src");
         img.onload = async function () {
-         const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
-         d.src = H;
-         d.setAttribute("data-zoom-image",H);
+            const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
+            d.src = H;
+            d.setAttribute("data-zoom-image", H);
         }
     }
     compTxt(s) {

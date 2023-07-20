@@ -124,9 +124,21 @@ class Welcomer {
             beta: true
         },
         {
-            title: "My Telegram channel",
+            title: "Telegram",
             descr: "Look at my Telegram profile",
             icon: "fab fa-telegram",
+            href: {
+                f_u: "https://t.me/nikoliccc02",
+                f: false,
+                target: "blank"
+            },
+            num: 0,
+            beta: false
+        },
+        {
+            title: "Contact me",
+            descr: "Contact me",
+            icon: "bi bi-inbox",
             href: {
                 f_u: "https://t.me/nikoliccc02",
                 f: false,

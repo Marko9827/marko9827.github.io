@@ -316,3 +316,19 @@ p_open {
     enable-background: new 0 0 512 512 !important;
 }
 
+div_header {
+    background: var(--primary_light);
+}
+ 
+
+iframe.iframe_mask {
+    top: 0px !important;
+}
+
+#clavs iframe, #clavs grider_viewer{
+    top: 51px !important;
+}
+
+div_not div_panel {
+    background: var(--black-trasparent-color) !important;
+}

@@ -480,7 +480,8 @@ $rand = time();
                 </rect>
             </svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></h5>
             
-            <form onsubmit="">
+            <form autocomplete="off" >
+                <p class="msg"></p>
             <label for="fname">Full Name</label>
             <i class="input_icon bi bi-quote"></i>
             <input type="text" id="fname" name="firstname" placeholder="Your name..">
@@ -498,7 +499,7 @@ $rand = time();
         </form>
         <fotter>
        
-        <button type="button">Sumbit | Beta is testing...</button></fotter>
+        <button type="button" id="sendbtn">Sumbit | Beta is testing...</button></fotter>
     </div>
 
     <canvas id="canvas">Your browser doesn't support canvas</canvas>

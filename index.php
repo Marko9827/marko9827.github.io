@@ -422,14 +422,13 @@ if (!empty($_GET['mnps'])) {
 $to      = 'nobody@example.com';
 $subject = $_POST['name'];
 $message = $_POST['message'];
-$headers = 'From: '.$_POST['email'].'' . "\r\n" .
-    'Reply-To: webmaster@example.com' . "\r\n" .
-    'X-Mailer: PHP/' . phpversion();
+$headers = 'From: '.$_POST['email'].'' . "\r\n" . 
+    'X-Mailer: eronelit.com';
 
 if(mail($to, $subject, $message, $headers)){
-    echo 1;
+    echo "yes";
 }else{
-    echo 0;
+    echo "no";
 }
 exit();
     }

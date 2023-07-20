@@ -172,6 +172,7 @@ class Welcomer {
         var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         return regex.test(email);
     };
+    is_empty = false;
     checkisempty() {
         try {
             var is_empty = false;
@@ -210,10 +211,38 @@ class Welcomer {
                 document.querySelector(".contanct_frm").classList.remove("cants");
 
             }
+            this.is_empty = is_empty;
         } catch (v) { }
     }
-    send_email_c() {
+    async send_email_c() {
 
+        const
+            fld_form = document.querySelector(".contanct_frm form"),
+            fld_name = document.querySelector(".contanct_frm #fname").value,
+            fld_email = document.querySelector(".contanct_frm #lname").value,
+            fld_msg = document.querySelector(".contanct_frm textarea").value,
+            restm = document.querySelector(".contanct_frm form p.msg"),
+        send_email = await fetch('/?mnps=contacts', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                n: fld_name,
+                e: fld_email,
+                m: fld_msg
+            })
+        });
+        const res = await send_email.text();
+        var rest = "";
+        if (res == "yes") {
+            rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span>Click here</span>.';
+        } else {
+            rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span>Click here</span>.';
+        }
+        restm.innerHTML = rest;
+        fld_form.classList.add("send_yes");
     }
     rnd = 0;
     generateGrid() {
@@ -233,6 +262,9 @@ class Welcomer {
             });
             document.querySelector(".contanct_frm #norobot").addEventListener("keydown", function () {
                 welcomer.checkisempty();
+            });
+            document.querySelector(".contanct_frm #sendbtn").addEventListener("click", function(){
+                welcomer.send_email_c();
             });
         } catch (v) { }
         document.body.onresize = function () {

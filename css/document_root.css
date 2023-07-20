@@ -351,11 +351,11 @@ div_not div_panel {
     box-sizing: border-box;
 }
 
-.contanct_frm input[type=text],
+.contanct_frm input,
 .contanct_frm select,
 .contanct_frm textarea {
     width: 100%;
-    padding: 12px;
+    padding: 7px 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
@@ -609,7 +609,7 @@ body:not(.open_f) .contanct_frm {
     border-color: white;
 }
 
-body.open_f .contanct_frm {}
+
 
 .contanct_frm.open.cants iframe {
     display: none !important;
@@ -617,18 +617,47 @@ body.open_f .contanct_frm {}
 
 .contanct_frm h5 svg {
     margin-bottom: 0px !important;
-} 
+}
 
 body.open_f .contanct_frm {
-       
+
     bottom: 40px;
     top: 120px;
     height: -webkit-fill-available;
     min-height: -webkit-fill-available;
     max-height: -webkit-fill-available;
-    border-color:white;
+    border-color: white;
 }
 
-body.open_f .contanct_frm iframe{
-    display:none;
+body.open_f .contanct_frm iframe {
+    display: none;
+}
+
+.contanct_frm input {
+    padding-right: 42px;
+}
+
+i.input_icon {
+    position: absolute;
+    right: 11px;
+    margin-top: 40px;
+    font-size: 25px;
+    pointer-events: none;
+}
+
+.contanct_frm label {
+    margin-bottom: 0px;
+}
+
+body:not(.open_f) .contanct_frm.open.cants {
+    top: 0px !important;
+    bottom: 0px !important;
+}
+
+
+body:not(.open_f) .contanct_frm.open.cants iframe {
+    display: unset !important;
+}
+.contanct_frm textarea{
+    min-height:150px;
 }

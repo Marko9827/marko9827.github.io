@@ -469,7 +469,8 @@ div_not div_panel {
     right: 10px;
 }
 
-body.open_f * {
+body.open_f .contanct_frm,
+body.open_f .contanct_frm * {
     transition: .3s !important;
 }
 
@@ -611,9 +612,23 @@ body:not(.open_f) .contanct_frm {
 body.open_f .contanct_frm {}
 
 .contanct_frm.open.cants iframe {
-    display: none;
+    display: none !important;
 }
 
 .contanct_frm h5 svg {
     margin-bottom: 0px !important;
+} 
+
+body.open_f .contanct_frm {
+       
+    bottom: 40px;
+    top: 120px;
+    height: -webkit-fill-available;
+    min-height: -webkit-fill-available;
+    max-height: -webkit-fill-available;
+    border-color:white;
+}
+
+body.open_f .contanct_frm iframe{
+    display:none;
 }

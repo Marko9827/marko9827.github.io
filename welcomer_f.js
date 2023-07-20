@@ -461,7 +461,7 @@ class Welcomer {
             }
             $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
             <grider_box>
-            <p>${v.title}</p>
+            <p><span>${v.title}</span></p>
               
                 ${p_open}
                 <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
@@ -887,7 +887,7 @@ class Welcomer {
         }
         $("grider_viewer").append(`<project  ${thi} id-int="${welcomer.div_not_i}" title="${v.description}">
             <grider_box>
-            <p>${v.title}</p>
+            <p><span>${v.title}</span></p>
               
                 ${p_open}
                 <fiv><i onclick="welcomer.infoVa(${welcomer.div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>

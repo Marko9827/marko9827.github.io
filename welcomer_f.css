@@ -847,9 +847,9 @@ p_open {
     transition: .3s;
 }
 
-#clavs grider_viewer .is_touch:hover p_open {
+/* #clavs grider_viewer .is_touch:hover p_open {
     top: 45px !important;
-}
+} */
 
 #canvas {
     position: absolute;

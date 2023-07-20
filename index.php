@@ -417,7 +417,22 @@ if (!empty($_GET['mnps'])) {
 
         include "./visitcard/jquery-3.3.1.min_js.php";
     } 
-    
+    else if ($_GET['mnps'] == "contacts"){
+       
+$to      = 'nobody@example.com';
+$subject = $_POST['name'];
+$message = $_POST['message'];
+$headers = 'From: '.$_POST['email'].'' . "\r\n" .
+    'Reply-To: webmaster@example.com' . "\r\n" .
+    'X-Mailer: PHP/' . phpversion();
+
+if(mail($to, $subject, $message, $headers)){
+    echo 1;
+}else{
+    echo 0;
+}
+exit();
+    }
     else if ($_GET['mnps'] == 'dbe') {
         if (!empty($_GET['q'])) {
             if (strpos($_GET['q'], ".png") !== false) {

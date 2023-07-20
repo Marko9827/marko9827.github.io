@@ -149,70 +149,92 @@ class Welcomer {
         }
     ];
     cp() {
-        var df = document.querySelector(".contanct_frm");
+        const df = document.querySelector(".contanct_frm"),
+            f1 = Math.floor(Math.random() * 10),
+            f2 = Math.floor(Math.random() * 10);
         if (df.classList.contains("open")) {
             document.body.classList.remove("open_f");
             df.classList.remove("open");
+            this.rnd = 0;
         } else {
             if (document.body.offsetWidth < 700) {
 
                 welcomer.bell_out("");
                 document.body.classList.add("open_f");
             }
+            document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - I'm not a robot.`);
+
+            this.rnd = f1 + f2;
             df.classList.add("open");
         }
     }
     validateEmail(email) {
-        return email.match(
-            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
+        var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+        return regex.test(email);
     };
     checkisempty() {
-        try{
-        var is_empty = false;
-        if (document.querySelector(".contanct_frm #fname").value.length > 0) {
-            is_empty = true;
-        } else {
-            is_empty = false;
-        }
-        if (document.querySelector(".contanct_frm #lname").value.length > 0) {
-            if (this.validateEmail(document.querySelector(".contanct_frm #lname").value)) {
+        try {
+            var is_empty = false;
+            if (document.querySelector(".contanct_frm #fname").value.length > 0) {
                 is_empty = true;
-            }else{
+            } else {
                 is_empty = false;
             }
-        } else {
-            is_empty = false;
-        }
-        if (document.querySelector(".contanct_frm textarea").value.length > 0) {
-            is_empty = true;
-        } else {
-            is_empty = false;
-        }
+            if (document.querySelector(".contanct_frm #lname").value.length > 0) {
+                if (this.validateEmail(document.querySelector(".contanct_frm #lname").value)) {
+                    is_empty = true;
+                } else {
+                    is_empty = false;
+                }
+            } else {
+                is_empty = false;
+            }
+            if (document.querySelector(".contanct_frm textarea").value.length > 0) {
+                is_empty = true;
+            } else {
+                is_empty = false;
+            }
+            if (this.validateEmail(document.querySelector(".contanct_frm #lname").value)) {
+                if (document.getElementById("norobot").value == this.rnd) {
+                    if (is_empty) {
+                        document.querySelector(".contanct_frm").classList.add("cants");
+                    } else {
+                        document.querySelector(".contanct_frm").classList.remove("cants");
 
-        if (is_empty) {
-            document.querySelector(".contanct_frm").classList.add("cants");
-        } else {
-            document.querySelector(".contanct_frm").classList.remove("cants");
+                    }
+                } else {
+                    document.querySelector(".contanct_frm").classList.remove("cants");
 
-        }    }catch(v){}
+                }
+            } else {
+                document.querySelector(".contanct_frm").classList.remove("cants");
+
+            }
+        } catch (v) { }
     }
+    send_email_c() {
+
+    }
+    rnd = 0;
     generateGrid() {
         document.querySelector(".contanct_frm h5 .closec").addEventListener("click", function () {
             welcomer.cp();
         });
-        try{
-        this.checkisempty();
-        document.querySelector(".contanct_frm #fname").addEventListener("keyup", function () {
-            welcomer.checkisempty();
-        });
-        document.querySelector(".contanct_frm #lname").addEventListener("keyup", function () {
-            welcomer.checkisempty();
-        });
-        document.querySelector(".contanct_frm textarea").addEventListener("keyup", function () {
-            welcomer.checkisempty();
-        });
-    }catch(v){}
+        try {
+            this.checkisempty();
+            document.querySelector(".contanct_frm #fname").addEventListener("keydown", function () {
+                welcomer.checkisempty();
+            });
+            document.querySelector(".contanct_frm #lname").addEventListener("keydown", function () {
+                welcomer.checkisempty();
+            });
+            document.querySelector(".contanct_frm textarea").addEventListener("keydown", function () {
+                welcomer.checkisempty();
+            });
+            document.querySelector(".contanct_frm #norobot").addEventListener("keydown", function () {
+                welcomer.checkisempty();
+            });
+        } catch (v) { }
         document.body.onresize = function () {
             var df = document.querySelector(".contanct_frm");
             if (df.classList.contains("open")) {

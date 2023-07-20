@@ -14,5 +14,10 @@
     <textarea id="subject" name="subject" placeholder="Your message..." style="height:200px"></textarea>
  
   </form>
-  <fotter><button type="button">Sumbit | Beta is testing...</button></fotter>
+  <fotter>
+  <label for="lname">I'm not a robot</label>
+    
+    <input type="email" id="lname" name="email" placeholder="Your Email..">
+    
+  <button type="button">Sumbit | Beta is testing...</button></fotter>
 </div>

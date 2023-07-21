@@ -227,6 +227,12 @@ class Welcomer {
         } catch (v) { }
     }
     send_again(){
+        const df = document.querySelector(".contanct_frm"),
+        f1 = Math.floor(Math.random() * 10),
+        f2 = Math.floor(Math.random() * 10);
+        document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - Type and hit enter.`);
+        document.querySelector(".contanct_frm #norobot").value = "";
+        this.rnd = f1 + f2;
         document.querySelector(".contanct_frm #fname").value = "";
         document.querySelector(".contanct_frm #lname").value  = "";
         document.querySelector(".contanct_frm textarea").value = "";

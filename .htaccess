@@ -17,6 +17,10 @@ RewriteRule ^data_f/?$ - [F]
     order allow,deny
     deny from all
 </Files>
+<Files *.pdf>
+    order allow,deny
+    deny from all
+</Files>
 <Files *.png>
     order allow,deny
     deny from all

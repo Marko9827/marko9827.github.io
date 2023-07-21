@@ -152,6 +152,7 @@ class Welcomer {
          
     ];
     cp() {
+                    $("iframe.iframe_mask").removeAttr("style");
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
             f2 = Math.floor(Math.random() * 10);
@@ -268,7 +269,21 @@ class Welcomer {
         xhr.send(data);
     }
     rnd = 0;
+    async pdf(){
+        const H = URL.createObjectURL(await fetch("/?mnps=pdf-d-cv").then(function (v) { return v.blob() })),
+        a = document.createElement("a");
+        a.href = H;
+        a.download = "pdf-cv.pdf";
+        a.click();
+        setTimeout(() => {
+            URL.revokeObjectURL(H);
+        }, 1000);
+    }
     generateGrid() {
+        document.querySelector(".pdf_download").addEventListener("click", function(){
+            welcomer.pdf();
+        });
+         
         document.querySelector(".contanct_frm h5 .closec").addEventListener("click", function () {
             welcomer.cp();
         });
@@ -599,7 +614,7 @@ class Welcomer {
         $(ljoader).hide();
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-        $("iframe").hide();
+        $("iframe:not(.iframe_mask)").hide();
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
@@ -764,8 +779,8 @@ class Welcomer {
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs");
 
-
-
+             document.querySelector(".pdf_download").setAttribute("style","display: none;");
+        
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
@@ -774,7 +789,13 @@ class Welcomer {
             $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
-
+            var url2 = $("iframe:not(.iframe_mask)").attr("src");
+            if(url2.includes("cv-pdf")){
+                document.querySelector(".pdf_download").setAttribute("style","display: block;");
+            }else{
+                document.querySelector(".pdf_download").setAttribute("style","display: none;");
+    
+            }
         } else if (url.includes("projects")) {
             $("body").removeAttr("data-hmm");
             welcomer.projectsload();
@@ -807,10 +828,12 @@ class Welcomer {
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
+           
             // iframe.src = url;
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
         }
+       
         /*
         if(url.includes("cv-pdf")){
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
@@ -829,17 +852,18 @@ class Welcomer {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
 
-            $("div_header span").html($("iframe").contents().find("title").html());
+            $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
-
+            var urlf = $("iframe:not(.iframe_mask)").attr("src");
+            
         } else if (url == "projects") {
             welcomer.projectsload();
         } else {
 
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe").attr("src", url);
-            $("iframe").attr("data-temp-url", url);
+            $("iframe:not(.iframe_mask)").attr("src", url);
+            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
@@ -847,6 +871,7 @@ class Welcomer {
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
         }
+        
     }
     #f_blob(url = "") {
         var xhr = new XMLHttpRequest();
@@ -885,7 +910,7 @@ class Welcomer {
         }
         $("div_not").removeAttr("style");
 
-        $("#clavs iframe").removeAttr("style");
+        $("#clavs iframe:not(.iframe_mask)").removeAttr("style");
         $("box_h").hide();
     };
 
@@ -1681,7 +1706,7 @@ class CircleContainer {
         this.position = { x, y };
         if (welcomer.isMobile()) {
             this.numberOfCircles = 5;
-            this.bounceRadius = 80;
+            this.bounceRadius = 20;
 
         } else {
             this.numberOfCircles = 19;

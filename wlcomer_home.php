@@ -346,6 +346,7 @@ $rand = time();
             <btns_r>
                 <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);"
                     title="Search project..."></i>
+                    <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
@@ -499,7 +500,7 @@ $rand = time();
         </form>
         <fotter>
        
-        <button type="button" id="sendbtn">Sumbit | Beta is testing...</button></fotter>
+        <button type="button" id="sendbtn">Send message</button></fotter>
     </div>
 
     <canvas id="canvas">Your browser doesn't support canvas</canvas>

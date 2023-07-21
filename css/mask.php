@@ -1819,8 +1819,8 @@ class CircleContainer {
         this.context = context;
         this.position = { x, y };
         if (welcomer.isMobile()) {
-         //   this.numberOfCircles = 5;
-         //   this.bounceRadius = 80;
+          this.numberOfCircles = 5;
+          this.bounceRadius = 80;
 
         } else {
             this.numberOfCircles = 19;

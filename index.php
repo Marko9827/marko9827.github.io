@@ -270,6 +270,12 @@ if (!empty($_GET['mnps'])) {
     } else if (strpos($_GET['mnps'], 'image-s-mask') !== false) {
         header("Content-type: image/svg+xml");
         readfile("./img/svg_bckr_mask.svg");
+    } else if ($_GET['mnps'] == 'pdf-d-cv') {
+         $file_url = "./cv-pdf.pdf";
+        header('Content-Type: application/octet-stream');
+header("Content-Transfer-Encoding: Binary"); 
+header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
+readfile($file_url); 
     }
     
       else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {

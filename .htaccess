@@ -2,7 +2,7 @@ Options All -Indexes
  
 RewriteEngine on
 
-RewriteRule ^data_f/?$ - [F]
+RewriteRule ^data_s/?$ - [F]
 
 
 <Files *.sql>

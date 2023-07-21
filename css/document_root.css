@@ -658,26 +658,72 @@ body:not(.open_f) .contanct_frm.open.cants {
 body:not(.open_f) .contanct_frm.open.cants iframe {
     display: unset !important;
 }
-.contanct_frm textarea{
-    min-height:150px;
+
+.contanct_frm textarea {
+    min-height: 150px;
 }
 
-.contanct_frm form p.msg {text-align: center;margin: auto;}
+.contanct_frm form p.msg {
+    text-align: center;
+    margin: auto;
+}
 
 .contanct_frm form p.msg span {
     text-decoration: underline !important;
 }
 
-.contanct_frm form.send_yes *:not(.msg,.msg>br,.msg>span,.msg>i) {
-    display:none !important;
+.contanct_frm form.send_yes *:not(.msg, .msg>br, .msg>span, .msg>i) {
+    display: none !important;
 }
-.contanct_frm form:not(.send_yes) .msg{
-     display: none !important;
+
+.contanct_frm form:not(.send_yes) .msg {
+    display: none !important;
 }
+
 .contanct_frm form.send_yes {
     display: flex;
 }
 
 .contanct_frm form.send_yes .msg i {
-    font-size:50px;
+    font-size: 50px;
 }
+
+/* __- */
+grider_viewer.gridsH.grids.g_gallery {}
+
+
+grider_viewer.gridsH.grids.g_gallery project p {
+    display: none;
+}
+
+
+grider_viewer.gridsH.grids.g_gallery project {
+    height: 228px !important;
+    transform: none !important;
+}
+
+grider_viewer.gridsH.grids.g_gallery project img {
+    top: 0px
+}
+
+grider_viewer.gridsH.grids.g_gallery project grider_box {
+    height: 247px !important;
+    bottom: unset !important;
+
+    margin: 0px !important;
+}
+
+grider_viewer.gridsH.grids.g_gallery project p_open {
+    display: none;
+}
+
+grider_viewer.g_gallery project img {
+    border: 3px solid var(--primary_light) !important;
+    border-radius: 5px !important;
+    top: 0px !important;
+}
+grider_viewer.gridsH.grids.g_gallery project {
+    line-height: 0px !important;
+}
+
+/* __- */

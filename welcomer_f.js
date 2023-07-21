@@ -376,6 +376,7 @@ class Welcomer {
             buttons_box_shadow.appendChild(div);
         });
     }
+     
     #projects = [
         {
             title: "E-student",

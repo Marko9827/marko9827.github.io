@@ -1,14 +1,16 @@
 <?php
 
 header('X-Frame-Options: SAMEORIGIN');
- 
+
 //  header("Access-Control-Allow-Origin: *"); 
- function file_force_contents($dir, $contents){
+function file_force_contents($dir, $contents)
+{
     $parts = explode('/', $dir);
     $file = array_pop($parts);
     $dir = '';
-    foreach($parts as $part)
-        if(!is_dir($dir .= "/$part")) mkdir($dir);
+    foreach ($parts as $part)
+        if (!is_dir($dir .= "/$part"))
+            mkdir($dir);
     file_put_contents("$dir/$file", $contents);
 }
 
@@ -26,29 +28,30 @@ if (!empty($_GET['mnps'])) {
         header("Content-type: application/javascript");
 
         include "js/js_s/words.php";
-    } else  if (strpos($_GET['mnps'], 'welcomer-pl') !== false) {
+    } else if (strpos($_GET['mnps'], 'welcomer-pl') !== false) {
         header("Content-type: application/javascript");
         $f = time();
         echo " /* $f */ ";
         include "./welcomer_f.js";
-    }  else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
-              header("Content-type: text/plain");
-      if(!empty($_POST['what'])){
-        if($_POST['what'] == "blog"){
-              $url = "https://blog.eronelit.com/feeds/posts/default";
-        $fileContents= file_get_contents($url);
-    $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
-    $fileContents = trim(str_replace('"', "'", $fileContents));
-    $simpleXml = simplexml_load_string($fileContents);
-    $json = json_encode($simpleXml);
-    // echo $json; 
-    echo trim(base64_encode($json)," ");
-           
-        }else{ 
+    } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
+        header("Content-type: text/plain");
+        if (!empty($_POST['what'])) {
+            if ($_POST['what'] == "blog") {
+                $url = "https://blog.eronelit.com/feeds/posts/default";
+                $fileContents = file_get_contents($url);
+                $fileContents = str_replace(array("\n", "\r", "\t"), '', $fileContents);
+                $fileContents = trim(str_replace('"', "'", $fileContents));
+                $simpleXml = simplexml_load_string($fileContents);
+                $json = json_encode($simpleXml);
+                // echo $json; 
+                echo trim(base64_encode($json), " ");
+
+            } else {
+            }
+        } else {
         }
-      } else{  }
-    exit();
-    } else  if (strpos($_GET['mnps'], 'javascript-14') !== false) {
+        exit();
+    } else if (strpos($_GET['mnps'], 'javascript-14') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/f3924.php";
@@ -76,11 +79,11 @@ if (!empty($_GET['mnps'])) {
         header("Content-type: application/javascript");
 
         include "js/js_s/jquery.swipebox.php";
-    } else  if (strpos($_GET['mnps'], 'javascript-8') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-8') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/dialogFx.php";
-    } else  if (strpos($_GET['mnps'], 'javascript-7') !== false) {
+    } else if (strpos($_GET['mnps'], 'javascript-7') !== false) {
         header("Content-type: application/javascript");
 
         include "js/js_s/classie.php";
@@ -187,7 +190,6 @@ if (!empty($_GET['mnps'])) {
     }
 
     // projct >
-
     else if (strpos($_GET['mnps'], 'image-in-background-3') !== false) {
         header('Content-type: image/jpeg');
         header('Content-disposition: inline; filename="Eronelit background"');
@@ -260,31 +262,48 @@ if (!empty($_GET['mnps'])) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/slika314.jpg");
-    }  else if (strpos($_GET['mnps'], 'image-og') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-og') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./README_files/readme_part1.png");
-    }   else if (strpos($_GET['mnps'], 'image-mask') !== false) {
-        header("Content-type: text/html"); 
+    } else if (strpos($_GET['mnps'], 'image-mask') !== false) {
+        header("Content-type: text/html");
         include "./css/mask.php";
     } else if (strpos($_GET['mnps'], 'image-s-mask') !== false) {
         header("Content-type: image/svg+xml");
         readfile("./img/svg_bckr_mask.svg");
     } else if ($_GET['mnps'] == 'pdf-d-cv') {
-         $file_url = "./cv-pdf.pdf";
+        $file_url = "./cv-pdf.pdf";
         header('Content-Type: application/octet-stream');
-header("Content-Transfer-Encoding: Binary"); 
-header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\""); 
-readfile($file_url); 
+        header("Content-Transfer-Encoding: Binary");
+        header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
+        readfile($file_url);
+    } else if ($_GET['mnps'] == 'gallery') {
+           
+        $arr = array();
+        if(!empty($_GET['img'])){
+             header("content-type: image/png");
+            readfile("./data_s/data_wlp/$_GET[img].png");
+            exit();
+        }else{
+
+        $fileList = glob('data_s/data_wlp/*.png', GLOB_BRACE);
+        $i = 0;
+        foreach ($fileList as $filename) {
+            $path_parts = pathinfo($filename);
+            
+                $arr[$i]->name = $path_parts['filename'];
+                $i++; 
+        } 
+        header("content-type: text/json");
+        echo json_encode($arr);
+        exit();
     }
-    
-      else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {
+    } else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {
         header("Content-type: image/svg+xml");
         // header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/svg_bckr_mask.svg");
-    } 
-     
-    else if (strpos($_GET['mnps'], 'image-in-g-background-1') !== false) {
+    } else if (strpos($_GET['mnps'], 'image-in-g-background-1') !== false) {
         header("Content-type: image/jpeg");
         header('Content-disposition: inline; filename="Eronelit background"');
         readfile("./img/vertical-gallery-1.jpg");
@@ -342,8 +361,6 @@ readfile($file_url);
         include "./Scripts/jquery-2.2.4.min.php";
     }
     // -- arial font
-
-
     else if (strpos($_GET['mnps'], "arial_font") !== false) {
 
         if (!empty($_GET['FGC_source'])) {
@@ -397,8 +414,7 @@ readfile($file_url);
 
 
         include "./projct.php";
-    } 
-    else if (strpos($_GET['mnps'], 'media_source') !== false) {
+    } else if (strpos($_GET['mnps'], 'media_source') !== false) {
         $ppath = "$_SERVER[DOCUMENT_ROOT]/cinematic_3/cinematic_MainMenu.mp4";
         $reqpath = $ppath;
         header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
@@ -429,34 +445,32 @@ readfile($file_url);
         header("Content-type: application/javascript");
 
         include "./visitcard/jquery-3.3.1.min_js.php";
-    } 
-    else if ($_GET['mnps'] == "contacts"){
+    } else if ($_GET['mnps'] == "contacts") {
         header("content-type: text/json");
-       // The code is public, the connection to the base is not in the project. The static method is used.
-$to      = date('mdYhisa', time()) . "-$_POST[fe]-contact.json";
-$subject = $_POST['fn'];
-$message = $_POST['fm'];
-$headers = 'From: '.$_POST['fe'].'' . "\r\n" . 
-    'X-Mailer: eronelit.com';
-    
-    // $r = json_encode($_POST);
-    $r = array();
-    $r[0]->name = $subject;
-    $r[0]->message = "$_POST[fm]";
-    $r[0]->email = "$_POST[fe]";
-    // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
-    $far = base64_encode(json_encode($r));
-  
-    $ff = file_put_contents("./data_f/$to","$far");
-if($ff){
-    //mail($to, $subject, $message, $headers)){
-    echo "yes";
-}else{
-    echo "no";
-}
-exit();
-    }
-    else if ($_GET['mnps'] == 'dbe') {
+        // The code is public, the connection to the base is not in the project. The static method is used.
+        $to = date('mdYhisa', time()) . "-$_POST[fe]-contact.json";
+        $subject = $_POST['fn'];
+        $message = $_POST['fm'];
+        $headers = 'From: ' . $_POST['fe'] . '' . "\r\n" .
+            'X-Mailer: eronelit.com';
+
+        // $r = json_encode($_POST);
+        $r = array();
+        $r[0]->name = $subject;
+        $r[0]->message = "$_POST[fm]";
+        $r[0]->email = "$_POST[fe]";
+        // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
+        $far = base64_encode(json_encode($r));
+
+        $ff = file_put_contents("./data_f/$to", "$far");
+        if ($ff) {
+            //mail($to, $subject, $message, $headers)){
+            echo "yes";
+        } else {
+            echo "no";
+        }
+        exit();
+    } else if ($_GET['mnps'] == 'dbe') {
         if (!empty($_GET['q'])) {
             if (strpos($_GET['q'], ".png") !== false) {
                 header("Content-type: image/png");
@@ -466,9 +480,7 @@ exit();
             }
             readfile("$_SERVER[DOCUMENT_ROOT]/rdlv/$_GET[q]");
         }
-    } 
-    
-    else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
+    } else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
         header("Content-type: image/svg+xml");
 
         include "./visitcard/qr-portfolio-erone.php";
@@ -483,14 +495,12 @@ exit();
     // - CV
 
     // - pdf version
-
     else if (strpos($_GET['mnps'], 'pdf-cs1') !== false) {
         header("Content-type: text/css");
         include "./visitcard/ff_FA/cv_pdf/style.php";
     }
 
     // - pdf version
-
     else {
     }
 } else if (!empty($_GET['pages'])) {

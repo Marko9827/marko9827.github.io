@@ -16,6 +16,13 @@ class Welcomer {
     #energyAnim = true;
     domain = window.location.origin + "/?mnps=dbe&q=";
     div_not_i = 0;
+    #yesurls = [
+        "",
+        "cv-pdf",
+        "gallery",
+        "projects",
+        "visitcard"
+    ];
     #cards_links = [
         {
             title: "My CV",
@@ -76,7 +83,7 @@ class Welcomer {
             },
             num: 323,
             beta: false
-        },  {
+        }, {
             title: "Gallery - Photos",
             descr: "My photos gallery | Comming soon",
             icon: "bi bi-images",
@@ -136,7 +143,7 @@ class Welcomer {
             num: 37,
             beta: false
         },
-       
+
         {
             title: "Telegram",
             descr: "Look at my Telegram profile",
@@ -376,15 +383,15 @@ class Welcomer {
             buttons_box_shadow.appendChild(div);
         });
     }
-     
+
     async getDataGallery() {
- 
+
         const response = await fetch("/?mnps=gallery"),
             responseJson = await response.json();
-        return responseJson; 
-         
+        return responseJson;
 
-         
+
+
     }
     #projects = [
         {
@@ -617,8 +624,29 @@ class Welcomer {
         })
     }
     loader_svg = "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=";
+    load_gallery(){
+        $.getJSON("/?mnps=gallery", function (res) {
+            $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+
+            welcomer.load_gallery_j = res;
+        });
+    }
+    load_gallery_j = [];
     galleryload() {
-        
+        $("gridder_loader").attr("style", "opacity:1");
+
+        if(this.load_gallery_j.length > 0){
+            this.galleryloadajax();
+        } else {
+            $.getJSON("/?mnps=gallery", function (res) {
+                $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+    
+                welcomer.load_gallery_j = res;
+                welcomer.galleryloadajax();
+            });
+        }
+    }
+    galleryloadajax(){   
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -637,49 +665,52 @@ class Welcomer {
         $("grider_viewer").addClass("g_gallery");
         $("grider_viewer").html("");
         var gallery = [];
-        $("gridder_loader").attr("style","opacity:1");
-            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
-       
-        gallery = $.getJSON("/?mnps=gallery",function(res) {return res;});
-        $.getJSON("/?mnps=gallery",function(res) {
-            console.log(res);
-        $.each(res,function (k,v) {
-            console.log(v);
-            console.clear();
-            var thi = "class='is_touch'",
-                p_open = "";
-            if (v.href !== "") {
-                if (v.type) {
-                    p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+        $("gridder_loader").attr("style", "opacity:1");
+        history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+
+        // gallery = $.getJSON("/?mnps=gallery", function (res) { return res; });
+        // $.getJSON("/?mnps=gallery", function (res) {
+            // console.log(res);
+            // $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+            // $.each(welcomer.load_gallery_j, function (k, v) {
+                var v = welcomer.load_gallery_j;
+                for(var i = 0; i < v.length; i++){
+                console.log(v[i]);
+                console.clear();
+                var thi = "class='is_touch'",
+                    p_open = "";
+                if (v[i].href !== "") {
+                    if (v[i].type) {
+                        p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
            <i class="bi bi-link"></i> Open link
            </p_open>`;
-                } else {
-                    p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+                    } else {
+                        p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
           <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
            </p_open>`;
+                    }
                 }
-            }
-            if (welcomer.isMobile()) {
+                if (welcomer.isMobile()) {
 
-                thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+                    thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
 
-            }
-            $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+                }
+                $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v[i].description}">
         <grider_box>
-        <p><span>${v.title}</span></p>
+        <p><span>${v[i].title}</span></p>
           
             ${p_open}
-            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview image in full size"></i></fiv>
             <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-            src="${v.img}"  data-zoom-image="${v.img}" alt="${v.title}">
+            src="${v[i].img}"  data-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
-            div_not_i++;
-        });
-    });
-    
-    $("gridder_loader").removeAttr("style");
+                div_not_i++;
+            }
+        // });
+
+        $("gridder_loader").removeAttr("style");
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
@@ -788,10 +819,10 @@ class Welcomer {
 
         $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
         this.toblob(aer);
-        $(aer).removeAttr("onload"); 
+        $(aer).removeAttr("onload");
     };
     start(j) {
-        $("gridder_loader img").attr("onload","welcomer.loading_t(this)"); 
+        $("gridder_loader img").attr("onload", "welcomer.loading_t(this)");
         if (!this.#isChrome) {
             //    $("canvas").addClass("low_GPU")
         }
@@ -799,6 +830,7 @@ class Welcomer {
             // pgloader("yes");
 
         });
+        this.load_gallery()
         document.querySelectorAll("script").forEach(function (v) {
             try {
                 v.remove();
@@ -844,17 +876,31 @@ class Welcomer {
             v.classList.add("show");
         });
     };
+    loadorNot(){
+        const urlParams = new URLSearchParams(window.location.href);
+        const myParam = urlParams.get('p');
+        if(urlParams.getAll().length > 0){
+        if (!this.#yesurls.includes(myParam)) {
+            history.replaceState({}, "", `${window.location.origin}`);
+
+            $("#clavs").attr("style", "transform: translateY(-100%);");
+            welcomer.loop_active = true; 
+            $("iframe:not(.iframe_mask)").attr("src", "");
+            $("iframe:not(.iframe_mask)").removeAttr("style");
+        
+        } }
+    }
     pgloader(url = "") {
         // history.replaceState({}, "", `${window.location.origin}`);
-
+        
         $("grider_viewer").removeClass("g_gallery");
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
             if (!url.includes(window.location.origin)) {
                 $("div_header").attr("data-url", window.location.origin + hrl_url);
-                try{
-                history.replaceState({}, "", `${window.location.origin + hrl_url}`);
-                }catch(arV){}
+                try {
+                    history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+                } catch (arV) { }
             } else {
                 $("div_header").attr("data-url", url);
             }
@@ -867,7 +913,7 @@ class Welcomer {
             clavs = document.getElementById("clavs");
 
         document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-
+        
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
@@ -884,6 +930,7 @@ class Welcomer {
                 document.querySelector(".pdf_download").setAttribute("style", "display: none;");
 
             }
+            this.loadorNot();
         } else if (url.includes("projects")) {
             $("body").removeAttr("data-hmm");
             welcomer.projectsload();
@@ -915,6 +962,7 @@ class Welcomer {
 
 
         } else {
+            
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
@@ -926,7 +974,7 @@ class Welcomer {
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
-
+           
             // iframe.src = url;
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
@@ -1020,7 +1068,7 @@ class Welcomer {
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
             setTimeout(function () {
- 
+
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
             }, 1000);
@@ -1189,7 +1237,7 @@ class Welcomer {
                 </project>`);
         welcomer.div_not_i++;
     }
-    loading_t(d){
+    loading_t(d) {
         const img = new Image();
         img.src = d.getAttribute("src");
         img.onload = async function () {

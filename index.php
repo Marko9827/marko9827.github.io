@@ -286,9 +286,12 @@ if (!empty($_GET['mnps'])) {
             if(file_exists("./data_s/data_wlp/$_GET[img].png")){
                 header("content-type: image/png");
                 readfile("./data_s/data_wlp/$_GET[img].png");
-            }else if(file_exists("./data_s/data_wlp/$_GET[img].jpg")){
+            } else if(file_exists("./data_s/data_wlp/$_GET[img].jpg")){
                 header("content-type: image/jpeg");
                 readfile("./data_s/data_wlp/$_GET[img].jpg");
+            } else if(file_exists("./data_s/data_wlp/$_GET[img].jpeg")){
+                header("content-type: image/jpeg");
+                readfile("./data_s/data_wlp/$_GET[img].jpeg");
             } else {
 
             }
@@ -296,7 +299,7 @@ if (!empty($_GET['mnps'])) {
             exit();
         } else {
 
-            $fileList = glob('data_s/data_wlp/*.{png,jpg}', GLOB_BRACE);
+            $fileList = glob('data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
             $i = 0;
             foreach ($fileList as $filename) {
                 // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
@@ -304,13 +307,11 @@ if (!empty($_GET['mnps'])) {
                 $IamNumberic =  time() . rand();
                 if(!is_numeric("$path_parts[filename]")){
                     rename("data_s/data_wlp/$path_parts[filename].$path_parts[extension]","data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                   
-
                     $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
                 }else{
                     $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
-
                 }
+                // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
                  $arr[$i]->title = "-";
                 $arr[$i]->description = "-";
              

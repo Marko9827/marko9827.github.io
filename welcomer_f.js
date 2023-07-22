@@ -695,14 +695,14 @@ class Welcomer {
                     thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
 
                 }
-                $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v[i].description}">
+                $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" title="${v[i].description}">
         <grider_box>
         <p><span>${v[i].title}</span></p>
           
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview image in full size"></i></fiv>
-            <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-            src="${v[i].img}"  data-zoom-image="${v[i].img}" alt="${v[i].title}">
+            <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
+            src="${this.loader_svg}"  data-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
@@ -716,6 +716,27 @@ class Welcomer {
         $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
         $(Vjideo_sjpinner).hide();
     }
+    loaded_imgPrld(aer, id = 0) {
+        const d = aer;
+        // $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
+        const img = new Image();
+        /*
+        img.src = d.getAttribute("src");
+        img.onload = async function () {
+            const H = URL.createObjectURL(await fetch(aer.getAttribute("data-zoom-image")).then(function (v) { return v.blob() }));
+            d.src = H;
+            $(aer).parent().parent().removeAttr("style");
+        }
+        $(aer).removeAttr("onload");*/
+        img.src = d.getAttribute("src");
+        img.onload = async function () {
+            const H = aer.getAttribute("data-zoom-image");
+            d.src = H;
+            $(aer).parent().parent().removeAttr("style");
+        }
+        $(aer).removeAttr("onload");
+         
+    };
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),

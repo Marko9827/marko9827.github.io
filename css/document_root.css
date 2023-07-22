@@ -758,4 +758,11 @@ gridder_loader img {
     display: block;
     margin: auto;
 }
+grider_viewer.gridsH.grids.g_gallery,
+grider_viewer.gridsH.grids.g_gallery * {
+    transition: .3s !important;
+}
+grider_viewer.gridsH.grids.g_gallery project {
+    transform: scale(0);
+}
 /* __- */

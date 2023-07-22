@@ -725,5 +725,17 @@ grider_viewer.g_gallery project img {
 grider_viewer.gridsH.grids.g_gallery project {
     line-height: 0px !important;
 }
+grider_viewer.g_gallery  project fiv {
+    top: 10px !important;
+}
 
+grider_viewer.g_gallery  project
+ fiv .bi-info-circle {
+     margin-top: 2px !important;
+     margin-left: 2px !important;
+ }
+
+ grider_viewer.g_gallery  * {
+    transition: .3s !important;
+ }
 /* __- */

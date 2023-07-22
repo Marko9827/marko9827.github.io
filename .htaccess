@@ -2075,5 +2075,5 @@ Header always set Content-Security-Policy "upgrade-insecure-requests;"
 </IfModule>
 
 Header unset Expect-CT
-
-Header set Access-Control-Allow-Methods "GET" 
+Header set Access-Control-Allow-Methods "GET"
+ Header set Platform eronelit.com

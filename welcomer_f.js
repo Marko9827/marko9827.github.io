@@ -76,6 +76,17 @@ class Welcomer {
             },
             num: 323,
             beta: false
+        },  {
+            title: "Gallery - Photos",
+            descr: "My photos gallery | Comming soon",
+            icon: "bi bi-images",
+            href: {
+                f_u: "welcomer.galleryload();",
+                f: true,
+                target: "blank"
+            },
+            num: 37,
+            beta: false
         },
         {
             title: "My Linkedin (NEW)",
@@ -125,18 +136,7 @@ class Welcomer {
             num: 37,
             beta: false
         },
-        {
-            title: "Gallery - Photos",
-            descr: "My photos gallery | Comming soon",
-            icon: "bi bi-images",
-            href: {
-                f_u: "",
-                f: false,
-                target: "blank"
-            },
-            num: 37,
-            beta: true
-        },
+       
         {
             title: "Telegram",
             descr: "Look at my Telegram profile",
@@ -149,10 +149,10 @@ class Welcomer {
             num: 0,
             beta: false
         }
-         
+
     ];
     cp() {
-                    $("iframe.iframe_mask").removeAttr("style");
+        $("iframe.iframe_mask").removeAttr("style");
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
             f2 = Math.floor(Math.random() * 10);
@@ -226,15 +226,15 @@ class Welcomer {
             this.is_empty = is_empty;
         } catch (v) { }
     }
-    send_again(){
+    send_again() {
         const df = document.querySelector(".contanct_frm"),
-        f1 = Math.floor(Math.random() * 10),
-        f2 = Math.floor(Math.random() * 10);
+            f1 = Math.floor(Math.random() * 10),
+            f2 = Math.floor(Math.random() * 10);
         document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - Type and hit enter.`);
         document.querySelector(".contanct_frm #norobot").value = "";
         this.rnd = f1 + f2;
         document.querySelector(".contanct_frm #fname").value = "";
-        document.querySelector(".contanct_frm #lname").value  = "";
+        document.querySelector(".contanct_frm #lname").value = "";
         document.querySelector(".contanct_frm textarea").value = "";
         document.querySelector(".contanct_frm #norobot").value = "";
         document.querySelector(".contanct_frm").classList.remove("cants");
@@ -260,11 +260,11 @@ class Welcomer {
         xhr.onload = function () {
 
             const res = this.responseText;
-            var rest = "";        
+            var rest = "";
             document.querySelector(".contanct_frm").classList.remove("cants");
 
             if (res == "yes") {
-               
+
                 rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span onclick="welcomer.send_again();">Click here</span>.';
             } else {
                 rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';
@@ -275,9 +275,9 @@ class Welcomer {
         xhr.send(data);
     }
     rnd = 0;
-    async pdf(){
+    async pdf() {
         const H = URL.createObjectURL(await fetch("/?mnps=pdf-d-cv").then(function (v) { return v.blob() })),
-        a = document.createElement("a");
+            a = document.createElement("a");
         a.href = H;
         a.download = "pdf-cv.pdf";
         a.click();
@@ -286,10 +286,10 @@ class Welcomer {
         }, 1000);
     }
     generateGrid() {
-        document.querySelector(".pdf_download").addEventListener("click", function(){
+        document.querySelector(".pdf_download").addEventListener("click", function () {
             welcomer.pdf();
         });
-         
+
         document.querySelector(".contanct_frm h5 .closec").addEventListener("click", function () {
             welcomer.cp();
         });
@@ -377,6 +377,15 @@ class Welcomer {
         });
     }
      
+    async getDataGallery() {
+ 
+        const response = await fetch("/?mnps=gallery"),
+            responseJson = await response.json();
+        return responseJson; 
+         
+
+         
+    }
     #projects = [
         {
             title: "E-student",
@@ -608,7 +617,71 @@ class Welcomer {
         })
     }
     loader_svg = "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=";
+    galleryload() {
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs"),
+            div_not_i = 0,
+            div_not = document.querySelector("div_not");
 
+        $(ljoader).hide();
+        $(Vjideo_sjpinner).show();
+        document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+        $("iframe:not(.iframe_mask)").hide();
+
+        $("grider_viewer").show().removeAttr("style");
+        $("div_header").removeClass("ld_completeld_complete");
+        $("grider_viewer").addClass("g_gallery");
+        $("grider_viewer").html("");
+        var gallery = [];
+        
+            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+       
+        gallery = $.getJSON("/?mnps=gallery",function(res) {return res;});
+        $.getJSON("/?mnps=gallery",function(res) {
+            console.log(res);
+        $.each(res,function (k,v) {
+            console.log(v);
+            console.clear();
+            var thi = "class='is_touch'",
+                p_open = "";
+            if (v.href !== "") {
+                if (v.type) {
+                    p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+           <i class="bi bi-link"></i> Open link
+           </p_open>`;
+                } else {
+                    p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+          <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+           </p_open>`;
+                }
+            }
+            if (welcomer.isMobile()) {
+
+                thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+
+            }
+            $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+        <grider_box>
+        <p><span>${v.title}</span></p>
+          
+            ${p_open}
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+            <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+            src="${v.img}"  data-zoom-image="${v.img}" alt="${v.title}">
+                   </grider_box>
+
+            </project>`);
+            div_not_i++;
+        });
+    });
+        $("div_header").addClass("ld_completeld_complete2");
+        $(ljoader).show();
+        $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+        $(Vjideo_sjpinner).hide();
+    }
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -712,7 +785,7 @@ class Welcomer {
 
         $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
         this.toblob(aer);
-        $(aer).removeAttr("onload");
+        $(aer).removeAttr("onload"); 
     };
     start(j) {
 
@@ -770,11 +843,16 @@ class Welcomer {
         });
     };
     pgloader(url = "") {
+        // history.replaceState({}, "", `${window.location.origin}`);
+
+        $("grider_viewer").removeClass("g_gallery");
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
             if (!url.includes(window.location.origin)) {
                 $("div_header").attr("data-url", window.location.origin + hrl_url);
-
+                try{
+                history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+                }catch(arV){}
             } else {
                 $("div_header").attr("data-url", url);
             }
@@ -786,8 +864,8 @@ class Welcomer {
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs");
 
-             document.querySelector(".pdf_download").setAttribute("style","display: none;");
-        
+        document.querySelector(".pdf_download").setAttribute("style", "display: none;");
+
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
@@ -797,11 +875,12 @@ class Welcomer {
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
-            if(url2.includes("cv-pdf")){
-                document.querySelector(".pdf_download").setAttribute("style","display: block;");
-            }else{
-                document.querySelector(".pdf_download").setAttribute("style","display: none;");
-    
+            if (url2.includes("cv-pdf")) {
+                history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+                document.querySelector(".pdf_download").setAttribute("style", "display: block;");
+            } else {
+                document.querySelector(".pdf_download").setAttribute("style", "display: none;");
+
             }
         } else if (url.includes("projects")) {
             $("body").removeAttr("data-hmm");
@@ -809,6 +888,14 @@ class Welcomer {
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+            history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+        } else if (url.includes("gallery")) {
+            $("body").removeAttr("data-hmm");
+            welcomer.galleryload();
+            $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
+            $("iframe.iframe_mask").removeAttr("style");
+            $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
 
         } else if (url.includes("blog.eronelit.com")) {
             $(ljoader).hide();
@@ -829,18 +916,20 @@ class Welcomer {
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
+            // history.replaceState({}, "", `${url}`);
+
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("#clavs grider_viewer").hide();
             $("iframe.iframe_mask").hide();
             try {
                 // document.querySelector("iframe").remove();
             } catch (v) { }
-           
+
             // iframe.src = url;
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
         }
-       
+
         /*
         if(url.includes("cv-pdf")){
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
@@ -863,7 +952,7 @@ class Welcomer {
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var urlf = $("iframe:not(.iframe_mask)").attr("src");
-            
+
         } else if (url == "projects") {
             welcomer.projectsload();
         } else {
@@ -878,7 +967,7 @@ class Welcomer {
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);
         }
-        
+
     }
     #f_blob(url = "") {
         var xhr = new XMLHttpRequest();
@@ -924,9 +1013,12 @@ class Welcomer {
 
     Hclose() {
         this.#hmm("Are you sure to close? You are only closing the built-in browser. You do not close the card.", function () {
+            history.replaceState({}, "", `${window.location.origin}`);
+
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
             setTimeout(function () {
+ 
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
             }, 1000);

@@ -279,26 +279,29 @@ if (!empty($_GET['mnps'])) {
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         readfile($file_url);
     } else if ($_GET['mnps'] == 'gallery') {
-           
+
         $arr = array();
-        if(!empty($_GET['img'])){
-             header("content-type: image/png");
+        if (!empty($_GET['img'])) {
+            header("content-type: image/png");
             readfile("./data_s/data_wlp/$_GET[img].png");
             exit();
-        }else{
+        } else {
 
-        $fileList = glob('data_s/data_wlp/*.png', GLOB_BRACE);
-        $i = 0;
-        foreach ($fileList as $filename) {
-            $path_parts = pathinfo($filename);
-            
-                $arr[$i]->name = $path_parts['filename'];
-                $i++; 
-        } 
-        header("content-type: text/json");
-        echo json_encode($arr);
-        exit();
-    }
+            $fileList = glob('data_s/data_wlp/*.png', GLOB_BRACE);
+            $i = 0;
+            foreach ($fileList as $filename) {
+                $path_parts = pathinfo($filename);
+                $arr[$i]->title = "-";
+                $arr[$i]->description = "-";
+                $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                $arr[$i]->href = "-";
+                $arr[$i]->type = true;
+                $i++;
+            }
+            header("content-type: text/json");
+            echo json_encode($arr);
+            exit();
+        }
     } else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {
         header("Content-type: image/svg+xml");
         // header('Content-disposition: inline; filename="Eronelit background"');

@@ -738,4 +738,24 @@ grider_viewer.g_gallery  project
  grider_viewer.g_gallery  * {
     transition: .3s !important;
  }
+
+ gridder_loader {
+    position: fixed;
+    z-index: 3333;
+    left: 0px;
+    top: 0px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    display: flex;
+    transition: .3s !important;
+    pointer-events: none;
+    opacity: 0;
+}
+
+gridder_loader img {
+    width: 55px;
+    height: 55px;
+    display: block;
+    margin: auto;
+}
 /* __- */

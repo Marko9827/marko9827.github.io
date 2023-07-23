@@ -796,3 +796,13 @@ grider_viewer.gridsH.grids.g_gallery project grider_box img {
     background: rgb(0 0 0 / 52%);
     color: white;
 }
+
+ 
+iframe.blog_style {
+    z-index: 1;
+    background: rgb(255 255 255 / 36%) !important;
+}
+
+iframe.blog_style {
+    background: transparent;
+}

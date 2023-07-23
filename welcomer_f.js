@@ -561,115 +561,63 @@ class Welcomer {
             success: function (v) { }
         })
     }
+    blogloader(id) {
+        var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
+         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+      
+        $.ajax({
+            url: "/?blog=" + id,
+            type: "GET",
+            success: function (f) {
+                 
+                if (f.title) {
+                    
+
+                    $.get(f.source, function (res) { 
+                        ifrm.document.open();
+                        ifrm.document.write(`${res}`);
+                        ifrm.document.close();
+
+                    });
+                    $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
+                    $("body").removeAttr("data-hmm");
+                    document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+                    // history.replaceState({}, "", `${url}`);
+
+                    $("div_header span").html(`Blog > ${f.title}`);
+
+                    $("#clavs grider_viewer").hide();
+                    $("iframe.iframe_mask").show();
+                } else {     alert(f.title);
+                    history.replaceState({}, "", `${window.location.origin}`);
+
+                    $("#clavs").attr("style", "transform: translateY(-100%);");
+                    welcomer.loop_active = true;
+                    $("iframe:not(.iframe_mask)").attr("src", "");
+                    $("iframe:not(.iframe_mask)").removeAttr("style");
+                }
+
+            }, complete: function () {
+
+
+            }
+        });
+    }
     #url_params() {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
+        const myParam_id = urlParams.get("id");
 
         if (myParam !== null) {
             if (myParam == "blog") {
-                 this.pgloaderBg("https://blog.eronelit.com");
+                //  this.pgloader(myParam_id);
+                this.blogloader(myParam_id);
             } else {
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
         }
     }
-    pgloaderBg(url = "") {
-        // history.replaceState({}, "", `${window.location.origin}`);
 
-        $("grider_viewer").removeClass("g_gallery");
-        if (url !== "yes") {
-            var hrl_url = url.replace("pages", "p");
-            if (!url.includes(window.location.origin)) {
-                $("div_header").attr("data-url", window.location.origin + hrl_url);
-                try {
-                    history.replaceState({}, "", `${window.location.origin + hrl_url}`);
-                } catch (arV) { }
-            } else {
-                $("div_header").attr("data-url", url);
-            }
-        }
-        welcomer.loop_active = false;
-        var ljoader = document.querySelector("#reaload_page"),
-            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
-            div_header = document.querySelector("div_header"),
-            iframe = document.createElement("iframe"),
-            clavs = document.getElementById("clavs");
-
-        document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-
-        if (url == "yes") {
-            $(ljoader).show();
-            $(Vjideo_sjpinner).hide();
-
-
-            $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
-            $("div_header").removeClass("ld_completeld_complete2");
-            $("div_header").addClass("ld_completeld_complete");
-            var url2 = $("iframe:not(.iframe_mask)").attr("src");
-            if (url2.includes("cv-pdf")) {
-                history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
-                document.querySelector(".pdf_download").setAttribute("style", "display: block;");
-            } else {
-                document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-
-            }
-            this.loadorNot();
-        } else if (url.includes("projects")) {
-            $("body").removeAttr("data-hmm");
-            welcomer.projectsload();
-            $("div_header").attr("data-url", window.location.origin + "/?p=projects");
-            $("iframe.iframe_mask").removeAttr("style");
-            $("div_header span").html("Marko Nikolić - Portfolio > Projects");
-            history.replaceState({}, "", `${window.location.origin}/?p=projects`);
-        } else if (url.includes("gallery")) {
-            $("body").removeAttr("data-hmm");
-            welcomer.galleryload();
-            $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
-            $("iframe.iframe_mask").removeAttr("style");
-            $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
-            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
-
-        } else if (url.includes("blog.eronelit.com")) {
-            $(ljoader).hide();
-            $(Vjideo_sjpinner).show();
-            $("div_header").removeClass("ld_completeld_complete");
-            $("div_header").addClass("ld_completeld_complete2");
-
-            $("body").attr("data-hmm", "ld_completeld_complete3");
-
-            $("div_header span").html("Marko Nikolić - Portfolio > Blog");
-            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe:not(.iframe_mask)").attr("src", url);
-            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-            $("div_header").attr("data-url", window.location.origin + "/?p=blog");
-
-
-        } else {
-
-            $("body").removeAttr("data-hmm");
-            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe:not(.iframe_mask)").attr("src", url);
-            // history.replaceState({}, "", `${url}`);
-
-            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-            $("#clavs grider_viewer").hide();
-            $("iframe.iframe_mask").hide();
-            if (url.includes)
-                try {
-                    // document.querySelector("iframe").remove();
-                } catch (v) { }
-
-            // iframe.src = url;
-            // iframe.onload = pgloader("yes");
-            // div_header.appendChild(iframe);
-        }
-
-        /*
-        if(url.includes("cv-pdf")){
-            $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
-        }
-        */
-    }
     url_params2() {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
@@ -1007,7 +955,7 @@ class Welcomer {
                 if (v == myParam) {
                     myrls = true;
                 }
-                if(v == myParam.includes("blog")){
+                if (v == myParam.includes("blog")) {
                     myrls = true;
                 }
             });
@@ -1024,13 +972,14 @@ class Welcomer {
             }
         }
     }
-    blgloader(id = ""){
+    blgloader(id = "") {
         $.ajax({
 
         })
     }
     pgloader(url = "") {
         // history.replaceState({}, "", `${window.location.origin}`);
+        const urlParams = new URLSearchParams(window.location.search);
 
         $("grider_viewer").removeClass("g_gallery");
         if (url !== "yes") {

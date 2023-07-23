@@ -1626,6 +1626,12 @@ div#helper_id_helper3 p {
     }
 }
 
- .iframe_docs {
+  
+ iframe.blog_style {
+    z-index: 1;
     background: rgb(255 255 255 / 36%) !important;
- }
+}
+
+iframe.blog_style {
+    background: transparent;
+}

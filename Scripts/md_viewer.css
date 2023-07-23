@@ -569,3 +569,29 @@
  h1 {
      font-size: 20px !important;
  }
+
+ * {
+    color: white !important;
+ }
+
+ ::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 30px !important;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: white;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+* {
+    font-family: "Poppins", sans-serif !important;
+}

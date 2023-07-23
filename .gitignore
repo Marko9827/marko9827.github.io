@@ -2,7 +2,8 @@
 Content/bootstrap.min.css.map
 css/style1f.php
 js/301F942.js
-/ventor
+/vendor
 /data
 /data_s/data_f
 /cache
+/node_modules

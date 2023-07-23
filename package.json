@@ -21,6 +21,7 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "^4.6.2",
+    "commonmark": "^0.30.0",
     "ez-plus": "^1.2.1",
     "gpu-info-nv": "^1.0.3",
     "jquery-zoom": "^1.7.21",

@@ -1626,4 +1626,6 @@ div#helper_id_helper3 p {
     }
 }
 
- 
+ .iframe_docs {
+    background: rgb(255 255 255 / 36%) !important;
+ }

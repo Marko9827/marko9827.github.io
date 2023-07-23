@@ -1,0 +1,6 @@
+{
+    "require": {
+        "mistralys/markdown-viewer": "^1.3",
+        "league/commonmark": "^2.4"
+    }
+}

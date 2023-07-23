@@ -16,8 +16,8 @@ class Welcomer {
     #energyAnim = true;
     domain = window.location.origin + "/?mnps=dbe&q=";
     div_not_i = 0;
-    #yesurls = [
-        "",
+    yesurls = [
+        "blog",
         "cv-pdf",
         "gallery",
         "projects",
@@ -567,11 +567,108 @@ class Welcomer {
 
         if (myParam !== null) {
             if (myParam == "blog") {
-                this.pgloader("https://blog.eronelit.com");
+                 this.pgloaderBg("https://blog.eronelit.com");
             } else {
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
         }
+    }
+    pgloaderBg(url = "") {
+        // history.replaceState({}, "", `${window.location.origin}`);
+
+        $("grider_viewer").removeClass("g_gallery");
+        if (url !== "yes") {
+            var hrl_url = url.replace("pages", "p");
+            if (!url.includes(window.location.origin)) {
+                $("div_header").attr("data-url", window.location.origin + hrl_url);
+                try {
+                    history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+                } catch (arV) { }
+            } else {
+                $("div_header").attr("data-url", url);
+            }
+        }
+        welcomer.loop_active = false;
+        var ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs");
+
+        document.querySelector(".pdf_download").setAttribute("style", "display: none;");
+
+        if (url == "yes") {
+            $(ljoader).show();
+            $(Vjideo_sjpinner).hide();
+
+
+            $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
+            $("div_header").removeClass("ld_completeld_complete2");
+            $("div_header").addClass("ld_completeld_complete");
+            var url2 = $("iframe:not(.iframe_mask)").attr("src");
+            if (url2.includes("cv-pdf")) {
+                history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+                document.querySelector(".pdf_download").setAttribute("style", "display: block;");
+            } else {
+                document.querySelector(".pdf_download").setAttribute("style", "display: none;");
+
+            }
+            this.loadorNot();
+        } else if (url.includes("projects")) {
+            $("body").removeAttr("data-hmm");
+            welcomer.projectsload();
+            $("div_header").attr("data-url", window.location.origin + "/?p=projects");
+            $("iframe.iframe_mask").removeAttr("style");
+            $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+            history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+        } else if (url.includes("gallery")) {
+            $("body").removeAttr("data-hmm");
+            welcomer.galleryload();
+            $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
+            $("iframe.iframe_mask").removeAttr("style");
+            $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+
+        } else if (url.includes("blog.eronelit.com")) {
+            $(ljoader).hide();
+            $(Vjideo_sjpinner).show();
+            $("div_header").removeClass("ld_completeld_complete");
+            $("div_header").addClass("ld_completeld_complete2");
+
+            $("body").attr("data-hmm", "ld_completeld_complete3");
+
+            $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+            $("iframe:not(.iframe_mask)").attr("src", url);
+            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
+            $("div_header").attr("data-url", window.location.origin + "/?p=blog");
+
+
+        } else {
+
+            $("body").removeAttr("data-hmm");
+            document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+            $("iframe:not(.iframe_mask)").attr("src", url);
+            // history.replaceState({}, "", `${url}`);
+
+            $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
+            $("#clavs grider_viewer").hide();
+            $("iframe.iframe_mask").hide();
+            if (url.includes)
+                try {
+                    // document.querySelector("iframe").remove();
+                } catch (v) { }
+
+            // iframe.src = url;
+            // iframe.onload = pgloader("yes");
+            // div_header.appendChild(iframe);
+        }
+
+        /*
+        if(url.includes("cv-pdf")){
+            $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
+        }
+        */
     }
     url_params2() {
         const urlParams = new URLSearchParams(window.location.search);
@@ -624,7 +721,7 @@ class Welcomer {
         })
     }
     loader_svg = "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=";
-    load_gallery(){
+    load_gallery() {
         $.getJSON("/?mnps=gallery", function (res) {
             $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
 
@@ -635,18 +732,18 @@ class Welcomer {
     galleryload() {
         $("gridder_loader").attr("style", "opacity:1");
 
-        if(this.load_gallery_j.length > 0){
+        if (this.load_gallery_j.length > 0) {
             this.galleryloadajax();
         } else {
             $.getJSON("/?mnps=gallery", function (res) {
                 $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
-    
+
                 welcomer.load_gallery_j = res;
                 welcomer.galleryloadajax();
             });
         }
     }
-    galleryloadajax(){   
+    galleryloadajax() {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -670,50 +767,51 @@ class Welcomer {
 
         // gallery = $.getJSON("/?mnps=gallery", function (res) { return res; });
         // $.getJSON("/?mnps=gallery", function (res) {
-            // console.log(res);
-            // $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
-            // $.each(welcomer.load_gallery_j, function (k, v) {
-                var v = welcomer.load_gallery_j;
-                for(var i = 0; i < v.length; i++){
-                console.log(v[i]);
-                console.clear();
-                var thi = "class='is_touch'",
-                    p_open = "";
-                if (v[i].href !== "") {
-                    if (v[i].type) {
-                        p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
+        // console.log(res);
+        // $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+        // $.each(welcomer.load_gallery_j, function (k, v) {
+        var v = welcomer.load_gallery_j;
+        for (var i = 0; i < v.length; i++) {
+            console.log(v[i]);
+            console.clear();
+            var thi = "class='is_touch'",
+                p_open = "";
+            if (v[i].href !== "") {
+                if (v[i].type) {
+                    p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
            <i class="bi bi-link"></i> Open link
            </p_open>`;
-                    } else {
-                        p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
+                } else {
+                    p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
           <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
            </p_open>`;
-                    }
                 }
-                if (welcomer.isMobile()) {
+            }
+            if (welcomer.isMobile()) {
 
-                    thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+                thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
 
-                }
-                $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" title="${v[i].description}">
+            }
+            $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" title="${v[i].description}">
         <grider_box>
         <p><span>${v[i].title}</span></p>
           
             ${p_open}
-            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview image in full size"></i></fiv>
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
             <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
             src="${this.loader_svg}"  data-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
-                div_not_i++;
-            }
+            div_not_i++;
+        }
         // });
 
         $("gridder_loader").removeAttr("style");
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+        $(".F_bi_search").hide();
         $(Vjideo_sjpinner).hide();
     }
     loaded_imgPrld(aer, id = 0) {
@@ -732,10 +830,11 @@ class Welcomer {
         img.onload = async function () {
             const H = aer.getAttribute("data-zoom-image");
             d.src = H;
+
             $(aer).parent().parent().removeAttr("style");
         }
         $(aer).removeAttr("onload");
-         
+
     };
     projectsload() {
         var ljoader = document.querySelector("#reaload_page"),
@@ -791,6 +890,8 @@ class Welcomer {
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+        $(".F_bi_search").show();
+
         $(Vjideo_sjpinner).hide();
     }
     closeMeIamSad() {
@@ -897,23 +998,40 @@ class Welcomer {
             v.classList.add("show");
         });
     };
-    loadorNot(){
-        const urlParams = new URLSearchParams(window.location.href);
+    loadorNot() {
+        const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('p');
-        if(urlParams.getAll().length > 0){
-        if (!this.#yesurls.includes(myParam)) {
-            history.replaceState({}, "", `${window.location.origin}`);
+        var myrls = false;
+        if (myParam) {
+            this.yesurls.forEach(function (v) {
+                if (v == myParam) {
+                    myrls = true;
+                }
+                if(v == myParam.includes("blog")){
+                    myrls = true;
+                }
+            });
+            if (myrls) {
 
-            $("#clavs").attr("style", "transform: translateY(-100%);");
-            welcomer.loop_active = true; 
-            $("iframe:not(.iframe_mask)").attr("src", "");
-            $("iframe:not(.iframe_mask)").removeAttr("style");
-        
-        } }
+            } else {
+                history.replaceState({}, "", `${window.location.origin}`);
+
+                $("#clavs").attr("style", "transform: translateY(-100%);");
+                welcomer.loop_active = true;
+                $("iframe:not(.iframe_mask)").attr("src", "");
+                $("iframe:not(.iframe_mask)").removeAttr("style");
+
+            }
+        }
+    }
+    blgloader(id = ""){
+        $.ajax({
+
+        })
     }
     pgloader(url = "") {
         // history.replaceState({}, "", `${window.location.origin}`);
-        
+
         $("grider_viewer").removeClass("g_gallery");
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
@@ -934,7 +1052,7 @@ class Welcomer {
             clavs = document.getElementById("clavs");
 
         document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-        
+
         if (url == "yes") {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
@@ -983,7 +1101,7 @@ class Welcomer {
 
 
         } else {
-            
+
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
@@ -992,10 +1110,11 @@ class Welcomer {
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("#clavs grider_viewer").hide();
             $("iframe.iframe_mask").hide();
-            try {
-                // document.querySelector("iframe").remove();
-            } catch (v) { }
-           
+            if (url.includes)
+                try {
+                    // document.querySelector("iframe").remove();
+                } catch (v) { }
+
             // iframe.src = url;
             // iframe.onload = pgloader("yes");
             // div_header.appendChild(iframe);

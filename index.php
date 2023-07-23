@@ -2,6 +2,7 @@
 
 header('X-Frame-Options: SAMEORIGIN');
 
+
 //  header("Access-Control-Allow-Origin: *"); 
 function file_force_contents($dir, $contents)
 {
@@ -13,8 +14,68 @@ function file_force_contents($dir, $contents)
             mkdir($dir);
     file_put_contents("$dir/$file", $contents);
 }
+if (!empty($_GET['blog'])) {
+    $url = "./data_s/blog/image/";
+    $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+    $file = "./data_s/blog/$_GET[blog].html";
+    if (file_exists($file)) {
+        header("content-type: text/html");
+        if (file_exists($file)) {
+            $css = file_get_contents("./Scripts/md_viewer.css");
+            $js = file_get_contents("./Scripts/md_viewer.js");
 
-if (!empty($_GET['mnps'])) {
+
+            echo file_get_contents($file);
+
+            echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+            echo "<style type='text/css'>$css</style>";
+            echo "<script type='text/javascript'>$js </script>";
+
+            exit();
+        } else {
+            include "./ERROR_PG.php";
+        }
+        // 23_jul_2023_09_26/1690103453287
+    } else if (file_exists("$url$_GET[blog].png")) {
+        header("content-type: image/png");
+        readfile("$url$_GET[blog].png");
+    } else if (file_exists("$url$_GET[blog].jpg")) {
+        header("content-type: image/jpeg");
+        readfile("$url$_GET[blog].jpg");
+    } else if (file_exists("$url$_GET[blog].jpeg")) {
+        header("content-type: image/jpeg");
+        readfile("$url$_GET[blog].jpeg");
+    } else if ($_GET['blog'] == "all") {
+        header("content-type: text/json");
+        $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+        $array2 = file_get_contents("./data_s/blog/blgd.json");
+
+        if (!empty($_GET['id'])) {
+            foreach ($array as $index => $element) {
+                if ($element['id'] == $_GET['id']) {
+                    echo json_encode($element);
+                }
+            }
+        } else {
+            echo $array2;
+        }
+        exit();
+    } else if ($_GET['blog'] > 0) {
+        header("content-type: text/json");
+        $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+
+        $array2 = file_get_contents("./data_s/blog/blgd.json");
+
+        foreach ($array as $index => $element) {
+            if ($element['id'] == $_GET['blog']) {
+                echo json_encode($element);
+            }
+        }
+    } else {
+        include "./ERROR_PG.php";
+    }
+    exit();
+} else if (!empty($_GET['mnps'])) {
 
     $img_background_3_jpg = "./img/background-3.jpg";
     $img_background_1_jpg = "./img/background-1.jpg";
@@ -30,7 +91,10 @@ if (!empty($_GET['mnps'])) {
         include "js/js_s/words.php";
     } else if (strpos($_GET['mnps'], 'welcomer-pl') !== false) {
         header("Content-type: application/javascript");
-        $f = time();
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        $f = time() . rand();
         echo " /* $f */ ";
         include "./welcomer_f.js";
     } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
@@ -278,24 +342,70 @@ if (!empty($_GET['mnps'])) {
         header("Content-Transfer-Encoding: Binary");
         header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
         readfile($file_url);
+    } else if ($_GET['mnps'] == 'blog') {
+
+        if (!empty($_GET['f'])) {
+            header("content-type: text/html");
+            $file = "./data_s/blog/$_GET[f].html";
+            if (file_exists($file)) {
+                $css = file_get_contents("./Scripts/md_viewer.css");
+                $js = file_get_contents("./Scripts/md_viewer.js");
+
+
+                echo file_get_contents($file);
+
+                echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                echo "<style type='text/css'>$css</style>";
+                echo "<script type='text/javascript'>$js </script>";
+
+                exit();
+            } else {
+                include "./ERROR_PG.php";
+            }
+
+        } else if (!empty($_GET['q'])) {
+            if ($_GET['q'] == "all") {
+                header("content-type: text/json");
+                $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+                $array2 = file_get_contents("./data_s/blog/blgd.json");
+
+                if (!empty($_GET['id'])) {
+                    foreach ($array as $index => $element) {
+                        if ($element['id'] == $_GET['id']) {
+                            echo json_encode($element);
+                        }
+                    }
+                } else {
+                    echo $array2;
+                }
+                exit();
+            }
+        } else {
+            include "./ERROR_PG.php";
+        }
+
     } else if ($_GET['mnps'] == 'gallery') {
 
         $arr = array();
         if (!empty($_GET['img'])) {
-
-            if(file_exists("./data_s/data_wlp/$_GET[img].png")){
-                header("content-type: image/png");
-                readfile("./data_s/data_wlp/$_GET[img].png");
-            } else if(file_exists("./data_s/data_wlp/$_GET[img].jpg")){
-                header("content-type: image/jpeg");
-                readfile("./data_s/data_wlp/$_GET[img].jpg");
-            } else if(file_exists("./data_s/data_wlp/$_GET[img].jpeg")){
-                header("content-type: image/jpeg");
-                readfile("./data_s/data_wlp/$_GET[img].jpeg");
-            } else {
-
+            $url = "./data_s/data_wlp/";
+            if (!empty($_GET["blog"])) {
+                $url = "./data_s/blog/image/";
             }
-           
+
+            if (file_exists("$url$_GET[img].png")) {
+                header("content-type: image/png");
+                readfile("$url$_GET[img].png");
+            } else if (file_exists("$url$_GET[img].jpg")) {
+                header("content-type: image/jpeg");
+                readfile("$url$_GET[img].jpg");
+            } else if (file_exists("$url$_GET[img].jpeg")) {
+                header("content-type: image/jpeg");
+                readfile("$url$_GET[img].jpeg");
+            } else {
+                include "./ERROR_PG.php";
+            }
+
             exit();
         } else {
 
@@ -304,17 +414,17 @@ if (!empty($_GET['mnps'])) {
             foreach ($fileList as $filename) {
                 // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
                 $path_parts = pathinfo($filename);
-                $IamNumberic =  time() . rand();
-                if(!is_numeric("$path_parts[filename]")){
-                    rename("data_s/data_wlp/$path_parts[filename].$path_parts[extension]","data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                $IamNumberic = time() . rand();
+                if (!is_numeric("$path_parts[filename]")) {
+                    rename("data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
                     $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                }else{
+                } else {
                     $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
                 }
                 // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                 $arr[$i]->title = "-";
+                $arr[$i]->title = "-";
                 $arr[$i]->description = "-";
-             
+
                 // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
                 $arr[$i]->href = "-";
                 $arr[$i]->type = true;

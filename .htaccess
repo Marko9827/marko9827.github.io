@@ -29,6 +29,10 @@ RewriteRule ^data_s/?$ - [F]
     order allow,deny
     deny from all
 </Files>
+<Files *.html>
+    order allow,deny
+    deny from all
+</Files>
 <Files *.mp4>
     order allow,deny
     deny from all
@@ -2077,3 +2081,5 @@ Header always set Content-Security-Policy "upgrade-insecure-requests;"
 Header unset Expect-CT
 Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
+
+#Header set X-Frame-Options *.eronelit.com

@@ -722,24 +722,25 @@ grider_viewer.g_gallery project img {
     border-radius: 5px !important;
     top: 0px !important;
 }
+
 grider_viewer.gridsH.grids.g_gallery project {
     line-height: 0px !important;
 }
-grider_viewer.g_gallery  project fiv {
+
+grider_viewer.g_gallery project fiv {
     top: 10px !important;
 }
 
-grider_viewer.g_gallery  project
- fiv .bi-info-circle {
-     margin-top: 2px !important;
-     margin-left: 2px !important;
- }
+grider_viewer.g_gallery project fiv .bi-info-circle {
+    margin-top: 2px !important;
+    margin-left: 2px !important;
+}
 
- grider_viewer.g_gallery  * {
+grider_viewer.g_gallery * {
     transition: .3s !important;
- }
+}
 
- gridder_loader {
+gridder_loader {
     position: fixed;
     z-index: 3333;
     left: 0px;
@@ -758,10 +759,12 @@ gridder_loader img {
     display: block;
     margin: auto;
 }
+
 grider_viewer.gridsH.grids.g_gallery,
 grider_viewer.gridsH.grids.g_gallery * {
     transition: .3s !important;
 }
+
 grider_viewer.gridsH.grids.g_gallery project {
     transform: scale(0);
 }
@@ -772,32 +775,37 @@ grider_viewer.gridsH.grids.g_gallery project grider_box {
 }
 
 grider_viewer.gridsH.grids.g_gallery project grider_box img {
-    border-radius:4px !important;
+    border-radius: 4px !important;
 }
-/* __- */grider_viewer.gridsH.grids.g_gallery project grider_box {
+
+/* __- */
+grider_viewer.gridsH.grids.g_gallery project grider_box {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
 }
 
 grider_viewer.gridsH.grids.g_gallery project grider_box img {
-    border-radius:4px !important;
+    border-radius: 4px !important;
 }
-#clavs grider_viewer.g_gallery project fiv{
-    border-radius:3px !important;
-    width:25px;
-    height:26px;
+
+#clavs grider_viewer.g_gallery project fiv {
+    border-radius: 3px !important;
+    width: 25px;
+    height: 26px;
 }
 
 #clavs grider_viewer.g_gallery project fiv i.bi-fullscreen {
-    font-size:18px;
-     margin-top:3.5px;
-    margin-left:3.5px;
-}#clavs grider_viewer.g_gallery project fiv {
+    font-size: 18px;
+    margin-top: 3.5px;
+    margin-left: 3.5px;
+}
+
+#clavs grider_viewer.g_gallery project fiv {
     background: rgb(0 0 0 / 52%);
     color: white;
 }
 
- 
+
 iframe.blog_style {
     z-index: 1;
     background: rgb(255 255 255 / 36%) !important;
@@ -807,7 +815,6 @@ iframe.blog_style {
     background: transparent;
 }
 
-#clavs iframe:not(.iframe_mask){
+#clavs iframe:not(.iframe_mask) {
     transition: .3s !important;
 }
- 

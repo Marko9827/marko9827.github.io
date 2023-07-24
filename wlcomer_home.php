@@ -17,9 +17,7 @@ $urlCdn = "";
 $cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 
-ob_start(function ($b) {
-    return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
-});
+ 
 $csp = " frame-ancestors 'self';
   block-all-mixed-content;
   default-src 'self' $cdn_urls;
@@ -48,50 +46,10 @@ $rand = time();
 
 <head>
     <meta charset="utf-8">
-    <title>
-        <?php
-        if (!empty($_GET['p'])) {
-            if ($_GET['p'] == "cv-pdf") {
-                echo "Marko Nikolić - Portfolio > CV";
-            } else if ($_GET['p'] == "visitcard") {
-                echo "Marko Nikolić - Portfolio > Visitcard";
-            } else if ($_GET['p'] == "Projects") {
-                echo "Marko Nikolić - Portfolio > Projects";
-            } else {
-                echo "Marko Nikolić - Portfolio";
-            }
-        } else {
-            echo "Marko Nikolić - Portfolio";
-        }
-        ?>
-    </title>
-    <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-    <meta name="description" content="This website for my PortFolio. ">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-    <meta name="author" content="Marko Nikolic">
-
-    <meta name="theme-color" content="#333">
-    <meta property="og:type" content="website" />
-    <meta name="author" content="Marko Nikolic">
-    <link rel="manifest" href="/manifest.webmanifest">
-
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@markoni62595164" />
-    <meta name="twitter:creator" content="@markoni62595164" />
-    <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
-    <meta property="og:title" content="Marko Nikolić - Portfolio" />
-    <meta property="og:description" content="This website for my PortFolio." />
-    <meta property="og:image" itemprop="image"
-        content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image" itemprop="image"
-        content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image:url" itemprop="image"
-        content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1024">
-    <meta property="og:image:height" content="1024">
-    <meta property="og:locale" content="en_GB" />
+   
+    <?php
+    $this->MetaTags();
+    ?>
 
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

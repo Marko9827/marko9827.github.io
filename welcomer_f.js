@@ -34,7 +34,8 @@ class Welcomer {
                 target: ""
             },
             num: 0,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "My projects",
@@ -46,7 +47,8 @@ class Welcomer {
                 target: ""
             },
             num: 13,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "My Visitcard",
@@ -58,7 +60,8 @@ class Welcomer {
                 target: ""
             },
             num: 0,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "Contact me",
@@ -70,7 +73,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 0,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "Blog/News &#128512",
@@ -82,18 +86,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 323,
-            beta: false
-        },{
-            title: "Blog - BETA",
-            descr: "Blog/News &#128512",
-            icon: "bi bi-files-alt",
-            href: {
-                f_u: "welcomer.blogloader('all');",
-                f: true,
-                target: "blank"
-            },
-            num: "BETA",
-            beta: false
+            beta: false,
+            soon: false
         }, {
             title: "Gallery - Photos",
             descr: "My photos gallery | Comming soon",
@@ -104,19 +98,33 @@ class Welcomer {
                 target: "blank"
             },
             num: 10,
-            beta: false
+            beta: false,
+            soon: false
+        }, {
+            title: "Blog - BETA",
+            descr: "Blog/News &#128512",
+            icon: "bi bi-files-alt",
+            href: {
+                f_u: "welcomer.blogloader('all');",
+                f: true,
+                target: "blank"
+            },
+            num: 5,
+            beta: false,
+            soon: false
         },
         {
             title: "My Linkedin (NEW)",
             descr: "Look at my Linkedin profile (NEW)",
             icon: "bi bi-linkedin",
             href: {
-                f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
-                f: false,
-                target: "blank"
+                f_u: "#soon",// f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
+                f: "soon",
+                target: ""
             },
             num: 0,
-            beta: false
+            beta: false,
+            soon: true
         },
         {
             title: "My Github",
@@ -128,7 +136,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 172,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "My Instagram",
@@ -140,7 +149,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 2249,
-            beta: false
+            beta: false,
+            soon: false
         },
         {
             title: "My Deviantart",
@@ -152,7 +162,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 37,
-            beta: false
+            beta: false,
+            soon: false
         },
 
         {
@@ -165,7 +176,8 @@ class Welcomer {
                 target: "blank"
             },
             num: 0,
-            beta: false
+            beta: false,
+            soon: false
         }
 
     ];
@@ -351,9 +363,11 @@ class Welcomer {
                 span = document.createElement("span"),
                 nnum = document.createElement("div");
             div.onclick = function () {
-                if (!v.beta) {
-                    if (v.href.f) {
+                if ((!v.beta) || (!v.soon)) {
+                    if (v.href.f == true) {
                         eval(`${v.href.f_u}`);
+                    } else if (v.href.f == "soon") {
+
                     } else {
                         if (v.href.target = "self") {
                             window.location.href = `${v.href.f_u}`;
@@ -385,7 +399,7 @@ class Welcomer {
                 nnum.setAttribute("class", "nnum");
                 div.appendChild(nnum);
             }
-            
+
             if (v.beta) {
                 nnum.innerHTML = "Beta";
                 nnum.setAttribute("class", "nnum");
@@ -393,6 +407,11 @@ class Welcomer {
             }
             if (v.beta) {
                 nnum.innerHTML = "Beta";
+                nnum.setAttribute("class", "nnum");
+                div.appendChild(nnum);
+            }
+            if (v?.soon) {
+                nnum.innerHTML = "Soon";
                 nnum.setAttribute("class", "nnum");
                 div.appendChild(nnum);
             }
@@ -597,12 +616,12 @@ class Welcomer {
                 if (id == "all") {
 
                     welcomer.blogljoad_posts(f);
- 
+
                 } else {
                     if (f.title) {
 
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
-
+                        $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.get(f.source, function (res) {
                             ifrm.document.open();
                             ifrm.document.write(`${res}`);
@@ -620,7 +639,7 @@ class Welcomer {
 
                         $("#clavs grider_viewer").hide();
                         $("iframe.iframe_mask").show();
-                    } else { 
+                    } else {
                         history.replaceState({}, "", `${window.location.origin}`);
 
                         $("#clavs").attr("style", "transform: translateY(-100%);");
@@ -701,7 +720,7 @@ class Welcomer {
             if (v.id !== "") {
                 if (v.type) {
                     p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${div_not_i});" >
-           <i class="bi bi-link"></i> Open link
+           <i class="bi bi-link"></i> Open post
            </p_open>`;
                 } else {
                     p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.blogloader(${div_not_i});" >
@@ -710,7 +729,7 @@ class Welcomer {
                 }
             }
             p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${v.id});" >
-            <i class="bi bi-link"></i> Open link
+            <i class="bi bi-link"></i> Open post
             </p_open>`;
             if (welcomer.isMobile()) {
 
@@ -738,7 +757,7 @@ class Welcomer {
 
         $(Vjideo_sjpinner).hide();
     }
-    
+
     blogljoad() {
         const RSS_URL = "/?mnps=blog-rss";
         $.ajax({
@@ -1260,16 +1279,51 @@ class Welcomer {
         });
     };
     Hclose() {
-        this.#hmm("Are you sure to close? You are only closing the built-in browser. You do not close the card.", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get("p");
+        const myParam_id = urlParams.get("id");
+        var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
+        if (myParam == "blog") {
+            if(myParam_id){
+            msg_title = "Return to Blog?";
+        }}
+        this.#hmm(msg_title, function () {  
             history.replaceState({}, "", `${window.location.origin}`);
 
-            $("#clavs").attr("style", "transform: translateY(-100%);");
-            welcomer.loop_active = true;
-            setTimeout(function () {
+        $("#clavs").attr("style", "transform: translateY(-100%);");
+        welcomer.loop_active = true;
+        setTimeout(function () {
 
-                $("iframe:not(.iframe_mask)").attr("src", "");
-                $("iframe:not(.iframe_mask)").removeAttr("style");
-            }, 1000);
+            $("iframe:not(.iframe_mask)").attr("src", "");
+            $("iframe:not(.iframe_mask)").removeAttr("style");
+        }, 1000);
+        return false;
+            if (myParam == "blog") {
+                if(myParam){
+                welcomer.blogloader('all');
+                history.replaceState({}, "", `${window.location.origin}/?p=blog`);
+                }else{
+                    history.replaceState({}, "", `${window.location.origin}`);
+
+                    $("#clavs").attr("style", "transform: translateY(-100%);");
+                    welcomer.loop_active = true;
+                    setTimeout(function () {
+    
+                        $("iframe:not(.iframe_mask)").attr("src", "");
+                        $("iframe:not(.iframe_mask)").removeAttr("style");
+                    }, 1000);
+                }
+            } else {
+                history.replaceState({}, "", `${window.location.origin}`);
+
+                $("#clavs").attr("style", "transform: translateY(-100%);");
+                welcomer.loop_active = true;
+                setTimeout(function () {
+
+                    $("iframe:not(.iframe_mask)").attr("src", "");
+                    $("iframe:not(.iframe_mask)").removeAttr("style");
+                }, 1000);
+            }
         });
     };
     share() {
@@ -1473,25 +1527,34 @@ class Welcomer {
         }
     }
     search_Kompjiler(tt) {
+        const urlParams = new URLSearchParams(window.location.search);
+       
+            const attr = $(tt).attr("data-hmm"),
+                hd = $("div_header"),
+                input = $("div_header input[type='text']").val();
+            if (attr) {
+                hd.addClass("ld_completeld_complete_search");
 
-        const attr = $(tt).attr("data-hmm"),
-            hd = $("div_header"),
-            input = $("div_header input[type='text']").val();
-        if (attr) {
-            hd.addClass("ld_completeld_complete_search");
+            }
+            if (attr == "search") {
+                const myParam = urlParams.get("p");
+                const myParam_id = urlParams.get("id");
+                if (myParam == "blog") {
+                    $.getJSON("/?blog=search&q="+input,function(arr){
+                        welcomer.blogljoad_posts(arr);
+                    });
+              
+                } else {
+                welcomer.compTxt(input);
+                }
+            }
+            if (attr == "closeMe") {
+                this.#hmmQ("Close search?", function () {
+                    hd.removeClass("ld_completeld_complete_search");
+                    $("btns_i input[type='text']").val("");
+                    new Welcomer().projectsload();
 
-        }
-        if (attr == "search") {
-
-            welcomer.compTxt(input);
-        }
-        if (attr == "closeMe") {
-            this.#hmmQ("Close search?", function () {
-                hd.removeClass("ld_completeld_complete_search");
-                $("btns_i input[type='text']").val("");
-                new Welcomer().projectsload();
-
-            });
+                }); 
         }
     }
     txt_cursor() {

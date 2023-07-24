@@ -806,3 +806,8 @@ iframe.blog_style {
 iframe.blog_style {
     background: transparent;
 }
+
+#clavs iframe:not(.iframe_mask){
+    transition: .3s !important;
+}
+ 

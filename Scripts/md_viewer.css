@@ -595,3 +595,35 @@
 * {
     font-family: "Poppins", sans-serif !important;
 }
+dnm_footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    text-align: center;
+    background: #000000a1;
+    padding: 10px;
+    z-index: 3;
+    left: 10px;
+    right: 10px;
+    border-radius: 10px 10px 0px 0px;
+    max-width: 350px;
+    margin: auto;
+}img {
+    transition:.3s;
+    pointer-events: unset;
+}
+img:hover {
+    transform: scale(1.1);
+} 
+.content-wrapper {
+    max-width: 600px;
+}
+
+
+img {
+    max-height: 70vh !important;
+    object-fit:  contain;
+}
+
+

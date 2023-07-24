@@ -23,13 +23,14 @@ ob_start(function ($b) {
 $csp = " frame-ancestors 'self';
   block-all-mixed-content;
   default-src 'self' $cdn_urls;
-  script-src 'self'  $cdn_urls;
-  style-src 'self' $cdn_urls 'report-sample' 'unsafe-inline';
+  script-src 'self' blog: data:  $cdn_urls 'unsafe-inline';
+  style-src 'self' $cdn_urls  'unsafe-inline';
+  'style-src-elem'  'self' $cdn_urls  'unsafe-inline';
   object-src 'none';
   frame-src 'self';
   child-src 'self';
-  img-src 'self' $cdn_urls;
-  font-src 'self' data: $font_src; 
+  img-src 'self' $cdn_urls data: blob:  'unsafe-inline';
+  font-src 'self' data: $font_src  'unsafe-inline'; 
   connect-src 'self' $cdn_urls ws: wss: ;
   manifest-src 'self';
   base-uri 'self';
@@ -70,10 +71,6 @@ $rand = time();
     <meta name="author" content="Marko Nikolic">
 
     <meta name="theme-color" content="#333">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-
     <meta property="og:type" content="website" />
     <meta name="author" content="Marko Nikolic">
     <link rel="manifest" href="/manifest.webmanifest">
@@ -95,8 +92,15 @@ $rand = time();
     <meta property="og:image:width" content="1024">
     <meta property="og:image:height" content="1024">
     <meta property="og:locale" content="en_GB" />
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
+ 
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
 
+    
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">

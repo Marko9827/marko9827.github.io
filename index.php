@@ -1,9 +1,45 @@
 <?php
 
 header('X-Frame-Options: SAMEORIGIN');
-
+define("CDN", "https://cdn.eronelit.com/");
 
 //  header("Access-Control-Allow-Origin: *"); 
+class portfolio_marko
+{
+    public function __construct()
+    {
+
+    }
+
+    function metaTag_Generator($id, $specific = "title")
+    {
+        $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+        $array2 = file_get_contents("./data_s/blog/blgd.json");
+
+        if (!empty($id)) {
+            foreach ($array as $index => $element) {
+                if ($element['id'] == $id) {
+                    ?>
+
+
+<?php
+                }
+            }
+        }
+    }
+
+    function file_force_contents($dir, $contents)
+    {
+        $parts = explode('/', $dir);
+        $file = array_pop($parts);
+        $dir = '';
+        foreach ($parts as $part)
+            if (!is_dir($dir .= "/$part"))
+                mkdir($dir);
+        file_put_contents("$dir/$file", $contents);
+    }
+
+}
 function file_force_contents($dir, $contents)
 {
     $parts = explode('/', $dir);
@@ -14,6 +50,8 @@ function file_force_contents($dir, $contents)
             mkdir($dir);
     file_put_contents("$dir/$file", $contents);
 }
+
+
 if (!empty($_GET['blog'])) {
     $url = "./data_s/blog/image/";
     $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
@@ -28,24 +66,24 @@ if (!empty($_GET['blog'])) {
             echo file_get_contents($file);
             ?>
             <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-<link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-<link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-<link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-<link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-<link rel="preload" as="font"
-   href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-   type="font/woff2">
-<link
-   href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-   rel="stylesheet">
-<link
-   href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-   rel="stylesheet">
-           <?php
+            <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+            <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+            <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+            <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+            <link rel="preload" as="font"
+                href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                type="font/woff2">
+            <link
+                href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                rel="stylesheet">
+            <link
+                href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                rel="stylesheet">
+            <?php
             echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
             echo "<style type='text/css'>$css</style>";
             echo "<script type='text/javascript'>$js </script>";
-
+            echo '<div class="cursor " style="opacity: 0;></div>';
             exit();
         } else {
             include "./ERROR_PG.php";
@@ -87,11 +125,11 @@ if (!empty($_GET['blog'])) {
         $array2 = file_get_contents("./data_s/blog/blgd.json");
         $off = "true";
         foreach ($array as $index => $element) {
-            
+
             if ($element['id'] == $_GET['blog']) {
                 echo json_encode($element);
                 $off = "false";
-            } 
+            }
         }
         if ($off == "true") {
             header("contnet-type: text/plain");
@@ -380,26 +418,26 @@ if (!empty($_GET['blog'])) {
 
                 echo file_get_contents($file);
                 ?>
-                 <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-    <link rel="preload" as="font"
-        href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-        type="font/woff2">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-                <?php
-                echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
-                echo "<style type='text/css'>$css</style>";
-                echo "<script type='text/javascript'>$js </script>";
+                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                                                                                                                                                                                                                                                <link rel="preload" as="font"
+                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                                                                                                                                                                                                                                                    type="font/woff2">
+                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                <?php
+                                                                                                                                                                                                                                                echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                                                                                                                                                                                                                                                echo "<style type='text/css'>$css</style>";
+                                                                                                                                                                                                                                                echo "<script type='text/javascript'>$js </script>";
 
-                exit();
+                                                                                                                                                                                                                                                exit();
             } else {
                 include "./ERROR_PG.php";
             }

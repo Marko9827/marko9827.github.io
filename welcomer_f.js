@@ -601,7 +601,7 @@ class Welcomer {
                 } else {
                     if (f.title) {
 
-                        history.replaceState({}, "", `${window.location.origin}/?blog=${id}`);
+                        history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
 
                         $.get(f.source, function (res) {
                             ifrm.document.open();

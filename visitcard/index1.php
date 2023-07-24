@@ -81,6 +81,9 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
         ::-webkit-scrollbar-thumb {
             background: #337ab7;
         }
+        body{
+            background: white !important;
+        }
     </style>
 </head>
 

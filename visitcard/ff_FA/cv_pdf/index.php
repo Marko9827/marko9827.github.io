@@ -150,7 +150,7 @@ img.onload = async function () {
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit Q </span><br> Web engine [ https://search.eronelit.com ]</span></p>
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Full PC info </span> <br> All information PC [ https://blog.eronelit.com/2016/11/eronel-full-pc-information.html ]</span></p>
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Interaktivmarket </span> <br> Bussiness social network [ https://interaktivmarket.com ]</span></p>
-                        <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit O/FTP</span> <br> Online FTP Client [ https://ftpo.eronelit.com/ ]</span></p>
+                        <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Echat</span> <br> Bussiness/Stream/Gaming network<br>[ https://echat.eronelit.com/ ]</span></p>
                         <p id="info_email" class="info_email_code main_label_fffear  "><span><span class="main_label_fffear_FFFA" style="font-weight:bold;">Eronelit Web Q</span> <br> Web browser</span><br><br>
                             <span onclick="parent.welcomer.pgloader('projects');" id="ffaefaer_F" title="Open my projects">AND MORE</span>
                         </p>

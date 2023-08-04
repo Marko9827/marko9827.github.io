@@ -17,7 +17,7 @@ $urlCdn = "";
 $cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 
- 
+
 $csp = " frame-ancestors 'self';
   block-all-mixed-content;
   default-src 'self' $cdn_urls;
@@ -46,7 +46,7 @@ $rand = time();
 
 <head>
     <meta charset="utf-8">
-   
+
     <?php
     $this->MetaTags();
     ?>
@@ -55,10 +55,10 @@ $rand = time();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
- 
+
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
 
-    
+
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
@@ -81,7 +81,7 @@ $rand = time();
 
     <?php /*
 <style type="text/css">
-   include "./welcomer_f.css"; 
+include "./welcomer_f.css"; 
 </style>*/
     $token = bin2hex(random_bytes(64));
     echo '<meta content="' . $token . '" name="csrf-param" />
@@ -129,6 +129,15 @@ $rand = time();
 
         <?php include "$_SERVER[DOCUMENT_ROOT]/css/document_root.css"; ?>
     </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-DFNVTLRPLX');
+    </script>
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
@@ -220,18 +229,18 @@ $rand = time();
                 </arr_bundle>
                 <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();">
                     <?php /*
-               <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
-               <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
-               <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
-               <a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i><span class="href_a_span">Blog/News &#128512</span></a>
+     <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
+     <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
+     <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
+     <a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i><span class="href_a_span">Blog/News &#128512</span></a>
 
-               <a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span"><span class="href_a_span">My Linkedin (NEW)</span></a>
-               <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
-               <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
-               <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
-               <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
+     <a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span"><span class="href_a_span">My Linkedin (NEW)</span></a>
+     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
+     <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
+     <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
+     <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
 " class="fab fa-telegram"></i> <span class="href_a_span">Telegram</span></a>
-       
+
 */?>
                 </div>
             </spj>
@@ -308,9 +317,10 @@ $rand = time();
             <btns_r>
                 <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);"
                     title="Search project..."></i>
-                    <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
+                <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
+                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');" title="Return to Blog home page"></i>
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
-                <i class="bi bi-x-lg" onclick="welcomer.Hclose(this);" title="Close"></i>
+                <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
 
         </div_header>
@@ -320,59 +330,59 @@ $rand = time();
 
         </grider_viewer>
         <?php /*
-   <pages>
-       <page>
-           <div class="container page_header">
-               <div class="row-0">
-                   <div class="col-sm-1">
-                       <img src="/rdlv/students.svg" alt="aefeaf" />
-                   </div>
-                   <div class="col-sm-2">
-                       <h3>Echat</h3>
-                   
-                       <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
-                   <tags>
-                       <tag>Social</tag>
-                   </tags>
-                   </div>
-               </div>
-           </div>
-           <headr>
+<pages>
+<page>
+ <div class="container page_header">
+     <div class="row-0">
+         <div class="col-sm-1">
+             <img src="/rdlv/students.svg" alt="aefeaf" />
+         </div>
+         <div class="col-sm-2">
+             <h3>Echat</h3>
+         
+             <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
+         <tags>
+             <tag>Social</tag>
+         </tags>
+         </div>
+     </div>
+ </div>
+ <headr>
 
-           </headr>
-           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-               <ol class="carousel-indicators">
-                   <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                   <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                   <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                   <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-               </ol>
-               <div class="carousel-inner">
-                   <div class="carousel-item active">
-                       <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
-                   </div>
-                   <div class="carousel-item ">
-                       <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
-                   </div>
-                   <div class="carousel-item ">
-                       <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
-                   </div>
-                   <div class="carousel-item ">
-                       <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
-                   </div>
-               </div>
-               <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                   <span class="sr-only">Previous</span>
-               </a>
-               <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                   <span class="sr-only">Next</span>
-               </a>
-           </div>
-       </page>
-   </pages> */?>
-        <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);" 
+ </headr>
+ <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+     <ol class="carousel-indicators">
+         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+         <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+     </ol>
+     <div class="carousel-inner">
+         <div class="carousel-item active">
+             <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
+         </div>
+         <div class="carousel-item ">
+             <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
+         </div>
+         <div class="carousel-item ">
+             <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
+         </div>
+         <div class="carousel-item ">
+             <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
+         </div>
+     </div>
+     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+         <span class="sr-only">Previous</span>
+     </a>
+     <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+         <span class="carousel-control-next-icon" aria-hidden="true"></span>
+         <span class="sr-only">Next</span>
+     </a>
+ </div>
+</page>
+</pages> */?>
+        <iframe title="Ignoring me " src="" onload="welcomer.pgloader('yes');" onmousemove="welcomer.cursor_hide(this);"
             onmouseout="try{ welcomer.cursor_hide(this); } catch(v){}"></iframe>
         <div_not>
             <div_panel>
@@ -386,8 +396,10 @@ $rand = time();
     </div>
 
     <gridder_loader>
-<img alt="loading" loading="lazy" src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="
- height="55" width="55"></gridder_loader>
+        <img alt="loading" loading="lazy"
+            src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="
+            height="55" width="55">
+    </gridder_loader>
     <div class="contanct_frm">
         <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
         <h5><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
@@ -445,9 +457,9 @@ $rand = time();
                         repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></h5>
-            
-            <form autocomplete="off" >
-                <p class="msg"></p>
+
+        <form autocomplete="off">
+            <p class="msg"></p>
             <label for="fname">Full Name</label>
             <i class="input_icon bi bi-quote"></i>
             <input type="text" id="fname" name="firstname" placeholder="Your name..">
@@ -459,13 +471,14 @@ $rand = time();
             <label for="subject" class="message_lenght">Message </label>
             <textarea id="subject" name="subject" placeholder="Your message..." style="height:200px"></textarea>
             <label for="lname">Solve math problem. I'm not a robot</label>
-    
-    <input type="number" id="norobot" placeholder="">
-        
+
+            <input type="number" id="norobot" placeholder="">
+
         </form>
         <fotter>
-       
-        <button type="button" id="sendbtn">Send message</button></fotter>
+
+            <button type="button" id="sendbtn">Send message</button>
+        </fotter>
     </div>
 
     <canvas id="canvas">Your browser doesn't support canvas</canvas>
@@ -507,10 +520,10 @@ $rand = time();
     </info_box>
     <?php /*<ul id="btns_bottom">
 
-   <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-   <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-   <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-   <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
 
 </ul>
 */?>

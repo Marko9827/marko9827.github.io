@@ -6,7 +6,7 @@ use \Exception;
 header('X-Frame-Options: *');
 define("CDN", "https://cdn.eronelit.com/");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]");
-
+define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");
 if (!empty($_GET['p'])) {
     if ($_GET['p'] == "blog") {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -48,6 +48,7 @@ class portfolio_marko
                 mkdir($dir);
         file_put_contents("$dir/$file", $contents);
     }
+
     function MetaTags()
     {
         $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
@@ -71,6 +72,22 @@ class portfolio_marko
             <meta name="description" content="This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
+            <meta name="keywords" content="<?php 
+            /*$t = "";
+            foreach($data->keywords as $index => $v){
+                echo $v .",";
+            }*/
+            $faf =  $data["keywords"];
+            $c = count($data["keywords"]);
+            $ci = 0;
+            foreach($faf as $v){
+                echo $v;  
+                if($ci < $c){      
+                  echo ","; 
+                }
+                $ci++;
+            }
+            ?>">
 
             <meta name="theme-color" content="#333">
             <meta property="og:type" content="website" />
@@ -213,11 +230,49 @@ class portfolio_marko
     ">' . $actual_link . '</code> ' . $message . ' </br> 
     ');
     }
+    function sitemapGenerator()
+    {
+        header("content-type: application/xml");
+        $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
+        $array2 = file_get_contents("./data_s/blog/blgd.json");
+        $generated = "";
+        $rplc =   file_get_contents("https://blog.eronelit.com/sitemap.xml");
+        $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>","",$rplc);
+        $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',"",$rplc);
+        $rplc = str_replace("</urlset>","",$rplc);
+        
+        foreach ($array as $index => $element) {
+                $d2 = strtotime( $element["time"]);   
+                $d =  date ( 'Y-m-d h:i:s ' , $d2 );
+                // date_format($d2,"Y/m/d  H:i:s");
+                $generated .= " 
+            <url>
+                <loc>https://portfolio.eronelit.com/?p=blog&id=$element[id]</loc>
+                <lastmod>$d</lastmod>
+            </url>\n
+            $rplc
+            ";
+            } 
+            $generated = str_replace("&","&amp;",$generated);
+        echo "
+       
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+        $generated
+        </urlset>
+        ";
+        exit();
+    }
 
     function RUN()
     {
+        if (!empty($_GET['data'])) {
+            if ($_GET['data'] == "sitemap") {
+               $this->sitemapGenerator();
+            }
+            if ($_GET['data'] == "") {
 
-        if (!empty($_GET['blog'])) {
+            }
+        } else if (!empty($_GET['blog'])) {
             $url = "./data_s/blog/image/";
             $array = json_decode(file_get_contents("./data_s/blog/blgd.json"), true);
             $file = "./data_s/blog/$_GET[blog].html";
@@ -343,7 +398,7 @@ class portfolio_marko
                     }
                 }
             } else {
-                
+
             }
             exit();
         } else if (!empty($_GET['mnps'])) {

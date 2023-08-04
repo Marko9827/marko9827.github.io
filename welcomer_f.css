@@ -819,12 +819,12 @@ div_header.ld_completeld_complete2 #logo_backscr_img {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--cdn_white);
+    background: transparent
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: transparent;
+    background: white !important;
 }
 
 p_open {

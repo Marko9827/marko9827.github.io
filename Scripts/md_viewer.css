@@ -658,4 +658,20 @@
          min-height:80vh !important;
      }
  
-  }
+  }::-webkit-scrollbar {
+    width: 5px;
+}
+ 
+::-webkit-scrollbar-track {
+    /* background: transparent; */
+    background: var(--primary_light) !important;
+
+}
+ 
+::-webkit-scrollbar-thumb {
+    background: var(--primary_light) !important;
+}
+ 
+::-webkit-scrollbar-thumb:hover {
+    background: white !important;
+}

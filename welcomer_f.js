@@ -13,7 +13,7 @@ class Welcomer {
     loop_active = true;
     Dots_color = 195;
     #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    #energyAnim = true;
+    energyAnim = true;
     domain = window.location.origin + "/?mnps=dbe&q=";
     div_not_i = 0;
     yesurls = [
@@ -109,22 +109,22 @@ class Welcomer {
                 f: true,
                 target: "blank"
             },
-            num: 5,
+            num: 7,
             beta: false,
             soon: false
         },
         {
-            title: "My Linkedin (NEW)",
-            descr: "Look at my Linkedin profile (NEW)",
+            title: "My Linkedin",
+            descr: "Look at my Linkedin Official profile",
             icon: "bi bi-linkedin",
             href: {
-                f_u: "#soon",// f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
-                f: "soon",
-                target: ""
+                f_u: "https://www.linkedin.com/in/markonikolic98/",// f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
+                f: false,
+                target: "blank"
             },
             num: 0,
             beta: false,
-            soon: true
+            soon: false,  
         },
         {
             title: "My Github",
@@ -604,21 +604,28 @@ class Welcomer {
         $("div_header").addClass("ld_completeld_complete2");
         $(".F_bi_search").hide();
         $("gridder_loader").attr("style", "opacity:1");
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
+
         $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
         if (id == "null" || id == null) {
             id = "all";
         }
+
         $.ajax({
             url: "/?blog=" + id,
             type: "GET",
             success: function (f) {
 
                 if (id == "all") {
+                    history.replaceState({}, "", `${window.location.origin}/?p=blog`);
 
                     welcomer.blogljoad_posts(f);
 
                 } else {
                     if (f.title) {
+                        $(".pdf_page_home_btn").show();
+                        // $(".close_btnf").hide();
 
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
@@ -627,6 +634,7 @@ class Welcomer {
                             ifrm.document.write(`${res}`);
                             ifrm.document.close();
                             $("div_header span").html(`Blog > ${f.title}`);
+                            welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
                             $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
                         });
@@ -649,7 +657,7 @@ class Welcomer {
                     }
                 }
             }, complete: function () {
-
+                welcomer.titleC("Blog > Marko Nikolić - Portfolio")
 
             }
         });
@@ -804,6 +812,8 @@ class Welcomer {
                 welcomer.galleryloadajax();
             });
         }
+        welcomer.titleC("Gallery > Marko Nikolić - Portfolio")
+
     }
     galleryloadajax() {
         var ljoader = document.querySelector("#reaload_page"),
@@ -1023,7 +1033,7 @@ class Welcomer {
         });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
         this.#url_params();
-        if (this.#energyAnim) {
+        if (this.energyAnim) {
             const application = new Application();
 
             //Initialize the CircleContainer objects
@@ -1031,6 +1041,7 @@ class Welcomer {
 
             //Start the initial loop function for the first time
             application.loop();
+
         }
         this.generateGrid();
     };
@@ -1069,15 +1080,18 @@ class Welcomer {
             this.yesurls.forEach(function (v) {
                 if (v == myParam) {
                     myrls = true;
+
                 }
                 if (v == myParam.includes("blog")) {
                     myrls = true;
                 }
             });
             if (myrls) {
+                this.energyAnim = false;
 
             } else {
                 history.replaceState({}, "", `${window.location.origin}`);
+                this.energyAnim = true;
 
                 $("#clavs").attr("style", "transform: translateY(-100%);");
                 welcomer.loop_active = true;
@@ -1096,7 +1110,8 @@ class Welcomer {
         // history.replaceState({}, "", `${window.location.origin}`);
         const urlParams = new URLSearchParams(window.location.search);
         $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
-
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
         $("grider_viewer").removeClass("g_gallery");
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
@@ -1264,51 +1279,64 @@ class Welcomer {
         $("#clavs iframe:not(.iframe_mask)").removeAttr("style");
         $("box_h").hide();
     };
-
+    titleC(str) {
+        $("title").html(str);
+    }
     HcloseF() {
         this.#hmm("You ", function () {
             history.replaceState({}, "", `${window.location.origin}`);
-
+            welcomer.titleC("Marko Nikolić - Portfolio")
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
             setTimeout(function () {
 
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
+
             }, 1000);
+            welcomer.energyAnim = true;
+
         });
     };
+    HclosePostB() {
+
+        var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
+        msg_title = "Return to Blog Home page?";
+        this.#hmm(msg_title, function () {
+            welcomer.blogloader("all");
+        });
+        return false;
+    }
     Hclose() {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
         var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
-        if (myParam == "blog") {
-            if(myParam_id){
-            msg_title = "Return to Blog?";
-        }}
-        this.#hmm(msg_title, function () {  
+      
+        this.#hmm(msg_title, function () {
+
+            $("#clavs").attr("style", "transform: translateY(-100%);");
+            welcomer.titleC(`Marko Nikolić - Portfolio`);
             history.replaceState({}, "", `${window.location.origin}`);
 
-        $("#clavs").attr("style", "transform: translateY(-100%);");
-        welcomer.loop_active = true;
-        setTimeout(function () {
+            welcomer.loop_active = true;
+            setTimeout(function () {
 
-            $("iframe:not(.iframe_mask)").attr("src", "");
-            $("iframe:not(.iframe_mask)").removeAttr("style");
-        }, 1000);
-        return false;
+                $("iframe:not(.iframe_mask)").attr("src", "");
+                $("iframe:not(.iframe_mask)").removeAttr("style");
+            }, 1000);
+            return false;
             if (myParam == "blog") {
-                if(myParam){
-                welcomer.blogloader('all');
-                history.replaceState({}, "", `${window.location.origin}/?p=blog`);
-                }else{
+                if (myParam) {
+                    welcomer.blogloader('all');
+                    history.replaceState({}, "", `${window.location.origin}/?p=blog`);
+                } else {
                     history.replaceState({}, "", `${window.location.origin}`);
 
                     $("#clavs").attr("style", "transform: translateY(-100%);");
                     welcomer.loop_active = true;
                     setTimeout(function () {
-    
+
                         $("iframe:not(.iframe_mask)").attr("src", "");
                         $("iframe:not(.iframe_mask)").removeAttr("style");
                     }, 1000);
@@ -1528,33 +1556,33 @@ class Welcomer {
     }
     search_Kompjiler(tt) {
         const urlParams = new URLSearchParams(window.location.search);
-       
-            const attr = $(tt).attr("data-hmm"),
-                hd = $("div_header"),
-                input = $("div_header input[type='text']").val();
-            if (attr) {
-                hd.addClass("ld_completeld_complete_search");
 
-            }
-            if (attr == "search") {
-                const myParam = urlParams.get("p");
-                const myParam_id = urlParams.get("id");
-                if (myParam == "blog") {
-                    $.getJSON("/?blog=search&q="+input,function(arr){
-                        welcomer.blogljoad_posts(arr);
-                    });
-              
-                } else {
+        const attr = $(tt).attr("data-hmm"),
+            hd = $("div_header"),
+            input = $("div_header input[type='text']").val();
+        if (attr) {
+            hd.addClass("ld_completeld_complete_search");
+
+        }
+        if (attr == "search") {
+            const myParam = urlParams.get("p");
+            const myParam_id = urlParams.get("id");
+            if (myParam == "blog") {
+                $.getJSON("/?blog=search&q=" + input, function (arr) {
+                    welcomer.blogljoad_posts(arr);
+                });
+
+            } else {
                 welcomer.compTxt(input);
-                }
             }
-            if (attr == "closeMe") {
-                this.#hmmQ("Close search?", function () {
-                    hd.removeClass("ld_completeld_complete_search");
-                    $("btns_i input[type='text']").val("");
-                    new Welcomer().projectsload();
+        }
+        if (attr == "closeMe") {
+            this.#hmmQ("Close search?", function () {
+                hd.removeClass("ld_completeld_complete_search");
+                $("btns_i input[type='text']").val("");
+                new Welcomer().projectsload();
 
-                }); 
+            });
         }
     }
     txt_cursor() {
@@ -2038,9 +2066,9 @@ $(document).ready(function () {
 if (window.location.host == "portfolio.eronelit.com") {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').then(function (registration) {
-            console.log('SW registration succeeded with scope:', registration.scope);
+            // console.log('SW registration succeeded with scope:', registration.scope);
         }).catch(function (e) {
-            console.log('SW registration failed with error:', e);
+            // console.log('SW registration failed with error:', e);
         });
     }
 }

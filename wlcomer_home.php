@@ -167,7 +167,7 @@ html.anim_djenerated div#clavs {
     background: transparent !important;
 }
 html.anim_djenerated p-c,
-html.anim_djenerated .p-c,
+html.anim_djenerated p.p-c,
 html.anim_djenerated hh_anim_start{
     -webkit-transition:.3s !important;
     -o-transition:.3s !important;
@@ -176,7 +176,7 @@ html.anim_djenerated hh_anim_start{
 }
 html.anim_djenerated p-c,
 p-c,
-html.anim_djenerated hh_anim_start{
+html.anim_djenerated hh_anim_start, html.anim_djenerated p.p-c{
     opacity:0 !important;
     pointer-events:none !important
 }
@@ -222,7 +222,7 @@ p.p-c {
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-<video   style="opacity:0;" 
+<video   style="opacity:0;" loading="lazy"
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
@@ -508,7 +508,7 @@ onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetad
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
 </video> */?> 
-        <h5><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+        <div class="h5_div"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
@@ -562,7 +562,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                     <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
                         repeatCount="indefinite"></animateTransform>
                 </rect>
-            </svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></h5>
+            </svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
 
         <form autocomplete="off">
             <p class="msg"></p>
@@ -576,9 +576,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
             <label for="subject" class="message_lenght">Message </label>
             <textarea id="subject" name="subject" placeholder="Your message..." style="height:200px"></textarea>
-            <label for="lname">Solve math problem. I'm not a robot</label>
-
-            <input type="number" id="norobot" placeholder="">
+            <label for="norobot">Solve math problem. I'm not a robot</label>
+            <input type="number" id="norobot" name="norobot" placeholder="">
 
         </form>
         <fotter>

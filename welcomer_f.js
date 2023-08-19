@@ -1,33 +1,33 @@
 
- 
+
 const welcomer = {
 
     constructor: function () {
         this.isMobile();
 
-      //  this.fpsMeter();
+        //  this.fpsMeter();
         // this.scroll_event();
-        document.querySelector(".Ignoring_me_iframe").onload = function(){
+        document.querySelector(".Ignoring_me_iframe").onload = function () {
             welcomer.pgloader('yes');
         }
 
-        document.querySelector(".Ignoring_me_iframe").onmousemove = function(){
-           welcomer.cursor_hide(this);
-        }       
-          document.querySelector(".Ignoring_me_iframe").onmouseout = function(){
+        document.querySelector(".Ignoring_me_iframe").onmousemove = function () {
             welcomer.cursor_hide(this);
-        } 
+        }
+        document.querySelector(".Ignoring_me_iframe").onmouseout = function () {
+            welcomer.cursor_hide(this);
+        }
         document.querySelector(".wallpaperVideo").play();
-        document.querySelector(".wallpaperVideo").addEventListener("ended",function(v){
-            try{
-v.play();
-            }catch(v){}
-        }); 
+        document.querySelector(".wallpaperVideo").addEventListener("ended", function (v) {
+            try {
+                v.play();
+            } catch (v) { }
+        });
         var styleClass = document.createElement("style");
-        styleClass.setAttribute("type","text/css");
-        styleClass.setAttribute("data-what","generated");
+        styleClass.setAttribute("type", "text/css");
+        styleClass.setAttribute("data-what", "generated");
         styleClass.innerHTML = "";
-        document.querySelectorAll("style").forEach(function(v){
+        document.querySelectorAll("style").forEach(function (v) {
             styleClass.innerHTML += v.innerHTML;
             v.remove();
         });
@@ -344,7 +344,7 @@ v.play();
             welcomer.pdf();
         });
 
-        document.querySelector(".contanct_frm h5 .closec").addEventListener("click", function () {
+        document.querySelector(".contanct_frm .h5_div .closec").addEventListener("click", function () {
             welcomer.cp();
         });
         try {
@@ -387,108 +387,108 @@ v.play();
                 a = document.createElement("a"),
                 span = document.createElement("span"),
                 nnum = document.createElement("div");
-                if (v.href.f == false) {
-                    a.href = v.href.f_u;
-                    a.target = "_blank";
-        
-                    a.onmouseover = function () {
-                        welcomer.bell_over(a);
-                    }
-                    a.onmouseout = function () {
-                        welcomer.bell_out(a);
-                    }
-                    a.classList.add("adiv");
-                    a.title = v.descr;
-                    i.setAttribute("class", v.icon);
-                    span.classList.add("href_a_span");
-                    span.innerHTML = v.title;
-                    a.appendChild(i);
-                    if (v.num > 0) {
-                        nnum.innerHTML = v.num;
-                        nnum.setAttribute("class", "nnum");
-                        a.appendChild(nnum);
-                    }
-        
-                    if (v.beta) {
-                        nnum.innerHTML = "Beta";
-                        nnum.setAttribute("class", "nnum");
-                        a.appendChild(nnum);
-                    }
-                    if (v.beta) {
-                        nnum.innerHTML = "Beta";
-                        nnum.setAttribute("class", "nnum");
-                        a.appendChild(nnum);
-                    }
-                    if (v?.soon) {
-                        nnum.innerHTML = "Soon";
-                        nnum.setAttribute("class", "nnum");
-                        a.appendChild(nnum);
-                    }
-                    a.appendChild(span);
-                 
-                    buttons_box_shadow.appendChild(a);
-                }else{
-            div.onclick = function () {
-                if ((!v.beta) || (!v.soon)) {
-                    if (v.href.f == true) {
-                        eval(`${v.href.f_u}`);
-                    } else if (v.href.f == "soon") {
+            if (v.href.f == false) {
+                a.href = v.href.f_u;
+                a.target = "_blank";
 
-                    } else {
-                        if (v.href.target = "self") {
-                            window.location.href = `${v.href.f_u}`;
-                        }
-                        if (v.href.target = "blank") {
-                            
-                            a.href = v.href.f_u;
-                            a.target = "_blank";
-                          
-                        }
-                    }
+                a.onmouseover = function () {
+                    welcomer.bell_over(a);
                 }
-            };
+                a.onmouseout = function () {
+                    welcomer.bell_out(a);
+                }
+                a.classList.add("adiv");
+                a.title = v.descr;
+                i.setAttribute("class", v.icon);
+                span.classList.add("href_a_span");
+                span.innerHTML = v.title;
+                a.appendChild(i);
+                if (v.num > 0) {
+                    nnum.innerHTML = v.num;
+                    nnum.setAttribute("class", "nnum");
+                    a.appendChild(nnum);
+                }
 
-            div.onmouseover = function () {
-                welcomer.bell_over(div);
-            }
-            div.onmouseout = function () {
-                welcomer.bell_out(div);
-            }
-            div.classList.add("adiv");
-            div.title = v.descr;
-            i.setAttribute("class", v.icon);
-            span.classList.add("href_a_span");
-            span.innerHTML = v.title;
-            div.appendChild(i);
-            if (v.num > 0) {
-                nnum.innerHTML = v.num;
-                nnum.setAttribute("class", "nnum");
-                div.appendChild(nnum);
-            }
+                if (v.beta) {
+                    nnum.innerHTML = "Beta";
+                    nnum.setAttribute("class", "nnum");
+                    a.appendChild(nnum);
+                }
+                if (v.beta) {
+                    nnum.innerHTML = "Beta";
+                    nnum.setAttribute("class", "nnum");
+                    a.appendChild(nnum);
+                }
+                if (v?.soon) {
+                    nnum.innerHTML = "Soon";
+                    nnum.setAttribute("class", "nnum");
+                    a.appendChild(nnum);
+                }
+                a.appendChild(span);
 
-            if (v.beta) {
-                nnum.innerHTML = "Beta";
-                nnum.setAttribute("class", "nnum");
-                div.appendChild(nnum);
+                buttons_box_shadow.appendChild(a);
+            } else {
+                div.onclick = function () {
+                    if ((!v.beta) || (!v.soon)) {
+                        if (v.href.f == true) {
+                            eval(`${v.href.f_u}`);
+                        } else if (v.href.f == "soon") {
+
+                        } else {
+                            if (v.href.target = "self") {
+                                window.location.href = `${v.href.f_u}`;
+                            }
+                            if (v.href.target = "blank") {
+
+                                a.href = v.href.f_u;
+                                a.target = "_blank";
+
+                            }
+                        }
+                    }
+                };
+
+                div.onmouseover = function () {
+                    welcomer.bell_over(div);
+                }
+                div.onmouseout = function () {
+                    welcomer.bell_out(div);
+                }
+                div.classList.add("adiv");
+                div.title = v.descr;
+                i.setAttribute("class", v.icon);
+                span.classList.add("href_a_span");
+                span.innerHTML = v.title;
+                div.appendChild(i);
+                if (v.num > 0) {
+                    nnum.innerHTML = v.num;
+                    nnum.setAttribute("class", "nnum");
+                    div.appendChild(nnum);
+                }
+
+                if (v.beta) {
+                    nnum.innerHTML = "Beta";
+                    nnum.setAttribute("class", "nnum");
+                    div.appendChild(nnum);
+                }
+                if (v.beta) {
+                    nnum.innerHTML = "Beta";
+                    nnum.setAttribute("class", "nnum");
+                    div.appendChild(nnum);
+                }
+                if (v?.soon) {
+                    nnum.innerHTML = "Soon";
+                    nnum.setAttribute("class", "nnum");
+                    div.appendChild(nnum);
+                }
+                div.appendChild(span);
+
+                buttons_box_shadow.appendChild(div);
             }
-            if (v.beta) {
-                nnum.innerHTML = "Beta";
-                nnum.setAttribute("class", "nnum");
-                div.appendChild(nnum);
-            }
-            if (v?.soon) {
-                nnum.innerHTML = "Soon";
-                nnum.setAttribute("class", "nnum");
-                div.appendChild(nnum);
-            }
-            div.appendChild(span);
-         
-            buttons_box_shadow.appendChild(div);
-            }  
         });
         document.querySelector(".wallpaperVideo").play();
         document.querySelector(".wallpaperVideo").removeAttribute("style");
-   
+
     },
     getDataGallery: async function () {
 
@@ -713,8 +713,8 @@ v.play();
                         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                         $("body").removeAttr("data-hmm");
                         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-  /*                      // history.replaceState({}, "", `${url}`);
-*/
+                        /*                      // history.replaceState({}, "", `${url}`);
+                      */
                         $("div_header span").html(`Blog > ${f.title}`);
 
                         $("#clavs grider_viewer").hide();
@@ -1091,7 +1091,7 @@ v.play();
 
         });
         this.load_gallery();
-        
+
         document.querySelectorAll("script").forEach(function (v) {
             try {
                 v.remove();
@@ -1099,17 +1099,17 @@ v.play();
         });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
         this.url_params();
-       /*if (this.energyAnim) {
-       
-        const application = new this.Application();
-
-            //Initialize the CircleContainer objects
-            application.initializeCircleContainers();
-
-            //Start the initial loop function for the first time
-            application.loop();
-
-        }*/
+        /*if (this.energyAnim) {
+        
+         const application = new this.Application();
+ 
+             //Initialize the CircleContainer objects
+             application.initializeCircleContainers();
+ 
+             //Start the initial loop function for the first time
+             application.loop();
+ 
+         }*/
         this.generateGrid();
     },
     bell_over: function (h) {
@@ -1164,7 +1164,7 @@ v.play();
                 welcomer.loop_active = true;
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
- 
+
             }
         }
     },
@@ -1174,10 +1174,10 @@ v.play();
         })
     },
     pgloader: function (url = "") {
-         const urlParams = new URLSearchParams(window.location.search);
-         $(".pdf_page_home_btn").hide();
+        const urlParams = new URLSearchParams(window.location.search);
+        $(".pdf_page_home_btn").hide();
         $(".close_btnf").show();
-        $("grider_viewer").removeClass("g_gallery"); 
+        $("grider_viewer").removeClass("g_gallery");
 
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
@@ -1233,7 +1233,7 @@ v.play();
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
             history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
-           ;
+            ;
 
         } else if (url.includes("blog.eronelit.com")) {
             $(ljoader).hide();
@@ -1265,7 +1265,7 @@ v.play();
 
         }
 
-       
+
         /*
         if(url.includes("cv-pdf")){
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
@@ -1295,7 +1295,7 @@ v.play();
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-       
+
         }
 
     },
@@ -1354,7 +1354,7 @@ v.play();
                 $("html").removeClass("anim_djenerated");
 
             }, 1000);
-            welcomer.energyAnim = true; 
+            welcomer.energyAnim = true;
 
         });
     },
@@ -1378,7 +1378,7 @@ v.play();
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.titleC(`Marko Nikolić - Portfolio`);
             history.replaceState({}, "", `${window.location.origin}`);
-             
+
 
             welcomer.loop_active = true;
             setTimeout(function () {
@@ -1387,8 +1387,8 @@ v.play();
                 $("iframe:not(.iframe_mask)").removeAttr("style");
                 $("html").removeClass("anim_djenerated");
             }, 1000);
-            
-         
+
+
             return false;
             if (myParam == "blog") {
                 if (myParam) {
@@ -1785,8 +1785,49 @@ v.play();
             }
         });
     },
+    touchpcSimulator: function (elm) {
+        const ele = document.getElementById(elm);
+        ele.style.cursor = 'grab';
+
+        let pos = { top: 0, left: 0, x: 0, y: 0 };
+
+        const mouseDownHandler = function (e) {
+            ele.style.cursor = 'grabbing';
+            ele.style.userSelect = 'none';
+
+            pos = {
+                left: ele.scrollLeft,
+                top: ele.scrollTop, 
+                x: e.clientX,
+                y: e.clientY,
+            };
+
+            document.addEventListener('mousemove', mouseMoveHandler);
+            document.addEventListener('mouseup', mouseUpHandler);
+        };
+
+        const mouseMoveHandler = function (e) { 
+            const dx = e.clientX - pos.x;
+            const dy = e.clientY - pos.y;
+ 
+            ele.scrollTop = pos.top - dy;
+            ele.scrollLeft = pos.left - dx;
+        };
+
+        const mouseUpHandler = function () {
+            ele.style.cursor = 'grab';
+            ele.style.removeProperty('user-select');
+
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+        };
+
+        // Attach the handler
+        ele.addEventListener('mousedown', mouseDownHandler);
+    },
     start: function () {
         this.start_v2();
+      
         $.ajaxSetup({
             cache: true,
             async: true,
@@ -1802,9 +1843,11 @@ v.play();
         if (isMobile == true) {
             $(".cursor").remove();
             $(".anchorTitle").remove();
+            
         }
         if (isMobile == false) {
-
+            this.touchpcSimulator('buttons');
+     
             $('body').append('<div id="anchorTitle" class="anchorTitle"></div>');
 
             this.get_events();
@@ -1815,7 +1858,7 @@ v.play();
 
 
             $(window).mousemove(function (e) {
-                 cursor.css({
+                cursor.css({
                     top: e.clientY - cursor.height() / 2,
                     left: e.clientX - cursor.width() / 2
                 });
@@ -2273,31 +2316,31 @@ v.play();
         }, 100);
     }())
 }
- 
 
-    /*(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
-        var f = function () {
-            function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
-                a.preventDefault();
-                u(++l % c.children.length)
-            }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
-            if (self.performance && self.performance.memory)
-                var t = e(new f.Panel("MB", "#f08", "#201"));
-            u(0);
-            return {
-                REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
-                    k = (performance || Date).now()
-                },
-                end: function () {
-                    a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
-                        var d = performance.memory; t.update(d.usedJSHeapSize /
-                            1048576, d.jsHeapSizeLimit / 1048576)
-                    } return c
-                }, update: function () { k = this.end() }, domElement: c, setMode: u
-            }
-        }; f.Panel = function (e, f, l) {
-            var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
-            b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
-        }; return f
-    });
- */
+
+/*(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
+    var f = function () {
+        function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
+            a.preventDefault();
+            u(++l % c.children.length)
+        }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
+        if (self.performance && self.performance.memory)
+            var t = e(new f.Panel("MB", "#f08", "#201"));
+        u(0);
+        return {
+            REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
+                k = (performance || Date).now()
+            },
+            end: function () {
+                a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
+                    var d = performance.memory; t.update(d.usedJSHeapSize /
+                        1048576, d.jsHeapSizeLimit / 1048576)
+                } return c
+            }, update: function () { k = this.end() }, domElement: c, setMode: u
+        }
+    }; f.Panel = function (e, f, l) {
+        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
+        b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
+    }; return f
+});
+*/

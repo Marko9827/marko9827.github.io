@@ -1,29 +1,52 @@
-'use strict';
 
-class Welcomer {
+ 
+const welcomer = {
 
-    constructor() {
+    constructor: function () {
         this.isMobile();
 
-        this.fpsMeter();
+      //  this.fpsMeter();
         // this.scroll_event();
+        document.querySelector(".Ignoring_me_iframe").onload = function(){
+            welcomer.pgloader('yes');
+        }
 
-
-    }
-    loop_active = true;
-    Dots_color = 195;
-    #isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    energyAnim = true;
-    domain = window.location.origin + "/?mnps=dbe&q=";
-    div_not_i = 0;
-    yesurls = [
+        document.querySelector(".Ignoring_me_iframe").onmousemove = function(){
+           welcomer.cursor_hide(this);
+        }       
+          document.querySelector(".Ignoring_me_iframe").onmouseout = function(){
+            welcomer.cursor_hide(this);
+        } 
+        document.querySelector(".wallpaperVideo").play();
+        document.querySelector(".wallpaperVideo").addEventListener("ended",function(v){
+            try{
+v.play();
+            }catch(v){}
+        }); 
+        var styleClass = document.createElement("style");
+        styleClass.setAttribute("type","text/css");
+        styleClass.setAttribute("data-what","generated");
+        styleClass.innerHTML = "";
+        document.querySelectorAll("style").forEach(function(v){
+            styleClass.innerHTML += v.innerHTML;
+            v.remove();
+        });
+        document.head.appendChild(styleClass);
+    },
+    loop_active: true,
+    Dots_color: 195,
+    isChrome: /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor),
+    energyAnim: true,
+    domain: "/?mnps=dbe&q=",
+    div_not_i: 0,
+    yesurls: [
         "blog",
         "cv-pdf",
         "gallery",
         "projects",
         "visitcard"
-    ];
-    #cards_links = [
+    ],
+    cards_links: [
         {
             title: "My CV",
             descr: "Look at my CV",
@@ -124,7 +147,7 @@ class Welcomer {
             },
             num: 0,
             beta: false,
-            soon: false,  
+            soon: false,
         },
         {
             title: "My Github",
@@ -180,8 +203,8 @@ class Welcomer {
             soon: false
         }
 
-    ];
-    cp() {
+    ],
+    cp: function () {
         $("iframe.iframe_mask").removeAttr("style");
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
@@ -202,20 +225,20 @@ class Welcomer {
             this.rnd = f1 + f2;
             df.classList.add("open");
         }
-    }
-    validateEmail(email) {
+    },
+    validateEmail: function (email) {
         var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
         return regex.test(email);
-    };
-    is_empty = false;
-    norobot() {
+    },
+    is_empty: false,
+    norobot: function () {
         var f = false;
         if (parseInt(document.getElementById("norobot").value) == this.rnd) {
             f = true;
         }
         return f;
-    }
-    checkisempty() {
+    },
+    checkisempty: function () {
         try {
             var is_empty = false;
             if (document.querySelector(".contanct_frm #fname").value.length > 0) {
@@ -255,8 +278,8 @@ class Welcomer {
             }
             this.is_empty = is_empty;
         } catch (v) { }
-    }
-    send_again() {
+    },
+    send_again: function () {
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
             f2 = Math.floor(Math.random() * 10);
@@ -269,8 +292,8 @@ class Welcomer {
         document.querySelector(".contanct_frm #norobot").value = "";
         document.querySelector(".contanct_frm").classList.remove("cants");
         document.querySelector(".contanct_frm form").classList.remove("send_yes");
-    }
-    send_email_c() {
+    },
+    send_email_c: function () {
 
         var
             contanct_frm = document.querySelector(".contanct_frm "),
@@ -303,9 +326,9 @@ class Welcomer {
             fld_form.classList.add("send_yes");
         }
         xhr.send(data);
-    }
-    rnd = 0;
-    async pdf() {
+    },
+    rnd: 0,
+    pdf: async function () {
         const H = URL.createObjectURL(await fetch("/?mnps=pdf-d-cv").then(function (v) { return v.blob() })),
             a = document.createElement("a");
         a.href = H;
@@ -314,9 +337,10 @@ class Welcomer {
         setTimeout(() => {
             URL.revokeObjectURL(H);
         }, 1000);
-    }
-    generateGrid() {
+    },
+    generateGrid: function () {
         document.querySelector(".pdf_download").addEventListener("click", function () {
+            // welcomer.pdf();
             welcomer.pdf();
         });
 
@@ -357,11 +381,53 @@ class Welcomer {
         var buttons_box_shadow = document.querySelector("div#buttons");
 
 
-        this.#cards_links.forEach(function (v) {
+        this.cards_links.forEach(function (v) {
             const div = document.createElement("div"),
                 i = document.createElement("i"),
+                a = document.createElement("a"),
                 span = document.createElement("span"),
                 nnum = document.createElement("div");
+                if (v.href.f == false) {
+                    a.href = v.href.f_u;
+                    a.target = "_blank";
+        
+                    a.onmouseover = function () {
+                        welcomer.bell_over(a);
+                    }
+                    a.onmouseout = function () {
+                        welcomer.bell_out(a);
+                    }
+                    a.classList.add("adiv");
+                    a.title = v.descr;
+                    i.setAttribute("class", v.icon);
+                    span.classList.add("href_a_span");
+                    span.innerHTML = v.title;
+                    a.appendChild(i);
+                    if (v.num > 0) {
+                        nnum.innerHTML = v.num;
+                        nnum.setAttribute("class", "nnum");
+                        a.appendChild(nnum);
+                    }
+        
+                    if (v.beta) {
+                        nnum.innerHTML = "Beta";
+                        nnum.setAttribute("class", "nnum");
+                        a.appendChild(nnum);
+                    }
+                    if (v.beta) {
+                        nnum.innerHTML = "Beta";
+                        nnum.setAttribute("class", "nnum");
+                        a.appendChild(nnum);
+                    }
+                    if (v?.soon) {
+                        nnum.innerHTML = "Soon";
+                        nnum.setAttribute("class", "nnum");
+                        a.appendChild(nnum);
+                    }
+                    a.appendChild(span);
+                 
+                    buttons_box_shadow.appendChild(a);
+                }else{
             div.onclick = function () {
                 if ((!v.beta) || (!v.soon)) {
                     if (v.href.f == true) {
@@ -373,10 +439,10 @@ class Welcomer {
                             window.location.href = `${v.href.f_u}`;
                         }
                         if (v.href.target = "blank") {
-                            var a = document.createElement("a");
+                            
                             a.href = v.href.f_u;
                             a.target = "_blank";
-                            a.click();
+                          
                         }
                     }
                 }
@@ -416,11 +482,15 @@ class Welcomer {
                 div.appendChild(nnum);
             }
             div.appendChild(span);
+         
             buttons_box_shadow.appendChild(div);
+            }  
         });
-    }
-
-    async getDataGallery() {
+        document.querySelector(".wallpaperVideo").play();
+        document.querySelector(".wallpaperVideo").removeAttribute("style");
+   
+    },
+    getDataGallery: async function () {
 
         const response = await fetch("/?mnps=gallery"),
             responseJson = await response.json();
@@ -428,12 +498,12 @@ class Welcomer {
 
 
 
-    }
-    #projects = [
+    },
+    projects: [
         {
             title: "E-student",
             description: "E-student, platforma za studente",
-            img: this.domain + "students.svg",
+            img: "/?mnps=dbe&q=students.svg",
             href: "https://demo.eronelit.com/demo_34023591386511932414/",
             type: true,
             page: {
@@ -457,7 +527,7 @@ class Welcomer {
         {
             title: "Search engine",
             description: "My search engine ",
-            img: this.domain + "erq.png",
+            img: "/?mnps=dbe&q=erq.png",
             href: "https://search.eronelit.com/",
             type: true
 
@@ -465,88 +535,88 @@ class Welcomer {
         {
             title: "Eronelit Dashboard",
             description: "Eronelit Dashboard for server like a WHM/Cpanel",
-            img: this.domain + "eronelit_dashboard.png",
+            img: "/?mnps=dbe&q=eronelit_dashboard.png",
             href: "",
             type: true
         },
         {
             title: "DB Manager",
             description: "Eronelit Dashboard - Plugin DB Manager",
-            img: this.domain + "rlj.png",
+            img: "/?mnps=dbe&q=rlj.png",
             href: "",
             type: true
         },
         {
             title: "Invoice Manager",
             description: "Eronelit Dashboard - Plugin Invoice manager",
-            img: this.domain + "eronelit_plugin_invoice.png",
+            img: "/?mnps=dbe&q=eronelit_plugin_invoice.png",
             href: "",
             type: true
         },
         {
             title: "IP Calculator",
             description: "Eronelit Dashboard - Plugin IP Calculator",
-            img: this.domain + "eronelit_plugin_ip_calculator.png",
+            img: "/?mnps=dbe&q=eronelit_plugin_ip_calculator.png",
             href: "",
             type: true
         },
         {
             title: "Echat",
             description: "My bussines, cloud gaming, Streaming social network",
-            img: this.domain + "rlj2.png",
+            img: "/?mnps=dbe&q=rlj2.png",
             href: "https://echat.eronelit.com/",
             type: true
         },
         {
             title: "Full PC Info",
             description: "Get full pc info / New version coming soon!",
-            img: this.domain + "flj3.png",
+            img: "/?mnps=dbe&q=flj3.png",
             href: window.location.origin + "/Eronel_Full_PC_information_.rar",
             type: false
         },
         {
             title: "Do not be angry man",
             description: "Do not be angry man - GAME",
-            img: this.domain + "tema_bela.png",
+            img: "/?mnps=dbe&q=tema_bela.png",
             href: "https://github.com/Marko9827/projekatZaFaks",
             type: true
         },
         {
             title: "Java http server",
             description: "Simple java http static web server",
-            img: this.domain + "java-http-server.png",
+            img: "/?mnps=dbe&q=java-http-server.png",
             href: "https://github.com/Marko9827/java-http-server",
             type: true
         },
         {
             title: "Operating system",
             description: "My operating system for all devices.",
-            img: this.domain + "os.png",
+            img: "/?mnps=dbe&q=os.png",
             href: "",
             type: true
         },
         {
             title: "EchaTv[Echat] - Streaming Platform",
             description: "My video Streaming platform [Tiktok, Instagram, Youtube].",
-            img: this.domain + "echatv.png",
+            img: "/?mnps=dbe&q=echatv.png",
             href: "",
             type: true
         },
         {
             title: "Echat 3D Model SDK/viewer",
             description: "Echat my Social network - 3D model animation viewer - Shared Post \n Supported: Blender, PTC Creo, Solidwork, Autocad, Alias Wavefront, Autodesk Filmbox, FBX, .3dc, .asc, .3ds, .abc, .dae, .zae, .igs, .iges, .las, .ply, glb. \n\n 3D model viewer TEST \n\n - BETA VERSION! \n\n        - PEGI 3",
-            img: this.domain + "echat_3d.png",
+            img: "/?mnps=dbe&q=echat_3d.png",
             href: "https://echat.eronelit.com/?s=p&id=943703156",
             type: true
         },
-    ];
-    #history = [];
-    cursor = $(".cursor");
-    TopLeft = {
+    ],
+    history: [],
+    cursor: $(".cursor"),
+    TopLeft: {
         y: 0,
         x: 0
-    };
-    scroll_event() {
+    },
+    scroll_event: function () {
         $("#buttons").on("scroll", function (e) {
             e.preventDefault();
             welcomer.scrolj();
@@ -557,8 +627,8 @@ class Welcomer {
         $(".catascrollEchatTv:not(.catascrollEchatTv_right)").on("click", function () {
             welcomer.bundleSuggestedS("1");
         });
-    }
-    scrolj() {
+    },
+    scrolj: function () {
         const catascrollEchatTv_right = document.querySelector(
             ".catascrollEchatTv_right"
         ),
@@ -581,23 +651,23 @@ class Welcomer {
         } else {
             catascrollEchatTv_right.setAttribute("style", "transform:scale(1)");
         }
-    }
-    bundleSuggestedS(n) {
+    },
+    bundleSuggestedS: function (n) {
         if (n == "1") {
             document.querySelector("#buttons").scrollLeft += 150;
         } else {
             document.querySelector("#buttons").scrollLeft -= 150;
         }
         welcomer.scrolj();
-    }
-    #get_from_datter(url) {
+    },
+    get_from_datter: function (url) {
         $.ajax({
             url: url,
             type: "GET",
             success: function (v) { }
         })
-    }
-    blogloader(id = "all") {
+    },
+    blogloader: function (id = "all") {
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
@@ -625,7 +695,9 @@ class Welcomer {
                 } else {
                     if (f.title) {
                         $(".pdf_page_home_btn").show();
-                        // $(".close_btnf").hide();
+                        /*
+
+                        // $(".close_btnf").hide();*/
 
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
@@ -641,8 +713,8 @@ class Welcomer {
                         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                         $("body").removeAttr("data-hmm");
                         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-                        // history.replaceState({}, "", `${url}`);
-
+  /*                      // history.replaceState({}, "", `${url}`);
+*/
                         $("div_header span").html(`Blog > ${f.title}`);
 
                         $("#clavs grider_viewer").hide();
@@ -658,31 +730,31 @@ class Welcomer {
                 }
             }, complete: function () {
                 welcomer.titleC("Blog > Marko Nikolić - Portfolio")
+                $("html").addClass("anim_djenerated");
 
             }
         });
-    }
-    #url_params() {
+    },
+    url_params: function () {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
 
         if (myParam !== null) {
             if (myParam == "blog") {
-                //  this.pgloader(myParam_id);
+
                 this.blogloader(myParam_id);
             } else {
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
         }
-    }
-
-    url_params2() {
+    },
+    url_params2: function () {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         return window.location.origin + "/?p=" + myParam;
-    }
-    isMobile() {
+    },
+    isMobile: function () {
         var isMobile = false;
 
         if (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i.test(navigator.userAgent) ||
@@ -692,17 +764,15 @@ class Welcomer {
         $("p-c").attr("data-title", "Your GPU: " + this.GPPU_ms());
 
         return isMobile;
-    }
-
-    decodeEntities(str) {
-        // this prevents any overhead from creating the object each time
+    },
+    decodeEntities: function (str) {
         let txt = document.createElement("textarea");
 
         txt.innerHTML = str;
 
         return txt.value;
-    }
-    blogljoad_posts(arr = []) {
+    },
+    blogljoad_posts: function (arr = []) {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -715,7 +785,7 @@ class Welcomer {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
-        $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
+        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
@@ -764,9 +834,8 @@ class Welcomer {
         $("gridder_loader").removeAttr("style");
 
         $(Vjideo_sjpinner).hide();
-    }
-
-    blogljoad() {
+    },
+    blogljoad: function () {
         const RSS_URL = "/?mnps=blog-rss";
         $.ajax({
             url: RSS_URL,
@@ -789,17 +858,17 @@ class Welcomer {
                          */
             }
         })
-    }
-    loader_svg = "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=";
-    load_gallery() {
+    },
+    loader_svg: "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",
+    load_gallery: function () {
         $.getJSON("/?mnps=gallery", function (res) {
             $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
 
             welcomer.load_gallery_j = res;
         });
-    }
-    load_gallery_j = [];
-    galleryload() {
+    },
+    load_gallery_j: [],
+    galleryload: function () {
         $("gridder_loader").attr("style", "opacity:1");
 
         if (this.load_gallery_j.length > 0) {
@@ -810,12 +879,13 @@ class Welcomer {
 
                 welcomer.load_gallery_j = res;
                 welcomer.galleryloadajax();
+                $("html").addClass("anim_djenerated")
             });
         }
         welcomer.titleC("Gallery > Marko Nikolić - Portfolio")
 
-    }
-    galleryloadajax() {
+    },
+    galleryloadajax: function () {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -837,11 +907,6 @@ class Welcomer {
         $("gridder_loader").attr("style", "opacity:1");
         history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
 
-        // gallery = $.getJSON("/?mnps=gallery", function (res) { return res; });
-        // $.getJSON("/?mnps=gallery", function (res) {
-        // console.log(res);
-        // $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
-        // $.each(welcomer.load_gallery_j, function (k, v) {
         var v = welcomer.load_gallery_j;
         for (var i = 0; i < v.length; i++) {
             console.log(v[i]);
@@ -885,8 +950,8 @@ class Welcomer {
         $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
         $(".F_bi_search").hide();
         $(Vjideo_sjpinner).hide();
-    }
-    loaded_imgPrld(aer, id = 0) {
+    },
+    loaded_imgPrld: function (aer, id = 0) {
         const d = aer;
         // $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
         const img = new Image();
@@ -907,8 +972,8 @@ class Welcomer {
         }
         $(aer).removeAttr("onload");
 
-    };
-    projectsload() {
+    },
+    projectsload: function () {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -921,14 +986,14 @@ class Welcomer {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
-        $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
+        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
 
 
-        this.#projects.forEach(function (v) {
+        this.projects.forEach(function (v) {
             var thi = "class='is_touch'",
                 p_open = "";
             if (v.href !== "") {
@@ -966,11 +1031,11 @@ class Welcomer {
         $(".F_bi_search").show();
 
         $(Vjideo_sjpinner).hide();
-    }
-    closeMeIamSad() {
+    },
+    closeMeIamSad: function () {
         $(".zoomContainer, .zoomer_exit, #helper_id_helper, #helper_id_helper3").remove();
-    }
-    infoVa(h = 0) {
+    },
+    infoVa: function (h = 0) {
 
         const imgH = $(`project[id-int="${h}"] img`);
 
@@ -981,10 +1046,10 @@ class Welcomer {
         });
         $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
 
-    }
-    openWindow(i = 0) {
-        if (this.#projects[i].href !== "") {
-            const urls = this.#projects[i].href;
+    },
+    openWindow: function (i = 0) {
+        if (this.projects[i].href !== "") {
+            const urls = this.projects[i].href;
             window.open(urls);
             return "";
             if (urls.includes("download")) {
@@ -1004,37 +1069,39 @@ class Welcomer {
                 });
             }
         }
-    }
-
-    openLink(kk) {
+    },
+    openLink: function (kk) {
         $("project").find("p_open").removeAttr("style");
         $(`project[id-int="${kk}"]`).find("p_open").attr("style", "top: 45px !important; opacity: 1 !important;");
-    }
-    loaded_img(aer, id = 0) {
+    },
+    loaded_img: function (aer, id = 0) {
 
         $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
         this.toblob(aer);
         $(aer).removeAttr("onload");
-    };
-    start(j) {
+    },
+    start_v2: function (j) {
+        this.constructor();
         $("gridder_loader img").attr("onload", "welcomer.loading_t(this)");
-        if (!this.#isChrome) {
+        if (!this.isChrome) {
             //    $("canvas").addClass("low_GPU")
         }
         document.querySelector("iframe").addEventListener("load", function () {
             // pgloader("yes");
 
         });
-        this.load_gallery()
+        this.load_gallery();
+        
         document.querySelectorAll("script").forEach(function (v) {
             try {
                 v.remove();
             } catch (v) { }
         });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
-        this.#url_params();
-        if (this.energyAnim) {
-            const application = new Application();
+        this.url_params();
+       /*if (this.energyAnim) {
+       
+        const application = new this.Application();
 
             //Initialize the CircleContainer objects
             application.initializeCircleContainers();
@@ -1042,37 +1109,36 @@ class Welcomer {
             //Start the initial loop function for the first time
             application.loop();
 
-        }
+        }*/
         this.generateGrid();
-    };
-
-    bell_over(h) {
+    },
+    bell_over: function (h) {
 
         document.querySelector("#logo_backscr_img").classList.add("activeBell");
-        if (this.#isChrome) {
-            $("#canvas").attr("style", "opacity: 1; -webkit-filter: url('#shadowed-goo') !important; filter: url('#shadowed-goo') !important; transform: rotate(45deg) scale(2);");
+        if (this.isChrome) {
+            $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: url('#shadowed-goo') !important; filter: url('#shadowed-goo') !important; transform: rotate(45deg) scale(2);");
             //; transform: rotateX(75deg) scale(4)
         } else {
-            $("#canvas").attr("style", "opacity: 1; -webkit-filter: unset !important; filter: unset !important ;  transform: rotate(45deg) scale(2);");
+            $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: unset !important; filter: unset !important ;  transform: rotate(45deg) scale(2);");
         }
-    };
-    bell_out(o) {
+    },
+    bell_out: function (o) {
         document.querySelector("#logo_backscr_img").classList.remove("activeBell");
-        $("#canvas").removeAttr("style");
-    }
-    hide(elem) {
+        $("#canvas, .wallpaperVideo ").removeAttr("style");
+    },
+    hide: function (elem) {
         document.querySelectorAll(elem).forEach(function (v) {
             v.classList.remove("show");
             v.classList.add("hide");
         });
-    };
-    show(elem) {
+    },
+    show: function (elem) {
         document.querySelectorAll(elem).forEach(function (v) {
             v.classList.remove("hide");
             v.classList.add("show");
         });
-    };
-    loadorNot() {
+    },
+    loadorNot: function () {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('p');
         var myrls = false;
@@ -1088,31 +1154,31 @@ class Welcomer {
             });
             if (myrls) {
                 this.energyAnim = false;
+                $("html").addClass("anim_djenerated");
 
             } else {
                 history.replaceState({}, "", `${window.location.origin}`);
                 this.energyAnim = true;
-
+                $("html").removeClass("anim_djenerated");
                 $("#clavs").attr("style", "transform: translateY(-100%);");
                 welcomer.loop_active = true;
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
-
+ 
             }
         }
-    }
-    blgloader(id = "") {
+    },
+    blgloader: function (id = "") {
         $.ajax({
 
         })
-    }
-    pgloader(url = "") {
-        // history.replaceState({}, "", `${window.location.origin}`);
-        const urlParams = new URLSearchParams(window.location.search);
-        $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
-        $(".pdf_page_home_btn").hide();
+    },
+    pgloader: function (url = "") {
+         const urlParams = new URLSearchParams(window.location.search);
+         $(".pdf_page_home_btn").hide();
         $(".close_btnf").show();
-        $("grider_viewer").removeClass("g_gallery");
+        $("grider_viewer").removeClass("g_gallery"); 
+
         if (url !== "yes") {
             var hrl_url = url.replace("pages", "p");
             if (!url.includes(window.location.origin)) {
@@ -1124,7 +1190,7 @@ class Welcomer {
                 $("div_header").attr("data-url", url);
             }
         }
-        welcomer.loop_active = false;
+        this.loop_active = false;
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -1152,18 +1218,22 @@ class Welcomer {
             this.loadorNot();
         } else if (url.includes("projects")) {
             $("body").removeAttr("data-hmm");
-            welcomer.projectsload();
+            this.projectsload();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Projects");
             history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+            $("html").addClass("anim_djenerated");
+
         } else if (url.includes("gallery")) {
             $("body").removeAttr("data-hmm");
-            welcomer.galleryload();
+            this.galleryload();
+
             $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
             history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+           ;
 
         } else if (url.includes("blog.eronelit.com")) {
             $(ljoader).hide();
@@ -1185,29 +1255,24 @@ class Welcomer {
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
-            // history.replaceState({}, "", `${url}`);
 
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("#clavs grider_viewer").hide();
             $("iframe.iframe_mask").hide();
             if (url.includes)
-                try {
-                    // document.querySelector("iframe").remove();
+                try { /* document.querySelector("iframe").remove();*/
                 } catch (v) { }
 
-            // iframe.src = url;
-            // iframe.onload = pgloader("yes");
-            // div_header.appendChild(iframe);
         }
 
+       
         /*
         if(url.includes("cv-pdf")){
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
         }
         */
-    }
-
-    pgloaderH(url = "") {
+    },
+    pgloaderH: function (url = "") {
 
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -1224,22 +1289,17 @@ class Welcomer {
             var urlf = $("iframe:not(.iframe_mask)").attr("src");
 
         } else if (url == "projects") {
-            welcomer.projectsload();
+            this.projectsload();
         } else {
 
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
             $("iframe:not(.iframe_mask)").attr("src", url);
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-            try {
-                // document.querySelector("iframe").remove();
-            } catch (v) { }
-            // iframe.src = url;
-            // iframe.onload = pgloader("yes");
-            // div_header.appendChild(iframe);
+       
         }
 
-    }
-    #f_blob(url = "") {
+    },
+    f_blob: function (url = "") {
         var xhr = new XMLHttpRequest();
 
         xhr.open('GET', url);
@@ -1259,9 +1319,8 @@ class Welcomer {
                 }
             }
         }
-    };
-
-    reload_me(t = true) {
+    },
+    reload_me: function (t = true) {
         var ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
@@ -1278,53 +1337,58 @@ class Welcomer {
 
         $("#clavs iframe:not(.iframe_mask)").removeAttr("style");
         $("box_h").hide();
-    };
-    titleC(str) {
+    },
+    titleC: function (str) {
         $("title").html(str);
-    }
-    HcloseF() {
-        this.#hmm("You ", function () {
+    },
+    HcloseF: function () {
+        this.hmm("You ", function () {
             history.replaceState({}, "", `${window.location.origin}`);
-            welcomer.titleC("Marko Nikolić - Portfolio")
+            this.titleC("Marko Nikolić - Portfolio")
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
             setTimeout(function () {
 
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
+                $("html").removeClass("anim_djenerated");
 
             }, 1000);
-            welcomer.energyAnim = true;
+            welcomer.energyAnim = true; 
 
         });
-    };
-    HclosePostB() {
+    },
+    HclosePostB: function () {
 
         var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
         msg_title = "Return to Blog Home page?";
-        this.#hmm(msg_title, function () {
+        this.hmm(msg_title, function () {
             welcomer.blogloader("all");
         });
         return false;
-    }
-    Hclose() {
+    },
+    Hclose: function () {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
         var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
-      
-        this.#hmm(msg_title, function () {
+
+        this.hmm(msg_title, function () {
 
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.titleC(`Marko Nikolić - Portfolio`);
             history.replaceState({}, "", `${window.location.origin}`);
+             
 
             welcomer.loop_active = true;
             setTimeout(function () {
 
                 $("iframe:not(.iframe_mask)").attr("src", "");
                 $("iframe:not(.iframe_mask)").removeAttr("style");
+                $("html").removeClass("anim_djenerated");
             }, 1000);
+            
+         
             return false;
             if (myParam == "blog") {
                 if (myParam) {
@@ -1353,8 +1417,8 @@ class Welcomer {
                 }, 1000);
             }
         });
-    };
-    share() {
+    },
+    share: function () {
         var hl = $("div_header").attr("data-url");
         if (navigator.share) {
             navigator.share({
@@ -1367,11 +1431,11 @@ class Welcomer {
             $("body").append(``);
         }
 
-    }
-    hideCursor() {
+    },
+    hideCursor: function () {
         $(".cursor").hide();
-    }
-    #hmmQ(qust = "", call) {
+    },
+    hmmQ: function (qust = "", call) {
         $("div_not").attr("style", "top: 45px !important; opacity: 1 !important;");
 
         $("div_not div_panel span").text(qust);
@@ -1396,8 +1460,8 @@ class Welcomer {
             call();
         });
 
-    }
-    #hmm(qust = "", call) {
+    },
+    hmm: function (qust = "", call) {
         $("div_not").attr("style", "top: 45px !important; opacity: 1 !important;");
         // var answer = window.confirm(qust);
         // if (answer) {
@@ -1425,24 +1489,19 @@ class Welcomer {
             $("#clavs grider_viewer").hide();
             call();
         });
-    }
-    question_no() {
+    },
+    question_no: function () {
         $("div_not").removeAttr("style");
 
         $("#clavs iframe, #clavs grider_viewer").removeAttr("style");
-    };
-
-    cursor_hide() {
+    },
+    cursor_hide: function () {
         $(".cursor").hide();
-    }
-
-    cursor_show() {
+    },
+    cursor_show: function () {
         $(".cursor").show();
-
-    }
-
-
-    url_blob(url = "") {
+    },
+    url_blob: function (url = "") {
         var blob = null;
         var objectURL = null;
         $.ajax({
@@ -1457,12 +1516,9 @@ class Welcomer {
             },
             async: false
         });
-    };
-
-
-
-    Img_cursor() {
-        welcomer.cursor.css({
+    },
+    Img_cursor: function () {
+        this.cursor.css({
             transform: "scale(2)",
             "text-align": "center",
             "font-size": "10px",
@@ -1471,11 +1527,9 @@ class Welcomer {
             "cursor": "none",
             "mix-blend-mode": "unset"
         });
-    }
-
-
-    Img_no_cursor() {
-        welcomer.cursor.css({
+    },
+    Img_no_cursor: function () {
+        this.cursor.css({
             transform: "scale(1)",
             "font-size": "unset",
             "padding": "unset",
@@ -1485,39 +1539,40 @@ class Welcomer {
             "display": "unset"
 
         });
-    }
-    cr(v) {
+    },
+    cr: function (v) {
         var thi = "class='is_touch'",
             p_open = "";
         if (v.href !== "") {
             if (v.type) {
-                p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${welcomer.div_not_i});" >
+                p_open = ` <p_open title="Open: ${v.href}" onclick=" welcomer.openWindow(${this.div_not_i});" >
                <i class="bi bi-link"></i> Open link
                </p_open>`;
             } else {
-                p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${welcomer.div_not_i});" >
+                p_open = ` <p_open title="Download: ${v.title}" onclick=" welcomer.openWindow(${this.div_not_i});" >
               <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
                </p_open>`;
             }
         }
-        if (welcomer.isMobile()) {
+        if (this.isMobile()) {
 
-            thi = "onclick='welcomer.openLink(" + welcomer.div_not_i + ")'"
+            thi = "onclick=' welcomer.openLink(" + this.div_not_i + ")'"
 
         }
-        $("grider_viewer").append(`<project  ${thi} id-int="${welcomer.div_not_i}" title="${v.description}">
+        $("grider_viewer").append(`<project  ${thi} id-int="${this.div_not_i}" title="${v.description}">
             <grider_box>
             <p><span>${v.title}</span></p>
               
                 ${p_open}
-                <fiv><i onclick="welcomer.infoVa(${welcomer.div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
-                <img loading="lazy"  data-zoom-image="${v.img}" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${welcomer.div_not_i});" src="${v.img}" alt="${v.title}">
+                <fiv><i onclick=" welcomer.infoVa(${this.div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+                <img loading="lazy"  data-zoom-image="${v.img}" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${this.div_not_i});" src="${v.img}" alt="${v.title}">
                        </grider_box>
 
                 </project>`);
-        welcomer.div_not_i++;
-    }
-    loading_t(d) {
+        this.div_not_i++;
+        /* / welcomer.div_not_i++;*/
+    },
+    loading_t: function (d) {
         const img = new Image();
         img.src = d.getAttribute("src");
         img.onload = async function () {
@@ -1525,8 +1580,8 @@ class Welcomer {
             d.src = H;
             d.removeAttribute("onload");
         }
-    }
-    toblob(d) {
+    },
+    toblob: function (d) {
         const img = new Image();
         img.src = d.getAttribute("src");
         img.onload = async function () {
@@ -1534,16 +1589,17 @@ class Welcomer {
             d.src = H;
             d.setAttribute("data-zoom-image", H);
         }
-    }
-    compTxt(s) {
+    },
+    compTxt: function (s) {
         var div_not_i = 0;
         $("grider_viewer").html("");
         if (s == "") {
-            this.#projects.forEach(function (v) {
+            this.projects.forEach(function (v) {
+                // welcomer.cr(v);
                 welcomer.cr(v);
             });
         } else {
-            this.#projects.forEach(function (v) {
+            this.projects.forEach(function (v) {
                 if (v.title.indexOf(s) !== -1) {
                     welcomer.div_not_i = 0;
                     welcomer.cr(v);
@@ -1553,8 +1609,8 @@ class Welcomer {
 
             });
         }
-    }
-    search_Kompjiler(tt) {
+    },
+    search_Kompjiler: function (tt) {
         const urlParams = new URLSearchParams(window.location.search);
 
         const attr = $(tt).attr("data-hmm"),
@@ -1577,15 +1633,15 @@ class Welcomer {
             }
         }
         if (attr == "closeMe") {
-            this.#hmmQ("Close search?", function () {
+            this.hmmQ("Close search?", function () {
                 hd.removeClass("ld_completeld_complete_search");
                 $("btns_i input[type='text']").val("");
-                new Welcomer().projectsload();
+                welcomer.projectsload();
 
             });
         }
-    }
-    txt_cursor() {
+    },
+    txt_cursor: function () {
         $("input[type='text'], textarea, input[type='search'], .trumbowyg-box .trumbowyg-editor" +
             " , .invoice-box input").click(function () {
                 welcomer.cursor.css({
@@ -1616,15 +1672,14 @@ class Welcomer {
 
                 });
             });
-    }
-
-    parentTitler(element, text) {
+    },
+    parentTitler: function (element, text) {
         var offset = element.offset();
 
         $('#anchorTitle').html("<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text)
             .attr("style", "opacity:1;");
-    }
-    showAnchorTitle(element, text) {
+    },
+    showAnchorTitle: function (element, text) {
 
         var offset = element.offset();
         if ($('#anchorTitle').length > 0) {
@@ -1641,21 +1696,20 @@ class Welcomer {
         })
         .html(text)
         .show();*/
-    }
-
-    hideAnchorTitle() {
+    },
+    hideAnchorTitle: function () {
         if ($('#anchorTitle').length > 0) {
             $('#anchorTitle').removeAttr("style");
         } else {
             parent.welcomer.hideAnchorTitle();
         }
-    }
-    fpsMeter() {
+    },
+    fpsMeter: function () {
         let prevTime = Date.now(),
             frames = 0,
             k = (performance || Date).now()
 
-        requestAnimationFrame(function loop() {
+        window.requestAnimationFrame(function loop() {
             if (self.performance && self.performance.memory) {
                 const time = Date.now();
                 frames++;
@@ -1673,16 +1727,14 @@ class Welcomer {
                     $("p-c").html(`<i class="bi bi-pci-card"></i> ${fps}FPS`);
                 }
 
-                requestAnimationFrame(loop);
+                window.requestAnimationFrame(loop);
             }
         });
-    }
-
-    GPPU_ms() {
-        //return  this.getUnmaskedInfo().renderer;
-    }
-
-    getUnmaskedInfo() {
+    },
+    GPPU_ms: function () {
+        /* /return  this.getUnmaskedInfo().renderer; */
+    },
+    getUnmaskedInfo: function () {
         const gl = document.createElement('canvas').getContext('webgl');
         if (!gl) {
             return {
@@ -1697,8 +1749,8 @@ class Welcomer {
             error: "no WEBGL_debug_renderer_info",
         };
 
-    }
-    get_events() {
+    },
+    get_events: function () {
         $('*[title]:not(iframe), *[data-title]:not(iframe)').each(function () {
 
             var a = $(this);
@@ -1732,536 +1784,520 @@ class Welcomer {
                 });
             }
         });
-    }
-}
+    },
+    start: function () {
+        this.start_v2();
+        $.ajaxSetup({
+            cache: true,
+            async: true,
+            global: true,
+            headers: {
+                "AuthV2-token": $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-var welcomer = new Welcomer();
+        const isMobile = this.isMobile();
 
 
-$(document).ready(function () {
-
-
-
-
-    $.ajaxSetup({
-        cache: true,
-        async: true,
-        global: true,
-        headers: {
-            "AuthV2-token": $('meta[name="csrf-token"]').attr('content')
+        if (isMobile == true) {
+            $(".cursor").remove();
+            $(".anchorTitle").remove();
         }
-    });
+        if (isMobile == false) {
 
-    const isMobile = welcomer.isMobile();
+            $('body').append('<div id="anchorTitle" class="anchorTitle"></div>');
 
-
-    if (isMobile == true) {
-        $(".cursor").remove();
-        $(".anchorTitle").remove();
-    }
-    if (isMobile == false) {
-
-        $('body').append('<div id="anchorTitle" class="anchorTitle"></div>');
-
-        welcomer.get_events();
+            this.get_events();
 
 
-        var cursor = $(".cursor");
-        cursor.addClass("cursor_pc_show");
+            var cursor = $(".cursor");
+            cursor.addClass("cursor_pc_show");
 
 
-        $(window).mousemove(function (e) {
-            cursor.css({
-                top: e.clientY - cursor.height() / 2,
-                left: e.clientX - cursor.width() / 2
-            });
-            welcomer.TopLeft = {
-                y: e.clientY - $('*[title]').height() / 2,
-                x: e.clientX - $('*[title]').width() / 2
-            };
-
-
-
-
-        });
-
-        $(document)
-            .mouseleave(function () {
-                cursor.css({
-                    opacity: "0"
+            $(window).mousemove(function (e) {
+                 cursor.css({
+                    top: e.clientY - cursor.height() / 2,
+                    left: e.clientX - cursor.width() / 2
                 });
-            })
-            .mouseenter(function () {
-                cursor.css({
-                    opacity: "1"
-                });
-            });
-        $("iframe")
-            .mouseleave(function () {
-                cursor.css({
-                    opacity: "1"
-                });
-            })
-            .mouseenter(function () {
-                cursor.css({
-                    opacity: "0"
-                });
-            });
-        setInterval(function () {
+                welcomer.TopLeft = {
+                    y: e.clientY - $('*[title]').height() / 2,
+                    x: e.clientX - $('*[title]').width() / 2
+                };
 
-            welcomer.get_events();
 
-            $("p-message , *[onclick], *[href], button, .btn, #open_image_for_title, .trumbowyg-button-pane button").contextmenu(function () {
-                cursor.css({
-                    transform: "scale(1.5)"
-                });
-            }).mouseenter(function () {
-                cursor.css({
-                    transform: "scale(1.5)"
-                });
-            }).mouseleave(function () {
-                cursor.css({
-                    transform: "scale(1)"
-                });
+
+
             });
 
+            $(document)
+                .mouseleave(function () {
+                    cursor.css({
+                        opacity: "0"
+                    });
+                })
+                .mouseenter(function () {
+                    cursor.css({
+                        opacity: "1"
+                    });
+                });
+            $("iframe")
+                .mouseleave(function () {
+                    cursor.css({
+                        opacity: "1"
+                    });
+                })
+                .mouseenter(function () {
+                    cursor.css({
+                        opacity: "0"
+                    });
+                });
+            setInterval(function () {
 
-            $("iframe").hover(function () {
-                $(".cursor").hide();
-            }).mouseleave(function () {
+                welcomer.get_events();
 
-
-                $(".cursor").show();
-            });
-        }, 1500);
-
-
-        $("#side-menu li:last-child").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        }).mousemove(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
-
-        $(".pdf-btn-info").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='far fa-file-pdf'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='far fa-file-pdf'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
-
-
-        $("#side-menu li:first-child").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-home'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-home'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
+                $("p-message , *[onclick], *[href], button, .btn, #open_image_for_title, .trumbowyg-button-pane button").contextmenu(function () {
+                    cursor.css({
+                        transform: "scale(1.5)"
+                    });
+                }).mouseenter(function () {
+                    cursor.css({
+                        transform: "scale(1.5)"
+                    });
+                }).mouseleave(function () {
+                    cursor.css({
+                        transform: "scale(1)"
+                    });
+                });
 
 
-        $(".select-selected-all, select").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        }).click(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
+                $("iframe").hover(function () {
+                    $(".cursor").hide();
+                }).mouseleave(function () {
 
 
-        $(".save-btn-info").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-save'></i>");
-        }).click(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-save'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-save'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
+                    $(".cursor").show();
+                });
+            }, 1500);
 
 
-
-        setInterval(function () {
-            $(".container-galerry img").mousemove(function () {
+            $("#side-menu li:last-child").contextmenu(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-file-image'></i>");
+                cursor.html("<i class='fas fa-sign-out-alt'></i>");
+            }).mousemove(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-sign-out-alt'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-sign-out-alt'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+            $(".pdf-btn-info").contextmenu(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='far fa-file-pdf'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='far fa-file-pdf'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+
+            $("#side-menu li:first-child").contextmenu(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-home'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-home'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+
+            $(".select-selected-all, select").contextmenu(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-arrows-alt-v'></i>");
+            }).click(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-arrows-alt-v'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-arrows-alt-v'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+
+            $(".save-btn-info").contextmenu(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-save'></i>");
+            }).click(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-save'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-save'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+
+
+            setInterval(function () {
+                $(".container-galerry img").mousemove(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-file-image'></i>");
+                }).contextmenu(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-file-image'></i>");
+                }).mouseenter(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-file-image'></i>");
+                }).mouseleave(function () {
+                    welcomer.Img_no_cursor();
+                    cursor.html("");
+                });
+            }, 1000);
+
+
+
+
+
+            $("input[type='password']").click(function () {
+
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-lock'></i>");
             }).contextmenu(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-file-image'></i>");
+                cursor.html("<i class='fas fa-lock'></i>");
             }).mouseenter(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-file-image'></i>");
+                cursor.html("<i class='fas fa-lock'></i>");
             }).mouseleave(function () {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-        }, 1000);
-
-
-
-
-
-        $("input[type='password']").click(function () {
-
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-lock'></i>");
-        }).contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-lock'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-lock'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
-        setInterval(function () {
-            $(".btn-danger, *[data-dismiss='modal'], *[onclick*='post_form_edit_cancel']").contextmenu(function () {
+            setInterval(function () {
+                $(".btn-danger, *[data-dismiss='modal'], *[onclick*='post_form_edit_cancel']").contextmenu(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-times'></i>");
+                }).mouseenter(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-times'></i>");
+                }).mouseleave(function () {
+                    welcomer.Img_no_cursor();
+                    cursor.html("");
+                });
+            }, 1000);
+            $("input[type='file'] , .invoice-box table tr.top table td.title").contextmenu(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-times'></i>");
+                cursor.html("<i class='fas fa-upload'></i>");
+            }).click(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-upload'></i>");
             }).mouseenter(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-times'></i>");
+                cursor.html("<i class='fas fa-upload'></i>");
             }).mouseleave(function () {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-        }, 1000);
-        $("input[type='file'] , .invoice-box table tr.top table td.title").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-upload'></i>");
-        }).click(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-upload'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-upload'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
 
 
-        $(".btn-success").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-pencil-alt'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-pencil-alt'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
-
-
-        $(".col-xa-resizer").contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-arrows-alt-h'></i>");
-        }).mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-arrows-alt-h'></i>");
-        }).mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-        });
-
-        setInterval(function () {
-            $("iframe").mouseenter(function () {
-                welcomer.Img_no_cursor();
-                cursor.html("");
-            }).mousemove(function () {
-
-                welcomer.Img_no_cursor();
-                cursor.html("");
-
-            });
-        }, 1000);
-
-
-        setInterval(function () {
-            $(".plugin_status[href]").contextmenu(function () {
+            $(".btn-success").contextmenu(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-link'></i>");
+                cursor.html("<i class='fas fa-pencil-alt'></i>");
             }).mouseenter(function () {
                 welcomer.Img_cursor();
-                cursor.html("<i class='fas fa-link'></i>");
+                cursor.html("<i class='fas fa-pencil-alt'></i>");
             }).mouseleave(function () {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-        }, 1000);
 
 
-        welcomer.txt_cursor();
-        setInterval(function () {
+            $(".col-xa-resizer").contextmenu(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-arrows-alt-h'></i>");
+            }).mouseenter(function () {
+                welcomer.Img_cursor();
+                cursor.html("<i class='fas fa-arrows-alt-h'></i>");
+            }).mouseleave(function () {
+                welcomer.Img_no_cursor();
+                cursor.html("");
+            });
+
+            setInterval(function () {
+                $("iframe").mouseenter(function () {
+                    welcomer.Img_no_cursor();
+                    cursor.html("");
+                }).mousemove(function () {
+
+                    welcomer.Img_no_cursor();
+                    cursor.html("");
+
+                });
+            }, 1000);
+
+
+            setInterval(function () {
+                $(".plugin_status[href]").contextmenu(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-link'></i>");
+                }).mouseenter(function () {
+                    welcomer.Img_cursor();
+                    cursor.html("<i class='fas fa-link'></i>");
+                }).mouseleave(function () {
+                    welcomer.Img_no_cursor();
+                    cursor.html("");
+                });
+            }, 1000);
+
 
             welcomer.txt_cursor();
+            setInterval(function () {
 
-        }, 1000);
-        $(window).mousedown(function () {
-            cursor.css({
-                transform: "scale(.2)",
+                welcomer.txt_cursor();
 
-                "border-radius": "50%"
+            }, 1000);
+            $(window).mousedown(function () {
+                cursor.css({
+                    transform: "scale(.2)",
+
+                    "border-radius": "50%"
+                });
+            }).mouseup(function () {
+                cursor.css({
+                    transform: "scale(1)",
+                    "mix-blend-mode": "difference"
+                });
             });
-        }).mouseup(function () {
-            cursor.css({
-                transform: "scale(1)",
-                "mix-blend-mode": "difference"
-            });
-        });
 
-    }
+        }
 
-    $("*[data-title]").mousemove(function () {
-        $(".cursor").addClass("cursor-title");
-        welcomer.Img_cursor();
-        cursor.html("<i class='fas fa-quote-right'></i> " + $(this).attr("data-title"));
+        $("*[data-title]").mousemove(function () {
+            $(".cursor").addClass("cursor-title");
+            welcomer.Img_cursor();
+            cursor.html("<i class='fas fa-quote-right'></i> " + $(this).attr("data-title"));
 
-    }).contextmenu(function () {
-        $(".cursor").removeClass("cursor-title");
-        welcomer.Img_no_cursor();
-        cursor.html("");
-    }).mouseenter(function () {
-        setTimeout(function () {
+        }).contextmenu(function () {
             $(".cursor").removeClass("cursor-title");
             welcomer.Img_no_cursor();
             cursor.html("");
+        }).mouseenter(function () {
+            setTimeout(function () {
+                $(".cursor").removeClass("cursor-title");
+                welcomer.Img_no_cursor();
+                cursor.html("");
 
-        }, 3000);
+            }, 3000);
 
-    }).mouseleave(function () {
-        $(".cursor").removeClass("cursor-title");
-        welcomer.Img_no_cursor();
-        cursor.html("");
-    });
-
-
-});
-
-if (window.location.host == "portfolio.eronelit.com") {
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').then(function (registration) {
-            // console.log('SW registration succeeded with scope:', registration.scope);
-        }).catch(function (e) {
-            // console.log('SW registration failed with error:', e);
+        }).mouseleave(function () {
+            $(".cursor").removeClass("cursor-title");
+            welcomer.Img_no_cursor();
+            cursor.html("");
         });
-    }
-}
-const TWO_PI = Math.PI * 2;
-
-class Application {
-    constructor() {
-        this.canvas = document.getElementById("canvas");
-        this.context = this.canvas.getContext("2d");
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
-        this.center = {
-            x: this.width / 2,
-            y: this.height / 2
-        };
 
 
-        this.circleContainers = [];
-
-        window.addEventListener('resize', () => this.resizeCanvas(), false);
-    }
-
-    resizeCanvas() {
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
-        this.center = {
-            x: this.width / 2,
-            y: this.height / 2
-        };
-
-
-        this.circleContainers = [];
-        this.initializeCircleContainers();
-    }
-
-    initializeCircleContainers() {
-        for (let x = 0; x < this.width + 100; x += 100) {
-            for (let y = 0; y < this.height + 100; y += 100) {
-                let circleContainer = new CircleContainer(this.context, x, y);
-
-                circleContainer.initializeCircles();
-                this.circleContainers.push(circleContainer);
+        if (window.location.host == "portfolio.eronelit.com") {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js').then(function (registration) {
+                    // console.log('SW registration succeeded with scope:', registration.scope);
+                }).catch(function (e) {
+                    // console.log('SW registration failed with error:', e);
+                });
             }
         }
-    }
+    },
+    TWO_PI: Math.PI * 2,
+    Application: class {
+        constructor() {
+            this.canvas = document.getElementById("canvas");
+            this.context = this.canvas.getContext("2d");
+            this.width = this.canvas.width = window.innerWidth;
+            this.height = this.canvas.height = window.innerHeight;
+            this.center = {
+                x: this.width / 2,
+                y: this.height / 2
+            };
 
-    update() {
-        for (let i = 0; i < this.circleContainers.length; i++) {
-            if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
 
-                this.circleContainers[i].update();
+            this.circleContainers = [];
 
+            window.addEventListener('resize', () => this.resizeCanvas(), false);
+        }
+
+        resizeCanvas() {
+            this.width = this.canvas.width = window.innerWidth;
+            this.height = this.canvas.height = window.innerHeight;
+            this.center = {
+                x: this.width / 2,
+                y: this.height / 2
+            };
+
+
+            this.circleContainers = [];
+            this.initializeCircleContainers();
+        }
+
+        initializeCircleContainers() {
+            for (let x = 0; x < this.width + 100; x += 100) {
+                for (let y = 0; y < this.height + 100; y += 100) {
+                    let circleContainer = new welcomer.CircleContainer(this.context, x, y);
+
+                    circleContainer.initializeCircles();
+                    this.circleContainers.push(circleContainer);
+                }
             }
         }
-    }
 
-    render() {
-        this.context.clearRect(0, 0, this.width, this.height);
+        update() {
+            for (let i = 0; i < this.circleContainers.length; i++) {
+                if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
 
-        for (let i = 0; i < this.circleContainers.length; i++) {
-            if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
+                    this.circleContainers[i].update();
 
-                this.circleContainers[i].render();
+                }
             }
         }
-    }
 
-    loop() {
-        this.update();
+        render() {
+            this.context.clearRect(0, 0, this.width, this.height);
 
-        this.render();
+            for (let i = 0; i < this.circleContainers.length; i++) {
+                if ($("#clavs").attr("style") == "transform: translateY(-100%);") {
 
-        window.requestAnimationFrame(() => this.loop());
+                    this.circleContainers[i].render();
+                }
+            }
+        }
 
-    }
-}
+        loop() {
+            this.update();
 
+            this.render();
 
-class CircleContainer {
-    constructor(context, x, y) {
-        this.context = context;
-        this.position = { x, y };
-        if (welcomer.isMobile()) {
-            this.numberOfCircles = 5;
-            this.bounceRadius = 20;
-
-        } else {
-            this.numberOfCircles = 19;
-            this.bounceRadius = 150;
+            window.requestAnimationFrame(() => this.loop());
 
         }
-        this.circles = [];
+    },
+    CircleContainer: class {
+        constructor(context, x, y) {
+            this.context = context;
+            this.position = { x, y };
+            if (welcomer.isMobile()) {
+                this.numberOfCircles = 5;
+                this.bounceRadius = 20;
 
-        this.baseRadius = 20;
-        this.singleSlice = TWO_PI / this.numberOfCircles;
-    }
-
-    initializeCircles() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles.push(new Circle(this.position.x, this.position.y + Math.random(), this.baseRadius, this.bounceRadius, i * this.singleSlice));
-        }
-    }
-
-    update() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles[i].update(this.context);
-        }
-    }
-
-    render() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles[i].render(this.context);
-        }
-    }
-}
-
-
-class Circle {
-    constructor(x, y, baseRadius, bounceRadius, angleCircle) {
-        this.basePosition = { x, y };
-        this.position = { x, y };
-        this.speed = 0.01;
-        this.baseSize = 10;
-        this.size = 10;
-        this.angle = x + y;
-        this.baseRadius = baseRadius;
-        this.bounceRadius = bounceRadius;
-        this.angleCircle = angleCircle;
-    }
-
-    update() {
-        this.position.x = this.basePosition.x + Math.cos(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
-        this.position.y = this.basePosition.y + Math.sin(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
-        this.size = Math.cos(this.angle) * 8 + this.baseSize;
-
-        this.angle += this.speed;
-    }
-
-    render(context) {
-        $("body").attr("style", `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`);
-        context.fillStyle = "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
-        context.beginPath();
-        context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
-        context.fill();
-    }
-}
-
-
-window.countFPS = (function () {
-    setInterval(function () {
-        var lastLoop = (new Date()).getMilliseconds();
-        var count = 1;
-        var fps = 0;
-
-        return function () {
-            var currentLoop = (new Date()).getMilliseconds();
-            if (lastLoop > currentLoop) {
-                fps = count;
-                count = 1;
             } else {
-                count += 1;
+                this.numberOfCircles = 19;
+                this.bounceRadius = 150;
+
             }
-            lastLoop = currentLoop;
-            return fps;
-        };
-    }, 100);
-}());
+            this.circles = [];
 
-
-
-(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
-    var f = function () {
-        function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
-            a.preventDefault();
-            u(++l % c.children.length)
-        }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
-        if (self.performance && self.performance.memory)
-            var t = e(new f.Panel("MB", "#f08", "#201"));
-        u(0);
-        return {
-            REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
-                k = (performance || Date).now()
-            },
-            end: function () {
-                a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
-                    var d = performance.memory; t.update(d.usedJSHeapSize /
-                        1048576, d.jsHeapSizeLimit / 1048576)
-                } return c
-            }, update: function () { k = this.end() }, domElement: c, setMode: u
+            this.baseRadius = 20;
+            this.singleSlice = welcomer.TWO_PI / this.numberOfCircles;
         }
-    }; f.Panel = function (e, f, l) {
-        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
-        b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
-    }; return f
-});
 
+        initializeCircles() {
+            for (let i = 0; i < this.numberOfCircles; i++) {
+                this.circles.push(new welcomer.Circle(this.position.x, this.position.y + Math.random(), this.baseRadius, this.bounceRadius, i * this.singleSlice));
+            }
+        }
+
+        update() {
+            for (let i = 0; i < this.numberOfCircles; i++) {
+                this.circles[i].update(this.context);
+            }
+        }
+
+        render() {
+            for (let i = 0; i < this.numberOfCircles; i++) {
+                this.circles[i].render(this.context);
+            }
+        }
+    },
+    Circle: class {
+        constructor(x, y, baseRadius, bounceRadius, angleCircle) {
+            this.basePosition = { x, y };
+            this.position = { x, y };
+            this.speed = 0.01;
+            this.baseSize = 10;
+            this.size = 10;
+            this.angle = x + y;
+            this.baseRadius = baseRadius;
+            this.bounceRadius = bounceRadius;
+            this.angleCircle = angleCircle;
+        }
+
+        update() {
+            this.position.x = this.basePosition.x + Math.cos(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
+            this.position.y = this.basePosition.y + Math.sin(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
+            this.size = Math.cos(this.angle) * 8 + this.baseSize;
+
+            this.angle += this.speed;
+        }
+
+        render(context) {
+            $("body").attr("style", `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`);
+            context.fillStyle = "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
+            context.beginPath();
+            context.arc(this.position.x, this.position.y, this.size, 0, welcomer.TWO_PI);
+            context.fill();
+        }
+    },
+    countFPS: (function () {
+        setInterval(function () {
+            var lastLoop = (new Date()).getMilliseconds();
+            var count = 1;
+            var fps = 0;
+
+            return function () {
+                var currentLoop = (new Date()).getMilliseconds();
+                if (lastLoop > currentLoop) {
+                    fps = count;
+                    count = 1;
+                } else {
+                    count += 1;
+                }
+                lastLoop = currentLoop;
+                return fps;
+            };
+        }, 100);
+    }())
+}
+ 
+
+    /*(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
+        var f = function () {
+            function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
+                a.preventDefault();
+                u(++l % c.children.length)
+            }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
+            if (self.performance && self.performance.memory)
+                var t = e(new f.Panel("MB", "#f08", "#201"));
+            u(0);
+            return {
+                REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
+                    k = (performance || Date).now()
+                },
+                end: function () {
+                    a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
+                        var d = performance.memory; t.update(d.usedJSHeapSize /
+                            1048576, d.jsHeapSizeLimit / 1048576)
+                    } return c
+                }, update: function () { k = this.end() }, domElement: c, setMode: u
+            }
+        }; f.Panel = function (e, f, l) {
+            var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
+            b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
+        }; return f
+    });
+ */

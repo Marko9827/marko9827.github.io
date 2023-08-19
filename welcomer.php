@@ -1,4 +1,5 @@
-<?php
+<?php 
+session_start();
 $HOST_URL = "https://$_SERVER[HTTP_HOST]";
 function img_t($url)
 {
@@ -128,7 +129,39 @@ if (!empty($_GET['drc'])) {
     readfile($name);
     exit;
 } else if (!empty($_GET['src'])) {
+    if($_GET['src'] == "vdwallpper"){
+        ignore_user_abort(false);
+        include "$_SERVER[DOCUMENT_ROOT]/Content/vstream.php";
+        // $this->include("$_SERVER[DOCUMENT_ROOT]/Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
 
+        $filetry = "$_SERVER[DOCUMENT_ROOT]/Content/videos/";
+        $files = glob($filetry . '/*.mp4');
+        
+
+    
+        foreach (array_keys($files, $_SESSION['vname']) as $key) {
+            unset($files[$key]);
+        }
+        $file = array_rand($files);
+        $filetry2 = $files[$file];
+        $_SESSION['vname'] = $filetry2;
+         if (file_exists($filetry2)) {
+            // header("Content-Type: video/mp4"); 
+        
+            $stream = new eronelit_VideoStream($filetry2);
+            $stream->start();
+        }/*else{
+            // header("Content-Type: video/mp4"); 
+            $files = glob($filetry . '/*.mp4');
+            $stream = new eronelit_VideoStream($files[0]);
+            $stream->start();
+        }*/
+       
+        exit();
+    }else{
     $filetry = "$_SERVER[DOCUMENT_ROOT]/rdlv/$_GET[src]";
 
     # header("content-type: image/png");
@@ -153,6 +186,7 @@ if (!empty($_GET['drc'])) {
     } else {
         include "./ERROR_PG.php";
     }
+}
 } else if (!empty($_GET['svc'])) {
     $filetry = "$_SERVER[DOCUMENT_ROOT]/svc/$_GET[svc].css";
 

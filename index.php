@@ -4,6 +4,7 @@ namespace portfolio;
 use \Exception;
 
 header('X-Frame-Options: *');
+header_remove("Expect-CT");
 define("CDN", "https://cdn.eronelit.com/");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]");
 define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");

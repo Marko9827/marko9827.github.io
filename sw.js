@@ -1,8 +1,14 @@
 
-var echat_v = "p-e-4104-32";
+var echat_v = "p-e-4104-35";
 var assets = [
-
-    "/"];
+/*
+    "/?mnps=welcomer-pl",
+    "/svc=aet",
+    "/favicon.svg",
+    "/manifest.webmanifest"
+*/
+"/"
+];
 
 
 self.addEventListener("install", async event => {

@@ -150,9 +150,16 @@ if (!empty($_GET['drc'])) {
         $_SESSION['vname'] = $filetry2;
          if (file_exists($filetry2)) {
             // header("Content-Type: video/mp4"); 
-        
+            $ppath = $filetry2;//"$_SERVER[DOCUMENT_ROOT]/cinematic_3/cinematic_MainMenu.mp4";
+            $reqpath = $ppath;
+            header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
+            header('Accept-Ranges: bytes');
+            header('Content-Length:' . filesize($reqpath));
+            @readfile($reqpath);
+            /*
+
             $stream = new eronelit_VideoStream($filetry2);
-            $stream->start();
+            $stream->start();*/
         }/*else{
             // header("Content-Type: video/mp4"); 
             $files = glob($filetry . '/*.mp4');

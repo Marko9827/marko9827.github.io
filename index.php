@@ -152,12 +152,12 @@ class portfolio_marko
         <meta property="og:title" content="Marko Nikolić - Portfolio" />
         <meta property="og:description" content="This website for my PortFolio." />
         <meta property="og:image" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
         <meta property="og:image" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
         <meta property="og:image:url" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
-        <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image-og&v=<?php echo time(); ?>" />
+            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+        <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1024">
         <meta property="og:image:height" content="1024">
@@ -653,7 +653,7 @@ class portfolio_marko
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
                 readfile("./img/slika314.jpg");
-            } else if (strpos($_GET['mnps'], 'image-og') !== false) {
+            } else if (strpos($_GET['mnps'], 'image_og') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
                 readfile("./README_files/readme_part1.png");

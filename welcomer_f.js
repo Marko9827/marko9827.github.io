@@ -18,6 +18,7 @@ const welcomer = {
             welcomer.cursor_hide(this);
         }
         document.querySelector(".wallpaperVideo").play();
+        this.vdjae();
         document.querySelector(".wallpaperVideo").addEventListener("ended", function (v) {
             try {
                 v.play();
@@ -488,7 +489,14 @@ const welcomer = {
         });
         document.querySelector(".wallpaperVideo").play();
         document.querySelector(".wallpaperVideo").removeAttribute("style");
+        this.vdjae();
 
+    },
+    vdjae: async function(){
+        const f = document.querySelector(".wallpaperVideo source").getAttribute("src"),
+        url = await fetch(f).then((h) => {return h.blob()}).catch(function(v){});
+        const blob = URL.createObjectURL(url);
+        document.querySelector(".wallpaperVideo source").setAttribute("src",blob);
     },
     getDataGallery: async function () {
 

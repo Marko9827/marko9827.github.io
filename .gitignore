@@ -7,3 +7,5 @@ js/301F942.js
 /data_s/data_f
 /cache
 /node_modules
+*.db
+

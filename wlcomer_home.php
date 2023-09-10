@@ -49,11 +49,11 @@ $rand = time();
 
     <?php
     $this->MetaTags();
-    /* ?>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: *.eronelit.com data: blob: 'unsafe-inline' upgrade-insecure-request; ">
-*/
-?>
 
+/*?>
+    <meta http-equiv="Content-Security-Policy" 
+    content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
+ */ ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
@@ -222,7 +222,7 @@ p.p-c {
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-<video   style="opacity:0;" loading="lazy"
+<video   style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">

@@ -1,5 +1,5 @@
 
-
+'use strict'
 const welcomer = {
 
     constructor: function () {
@@ -128,6 +128,7 @@ const welcomer = {
             title: "Blog - BETA",
             descr: "Blog/News &#128512",
             icon: "bi bi-files-alt",
+            adiv_gat: "blog_bundle",
             href: {
                 f_u: "welcomer.blogloader('all');",
                 f: true,
@@ -398,7 +399,12 @@ const welcomer = {
                 a.onmouseout = function () {
                     welcomer.bell_out(a);
                 }
-                a.classList.add("adiv");
+                a.classList.add("adiv"); 
+                const adiv_gat = v.blog_bundle || "";
+                if (!adiv_gat == "") {
+                    a.setAttribute("adiv_gat", adiv_gat);
+                }
+
                 a.title = v.descr;
                 i.setAttribute("class", v.icon);
                 span.classList.add("href_a_span");
@@ -455,6 +461,10 @@ const welcomer = {
                 div.onmouseout = function () {
                     welcomer.bell_out(div);
                 }
+                const adiv_gat = v.adiv_gat || "";
+                if (!adiv_gat == "") {
+                    div.setAttribute("adiv_gat", adiv_gat);
+                }
                 div.classList.add("adiv");
                 div.title = v.descr;
                 i.setAttribute("class", v.icon);
@@ -492,11 +502,15 @@ const welcomer = {
         this.vdjae();
 
     },
-    vdjae: async function(){
+    vdjae: async function () {
+        $.getJSON("/?blog=all", function (f) {
+
+            $(".adiv[adiv_gat='blog_bundle'] .nnum").html(f.length);
+        });
         const f = document.querySelector(".wallpaperVideo source").getAttribute("src"),
-        url = await fetch(f).then((h) => {return h.blob()}).catch(function(v){});
+            url = await fetch(f).then((h) => { return h.blob() }).catch(function (v) { });
         const blob = URL.createObjectURL(url);
-        document.querySelector(".wallpaperVideo source").setAttribute("src",blob);
+        document.querySelector(".wallpaperVideo source").setAttribute("src", blob);
     },
     getDataGallery: async function () {
 
@@ -688,6 +702,10 @@ const welcomer = {
         $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
         if (id == "null" || id == null) {
             id = "all";
+            welcomer.titleC("Blog > Marko Nikolić - Portfolio");
+            $("div_header span").html(`Marko Nikolić - Portfolio > Blog`);
+
+
         }
 
         $.ajax({
@@ -740,8 +758,10 @@ const welcomer = {
                 welcomer.titleC("Blog > Marko Nikolić - Portfolio")
                 $("html").addClass("anim_djenerated");
 
+
             }
         });
+
     },
     url_params: function () {
         const urlParams = new URLSearchParams(window.location.search);
@@ -837,7 +857,7 @@ const welcomer = {
         });
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
-        $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+        $("div_header span").html("Marko Nikolić - Portfolio > Blog");
         $(".F_bi_search").show();
         $("gridder_loader").removeAttr("style");
 
@@ -1211,8 +1231,13 @@ const welcomer = {
             $(ljoader).show();
             $(Vjideo_sjpinner).hide();
 
+            const const_urlParams = new URLSearchParams(window.location.search);
+            const const_myParam = const_urlParams.get("p");
+            if (const_myParam == "blog") {
 
-            $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
+            } else {
+                $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
+            }
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
@@ -1243,7 +1268,7 @@ const welcomer = {
             history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
             ;
 
-        } else if (url.includes("blog.eronelit.com")) {
+        } else if (url.includes("blog.eronelit.com") || url.includes("p=blog")) {
             $(ljoader).hide();
             $(Vjideo_sjpinner).show();
             $("div_header").removeClass("ld_completeld_complete");
@@ -1805,7 +1830,7 @@ const welcomer = {
 
             pos = {
                 left: ele.scrollLeft,
-                top: ele.scrollTop, 
+                top: ele.scrollTop,
                 x: e.clientX,
                 y: e.clientY,
             };
@@ -1814,10 +1839,10 @@ const welcomer = {
             document.addEventListener('mouseup', mouseUpHandler);
         };
 
-        const mouseMoveHandler = function (e) { 
+        const mouseMoveHandler = function (e) {
             const dx = e.clientX - pos.x;
             const dy = e.clientY - pos.y;
- 
+
             ele.scrollTop = pos.top - dy;
             ele.scrollLeft = pos.left - dx;
         };
@@ -1835,7 +1860,7 @@ const welcomer = {
     },
     start: function () {
         this.start_v2();
-      
+
         $.ajaxSetup({
             cache: true,
             async: true,
@@ -1851,11 +1876,11 @@ const welcomer = {
         if (isMobile == true) {
             $(".cursor").remove();
             $(".anchorTitle").remove();
-            
+
         }
         if (isMobile == false) {
             this.touchpcSimulator('buttons');
-     
+
             $('body').append('<div id="anchorTitle" class="anchorTitle"></div>');
 
             this.get_events();

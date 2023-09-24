@@ -9,6 +9,12 @@ RewriteEngine on
 RedirectMatch 404 ^/app/?$
 RedirectMatch 404 ^/vendor/?$ 
 
+
+<Files *.json>
+    order allow,deny
+    deny from all
+</Files>
+
 <Files *.sql>
     order allow,deny
     deny from all

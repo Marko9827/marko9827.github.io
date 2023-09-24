@@ -1,9 +1,13 @@
 Options All -Indexes
  
 RewriteEngine on
-
 RewriteRule ^data_s/?$ - [F]
 
+
+RewriteEngine on
+
+RedirectMatch 404 ^/app/?$
+RedirectMatch 404 ^/vendor/?$ 
 
 <Files *.sql>
     order allow,deny
@@ -45,14 +49,7 @@ RewriteRule ^data_s/?$ - [F]
     deny from all
 </FilesMatch>
 
-<Files .php>
-    order allow,deny
-    deny from all
-</Files>
-
-RewriteEngine On
-RewriteCond %{THE_REQUEST} ^(.+)\.php([#?][^\ ]*)?\ HTTPS/
-RewriteRule ^(.+)\.php$ $1 [R=404,L]
+  
 
 php_value session.name ERONELIT_sessionID
 
@@ -2083,3 +2080,6 @@ Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
 
 #Header set X-Frame-Options *.eronelit.com
+
+
+ 

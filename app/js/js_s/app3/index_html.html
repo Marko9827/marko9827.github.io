@@ -1,0 +1,321 @@
+﻿<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link type="text/css" rel="stylesheet" href="style.css" />
+
+
+
+
+
+
+    <script type="text/javascript" src="js/babel/babel.js"></script>
+
+
+
+
+
+    <script type="text/javascript" src="js/lib/dummy.js"></script>
+
+
+
+
+
+
+
+
+    <link rel="stylesheet" type="text/css" data-name="vs/editor/editor.main" href="https://unpkg.com/monaco-editor@0.8.3/min/vs/editor/editor.main.css">
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+
+
+
+    <script type="text/javascript" src="js/min/vs/loader.js"></script>
+
+
+
+    <!--<style type="text/css" >
+        html, body, #container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>-->
+
+    <link type="text/css" rel="stylesheet" href="js/min/editor/stil.css" />
+
+
+    <title>App - 49258255502</title>
+
+
+
+    <style>
+        body {
+            background-color: rebeccapurple;
+        }
+    </style>
+
+    <script type="text/babel" data-presets="es2017,react,stage-0" data-plugins="transform-decorators-legacy">
+
+
+
+
+
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' }});
+        window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+
+        let proxy = URL.createObjectURL(new Blob([`
+        self.MonacoEnvironment = {
+        baseUrl: 'https://unpkg.com/monaco-editor@0.8.3/min/'
+        };
+        importScripts('https://unpkg.com/monaco-editor@0.8.3/min/vs/base/worker/workerMain.js');
+        `], { type: 'text/javascript' }));
+
+        require(["vs/editor/editor.main"], function () {
+        let editor = monaco.editor.create(document.getElementById('container'), {
+        value: [
+        'function x() {',
+        '\tconsole.log("Hello world! - By Eronel SDK Plugin");',
+        '}'
+        ].join('\n'),
+        language: 'javascript',
+        theme: 'vs-dark'
+        });
+
+        editor.addListener('didType', () => {
+        console.log(editor.getValue());
+        });
+        });
+
+
+    </script>
+
+
+    <script>
+
+        require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.8.3/min/vs' } });
+        window.MonacoEnvironment = { getWorkerUrl: () => proxy };
+
+        let proxy = URL.createObjectURL(new Blob([`
+            self.MonacoEnvironment = {
+                baseUrl: 'https://unpkg.com/monaco-editor@0.8.3/min/'
+            };
+            importScripts('https://unpkg.com/monaco-editor@0.8.3/min/vs/base/worker/workerMain.js');
+`], { type: 'text/javascript' }));
+
+        require(["vs/editor/editor.main"], function () {
+            let editor = monaco.editor.create(document.getElementById('container'), {
+                value: ['<html>', '<p>https://eronelit.com |! Ctrl + click to follow link !|</p>', '</html>'].join('\n'),
+                language: 'html',
+                //  theme: 'vs-dark'
+                theme: 'vs'
+            });
+
+            editor.addListener('didType', () => {
+                console.log(editor.getValue());
+            });
+        });
+        //# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIklubGluZSBCYWJlbCBzY3JpcHQiXSwibmFtZXMiOlsicmVxdWlyZSIsImNvbmZpZyIsInBhdGhzIiwid2luZG93IiwiTW9uYWNvRW52aXJvbm1lbnQiLCJnZXRXb3JrZXJVcmwiLCJwcm94eSIsIlVSTCIsImNyZWF0ZU9iamVjdFVSTCIsIkJsb2IiLCJ0eXBlIiwiZWRpdG9yIiwibW9uYWNvIiwiY3JlYXRlIiwiZG9jdW1lbnQiLCJnZXRFbGVtZW50QnlJZCIsInZhbHVlIiwiam9pbiIsImxhbmd1YWdlIiwidGhlbWUiLCJhZGRMaXN0ZW5lciIsImNvbnNvbGUiLCJsb2ciLCJnZXRWYWx1ZSJdLCJtYXBwaW5ncyI6Ijs7QUFNQUEsUUFBUUMsTUFBUixDQUFlLEVBQUVDLE9BQU8sRUFBRSxNQUFNLDhDQUFSLEVBQVQsRUFBZjtBQUNBQyxPQUFPQyxpQkFBUCxHQUEyQixFQUFFQyxjQUFjLE1BQU1DLEtBQXRCLEVBQTNCOztBQUVBLElBQUlBLFFBQVFDLElBQUlDLGVBQUosQ0FBb0IsSUFBSUMsSUFBSixDQUFTLENBQUU7Ozs7O0NBQUYsQ0FBVCxFQUs1QixFQUFFQyxNQUFNLGlCQUFSLEVBTDRCLENBQXBCLENBQVo7O0FBT0FWLFFBQVEsQ0FBQyx1QkFBRCxDQUFSLEVBQW1DLFlBQVk7QUFDOUMsS0FBSVcsU0FBU0MsT0FBT0QsTUFBUCxDQUFjRSxNQUFkLENBQXFCQyxTQUFTQyxjQUFULENBQXdCLFdBQXhCLENBQXJCLEVBQTJEO0FBQ3ZFQyxTQUFPLENBQ04sZ0JBRE0sRUFFTixnQ0FGTSxFQUdOLEdBSE0sRUFJTEMsSUFKSyxDQUlBLElBSkEsQ0FEZ0U7QUFNdkVDLFlBQVUsWUFONkQ7QUFPdkVDLFNBQU87QUFQZ0UsRUFBM0QsQ0FBYjs7QUFVQVIsUUFBT1MsV0FBUCxDQUFtQixTQUFuQixFQUE4QixNQUFNO0FBQ25DQyxVQUFRQyxHQUFSLENBQVlYLE9BQU9ZLFFBQVAsRUFBWjtBQUNBLEVBRkQ7QUFHQSxDQWREIiwiZmlsZSI6IklubGluZSBCYWJlbCBzY3JpcHQiLCJzb3VyY2VzQ29udGVudCI6WyJcblxuXG5cblxuXG5yZXF1aXJlLmNvbmZpZyh7IHBhdGhzOiB7ICd2cyc6ICdodHRwczovL3VucGtnLmNvbS9tb25hY28tZWRpdG9yQDAuOC4zL21pbi92cycgfX0pO1xud2luZG93Lk1vbmFjb0Vudmlyb25tZW50ID0geyBnZXRXb3JrZXJVcmw6ICgpID0+IHByb3h5IH07XG5cbmxldCBwcm94eSA9IFVSTC5jcmVhdGVPYmplY3RVUkwobmV3IEJsb2IoW2Bcblx0c2VsZi5Nb25hY29FbnZpcm9ubWVudCA9IHtcblx0XHRiYXNlVXJsOiAnaHR0cHM6Ly91bnBrZy5jb20vbW9uYWNvLWVkaXRvckAwLjguMy9taW4vJ1xuXHR9O1xuXHRpbXBvcnRTY3JpcHRzKCdodHRwczovL3VucGtnLmNvbS9tb25hY28tZWRpdG9yQDAuOC4zL21pbi92cy9iYXNlL3dvcmtlci93b3JrZXJNYWluLmpzJyk7XG5gXSwgeyB0eXBlOiAndGV4dC9qYXZhc2NyaXB0JyB9KSk7XG5cbnJlcXVpcmUoW1widnMvZWRpdG9yL2VkaXRvci5tYWluXCJdLCBmdW5jdGlvbiAoKSB7XG5cdGxldCBlZGl0b3IgPSBtb25hY28uZWRpdG9yLmNyZWF0ZShkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY29udGFpbmVyJyksIHtcblx0XHR2YWx1ZTogW1xuXHRcdFx0J2Z1bmN0aW9uIHgoKSB7Jyxcblx0XHRcdCdcXHRjb25zb2xlLmxvZyhcIkhlbGxvIHdvcmxkIVwiKTsnLFxuXHRcdFx0J30nXG5cdFx0XS5qb2luKCdcXG4nKSxcblx0XHRsYW5ndWFnZTogJ2phdmFzY3JpcHQnLFxuXHRcdHRoZW1lOiAndnMtZGFyaydcblx0fSk7XG5cdFxuXHRlZGl0b3IuYWRkTGlzdGVuZXIoJ2RpZFR5cGUnLCAoKSA9PiB7XG5cdFx0Y29uc29sZS5sb2coZWRpdG9yLmdldFZhbHVlKCkpO1xuXHR9KTtcbn0pO1xuXG5cbiJdfQ==</script>
+    <script async="async" type="text/javascript" src="https://unpkg.com/monaco-editor@0.8.3/min/vs/editor/editor.main.js"></script>
+    <style type="text/css" media="screen"></style>
+    <script async="async" type="text/javascript" src="https://unpkg.com/monaco-editor@0.8.3/min/vs/editor/editor.main.nls.js"></script>
+    <style type="text/css" media="screen"></style>
+    <style type="text/css" media="screen" class="monaco-tokens-styles">
+        .mtk1 {
+            color: #D4D4D4;
+        }
+
+        .mtk2 {
+            color: #FFFFFF;
+        }
+
+        .mtk3 {
+            color: #CC6665;
+        }
+
+        .mtk4 {
+            color: #9CDCFE;
+        }
+
+        .mtk5 {
+            color: #CE9178;
+        }
+
+        .mtk6 {
+            color: #B5CEA8;
+        }
+
+        .mtk7 {
+            color: #608B4E;
+        }
+
+        .mtk8 {
+            color: #CE9178;
+        }
+
+        .mtk9 {
+            color: #DCDCDC;
+        }
+
+        .mtk10 {
+            color: #808080;
+        }
+
+        .mtk11 {
+            color: #F44747;
+        }
+
+        .mtk12 {
+            color: #C586C0;
+        }
+
+        .mtk13 {
+            color: #A79873;
+        }
+
+        .mtk14 {
+            color: #DD6A6F;
+        }
+
+        .mtk15 {
+            color: #5BB498;
+        }
+
+        .mtk16 {
+            color: #909090;
+        }
+
+        .mtk17 {
+            color: #778890;
+        }
+
+        .mtk18 {
+            color: #FF00FF;
+        }
+
+        .mtk19 {
+            color: #B46695;
+        }
+
+        .mtk20 {
+            color: #FF0000;
+        }
+
+        .mtk21 {
+            color: #4F76AC;
+        }
+
+        .mtk22 {
+            color: #3DC9B0;
+        }
+
+        .mtk23 {
+            color: #74B0DF;
+        }
+
+        .mtk24 {
+            color: #4864AA;
+        }
+
+        .mtki {
+            font-style: italic;
+        }
+
+        .mtkb {
+            font-weight: bold;
+        }
+
+        .mtku {
+            text-decoration: underline;
+        }
+    </style>
+    <script async="async" type="text/javascript" src="https://unpkg.com/monaco-editor@0.8.3/min/vs/language/typescript/src/mode.js"></script>
+    <script async="async" type="text/javascript" src="https://unpkg.com/monaco-editor@0.8.3/min/vs/language/typescript/lib/typescriptServices.js"></script>
+</head>
+
+<body>
+
+    <div id="Sve">
+
+
+
+        
+
+        <div id="container" data-keybinding-context="1" data-mode-id="javascript">
+            <!--        <div class="monaco-editor vs-dark" style="width: 631px; height: 359px;"> -->
+            <!--<div data-mprt="3" class="overflow-guard" style="width: 631px; height: 359px;">
+            <div class="margin monaco-editor-background" role="presentation" aria-hidden="true" data-transform="translate3d(0px, -38px, 0px)" style="position: absolute; transform: translate3d(0px, -38px, 0px); top: 0px; height: 397px; width: 48px;">
+                <div class="glyph-margin" style="left: 0px; width: 0px; height: 397px;"></div><div class="margin-view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div>
+                <div class="margin-view-overlays" role="presentation" aria-hidden="true" style="position: absolute; width: 48px; font-family: Consolas, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px; height: 397px;"><div linenumber="3" style="position:absolute;top:38px;width:100%;height:19px;"><div class="line-numbers" style="left:0px;width:38px;">3</div></div></div>
+            </div><div class="monaco-scrollable-element editor-scrollable vs-dark" role="presentation" data-mprt="5" style="position: absolute; overflow: hidden; left: 48px; width: 583px; height: 359px;"><div class="lines-content monaco-editor-background" data-transform="translate3d(0px, -38px, 0px)" style="position: absolute; overflow: hidden; width: 1e+06px; height: 1e+06px; transform: translate3d(0px, -38px, 0px); top: 0px; left: 0px;"><div class="view-overlays" role="presentation" aria-hidden="true" style="position: absolute; width: 583px; height: 0px;"><div linenumber="3" style="position:absolute;top:38px;width:100%;height:19px;"><div class="current-line" style="width:583px; height:19px;"></div><div class="cdr bracket-match" style="left:0px;width:8px;height:19px;"></div></div></div><div class="view-rulers"></div><div class="view-zones" role="presentation" aria-hidden="true" style="position: absolute;"></div><div class="view-lines" role="presentation" aria-hidden="true" data-mprt="7" style="position: absolute; font-family: Consolas, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px; width: 583px; height: 397px;"><div linenumber="3" style="top:38px;height:19px;" class="view-line"><span><span class="mtk9">}</span></span></div></div><div data-mprt="1" class="contentWidgets" style="position: absolute; top: 0px;"></div><div class="cursors-layer cursor-line-style cursor-solid"><div class="cursor" role="presentation" aria-hidden="true" linenumber="3" column="2" style="height: 19px; top: 38px; left: 8px; font-family: Consolas, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px; display: block; visibility: hidden; width: 2px;"></div></div></div><div class="invisible scrollbar horizontal" style="position: absolute; transform: translate3d(0px, 0px, 0px); width: 569px; height: 10px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; width: 569px; transform: translate3d(0px, 0px, 0px);"></div></div><canvas class="decorationsOverviewRuler" width="14" height="359" data-transform="translate3d(0px, 0px, 0px)" style="position: absolute; top: 0px; right: 0px; width: 14px; height: 359px; transform: translate3d(0px, 0px, 0px);"></canvas><div class="invisible scrollbar vertical fade" style="position: absolute; transform: translate3d(0px, 0px, 0px); width: 14px; height: 359px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 14px; height: 324px; transform: translate3d(0px, 34px, 0px);"></div></div></div><div style="width: 631px;" class="scroll-decoration"></div><div data-mprt="4" class="overlayWidgets" style="width: 631px;">
+                <div class="editor-widget find-widget" aria-hidden="false" widgetid="editor.contrib.findWidget" style="position: absolute;">
+                    <div title="Toggle Replace mode" tabindex="-1" class="button toggle left collapse disabled" role="button" aria-label="Toggle Replace mode" aria-expanded="false" aria-disabled="true"></div><div class="find-part">
+                        <div class="monaco-findInput disabled" style="width: 221px;">
+                            <div class="monaco-inputbox idle"><div class="wrapper"><input class="input" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" wrap="off" aria-label="Find" placeholder="Find" title="Find" disabled="" style="width: 155px;"></div></div><div class="controls">
+                                <div title="Match Case (Alt+C)" class="custom-checkbox monaco-case-sensitive unchecked" role="checkbox" aria-checked="false" aria-label="Match Case (Alt+C)" aria-disabled="true"></div><div title="Match Whole Word (Alt+W)" class="custom-checkbox monaco-whole-word unchecked" role="checkbox" aria-checked="false" aria-label="Match Whole Word (Alt+W)" aria-disabled="true">
+                                </div>
+                                <div title="Use Regular Expression (Alt+R)" class="custom-checkbox monaco-regex unchecked" role="checkbox" aria-checked="false" aria-label="Use Regular Expression (Alt+R)" aria-disabled="true"></div>
+                            </div>
+                        </div><div class="matchesCount" title="" style="min-width: 69px;">No Results</div><div title="Previous match (Shift+F3)" tabindex="-1" class="button previous disabled" role="button" aria-label="Previous match (Shift+F3)" aria-disabled="true"></div><div title="Next match (F3)" tabindex="-1" class="button next disabled" role="button" aria-label="Next match (F3)" aria-disabled="true"></div><div class="monaco-checkbox" title="Find in selection"><input type="checkbox" class="checkbox" id="checkbox-0" disabled=""><label class="label" for="checkbox-0"></label></div><div title="Close (Escape)" tabindex="-1" class="button close-fw disabled" role="button" aria-label="Close (Escape)" aria-disabled="true"></div>
+                    </div><div class="replace-part"><div class="replace-input" style="width: 221px;"><div class="monaco-inputbox idle"><div class="wrapper"><input class="input" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" wrap="off" aria-label="Replace" placeholder="Replace" title="Replace" disabled=""></div></div></div><div title="Replace (Ctrl+Shift+1)" tabindex="-1" class="button replace disabled" role="button" aria-label="Replace (Ctrl+Shift+1)" aria-disabled="true"></div><div title="Replace All (Ctrl+Alt+Enter)" tabindex="-1" class="button replace-all disabled" role="button" aria-label="Replace All (Ctrl+Alt+Enter)" aria-disabled="true"></div></div>
+                </div><div class="monaco-editor-background findOptionsWidget" role="presentation" aria-hidden="true" widgetid="editor.contrib.findOptionsWidget" data-editor-restorestyletop="10px" style="display: none; top: 0px; position: absolute; right: 28px;"><div title="Match Case (Alt+C)" class="custom-checkbox monaco-case-sensitive unchecked" tabindex="0" role="checkbox" aria-checked="false" aria-label="Match Case (Alt+C)"></div><div title="Match Whole Word (Alt+W)" class="custom-checkbox monaco-whole-word unchecked" tabindex="0" role="checkbox" aria-checked="false" aria-label="Match Whole Word (Alt+W)"></div></div><div class="monaco-editor-hover hidden" aria-hidden="true" role="presentation" widgetid="editor.contrib.modesGlyphHoverWidget" style="position: absolute;"></div><div class="lightbulb-glyph hidden" title="Show Fixes (Ctrl+.)" widgetid="__lightBulbWidget" style="width: 21px; height: 20px; position: absolute;"></div><div widgetid="editor.contrib.quickOpenEditorWidget" style="position: absolute; top: 0px; right: 50%;" data-editor-restorestyletop=""><div class="quick-open-widget builder-hidden" aria-hidden="true" style="width: 391.22px; margin-left: -195.61px;"><div class="progress-container builder-hidden done" aria-hidden="true"><div class="progress-bit" style="width: inherit; opacity: 1;"></div></div><div class="quick-open-input" aria-hidden="false" style="width: 379.22px;"><div class="monaco-inputbox idle"><div class="wrapper"><input class="input" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" wrap="off" aria-label="Quick picker. Type to narrow down results." role="combobox" aria-haspopup="false" aria-autocomplete="list" aria-activedescendant="NDE="></div></div></div><div class="quick-open-tree" style="height: 0px;"><div class="monaco-tree focused no-focused-item" tabindex="0" role="tree" aria-label="Quick Picker"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-tree-wrapper" style="overflow: hidden;"><div class="monaco-tree-rows show-twisties" style="top: 0px;"></div></div><div class="invisible scrollbar horizontal" style="position: absolute; width: 0px; height: 0px; left: 0px; bottom: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px; width: 0px;"></div></div><div class="invisible scrollbar vertical" style="position: absolute; width: 10px; height: 110px; right: 0px; top: 0px;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px; height: 110px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div></div></div>
+            </div><textarea data-mprt="6" class="inputarea" wrap="hard" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Editor content" role="textbox" aria-multiline="true" aria-haspopup="false" aria-autocomplete="both" style="top: 0px; left: 0px; font-family: Consolas, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 14px; line-height: 19px;"></textarea><div class="monaco-editor-background line-numbers textAreaCover" style="position: absolute; width: 1px; height: 1px; top: 0px; left: 0px;"></div>
+        </div>-->
+
+
+
+
+            <div data-mprt="2" class="overflowingContentWidgets">
+                <div class="monaco-editor-hover hidden" tabindex="0" widgetid="editor.contrib.modesContentHoverWidget" style="position: absolute; max-width: 631px; visibility: hidden;"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-editor-hover-content" style="overflow: hidden; font-size: 14px; line-height: 19px; max-height: 250px;"></div><div class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px;"></div></div><div class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div><div class="editor-widget parameter-hints-widget" widgetid="editor.widget.parameterHintsWidget" style="font-size: 14px; max-height: 250px; position: absolute; max-width: 631px; visibility: hidden;"><div class="wrapper"><div class="buttons"><div class="button previous"></div><div class="button next"></div></div><div class="overloads"></div><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="body" style="overflow: hidden;"><div class="signature"></div><div class="docs"></div></div><div class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px;"></div></div><div class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div><div class="monaco-editor rename-box" widgetid="__renameInputWidget" style="height: 19px; position: absolute; max-width: 631px; visibility: hidden;">
+                    <input class="rename-input" type="text" aria-label="Rename input. Type new name and press Enter to commit." style="font-family: Consolas, &quot;Courier New&quot;, monospace; font-weight: normal; font-size: 14px;">
+                </div>
+                <div class="editor-widget suggest-widget" widgetid="editor.widget.suggestWidget" style="position: absolute; max-width: 631px; visibility: hidden;"><div class="message" style="display: none;"></div><div class="tree"><div class="monaco-list" role="tree" tabindex="0"><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="monaco-list-rows" style="overflow: hidden; height: 0px;"></div><div class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px;"></div></div><div class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px;"></div></div></div></div></div><div class="details" style="font-size: 14px; display: none;"><div class="header"><span class="title" style="font-family: Consolas, &quot;Courier New&quot;, monospace;"><span class="monaco-highlighted-label"></span></span><span class="go-back" title="Go back" style="height: 19px; width: 19px;"></span></div><div class="monaco-scrollable-element " role="presentation" style="position: relative; overflow: hidden;"><div class="body" style="overflow: hidden;"><p class="type" style="font-family: Consolas, &quot;Courier New&quot;, monospace;"></p><p class="docs"></p></div><div class="invisible scrollbar horizontal" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; height: 10px;"></div></div><div class="invisible scrollbar vertical" style="position: absolute;"><div class="slider" style="position: absolute; top: 0px; left: 0px; width: 10px;"></div></div><div class="shadow"></div><div class="shadow"></div><div class="shadow top-left-corner"></div></div></div></div>
+            </div><div class="context-view monaco-menu-container bottom left builder-hidden" aria-hidden="true" style="top: 107px; left: 121px; width: initial;"><div class="monaco-menu"></div></div>
+        </div>
+
+
+        <script>
+            // tell the embed parent frame the height of the content
+            if (window.parent && window.parent.parent) {
+                window.parent.parent.postMessage(["resultsFrame", {
+                    height: document.body.getBoundingClientRect().height,
+                    slug: "None"
+                }], "*")
+            }
+        </script>
+    </div>
+    <script>
+
+        document.onkeypress = function (event) {
+            event = (event || window.event);
+            if (event.keyCode == 123) {
+                return false;
+            }
+        }
+        document.onmousedown = function (event) {
+            event = (event || window.event);
+            if (event.keyCode == 123) {
+                return false;
+            }
+        }
+        document.onkeydown = function (event) {
+            event = (event || window.event);
+            if (event.keyCode == 123) {
+                return false;
+            }
+        }  
+    </script>
+
+    <script src="/js/main.js"></script>
+
+
+
+</body>
+</html>

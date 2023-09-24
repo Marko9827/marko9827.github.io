@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="container">
+        <h2>Dynamic Tabs</h2>
+        <ul class="nav nav-tabs">
+            <li ><a data-toggle="tab" href="#home">Home</a></li>
+            <li class="active"><a data-toggle="tab" style="cursor:pointer;" href="#home">HTML</a></li>
+            <li ><a data-toggle="tab" href="#menu2">JavaScript 2</a></li>
+            <li ><a data-toggle="tab" href="#menu3">Css3</a></li>
+            <li ><a data-toggle="tab" href="#menu4">C#</a></li>
+            <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu 1 <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Submenu 1-1</a></li>
+                    <li><a href="#">Submenu 1-2</a></li>
+                    <li><a href="#">Submenu 1-3</a></li>
+                </ul>
+            </li>
+
+        </ul>
+        <script>
+            function a1() {
+                window.location.href = '#menu1';
+            }
+        </script>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+
+                <iframe src="index_html.html" id="frame"></iframe>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <iframe src="index_html.html" id="frame"></iframe>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <iframe src="index_cs.html" id="frame2"></iframe>
+            </div>
+            <div id="menu3" class="tab-pane fade">
+                <iframe src="index_javascript.html" id="frame3"></iframe>
+            </div>
+            <div id="menu3" class="tab-pane fade">
+                <iframe src="index_javascript.html" id="frame3"></iframe>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

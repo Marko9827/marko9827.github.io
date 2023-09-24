@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Hello world</title>
+</head>
+<body>
+    <h1>Hello world</h1>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+    <script type="text/javascript">
+        var pdf = new jsPDF();
+        pdf.text(30, 30, 'Hello world!');
+        pdf.save('hello_world.pdf');
+    </script>
+</body>
+</html>

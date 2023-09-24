@@ -1,0 +1,29 @@
+<canvas id="my_canvas" width="400" height="400"></canvas>
+
+<script type="text/javascript">
+    var canvas = document.getElementById('my_canvas');
+
+    //Get a 2D drawing context for the canvas.
+    var context = canvas.getContext('2d');
+
+    //The path to the image that we want to add.
+    var imgPath = 'http://localhost/other/portfoliof/?mnps=image-in-prjt-1';
+
+    //Create a new Image object.
+    var imgObj = new Image();
+
+    //Set the src of this Image object.
+    imgObj.src = imgPath;
+    
+    //the x coordinates
+    var x = 10;
+
+    //the y coordinates
+    var y = 10;
+
+    //When our image has loaded.
+    imgObj.onload = function () {
+        //Draw the image onto the canvas.
+        context.drawImage(imgObj, x, y);
+    }
+</script>

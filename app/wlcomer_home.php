@@ -238,7 +238,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
         <spjin>
-            <p> <span class="box_shadow_h">Marko Nikolić  Portfolio <i class="far fa-copyright"></i>
+            <p> <span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>
                     <?php echo Date("Y"); ?>
                 </span></p>
             <spj>

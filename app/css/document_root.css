@@ -827,3 +827,15 @@ iframe.blog_style {
     border: 2px solid white;
     padding: 3px;
 }
+.zoomWindow {
+    object-fit: scale-down !important;
+    transform: unset !important;
+    width: -webkit-fill-available !important;
+    height: -webkit-fill-available !important;
+    background-size: contain;
+    background-position: center !important;
+}
+
+div#helper_id_helper3 p {
+    display: none !important;
+}

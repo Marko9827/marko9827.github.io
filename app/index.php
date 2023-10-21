@@ -20,11 +20,11 @@ if (!empty($_GET['p'])) {
 //  header("Access-Control-Allow-Origin: *"); 
 class portfolio_marko
 {
- 
+
     public function __construct($root = "")
     {
-    
-      $this->RUN();
+
+        $this->RUN();
     }
     function Pages($h = "home")
     {
@@ -43,10 +43,64 @@ class portfolio_marko
         }
         exit();
     }
+    function ServeThumb($uploadedFile, $size = 640, $path = "", $fullname = "")
+    {
+
+        # ob_start();
+        if (3000 < $size) {
+            $size = 3000;
+        }
+        $jpg = true;
+        // = "",$name = ""){//$uploadDir,$uploadedFile,$name){
+        $sourceImage = imagecreatefromjpeg($uploadedFile);
+
+        if (!$sourceImage) {
+            $jpg = false;
+            $sourceImage = imagecreatefrompng($uploadedFile);
+        }
+        $targetWidth = $size;
+        $targetHeight = $size / 2;
+        $originalWidth = imagesx($sourceImage);
+        $originalHeight = imagesy($sourceImage);
+
+        if ($originalWidth > $originalHeight) {
+            $newWidth = $targetWidth;
+            $newHeight = ($originalHeight / $originalWidth) * $targetWidth;
+        } else {
+            $newHeight = $targetHeight;
+            $newWidth = ($originalWidth / $originalHeight) * $targetHeight;
+        }
+
+        $resizedImage = imagecreatetruecolor($newWidth, $newHeight);
+
+        imagecopyresampled($resizedImage, $sourceImage, 0, 0, 0, 0, $newWidth, $newHeight, $originalWidth, $originalHeight);
+
+        #   unlink("$path/$fullname");
+        #  header('Content-Type: image/jpeg');
+        #file_put_contents("$path/$fullname",$resizedImage);
+
+        /*
+     header('Content-Type: image/jpeg');
+        if(!imagejpeg($resizedImage,"$path$fullname")){
+            imagepng($resizedImage,"$path$fullname");
+
+        };*/
+        imagejpeg($resizedImage);//, "$path.jpg");
+        if ($jpg) {
+            imagejpeg($resizedImage);//, "$path.jpg");
+        } else {
+            imagepng($resizedImage);//, "$path.png");
+        }
+        #  $obas = ob_get_clean();
+        #  file_put_contents("$path$fullname",$resizedImage);
+        imagedestroy($sourceImage);
+        imagedestroy($resizedImage);
+
+    }
     function metaTag_Generator($id, $specific = "title")
     {
-        $array = json_decode(file_get_contents(ROOT. ROOT."data_s/blog/blgd.json"), true);
-        $array2 = file_get_contents(ROOT."/data_s/blog/blgd.json");
+        $array = json_decode(file_get_contents(ROOT . ROOT . "data_s/blog/blgd.json"), true);
+        $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
         if (!empty($id)) {
             foreach ($array as $index => $element) {
@@ -57,8 +111,9 @@ class portfolio_marko
         }
     }
 
-    function include($hmm){
-        include ROOT."$hmm";
+    function include($hmm)
+    {
+        include ROOT . "$hmm";
     }
 
     function file_force_contents($dir, $contents)
@@ -74,7 +129,7 @@ class portfolio_marko
 
     function MetaTags()
     {
-        $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
+        $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
         if (!empty($_GET['id']) || !empty($_GET['blog'])) {
             $off = false;
@@ -95,18 +150,18 @@ class portfolio_marko
             <meta name="description" content="This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
-            <meta name="keywords" content="<?php 
+            <meta name="keywords" content="<?php
             /*$t = "";
             foreach($data->keywords as $index => $v){
                 echo $v .",";
             }*/
-            $faf =  $data["keywords"];
+            $faf = $data["keywords"];
             $c = count($data["keywords"]);
             $ci = 0;
-            foreach($faf as $v){
-                echo $v;  
-                if($ci < $c){      
-                  echo ","; 
+            foreach ($faf as $v) {
+                echo $v;
+                if ($ci < $c) {
+                    echo ",";
                 }
                 $ci++;
             }
@@ -126,65 +181,60 @@ class portfolio_marko
             <meta property="og:image" itemprop="image"
                 content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image"
-            content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>"  />
+                content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:url" itemprop="image"
-            content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url" 
-
-  content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>"             
-            />
+                content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="1024">
             <meta property="og:locale" content="en_GB" />
-        <?php
+            <?php
         } else {
             ?>
             <title>
-            <?php
-            if (!empty($_GET['p'])) {
-                if ($_GET['p'] == "cv-pdf") {
-                    echo "Marko Nikolić - Portfolio > CV";
-                } else if ($_GET['p'] == "visitcard") {
-                    echo "Marko Nikolić - Portfolio > Visitcard";
-                } else if ($_GET['p'] == "Projects") {
-                    echo "Marko Nikolić - Portfolio > Projects";
+                <?php
+                if (!empty($_GET['p'])) {
+                    if ($_GET['p'] == "cv-pdf") {
+                        echo "Marko Nikolić - Portfolio > CV";
+                    } else if ($_GET['p'] == "visitcard") {
+                        echo "Marko Nikolić - Portfolio > Visitcard";
+                    } else if ($_GET['p'] == "Projects") {
+                        echo "Marko Nikolić - Portfolio > Projects";
+                    } else {
+                        echo "Marko Nikolić - Portfolio";
+                    }
                 } else {
                     echo "Marko Nikolić - Portfolio";
                 }
-            } else {
-                echo "Marko Nikolić - Portfolio";
-            }
-            ?>
-        </title>
-        <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-        <meta name="description" content="This website for my PortFolio. ">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-        <meta name="author" content="Marko Nikolic">
+                ?>
+            </title>
+            <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
+            <meta name="description" content="This website for my PortFolio. ">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
+            <meta name="author" content="Marko Nikolic">
 
-        <meta name="theme-color" content="#333">
-        <meta property="og:type" content="website" />
-        <meta name="author" content="Marko Nikolic">
-        <link rel="manifest" href="/manifest.webmanifest">
+            <meta name="theme-color" content="#333">
+            <meta property="og:type" content="website" />
+            <meta name="author" content="Marko Nikolic">
+            <link rel="manifest" href="/manifest.webmanifest">
 
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content="@markoni62595164" />
-        <meta name="twitter:creator" content="@markoni62595164" />
-        <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
-        <meta property="og:title" content="Marko Nikolić - Portfolio" />
-        <meta property="og:description" content="This website for my PortFolio." />
-        <meta property="og:image" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-        <meta property="og:image" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-        <meta property="og:image:url" itemprop="image"
-            content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-        <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="1024">
-        <meta property="og:image:height" content="1024">
-        <meta property="og:locale" content="en_GB" />
-    <?php
+            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:site" content="@markoni62595164" />
+            <meta name="twitter:creator" content="@markoni62595164" />
+            <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+            <meta property="og:title" content="Marko Nikolić - Portfolio" />
+            <meta property="og:description" content="This website for my PortFolio." />
+            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" itemprop="image"
+                content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:type" content="image/png" />
+            <meta property="og:image:width" content="1024">
+            <meta property="og:image:height" content="1024">
+            <meta property="og:locale" content="en_GB" />
+            <?php
         }
     }
     function error_page($status)
@@ -256,27 +306,27 @@ class portfolio_marko
     function sitemapGenerator()
     {
         header("content-type: application/xml");
-        $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
-        $array2 = file_get_contents(ROOT."/data_s/blog/blgd.json");
+        $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+        $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
         $generated = "";
-        $rplc =   file_get_contents("https://blog.eronelit.com/sitemap.xml");
-        $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>","",$rplc);
-        $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',"",$rplc);
-        $rplc = str_replace("</urlset>","",$rplc);
-        
+        $rplc = file_get_contents("https://blog.eronelit.com/sitemap.xml");
+        $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>", "", $rplc);
+        $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "", $rplc);
+        $rplc = str_replace("</urlset>", "", $rplc);
+
         foreach ($array as $index => $element) {
-                $d2 = strtotime( $element["time"]);   
-                $d =  date ( 'Y-m-d h:i:s ' , $d2 );
-                // date_format($d2,"Y/m/d  H:i:s");
-                $generated .= " 
+            $d2 = strtotime($element["time"]);
+            $d = date('Y-m-d h:i:s ', $d2);
+            // date_format($d2,"Y/m/d  H:i:s");
+            $generated .= " 
             <url>
                 <loc>https://portfolio.eronelit.com/?p=blog&id=$element[id]</loc>
                 <lastmod>$d</lastmod>
             </url>\n
             $rplc
             ";
-            } 
-            $generated = str_replace("&","&amp;",$generated);
+        }
+        $generated = str_replace("&", "&amp;", $generated);
         echo "
        
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
@@ -290,44 +340,44 @@ class portfolio_marko
     {
         if (!empty($_GET['data'])) {
             if ($_GET['data'] == "sitemap") {
-               $this->sitemapGenerator();
+                $this->sitemapGenerator();
             }
             if ($_GET['data'] == "") {
 
             }
         } else if (!empty($_GET['blog'])) {
-            $url = ROOT."data_s/blog/image/";
-            $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
-            $file = ROOT."data_s/blog/$_GET[blog].html";
+            $url = ROOT . "data_s/blog/image/";
+            $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+            $file = ROOT . "data_s/blog/$_GET[blog].html";
             if (file_exists($file)) {
                 header("content-type: text/html");
                 if (file_exists($file)) {
-                    $css = file_get_contents(ROOT."/Scripts/md_viewer.css");
-                    $js = file_get_contents(ROOT."/Scripts/md_viewer.js");
+                    $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+                    $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
 
 
                     echo file_get_contents($file);
                     ?>
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                    <link rel="preload" as="font"
-                        href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                        type="font/woff2">
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                        rel="stylesheet">
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                        rel="stylesheet">
-                    <?php
-                    echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
-                    echo "<style type='text/css'>$css</style>";
-                    echo "<script type='text/javascript'>$js </script>";
-                    echo '<div class="cursor " style="opacity: 0;></div>';
-                    exit();
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                        <link rel="preload" as="font"
+                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                            type="font/woff2">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <?php
+                        echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                        echo "<style type='text/css'>$css</style>";
+                        echo "<script type='text/javascript'>$js </script>";
+                        echo '<div class="cursor " style="opacity: 0;></div>';
+                        exit();
                 } else {
                     $this->error_page(404);
                 }
@@ -343,8 +393,8 @@ class portfolio_marko
                 readfile("$url$_GET[blog].jpeg");
             } else if ($_GET['blog'] == "all") {
                 header("content-type: text/json");
-                $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
-                $array2 = file_get_contents(ROOT."/data_s/blog/blgd.json");
+                $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+                $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
                 if (!empty($_GET['id'])) {
                     $off = false;
@@ -365,7 +415,7 @@ class portfolio_marko
                 // $found_key = array_search('blue', $colors);
                 if (!empty($_GET['q'])) {
                     header("content-type: text/json");
-                    $arrayF = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
+                    $arrayF = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
                     $searchKey = "title";
                     $searchValue = $_GET['q'];
                     $arrayLM = array();
@@ -389,9 +439,9 @@ class portfolio_marko
                 }
             } else if ($_GET['blog'] > 0) {
                 header("content-type: text/json");
-                $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
+                $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
 
-                $array2 = file_get_contents(ROOT."/data_s/blog/blgd.json");
+                $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
                 $off = "true";
                 foreach ($array as $index => $element) {
 
@@ -405,13 +455,13 @@ class portfolio_marko
                     echo "NO";
                 }
             } else {
-                include  ROOT."ERROR_PG.php";
+                include ROOT . "ERROR_PG.php";
             }
             exit();
         } else if (!empty($_GET['pdf_file'])) {
-            $file = ROOT."data_s/blog/image/$_GET[id].pdf";
+            $file = ROOT . "data_s/blog/image/$_GET[id].pdf";
             if ($_GET['pdf_file'] == "view") {
-                include ROOT."Scripts/pdf_viewer.php";
+                include ROOT . "Scripts/pdf_viewer.php";
             } else if ($_GET['pdf_file'] == "file") {
                 if (!empty($_GET['id'])) {
                     if (file_exists($file)) {
@@ -426,8 +476,8 @@ class portfolio_marko
             exit();
         } else if (!empty($_GET['mnps'])) {
 
-            $img_background_3_jpg =  ROOT."img/background-3.jpg";
-            $img_background_1_jpg =  ROOT."img/background-1.jpg";
+            $img_background_3_jpg = ROOT . "img/background-3.jpg";
+            $img_background_1_jpg = ROOT . "img/background-1.jpg";
             //
 
 
@@ -445,7 +495,7 @@ class portfolio_marko
                 header("Pragma: no-cache");
                 $f = time() . rand();
                 echo " /* $f */ ";
-                include ROOT."welcomer_f.js";
+                include ROOT . "welcomer_f.js";
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
                 if (!empty($_POST['what'])) {
@@ -526,19 +576,19 @@ class portfolio_marko
             } else if (strpos($_GET['mnps'], 'javascript-mr-m') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."Scripts/tmp/1query/m.php";
+                include ROOT . "Scripts/tmp/1query/m.php";
             } else if (strpos($_GET['mnps'], 'javascript-mr-h_old') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."js/js_s/holder.min.php";
+                include ROOT . "js/js_s/holder.min.php";
             } else if (strpos($_GET['mnps'], 'javascript-jq-slm') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."Scripts/tmp/1query/jquery-slim.min.php";
+                include ROOT . "Scripts/tmp/1query/jquery-slim.min.php";
             } else if (strpos($_GET['mnps'], 'javascript-jq-slm3') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."Scripts/tmp/1query/jquery-3.3.1.slim.min.php";
+                include ROOT . "Scripts/tmp/1query/jquery-3.3.1.slim.min.php";
             } else if (strpos($_GET['mnps'], 'javascript-in-F_9') !== false) {
                 header("Content-type: application/javascript");
 
@@ -618,75 +668,75 @@ class portfolio_marko
             } else if (strpos($_GET['mnps'], 'image-in-background-6') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-6.jpg");
+                readfile(ROOT . "/img/background-6.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-background-4') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-4.jpg");
+                readfile(ROOT . "/img/background-4.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-background-5') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-5.jpg");
+                readfile(ROOT . "/img/background-5.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-background-7') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-7.jpg");
+                readfile(ROOT . "/img/background-7.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-background-8') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-8.jpg");
+                readfile(ROOT . "/img/background-8.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-background-9') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/background-9.jpg");
+                readfile(ROOT . "/img/background-9.jpg");
             }
             // - -- ---
             else if (strpos($_GET['mnps'], 'image-in-prjt-1') !== false) {
                 header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/AI1.png");
+                readfile(ROOT . "/img/AI1.png");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-2') !== false) {
                 header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/dd1.png");
+                readfile(ROOT . "/img/dd1.png");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-3') !== false) {
                 header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/ftpimage.png");
+                readfile(ROOT . "/img/ftpimage.png");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-4') !== false) {
                 header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/ftpimage.png");
+                readfile(ROOT . "/img/ftpimage.png");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-5') !== false) {
                 header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/home_experiments.png");
+                readfile(ROOT . "/img/home_experiments.png");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-6') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/img_fae.jpg");
+                readfile(ROOT . "/img/img_fae.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-prjt-7') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/galaxy_slider2.jpg");
+                readfile(ROOT . "/img/galaxy_slider2.jpg");
             }
             // - -- ---
             else if (strpos($_GET['mnps'], 'image-3140') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/slika314.jpg");
+                readfile(ROOT . "/img/slika314.jpg");
             } else if (strpos($_GET['mnps'], 'image_og') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/README_files/readme_part1.png");
+                readfile(ROOT . "/README_files/readme_part1.png");
             } else if (strpos($_GET['mnps'], 'image-mask') !== false) {
                 header("Content-type: text/html");
-                include  ROOT."css/mask.php";
+                include ROOT . "css/mask.php";
             } else if (strpos($_GET['mnps'], 'image-s-mask') !== false) {
                 header("Content-type: image/svg+xml");
-                readfile(ROOT."/img/svg_bckr_mask.svg");
+                readfile(ROOT . "/img/svg_bckr_mask.svg");
             } else if ($_GET['mnps'] == 'pdf-d-cv') {
-                $file_url = ROOT."cv-pdf.pdf";
+                $file_url = ROOT . "cv-pdf.pdf";
                 header('Content-Type: application/octet-stream');
                 header("Content-Transfer-Encoding: Binary");
                 header("Content-disposition: attachment; filename=\"" . basename($file_url) . "\"");
@@ -695,34 +745,34 @@ class portfolio_marko
 
                 if (!empty($_GET['f'])) {
                     header("content-type: text/html");
-                    $file =  ROOT."data_s/blog/$_GET[f].html";
+                    $file = ROOT . "data_s/blog/$_GET[f].html";
                     if (file_exists($file)) {
-                        $css = file_get_contents(ROOT."/Scripts/md_viewer.css");
-                        $js = file_get_contents(ROOT."/Scripts/md_viewer.js");
+                        $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+                        $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
 
 
                         echo file_get_contents($file);
                         ?>
-                                                                                                                                                                                                                                                            <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                                                                                                                                                                                                                                                            <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                                                                                                                                                                                                                                                            <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                                                                                                                                                                                                                                                            <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                                                                                                                                                                                                                                                            <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                                                                                                                                                                                                                                                            <link rel="preload" as="font"
-                                                                                                                                                                                                                                                                href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                                                                                                                                                                                                                                                                type="font/woff2">
-                                                                                                                                                                                                                                                            <link
-                                                                                                                                                                                                                                                                href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                                                                                                                                                                                                                                                                rel="stylesheet">
-                                                                                                                                                                                                                                                            <link
-                                                                                                                                                                                                                                                                href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                                                                                                                                                                                                                                                                rel="stylesheet">
-                                                                                                                                                                                                                                                            <?php
-                                                                                                                                                                                                                                                            echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
-                                                                                                                                                                                                                                                            echo "<style type='text/css'>$css</style>";
-                                                                                                                                                                                                                                                            echo "<script type='text/javascript'>$js </script>";
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" as="font"
+                                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                                                                                                                                                                                                                                                                    type="font/woff2">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                            <?php
+                            echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                            echo "<style type='text/css'>$css</style>";
+                            echo "<script type='text/javascript'>$js </script>";
 
-                                                                                                                                                                                                                                                            exit();
+                            exit();
                     } else {
                         $this->error_page(404);
                     }
@@ -730,8 +780,8 @@ class portfolio_marko
                 } else if (!empty($_GET['q'])) {
                     if ($_GET['q'] == "all") {
                         header("content-type: text/json");
-                        $array = json_decode(file_get_contents(ROOT."/data_s/blog/blgd.json"), true);
-                        $array2 = file_get_contents(ROOT."/data_s/blog/blgd.json");
+                        $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+                        $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
                         if (!empty($_GET['id'])) {
                             foreach ($array as $index => $element) {
@@ -752,38 +802,108 @@ class portfolio_marko
 
                 $arr = array();
                 if (!empty($_GET['img'])) {
-                    $url =  ROOT."data_s/data_wlp/";
+                    $url = ROOT . "data_s/data_wlp/";
                     if (!empty($_GET["blog"])) {
-                        $url =  ROOT."data_s/blog/image/";
+                        $url = ROOT . "data_s/blog/image/";
                     }
+
 
                     if (file_exists("$url$_GET[img].png")) {
                         header("content-type: image/png");
+                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$_GET[img].png")) {
+                            #  $this->SerfveThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","png");
+                        }
                         readfile("$url$_GET[img].png");
+
                     } else if (file_exists("$url$_GET[img].jpg")) {
                         header("content-type: image/jpeg");
+                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$_GET[img].jpg")) {
+                            #   $this->ServfeThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
+                        }
                         readfile("$url$_GET[img].jpg");
                     } else if (file_exists("$url$_GET[img].jpeg")) {
                         header("content-type: image/jpeg");
+                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$_GET[img].jpeg")) {
+                            # $this->ServefThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
+                        }
                         readfile("$url$_GET[img].jpeg");
+
                     } else {
                         $this->error_page(404);
                     }
+                } else if (!empty($_GET['thumb'])) {
+                    $url = ROOT . "data_s/data_wlp/";
+                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                    $i = 0;
+                    header("content-type: image/jpeg");
+                    foreach ($fileList as $filename) {
+                        $nmx = pathinfo($filename, PATHINFO_FILENAME);
+                        $n = pathinfo($filename, PATHINFO_BASENAME);
+                        $nmxext = pathinfo($filename, PATHINFO_EXTENSION);
+                        if (strpos($filename, "$_GET[thumb].$nmxext") !== false) {
+                            header("content-type: image/png");
+                           @readfile($filename);
+                            #$this->ServeThumb("$filename", 640, ROOT . "data_s/data_wlp/thumb/$nmx", "");
+                        exit();
+                        }
+
+                    }
+
+                    /*
+                    if (file_exists("$url$_GET[thumb].png")) {
+                        header("content-type: image/png");
+                        $this->ServefThumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
+                        #   readfile("$url$_GET[img].png"); 
+                    } else if (file_exists("$url$_GET[thumb].jpg")) {
+                        header("content-type: image/jpeg");
+                        $this->ServeTfhumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
+                        #  readfile("$url$_GET[img].jpg"); 
+                    } else if (file_exists("$url$_GET[thumb].jpeg")) {
+                        header("content-type: image/jpeg");
+                        $this->ServeThfumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
+                        #  readfile("$url$_GET[thumb].jpeg");
+
+                    } else {
+                        $url = ROOT . "data_s/data_wlp/";
+                        if (file_exists("$url$_GET[thumb].png")) {
+                            header("content-type: image/png");
+
+                            readfile("$url$_GET[thumb].png");
+
+                        } else if (file_exists("$url$_GET[img].jpg")) {
+                            header("content-type: image/jpeg");
+
+                            readfile("$url$_GET[thumb].jpg");
+                        } else if (file_exists("$url$_GET[thumb].jpeg")) {
+                            header("content-type: image/jpeg");
+
+                            readfile("$url$_GET[thumb].jpeg");
+
+                        } else {
+                            $this->error_page(404);
+                        }
+                    }*/
 
                     exit();
                 } else {
 
-                    $fileList = glob(ROOT.'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
                     $i = 0;
                     foreach ($fileList as $filename) {
                         // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
                         $path_parts = pathinfo($filename);
                         $IamNumberic = time() . rand();
                         if (!is_numeric("$path_parts[filename]")) {
-                            rename(ROOT."data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                            rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
                             $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                            if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                            }
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
                         } else {
                             $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
                         }
                         // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
                         $arr[$i]->title = "-";
@@ -801,52 +921,52 @@ class portfolio_marko
             } else if (strpos($_GET['mnps'], 'svg_bckr_mask') !== false) {
                 header("Content-type: image/svg+xml");
                 // header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/svg_bckr_mask.svg");
+                readfile(ROOT . "/img/svg_bckr_mask.svg");
             } else if (strpos($_GET['mnps'], 'image-in-g-background-1') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/vertical-gallery-1.jpg");
+                readfile(ROOT . "/img/vertical-gallery-1.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-g-background-2') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/vertical-gallery-2.jpg");
+                readfile(ROOT . "/img/vertical-gallery-2.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-g-background-3') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/vertical-gallery-3.jpg");
+                readfile(ROOT . "/img/vertical-gallery-3.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-g-background-4') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/vertical-gallery-4.jpg");
+                readfile(ROOT . "/img/vertical-gallery-4.jpg");
             } else if (strpos($_GET['mnps'], 'image-in-g-background-5') !== false) {
                 header("Content-type: image/jpeg");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/img/vertical-gallery-5.jpg");
+                readfile(ROOT . "/img/vertical-gallery-5.jpg");
             } else if (strpos($_GET['mnps'], 'image-favicon') !== false) {
                 header("Content-type: image/x-icon");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT."/logo.ico");
+                readfile(ROOT . "/logo.ico");
             } else if (strpos($_GET['mnps'], "fonts-D3") !== false) {
                 header('Content-type: font/woff');
                 header('Content-disposition: inline; filename="Eronelit font"');
-                readfile(ROOT."/fonts/D3/DRF.woff");
+                readfile(ROOT . "/fonts/D3/DRF.woff");
             } else if (strpos($_GET['mnps'], "fonts-D32") !== false) {
                 header('Content-type: font/woff2');
                 header('Content-disposition: inline; filename="Eronelit font"');
-                readfile(ROOT."/fonts/D3/DRF2.woff2");
+                readfile(ROOT . "/fonts/D3/DRF2.woff2");
             } else if (strpos($_GET['mnps'], "stylesheet-fai") !== false) {
                 header("Content-type: text/css");
-                include  ROOT."fonts/D3/D3.php";
+                include ROOT . "fonts/D3/D3.php";
             }
             // - portfolio old
             else if (strpos($_GET['mnps'], "portfolio-v3-old-s-h") !== false) {
-                include  ROOT."old_portfolio/index.php";
+                include ROOT . "old_portfolio/index.php";
             } else if (strpos($_GET['mnps'], "portfolio-v3-old-s-s-stylesheet") !== false) {
                 header("Content-type: text/css");
-                include  ROOT."old_portfolio/css.php";
+                include ROOT . "old_portfolio/css.php";
             } else if (strpos($_GET['mnps'], "portfolio-v3-old-s-s-script") !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."old_portfolio/script.php";
+                include ROOT . "old_portfolio/script.php";
             }
             // - portfolio old
             else if (strpos($_GET['mnps'], "stylesheet-3") !== false) {
@@ -854,10 +974,10 @@ class portfolio_marko
             } else if (strpos($_GET['mnps'], "stylesheet-js-fai") !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."Scripts/js_font_awesommme.php";
+                include ROOT . "Scripts/js_font_awesommme.php";
             } else if (strpos($_GET['mnps'], "jquery-2.2.4") !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."Scripts/jquery-2.2.4.min.php";
+                include ROOT . "Scripts/jquery-2.2.4.min.php";
             }
             // -- arial font
             else if (strpos($_GET['mnps'], "arial_font") !== false) {
@@ -865,7 +985,7 @@ class portfolio_marko
                 if (!empty($_GET['FGC_source'])) {
                     header('Content-type: application/ttf');
                     header('Content-disposition: inline; filename="Eronelit font"');
-                    readfile(ROOT."/fonts/D4/" . $_GET['FGC_source'] . ".ttf");
+                    readfile(ROOT . "/fonts/D4/" . $_GET['FGC_source'] . ".ttf");
                 } else {
                     return false;
                 }
@@ -879,13 +999,13 @@ class portfolio_marko
                 // -
             } else if (strpos($_GET['mnps'], "stylesheet-gg-fai") !== false) {
                 header("Content-type: text/css");
-                include  ROOT."fonts/BX/BX.php";
+                include ROOT . "fonts/BX/BX.php";
             } else if (strpos($_GET['mnps'], "stylesheet-js-fai") !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."Scripts/js_font_awesommme.php";
+                include ROOT . "Scripts/js_font_awesommme.php";
             } else if (strpos($_GET['mnps'], "js-feaie") !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."visitcard/ff_FA/cv_pdf/html2canvas.min.php";
+                include ROOT . "visitcard/ff_FA/cv_pdf/html2canvas.min.php";
             }
 
             // - 
@@ -905,14 +1025,14 @@ class portfolio_marko
             } else if (strpos($_GET['mnps'], "javascript-no-13") !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."Scripts/jquery.mousewheel.min.php";
+                include ROOT . "Scripts/jquery.mousewheel.min.php";
             } else if (strpos($_GET['mnps'], "javascript-nfo-13") !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."visitcard/html2canvas.php";
+                include ROOT . "visitcard/html2canvas.php";
             } else if (strpos($_GET['mnps'], 'source_099925') !== false) {
 
 
-                include  ROOT."projct.php";
+                include ROOT . "projct.php";
             } else if (strpos($_GET['mnps'], 'media_source') !== false) {
                 $ppath = "$_SERVER[DOCUMENT_ROOT]/cinematic_3/cinematic_MainMenu.mp4";
                 $reqpath = $ppath;
@@ -924,26 +1044,26 @@ class portfolio_marko
             }
             // - visitcard
             else if (strpos($_GET['mnps'], 'visitcard') !== false) {
-                include  ROOT."visitcard/index1.php";
+                include ROOT . "visitcard/index1.php";
             } else if (strpos($_GET['mnps'], 'source_934285_stylesheet') !== false) {
                 header("Content-type: text/css");
-                include  ROOT."visitcard/333234/style.php";
+                include ROOT . "visitcard/333234/style.php";
             } else if (strpos($_GET['mnps'], 'source_9342805_javascript') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/333234/style.php";
+                include ROOT . "visitcard/333234/style.php";
             } else if (strpos($_GET['mnps'], 'source_visitcard_FA032') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/html2canvas.php";
+                include ROOT . "visitcard/html2canvas.php";
             } else if (strpos($_GET['mnps'], 'source_visitcard_FV032') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/html2canvas.min.php";
+                include ROOT . "visitcard/html2canvas.min.php";
             } else if (strpos($_GET['mnps'], 'source_visitcard_FH032') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/jquery-3.3.1.min_js.php";
+                include ROOT . "visitcard/jquery-3.3.1.min_js.php";
             } else if ($_GET['mnps'] == "contacts") {
                 header("content-type: text/json");
                 if (!empty($_POST["fm"]) || !empty($_POST['fe']) || !empty($_POST["fn"])) {
@@ -987,12 +1107,12 @@ class portfolio_marko
                         header("Content-type: image/svg+xml");
                     } else {
                     }
-                    readfile("$_SERVER[DOCUMENT_ROOT]/rdlv/$_GET[q]");
+                    readfile("$_SERVER[DOCUMENT_ROOT]/app/rdlv/$_GET[q]");
                 }
             } else if (strpos($_GET['mnps'], 'source_9342805_generated_qr') !== false) {
                 header("Content-type: image/svg+xml");
 
-                include  ROOT."visitcard/qr-portfolio-erone.php";
+                include ROOT . "visitcard/qr-portfolio-erone.php";
             }
 
             // - visitcard
@@ -1006,7 +1126,7 @@ class portfolio_marko
             // - pdf version
             else if (strpos($_GET['mnps'], 'pdf-cs1') !== false) {
                 header("Content-type: text/css");
-                include  ROOT."visitcard/ff_FA/cv_pdf/style.php";
+                include ROOT . "visitcard/ff_FA/cv_pdf/style.php";
             }
 
             // - pdf version
@@ -1019,33 +1139,33 @@ class portfolio_marko
             } else if (strpos($_GET['pages'], 'vc-js-1') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/html2canvas.php";
+                include ROOT . "visitcard/html2canvas.php";
             } else if (strpos($_GET['pages'], 'portfolio-v3-old-s-h') !== false) {
-                include  ROOT."old_portfolio/index.php";
+                include ROOT . "old_portfolio/index.php";
             } else if (strpos($_GET['pages'], 'vc-js-2') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/html2canvas.min.php";
+                include ROOT . "visitcard/html2canvas.min.php";
             } else if (strpos($_GET['pages'], 'vc-js-3') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/jquery-3.3.1.min_js.php";
+                include ROOT . "visitcard/jquery-3.3.1.min_js.php";
             } else if (strpos($_GET['pages'], 'vc-js-4') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/jquery-1.9.1_js.php";
+                include ROOT . "visitcard/jquery-1.9.1_js.php";
             } else if (strpos($_GET['pages'], 'vc-js-5') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/jspdf.debug_js.php";
+                include ROOT . "visitcard/jspdf.debug_js.php";
             } else if (strpos($_GET['pages'], 'vc-js-6') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/333234/all_js.php";
+                include ROOT . "visitcard/333234/all_js.php";
             } else if (strpos($_GET['pages'], 'vc-js-7') !== false) {
                 header("Content-type: application/javascript");
 
-                include  ROOT."visitcard/333234/all_js_f.php";
+                include ROOT . "visitcard/333234/all_js_f.php";
             } else if (strpos($_GET['pages'], 'pdf-954385472') !== false) {
                 $filename = '.\visitcard\333234\printed.pdf';
                 header("Content-type:application/pdf");
@@ -1061,33 +1181,33 @@ class portfolio_marko
             } else if (strpos($_GET['pages'], 'source_9528') !== false) {
                 header("Content-type: image/svg+xml");
 
-                include  ROOT."visitcard/333234/font_aw.php";
+                include ROOT . "visitcard/333234/font_aw.php";
             } else if (strpos($_GET['pages'], 'source_9524') !== false) {
                 header("Content-type: image/svg+xml");
 
-                include  ROOT."visitcard/333234/serbia.php";
+                include ROOT . "visitcard/333234/serbia.php";
             } else if (strpos($_GET['pages'], 'source_9524') !== false) {
                 header("Content-type: image/svg+xml");
 
-                include  ROOT."visitcard/333234/serbia.php";
+                include ROOT . "visitcard/333234/serbia.php";
             }
 
             //-- test F130
             else if (strpos($_GET['pages'], 'source_F3429524') !== false) {
-                include  ROOT."Content/302/index.php";
+                include ROOT . "Content/302/index.php";
             } else if (strpos($_GET['pages'], 'source_FJ03249') !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."Content/302/three.min.php";
+                include ROOT . "Content/302/three.min.php";
             } else if (strpos($_GET['pages'], 'source_FJ13249') !== false) {
                 header("Content-type: application/javascript");
-                include  ROOT."Content/302/trackball_ctrl_r62.php";
+                include ROOT . "Content/302/trackball_ctrl_r62.php";
             } else if (strpos($_GET['pages'], 'source_FS03249') !== false) {
                 header("Content-type: text/css");
-                include  ROOT."Content/302/style.php";
+                include ROOT . "Content/302/style.php";
             }
             //-- test F130
             else if (strpos($_GET['pages'], 'email-send') !== false) {
-                include  ROOT."mail.php";
+                include ROOT . "mail.php";
             } else if (strpos($_GET['pages'], 'portfolio-2') !== false) {
             }
             // --
@@ -1096,10 +1216,10 @@ class portfolio_marko
                 $this->Pages("cv-pdf");
             } else if (strpos($_GET['pages'], 'cv-pdf-cv') !== false) {
                 //    include  ROOT."visitcard/333234/serbia.php";
-                include  ROOT."visitcard/ff_FA/cv_pdf/ind.php";
+                include ROOT . "visitcard/ff_FA/cv_pdf/ind.php";
             } else if (strpos($_GET['pages'], 'cv-png') !== false) {
                 //    include  ROOT."visitcard/333234/serbia.php";
-                $file =  ROOT.'visitcard/ff_FA/cv_pdf/png_cv.png';
+                $file = ROOT . 'visitcard/ff_FA/cv_pdf/png_cv.png';
                 /*      header('Content-Transfer-Encoding: binary');
                 echo '<head><title>Page Title</title></head>';
 
@@ -1125,7 +1245,7 @@ class portfolio_marko
                 exit;
             } else if (strpos($_GET['pages'], 'cv-fpdf') !== false) {
                 //    include  ROOT."visitcard/333234/serbia.php";
-                include  ROOT."visitcard/ff_FA/cv_pdf2/index.php";
+                include ROOT . "visitcard/ff_FA/cv_pdf2/index.php";
             } else if (strpos($_GET['pages'], 'cv-markonikolic-pdf') !== false) {
 
                 // header("Content-type:application/pdf");
@@ -1162,8 +1282,6 @@ class portfolio_marko
 
         }
     }
-    
- 
-}
 
- 
+
+}

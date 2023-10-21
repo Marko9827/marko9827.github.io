@@ -1636,4 +1636,16 @@ iframe.blog_style {
     background: transparent;
 }
  
- 
+.zoomWindow {
+    object-fit: scale-down !important;
+    transform: unset !important;
+    width: -webkit-fill-available !important;
+    height: -webkit-fill-available !important;
+    background-size: contain;
+    background-position: center !important;
+}
+
+html.anim_djenerated div#clavs {
+background: rgb(0 0 0 / 69%) !important;
+}
+

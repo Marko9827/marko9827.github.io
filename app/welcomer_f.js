@@ -957,14 +957,14 @@ const welcomer = {
                 thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
 
             }
-            $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" title="${v[i].description}">
+            $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
         <grider_box>
         <p><span>${v[i].title}</span></p>
           
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
-            <img loading="lazy"  ${thi} ondragstart="return false;" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
-            src="${this.loader_svg}"  data-zoom-image="${v[i].img}" alt="${v[i].title}">
+            <img loading="lazy"  ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
+            src="${this.loader_svg}"  data-zoom-image="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
@@ -978,6 +978,9 @@ const welcomer = {
         $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
         $(".F_bi_search").hide();
         $(Vjideo_sjpinner).hide();
+    },
+    loaded_imgPrld_error: function(aer, id = 0){
+        $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
     },
     loaded_imgPrld: function (aer, id = 0) {
         const d = aer;
@@ -1065,15 +1068,17 @@ const welcomer = {
     },
     infoVa: function (h = 0) {
 
-        const imgH = $(`project[id-int="${h}"] img`);
+        var imgH = new Image();
+        imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
 
-        imgH.ezPlus({
+        imgH.onload = function(){
+        $(imgH).ezPlus({
             zoomType: 'inner',
             containLensZoom: true,
             speed: 1
         });
         $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
-
+    }
     },
     openWindow: function (i = 0) {
         if (this.projects[i].href !== "") {
@@ -1621,6 +1626,9 @@ const welcomer = {
             const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
             d.src = H;
             d.setAttribute("data-zoom-image", H);
+        }
+        img.onerror = function(){
+
         }
     },
     compTxt: function (s) {

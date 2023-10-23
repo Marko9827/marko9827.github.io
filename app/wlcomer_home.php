@@ -642,4 +642,11 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 </html>
 <?php
-exit(); ?>
+
+
+exit(); 
+/*
+<div class="embed_posts"><p>Povezan post: </p><iframe src="/?blog=24_sept_2023_12_01" height="825" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe></div>
+*/
+
+?>

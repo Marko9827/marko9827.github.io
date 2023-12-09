@@ -1649,3 +1649,8 @@ html.anim_djenerated div#clavs {
 background: rgb(0 0 0 / 69%) !important;
 }
 
+div_header,
+iframe.Ignoring_me_iframe.blog_style {
+    background: var(--black-trasparent-color) !important;
+}
+ 

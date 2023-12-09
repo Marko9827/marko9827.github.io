@@ -399,7 +399,7 @@ const welcomer = {
                 a.onmouseout = function () {
                     welcomer.bell_out(a);
                 }
-                a.classList.add("adiv"); 
+                a.classList.add("adiv");
                 const adiv_gat = v.blog_bundle || "";
                 if (!adiv_gat == "") {
                     a.setAttribute("adiv_gat", adiv_gat);
@@ -979,7 +979,7 @@ const welcomer = {
         $(".F_bi_search").hide();
         $(Vjideo_sjpinner).hide();
     },
-    loaded_imgPrld_error: function(aer, id = 0){
+    loaded_imgPrld_error: function (aer, id = 0) {
         $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
     },
     loaded_imgPrld: function (aer, id = 0) {
@@ -1071,14 +1071,14 @@ const welcomer = {
         var imgH = new Image();
         imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
 
-        imgH.onload = function(){
-        $(imgH).ezPlus({
-            zoomType: 'inner',
-            containLensZoom: true,
-            speed: 1
-        });
-        $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
-    }
+        imgH.onload = function () {
+            $(imgH).ezPlus({
+                zoomType: 'inner',
+                containLensZoom: true,
+                speed: 1
+            });
+            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+        }
     },
     openWindow: function (i = 0) {
         if (this.projects[i].href !== "") {
@@ -1410,22 +1410,27 @@ const welcomer = {
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
         var msg_title = "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
-
+        var containeds = window.location.href;
+        if (containeds.includes("?p=blog&id=")) {
+            welcomer.blogloader('all');
+            return false;
+        } 
         this.hmm(msg_title, function () {
 
-            $("#clavs").attr("style", "transform: translateY(-100%);");
-            welcomer.titleC(`Marko Nikolić - Portfolio`);
-            history.replaceState({}, "", `${window.location.origin}`);
+            
+                $("#clavs").attr("style", "transform: translateY(-100%);");
+                welcomer.titleC(`Marko Nikolić - Portfolio`);
+                history.replaceState({}, "", `${window.location.origin}`);
 
 
-            welcomer.loop_active = true;
-            setTimeout(function () {
+                welcomer.loop_active = true;
+                setTimeout(function () {
 
-                $("iframe:not(.iframe_mask)").attr("src", "");
-                $("iframe:not(.iframe_mask)").removeAttr("style");
-                $("html").removeClass("anim_djenerated");
-            }, 1000);
-
+                    $("iframe:not(.iframe_mask)").attr("src", "");
+                    $("iframe:not(.iframe_mask)").removeAttr("style");
+                    $("html").removeClass("anim_djenerated");
+                }, 1000);
+            
 
             return false;
             if (myParam == "blog") {
@@ -1627,7 +1632,7 @@ const welcomer = {
             d.src = H;
             d.setAttribute("data-zoom-image", H);
         }
-        img.onerror = function(){
+        img.onerror = function () {
 
         }
     },

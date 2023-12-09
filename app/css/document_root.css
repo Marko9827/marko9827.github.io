@@ -839,3 +839,9 @@ iframe.blog_style {
 div#helper_id_helper3 p {
     display: none !important;
 }
+
+div_header,
+iframe.Ignoring_me_iframe.blog_style {
+    background: var(--black-trasparent-color) !important;
+}
+ 

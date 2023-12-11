@@ -499,6 +499,7 @@ class portfolio_marko
                 if ($off == "true") {
                     header("contnet-type: text/plain");
                     echo "NO";
+                    exit();
                 }
             } else {
                 include ROOT . "ERROR_PG.php";

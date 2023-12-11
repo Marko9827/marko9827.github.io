@@ -1,4 +1,19 @@
-[   
+[
+    {
+        "id": "1702203759350",
+        "title": "Happy Dog waiting you...",
+        "time": "11.dec.2023 11:17AM",
+        "source": "/?blog=11_dec_2023_11_17",
+        "keywords": [
+            "dog",
+            "art",
+            "deviantart",
+            "ai",
+            "happy",
+            "portfolio marko"
+        ],
+        "thumbail": "/?blog=10_dec_2023_11_17/1702203759350"
+    },
     {
         "id": "1702118968197",
         "title": "AI IN CYBER SECURITY!",
@@ -39,7 +54,7 @@
     },
     {
         "id": "1702118968198",
-        "title": "AI IN CYBER SECURITY!",
+        "title": "Use tech from today. To create tech for future!",
         "time": "9.dec.2023 11:50AM",
         "source": "/?blog=9_dec_2023_12_50",
         "keywords": [
@@ -149,43 +164,43 @@
         ],
         "thumbail": "/?blog=20_nov_2023_12_20/1700486889821"
     },
-{
-    "id": "1699186822990",
-    "title": "IS MAKING SOMETHING IS MORE ...",
-    "time": "23.okt.2023 13:22AM",
-    "source": "/?blog=05_nov_2023_13_19",
-    "keywords": [
-        "quantum",
-        "quantumcomputing",
-        "api",
-        "ai",
-        "security",
-        "science",
-        "qubits",
-        "qubit",
-        "howitworks",
-        "requests",
-        "server",
-        "servers",
-        "happy",
-        "it",
-        "science",
-        "nauka DNA",
-        "ancientegypt",
-        "mystery",
-        "arguments",
-        "scienceandtechnology",
-        "sciencefacts",
-        "bulb",
-        "medicine",
-        "research",
-        "labs",
-        "future",
-        "technology",
-        "inovations"
-    ],
-    "thumbail": "/?blog=05_nov_2023_13_19/1699186822990"
-},
+    {
+        "id": "1699186822990",
+        "title": "IS MAKING SOMETHING IS MORE ...",
+        "time": "23.okt.2023 13:22AM",
+        "source": "/?blog=05_nov_2023_13_19",
+        "keywords": [
+            "quantum",
+            "quantumcomputing",
+            "api",
+            "ai",
+            "security",
+            "science",
+            "qubits",
+            "qubit",
+            "howitworks",
+            "requests",
+            "server",
+            "servers",
+            "happy",
+            "it",
+            "science",
+            "nauka DNA",
+            "ancientegypt",
+            "mystery",
+            "arguments",
+            "scienceandtechnology",
+            "sciencefacts",
+            "bulb",
+            "medicine",
+            "research",
+            "labs",
+            "future",
+            "technology",
+            "inovations"
+        ],
+        "thumbail": "/?blog=05_nov_2023_13_19/1699186822990"
+    },
     {
         "id": "1698063174900",
         "title": "Nešto razmiljam šta ako? Je moguće...",

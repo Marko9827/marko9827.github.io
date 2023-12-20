@@ -99,7 +99,7 @@ class portfolio_marko
         }
         exit();
     }
-    function ServeThumb($uploadedFile, $size = 640, $path = "", $fullname = "")
+    function ServeThumb($uploadedFile, $size = 1200, $path = "", $fullname = "")
     {
 
         # ob_start();
@@ -197,28 +197,28 @@ class portfolio_marko
 
             $title = "Blog > $data[title] | Marko Nikolić - Portfolio";
             echo $title;
-?>
+            ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="This website for my PortFolio. ">
+            <meta name="description" content="<?php echo "$data[title]";?> | This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
-                                            /*$t = "";
-            foreach($data->keywords as $index => $v){
-                echo $v .",";
-            }*/
-                                            $faf = $data["keywords"];
-                                            $c = count($data["keywords"]);
-                                            $ci = 0;
-                                            foreach ($faf as $v) {
-                                                echo $v;
-                                                if ($ci < $c) {
-                                                    echo ",";
-                                                }
-                                                $ci++;
-                                            }
-                                            ?>">
+            /*$t = "";
+foreach($data->keywords as $index => $v){
+echo $v .",";
+}*/
+            $faf = $data["keywords"];
+            $c = count($data["keywords"]);
+            $ci = 0;
+            foreach ($faf as $v) {
+                echo $v;
+                if ($ci < $c) {
+                    echo ",";
+                }
+                $ci++;
+            }
+            ?>">
 
             <meta name="theme-color" content="#333">
             <meta property="og:type" content="website" />
@@ -228,20 +228,19 @@ class portfolio_marko
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:site" content="@markoni62595164" />
             <meta name="twitter:creator" content="@markoni62595164" />
-            <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+            <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
             <meta property="og:description" content="This website for my PortFolio." />
-            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image"   content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image:url"   content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
-            <meta property="og:image:height" content="1024">
+            <meta property="og:image:height" content="630">
             <meta property="og:locale" content="en_GB" />
-        <?php
+            <?php
         } else {
-        ?>
+            ?>
             <title>
                 <?php
                 if (!empty($_GET['p'])) {
@@ -272,16 +271,17 @@ class portfolio_marko
             <meta name="twitter:card" content="summary" />
             <meta name="twitter:site" content="@markoni62595164" />
             <meta name="twitter:creator" content="@markoni62595164" />
-            <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
+            <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="Marko Nikolić - Portfolio" />
             <meta property="og:description" content="This website for my PortFolio." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" itemprop="image"
+                content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
-            <meta property="og:image:height" content="1024">
+            <meta property="og:image:height" content="630">
             <meta property="og:locale" content="en_GB" />
             <?php
         }
@@ -399,7 +399,7 @@ class portfolio_marko
             $file = ROOT . "data_s/blog/$_GET[blog].html";
             $fl = false;
             if (file_exists(ROOT . "data_s/blog/$_GET[blog].php")) {
-                $file =  ROOT . "data_s/blog/$_GET[blog].php";
+                $file = ROOT . "data_s/blog/$_GET[blog].php";
             }
             if (file_exists($file)) {
                 header("content-type: text/html");
@@ -407,36 +407,55 @@ class portfolio_marko
                     $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
                     $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
 
-                    if($fl){
+                    if ($fl) {
                         include_once $file;
-                    }else{
-                    echo file_get_contents($file);
-           
-                    }?>
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                    <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
-                    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                    <?php
-                    echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
-                    echo "<style type='text/css'>$css</style>";
-                    echo "<script type='text/javascript'>$js </script>";
-                    echo '<div class="cursor " style="opacity: 0;></div>';
-                    exit();
+                    } else {
+                        echo file_get_contents($file);
+                    } ?>
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                        <link rel="preload" as="font"
+                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                            type="font/woff2">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <?php
+                        echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                        echo "<style type='text/css'>$css</style>";
+                        echo "<script type='text/javascript'>$js </script>";
+                        echo '<div class="cursor " style="opacity: 0;></div>';
+                        exit();
                 } else {
                     $this->error_page(404);
                 }
                 // 23_jul_2023_09_26/1690103453287
             } else if (file_exists("$url$_GET[blog].png")) {
-                header("content-type: image/png");
-                readfile("$url$_GET[blog].png");
+                if (!empty($_GET['for'])) {
+                    if ($_GET['for'] == "og") {
+                        header("content-type: image/png");
+                        $this->ServeThumb("$url$_GET[blog].png");
+                    }
+                } else {
+                    header("content-type: image/png");
+                    readfile("$url$_GET[blog].png");
+                }
             } else if (file_exists("$url$_GET[blog].jpg")) {
-                header("content-type: image/jpeg");
-                readfile("$url$_GET[blog].jpg");
+                if (!empty($_GET['for'])) {
+                    if ($_GET['for'] == "og") {
+                        header("content-type: image/png");
+                        $this->ServeThumb("$url$_GET[blog].jpg");
+                    }
+                } else {
+                    header("content-type: image/jpeg");
+                    readfile("$url$_GET[blog].jpg");
+                }
             } else if (file_exists("$url$_GET[blog].jpeg")) {
                 header("content-type: image/jpeg");
                 readfile("$url$_GET[blog].jpeg");
@@ -796,21 +815,27 @@ class portfolio_marko
 
 
                         echo file_get_contents($file);
-                    ?>
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
-                        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<?php
-                        echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
-                        echo "<style type='text/css'>$css</style>";
-                        echo "<script type='text/javascript'>$js </script>";
+                        ?>
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" as="font"
+                                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                                                                                                                                                                                                                                                                    type="font/woff2">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                            <?php
+                            echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                            echo "<style type='text/css'>$css</style>";
+                            echo "<script type='text/javascript'>$js </script>";
 
-                        exit();
+                            exit();
                     } else {
                         $this->error_page(404);
                     }
@@ -875,6 +900,9 @@ class portfolio_marko
                         $n = pathinfo($filename, PATHINFO_BASENAME);
                         $nmxext = pathinfo($filename, PATHINFO_EXTENSION);
                         if (strpos($filename, "$_GET[thumb].$nmxext") !== false) {
+                            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                            header("Cache-Control: post-check=0, pre-check=0", false);
+                            header("Pragma: no-cache");
                             header("content-type: image/png");
                             @readfile($filename);
                             #$this->ServeThumb("$filename", 640, ROOT . "data_s/data_wlp/thumb/$nmx", "");

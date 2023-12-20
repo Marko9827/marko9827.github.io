@@ -211,6 +211,12 @@ p.p-c {
             }
     }
 
+    div_header,
+iframe.Ignoring_me_iframe.blog_style {
+    background: var(--black-trasparent-color) !important;
+}
+ 
+    
         <?php include ROOT. "css/document_root.css"; ?>
     </style>
     <!-- Google tag (gtag.js) -->

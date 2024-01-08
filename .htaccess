@@ -2090,7 +2090,7 @@ Header always set Content-Security-Policy "upgrade-insecure-requests;"
 </IfModule>
 
  
-#Header set Access-Control-Allow-Methods "GET"
+Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
 
 #Header set X-Frame-Options *.eronelit.com

@@ -42,7 +42,7 @@ header(
 $rand = time();
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en-us" class="no-js" data-rand="<?php  echo $rand; ?>">
+<html id="themes_html" lang="en-us" class="no-js" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -50,17 +50,17 @@ $rand = time();
     <?php
     $this->MetaTags();
 
-/*?>
-    <meta http-equiv="Content-Security-Policy" 
-    content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
- */ ?>
+    /*?>
+        <meta http-equiv="Content-Security-Policy" 
+        content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
+     */?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
 
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
 
- 
+
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
@@ -79,31 +79,31 @@ $rand = time();
     <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494"
-
-    <?php /*
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
+        </script>
+        <?php /*
 <style type="text/css">
 include "./welcomer_f.css"; 
 </style>*/
-    $token = bin2hex(random_bytes(64));
-    echo '<meta content="' . $token . '" name="csrf-param" />
+        $token = bin2hex(random_bytes(64));
+        echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
-    $_SESSION['AuthV2-token'] = $token;
+        $_SESSION['AuthV2-token'] = $token;
 
 
-    ?>
-
-    <script nonce="<?php echo NONCE; ?>"
+        ?>
+         
+         
+         <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-      <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
+    <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-        <script nonce="<?php echo NONCE;?>"   
-        type="text/javascript">
-        <?php 
-            include ROOT."welcomer_f.js";
+    <script nonce="<?php echo NONCE; ?>" type="text/javascript">
+        <?php
+        include ROOT . "welcomer_f.js";
         ?>
     </script>
 
@@ -113,7 +113,7 @@ include "./welcomer_f.css";
             <style type="text/css">
                 * {
                     pointer-events: none !important;
-                    transition:.3s !important
+                    transition: .3s !important
                 }
 
                 body *:not(canvas) {
@@ -123,9 +123,7 @@ include "./welcomer_f.css";
         <?php }
     } ?>
     <style type="text/css">
-
-
-.zoomContainer:not(:hover, :focus) * {
+        .zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
             width: 100% !important;
@@ -138,86 +136,89 @@ include "./welcomer_f.css";
 
 
         video.wallpaperVideo {
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-    -o-object-fit: scale-fit;
-       object-fit: scale-fit;
-    background: black;
-    -webkit-transition: .3s !important;
-    -o-transition: .3s !important;
-    transition: .3s !important;
-    opacity: 0.5; 
-}
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+            -o-object-fit: scale-fit;
+            object-fit: scale-fit;
+            background: black;
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+            opacity: 0.5;
+        }
 
-div#content_Space {
-    background-color: transparent;
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent)), -webkit-gradient(linear, left top, right top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent));
-    height: 100%;
-    background-size: 50px 50px;
-    opacity: 0.3;
-    position: fixed;
-    left: 0px;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-    top: 0px;
-    z-index: 3;
-    pointer-events: none;
-}
+        div#content_Space {
+            background-color: transparent;
+            background-image: -webkit-gradient(linear, left bottom, left top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent)), -webkit-gradient(linear, left top, right top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent));
+            height: 100%;
+            background-size: 50px 50px;
+            opacity: 0.3;
+            position: fixed;
+            left: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+            top: 0px;
+            z-index: 3;
+            pointer-events: none;
+        }
 
-html.anim_djenerated div#clavs {
-    background: transparent !important;
-}
-html.anim_djenerated p-c,
-html.anim_djenerated p.p-c,
-html.anim_djenerated hh_anim_start{
-    -webkit-transition:.3s !important;
-    -o-transition:.3s !important;
-    transition:.3s !important;
-    opacity: 1;
-}
-html.anim_djenerated p-c,
-p-c,
-html.anim_djenerated hh_anim_start, html.anim_djenerated p.p-c{
-    opacity:0 !important;
-    pointer-events:none !important
-}
+        html.anim_djenerated div#clavs {
+            background: transparent !important;
+        }
 
-p.p-c {
-    position: fixed;
-    left: 10px;
-    top: 10px;
-    color: var(--white);
-    opacity: 0.5;
-    font-size: 15px;
-    pointer-events: none;
-}
+        html.anim_djenerated p-c,
+        html.anim_djenerated p.p-c,
+        html.anim_djenerated hh_anim_start {
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+            opacity: 1;
+        }
+
+        html.anim_djenerated p-c,
+        p-c,
+        html.anim_djenerated hh_anim_start,
+        html.anim_djenerated p.p-c {
+            opacity: 0 !important;
+            pointer-events: none !important
+        }
+
+        p.p-c {
+            position: fixed;
+            left: 10px;
+            top: 10px;
+            color: var(--white);
+            opacity: 0.5;
+            font-size: 15px;
+            pointer-events: none;
+        }
 
 
-@media only screen and (max-width: 700px) {
-    
-    p.p-c {
-        left:0px;
-        right:0px;
-        text-align:center;
-        font-size:10px;
-    }
-        
-            video.wallpaperVideo{
-                -o-object-fit:cover;
-                   object-fit:cover;
+        @media only screen and (max-width: 700px) {
+
+            p.p-c {
+                left: 0px;
+                right: 0px;
+                text-align: center;
+                font-size: 10px;
             }
-    }
 
-    div_header,
-iframe.Ignoring_me_iframe.blog_style {
-    background: var(--black-trasparent-color) !important;
-}
- 
-    
-        <?php include ROOT. "css/document_root.css"; ?>
+            video.wallpaperVideo {
+                -o-object-fit: cover;
+                object-fit: cover;
+            }
+        }
+
+        div_header,
+        iframe.Ignoring_me_iframe.blog_style {
+            background: var(--black-trasparent-color) !important;
+        }
+
+
+        <?php include ROOT . "css/document_root.css"; ?>
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
@@ -228,18 +229,17 @@ iframe.Ignoring_me_iframe.blog_style {
 
         gtag('config', 'G-DFNVTLRPLX');
     </script>
-    
+
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-<video   style="opacity:0;" 
-onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
-loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
-<source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
-</video>
-<p class="p-c">Do you love random videos?<br>
-- Tip: Reload page... </p>
-<div id="content_Space"></div>
+    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
+        loop autoplay muted autobuffer playsinline class="wallpaperVideo">
+        <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
+    </video>
+    <p class="p-c">Do you love random videos?<br>
+        - Tip: Reload page... </p>
+    <div id="content_Space"></div>
     <hh_anim_start>
 
 
@@ -327,16 +327,16 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 </arr_bundle>
                 <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();">
                     <?php /*
-     <a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
-     <a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
-     <a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
-     <a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i><span class="href_a_span">Blog/News &#128512</span></a>
+<a href="javascript: welcomer.pgloader('/?pages=cv-pdf');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my CV"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My CV</span></a>
+<a href="javascript: welcomer.pgloader('projects');" onmouseover="welcomer.bell_over(this);" onmouseout="welcomer.bell_out(this)" title="Look at my Projects"><i class="bi bi-box2-heart"></i><span class="href_a_span">My projects</span></a>
+<a href="javascript: welcomer.pgloader('/?pages=visitcard')" onmouseover="welcomer.bell_over(this);" title="Visit my Visit card" onmouseout="welcomer.bell_out(this)"><i class="bi bi-file-earmark-person-fill"></i><span class="href_a_span">My Visitcard</span></a>
+<a href="https://blog.eronelit.com/" target="_blank" onmouseover="welcomer.bell_over(this);" title="Blog/News &#128512" onmouseout="welcomer.bell_out(this)"><i class="bi bi-rss"></i><span class="href_a_span">Blog/News &#128512</span></a>
 
-     <a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span"><span class="href_a_span">My Linkedin (NEW)</span></a>
-     <a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
-     <a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
-     <a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
-     <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
+<a href="https://www.linkedin.com/in/marko-nikolic-49385a283" target="_blank" title="Look at my Linkedin profile (NEW)"><i class="bi bi-linkedin"></i> <span class="href_a_span"><span class="href_a_span">My Linkedin (NEW)</span></a>
+<a href="https://github.com/Marko9827" target="_blank" title="Look at my Github profile"><i class="bi bi-github"></i> <span class="href_a_span">My Github</span></a>
+<a href="https://www.instagram.com/nikoliccc02/" target="_blank" title="Look at my Instagram profile"><i class="bi bi-instagram"></i> <span class="href_a_span">My Instagram</span></a>
+<a href="https://www.deviantart.com/marko9827" target="_blank" title="Look at my Deviantart profile"><i class="fab fa-deviantart"></i> <span class="href_a_span">My Deviantart</span></a>
+<a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
 " class="fab fa-telegram"></i> <span class="href_a_span">Telegram</span></a>
 
 */?>
@@ -416,14 +416,15 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);"
                     title="Search project..."></i>
                 <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
-                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');" title="Return to Blog home page"></i>
+                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"
+                    title="Return to Blog home page"></i>
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
 
         </div_header>
         <?php /*<iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" 
-        <video  class="iframe_mask" style="opacity:0;" 
+   <video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
@@ -435,54 +436,54 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         <?php /*
 <pages>
 <page>
- <div class="container page_header">
-     <div class="row-0">
-         <div class="col-sm-1">
-             <img src="/rdlv/students.svg" alt="aefeaf" />
-         </div>
-         <div class="col-sm-2">
-             <h3>Echat</h3>
-         
-             <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
-         <tags>
-             <tag>Social</tag>
-         </tags>
-         </div>
-     </div>
- </div>
- <headr>
+<div class="container page_header">
+<div class="row-0">
+    <div class="col-sm-1">
+        <img src="/rdlv/students.svg" alt="aefeaf" />
+    </div>
+    <div class="col-sm-2">
+        <h3>Echat</h3>
+    
+        <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
+    <tags>
+        <tag>Social</tag>
+    </tags>
+    </div>
+</div>
+</div>
+<headr>
 
- </headr>
- <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-     <ol class="carousel-indicators">
-         <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-         <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-         <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-         <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
-     </ol>
-     <div class="carousel-inner">
-         <div class="carousel-item active">
-             <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
-         </div>
-         <div class="carousel-item ">
-             <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
-         </div>
-         <div class="carousel-item ">
-             <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
-         </div>
-         <div class="carousel-item ">
-             <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
-         </div>
-     </div>
-     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-         <span class="sr-only">Previous</span>
-     </a>
-     <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-         <span class="sr-only">Next</span>
-     </a>
- </div>
+</headr>
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+</ol>
+<div class="carousel-inner">
+    <div class="carousel-item active">
+        <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
+    </div>
+    <div class="carousel-item ">
+        <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
+    </div>
+    <div class="carousel-item ">
+        <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
+    </div>
+    <div class="carousel-item ">
+        <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
+    </div>
+</div>
+<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+</a>
+<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+</a>
+</div>
 </page>
 </pages> */?>
 
@@ -512,13 +513,14 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
             height="55" width="55">
     </gridder_loader>
     <div class="contanct_frm">
-       <?php /* <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
-      <video  class="iframe_mask" style="opacity:0;" 
+        <?php /* <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
+ <video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
-</video> */?> 
-        <div class="h5_div"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+</video> */?>
+        <div class="h5_div"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
+                class="">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
@@ -643,15 +645,15 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </ul>
 */?>
     <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
-   
-  
+
+
 </body>
 
 </html>
 <?php
 
 
-exit(); 
+exit();
 /*
 <div class="embed_posts"><p>Povezan post: </p><iframe src="/?blog=24_sept_2023_12_01" height="825" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe></div>
 */

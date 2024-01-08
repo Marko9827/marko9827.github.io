@@ -1,7 +1,20 @@
 
 'use strict'
 const welcomer = {
+    infoVa_img: function (event) {
+        var clickedElement = event.target;
+        var imgH = new Image();
+        imgH.src = clickedElement.getAttribute("src");
 
+        imgH.onload = function () {
+            $(imgH).ezPlus({
+                zoomType: 'inner',
+                containLensZoom: true,
+                speed: 1
+            });
+            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+        }
+    },
     constructor: function () {
         this.isMobile();
 
@@ -206,6 +219,24 @@ const welcomer = {
         }
 
     ],
+    gallery_delegator: function (dlg = "a") {
+          
+ 
+        $('#image-popups').magnificPopup({
+            delegate: dlg,
+            type: 'image',
+            removalDelay: 500,  
+            callbacks: {
+                beforeOpen: function () {
+                   this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+                    this.st.mainClass = 'mfp-zoom-in';
+                }
+            },
+            closeOnContentClick: true,
+            midClick: true 
+        });
+ 
+    },
     cp: function () {
         $("iframe.iframe_mask").removeAttr("style");
         const df = document.querySelector(".contanct_frm"),
@@ -728,9 +759,29 @@ const welcomer = {
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.get(f.source, function (res) {
+                            
                             ifrm.document.open();
                             ifrm.document.write(`${res}`);
+                            ifrm.document.querySelectorAll("img").forEach(function(v){
+                                $(v).attr("onclick","parent.welcomer.infoVa_img(event)").attr("data-title","Click (hovered image) for view image in full size");
+                               var a = $(v);
+                               a.hover(
+                                    function () {
+                                        parent.welcomer.showAnchorTitle(a, a.data('title'));
+                                    },
+                                    function () {
+                                        parent.welcomer.hideAnchorTitle();
+                                    }
+                                ).data('title', a.attr('title')).removeAttr('title');
+                
+                                a.mouseleave(function () {
+                                    parent.welcomer.hideAnchorTitle();
+                
+                                });
+                            });
+                            
                             ifrm.document.close();
+                            // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
                             $("div_header span").html(`Blog > ${f.title}`);
                             welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
@@ -745,6 +796,8 @@ const welcomer = {
 
                         $("#clavs grider_viewer").hide();
                         $("iframe.iframe_mask").show();
+                      
+
                     } else {
                         history.replaceState({}, "", `${window.location.origin}`);
 
@@ -757,8 +810,9 @@ const welcomer = {
             }, complete: function () {
                 welcomer.titleC("Blog > Marko Nikolić - Portfolio")
                 $("html").addClass("anim_djenerated");
-
-
+               
+    
+                
             }
         });
 
@@ -1080,6 +1134,7 @@ const welcomer = {
             $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
         }
     },
+   
     openWindow: function (i = 0) {
         if (this.projects[i].href !== "") {
             const urls = this.projects[i].href;
@@ -1543,7 +1598,7 @@ const welcomer = {
     },
     cursor_show: function () {
         $(".cursor").show();
-    },
+    }, 
     url_blob: function (url = "") {
         var blob = null;
         var objectURL = null;
@@ -2390,3 +2445,5 @@ const welcomer = {
     }; return f
 });
 */
+
+window.welcomer = welcomer;

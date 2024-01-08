@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 $HOST_URL = ROOT;
 function img_t($url)
@@ -15,7 +15,7 @@ function getHeaderWrongToken()
     header("content-type: text/json");
     $array = array();
     $array[0]->status = 200;
-    $array[0]->request->time =  date('d-m-Y h:i:s A');
+    $array[0]->request->time = date('d-m-Y h:i:s A');
     $array[0]->message = "Token expired!";
     $array[0]->By = "Eronelit Cloud API";
 
@@ -34,6 +34,18 @@ function getHeaderFromMe($header = "")
     }
     return $header_token;
 }
+function exist_mime($filePath)
+{
+    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+
+    // Get the MIME type of the file
+    $mime = finfo_file($finfo, $filePath);
+
+    // Close the finfo resource
+    finfo_close($finfo);
+    return $mime;
+
+}
 function headersExist()
 {
 
@@ -51,7 +63,7 @@ function headersExist()
 }
 
 if (!empty($_GET['drc'])) {
-     
+
     $rjl = "H3024F";
     if ($_GET['drc'] == "$rjl") {
         $rr = array();
@@ -59,7 +71,7 @@ if (!empty($_GET['drc'])) {
         $rr[0]->title = "E-student";
         $rr[0]->description = "E-student, platforma za studente";
         $rr[0]->img = img_t("students.svg");
-        $rr[0]->href =  "https://demo.eronelit.com/demo_34023591386511932414/";
+        $rr[0]->href = "https://demo.eronelit.com/demo_34023591386511932414/";
         $rr[0]->type = true;
         //
         $rr[1]->title = "Search engine";
@@ -129,7 +141,7 @@ if (!empty($_GET['drc'])) {
     readfile($name);
     exit;
 } else if (!empty($_GET['src'])) {
-    if($_GET['src'] == "vdwallpper"){
+    if ($_GET['src'] == "vdwallpper") {
         ignore_user_abort(false);
         include ROOT . "Content/vstream.php";
         // $this->include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
@@ -139,18 +151,18 @@ if (!empty($_GET['drc'])) {
 
         $filetry = ROOT . "Content/videos/";
         $files = glob($filetry . '/*.mp4');
-        
 
-    
+
+
         foreach (array_keys($files, $_SESSION['vname']) as $key) {
             unset($files[$key]);
         }
         $file = array_rand($files);
         $filetry2 = $files[$file];
         $_SESSION['vname'] = $filetry2;
-         if (file_exists($filetry2)) {
+        if (file_exists($filetry2)) {
             // header("Content-Type: video/mp4"); 
-            $ppath = $filetry2;//ROOT . "cinematic_3/cinematic_MainMenu.mp4";
+            $ppath = $filetry2; //ROOT . "cinematic_3/cinematic_MainMenu.mp4";
             $reqpath = $ppath;
             header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
             header('Accept-Ranges: bytes');
@@ -160,57 +172,79 @@ if (!empty($_GET['drc'])) {
 
             $stream = new eronelit_VideoStream($filetry2);
             $stream->start();*/
-        }/*else{
-            // header("Content-Type: video/mp4"); 
-            $files = glob($filetry . '/*.mp4');
-            $stream = new eronelit_VideoStream($files[0]);
-            $stream->start();
-        }*/
-       
+        } /*else{
+    // header("Content-Type: video/mp4"); 
+    $files = glob($filetry . '/*.mp4');
+    $stream = new eronelit_VideoStream($files[0]);
+    $stream->start();
+}*/
+
         exit();
-    }else{
-    $filetry = ROOT . "rdlv/$_GET[src]";
-
-    # header("content-type: image/png");
-    if (file_exists($filetry)) {
-        $mime_type = mime_content_type($filetry);
-        if (strpos($filetry, ".svg") !== false) {
-
-            header("Content-Type: image/svg+xml");
-            header('Content-Length' . filesize($filetry));
-            @readfile($filetry);
-        }
-        if (strpos($filetry, ".png") !== false) {
-            header("content-type: image/png");
-
-            echo file_get_contents($filetry);
-            exit();
-            echo "data:image/png;base64," . base64_encode(file_get_contents($filetry));
-        }
-
-
-        exit;
     } else {
-        include ROOT."ERROR_PG.php";
+        $filetry = ROOT . "rdlv/$_GET[src]";
+
+        # header("content-type: image/png");
+        if (file_exists($filetry)) {
+            $mime_type = mime_content_type($filetry);
+            if (strpos($filetry, ".svg") !== false) {
+
+                header("Content-Type: image/svg+xml");
+                header('Content-Length' . filesize($filetry));
+                @readfile($filetry);
+            }
+            if (strpos($filetry, ".png") !== false) {
+                header("content-type: image/png");
+
+                echo file_get_contents($filetry);
+                exit();
+                echo "data:image/png;base64," . base64_encode(file_get_contents($filetry));
+            }
+
+
+            exit;
+        } else {
+            include ROOT . "ERROR_PG.php";
+        }
     }
-}
 } else if (!empty($_GET['svc'])) {
-    $filetry = ROOT."svc/$_GET[svc].css";
+
+    $filetry = ROOT . "svc/$_GET[svc]";
+    $rr = ["css", "js", "jpg", "png", "txt"];
 
     # header("content-type: image/png");
-    if (file_exists($filetry)) {
-        $mime_type = mime_content_type($filetry);
 
-        header("Content-Type: text/css");
-        header('Content-Length' . filesize($filetry));
+    foreach ($rr as $val) {
 
-        // header("Content-type: " . image_type_to_mime_type($mime_type));
+        if (file_exists("$filetry.$val")) {
 
-        @readfile($filetry);
-        exit;
-    } else {
-        include ROOT."ERROR_PG.php";
+            $fileT = "$filetry.$val";
+            $fff3 = "text/txt";
+            if ($val == "css") {
+                $fff3 = "text/css";
+            }
+            if ($val == "js") {
+                $fff3 = "text/javascript";
+            }
+            if ($val == "jpg") {
+                $fff3 = "image/jpeg";
+            }
+            if ($val == "png") {
+                $fff3 = "image/png";
+            }
+
+            header("Content-Type: " . $fff3);
+            header('Content-Length' . filesize($fileT));
+
+            // header("Content-type: " . image_type_to_mime_type($mime_type));
+
+            @readfile($fileT); 
+            exit();
+        }
     }
+    if ($exist) {
+        include ROOT . "ERROR_PG.php";
+    }
+
 } else {
-    include ROOT."wlcomer_home.php";
+    include ROOT . "wlcomer_home.php";
 }

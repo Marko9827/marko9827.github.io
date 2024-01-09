@@ -18,7 +18,7 @@ const welcomer = {
     constructor: function () {
         this.isMobile();
 
-        //  this.fpsMeter();
+        //  this.fpsMeter(); test
         // this.scroll_event();
         document.querySelector(".Ignoring_me_iframe").onload = function () {
             welcomer.pgloader('yes');

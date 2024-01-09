@@ -216,7 +216,10 @@ include "./welcomer_f.css";
         iframe.Ignoring_me_iframe.blog_style {
             background: var(--black-trasparent-color) !important;
         }
-
+        .zoomContainer .zoomWindowContainer div {
+    background-position: center !important;
+    background-size: contain !important;
+}
 
         <?php include ROOT . "css/document_root.css"; ?>
     </style>

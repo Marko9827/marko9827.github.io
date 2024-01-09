@@ -1,5 +1,5 @@
 
-'use strict'
+ 
 const welcomer = {
     infoVa_img: function (event) {
         var clickedElement = event.target;
@@ -10,7 +10,7 @@ const welcomer = {
             $(imgH).ezPlus({
                 zoomType: 'inner',
                 containLensZoom: true,
-                speed: 1
+                speed: 10
             });
             $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
         }

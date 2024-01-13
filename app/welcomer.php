@@ -1,6 +1,7 @@
 <?php
 session_start();
 $HOST_URL = ROOT;
+
 function img_t($url)
 {
     global $HOST_URL;
@@ -10,6 +11,22 @@ function img_t($url)
     #return "data:image/png;base64," . base64_encode(file_get_contents($filetry));
     return "$HOST_URL/rdlv/$url";
 }
+
+function MarkDownTOstring($path)
+    {
+         
+
+     
+        $markdown = file_get_contents($path);
+        $converter = new League\CommonMark\CommonMarkConverter();
+        $html .= "<style type='text/css'> ".file_get_contents(ROOT."svc/md/style.css")." </style>";
+
+        $html .= $converter->convertToHtml($markdown);
+
+        
+        $html .= "<script type='text/javascript'> ".file_get_contents(ROOT."svc/md/js.js")." </script>";
+        return $html;
+    }
 function getHeaderWrongToken()
 {
     header("content-type: text/json");
@@ -46,6 +63,7 @@ function exist_mime($filePath)
     return $mime;
 
 }
+
 function headersExist()
 {
 
@@ -209,7 +227,7 @@ if (!empty($_GET['drc'])) {
 } else if (!empty($_GET['svc'])) {
 
     $filetry = ROOT . "svc/$_GET[svc]";
-    $rr = ["css", "js", "jpg", "png", "txt"];
+    $rr = ["css", "js", "jpg", "png", "txt","md"];
 
     # header("content-type: image/png");
 
@@ -230,6 +248,11 @@ if (!empty($_GET['drc'])) {
             }
             if ($val == "png") {
                 $fff3 = "image/png";
+            }
+            if ($val == "md"){
+                header("content-type: text/html");
+                echo MarkDownTOstring("$fileT");
+                exit();
             }
 
             header("Content-Type: " . $fff3);

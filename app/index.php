@@ -3,6 +3,7 @@
 namespace portfolio;
 
 use \Exception;
+use \League\CommonMark\CommonMarkConverter;
 
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
@@ -83,6 +84,7 @@ class portfolio_marko
             </div>";
         return $ar;
     }
+     
     function Pages($h = "home")
     {
         if ($h == "home") {
@@ -180,7 +182,81 @@ class portfolio_marko
                 mkdir($dir);
         file_put_contents("$dir/$file", $contents);
     }
+    function Curl_getURL($url){
+        exit();
+        $ch = curl_init($url);
 
+// Set cURL options
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+
+// Execute cURL session and get the response
+$response = curl_exec($ch);
+
+// Check if the request was successful
+if ($response === false) {
+    die('Failed to fetch data from the URL');
+}
+
+// Close cURL session
+curl_close($ch);
+
+// Process $response as needed
+return $response;
+    }
+    function getRSSFeed(){
+        header("Content-type: application/rss+xml; charset=utf-8");
+
+// GitHub repository information
+$repo_owner = 'marko9827';
+$repo_name = 'marko9827.github.io';
+
+// GitHub API URL to fetch commits
+$api_url = $this->Curl_getURL("https://api.github.com/repos/{$repo_owner}/{$repo_name}/commits");
+
+ 
+// Make a request to the GitHub API
+$response = file_get_contents($api_url);
+
+// Check if the request was successful
+if ($response === false) {
+    die('Failed to fetch commit information from GitHub API.');
+}
+
+// Decode the JSON response
+$commits = json_decode($response, true);
+
+// Start building the RSS feed
+$rss_feed = '<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+    <channel>
+        <title>Git Commit History Feed</title>
+        <link>https://github.com/{$repo_owner}/{$repo_name}</link>
+        <description>Git commit history feed for the {$repo_owner}/{$repo_name} repository.</description>
+';
+
+// Add each commit to the RSS feed
+foreach ($commits as $commit) {
+    $commit_date = date('D, d M Y H:i:s O', strtotime($commit['commit']['author']['date']));
+    $rss_feed .= "
+        <item>
+            <title>{$commit['commit']['message']}</title>
+            <description>{$commit['sha']}</description>
+            <link>{$commit['html_url']}</link>
+            <guid>{$commit['sha']}</guid>
+            <pubDate>{$commit_date}</pubDate>
+        </item>";
+}
+
+// Close the RSS feed
+$rss_feed .= '
+    </channel>
+</rss>';
+
+// Output the RSS feed
+echo $rss_feed;
+exit();
+    }
     function MetaTags()
     {
         $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
@@ -200,7 +276,7 @@ class portfolio_marko
             ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="<?php echo "$data[title]";?> | This website for my PortFolio. ">
+            <meta name="description" content="<?php echo "$data[title]"; ?> | This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
@@ -231,8 +307,8 @@ echo $v .",";
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
             <meta property="og:description" content="This website for my PortFolio." />
-            <meta property="og:image"   content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image:url"   content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
@@ -472,6 +548,10 @@ echo $v .",";
                         }
                     }
                     if ($off) {
+                    }
+                } else if (!empty($_GET['rss'])) {
+                    if($_GET['rss'] == "versions"){
+                        $this->getRSSFeed();
                     }
                 } else {
                     echo $array2;

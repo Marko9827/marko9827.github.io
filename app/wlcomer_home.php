@@ -80,21 +80,21 @@ $rand = time();
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
-        </script>
-        <?php /*
+    </script>
+    <?php /*
 <style type="text/css">
 include "./welcomer_f.css"; 
 </style>*/
-        $token = bin2hex(random_bytes(64));
-        echo '<meta content="' . $token . '" name="csrf-param" />
+    $token = bin2hex(random_bytes(64));
+    echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
-        $_SESSION['AuthV2-token'] = $token;
+    $_SESSION['AuthV2-token'] = $token;
 
 
-        ?>
-         
-         
-         <script nonce="<?php echo NONCE; ?>"
+    ?>
+
+
+    <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -216,10 +216,254 @@ include "./welcomer_f.css";
         iframe.Ignoring_me_iframe.blog_style {
             background: var(--black-trasparent-color) !important;
         }
+
         .zoomContainer .zoomWindowContainer div {
-    background-position: center !important;
-    background-size: contain !important;
+            background-position: center !important;
+            background-size: contain !important;
+        }
+
+
+        /*  */
+        section[data-ui-type="slider"] {
+            transition: .3s !important;
+        }
+
+        section[data-ui-type="slider"] * {
+            box-sizing: border-box;
+
+        }
+
+        section[data-ui-type="slider"] div-echatv {
+            width: -webkit-fill-available;
+            height: 100% !important;
+        
+        }
+
+        section[data-ui-type="slider"] div-echatv dh {
+            height: -webkit-fill-available !important;
+            display: flex;
+            margin: 10px !important;
+            width: -webkit-fill-available !important;
+        }
+
+        section[data-ui-type="slider"] div-echatv .img {
+            border-radius: 10px !important;
+            width: 100% !important;
+            margin: auto !important;
+        }
+
+        section[data-ui-type="slider"] div-echatv {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            right: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available !important;
+            margin: 0px !important;
+        }
+
+
+        section[data-ui-type="slider"] .catascrollEchatTv {
+            top: unset;
+            bottom: unset;
+            margin: auto;
+        }
+
+        section[data-ui-type="slider"] .catascrollEchatTv {
+            position: fixed;
+            bottom: 0px;
+            z-index: 33333333;
+            color: white;
+            left: 39px;
+            font-size: 35px;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+            enable-background: new 0 0 512 512 !important;
+            margin: 0px;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+            opacity: 0.7;
+            padding: 4px;
+            margin-bottom: -109px;
+            margin: auto;
+            right: 5px;
+            left: unset;
+            top: unset !important;
+            bottom: unset !important;
+            display: block;
+            margin: auto !important;
+            top: 0px;
+            bottom: 0px !important;
+            height: -webkit-fill-available;
+            top: 0px !important;
+            display: flex;
+            align-items: center;
+        }
+
+        section[data-ui-type="slider"] .catascrollEchatTv:not(.catascrollEchatTv_right) {
+            left: 5px !important;
+            right: unset !important;
+        }
+
+        section[data-ui-type="slider"] {
+            display: flex;
+            align-items: center;
+            align-content: center;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            right: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+            z-index: 44444444;
+            background: var(--black-trasparent-color);
+        }
+
+
+        section[data-ui-type="slider"] div-echatv .img {
+            height: -moz-fit-content;
+            height: fit-content;
+            object-fit: scale-down;
+            background: transparent !important;
+            width: -moz-fit-content;
+            width: fit-content !important;
+            max-width: -webkit-fill-available !important;
+            max-height: -webkit-fill-available !important;
+            width: fit-content !important;
+            opacity: 1;
+        }
+
+        section[data-ui-type="slider"] div-echatv i,
+        section[data-ui-type="slider"] div-echatv .img {
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            enable-background: new 0 0 512 512 !important;
+        }
+
+
+        section[data-ui-type="slider"] div-echatv iframe.img {
+            height: -webkit-fill-available !important;
+        }
+
+        section[data-ui-type="slider"] {
+    border: 2px solid var(--primary_light) !important;
+    margin:6px;
+    border-radius:10px;
 }
+
+
+        .hidden_omega {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+
+        section[data-ui-type="slider"] div-echatv {
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            overflow: overlay;
+            padding: 10px 0px;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            width: -webkit-fill-available;
+            top: unset;
+            margin-top: 35px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh:first-child {
+            margin-left: 0px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh:last-child {
+            margin-right: 0px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh {
+            margin: 0px 10px;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            enable-background: new 0 0 512 512 !important;
+            border-radius: 6px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh iframe,
+        section[data-ui-type="slider"] div-echatv dh .iframeImg {
+            border-radius: 6px;
+            border: 0px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh {
+            height: 245px
+        }
+
+        section[data-ui-type="slider"] div-echatv dh iframe,
+        section[data-ui-type="slider"] div-echatv dh .iframeImg {
+            height: 240px;
+            width: 120px;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1)
+        }
+
+        section[data-ui-type="slider"] div-echatv {
+            overflow-x: scroll;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            overflow-x: auto !important;
+            -ms-scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transition: margin-left 0.5s;
+            -o-transition: margin-left 0.5s;
+            scroll-behavior: smooth;
+            transition: margin-left 0.5s;
+            margin-bottom: 75px;
+            height: 278px;
+            -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+            mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+            margin:5px !important;
+        }
+
+        section[data-ui-type="slider"] div-echatv dh {
+            scroll-snap-align: center;
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            border-radius: 10px;
+            -webkit-transform-origin: center center;
+            -ms-transform-origin: center center;
+            transform-origin: center center;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            transition: -webkit-transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
+            -o-transition: transform 0.5s;
+            transition: transform 0.5s;
+            transition: transform 0.5s, -webkit-transform 0.5s;
+            position: relative;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center
+        }
+        section.hide_buttons[data-ui-type="slider"] .catascrollEchatTv {
+    transform:scale(0) !important;
+}
+
+
 
         <?php include ROOT . "css/document_root.css"; ?>
     </style>
@@ -427,7 +671,7 @@ include "./welcomer_f.css";
 
         </div_header>
         <?php /*<iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" 
-   <video  class="iframe_mask" style="opacity:0;" 
+<video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
@@ -441,17 +685,17 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <page>
 <div class="container page_header">
 <div class="row-0">
-    <div class="col-sm-1">
-        <img src="/rdlv/students.svg" alt="aefeaf" />
-    </div>
-    <div class="col-sm-2">
-        <h3>Echat</h3>
-    
-        <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
-    <tags>
-        <tag>Social</tag>
-    </tags>
-    </div>
+<div class="col-sm-1">
+   <img src="/rdlv/students.svg" alt="aefeaf" />
+</div>
+<div class="col-sm-2">
+   <h3>Echat</h3>
+
+   <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
+<tags>
+   <tag>Social</tag>
+</tags>
+</div>
 </div>
 </div>
 <headr>
@@ -459,32 +703,32 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </headr>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+<li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
 </ol>
 <div class="carousel-inner">
-    <div class="carousel-item active">
-        <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
-    </div>
-    <div class="carousel-item ">
-        <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
-    </div>
-    <div class="carousel-item ">
-        <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
-    </div>
-    <div class="carousel-item ">
-        <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
-    </div>
+<div class="carousel-item active">
+   <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
+</div>
+<div class="carousel-item ">
+   <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
+</div>
+<div class="carousel-item ">
+   <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
+</div>
+<div class="carousel-item ">
+   <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
+</div>
 </div>
 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
+<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+<span class="sr-only">Previous</span>
 </a>
 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
+<span class="carousel-control-next-icon" aria-hidden="true"></span>
+<span class="sr-only">Next</span>
 </a>
 </div>
 </page>
@@ -517,7 +761,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
     </gridder_loader>
     <div class="contanct_frm">
         <?php /* <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
- <video  class="iframe_mask" style="opacity:0;" 
+<video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
@@ -649,7 +893,20 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 */?>
     <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
 
+    <section data-ui-type="slider" class="hidden_omega">
+        <arr_bundle>
+            <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+                style="transform:scale(1)" onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i>
+            <i class="bi bi-arrow-left-circle-fill catascrollEchatTv"
+                onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
 
+        </arr_bundle>
+        <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;" class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
+        <i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i>
+        <div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();">
+
+        </div-echatv>
+    </section>
 </body>
 
 </html>

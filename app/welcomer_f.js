@@ -1,5 +1,5 @@
 
- 
+
 const welcomer = {
     infoVa_img: function (event) {
         var clickedElement = event.target;
@@ -220,22 +220,22 @@ const welcomer = {
 
     ],
     gallery_delegator: function (dlg = "a") {
-          
- 
+
+
         $('#image-popups').magnificPopup({
             delegate: dlg,
             type: 'image',
-            removalDelay: 500,  
+            removalDelay: 500,
             callbacks: {
                 beforeOpen: function () {
-                   this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+                    this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
                     this.st.mainClass = 'mfp-zoom-in';
                 }
             },
             closeOnContentClick: true,
-            midClick: true 
+            midClick: true
         });
- 
+
     },
     cp: function () {
         $("iframe.iframe_mask").removeAttr("style");
@@ -759,13 +759,13 @@ const welcomer = {
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.get(f.source, function (res) {
-                            
+
                             ifrm.document.open();
                             ifrm.document.write(`${res}`);
-                            ifrm.document.querySelectorAll("img").forEach(function(v){
-                                $(v).attr("onclick","parent.welcomer.infoVa_img(event)").attr("data-title","Click (hovered image) for view image in full size");
-                               var a = $(v);
-                               a.hover(
+                            ifrm.document.querySelectorAll("img").forEach(function (v) {
+                                $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
+                                var a = $(v);
+                                a.hover(
                                     function () {
                                         parent.welcomer.showAnchorTitle(a, a.data('title'));
                                     },
@@ -773,13 +773,13 @@ const welcomer = {
                                         parent.welcomer.hideAnchorTitle();
                                     }
                                 ).data('title', a.attr('title')).removeAttr('title');
-                
+
                                 a.mouseleave(function () {
                                     parent.welcomer.hideAnchorTitle();
-                
+
                                 });
                             });
-                            
+
                             ifrm.document.close();
                             // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
                             $("div_header span").html(`Blog > ${f.title}`);
@@ -796,7 +796,7 @@ const welcomer = {
 
                         $("#clavs grider_viewer").hide();
                         $("iframe.iframe_mask").show();
-                      
+
 
                     } else {
                         history.replaceState({}, "", `${window.location.origin}`);
@@ -810,9 +810,9 @@ const welcomer = {
             }, complete: function () {
                 welcomer.titleC("Blog > Marko Nikolić - Portfolio")
                 $("html").addClass("anim_djenerated");
-               
-    
-                
+
+
+
             }
         });
 
@@ -940,6 +940,123 @@ const welcomer = {
                          */
             }
         })
+    },
+    eronelit_gallery: {
+        call_ui: function (json = []) {
+            var this2 = welcomer.eronelit_gallery;
+
+            document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
+            for (var i = 0; i < json.length; i++) {
+                var dh = document.createElement("dh"),
+                    image = document.createElement("img"),
+                    afterSlash = json[i].split("/")[2];
+                image.src = json[i];
+                image.setAttribute("loading","lazy");
+                dh.setAttribute("data-index", i);
+                dh.setAttribute("data-name", afterSlash);
+                dh.appendChild(image);
+
+
+                document.querySelector(this2.scrolle.root_scroll).appendChild(dh);
+
+            }
+            document.querySelector('section[data-ui-type="slider"]').classList.remove("hidden_omega");
+        },
+        scrolle: {
+            root_scroll: 'section[data-ui-type="slider"] div-echatv',
+            dh: 'section[data-ui-type="slider"] div-echatv dh'
+        },
+        start: function (pr = "") {
+            const wlc = this;
+            document.body.addEventListener("keydown", function (event) {
+                if (event.keyCode == 39) {
+                    wlc.bundleSuggestedS(1);
+                }
+                if (event.keyCode == 37) {
+                    wlc.bundleSuggestedS(-1);
+                }
+                if (event.keyCode == 32) {
+                    wlc.bundleSuggestedS(1);
+                }
+            });
+
+            // new App_gallery().scroll_event(document.querySelector(new App_gallery().scrolle.root_scroll));
+            this.scrollby_h(pr);
+        },
+        bundleSuggestedS: function (n) {
+            var this2 = welcomer.eronelit_gallery;
+            const width_fs = document.querySelector(this2.scrolle.dh).offsetWidth;
+
+            if (n == "1") {
+                document.querySelector(this2.scrolle.root_scroll).scrollLeft += width_fs;
+            } else {
+                document.querySelector(this2.scrolle.root_scroll).scrollLeft -= width_fs;
+            }
+            this2.scrolj();
+        },
+        scrollby_h: function (pr) {
+            var this2 = welcomer.eronelit_gallery;
+            document.querySelectorAll(this2.scrolle.dh).forEach(function (res) {
+
+                if (pr == res.getAttribute("data-name")) {
+                    console.log(res.getAttribute("data-name"));
+                    welcomer.eronelit_gallery.byEvent(parseInt(res.getAttribute("data-index")));
+                }
+            });
+        },
+        alert: function (at) {
+            alert(at);
+        },
+        scroll_event: function () {
+            var this2 = welcomer.eronelit_gallery;
+            this2.scrolj();
+        },
+        scrolj: function () {
+            var this2 = welcomer.eronelit_gallery;
+            const width_fs = document.querySelector(this2.scrolle.dh).offsetWidth;
+            const catascrollEchatTv_right = document.querySelector(
+                ".catascrollEchatTv_right"
+            ),
+                catascrollEchatTv = document.querySelector(
+                    ".catascrollEchatTv:not(.catascrollEchatTv_right)"
+                );
+
+            if (document.querySelector(this2.scrolle.root_scroll).scrollLeft > width_fs) {
+                if (catascrollEchatTv !== null) {
+                    catascrollEchatTv.setAttribute("style", "transform:scale(1)");
+                }
+            } else {
+                if (catascrollEchatTv !== null) {
+                    catascrollEchatTv.setAttribute("style", "transform:scale(0)");
+                }
+            }
+            const r = document.querySelector(this2.scrolle.root_scroll);
+            if (r.offsetWidth + r.scrollLeft >= r.scrollWidth) {
+                catascrollEchatTv_right.setAttribute("style", "transform:scale(0)");
+            } else {
+                catascrollEchatTv_right.setAttribute("style", "transform:scale(1)");
+            }
+        },
+        byEvent: function (n = 0) {
+            var this2 = welcomer.eronelit_gallery;
+            const width_fs = document.querySelector(this2.scrolle.dh).offsetWidth;
+
+            document.querySelector(this2.scrolle.root_scroll).scrollLeft = 0;
+
+            document.querySelector(this2.scrolle.root_scroll).scrollLeft = width_fs * n;
+
+        },
+        bundleSuggestedS: function (n) {
+            var this2 = welcomer.eronelit_gallery;
+            const width_fs = document.querySelector(this2.scrolle.dh).offsetWidth;
+
+            if (n == "1") {
+                document.querySelector(this2.scrolle.root_scroll).scrollLeft += width_fs;
+            } else {
+                document.querySelector(this2.scrolle.root_scroll).scrollLeft -= width_fs;
+            }
+            this2.scrolj();
+        }
     },
     loader_svg: "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",
     load_gallery: function () {
@@ -1118,7 +1235,12 @@ const welcomer = {
         $(Vjideo_sjpinner).hide();
     },
     closeMeIamSad: function () {
-        $(".zoomContainer, .zoomer_exit, #helper_id_helper, #helper_id_helper3").remove();
+        if ($('section[data-ui-type="slider"]:not(.hidden_omega)').length > 0) {
+            $('section[data-ui-type="slider"]').addClass("hidden_omega");
+            $('section[data-ui-type="slider"] div-echatv').html("");
+        } else {
+            $(".zoomContainer:not(.dont_removme), .zoomer_exit:not(.dont_removme), #helper_id_helper:not(.dont_removme), #helper_id_helper3:not(.dont_removme)").remove();
+        }
     },
     infoVa: function (h = 0) {
 
@@ -1134,7 +1256,7 @@ const welcomer = {
             $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
         }
     },
-   
+
     openWindow: function (i = 0) {
         if (this.projects[i].href !== "") {
             const urls = this.projects[i].href;
@@ -1469,23 +1591,23 @@ const welcomer = {
         if (containeds.includes("?p=blog&id=")) {
             welcomer.blogloader('all');
             return false;
-        } 
+        }
         this.hmm(msg_title, function () {
 
-            
-                $("#clavs").attr("style", "transform: translateY(-100%);");
-                welcomer.titleC(`Marko Nikolić - Portfolio`);
-                history.replaceState({}, "", `${window.location.origin}`);
+
+            $("#clavs").attr("style", "transform: translateY(-100%);");
+            welcomer.titleC(`Marko Nikolić - Portfolio`);
+            history.replaceState({}, "", `${window.location.origin}`);
 
 
-                welcomer.loop_active = true;
-                setTimeout(function () {
+            welcomer.loop_active = true;
+            setTimeout(function () {
 
-                    $("iframe:not(.iframe_mask)").attr("src", "");
-                    $("iframe:not(.iframe_mask)").removeAttr("style");
-                    $("html").removeClass("anim_djenerated");
-                }, 1000);
-            
+                $("iframe:not(.iframe_mask)").attr("src", "");
+                $("iframe:not(.iframe_mask)").removeAttr("style");
+                $("html").removeClass("anim_djenerated");
+            }, 1000);
+
 
             return false;
             if (myParam == "blog") {
@@ -1598,7 +1720,7 @@ const welcomer = {
     },
     cursor_show: function () {
         $(".cursor").show();
-    }, 
+    },
     url_blob: function (url = "") {
         var blob = null;
         var objectURL = null;

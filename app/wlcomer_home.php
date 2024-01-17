@@ -427,10 +427,17 @@ include "./welcomer_f.css";
             transition: margin-left 0.5s;
             margin-bottom: 75px;
             height: 278px;
-            -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
-            mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+            /* -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
+            /* mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
             margin:5px !important;
         }
+        section[data-ui-type="slider"] div-echatv dh img {
+            object-fit: scale-down;
+        }
+        section[data-ui-type="slider"] div-echatv::-webkit-scrollbar {
+  width: 0px;
+  height: 0;
+}
 
         section[data-ui-type="slider"] div-echatv dh {
             scroll-snap-align: center;
@@ -463,7 +470,20 @@ include "./welcomer_f.css";
     transform:scale(0) !important;
 }
 
-
+section[data-ui-type="slider"] dhn {
+    position: absolute;
+    left: 5px;
+    bottom: 0px;
+    z-index: 333333;
+    color: white;
+    background: var(--black-trasparent-color);
+    padding: 4px 10px;
+    border: 1px solid var(--hard_white);
+    border-radius: 4px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+}
 
         <?php include ROOT . "css/document_root.css"; ?>
     </style>

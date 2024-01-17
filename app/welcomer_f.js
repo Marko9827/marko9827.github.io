@@ -3,24 +3,24 @@
 const welcomer = {
     gallery_temp: [],
     infoVa_img: function (event) {
-        if(welcomer.gallery_temp.length > 1){
+        if (welcomer.gallery_temp.length > 0) {
             welcomer.eronelit_gallery.call_ui(
                 welcomer.gallery_temp
             )
-        }else{
-        var clickedElement = event.target;
-        var imgH = new Image();
-        imgH.src = clickedElement.getAttribute("src");
+        } else {
+            var clickedElement = event.target;
+            var imgH = new Image();
+            imgH.src = clickedElement.getAttribute("src");
 
-        imgH.onload = function () {
-            $(imgH).ezPlus({
-                zoomType: 'inner',
-                containLensZoom: true,
-                speed: 10
-            });
-            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+            imgH.onload = function () {
+                $(imgH).ezPlus({
+                    zoomType: 'inner',
+                    containLensZoom: true,
+                    speed: 10
+                });
+                $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+            }
         }
-    }
     },
     constructor: function () {
         this.isMobile();
@@ -750,7 +750,7 @@ const welcomer = {
             url: "/?blog=" + id,
             type: "GET",
             success: function (f) {
-                
+
                 if (id == "all") {
                     history.replaceState({}, "", `${window.location.origin}/?p=blog`);
 
@@ -953,12 +953,15 @@ const welcomer = {
             var this2 = welcomer.eronelit_gallery;
 
             document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
-            for (var i = 0; i < json.length; i++) {
+            var a = json.length - 1;
+            for (var i = 1; i < json.length; i++) {
                 var dh = document.createElement("dh"),
                     image = document.createElement("img"),
                     afterSlash = json[i].split("/")[2];
                 image.src = json[i];
-                image.setAttribute("loading","lazy");
+            
+                dh.innerHTML = `<dhn>${i}/${a}</dhn>`;
+                image.setAttribute("loading", "lazy");
                 dh.setAttribute("data-index", i);
                 dh.setAttribute("data-name", afterSlash);
                 dh.appendChild(image);

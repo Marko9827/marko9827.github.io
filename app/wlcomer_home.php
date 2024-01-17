@@ -484,7 +484,9 @@ section[data-ui-type="slider"] dhn {
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
     enable-background: new 0 0 512 512 !important;
 }
-
+section[data-ui-type="slider"] div-echatv * {
+    transition: .3s;
+}
         <?php include ROOT . "css/document_root.css"; ?>
     </style>
     <!-- Google tag (gtag.js) -->

@@ -962,6 +962,8 @@ const welcomer = {
             
                 dh.innerHTML = `<dhn>${i}/${a}</dhn>`;
                 image.setAttribute("loading", "lazy");
+                image.setAttribute("style","opacity:0; transform: scale(0);");
+                image.setAttribute("onload","$(this).removeAttr('style');");
                 dh.setAttribute("data-index", i);
                 dh.setAttribute("data-name", afterSlash);
                 dh.appendChild(image);
@@ -1048,6 +1050,7 @@ const welcomer = {
             }
         },
         byEvent: function (n = 0) {
+            $("body").append(n);
             var this2 = welcomer.eronelit_gallery;
             const width_fs = document.querySelector(this2.scrolle.dh).offsetWidth;
 

@@ -1,7 +1,13 @@
 
 
 const welcomer = {
+    gallery_temp: [],
     infoVa_img: function (event) {
+        if(welcomer.gallery_temp.length > 1){
+            welcomer.eronelit_gallery.call_ui(
+                welcomer.gallery_temp
+            )
+        }else{
         var clickedElement = event.target;
         var imgH = new Image();
         imgH.src = clickedElement.getAttribute("src");
@@ -14,6 +20,7 @@ const welcomer = {
             });
             $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
         }
+    }
     },
     constructor: function () {
         this.isMobile();
@@ -743,7 +750,7 @@ const welcomer = {
             url: "/?blog=" + id,
             type: "GET",
             success: function (f) {
-
+                
                 if (id == "all") {
                     history.replaceState({}, "", `${window.location.origin}/?p=blog`);
 
@@ -755,7 +762,7 @@ const welcomer = {
                         /*
 
                         // $(".close_btnf").hide();*/
-
+                        welcomer.gallery_temp = f.gallery;
                         history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.get(f.source, function (res) {
@@ -1243,7 +1250,11 @@ const welcomer = {
         }
     },
     infoVa: function (h = 0) {
-
+        /*welcomer.eronelit_gallery.call_ui( [
+            "/?blog=13_jan_2024_18_34/1705167933024",
+            "/?blog=13_jan_2024_18_34/32423423515315135"
+        ]);
+        */
         var imgH = new Image();
         imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
 

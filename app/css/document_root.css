@@ -844,4 +844,6 @@ div_header,
 iframe.Ignoring_me_iframe.blog_style {
     background: var(--black-trasparent-color) !important;
 }
- 
+section[data-ui-type="slider"] div-echatv dh img {
+    height: -webkit-fill-available;
+}

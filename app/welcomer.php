@@ -13,20 +13,20 @@ function img_t($url)
 }
 
 function MarkDownTOstring($path)
-    {
-         
+{
 
-     
-        $markdown = file_get_contents($path);
-        $converter = new League\CommonMark\CommonMarkConverter();
-        $html .= "<style type='text/css'> ".file_get_contents(ROOT."svc/md/style.css")." </style>";
 
-        $html .= $converter->convertToHtml($markdown);
 
-        
-        $html .= "<script type='text/javascript'> ".file_get_contents(ROOT."svc/md/js.js")." </script>";
-        return $html;
-    }
+    $markdown = file_get_contents($path);
+    $converter = new League\CommonMark\CommonMarkConverter();
+    $html .= "<style type='text/css'> " . file_get_contents(ROOT . "svc/md/style.css") . " </style>";
+
+    $html .= $converter->convertToHtml($markdown);
+
+
+    $html .= "<script type='text/javascript'> " . file_get_contents(ROOT . "svc/md/js.js") . " </script>";
+    return $html;
+}
 function getHeaderWrongToken()
 {
     header("content-type: text/json");
@@ -191,10 +191,10 @@ if (!empty($_GET['drc'])) {
             $stream = new eronelit_VideoStream($filetry2);
             $stream->start();*/
         } /*else{
-    // header("Content-Type: video/mp4"); 
-    $files = glob($filetry . '/*.mp4');
-    $stream = new eronelit_VideoStream($files[0]);
-    $stream->start();
+   // header("Content-Type: video/mp4"); 
+   $files = glob($filetry . '/*.mp4');
+   $stream = new eronelit_VideoStream($files[0]);
+   $stream->start();
 }*/
 
         exit();
@@ -226,48 +226,52 @@ if (!empty($_GET['drc'])) {
     }
 } else if (!empty($_GET['svc'])) {
 
-    $filetry = ROOT . "svc/$_GET[svc]";
-    $rr = ["css", "js", "jpg", "png", "txt","md"];
+    if ($_GET['svc'] == "edt3") {
+        include ROOT . "svc/editor.php";
 
-    # header("content-type: image/png");
+    } else {
+        $filetry = ROOT . "svc/$_GET[svc]";
+        $rr = ["css", "js", "jpg", "png", "txt", "md"];
 
-    foreach ($rr as $val) {
+        # header("content-type: image/png");
 
-        if (file_exists("$filetry.$val")) {
+        foreach ($rr as $val) {
 
-            $fileT = "$filetry.$val";
-            $fff3 = "text/txt";
-            if ($val == "css") {
-                $fff3 = "text/css";
-            }
-            if ($val == "js") {
-                $fff3 = "text/javascript";
-            }
-            if ($val == "jpg") {
-                $fff3 = "image/jpeg";
-            }
-            if ($val == "png") {
-                $fff3 = "image/png";
-            }
-            if ($val == "md"){
-                header("content-type: text/html");
-                echo MarkDownTOstring("$fileT");
+            if (file_exists("$filetry.$val")) {
+
+                $fileT = "$filetry.$val";
+                $fff3 = "text/txt";
+                if ($val == "css") {
+                    $fff3 = "text/css";
+                }
+                if ($val == "js") {
+                    $fff3 = "text/javascript";
+                }
+                if ($val == "jpg") {
+                    $fff3 = "image/jpeg";
+                }
+                if ($val == "png") {
+                    $fff3 = "image/png";
+                }
+                if ($val == "md") {
+                    header("content-type: text/html");
+                    echo MarkDownTOstring("$fileT");
+                    exit();
+                }
+
+                header("Content-Type: " . $fff3);
+                header('Content-Length' . filesize($fileT));
+
+                // header("Content-type: " . image_type_to_mime_type($mime_type));
+
+                @readfile($fileT);
                 exit();
             }
-
-            header("Content-Type: " . $fff3);
-            header('Content-Length' . filesize($fileT));
-
-            // header("Content-type: " . image_type_to_mime_type($mime_type));
-
-            @readfile($fileT); 
-            exit();
+        }
+        if ($exist) {
+            include ROOT . "ERROR_PG.php";
         }
     }
-    if ($exist) {
-        include ROOT . "ERROR_PG.php";
-    }
-
 } else {
     include ROOT . "wlcomer_home.php";
 }

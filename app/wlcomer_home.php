@@ -93,6 +93,8 @@ include "./welcomer_f.css";
 
     ?>
 
+    <script nonce="<?php echo NONCE;?>" defer src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
 
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>

@@ -1429,38 +1429,38 @@ const welcomer = {
                 time: "",
                 code: ""
             }) {
-          
+
                 var transaction = this.db.transaction([this.storeName], "readwrite");
                 var objectStore = transaction.objectStore(this.storeName);
 
                 // Retrieve the existing data using the key
                 var getRequest = objectStore.get(Number(welcomer.editor.getParams("id")));
 
-                getRequest.onsuccess = function(event) {
+                getRequest.onsuccess = function (event) {
                     var data = getRequest.result;
 
                     if (data) {
                         // Modify the data with the new value
                         data.data = dataF;
-                        
+
 
                         // Update the data in the object store
                         var updateRequest = objectStore.put(data);
 
-                        updateRequest.onsuccess = function(event) {
-                         };
+                        updateRequest.onsuccess = function (event) {
+                        };
 
-                        updateRequest.onerror = function(event) {
-                         };
+                        updateRequest.onerror = function (event) {
+                        };
                     } else {
-                     }
+                    }
                 };
 
-                getRequest.onerror = function(event) {
-                 };
+                getRequest.onerror = function (event) {
+                };
 
-                transaction.oncomplete = function(event) {
-                 };
+                transaction.oncomplete = function (event) {
+                };
             },
             crindex: function (index) {
                 var d = new Date().getFullYear();
@@ -1819,7 +1819,7 @@ const welcomer = {
 
 
                     welcomer.editor.editr_tijemp = editor.getValue();
-                     
+
                 }
                 if (welcomer.editor.getParams("id") !== null) {
                     welcomer.editor.webDb.getCurrent(parseInt(welcomer.editor.getParams("id")));

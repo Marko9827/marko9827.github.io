@@ -1423,29 +1423,44 @@ const welcomer = {
 
                 }
             },
-            edit: function (key = 0, data = {
+            edit: function (dataF = {
                 id: 0,
                 name: "",
                 time: "",
                 code: ""
             }) {
-                const objectStore = this.db.transaction(this.storeName)
-                    .objectStore(this.storeName);
+          
+                var transaction = this.db.transaction([this.storeName], "readwrite");
+                var objectStore = transaction.objectStore(this.storeName);
 
-                const request = objectStore.get(key);
+                // Retrieve the existing data using the key
+                var getRequest = objectStore.get(Number(welcomer.editor.getParams("id")));
 
-                request.onsuccess = () => {
+                getRequest.onsuccess = function(event) {
+                    var data = getRequest.result;
 
-                    const student = request.result;
-                    student = data;
-                    const updateRequest = objectStore.update(student);
+                    if (data) {
+                        // Modify the data with the new value
+                        data.data = dataF;
+                        
 
-                    updateRequest.onsuccess = () => {
+                        // Update the data in the object store
+                        var updateRequest = objectStore.put(data);
 
-                        welcomer.editor.webDb.success.edit(key);
+                        updateRequest.onsuccess = function(event) {
+                         };
 
-                    }
-                }
+                        updateRequest.onerror = function(event) {
+                         };
+                    } else {
+                     }
+                };
+
+                getRequest.onerror = function(event) {
+                 };
+
+                transaction.oncomplete = function(event) {
+                 };
             },
             crindex: function (index) {
                 var d = new Date().getFullYear();
@@ -1536,10 +1551,10 @@ const welcomer = {
                         const urlParams = new URLSearchParams(window.location.search);
                         const myParam = urlParams.get("p");
                         const myParam_id = urlParams.get("id");
-            
+
                         if (myParam !== null) {
                             if (myParam == "editor") {
-            
+
                                 if (myParam_id !== null) {
                                     welcomer.editor.webDb.getCurrent(myParam_id);
                                 }
@@ -1559,14 +1574,14 @@ const welcomer = {
                 this.request = indexedDB.open(this.dbName, this.version);
 
                 this.request.onerror = function (event) {
-                 };
+                };
 
                 this.request.onsuccess = function (event) {
                     webDb.db = event.target.result;
                     welcomer.editor.webDb.getAll();
 
-                   
-                    
+
+
                 };
 
                 this.request.onupgradeneeded = function (event) {
@@ -1585,7 +1600,7 @@ const welcomer = {
         start: function () {
             this.callEditor();
             this.webDb.start();
-            
+
 
             // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
@@ -1686,7 +1701,10 @@ const welcomer = {
             return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
         },
 
-
+        getParams: function (name = "") {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        },
         callEditor: function (id = 0) {
 
             const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
@@ -1795,22 +1813,50 @@ const welcomer = {
         </body>
         </html>
         `;
-                    previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
-                    welcomer.editor.editr_tijemp = editor.getValue();
 
+                    previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+
+
+                    welcomer.editor.editr_tijemp = editor.getValue();
+                     
+                }
+                if (welcomer.editor.getParams("id") !== null) {
+                    welcomer.editor.webDb.getCurrent(parseInt(welcomer.editor.getParams("id")));
                 }
                 function onTypingStopped() {
                     /* welcomer.editor.editr_history.push({
                         "code": editor.getValue(),
                         "time": welcomer.editor.time()
                     });*/
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const myParam = urlParams.get("p");
+                    const myParam_id = urlParams.get("id");
                     if (welcomer.editor.webDb.data.length < 1) { }
-                    welcomer.editor.webDb.add({
-                        id: welcomer.editor.edtr_id,
-                        name: "test",
-                        time: welcomer.editor.time(),
-                        code: editor.getValue()
-                    })
+
+
+
+                    if (myParam !== null) {
+                        if (myParam == "editor") {
+
+                            if (myParam_id == null) {
+                                welcomer.editor.edtr_id = 0;
+                                welcomer.blg_history_replace(`/?p=editor&id=${welcomer.editor.edtr_id}`);
+                                welcomer.editor.webDb.add({
+                                    id: welcomer.editor.edtr_id,
+                                    name: "Hello World!!!",
+                                    time: welcomer.editor.time(),
+                                    code: welcomer.editor.editr_tijemp
+                                });
+                            } else {
+                                welcomer.editor.webDb.edit({
+                                    id: myParam_id,
+                                    name: "Hello World!!!",
+                                    time: welcomer.editor.time(),
+                                    code: welcomer.editor.editr_tijemp
+                                });
+                            }
+                        }
+                    }
                     // Add your logic here for what to do when typing stops
                 }
                 editor.onDidChangeModelContent(function () {

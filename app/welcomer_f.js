@@ -159,6 +159,20 @@ const welcomer = {
             soon: false
         },
         {
+            title: "Editor",
+            descr: "Html5/css/javascript editor, other languages coming soon...",
+            icon: "bi bi-file-code",
+            adiv_gat: "blog_bundle",
+            href: {
+                f_u: "welcomer.editor.callEditor_r();",
+                f: true,
+                target: "blank"
+            },
+            num: 0,
+            beta: false,
+            soon: false
+        },
+        {
             title: "My Linkedin",
             descr: "Look at my Linkedin Official profile",
             icon: "bi bi-linkedin",
@@ -1668,6 +1682,11 @@ link.click();
             */
         },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
+        callEditor_r: function(){
+            this.start();
+            welcomer.blg_history_replace(`/?p=editor`);
+
+        },
         start: function () {
             this.callEditor();
             this.webDb.start();

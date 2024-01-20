@@ -1,4 +1,4 @@
-
+'use strict';
 
 const welcomer = {
     gallery_temp: [],
@@ -1399,6 +1399,86 @@ const welcomer = {
         }
     },
     editor: {
+        webDb: {
+            dbName: "marko_portfolio_editor",
+            request: null,
+            projects: null,
+            transaction:null,
+            edit: function (data = {
+                id: 0,
+                name: "",
+                time: "",
+                code: ""
+            }) {
+
+            },
+            add: function (data = {
+                id: 0,
+                name: "",
+                time: "",
+                code: ""
+            }) {
+
+            },
+            remove:function (id = 0) {
+
+            },
+            start: function () {
+                const webDb = welcomer.editor.webDb;
+                this.request = indexedDB.open(this.dbName, 1);
+                this.request.onupgradeneeded = function (event) {
+                    const db = event.target.result,
+                         objectStore = db.createObjectStore('your_projects', { keyPath: 'id', autoIncrement: true });
+
+                    // Define indexes for searching by different fields (optional)
+                    objectStore.createIndex('id', 'id', { unique: true });
+                    objectStore.createIndex('name', 'name', { unique: false });
+                    objectStore.createIndex('time', 'time', { unique: false });
+                    objectStore.createIndex('code', 'code', { unique: false });
+
+                };
+
+                // Handle successful database open
+                this.request.onsuccess = function (event) {
+                    const db = event.target.result;
+
+                    // Insert data
+
+                    const transaction = db.transaction(['your_projects'], 'readwrite');
+                    const objectStore = transaction.objectStore('your_projects');
+
+                    const data = { name: 'John fDoe', age: 30 };
+
+                    const addRequest = objectStore.add(data);
+                    addRequest.onsuccess = function () {
+                        console.log('Record added successfully.');
+                    };
+
+                    // Read data
+                    const getRequest = objectStore.get(1);
+                    getRequest.onsuccess = function () {
+                        console.log('Retrieved data:', getRequest.result);
+                    };
+
+                    // Update data
+                    const updateRequest = objectStore.put({ id: 1, name: 'Updated Name', age: 35 });
+                    updateRequest.onsuccess = function () {
+                        console.log('Record updated successfully.');
+                    };
+
+                    // Delete data
+                    const deleteRequest = objectStore.delete(1);
+                    deleteRequest.onsuccess = function () {
+                        console.log('Record deleted successfully.');
+                    };
+
+                    // Close the database when the transaction is done
+                    transaction.oncomplete = function () {
+                        db.close();
+                    };
+                };
+            }
+        },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
         start: function (id = 0) {
             this.callEditor();
@@ -1495,10 +1575,10 @@ const welcomer = {
         },
         edtr: null,
         editr_tijemp: "",
-        editr_history:[],
-        time:function(){
-            const time = new Date(); 
-return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+        editr_history: [],
+        time: function () {
+            const time = new Date();
+            return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
         },
         callEditor: function (id = 0) {
 
@@ -1579,7 +1659,7 @@ return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
                     cursorStyle: 'hidden'
                 });
                 buttons.undo.addEventListener("click", function () {
-                  
+
                     editor.getModel().undo();
                 });
                 buttons.redo.addEventListener("click", function () {
@@ -1587,7 +1667,7 @@ return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
                 });
                 welcomer.editor.edtr = editor;
                 document.querySelector('section[data-ui-type="editor"] div#editor-container').addEventListener("resize", function () {
-                    
+
                     welcomer.editor.edtr.layout();
                 });
                 window.addEventListener('resize', function () {
@@ -1610,7 +1690,7 @@ return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
         `;
                     previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
                     welcomer.editor.editr_tijemp = editor.getValue();
-                 
+
                 }
                 function onTypingStopped() {
                     welcomer.editor.editr_history.push({
@@ -1618,10 +1698,10 @@ return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
                         "time": welcomer.editor.time()
                     });
                     // Add your logic here for what to do when typing stops
-                  }
+                }
                 editor.onDidChangeModelContent(function () {
                     clearTimeout(typingTimer);
-                  
+
                     typingTimer = setTimeout(onTypingStopped, typingTimeout);
                     updatePreview();
                 });

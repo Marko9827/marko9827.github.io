@@ -1134,7 +1134,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         </div-echatv>
     </section>
     <section data-ui-type="editor" class="hidden_omega">
-        <div_header>
+        <div_header data-url="editor">
             <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">

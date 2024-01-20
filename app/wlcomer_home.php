@@ -622,6 +622,17 @@ include "./welcomer_f.css";
     left: 40%;
     z-index: 33;
 }
+section[data-ui-type="editor"]  i.celvon {
+    border-right:2px solid var(--primary_light);
+    padding-right:10px;
+    margin-right: 2px;
+}
+section[data-ui-type="editor"] btns_r i.editor_btns:hover {
+    background:var(--primary_light);
+    border-radius:4px;
+    border-color:transparent;
+}
+ 
         /*  */
         <?php include ROOT . "css/document_root.css"; ?>
     </style>
@@ -1132,6 +1143,9 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
             </btns_i>
             <btns_r>
+            <i class="bi bi-arrow-left-short editor_btns undo"></i>
+
+                <i class="bi bi-arrow-right-short editor_btns redo celvon" title="redo" data-title="redo"></i>
                 <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i>
                 <i class="bi bi-question-lg"></i>
 

@@ -1494,13 +1494,18 @@ const welcomer = {
             }
         },
         edtr: null,
-        
-        callEditor: function () {
+        editr_tijemp: "",
+        callEditor: function (id = 0) {
 
             const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
                 editor_container = document.createElement("div"),
                 resizer = document.createElement("div"),
-                iframe = document.createElement("iframe");
+                iframe = document.createElement("iframe"),
+                buttons =  {
+                    undo: document.querySelector("section[data-ui-type='editor'] i.editor_btns.undo"),
+                    redo: document.querySelector("section[data-ui-type='editor'] i.editor_btns.redo")
+                };
+                
             $(data_ui_type).find("#editor-container").remove();
             $(data_ui_type).find("iframe").remove();
             editor_container.id = "editor-container";
@@ -1539,27 +1544,37 @@ const welcomer = {
             styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
             shadowRoot.appendChild(styleLink);
             require.config({ paths: { 'vs': 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs' } });
-
+            if(id < 1){
+                this.editr_tijemp = `<!DOCTYPE html>
+                <html>
+                
+                <head>
+                    <title>Hello World!</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                
+                </head>
+                
+                <body>
+                    <!--- Hello world --->
+                    <!--- Click ? for more info! :) --->
+                </body>
+                
+                </html>`;
+            }
             require(['vs/editor/editor.main'], function () {
                 // Your existing Monaco Editor initialization code
                 var editor = monaco.editor.create(editor_container_2, {
-                    value: `<!DOCTYPE html>
-    <html>
-    
-    <head>
-        <title>Hello World!</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    </head>
-    
-    <body>
-        <!--- Hello world --->
-        <!--- Click ? for more info! :) --->
-    </body>
-    
-    </html>`,
+                    value:  welcomer.editor.editr_tijemp,
                     language: 'html',
-                    theme: 'vs-dark'
+                    theme: 'vs-dark',
+                    automaticLayout: true,
+                    cursorStyle: 'hidden'
+                });
+                buttons.undo.addEventListener("click",function(){
+                    editor.getModel().undo();
+                });
+                buttons.redo.addEventListener("click",function(){
+                    editor.getModel().undo();
                 });
                 welcomer.editor.edtr = editor;
                 document.querySelector('section[data-ui-type="editor"] div#editor-container').addEventListener("resize", function () {
@@ -1585,6 +1600,7 @@ const welcomer = {
         </html>
         `;
                     previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                    welcomer.editor.editr_tijemp = editor.getValue();
                 }
 
                 editor.onDidChangeModelContent(function () {

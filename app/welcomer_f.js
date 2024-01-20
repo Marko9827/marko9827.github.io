@@ -1399,6 +1399,15 @@ const welcomer = {
         }
     },
     editor: {
+        d: function(){
+           
+            var blob = new Blob([welcomer.editor.editr_tijemp], { type: 'text/html' });  
+var blobUrl = URL.createObjectURL(blob); 
+ var link = document.createElement('a');
+link.href = blobUrl;
+link.download = `${blobUrl}.html`; 
+link.click();
+        },
         webDb: {
             dbName: "marko_portfolio_editor",
             request: null,
@@ -1423,25 +1432,25 @@ const welcomer = {
 
                 }
             },
-            str_to_mb:function(){ 
- 
+            str_to_mb: function () {
+
                 // Convert a string to bytes
                 const str = welcomer.editor.editr_tijemp;
                 const bytes = new TextEncoder().encode(str).length;
 
-  const kilobyte = 1024;
-  const megabyte = kilobyte * 1024;
-  const gigabyte = megabyte * 1024;
+                const kilobyte = 1024;
+                const megabyte = kilobyte * 1024;
+                const gigabyte = megabyte * 1024;
 
-  if (bytes >= gigabyte) {
-    return (bytes / gigabyte).toFixed(2) + " GB";
-  } else if (bytes >= megabyte) {
-    return (bytes / megabyte).toFixed(2) + " MB";
-  } else if (bytes >= kilobyte) {
-    return (bytes / kilobyte).toFixed(2) + " KB";
-  } else {
-    return bytes + " Bytes";
-  }
+                if (bytes >= gigabyte) {
+                    return (bytes / gigabyte).toFixed(2) + " GB";
+                } else if (bytes >= megabyte) {
+                    return (bytes / megabyte).toFixed(2) + " MB";
+                } else if (bytes >= kilobyte) {
+                    return (bytes / kilobyte).toFixed(2) + " KB";
+                } else {
+                    return bytes + " Bytes";
+                }
             },
             edit: function (dataF = {
                 id: 0,
@@ -1616,6 +1625,48 @@ const welcomer = {
                 };
             }
         },
+        load_menu_bar: function () {
+            const edimls = document.querySelector('section[data-ui-type="editor"] editor-history-rp');
+            if (edimls.hasAttribute("style")) {
+                edimls.removeAttribute("style");
+                edimls.innerHTML = "";
+                return false;
+            }
+            welcomer.editor.webDb.getAll();
+            welcomer.editor.webDb.data.forEach(function (res) {
+                var rs=  res.data.code;
+                if (rs.length > 0) {
+                    const if_div = document.createElement("if_div"),
+                        peview = document.createElement("iframe"),
+                        p = document.createElement("p");
+
+
+                    peview.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(res.data.code);
+                    p.innerHTML = "Click for edit.";
+                    peview.classList.add("preview_dom");
+                    peview.setAttribute("data-id",res.id);
+                    if_div.onclick = function () {
+                        welcomer.editor.edtr.setValue(res.data.code);
+                        welcomer.blg_history_replace(`/?p=editor&id=${res.id}`);
+                        edimls.removeAttribute("style");
+
+
+                    };
+                    edimls.setAttribute("data-title", "Load code");
+                    if_div.appendChild(peview);
+                    if_div.appendChild(p);
+                    edimls.appendChild(if_div);
+                }
+
+            });
+
+            edimls.setAttribute("style", "transform:none");
+            /*
+            <if_div>
+                <iframe class="preview_dom"></iframe><p>Preview. Click for edit.</p>
+            </if_div>
+            */
+        },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
         start: function () {
             this.callEditor();
@@ -1635,6 +1686,7 @@ const welcomer = {
             connectedCallback() {
                 const container = document.createElement('div'),
                     resizer = document.createElement("div"),
+                    bar_f = document.createElement("div"),
                     iframe = document.createElement("iframe");
                 iframe.id = "preview-container";
                 container.id = 'editor-container',
@@ -1701,6 +1753,9 @@ const welcomer = {
             </html>
             `;
                         previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                        try{
+                        document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                        }catch(a){}
                     }
 
                     editor.onDidChangeModelContent(function () {
@@ -1837,7 +1892,10 @@ const welcomer = {
 
                     previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
 
-
+                    try{
+                        document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                        }catch(a){}
+                    
                     welcomer.editor.editr_tijemp = editor.getValue();
 
                 }

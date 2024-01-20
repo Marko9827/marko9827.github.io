@@ -645,16 +645,19 @@ include "./welcomer_f.css";
             background: black !important;
         }
 
-        section[data-ui-type="editor"] div_header span.editor_t{
+        section[data-ui-type="editor"] div_header span.editor_t {
             display: none;
         }
+
         @media only screen and (max-width: 530px) {
             section[data-ui-type="editor"] div_header span:not(.editor_t) {
                 display: none !important;
             }
-            section[data-ui-type="editor"] div_header span.editor_t{
-            display: block;
-        }
+
+            section[data-ui-type="editor"] div_header span.editor_t {
+                display: block;
+            }
+
             section[data-ui-type="editor"] div#editor-container {
                 left: 0px;
                 right: 0px;
@@ -679,7 +682,7 @@ include "./welcomer_f.css";
                 width: -webkit-fill-available;
                 height: 3px;
                 right: 0px;
-                pointer-events:none;
+                pointer-events: none;
             }
         }
 
@@ -689,6 +692,99 @@ include "./welcomer_f.css";
             margin: 0px;
         }
 
+        editor-history-rp {
+            position: fixed;
+            top: 50px;
+            bottom: 0px;
+            width: 40%;
+            left: unset;
+            right: 0px;
+            z-index: 3333;
+            background: rgb(0 0 0 / 87%);
+            display: grid;
+            transition: .3s;
+            transform: translateX(100%);
+            padding: 10px;
+            overflow: auto;
+        }
+
+        editor-history-rp if_div {
+            border: 1px solid var(--hard_white);
+            margin: 4px 0px;
+            border-radius: 6px;
+            height: 170px;
+        }
+
+        editor-history-rp if_div:first-child {
+            margin-top: 0px;
+        }
+
+        editor-history-rp if_div:last-child {
+            margin-bottom: 0px;
+        }
+
+        editor-history-rp preview_dom {}
+
+        editor-history-rp {
+            position: fixed;
+            top: 50px;
+            bottom: 0px;
+            width: 40%;
+            left: unset;
+            right: 0px;
+            z-index: 3333;
+            background: rgb(0 0 0 / 87%);
+            display: grid;
+            transition: .3s;
+            transform: translatefX(100%);
+            padding: 10px;
+            overflow: auto;
+        }
+
+        editor-history-rp if_div {
+            border: 1px solid var(--hard_white);
+            margin: 4px 0px;
+            border-radius: 6px;
+            height: 170px;
+            display: flex;
+        }
+
+        editor-history-rp if_div:first-child {
+            margin-top: 0px;
+        }
+
+        editor-history-rp if_div:last-child {
+            margin-bottom: 0px;
+        }
+
+        editor-history-rp preview_dom,
+        editor-history-rp iframe.preview_dom {
+            position: relative;
+            width: -webkit-fill-available;
+            height: 131px;
+            background: white;
+            pointer-events: none !important;
+            border: none;
+            margin-left: 2px;
+            margin-top: 2px;
+            margin-right: 2px;
+            border-radius: 4px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        editor-history-rp p {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            text-align: center;
+            margin-top: 135px;
+            background: white;
+            color: black;
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            padding: 5px;
+        }
 
         /*  */
         <?php include ROOT . "css/document_root.css"; ?>
@@ -1203,16 +1299,23 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
             </btns_i>
             <btns_r>
                 <i class="bi bi-arrow-left-short editor_btns undo"></i>
+                <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
+                    class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
+                    data-title="Download as html file"></i>
 
-                <i class="bi bi-arrow-right-short editor_btns redo celvon" title="redo" data-title="redo"></i>
                 <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
-                <i class="bi bi-question-lg"></i>
+                <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
 
         </div_header>
+        <editor-history-rp>
+            <if_div>
+                <preview_dom></preview_dom>
+            </if_div>
+        </editor-history-rp>
         <editor-wrapper>
         </editor-wrapper>
     </section>

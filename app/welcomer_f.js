@@ -1402,86 +1402,190 @@ const welcomer = {
         webDb: {
             dbName: "marko_portfolio_editor",
             request: null,
+            storeName: "projects",
             projects: null,
-            transaction:null,
-            edit: function (data = {
+            objectStore: null,
+            transaction: null,
+            version: 2,
+            index: 0,
+            specific_id: null,
+            specific: {},
+            data: [],
+            db: null,
+            success: {
+                edit: function (k = 0) {
+
+                },
+                add: function (k = 0) {
+
+                },
+                remove: function (k = 0) {
+
+                }
+            },
+            edit: function (key = 0, data = {
+                id: 0,
+                name: "",
+                time: "",
+                code: ""
+            }) {
+                const objectStore = this.db.transaction(this.storeName)
+                    .objectStore(this.storeName);
+
+                const request = objectStore.get(key);
+
+                request.onsuccess = () => {
+
+                    const student = request.result;
+                    student = data;
+                    const updateRequest = objectStore.update(student);
+
+                    updateRequest.onsuccess = () => {
+
+                        welcomer.editor.webDb.success.edit(key);
+
+                    }
+                }
+            },
+            crindex: function (index) {
+                var d = new Date().getFullYear();
+                document.cookie = `crindex=${index}; expires=Thu, 18 Dec ${d + 5} 12:00:00 UTC`;
+            },
+            add: function (dataF = {
                 id: 0,
                 name: "",
                 time: "",
                 code: ""
             }) {
 
-            },
-            add: function (data = {
-                id: 0,
-                name: "",
-                time: "",
-                code: ""
-            }) {
+                var transaction = this.db.transaction([this.storeName], "readwrite");
+                var objectStore = transaction.objectStore(this.storeName);
 
+                var data = { data: dataF };
+
+                var request = objectStore.add(data);
+
+                request.onsuccess = function (event) {
+                    welcomer.editor.webDb.getAll();
+                    // Clear the input field
+                };
+
+                request.onerror = function (event) {
+
+                };
+
+                transaction.oncomplete = function (event) {
+                };
             },
-            remove:function (id = 0) {
+            getCurrent(key) {
+
+                const urlParams = new URLSearchParams(window.location.search);
+                const myParam = urlParams.get("p");
+                const myParam_id = urlParams.get("id");
+
+                if (myParam !== null) {
+                    if (myParam == "editor") {
+
+                        if (myParam_id !== null) {
+                            this.specific_id = key;
+
+                            var transaction = this.db.transaction([this.storeName], "readonly");
+                            var objectStore = transaction.objectStore(this.storeName);
+                            var index = objectStore.index("id");
+
+                            var getRequest = index.get(key);
+
+                            getRequest.onsuccess = function (event) {
+                                var data = getRequest.result;
+
+                                if (data) {
+                                    welcomer.editor.webDb.specific = data;
+                                    welcomer.editor.webDb.loadafter(welcomer.editor.webDb.specific,
+                                        function () {
+
+                                        });
+                                } else {
+                                }
+                            };
+
+                            getRequest.onerror = function (event) {
+                            };
+
+                            transaction.oncomplete = function (event) {
+                            };
+                        }
+                    }
+                }
+            },
+            loadafter: function (data = {}, call) {
+                welcomer.blg_history_replace(`/?p=editor&id=${data.id}`);
+                welcomer.editor.edtr.setValue(`${data.data.code}`);
+                call();
+            },
+            getAll: function () {
+                var transaction = this.db.transaction([this.storeName], "readonly");
+                var cursorRequest = transaction.objectStore(this.storeName).getAll();
+
+
+                cursorRequest.onsuccess = function (event) {
+                    var cursor = event.target.result;
+                    if (cursor) {
+                        welcomer.editor.webDb.data = cursor;
+                        // Move to the next record
+                        // cursor.continue();
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const myParam = urlParams.get("p");
+                        const myParam_id = urlParams.get("id");
+            
+                        if (myParam !== null) {
+                            if (myParam == "editor") {
+            
+                                if (myParam_id !== null) {
+                                    welcomer.editor.webDb.getCurrent(myParam_id);
+                                }
+                            }
+                        }
+                    } else {
+                    }
+                };
+                cursorRequest.onerror = function (event) {
+                };
+            },
+            remove: function (id = 0) {
 
             },
             start: function () {
                 const webDb = welcomer.editor.webDb;
-                this.request = indexedDB.open(this.dbName, 1);
-                this.request.onupgradeneeded = function (event) {
-                    const db = event.target.result,
-                         objectStore = db.createObjectStore('your_projects', { keyPath: 'id', autoIncrement: true });
+                this.request = indexedDB.open(this.dbName, this.version);
 
-                    // Define indexes for searching by different fields (optional)
-                    objectStore.createIndex('id', 'id', { unique: true });
-                    objectStore.createIndex('name', 'name', { unique: false });
-                    objectStore.createIndex('time', 'time', { unique: false });
-                    objectStore.createIndex('code', 'code', { unique: false });
+                this.request.onerror = function (event) {
+                 };
 
+                this.request.onsuccess = function (event) {
+                    webDb.db = event.target.result;
+                    welcomer.editor.webDb.getAll();
+
+                   
+                    
                 };
 
-                // Handle successful database open
-                this.request.onsuccess = function (event) {
-                    const db = event.target.result;
+                this.request.onupgradeneeded = function (event) {
+                    var db = event.target.result;
+                    var objectStore = db.createObjectStore(webDb.storeName, { keyPath: "id", autoIncrement: true });
+                    // You can add more fields as needed
+                    objectStore.createIndex("id", "id", { unique: false });
+                    objectStore.createIndex("name", "name", { unique: false });
+                    objectStore.createIndex("time", "time", { unique: false });
+                    objectStore.createIndex("code", "code", { unique: false });
 
-                    // Insert data
-
-                    const transaction = db.transaction(['your_projects'], 'readwrite');
-                    const objectStore = transaction.objectStore('your_projects');
-
-                    const data = { name: 'John fDoe', age: 30 };
-
-                    const addRequest = objectStore.add(data);
-                    addRequest.onsuccess = function () {
-                        console.log('Record added successfully.');
-                    };
-
-                    // Read data
-                    const getRequest = objectStore.get(1);
-                    getRequest.onsuccess = function () {
-                        console.log('Retrieved data:', getRequest.result);
-                    };
-
-                    // Update data
-                    const updateRequest = objectStore.put({ id: 1, name: 'Updated Name', age: 35 });
-                    updateRequest.onsuccess = function () {
-                        console.log('Record updated successfully.');
-                    };
-
-                    // Delete data
-                    const deleteRequest = objectStore.delete(1);
-                    deleteRequest.onsuccess = function () {
-                        console.log('Record deleted successfully.');
-                    };
-
-                    // Close the database when the transaction is done
-                    transaction.oncomplete = function () {
-                        db.close();
-                    };
                 };
             }
         },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
-        start: function (id = 0) {
+        start: function () {
             this.callEditor();
+            this.webDb.start();
+            
 
             // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
@@ -1574,12 +1678,15 @@ const welcomer = {
             }
         },
         edtr: null,
+        edtr_id: 0,
         editr_tijemp: "",
         editr_history: [],
         time: function () {
             const time = new Date();
             return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
         },
+
+
         callEditor: function (id = 0) {
 
             const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
@@ -1693,10 +1800,17 @@ const welcomer = {
 
                 }
                 function onTypingStopped() {
-                    welcomer.editor.editr_history.push({
+                    /* welcomer.editor.editr_history.push({
                         "code": editor.getValue(),
                         "time": welcomer.editor.time()
-                    });
+                    });*/
+                    if (welcomer.editor.webDb.data.length < 1) { }
+                    welcomer.editor.webDb.add({
+                        id: welcomer.editor.edtr_id,
+                        name: "test",
+                        time: welcomer.editor.time(),
+                        code: editor.getValue()
+                    })
                     // Add your logic here for what to do when typing stops
                 }
                 editor.onDidChangeModelContent(function () {

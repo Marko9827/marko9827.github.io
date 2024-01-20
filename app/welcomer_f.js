@@ -828,15 +828,15 @@ const welcomer = {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
-        
+
         if (myParam !== null) {
             if (myParam == "blog") {
 
                 this.blogloader(myParam_id);
-            } else if (myParam == "editor"){
+            } else if (myParam == "editor") {
                 this.editor.start();
                 // welcomer.editor.start();
-            } else{
+            } else {
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
         }
@@ -1402,7 +1402,7 @@ const welcomer = {
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
         start: function (id = 0) {
             this.callEditor();
-            
+
             // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
         },
@@ -1415,11 +1415,11 @@ const welcomer = {
 
             connectedCallback() {
                 const container = document.createElement('div'),
-                resizer = document.createElement("div"),
-                iframe = document.createElement("iframe");
+                    resizer = document.createElement("div"),
+                    iframe = document.createElement("iframe");
                 iframe.id = "preview-container";
                 container.id = 'editor-container',
-                this.shadowRoot.appendChild(container);
+                    this.shadowRoot.appendChild(container);
                 this.shadowRoot.appendChild(resizer);
                 this.shadowRoot.appendChild(iframe);
                 const styleLink = document.createElement('link');
@@ -1427,13 +1427,13 @@ const welcomer = {
                 styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
                 this.shadowRoot.appendChild(styleLink);
                 container.addEventListener("resize", function () {
-    
+
                     welcomer.editor.edtr.layout();
                 });
                 // Load Monaco Editor scripts
                 const loaderScript = document.createElement('script');
                 loaderScript.src = `${welcomer.editor.cdn}/vs/loader.js`;
-                loaderScript.onload =  this.initEditor.bind();
+                loaderScript.onload = this.initEditor.bind();
                 this.shadowRoot.appendChild(loaderScript);
             }
 
@@ -1462,7 +1462,7 @@ const welcomer = {
                     });
 
                     welcomer.editor.edtr = editor;
-                     
+
                     window.addEventListener('resize', function () {
                         welcomer.editor.edtr.layout();
                     });
@@ -1483,11 +1483,11 @@ const welcomer = {
             `;
                         previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
                     }
-    
+
                     editor.onDidChangeModelContent(function () {
                         updatePreview();
                     });
-    
+
                     // Initial preview update
                     updatePreview();
                 });
@@ -1495,23 +1495,29 @@ const welcomer = {
         },
         edtr: null,
         editr_tijemp: "",
+        editr_history:[],
+        time:function(){
+            const time = new Date(); 
+return `${time.toLocaleDateString()} ${time.toLocaleTimeString()}`;
+        },
         callEditor: function (id = 0) {
 
             const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
                 editor_container = document.createElement("div"),
                 resizer = document.createElement("div"),
                 iframe = document.createElement("iframe"),
-                buttons =  {
+                buttons = {
+                    history: "",
                     undo: document.querySelector("section[data-ui-type='editor'] i.editor_btns.undo"),
                     redo: document.querySelector("section[data-ui-type='editor'] i.editor_btns.redo")
                 };
-                
+
             $(data_ui_type).find("#editor-container").remove();
             $(data_ui_type).find("iframe").remove();
             editor_container.id = "editor-container";
             iframe.id = "preview-container";
             resizer.id = "resizer-container";
-            iframe.sandbox="allow-same-origin allow-scripts";
+            iframe.sandbox = "allow-same-origin allow-scripts";
             data_ui_type.appendChild(editor_container);
             data_ui_type.appendChild(resizer);
             data_ui_type.appendChild(iframe);
@@ -1535,7 +1541,7 @@ const welcomer = {
                 container.removeEventListener("mousemove", onMouseDrag);
             });
             const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
-            editor_container_2 = document.createElement("div");
+                editor_container_2 = document.createElement("div");
             editor_container_2.style.width = '100%';
             editor_container_2.style.height = '100%';
             shadowRoot.appendChild(editor_container_2);
@@ -1544,7 +1550,7 @@ const welcomer = {
             styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
             shadowRoot.appendChild(styleLink);
             require.config({ paths: { 'vs': 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs' } });
-            if(id < 1){
+            if (id < 1) {
                 this.editr_tijemp = `<!DOCTYPE html>
                 <html>
                 
@@ -1561,24 +1567,27 @@ const welcomer = {
                 
                 </html>`;
             }
+            let typingTimer;
+            const typingTimeout = 1000;
             require(['vs/editor/editor.main'], function () {
                 // Your existing Monaco Editor initialization code
                 var editor = monaco.editor.create(editor_container_2, {
-                    value:  welcomer.editor.editr_tijemp,
+                    value: welcomer.editor.editr_tijemp,
                     language: 'html',
                     theme: 'vs-dark',
                     automaticLayout: true,
                     cursorStyle: 'hidden'
                 });
-                buttons.undo.addEventListener("click",function(){
+                buttons.undo.addEventListener("click", function () {
+                  
                     editor.getModel().undo();
                 });
-                buttons.redo.addEventListener("click",function(){
+                buttons.redo.addEventListener("click", function () {
                     editor.getModel().undo();
                 });
                 welcomer.editor.edtr = editor;
                 document.querySelector('section[data-ui-type="editor"] div#editor-container').addEventListener("resize", function () {
-
+                    
                     welcomer.editor.edtr.layout();
                 });
                 window.addEventListener('resize', function () {
@@ -1601,17 +1610,27 @@ const welcomer = {
         `;
                     previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
                     welcomer.editor.editr_tijemp = editor.getValue();
+                 
                 }
-
+                function onTypingStopped() {
+                    welcomer.editor.editr_history.push({
+                        "code": editor.getValue(),
+                        "time": welcomer.editor.time()
+                    });
+                    // Add your logic here for what to do when typing stops
+                  }
                 editor.onDidChangeModelContent(function () {
+                    clearTimeout(typingTimer);
+                  
+                    typingTimer = setTimeout(onTypingStopped, typingTimeout);
                     updatePreview();
                 });
 
                 // Initial preview update
                 updatePreview();
- 
+
             });
- 
+
         }
     },
     blg_history_replace: function (st) {

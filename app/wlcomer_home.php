@@ -188,7 +188,7 @@ include "./welcomer_f.css";
             opacity: 1;
         }
 
-        .disable_pointer{
+        .disable_pointer {
             pointer-events: none !important;
         }
 
@@ -612,27 +612,83 @@ include "./welcomer_f.css";
         }
 
         /*  */
-        section[data-ui-type="editor"]  div#resizer-container {
-    position: fixed;
-    top: 50px;
-    background: red;
-    width: 5px;
-    height: -webkit-fill-available;
-    bottom: 0px;
-    left: 40%;
-    z-index: 33;
-}
-section[data-ui-type="editor"]  i.celvon {
-    border-right:2px solid var(--primary_light);
-    padding-right:10px;
-    margin-right: 2px;
-}
-section[data-ui-type="editor"] btns_r i.editor_btns:hover {
-    background:var(--primary_light);
-    border-radius:4px;
-    border-color:transparent;
-}
- 
+        section[data-ui-type="editor"] div#resizer-container {
+            position: fixed;
+            top: 50px;
+            background: black;
+            width: 5px;
+            height: -webkit-fill-available;
+            bottom: 0px;
+            left: 40%;
+            z-index: 33;
+        }
+
+        section[data-ui-type="editor"] i.celvon {
+            border-right: 2px solid var(--primary_light);
+            padding-right: 10px;
+            margin-right: 2px;
+        }
+
+        section[data-ui-type="editor"] btns_r i:hover {
+            background: var(--primary_light);
+            border-radius: 4px;
+            border-color: transparent;
+        }
+
+        section[data-ui-type="editor"] btns_r i {
+            width: 45px;
+            text-align: center;
+            padding: 0px 10px !important;
+        }
+
+        section[data-ui-type="editor"] div_header {
+            background: black !important;
+        }
+
+        section[data-ui-type="editor"] div_header span.editor_t{
+            display: none;
+        }
+        @media only screen and (max-width: 530px) {
+            section[data-ui-type="editor"] div_header span:not(.editor_t) {
+                display: none !important;
+            }
+            section[data-ui-type="editor"] div_header span.editor_t{
+            display: block;
+        }
+            section[data-ui-type="editor"] div#editor-container {
+                left: 0px;
+                right: 0px;
+                width: -webkit-fill-available !important;
+                top: 0px;
+                bottom: unset;
+                height: 50vh !important;
+            }
+
+            section[data-ui-type="editor"] iframe#preview-container {
+                position: to;
+                top: unset;
+                bottom: 0px !important;
+                height: 50vh !important;
+                left: 0px;
+                width: -webkit-fill-available;
+            }
+
+            section[data-ui-type="editor"] div#resizer-container {
+                top: 50vh;
+                left: 0px;
+                width: -webkit-fill-available;
+                height: 3px;
+                right: 0px;
+            }
+        }
+
+        section[data-ui-type="editor"] div#resizer-container {
+            border: none !important;
+            padding: 0px;
+            margin: 0px;
+        }
+
+
         /*  */
         <?php include ROOT . "css/document_root.css"; ?>
     </style>
@@ -1135,6 +1191,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 </rect>
             </svg>
             <span>Marko Nikolić - Portfolio > Editor</span>
+            <span class="editor_t">> Editor</span>
+
             <btns_i>
                 <input type="text" placeholder="Search project" data-hmm="search"
                     onkeyup="welcomer.search_Kompjiler(this);" />
@@ -1143,10 +1201,10 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
             </btns_i>
             <btns_r>
-            <i class="bi bi-arrow-left-short editor_btns undo"></i>
+                <i class="bi bi-arrow-left-short editor_btns undo"></i>
 
                 <i class="bi bi-arrow-right-short editor_btns redo celvon" title="redo" data-title="redo"></i>
-                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i>
+                <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
                 <i class="bi bi-question-lg"></i>
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
@@ -1157,7 +1215,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         <editor-wrapper>
         </editor-wrapper>
     </section>
- 
+
 
 </body>
 

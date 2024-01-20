@@ -1312,9 +1312,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
         </div_header>
         <editor-history-rp>
-            <if_div>
-                <preview_dom></preview_dom>
-            </if_div>
+         
         </editor-history-rp>
         <editor-wrapper>
         </editor-wrapper>

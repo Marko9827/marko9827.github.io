@@ -92,8 +92,16 @@ include "./welcomer_f.css";
 
 
     ?>
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
+        as="style" />
+    <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
+    <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
 
-    <script nonce="<?php echo NONCE;?>" defer src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
+
+
+
+    <script nonce="<?php echo NONCE; ?>" defer
+        src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
 
     <script nonce="<?php echo NONCE; ?>"
@@ -180,6 +188,10 @@ include "./welcomer_f.css";
             opacity: 1;
         }
 
+        .disable_pointer{
+            pointer-events: none !important;
+        }
+
         html.anim_djenerated p-c,
         p-c,
         html.anim_djenerated hh_anim_start,
@@ -238,7 +250,7 @@ include "./welcomer_f.css";
         section[data-ui-type="slider"] div-echatv {
             width: -webkit-fill-available;
             height: 100% !important;
-        
+
         }
 
         section[data-ui-type="slider"] div-echatv dh {
@@ -350,10 +362,10 @@ include "./welcomer_f.css";
         }
 
         section[data-ui-type="slider"] {
-    border: 2px solid var(--primary_light) !important;
-    margin:6px;
-    border-radius:10px;
-}
+            border: 2px solid var(--primary_light) !important;
+            margin: 6px;
+            border-radius: 10px;
+        }
 
 
         .hidden_omega {
@@ -431,15 +443,17 @@ include "./welcomer_f.css";
             height: 278px;
             /* -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
             /* mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
-            margin:5px !important;
+            margin: 5px !important;
         }
+
         section[data-ui-type="slider"] div-echatv dh img {
             object-fit: scale-down;
         }
+
         section[data-ui-type="slider"] div-echatv::-webkit-scrollbar {
-  width: 0px;
-  height: 0;
-}
+            width: 0px;
+            height: 0;
+        }
 
         section[data-ui-type="slider"] div-echatv dh {
             scroll-snap-align: center;
@@ -468,27 +482,147 @@ include "./welcomer_f.css";
             -ms-flex-align: center;
             align-items: center
         }
-        section.hide_buttons[data-ui-type="slider"] .catascrollEchatTv {
-    transform:scale(0) !important;
-}
 
-section[data-ui-type="slider"] dhn {
-    position: absolute;
-    left: 5px;
+        section.hide_buttons[data-ui-type="slider"] .catascrollEchatTv {
+            transform: scale(0) !important;
+        }
+
+        section[data-ui-type="slider"] dhn {
+            position: absolute;
+            left: 5px;
+            bottom: 0px;
+            z-index: 333333;
+            color: white;
+            background: var(--black-trasparent-color);
+            padding: 4px 10px;
+            border: 1px solid var(--hard_white);
+            border-radius: 4px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            enable-background: new 0 0 512 512 !important;
+        }
+
+        section[data-ui-type="slider"] div-echatv * {
+            transition: .3s;
+        }
+
+
+        section[data-ui-type="editor"] {
+            opacity: 1;
+            position: fixed;
+            z-index: 333;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            bottom: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+            background: red;
+        }
+
+        section[data-ui-type="editor"],
+        section[data-ui-type="editor"] * {
+            box-sizing: border-box !important;
+        }
+
+
+        section[data-ui-type="editor"] iframe {
+            background: white;
+        }
+
+        section[data-ui-type="editor"] {
+            background: #333;
+        }
+
+        section[data-ui-type="editor"] iframe#preview-container {
+            border: 0px !important;
+            border-left: 2px solid #333 !important;
+        }
+
+        section[data-ui-type="editor"] #editor-container {
+            flex: 1;
+        }
+
+        section[data-ui-type="editor"] #preview-container {
+            flex: 1;
+            border: 1px solid #ccc;
+        }
+
+        section[data-ui-type="editor"] div#editor-container,
+        section[data-ui-type="editor"] .monaco-editor {
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            width: 40% !important;
+            height: -webkit-fill-available !important;
+        }
+
+        section[data-ui-type="editor"] iframe#preview-container {
+            position: fixed;
+            bottom: 0px;
+            right: 0px;
+            left: 0px;
+            height: -webkit-fill-available;
+            width: 50vh;
+            border-top: solid white !important;
+        }
+
+
+        section[data-ui-type="editor"] div#editor-container,
+        section[data-ui-type="editor"] .monaco-editor {
+            top: 50px;
+            left: 0px;
+            bottom: 0px !important;
+            height: -webkit-fill-available !important;
+            border-radius: 6px !important;
+        }
+
+        section[data-ui-type="editor"] div#editor-container {}
+
+        section[data-ui-type="editor"] {
+            background: #333 !important;
+        }
+
+        section[data-ui-type="editor"] div#editor-container {}
+
+        section[data-ui-type="editor"] iframe#preview-container {
+            left: unset;
+            width: 60%;
+            top: 50px;
+        }
+
+
+
+        section[data-ui-type="editor"] svg#logo_backscr_img {
+            border: 2px solid var(--cdn_primary);
+            width: 36px;
+            height: 36px;
+            border-radius: 50px;
+            padding: 4px;
+            position: absolute;
+            top: 7px;
+            opacity: 1 !important;
+            left: 7px;
+        }
+
+        section[data-ui-type="editor"] div#editor-container,
+        section[data-ui-type="editor"] div#editor-container * {
+            font-family: Consolas, "Courier New", monospace !important;
+        }
+
+        /*  */
+        section[data-ui-type="editor"]  div#resizer-container {
+    position: fixed;
+    top: 50px;
+    background: red;
+    width: 5px;
+    height: -webkit-fill-available;
     bottom: 0px;
-    z-index: 333333;
-    color: white;
-    background: var(--black-trasparent-color);
-    padding: 4px 10px;
-    border: 1px solid var(--hard_white);
-    border-radius: 4px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-    enable-background: new 0 0 512 512 !important;
+    left: 40%;
+    z-index: 33;
 }
-section[data-ui-type="slider"] div-echatv * {
-    transition: .3s;
-}
+        /*  */
         <?php include ROOT . "css/document_root.css"; ?>
     </style>
     <!-- Google tag (gtag.js) -->
@@ -710,14 +844,14 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <div class="container page_header">
 <div class="row-0">
 <div class="col-sm-1">
-   <img src="/rdlv/students.svg" alt="aefeaf" />
+<img src="/rdlv/students.svg" alt="aefeaf" />
 </div>
 <div class="col-sm-2">
-   <h3>Echat</h3>
+<h3>Echat</h3>
 
-   <p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
+<p class="descriptions">My bussines, cloud gaming, Streaming social network</p>
 <tags>
-   <tag>Social</tag>
+<tag>Social</tag>
 </tags>
 </div>
 </div>
@@ -734,16 +868,16 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </ol>
 <div class="carousel-inner">
 <div class="carousel-item active">
-   <img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
+<img class="d-block w-100" src="/rdlv/apps/echat/page1.png" alt="First slide">
 </div>
 <div class="carousel-item ">
-   <img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
+<img class="d-block w-100" src="/rdlv/apps/echat/page2.png" alt="First slide">
 </div>
 <div class="carousel-item ">
-   <img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
+<img class="d-block w-100" src="/rdlv/apps/echat/page3.png" alt="First slide">
 </div>
 <div class="carousel-item ">
-   <img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
+<img class="d-block w-100" src="/rdlv/apps/echat/page4.png" alt="First slide">
 </div>
 </div>
 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -925,12 +1059,92 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
 
         </arr_bundle>
-        <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;" class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
+        <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
+                class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
         <i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i>
         <div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();">
 
         </div-echatv>
     </section>
+    <section data-ui-type="editor" class="hidden_omega">
+        <div_header>
+            <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+                <defs>
+                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                    </radialGradient>
+                </defs>
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                    transform="rotate(334.41 50 50)">
+                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                    transform="rotate(255.072 50 50)">
+                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                    transform="rotate(139.903 50 50)">
+                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+            </svg>
+            <span>Marko Nikolić - Portfolio > Editor</span>
+            <btns_i>
+                <input type="text" placeholder="Search project" data-hmm="search"
+                    onkeyup="welcomer.search_Kompjiler(this);" />
+                <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
+                    title="Close Search"></i>
+
+            </btns_i>
+            <btns_r>
+                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i>
+                <i class="bi bi-question-lg"></i>
+
+                <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
+                <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
+            </btns_r>
+
+        </div_header>
+        <editor-wrapper>
+        </editor-wrapper>
+    </section>
+ 
+
 </body>
 
 </html>

@@ -828,12 +828,15 @@ const welcomer = {
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get("p");
         const myParam_id = urlParams.get("id");
-
+        
         if (myParam !== null) {
             if (myParam == "blog") {
 
                 this.blogloader(myParam_id);
-            } else {
+            } else if (myParam == "editor"){
+                this.editor.start();
+                // welcomer.editor.start();
+            } else{
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
         }
@@ -959,11 +962,11 @@ const welcomer = {
                     image = document.createElement("img"),
                     afterSlash = json[i].split("/")[2];
                 image.src = json[i];
-            
+
                 dh.innerHTML = `<dhn>${i}/${a}</dhn>`;
                 image.setAttribute("loading", "lazy");
-                image.setAttribute("style","opacity:0; transform: scale(0);");
-                image.setAttribute("onload","$(this).removeAttr('style');");
+                image.setAttribute("style", "opacity:0; transform: scale(0);");
+                image.setAttribute("onload", "$(this).removeAttr('style');");
                 dh.setAttribute("data-index", i);
                 dh.setAttribute("data-name", afterSlash);
                 dh.appendChild(image);
@@ -1384,7 +1387,7 @@ const welcomer = {
                 $("html").addClass("anim_djenerated");
 
             } else {
-                history.replaceState({}, "", `${window.location.origin}`);
+                welcomer.blg_history_replace(`${window.location.origin}`);
                 this.energyAnim = true;
                 $("html").removeClass("anim_djenerated");
                 $("#clavs").attr("style", "transform: translateY(-100%);");
@@ -1394,6 +1397,208 @@ const welcomer = {
 
             }
         }
+    },
+    editor: {
+        cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
+        start: function (id = 0) {
+            this.callEditor();
+            
+            // customElements.define("editor-container", this.EditorWrapper);
+            $('section[data-ui-type="editor"]').removeClass("hidden_omega");
+        },
+        EditorWrapper: class extends HTMLElement {
+
+            constructor() {
+                super();
+                this.attachShadow({ mode: 'open' });
+            }
+
+            connectedCallback() {
+                const container = document.createElement('div'),
+                resizer = document.createElement("div"),
+                iframe = document.createElement("iframe");
+                iframe.id = "preview-container";
+                container.id = 'editor-container',
+                this.shadowRoot.appendChild(container);
+                this.shadowRoot.appendChild(resizer);
+                this.shadowRoot.appendChild(iframe);
+                const styleLink = document.createElement('link');
+                styleLink.rel = 'stylesheet';
+                styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
+                this.shadowRoot.appendChild(styleLink);
+                container.addEventListener("resize", function () {
+    
+                    welcomer.editor.edtr.layout();
+                });
+                // Load Monaco Editor scripts
+                const loaderScript = document.createElement('script');
+                loaderScript.src = `${welcomer.editor.cdn}/vs/loader.js`;
+                loaderScript.onload =  this.initEditor.bind();
+                this.shadowRoot.appendChild(loaderScript);
+            }
+
+            initEditor() {
+                // Initialize Monaco Editor inside the shadow DOM
+                require.config({ paths: { 'vs': `${welcomer.editor.cdn}vs` } });
+                require(['vs/editor/editor.main'], () => {
+                    const editorContainer = this.shadowRoot.getElementById('editor-container');
+                    const editor = monaco.editor.create(editorContainer, {
+                        value: `<!DOCTYPE html>
+                        <html>
+                        
+                        <head>
+                            <title>Hello World!</title>
+                            <meta name="viewport" content="width=device-width, initial-scale=1">
+                        
+                        </head>
+                        
+                        <body>
+                            <!--- Hello world --->
+                        </body>
+                        
+                        </html>`,
+                        language: 'html',
+                        theme: 'vs-dark'
+                    });
+
+                    welcomer.editor.edtr = editor;
+                     
+                    window.addEventListener('resize', function () {
+                        welcomer.editor.edtr.layout();
+                    });
+                    function updatePreview() {
+                        var previewFrame = document.getElementById('preview-container');
+                        var previewContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Hello World!</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+            </head>
+        
+            <body>
+                ${editor.getValue()}
+            </body>
+            </html>
+            `;
+                        previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                    }
+    
+                    editor.onDidChangeModelContent(function () {
+                        updatePreview();
+                    });
+    
+                    // Initial preview update
+                    updatePreview();
+                });
+            }
+        },
+        edtr: null,
+        
+        callEditor: function () {
+
+            const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
+                editor_container = document.createElement("div"),
+                resizer = document.createElement("div"),
+                iframe = document.createElement("iframe");
+            $(data_ui_type).find("#editor-container").remove();
+            $(data_ui_type).find("iframe").remove();
+            editor_container.id = "editor-container";
+            iframe.id = "preview-container";
+            resizer.id = "resizer-container";
+            iframe.sandbox="allow-same-origin allow-scripts";
+            data_ui_type.appendChild(editor_container);
+            data_ui_type.appendChild(resizer);
+            data_ui_type.appendChild(iframe);
+            const container = resizer;
+            function onMouseDrag({ movementX, movementY }) {
+                let getContainerStyle = window.getComputedStyle(container);
+                let leftValue = parseInt(getContainerStyle.left);
+                let topValue = parseInt(getContainerStyle.top);
+                container.style.left = `${leftValue + movementX}px`;
+                container.style.top = `${topValue + movementY}px`;
+            }
+            container.addEventListener("mousedown", () => {
+                editor_container.classList.add("disable_pointer");
+                iframe.classList.add("disable_pointer");
+                container.addEventListener("mousemove", onMouseDrag);
+            });
+            document.addEventListener("mouseup", () => {
+                editor_container.classList.remove("disable_pointer");
+                iframe.classList.remove("disable_pointer");
+
+                container.removeEventListener("mousemove", onMouseDrag);
+            });
+            const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
+            editor_container_2 = document.createElement("div");
+            editor_container_2.style.width = '100%';
+            editor_container_2.style.height = '100%';
+            shadowRoot.appendChild(editor_container_2);
+            const styleLink = document.createElement('link');
+            styleLink.rel = 'stylesheet';
+            styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
+            shadowRoot.appendChild(styleLink);
+            require.config({ paths: { 'vs': 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs' } });
+
+            require(['vs/editor/editor.main'], function () {
+                // Your existing Monaco Editor initialization code
+                var editor = monaco.editor.create(editor_container_2, {
+                    value: `<!DOCTYPE html>
+    <html>
+    
+    <head>
+        <title>Hello World!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    </head>
+    
+    <body>
+        <!--- Hello world --->
+    </body>
+    
+    </html>`,
+                    language: 'html',
+                    theme: 'vs-dark'
+                });
+                welcomer.editor.edtr = editor;
+                document.querySelector('section[data-ui-type="editor"] div#editor-container').addEventListener("resize", function () {
+
+                    welcomer.editor.edtr.layout();
+                });
+                window.addEventListener('resize', function () {
+                    welcomer.editor.edtr.layout();
+                });
+                function updatePreview() {
+                    var previewFrame = iframe;
+                    var previewContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hello World!</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+    
+        <body>
+            ${editor.getValue()}
+        </body>
+        </html>
+        `;
+                    previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                }
+
+                editor.onDidChangeModelContent(function () {
+                    updatePreview();
+                });
+
+                // Initial preview update
+                updatePreview();
+ 
+            });
+ 
+        }
+    },
+    blg_history_replace: function (st) {
+        history.replaceState({}, "", `${st}`);
     },
     blgloader: function (id = "") {
         $.ajax({
@@ -1445,7 +1650,9 @@ const welcomer = {
                 document.querySelector(".pdf_download").setAttribute("style", "display: block;");
             } else {
                 document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-
+                /*
+                Your work is saved on your computer (locally) via cookies. And it is not stored on the server!
+                */
             }
             this.loadorNot();
         } else if (url.includes("projects")) {

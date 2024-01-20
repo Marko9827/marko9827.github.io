@@ -2097,3 +2097,8 @@ Header set Access-Control-Allow-Methods "GET"
 
 
  
+ RewriteEngine On 
+ RewriteBase /
+ RewriteCond %{REQUEST_FILENAME} !-f
+ RewriteCond %{REQUEST_FILENAME} !-d
+ RewriteRule ^(.*)$ index.php?p=$1 [L,QSA]

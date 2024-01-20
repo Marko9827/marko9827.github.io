@@ -1423,6 +1423,26 @@ const welcomer = {
 
                 }
             },
+            str_to_mb:function(){ 
+ 
+                // Convert a string to bytes
+                const str = welcomer.editor.editr_tijemp;
+                const bytes = new TextEncoder().encode(str).length;
+
+  const kilobyte = 1024;
+  const megabyte = kilobyte * 1024;
+  const gigabyte = megabyte * 1024;
+
+  if (bytes >= gigabyte) {
+    return (bytes / gigabyte).toFixed(2) + " GB";
+  } else if (bytes >= megabyte) {
+    return (bytes / megabyte).toFixed(2) + " MB";
+  } else if (bytes >= kilobyte) {
+    return (bytes / kilobyte).toFixed(2) + " KB";
+  } else {
+    return bytes + " Bytes";
+  }
+            },
             edit: function (dataF = {
                 id: 0,
                 name: "",

@@ -1734,6 +1734,7 @@ const welcomer = {
                 container.style.left = `${leftValue + movementX}px`;
                 container.style.top = `${topValue + movementY}px`;
             }
+            /*
             container.addEventListener("mousedown", () => {
                 editor_container.classList.add("disable_pointer");
                 iframe.classList.add("disable_pointer");
@@ -1744,7 +1745,7 @@ const welcomer = {
                 iframe.classList.remove("disable_pointer");
 
                 container.removeEventListener("mousemove", onMouseDrag);
-            });
+            });*/
             const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
                 editor_container_2 = document.createElement("div");
             editor_container_2.style.width = '100%';

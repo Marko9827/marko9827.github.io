@@ -565,7 +565,7 @@ include "./welcomer_f.css";
             left: 0px;
             height: -webkit-fill-available;
             width: 50vh;
-            border-top: solid white !important;
+            /* border-top: solid white !important; */
         }
 
 
@@ -679,6 +679,7 @@ include "./welcomer_f.css";
                 width: -webkit-fill-available;
                 height: 3px;
                 right: 0px;
+                pointer-events:none;
             }
         }
 

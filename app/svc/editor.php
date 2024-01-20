@@ -1,3 +1,7 @@
+<?php 
+header("Location: /?p=editor");
+exit();
+?>
 <!DOCTYPE html>
 <html lang="en">
 

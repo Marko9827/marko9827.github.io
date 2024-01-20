@@ -1554,6 +1554,7 @@ const welcomer = {
     
     <body>
         <!--- Hello world --->
+        <!--- Click ? for more info! :) --->
     </body>
     
     </html>`,

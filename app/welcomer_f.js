@@ -1647,6 +1647,10 @@ link.click();
                 return false;
             }
             welcomer.editor.webDb.getAll();
+            edimls.innerHTML = `<if_div ><p>New +</p></if_div>`;
+            document.querySelector(`section[data-ui-type="editor"] editor-history-rp if_div:first-child`).onclick = function(){
+                
+            }
             welcomer.editor.webDb.data.forEach(function (res) {
                 var rs=  res.data.code;
                 if (rs.length > 0) {

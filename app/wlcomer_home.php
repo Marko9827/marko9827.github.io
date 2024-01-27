@@ -133,6 +133,10 @@ include "./welcomer_f.css";
         <?php }
     } ?>
     <style type="text/css">
+        <?php
+        include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
+        ?>
+
         .zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
@@ -788,6 +792,122 @@ include "./welcomer_f.css";
 
         /*  */
         <?php include ROOT . "css/document_root.css"; ?>
+
+        div#clavs br_ta {
+            position: sticky;
+            background: var(--black-trasparent-color);
+            top: 51.1px;
+            color: var(--hard_white);
+            width: -webkit-fill-available;
+            right: 0px;
+            overflow: auto;
+            z-index: 3;
+            display: inline-block;
+            padding: 10px 5px;
+            backdrop-filter: blur(1px);
+            height: fit-content;
+        }
+
+
+
+        div#clavs br_ta ta_f {
+            margin: 0px 4px;
+            padding: 6px;
+            border-radius: 6px;
+            color: var(--hard_white);
+            background: var(--black-trasparent-color);
+        }
+
+        div#clavs br_ta ta_f.active,
+        div#clavs br_ta ta_f:hover {
+            background: var(--hard_white) !important;
+            color: var(--black-trasparent-color);
+        }
+
+
+        div#clavs br_ta {
+            overflow-x: scroll;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            overflow-x: auto !important;
+            -ms-scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transition: margin-left 0.5s;
+            -o-transition: margin-left 0.5s;
+            scroll-behavior: smooth;
+            transition: margin-left 0.5s;
+
+            /* -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
+            /* mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%); */
+
+        }
+
+
+        div#clavs br_ta::-webkit-scrollbar {
+            width: 0px !important;
+            height: 0px !important;
+        }
+
+        div#clavs br_ta ta_f {
+            scroll-snap-align: center;
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            -webkit-transform-origin: center center;
+            -ms-transform-origin: center center;
+            transform-origin: center center;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            transition: -webkit-transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
+            -o-transition: transform 0.5s;
+            transition: transform 0.5s;
+            transition: transform 0.5s, -webkit-transform 0.5s;
+            position: relative;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+
+            align-items: center
+        }
+
+
+
+        #clavs grider_viewer {
+            padding-top: 65px !important;
+        }
+
+        div#clavs br_ta {
+            transition: .3s;
+        }
+
+        div#clavs br_ta.active_scr {
+            transform: translateY(-50px);
+            opacity: 0;
+        }
+
+        div#clavs br_ta,
+        div#clavs br_ta ta_f {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+        }
+
+        iframe{
+            border:none;
+        }
+        body[data-url-id="/?p=blog"]  i.pdf_download{
+    display:none;
+}
+
+ 
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
@@ -974,8 +1094,9 @@ include "./welcomer_f.css";
             <svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
             </svg><span>Loading ...</span>
-            <btns_i>
-                <input type="text" placeholder="Search project" data-hmm="search"
+            
+            <btns_i >
+                <input type="text" placeholder="Search ..." data-hmm="search"
                     onkeyup="welcomer.search_Kompjiler(this);" />
                 <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
                     title="Close Search"></i>
@@ -999,6 +1120,9 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
 </video>*/?>
         <box_h></box_h>
+        <br_ta class="active_scr">
+
+        </br_ta>
         <grider_viewer class="gridsH grids">
 
         </grider_viewer>
@@ -1312,7 +1436,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
         </div_header>
         <editor-history-rp>
-         
+
         </editor-history-rp>
         <editor-wrapper>
         </editor-wrapper>

@@ -1,6 +1,9 @@
 'use strict';
 
 const welcomer = {
+    lang:[
+        
+    ],
     gallery_temp: [],
     infoVa_img: function (event) {
         if (welcomer.gallery_temp.length > 0) {
@@ -766,20 +769,23 @@ const welcomer = {
             success: function (f) {
 
                 if (id == "all") {
-                    history.replaceState({}, "", `${window.location.origin}/?p=blog`);
-
+                    // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
+                    welcomer.blg_history_replace('/?p=blog');
                     welcomer.blogljoad_posts(f);
+                 } else {
+                    $("div#clavs br_ta").addClass("active_scr");
 
-                } else {
                     if (f.title) {
                         $(".pdf_page_home_btn").show();
                         /*
 
                         // $(".close_btnf").hide();*/
                         welcomer.gallery_temp = f.gallery;
-                        history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+                        // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+                        welcomer.blg_history_replace(`/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.get(f.source, function (res) {
+                            $("div#clavs br_ta").addClass("active_scr");
 
                             ifrm.document.open();
                             ifrm.document.write(`${res}`);
@@ -820,7 +826,8 @@ const welcomer = {
 
 
                     } else {
-                        history.replaceState({}, "", `${window.location.origin}`);
+                        // history.replaceState({}, "", `${window.location.origin}`);
+                        welcomer.blg_history_replace('');
 
                         $("#clavs").attr("style", "transform: translateY(-100%);");
                         welcomer.loop_active = true;
@@ -878,8 +885,22 @@ const welcomer = {
 
         return txt.value;
     },
-    blogljoad_posts: function (arr = []) {
-        var ljoader = document.querySelector("#reaload_page"),
+    remove_duplicates: function(arr) {
+        var obj = {};
+        var ret_arr = [];
+        for (var i = 0; i < arr.length; i++) {
+            obj[arr[i]] = true;
+        }
+        for (var key in obj) {
+            ret_arr.push(key);
+        }
+        return ret_arr;
+    },
+    blogljoad_posts: function (arr = []) { 
+        
+        var arrayr = [],
+        categoryTemp = document.querySelector('div#clavs br_ta'),
+         ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
             iframe = document.createElement("iframe"),
@@ -892,13 +913,21 @@ const welcomer = {
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
         // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
-
+        categoryTemp.classList.remove("active_scr");
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
 
 
         arr.forEach(function (v) {
+            try{
+            for(var i = 0; i < v?.category.length; i++){
+          
+            arrayr.push(v.category[i]);
+            }
+        }catch(r){}
+        
+            
             var thi = "class='is_touch'",
                 p_open = "";
             if (v.id !== "") {
@@ -933,6 +962,17 @@ const welcomer = {
             </project>`);
             div_not_i++;
         });
+        var arrayrH = welcomer.remove_duplicates(arrayr);
+
+        arrayrH.forEach(function(re){
+            const active_scrf = document.createElement("ta_f");
+            active_scrf.innerHTML = re;
+            $("div#clavs br_ta").append(active_scrf);
+      
+            
+        });
+        $("div#clavs br_ta").removeClass("active_scr");
+
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Blog");
@@ -1134,7 +1174,8 @@ const welcomer = {
         $("grider_viewer").html("");
         var gallery = [];
         $("gridder_loader").attr("style", "opacity:1");
-        history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+        // history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+        welcomer.blg_history_replace(`/?p=gallery`);
 
         var v = welcomer.load_gallery_j;
         for (var i = 0; i < v.length; i++) {
@@ -1413,14 +1454,22 @@ const welcomer = {
         }
     },
     editor: {
-        d: function(){
-           
-            var blob = new Blob([welcomer.editor.editr_tijemp], { type: 'text/html' });  
-var blobUrl = URL.createObjectURL(blob); 
- var link = document.createElement('a');
-link.href = blobUrl;
-link.download = `${blobUrl}.html`; 
-link.click();
+        screenshoot: function (screenshotTarget) {
+          //  const screenshotTarget = document.body;
+
+            html2canvas(screenshotTarget).then((canvas) => {
+                const base64image = canvas.toDataURL("image/png");
+                window.location.href = base64image;
+            });
+        },
+        d: function () {
+
+            var blob = new Blob([welcomer.editor.editr_tijemp], { type: 'text/html' });
+            var blobUrl = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = `${blobUrl}.html`;
+            link.click();
         },
         webDb: {
             dbName: "marko_portfolio_editor",
@@ -1635,6 +1684,7 @@ link.click();
                     objectStore.createIndex("name", "name", { unique: false });
                     objectStore.createIndex("time", "time", { unique: false });
                     objectStore.createIndex("code", "code", { unique: false });
+                    objectStore.createIndex("thumbail", "thumbail", { unique: false });
 
                 };
             }
@@ -1648,11 +1698,11 @@ link.click();
             }
             welcomer.editor.webDb.getAll();
             edimls.innerHTML = `<if_div ><p>New +</p></if_div>`;
-            document.querySelector(`section[data-ui-type="editor"] editor-history-rp if_div:first-child`).onclick = function(){
-                
+            document.querySelector(`section[data-ui-type="editor"] editor-history-rp if_div:first-child`).onclick = function () {
+
             }
             welcomer.editor.webDb.data.forEach(function (res) {
-                var rs=  res.data.code;
+                var rs = res.data.code;
                 if (rs.length > 0) {
                     const if_div = document.createElement("if_div"),
                         peview = document.createElement("iframe"),
@@ -1662,7 +1712,7 @@ link.click();
                     peview.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(res.data.code);
                     p.innerHTML = "Click for edit.";
                     peview.classList.add("preview_dom");
-                    peview.setAttribute("data-id",res.id);
+                    peview.setAttribute("data-id", res.id);
                     if_div.onclick = function () {
                         welcomer.editor.edtr.setValue(res.data.code);
                         welcomer.blg_history_replace(`/?p=editor&id=${res.id}`);
@@ -1686,7 +1736,7 @@ link.click();
             */
         },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
-        callEditor_r: function(){
+        callEditor_r: function () {
             this.start();
             welcomer.blg_history_replace(`/?p=editor`);
 
@@ -1776,9 +1826,9 @@ link.click();
             </html>
             `;
                         previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
-                        try{
-                        document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
-                        }catch(a){}
+                        try {
+                            document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                        } catch (a) { }
                     }
 
                     editor.onDidChangeModelContent(function () {
@@ -1915,10 +1965,10 @@ link.click();
 
                     previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
 
-                    try{
+                    try {
                         document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
-                        }catch(a){}
-                    
+                    } catch (a) { }
+
                     welcomer.editor.editr_tijemp = editor.getValue();
 
                 }
@@ -1977,6 +2027,11 @@ link.click();
     },
     blg_history_replace: function (st) {
         history.replaceState({}, "", `${st}`);
+    $("body").attr("data-url-id",st);
+    },
+    getParam: function(param){
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     },
     blgloader: function (id = "") {
         $.ajax({
@@ -1994,7 +2049,8 @@ link.click();
             if (!url.includes(window.location.origin)) {
                 $("div_header").attr("data-url", window.location.origin + hrl_url);
                 try {
-                    history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+                    // history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+                    welcomer.blg_history_replace(hrl_url);
                 } catch (arV) { }
             } else {
                 $("div_header").attr("data-url", url);
@@ -2024,7 +2080,8 @@ link.click();
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
             if (url2.includes("cv-pdf")) {
-                history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+                // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+                welcomer.blg_history_replace(`/?p=cv-pdf`);
                 document.querySelector(".pdf_download").setAttribute("style", "display: block;");
             } else {
                 document.querySelector(".pdf_download").setAttribute("style", "display: none;");
@@ -2039,7 +2096,8 @@ link.click();
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Projects");
-            history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+            // history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+            welcomer.blg_history_replace(`/?p=projects`);
             $("html").addClass("anim_djenerated");
 
         } else if (url.includes("gallery")) {
@@ -2049,7 +2107,8 @@ link.click();
             $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
-            history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+            // history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+            welcomer.blg_history_replace(`/?p=gallery`);
             ;
 
         } else if (url.includes("blog.eronelit.com") || url.includes("p=blog")) {
@@ -2160,7 +2219,8 @@ link.click();
     },
     HcloseF: function () {
         this.hmm("You ", function () {
-            history.replaceState({}, "", `${window.location.origin}`);
+            // history.replaceState({}, "", `${window.location.origin}`);
+            welcomer.blg_history_replace('');
             this.titleC("Marko Nikolić - Portfolio")
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.loop_active = true;
@@ -2199,7 +2259,8 @@ link.click();
 
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.titleC(`Marko Nikolić - Portfolio`);
-            history.replaceState({}, "", `${window.location.origin}`);
+            // history.replaceState({}, "", `${window.location.origin}`);
+            welcomer.blg_history_replace('/');
 
 
             welcomer.loop_active = true;
@@ -2461,8 +2522,11 @@ link.click();
             this.hmmQ("Close search?", function () {
                 hd.removeClass("ld_completeld_complete_search");
                 $("btns_i input[type='text']").val("");
+                if($("body").attr("data-url-id") == "/?p=blog"){
+                    welcomer.blogloader('all');
+                } else {
                 welcomer.projectsload();
-
+                }
             });
         }
     },

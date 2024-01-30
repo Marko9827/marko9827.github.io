@@ -1,8 +1,8 @@
 'use strict';
 
 const welcomer = {
-    lang:[
-        
+    lang: [
+
     ],
     gallery_temp: [],
     infoVa_img: function (event) {
@@ -42,6 +42,7 @@ const welcomer = {
         }
         document.querySelector(".wallpaperVideo").play();
         this.vdjae();
+        this.custom_evjents();
         document.querySelector(".wallpaperVideo").addEventListener("ended", function (v) {
             try {
                 v.play();
@@ -56,6 +57,8 @@ const welcomer = {
             v.remove();
         });
         document.head.appendChild(styleClass);
+        //  this.style_rebuild();
+
     },
     loop_active: true,
     Dots_color: 195,
@@ -744,6 +747,9 @@ const welcomer = {
             success: function (v) { }
         })
     },
+    custom_evjents: function () {
+
+    },
     blogloader: function (id = "all") {
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
@@ -762,17 +768,23 @@ const welcomer = {
 
 
         }
+        try {
+            welcomer.terminator.ajax.blog_post.abort();
+        } catch (aer) {
 
-        $.ajax({
+        }
+
+        this.terminator.ajax.blog_post = $.ajax({
             url: "/?blog=" + id,
             type: "GET",
             success: function (f) {
-
+                window.pazt_all = f;
                 if (id == "all") {
                     // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
                     welcomer.blg_history_replace('/?p=blog');
                     welcomer.blogljoad_posts(f);
-                 } else {
+                    $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
+                } else {
                     $("div#clavs br_ta").addClass("active_scr");
 
                     if (f.title) {
@@ -885,7 +897,7 @@ const welcomer = {
 
         return txt.value;
     },
-    remove_duplicates: function(arr) {
+    remove_duplicates: function (arr) {
         var obj = {};
         var ret_arr = [];
         for (var i = 0; i < arr.length; i++) {
@@ -896,15 +908,18 @@ const welcomer = {
         }
         return ret_arr;
     },
-    blogljoad_posts: function (arr = []) { 
+    blogljoad_posts_category: function(tt_category_name){
+        // window.arr_temp
         
         var arrayr = [],
-        categoryTemp = document.querySelector('div#clavs br_ta'),
-         ljoader = document.querySelector("#reaload_page"),
+            categoryTemp = document.querySelector('div#clavs br_ta'),
+            ljoader = document.querySelector("#reaload_page"),
             Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
             div_header = document.querySelector("div_header"),
+            tt_category_name_false = false,
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs"),
+            arr =  window.arr_temp,
             div_not_i = 0,
             div_not = document.querySelector("div_not");
 
@@ -917,17 +932,10 @@ const welcomer = {
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
-
-
-        arr.forEach(function (v) {
-            try{
-            for(var i = 0; i < v?.category.length; i++){
-          
-            arrayr.push(v.category[i]);
-            }
-        }catch(r){}
         
-            
+        arr.forEach(function (v) {
+           
+
             var thi = "class='is_touch'",
                 p_open = "";
             if (v.id !== "") {
@@ -949,7 +957,106 @@ const welcomer = {
                 thi = `onclick='welcomer.blogloader(${v.id})'`;
 
             }
-            $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+            try {
+                for (var i = 0; i < v?.category.length; i++) {
+                    if(tt_category_name == v.category[i]){
+                        $("grider_viewer").append(`<project
+                        data-category="${window.btoa(v?.category)}"
+                        ${thi} id-int="${div_not_i}" title="${v?.title}">
+                    <grider_box>
+                    <p><span>${v.title}</span></p>
+                      
+                        ${p_open}
+                        <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+                        <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+                        src="${v.thumbail}" data-zoom-image="${v.thumbail}" alt="${v.title}">
+                               </grider_box>
+            
+                        </project>`);
+                        div_not_i++;
+                    } 
+                    // arrayr.push(v.category[i]);
+                }
+            } catch (r) { }
+           
+           
+            tt_category_name_false = false;
+       
+        });
+        var arrayrH = welcomer.remove_duplicates(arrayr),
+            active_scrf_2 = document.createElement("ta_f");
+        active_scrf_2.innerHTML = "All";
+        active_scrf_2.onclick = function () {
+            document.querySelectorAll('#clavs grider_viewer project').forEach(function (res) {
+                res.classList.remove();
+            });
+        };
+      
+
+        $("div_header").addClass("ld_completeld_complete2");
+        $(ljoader).show();
+        $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+        $(".F_bi_search").show();
+        $("gridder_loader").removeAttr("style");
+
+        $(Vjideo_sjpinner).hide();
+    },
+    blogljoad_posts: function (arr = []) {
+
+        var arrayr = [],
+            categoryTemp = document.querySelector('div#clavs br_ta'),
+            ljoader = document.querySelector("#reaload_page"),
+            Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+            div_header = document.querySelector("div_header"),
+            iframe = document.createElement("iframe"),
+            clavs = document.getElementById("clavs"),
+            div_not_i = 0,
+            div_not = document.querySelector("div_not");
+
+        $(ljoader).hide();
+        $(Vjideo_sjpinner).show();
+        document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+        $("iframe:not(.iframe_mask)").hide();
+        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
+        categoryTemp.classList.remove("active_scr");
+        $("grider_viewer").show().removeAttr("style");
+        $("div_header").removeClass("ld_completeld_complete");
+        $("grider_viewer").html("");
+        window.arr_temp = arr;
+
+        arr.forEach(function (v) {
+            try {
+                for (var i = 0; i < v?.category.length; i++) {
+
+                    arrayr.push(v.category[i]);
+                }
+            } catch (r) { }
+
+
+            var thi = "class='is_touch'",
+                p_open = "";
+            if (v.id !== "") {
+                if (v.type) {
+                    p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${div_not_i});" >
+           <i class="bi bi-link"></i> Open post
+           </p_open>`;
+                } else {
+                    p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.blogloader(${div_not_i});" >
+          <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+           </p_open>`;
+                }
+            }
+            p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${v.id});" >
+            <i class="bi bi-link"></i> Open post
+            </p_open>`;
+            if (welcomer.isMobile()) {
+
+                thi = `onclick='welcomer.blogloader(${v.id})'`;
+
+            }
+            $("grider_viewer").append(`<project
+            data-category="${window.btoa(v?.category)}"
+            ${thi} id-int="${div_not_i}" title="${v?.title}">
         <grider_box>
         <p><span>${v.title}</span></p>
           
@@ -962,14 +1069,22 @@ const welcomer = {
             </project>`);
             div_not_i++;
         });
-        var arrayrH = welcomer.remove_duplicates(arrayr);
-
-        arrayrH.forEach(function(re){
+        var arrayrH = welcomer.remove_duplicates(arrayr),
+            active_scrf_2 = document.createElement("ta_f");
+        active_scrf_2.innerHTML = "All";
+        active_scrf_2.onclick = function () {
+            document.querySelectorAll('#clavs grider_viewer project').forEach(function (res) {
+                res.classList.remove();
+            });
+        };
+        $("div#clavs br_ta").append(active_scrf_2);
+        arrayrH.forEach(function (re) {
             const active_scrf = document.createElement("ta_f");
             active_scrf.innerHTML = re;
+            active_scrf.onclick = function () {
+               welcomer.blogljoad_posts_category(active_scrf.innerHTML);
+            };
             $("div#clavs br_ta").append(active_scrf);
-      
-            
         });
         $("div#clavs br_ta").removeClass("active_scr");
 
@@ -1455,7 +1570,7 @@ const welcomer = {
     },
     editor: {
         screenshoot: function (screenshotTarget) {
-          //  const screenshotTarget = document.body;
+            //  const screenshotTarget = document.body;
 
             html2canvas(screenshotTarget).then((canvas) => {
                 const base64image = canvas.toDataURL("image/png");
@@ -2027,9 +2142,9 @@ const welcomer = {
     },
     blg_history_replace: function (st) {
         history.replaceState({}, "", `${st}`);
-    $("body").attr("data-url-id",st);
+        $("body").attr("data-url-id", st);
     },
-    getParam: function(param){
+    getParam: function (param) {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get(param);
     },
@@ -2252,6 +2367,7 @@ const welcomer = {
         var containeds = window.location.href;
         if (containeds.includes("?p=blog&id=")) {
             welcomer.blogloader('all');
+
             return false;
         }
         this.hmm(msg_title, function () {
@@ -2522,12 +2638,17 @@ const welcomer = {
             this.hmmQ("Close search?", function () {
                 hd.removeClass("ld_completeld_complete_search");
                 $("btns_i input[type='text']").val("");
-                if($("body").attr("data-url-id") == "/?p=blog"){
+                if ($("body").attr("data-url-id") == "/?p=blog") {
                     welcomer.blogloader('all');
                 } else {
-                welcomer.projectsload();
+                    welcomer.projectsload();
                 }
             });
+        }
+    },
+    terminator: {
+        ajax: {
+            blog_post: null,
         }
     },
     txt_cursor: function () {
@@ -3045,6 +3166,31 @@ const welcomer = {
                     // console.log('SW registration failed with error:', e);
                 });
             }
+        }
+    },
+    style_rebuild: function () {
+        const style = document.createElement("style");
+        var temp = "";
+        style.setAttribute("type", "text/css");
+        //    style.rel = "stylesheet"
+        style.setAttribute("data-what", "generated2");
+        document.querySelectorAll("link[rel='stylesheet']").forEach(function (res) {
+            temp += `@import '${res.getAttribute("href")}'; \n`;
+        });
+        document.querySelectorAll("style").forEach(function (res) {
+            temp += res.innerHTML;
+        });
+        style.innerHTML = temp;
+        const blob = new Blob([temp], { type: "text/css" });
+        //  style.href = URL.createObjectURL(blob);
+        document.head.appendChild(style);
+        style.onload = function () {
+            document.querySelectorAll("style:not([data-what='generated2']);").forEach(function (res) {
+                res.remove();
+            });
+            document.querySelectorAll("link[rel='stylesheet']").forEach(function (res) {
+                res.remove();
+            });
         }
     },
     TWO_PI: Math.PI * 2,

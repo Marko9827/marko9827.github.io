@@ -81,10 +81,8 @@ $rand = time();
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
     </script>
-    <?php /*
-<style type="text/css">
-include "./welcomer_f.css"; 
-</style>*/
+    <?php  
+    
     $token = bin2hex(random_bytes(64));
     echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
@@ -907,7 +905,9 @@ include "./welcomer_f.css";
     display:none;
 }
 
- 
+#clavs iframe[src="about:blank"]:not(.iframe_mask){
+ pointer-events:none !important
+}
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>

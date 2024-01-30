@@ -2154,6 +2154,9 @@ $('div#clavs br_ta').html("");
     blg_history_replace: function (st) {
         history.replaceState({}, "", `${st}`);
         $("body").attr("data-url-id", st);
+        if(st == "/?p=blog" || st == "?p=blog"){
+           $('div#clavs br_ta').addClass("active_scr");
+        }
     },
     getParam: function (param) {
         const urlParams = new URLSearchParams(window.location.search);

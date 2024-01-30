@@ -987,9 +987,8 @@ const welcomer = {
             active_scrf_2 = document.createElement("ta_f");
         active_scrf_2.innerHTML = "All";
         active_scrf_2.onclick = function () {
-            document.querySelectorAll('#clavs grider_viewer project').forEach(function (res) {
-                res.classList.remove();
-            });
+            $('#clavs grider_viewer project').removeAttr("style");
+
         };
       
 
@@ -1073,9 +1072,7 @@ const welcomer = {
             active_scrf_2 = document.createElement("ta_f");
         active_scrf_2.innerHTML = "All";
         active_scrf_2.onclick = function () {
-            document.querySelectorAll('#clavs grider_viewer project').forEach(function (res) {
-                res.classList.remove();
-            });
+          $('#clavs grider_viewer project').removeAttr("style");
         };
         $("div#clavs br_ta").append(active_scrf_2);
         arrayrH.forEach(function (re) {

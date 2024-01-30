@@ -908,9 +908,9 @@ const welcomer = {
         }
         return ret_arr;
     },
-    blogljoad_posts_category: function(tt_category_name){
+    blogljoad_posts_category: function (tt_category_name) {
         // window.arr_temp
-        
+
         var arrayr = [],
             categoryTemp = document.querySelector('div#clavs br_ta'),
             ljoader = document.querySelector("#reaload_page"),
@@ -919,7 +919,7 @@ const welcomer = {
             tt_category_name_false = false,
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs"),
-            arr =  window.arr_temp,
+            arr = window.arr_temp,
             div_not_i = 0,
             div_not = document.querySelector("div_not");
 
@@ -932,9 +932,9 @@ const welcomer = {
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
-        
+
         arr.forEach(function (v) {
-           
+
 
             var thi = "class='is_touch'",
                 p_open = "";
@@ -957,10 +957,26 @@ const welcomer = {
                 thi = `onclick='welcomer.blogloader(${v.id})'`;
 
             }
-            try {
-                for (var i = 0; i < v?.category.length; i++) {
-                    if(tt_category_name == v.category[i]){
-                        $("grider_viewer").append(`<project
+            if (tt_category_name == "All" || tt_category_name == "all") {
+                $("grider_viewer").append(`<project
+                data-category="${window.btoa(v?.category)}"
+                ${thi} id-int="${div_not_i}" title="${v?.title}">
+            <grider_box>
+            <p><span>${v.title}</span></p>
+              
+                ${p_open}
+                <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+                src="${v.thumbail}" data-zoom-image="${v.thumbail}" alt="${v.title}">
+                       </grider_box>
+    
+                </project>`);
+                div_not_i++;
+            } else {
+                try {
+                    for (var i = 0; i < v?.category.length; i++) {
+                        if (tt_category_name == v.category[i]) {
+                            $("grider_viewer").append(`<project
                         data-category="${window.btoa(v?.category)}"
                         ${thi} id-int="${div_not_i}" title="${v?.title}">
                     <grider_box>
@@ -973,24 +989,18 @@ const welcomer = {
                                </grider_box>
             
                         </project>`);
-                        div_not_i++;
-                    } 
-                    // arrayr.push(v.category[i]);
-                }
-            } catch (r) { }
-           
-           
-            tt_category_name_false = false;
-       
-        });
-        var arrayrH = welcomer.remove_duplicates(arrayr),
-            active_scrf_2 = document.createElement("ta_f");
-        active_scrf_2.innerHTML = "All";
-        active_scrf_2.onclick = function () {
-            $('#clavs grider_viewer project').removeAttr("style");
+                            div_not_i++;
+                        }
+                        // arrayr.push(v.category[i]);
+                    }
+                } catch (r) { }
+            }
 
-        };
+            tt_category_name_false = false;
+
+        });
       
+
 
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
@@ -1072,14 +1082,18 @@ const welcomer = {
             active_scrf_2 = document.createElement("ta_f");
         active_scrf_2.innerHTML = "All";
         active_scrf_2.onclick = function () {
-          $('#clavs grider_viewer project').removeAttr("style");
+            welcomer.blogljoad_posts_category(active_scrf_2.innerHTML);
+            document.querySelectorAll('div#clavs br_ta ta_f').forEach(function (r) { r.classList.remove('active') });
+            active_scrf_2.classList.add("active");
         };
         $("div#clavs br_ta").append(active_scrf_2);
         arrayrH.forEach(function (re) {
             const active_scrf = document.createElement("ta_f");
             active_scrf.innerHTML = re;
             active_scrf.onclick = function () {
-               welcomer.blogljoad_posts_category(active_scrf.innerHTML);
+                document.querySelectorAll('div#clavs br_ta ta_f').forEach(function (r) { r.classList.remove('active') });
+                welcomer.blogljoad_posts_category(active_scrf.innerHTML);
+                active_scrf_2.classList.add("active");
             };
             $("div#clavs br_ta").append(active_scrf);
         });

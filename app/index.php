@@ -518,6 +518,11 @@ echo $v .",";
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].png");
                     }
+                } else  if (!empty($_GET['thumb'])) {
+                    if ($_GET['thumb'] == "true") {
+                        header("content-type: image/png");
+                        $this->ServeThumb("$url$_GET[blog].png");
+                    }
                 } else {
                     header("content-type: image/png");
                     readfile("$url$_GET[blog].png");

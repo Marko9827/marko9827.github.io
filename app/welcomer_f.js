@@ -985,7 +985,7 @@ const welcomer = {
                         ${p_open}
                         <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
                         <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-                        src="${v.thumbail}" data-zoom-image="${v.thumbail}" alt="${v.title}">
+                        src="${v.thumbail}&thumb=true" data-zoom-image="${v.thumbail}" alt="${v.title}">
                                </grider_box>
             
                         </project>`);
@@ -1032,7 +1032,7 @@ const welcomer = {
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
         window.arr_temp = arr;
-
+$('div#clavs br_ta').html("");
         arr.forEach(function (v) {
             try {
                 for (var i = 0; i < v?.category.length; i++) {
@@ -1072,7 +1072,7 @@ const welcomer = {
             ${p_open}
             <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
             <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-            src="${v.thumbail}" data-zoom-image="${v.thumbail}" alt="${v.title}">
+            src="${v.thumbail}&thumb=true" data-zoom-image="${v.thumbail}" alt="${v.title}">
                    </grider_box>
 
             </project>`);

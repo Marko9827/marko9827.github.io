@@ -796,7 +796,13 @@ const welcomer = {
                         // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         welcomer.blg_history_replace(`/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
-                        $.get(f.source, function (res) {
+                        $.ajax({
+                            type:"POST",
+                            url: f.source,
+                            data:{
+                                id: id,
+                            },
+                            success:function (res) {
                             $("div#clavs br_ta").addClass("active_scr");
 
                             ifrm.document.open();
@@ -825,7 +831,7 @@ const welcomer = {
                             welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
                             $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
-                        });
+                        }});
                         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                         $("body").removeAttr("data-hmm");
                         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");

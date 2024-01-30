@@ -460,7 +460,25 @@ echo $v .",";
         ";
         exit();
     }
-
+    function readJsonFile($filename)
+    {
+        $jsonContent = file_get_contents($filename);
+        return json_decode($jsonContent, true);
+    }
+    
+    // Function to get an item by ID from JSON data
+    function getItemById($filename, $id)
+    {
+        $jsonContent = file_get_contents($filename);
+        $jsonData =  json_decode($jsonContent, true);
+        foreach ($jsonData as $item) {
+            if ($item['id'] == $id) {
+                return $item;
+            }
+        }
+        return null; // Item with the specified ID not found
+    }
+    
     function RUN()
     {
         if (!empty($_GET['data'])) {
@@ -479,7 +497,7 @@ echo $v .",";
             }
             if (file_exists($file)) {
                 header("content-type: text/html");
-                if (file_exists($file)) {
+                if (file_exists($file) && !empty($_POST['id'])) {
                     $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
                     $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
 
@@ -503,7 +521,11 @@ echo $v .",";
                             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                             rel="stylesheet">
                         <?php
-                        echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                     $currentUrl = $_SERVER['REQUEST_URI']; 
+                     $urlParts = explode('/', $currentUrl)[2];
+                     $dataAfterSlash = $urlParts;
+                     $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json",$_POST['id']);
+                     echo "<dnm_footer>Last modified: $dataAfterSlash ". $r["time"] ."</dnm_footer>";
                         echo "<style type='text/css'>$css</style>";
                         echo "<script type='text/javascript'>$js </script>";
                         echo '<div class="cursor " style="opacity: 0;></div>';
@@ -916,7 +938,14 @@ echo $v .",";
                                                                                                                                                                                                                                                                     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                                                                                                                                                                                                                                                                     rel="stylesheet">
                             <?php
-                            echo "<dnm_footer>Last modified: " . date("F d Y H:i:s.", filemtime($file)) . "</dnm_footer>";
+                            $currentUrl = $_SERVER['REQUEST_URI']; 
+                            $urlParts = explode('/', $currentUrl);
+                             
+                            $urlParts = array_filter($urlParts);
+                             
+                            $dataAfterSlash = end($urlParts);
+                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json",$dataAfterSlash);
+                            echo "<dnm_footer>Last modified: ". $r["time"] ."</dnm_footer>";
                             echo "<style type='text/css'>$css</style>";
                             echo "<script type='text/javascript'>$js </script>";
 

@@ -935,7 +935,7 @@ $rand = time();
 
         <spjin>
             <p> <span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>
-                    <?php echo Date("Y"); ?>
+                    <?php echo "2012 - ".  Date("Y"); ?>
                 </span></p>
             <spj>
                 <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">

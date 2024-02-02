@@ -260,6 +260,7 @@ hh_anim_start .Vjideo_sjpinner {
 }
 
 #clavs iframe,
+#clavs .shadow_iframe,
 #clavs grider_viewer {
     position: absolute;
     top: 50px;

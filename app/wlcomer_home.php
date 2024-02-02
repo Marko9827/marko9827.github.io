@@ -89,7 +89,20 @@ $rand = time();
     $_SESSION['AuthV2-token'] = $token;
 
 
-    ?>
+    /* ?>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' *.googlesyndication.com *.eronelit.com;
+script-src 'self' *.eronelit.com 'unsafe-inline';
+style-src  'self' *.eronelit.com 'unsafe-inline';
+object-src 'self';
+frame-src *;
+base-uri 'self';
+connect-src 'self';
+font-src 'self' fonts.gstatic.com *.eronelit.com;
+frame-src 'self';
+img-src 'self' data: blob:;
+manifest-src 'self';
+media-src 'self';" />
+*/ ?>
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
         as="style" />
     <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
@@ -1185,8 +1198,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
 
-        <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe>
-
+        <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe> 
 
 
         <div_not>
@@ -1411,8 +1423,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                         repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg>
-            <span>Marko Nikolić - Portfolio > Editor</span>
-            <span class="editor_t">> Editor</span>
+            <span>Marko Nikolić - Portfolio > Editor - BETA</span>
+            <span class="editor_t">> Editor - BETA</span>
 
             <btns_i>
                 <input type="text" placeholder="Search project" data-hmm="search"
@@ -1421,8 +1433,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                     title="Close Search"></i>
 
             </btns_i>
-            <btns_r>
-                <i class="bi bi-arrow-left-short editor_btns undo"></i>
+            <btns_r class="btns_r_editor_right">
+         <i class="bi bi-arrow-left-short editor_btns undo"></i>
                 <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
                     class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
                     data-title="Download as html file"></i>
@@ -1431,7 +1443,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
-                <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
+                <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
+         
             </btns_r>
 
         </div_header>

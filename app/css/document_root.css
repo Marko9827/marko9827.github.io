@@ -326,6 +326,7 @@ iframe.iframe_mask {
 }
 
 #clavs iframe:not(.iframe_mask),
+#clavs .shadow_iframe,
 #clavs grider_viewer {
     top: 51px !important;
 }

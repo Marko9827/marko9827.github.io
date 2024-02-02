@@ -29,6 +29,9 @@
         * {
             user-select: none !important;
         }
+        body{
+            background: #333 !important;
+        }
     </style>
 </head>
 

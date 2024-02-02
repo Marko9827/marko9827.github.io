@@ -170,7 +170,7 @@ const welcomer = {
             icon: "bi bi-file-code",
             adiv_gat: "blog_bundle",
             href: {
-                f_u: "welcomer.editor.callEditor_r();",
+                f_u: "welcomer.editor.callEditor_r_h();",
                 f: true,
                 target: "blank"
             },
@@ -797,41 +797,67 @@ const welcomer = {
                         welcomer.blg_history_replace(`/?p=blog&id=${id}`);
                         $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
                         $.ajax({
-                            type:"POST",
+                            type: "POST",
                             url: f.source,
-                            data:{
+                            data: {
                                 id: id,
                             },
-                            success:function (res) {
-                            $("div#clavs br_ta").addClass("active_scr");
+                            success: function (res) {
+                                $("div#clavs br_ta").addClass("active_scr");
+                                $(ifrm).hide();
+                                ifrm.document.open();
+                                ifrm.document.write(`${res}`);
 
-                            ifrm.document.open();
-                            ifrm.document.write(`${res}`);
-                            ifrm.document.querySelectorAll("img").forEach(function (v) {
-                                $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
-                                var a = $(v);
-                                a.hover(
-                                    function () {
-                                        parent.welcomer.showAnchorTitle(a, a.data('title'));
-                                    },
-                                    function () {
+                                ifrm.document.querySelectorAll("img").forEach(function (v) {
+                                    $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
+                                    var a = $(v);
+                                    a.hover(
+                                        function () {
+                                            parent.welcomer.showAnchorTitle(a, a.data('title'));
+                                        },
+                                        function () {
+                                            parent.welcomer.hideAnchorTitle();
+                                        }
+                                    ).data('title', a.attr('title')).removeAttr('title');
+
+                                    a.mouseleave(function () {
                                         parent.welcomer.hideAnchorTitle();
-                                    }
-                                ).data('title', a.attr('title')).removeAttr('title');
 
-                                a.mouseleave(function () {
-                                    parent.welcomer.hideAnchorTitle();
-
+                                    });
                                 });
-                            });
+                                /*
+                                ifrm.document.querySelectorAll(".pdf_shadow").forEach(function (v) {
+                                    const fsT = v.getAttribute("data-url");
+                                    v.setAttribute("style",`
+                                        height: 80vh !important;
+                                        max-height: 80vh !important;
+                                        min-height: 80vh !important;
+                                        width: -webkit-fill-available !important;
+                                        display: block;
+                                        margin: 20px 0px !important;
+                                        border-radius: 10px;
+                                    `);
+                                    v.attachShadow({ mode: 'open' });
+                                    $.ajax({
+                                        type: "GET",
+                                        url: fsT,
+                                        success: function (res) {
+                                            var c = document.createElement("div");
+                                            c.innerHTML = `${res}`;
+                                            v.appendChild(c);
+                                        }
+                                    });
+                                });*/
+                                ifrm.document.close();
+                                // $(ifrm).hide();
 
-                            ifrm.document.close();
-                            // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
-                            $("div_header span").html(`Blog > ${f.title}`);
-                            welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+                                // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
+                                $("div_header span").html(`Blog > ${f.title}`);
+                                welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
-                            $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
-                        }});
+                                $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
+                            }
+                        });
                         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                         $("body").removeAttr("data-hmm");
                         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
@@ -1005,7 +1031,7 @@ const welcomer = {
             tt_category_name_false = false;
 
         });
-      
+
 
 
         $("div_header").addClass("ld_completeld_complete2");
@@ -1038,7 +1064,7 @@ const welcomer = {
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
         window.arr_temp = arr;
-$('div#clavs br_ta').html("");
+        $('div#clavs br_ta').html("");
         arr.forEach(function (v) {
             try {
                 for (var i = 0; i < v?.category.length; i++) {
@@ -1868,18 +1894,115 @@ $('div#clavs br_ta').html("");
             */
         },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
+        callEditor_r_h: function () {
+            window.location.href = "/?p=editor";
+        },
         callEditor_r: function () {
             this.start();
             welcomer.blg_history_replace(`/?p=editor`);
 
         },
         start: function () {
+            this.call_nav();
             this.callEditor();
             this.webDb.start();
 
 
             // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
+        },
+        call_nav_conf: [
+            {
+                title: "Undo", 
+                icon: "bi bi-arrow-left-short editor_btns undo",
+                href: {
+                    f_u: false,
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+            {
+                title: "Redo", 
+                icon: "bi bi-arrow-right-short editor_btns redo ",
+                href: {
+                    f_u: "welcomer.cp();",
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+            {
+                title: "Download as html file", 
+                icon: "bi bi-file-earmark-arrow-down celvon",
+                href: {
+                    f_u: "welcomer.editor.d()",
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+            {
+                title: "Your work history - Your projects!", 
+                icon: "bi bi-question-lg",
+                href: {
+                    f_u: "welcomer.editor.load_menu_bar(this);",
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+           
+            {
+                title: "Share Editor page", 
+                icon: "bi bi-share",
+                href: {
+                    f_u: "welcomer.share();",
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+            {
+                title: "bi bi-x-lg close_btnf", 
+                icon: "bi bi-arrow-left-short editor_btns undo",
+                href: {
+                    f_u: "welcomer.editor.close();",
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            }
+        ],
+        call_nav: function () {
+            return "";
+            const m_down = document.querySelector('btns_r.btns_r_editor_right');
+            this.call_nav_conf.forEach(function(res){
+                var i = document.createElement("i");
+                i.setAttribute("class", res.icon);
+                i.addEventListener("click", function(){
+                  
+                        try{
+                        res.href.f_u();
+                        }catch(ra){}
+                    
+                });
+                i.setAttribute("data-title",res.title);
+                i.setAttribute("title",res.title);
+                m_down.appendChild(i);
+            });
         },
         EditorWrapper: class extends HTMLElement {
 
@@ -2160,8 +2283,8 @@ $('div#clavs br_ta').html("");
     blg_history_replace: function (st) {
         history.replaceState({}, "", `${st}`);
         $("body").attr("data-url-id", st);
-        if(st == "/?p=blog" || st == "?p=blog"){
-           $('div#clavs br_ta').addClass("active_scr");
+        if (st == "/?p=blog" || st == "?p=blog") {
+            $('div#clavs br_ta').addClass("active_scr");
         }
     },
     getParam: function (param) {
@@ -2214,15 +2337,20 @@ $('div#clavs br_ta').html("");
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
-            if (url2.includes("cv-pdf")) {
-                // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
-                welcomer.blg_history_replace(`/?p=cv-pdf`);
-                document.querySelector(".pdf_download").setAttribute("style", "display: block;");
-            } else {
+            try {
+                if (url2.includes("cv-pdf")) {
+                    // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+                    welcomer.blg_history_replace(`/?p=cv-pdf`);
+                    document.querySelector(".pdf_download").setAttribute("style", "display: block;");
+                } else {
+                    document.querySelector(".pdf_download").setAttribute("style", "display: none;");
+                    /*
+                    Your work is saved on your computer (locally) via cookies. And it is not stored on the server!
+                    */
+                }
+            } catch (res) {
                 document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-                /*
-                Your work is saved on your computer (locally) via cookies. And it is not stored on the server!
-                */
+
             }
             this.loadorNot();
         } else if (url.includes("projects")) {

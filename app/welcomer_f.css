@@ -107,7 +107,6 @@ hh_anim_start spjin #logo_backscr_img {
     border: 3px solid var(--black-trasparent-color);
     margin-bottom: 25px;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     pointer-events: none;
 }
@@ -120,7 +119,6 @@ hh_anim_start spjin #logo_backscr_img {
 
 hh_anim_start #logo {
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
 }
 
@@ -226,7 +224,6 @@ hh_anim_start .Vjideo_sjpinner {
     border-radius: 4px;
     margin: 0px 10px;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     font-size: 15px;
 }
@@ -248,7 +245,6 @@ hh_anim_start .Vjideo_sjpinner {
     z-index: 4;
     background: var(--cdn_white);
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     opacity: 0;
 }
@@ -272,7 +268,6 @@ hh_anim_start .Vjideo_sjpinner {
     background: var(--cdn_primary);
     -webkit-transition: -webkit-filter .3s;
     transition: -webkit-filter .3s;
-    -o-transition: filter .3s;
     transition: filter .3s;
     transition: filter .3s, -webkit-filter .3s;
     overflow: auto;
@@ -291,7 +286,6 @@ hh_anim_start .Vjideo_sjpinner {
     -ms-transform: scale(0);
     transform: scale(0);
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
 }
 
@@ -314,7 +308,6 @@ hh_anim_start .Vjideo_sjpinner {
     box-shadow: 0 0 2px 0 rgb(0 0 0 / 20%), 0 1px 10px 0 rgb(0 0 0 / 10%) !important;
     opacity: 1;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     height: 220px;
     border: 3px solid var(--cdn_white);
@@ -338,7 +331,6 @@ hh_anim_start .Vjideo_sjpinner {
     padding: 5px;
     white-space: nowrap;
     overflow: hidden;
-    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     padding: 5px 10px
 }
@@ -359,7 +351,6 @@ svg.Vjideo_sjpinner {
 .Vjideo_sjpinner {
     -webkit-animation: vjideo_sjpinner_rotate 2s linear infinite;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     animation: vjideo_sjpinner_rotate 2s linear infinite;
     z-index: 23333333;
@@ -452,7 +443,6 @@ div_header span {
     color: var(--cdn_primary);
     white-space: nowrap;
     overflow: hidden;
-    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     right: 130px !important;
 }
@@ -512,7 +502,6 @@ div#clavs span {
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
     enable-background: new 0 0 512 512 !important;
     -webkit-transition: .3s !important;
-    -o-transition: .3s !important;
     transition: .3s !important;
 }
 
@@ -578,7 +567,6 @@ div_header #logo_backscr_img {
 
 .F_bi_search {
     -webkit-transition: opacity .3s !important;
-    -o-transition: opacity .3s !important;
     transition: opacity .3s !important;
     opacity: 0 !important;
     pointer-events: none !important;
@@ -609,7 +597,6 @@ div_header #logo_backscr_img {
     z-index: 1000000000;
     -webkit-transition: -webkit-transform 0.2s !important;
     transition: -webkit-transform 0.2s !important;
-    -o-transition: transform 0.2s !important;
     transition: transform 0.2s !important;
     transition: transform 0.2s, -webkit-transform 0.2s !important;
     -webkit-box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2), 0 1px 10px 0 rgba(0, 0, 0, 0.1);
@@ -632,9 +619,8 @@ div_not {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    z-index: 5;
+    z-index: 523423423342;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     top: -150px;
     opacity: 0;
@@ -845,7 +831,6 @@ p_open {
     margin: auto;
     display: block;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
 }
 
@@ -862,7 +847,6 @@ p_open {
     z-index: 1;
     opacity: 0.2;
     -webkit-transition: .5s !important;
-    -o-transition: .5s !important;
     transition: .5s !important;
 }
 
@@ -915,7 +899,6 @@ hh_anim_start * {
     left: 10px !important;
     bottom: 10px !important;
     -webkit-transition: opacity .3s;
-    -o-transition: opacity .3s;
     transition: opacity .3s;
     opacity: 0;
 }
@@ -932,7 +915,6 @@ hh_anim_start * {
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
     enable-background: new 0 0 512 512 !important;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     background: var(--cdn_primary);
     width: 20px;
@@ -962,7 +944,6 @@ info_box {
     display: flex;
     z-index: 333;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     opacity: 0;
     pointer-events: none;
@@ -977,9 +958,9 @@ info_box info_msg {
     width: -moz-max-content;
     width: max-content;
     margin: auto;
-    border-radius: 6px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+    border-radius: 6px; 
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
     enable-background: new 0 0 512 512 !important;
     padding: 5px 15px;
     width: 350px;
@@ -993,8 +974,8 @@ info_box info_msg img {
     border-radius: 30px;
     margin-left: 0px;
     margin-top: 10px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); 
     enable-background: new 0 0 512 512 !important;
 }
 
@@ -1021,7 +1002,6 @@ info_box info_msg p,
 info_box h4 {
     white-space: nowrap;
     overflow: hidden;
-    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
 }
 
@@ -1046,7 +1026,6 @@ dv_h {
     padding: 2px 0px;
     width: 80%;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
@@ -1095,7 +1074,6 @@ ul#btns_bottom li {
 ul#btns_bottom li span {
     display: inline-block;
     overflow: hidden;
-    -o-text-overflow: ellipsis;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -1135,7 +1113,6 @@ btns_i input[type="text"] {
     border: none;
     border-bottom: 2px solid var(--primary_light);
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     left: 0px;
     right: 0px;
@@ -1163,7 +1140,6 @@ btns_i input[type="text"] {
     border: none;
     border-bottom: 2px solid var(--primary_light);
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     padding-right: 30px;
 }
@@ -1495,6 +1471,7 @@ div#helper_id_helper3 p {
     }
 
     .box_shadow_txtf {
+        display: -ms-grid;
         display: grid;
         margin-bottom: 181px;
     }
@@ -1521,8 +1498,8 @@ div#helper_id_helper3 p {
         -o-transition: margin-left 0.5s;
         scroll-behavior: smooth;
         transition: margin-left 0.5s;
-        -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 25%, white 80%, transparent 100%);
-        mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+        -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+                mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
         z-index: 333333;
         left: 0px;
         bottom: 0px;
@@ -1547,7 +1524,6 @@ div#helper_id_helper3 p {
         transform: scale(1);
         transition: -webkit-transform 0.5s;
         -webkit-transition: -webkit-transform 0.5s;
-        -o-transition: transform 0.5s;
         transition: transform 0.5s;
         transition: transform 0.5s, -webkit-transform 0.5s;
         position: relative;
@@ -1567,10 +1543,17 @@ div#helper_id_helper3 p {
         text-align: center;
         height: 60px;
         margin: 0px !important;
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        -ms-flex-line-pack: center;
+            align-content: center;
     }
 
     #buttons a span,
@@ -1587,21 +1570,35 @@ div#helper_id_helper3 p {
     #buttons .adiv {
         width: 150px !important;
         height: 150px;
+        display: -webkit-box !important;
+        display: -ms-flexbox !important;
         display: flex !important;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        align-content: center;
+        -webkit-box-pack: center;
+            -ms-flex-pack: center;
+                justify-content: center;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        -ms-flex-line-pack: center;
+            align-content: center;
     }
 
     #buttons a,
     #buttons .adiv  {
+        display: -ms-grid !important;
         display: grid !important;
         text-align: center !important;
-        justify-content: center !important;
+        -webkit-box-pack: center !important;
+            -ms-flex-pack: center !important;
+                justify-content: center !important;
         justify-items: center;
-        align-items: center !important;
-        align-content: center;
+        -webkit-box-align: center !important;
+            -ms-flex-align: center !important;
+                align-items: center !important;
+        -ms-flex-line-pack: center;
+            align-content: center;
     }
 
     #buttons {
@@ -1638,8 +1635,11 @@ iframe.blog_style {
 }
  
 .zoomWindow {
-    object-fit: scale-down !important;
-    transform: unset !important;
+    -o-object-fit: scale-down !important;
+       object-fit: scale-down !important;
+    -webkit-transform: unset !important;
+        -ms-transform: unset !important;
+            transform: unset !important;
     width: -webkit-fill-available !important;
     height: -webkit-fill-available !important;
     background-size: contain;
@@ -1662,10 +1662,12 @@ iframe.Ignoring_me_iframe.blog_style {
 
 /*  */
 section[data-ui-type="slider"]{
+-webkit-transition: .3s !important;
 transition: .3s !important;
 }
 section[data-ui-type="slider"] * {
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     
 }
 
@@ -1676,6 +1678,8 @@ section[data-ui-type="slider"] div-echatv {
 
 section[data-ui-type="slider"] div-echatv dh {
     height: -webkit-fill-available !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     margin: 10px !important;
     width: -webkit-fill-available !important;
@@ -1716,7 +1720,6 @@ section[data-ui-type="slider"] .catascrollEchatTv {
     enable-background: new 0 0 512 512 !important;
     margin: 0px;
     -webkit-transition: .3s;
-    -o-transition: .3s;
     transition: .3s;
     opacity: 0.7;
     padding: 4px;
@@ -1732,8 +1735,12 @@ section[data-ui-type="slider"] .catascrollEchatTv {
     bottom: 0px !important;
     height: -webkit-fill-available;
     top: 0px !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 section[data-ui-type="slider"] .catascrollEchatTv:not(.catascrollEchatTv_right) {
@@ -1742,9 +1749,14 @@ section[data-ui-type="slider"] .catascrollEchatTv:not(.catascrollEchatTv_right) 
 }
 
 section[data-ui-type="slider"] {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
-    align-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
     position: fixed;
     left: 0px;
     top: 0px;
@@ -1759,10 +1771,13 @@ section[data-ui-type="slider"] {
  
 section[data-ui-type="slider"] div-echatv .img {
     height: -moz-fit-content;
+    height: -webkit-fit-content;
     height: fit-content;
-    object-fit: scale-down;
+    -o-object-fit: scale-down;
+       object-fit: scale-down;
     background: transparent !important;
     width: -moz-fit-content;
+    width: -webkit-fit-content !important;
     width: fit-content !important;
     max-width: -webkit-fill-available !important;
     max-height: -webkit-fill-available !important;

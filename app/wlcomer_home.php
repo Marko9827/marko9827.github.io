@@ -1201,15 +1201,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe> 
 
 
-        <div_not>
-            <div_panel>
-                <span></span>
-                <btns>
-                    <btn1>Yes</btn1>
-                    <btn2>Cancel</btn2>
-                </btns>
-            </div_panel>
-        </div_not>
+        
     </div>
 
     <gridder_loader>
@@ -1455,7 +1447,15 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         </editor-wrapper>
     </section>
 
-
+    <div_not>
+            <div_panel>
+                <span></span>
+                <btns>
+                    <btn1>Yes</btn1>
+                    <btn2>Cancel</btn2>
+                </btns>
+            </div_panel>
+        </div_not>
 </body>
 
 </html>

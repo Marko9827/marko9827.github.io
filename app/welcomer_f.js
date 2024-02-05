@@ -170,7 +170,7 @@ const welcomer = {
             icon: "bi bi-file-code",
             adiv_gat: "blog_bundle",
             href: {
-                f_u: "welcomer.editor.callEditor_r_h();",
+                f_u: 'welcomer.blg_history_replace(`/?p=editor`); welcomer.editor.start();',
                 f: true,
                 target: "blank"
             },
@@ -1612,6 +1612,24 @@ const welcomer = {
         }
     },
     editor: {
+        close: function () {
+            var msg_title = "Are you sure to close? Your work is auto-saved on your machine.";
+
+            welcomer.hmm(msg_title, function () {
+                welcomer.blg_history_replace('/');
+                welcomer.titleC("Marko Nikolić - Portfolio")
+                $("#clavs").attr("style", "transform: translateY(-100%);");
+                welcomer.loop_active = true;
+
+                $("section[data-ui-type='editor']").addClass("hidden_omega");
+
+                $("iframe:not(.iframe_mask)").removeAttr("style");
+                $("html").removeClass("anim_djenerated");
+
+
+                welcomer.energyAnim = true;
+            });
+        },
         screenshoot: function (screenshotTarget) {
             //  const screenshotTarget = document.body;
 
@@ -1913,7 +1931,7 @@ const welcomer = {
         },
         call_nav_conf: [
             {
-                title: "Undo", 
+                title: "Undo",
                 icon: "bi bi-arrow-left-short editor_btns undo",
                 href: {
                     f_u: false,
@@ -1925,7 +1943,7 @@ const welcomer = {
                 soon: false
             },
             {
-                title: "Redo", 
+                title: "Redo",
                 icon: "bi bi-arrow-right-short editor_btns redo ",
                 href: {
                     f_u: "welcomer.cp();",
@@ -1937,10 +1955,10 @@ const welcomer = {
                 soon: false
             },
             {
-                title: "Download as html file", 
+                title: "Download as html file",
                 icon: "bi bi-file-earmark-arrow-down celvon",
                 href: {
-                    f_u: "welcomer.editor.d()",
+                    f_u: function () { welcomer.editor.d(); },
                     f: true,
                     target: "blank"
                 },
@@ -1949,10 +1967,10 @@ const welcomer = {
                 soon: false
             },
             {
-                title: "Your work history - Your projects!", 
+                title: "Your work history - Your projects!",
                 icon: "bi bi-question-lg",
                 href: {
-                    f_u: "welcomer.editor.load_menu_bar(this);",
+                    f_u: function () { welcomer.editor.load_menu_bar(this); },
                     f: true,
                     target: "blank"
                 },
@@ -1960,12 +1978,12 @@ const welcomer = {
                 beta: false,
                 soon: false
             },
-           
+
             {
-                title: "Share Editor page", 
+                title: "Share Editor page",
                 icon: "bi bi-share",
                 href: {
-                    f_u: "welcomer.share();",
+                    f_u: function () { welcomer.share(); },
                     f: true,
                     target: "blank"
                 },
@@ -1974,10 +1992,12 @@ const welcomer = {
                 soon: false
             },
             {
-                title: "bi bi-x-lg close_btnf", 
-                icon: "bi bi-arrow-left-short editor_btns undo",
+                title: "Close Editor | Don't worry your work is auto saved on your machine!",
+                icon: "bi bi-x-lg close_btnf",
                 href: {
-                    f_u: "welcomer.editor.close();",
+                    f_u: function () {
+                        welcomer.editor.close();
+                    },
                     f: true,
                     target: "blank"
                 },
@@ -1987,20 +2007,21 @@ const welcomer = {
             }
         ],
         call_nav: function () {
-            return "";
+
             const m_down = document.querySelector('btns_r.btns_r_editor_right');
-            this.call_nav_conf.forEach(function(res){
+            m_down.innerHTML = "";
+            this.call_nav_conf.forEach(function (res) {
                 var i = document.createElement("i");
                 i.setAttribute("class", res.icon);
-                i.addEventListener("click", function(){
-                  
-                        try{
+                i.addEventListener("click", function () {
+
+                    try {
                         res.href.f_u();
-                        }catch(ra){}
-                    
+                    } catch (ra) { }
+
                 });
-                i.setAttribute("data-title",res.title);
-                i.setAttribute("title",res.title);
+                i.setAttribute("data-title", res.title);
+                i.setAttribute("title", res.title);
                 m_down.appendChild(i);
             });
         },
@@ -2107,6 +2128,221 @@ const welcomer = {
         getParams: function (name = "") {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
+        },
+        EditorWrappers: {
+            main: {
+
+            },
+            tabs: [
+                {
+
+                }
+            ],
+            html: {},
+            css: {},
+            javascript: {}
+        },
+        editor: {
+            test_stijart: function(){
+                var main = document.createElement("editor_wrapperv2"),
+                tabs = document.createElement("div_tabs"),
+                tabs_tab = document.createElement("div"),
+                tabs_contentBox = document.createElement("div"),
+                tab1 = document.createElement("div"),
+                tab2 = document.createElement("div"),
+                tab3 = document.createElement("div"),
+                tabs1 = document.createElement("tab"),
+                tabs2 = document.createElement("tab"),      
+                tabs3 = document.createElement("tab");
+
+                // 
+                tabs_contentBox.appendChild(tabs1);
+                tabs_contentBox.appendChild(tabs2);
+                tabs_contentBox.appendChild(tabs3);
+// 
+ this.main({
+    where: tab1,
+    callback:function(){
+
+    }
+});
+                //
+                tabs.appendChild(tabs_tab);
+                
+                main.appendChild(tabs);
+
+
+            },
+            tems: {
+                css: "",
+                html: "",
+                javascript: "",
+            },
+            collector: function () {
+
+                var preview_frm = document.querySelector('section[data-ui-type="editor"] iframe#preview-container'),
+                    previewContent = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Hello World!</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                <style> ${this.tems.css}</style>
+                    </head>
+            
+                <body>
+                    ${this.tems.html}
+
+                    <\script type="text/javascript"\>
+                        ${this.tems.javascript}
+                    <\/script\>
+                </body>
+                </html>
+                `;
+
+                preview_frm.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+
+            },
+            main: function (t = {
+                where,
+                wht,
+                callback,
+                template: ""
+            }) {
+                let editor_f;
+                const editor_container = document.createElement("div");
+                const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
+                    editor_container_2 = document.createElement("div");
+                editor_container_2.style.width = '100%';
+                editor_container_2.style.height = '100%';
+                shadowRoot.appendChild(editor_container_2);
+                const styleLink = document.createElement('link');
+                styleLink.rel = 'stylesheet';
+                styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
+                shadowRoot.appendChild(styleLink);
+                require.config({ paths: { 'vs': 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs' } });
+                if (id < 1) {
+                    welcomer.editor.editor.tems[t.wht] = `<!DOCTYPE html>
+                <html>
+                
+                <head>
+                    <title>Hello World!</title>
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                
+                </head>
+                
+                <body>
+                    <!--- Hello world --->
+                    <!--- Click ? for more info! :) --->
+                </body>
+                
+                </html>`;
+                }
+                let typingTimer;
+                const typingTimeout = 1000;
+                require(['vs/editor/editor.main'], function () {
+                    // Your existing Monaco Editor initialization code
+                    var editor = monaco.editor.create(editor_container_2, {
+                        value: welcomer.editor.editr_tijemp,
+                        language: 'html',
+                        theme: 'vs-dark',
+                        automaticLayout: true,
+                        cursorStyle: 'hidden'
+                    });
+                    editor_f = editor;
+                    buttons.undo.addEventListener("click", function () {
+
+                        editor.getModel().undo();
+                    });
+                    buttons.redo.addEventListener("click", function () {
+                        editor.getModel().undo();
+                    });
+                    welcomer.editor.edtr = editor;
+                    document.querySelector('section[data-ui-type="editor"] div#editor-container').addEventListener("resize", function () {
+
+                        welcomer.editor.edtr.layout();
+                    });
+                    window.addEventListener('resize', function () {
+                        welcomer.editor.edtr.layout();
+                    });
+                    function updatePreview() {
+                        var previewFrame = iframe;
+                        var previewContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Hello World!</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+    
+        <body>
+            ${editor.getValue()}
+        </body>
+        </html>
+        `;
+
+                        previewFrame.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+
+                        try {
+                            document.querySelector(`editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams("id")}"]`).src = 'data:text/html;charset=utf-8,' + encodeURIComponent(previewContent);
+                        } catch (a) { }
+
+                        welcomer.editor.editr_tijemp = editor.getValue();
+
+                    }
+                    if (welcomer.editor.getParams("id") !== null) {
+                        welcomer.editor.webDb.getCurrent(parseInt(welcomer.editor.getParams("id")));
+                    }
+                    function onTypingStopped() {
+                        /* welcomer.editor.editr_history.push({
+                            "code": editor.getValue(),
+                            "time": welcomer.editor.time()
+                        });*/
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const myParam = urlParams.get("p");
+                        const myParam_id = urlParams.get("id");
+                        if (welcomer.editor.webDb.data.length < 1) { }
+
+
+
+                        if (myParam !== null) {
+                            if (myParam == "editor") {
+
+                                if (myParam_id == null) {
+                                    welcomer.editor.edtr_id = 0;
+                                    welcomer.blg_history_replace(`/?p=editor&id=${welcomer.editor.edtr_id}`);
+                                    welcomer.editor.webDb.add({
+                                        id: welcomer.editor.edtr_id,
+                                        name: "Hello World!!!",
+                                        time: welcomer.editor.time(),
+                                        code: welcomer.editor.editr_tijemp
+                                    });
+                                } else {
+                                    welcomer.editor.webDb.edit({
+                                        id: myParam_id,
+                                        name: "Hello World!!!",
+                                        time: welcomer.editor.time(),
+                                        code: welcomer.editor.editr_tijemp
+                                    });
+                                }
+                            }
+                        }
+                        // Add your logic here for what to do when typing stops
+                    }
+                    editor.onDidChangeModelContent(function () {
+                        clearTimeout(typingTimer);
+
+                        typingTimer = setTimeout(onTypingStopped, typingTimeout);
+                        updatePreview();
+                    });
+
+                    // Initial preview update
+                    updatePreview();
+
+                });
+                where.append(editor_container);
+                t.callback(editor)
+            }
         },
         callEditor: function (id = 0) {
 

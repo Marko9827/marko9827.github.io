@@ -143,6 +143,7 @@ class portfolio_marko
             imagepng($resizedImage,"$path$fullname");
 
         };*/
+        ob_start();
         imagejpeg($resizedImage); //, "$path.jpg");
         if ($jpg) {
             imagejpeg($resizedImage); //, "$path.jpg");
@@ -153,6 +154,13 @@ class portfolio_marko
         #  file_put_contents("$path$fullname",$resizedImage);
         imagedestroy($sourceImage);
         imagedestroy($resizedImage);
+        
+        $img = ob_get_clean();
+        if(!empty(($resizedImage))){
+            echo $img;
+        } else{
+            @readfile($uploadedFile);
+        }
     }
     function metaTag_Generator($id, $specific = "title")
     {

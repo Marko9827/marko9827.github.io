@@ -130,6 +130,8 @@ const welcomer = {
             title: "Blog/News &#128512",
             descr: "Blog/News &#128512",
             icon: "bi bi-rss",
+            name:"blog_old",
+            visible: "yes",
             href: {
                 f_u: "https://blog.eronelit.com/",
                 f: false,
@@ -447,6 +449,13 @@ const welcomer = {
                 a = document.createElement("a"),
                 span = document.createElement("span"),
                 nnum = document.createElement("div");
+                try {
+                    if (v.visible == "yes") {
+                        a.setAttribute("data-iam-hidden","yes");
+
+                        div.setAttribute("data-iam-hidden","yes");
+                    }
+                } catch (ear) {   }
             if (v.href.f == false) {
                 a.href = v.href.f_u;
                 a.target = "_blank";
@@ -473,7 +482,7 @@ const welcomer = {
                     nnum.setAttribute("class", "nnum");
                     a.appendChild(nnum);
                 }
-
+         
                 if (v.beta) {
                     nnum.innerHTML = "Beta";
                     nnum.setAttribute("class", "nnum");
@@ -2143,32 +2152,32 @@ const welcomer = {
             javascript: {}
         },
         editor: {
-            test_stijart: function(){
+            test_stijart: function () {
                 var main = document.createElement("editor_wrapperv2"),
-                tabs = document.createElement("div_tabs"),
-                tabs_tab = document.createElement("div"),
-                tabs_contentBox = document.createElement("div"),
-                tab1 = document.createElement("div"),
-                tab2 = document.createElement("div"),
-                tab3 = document.createElement("div"),
-                tabs1 = document.createElement("tab"),
-                tabs2 = document.createElement("tab"),      
-                tabs3 = document.createElement("tab");
+                    tabs = document.createElement("div_tabs"),
+                    tabs_tab = document.createElement("div"),
+                    tabs_contentBox = document.createElement("div"),
+                    tab1 = document.createElement("div"),
+                    tab2 = document.createElement("div"),
+                    tab3 = document.createElement("div"),
+                    tabs1 = document.createElement("tab"),
+                    tabs2 = document.createElement("tab"),
+                    tabs3 = document.createElement("tab");
 
                 // 
                 tabs_contentBox.appendChild(tabs1);
                 tabs_contentBox.appendChild(tabs2);
                 tabs_contentBox.appendChild(tabs3);
-// 
- this.main({
-    where: tab1,
-    callback:function(){
+                // 
+                this.main({
+                    where: tab1,
+                    callback: function () {
 
-    }
-});
+                    }
+                });
                 //
                 tabs.appendChild(tabs_tab);
-                
+
                 main.appendChild(tabs);
 
 

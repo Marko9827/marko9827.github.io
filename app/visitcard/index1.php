@@ -103,7 +103,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
                     <p id="info_email"><i class="fas fa-map-marker-alt"></i> Serbia/Belgrade/Surčin</p>
                     <p id="info_email"><i class="fas fa-globe"></i> portfolio.eronelit.com</p>
                     <p id="info_email"><i class="fab fa-linkedin"></i> linkedin.com/in/marko-nikolic-49385a283</p>
-                    <p id="info_email"><i class="fas fa-at"></i> marko.supergun&#64;gmail.com</p>
+                    <p id="info_email"><i class="fas fa-at"></i> marko.nikolic.17&#64;singimail.rs</p>
                     <p></p>
                 </div>
             </div> <br><br> <br>

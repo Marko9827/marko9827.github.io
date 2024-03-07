@@ -940,7 +940,7 @@ alt="Image" class="img-responsive"></a>
 
           </form>
           <p> There is currently no active form for upgrading! <br>
-          */ ?> <p><i class="fa fa-envelope icon-fields"></i> Contact me on my email! <a style="color:blue;" href="mailto:marko.supergun&#64;gmail.com">marko.supergun&#64;gmail.com</a></p>
+          */ ?> <p><i class="fa fa-envelope icon-fields"></i> Contact me on my email! <a style="color:blue;" href="mailto:marko.nikolic.17&#64;singimail.rs">marko.nikolic.17&#64;singimail.rs</a></p>
         <div id="block-answer">
           <div id="answer"></div>
         </div>

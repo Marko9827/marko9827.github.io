@@ -68,7 +68,7 @@ ob_start(function ($b) {
                         <p id="info_email" class="info_email_code"><i class="fas fa-map-marker-alt"></i><span>Serbia/Belgrade/Surčin</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-globe"></i><span>portfolio.eronelit.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/marko-nikolic-49385a283</span></p>
-                        <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>marko.supergun&#64;gmail.com</span></p>
+                        <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>marko.nikolic.17&#64;singimail.rs</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-github"></i><span>github.com/marko9827</span></p>
                         <p></p>
                     </div>

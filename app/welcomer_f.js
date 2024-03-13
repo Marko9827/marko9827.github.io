@@ -144,16 +144,17 @@ const welcomer = {
             title: "Gallery - Photos",
             descr: "My photos gallery | Comming soon",
             icon: "bi bi-images",
+            adiv_gat: "gallery_bundle",
             href: {
                 f_u: "welcomer.galleryload();",
                 f: true,
                 target: "blank"
             },
-            num: 10,
+            num: window.portfolio.gallery,
             beta: false,
             soon: false
         }, {
-            title: "Blog - BETA",
+            title: "Blog",
             descr: "Blog/News &#128512",
             icon: "bi bi-files-alt",
             adiv_gat: "blog_bundle",
@@ -162,7 +163,7 @@ const welcomer = {
                 f: true,
                 target: "blank"
             },
-            num: 7,
+            num: window.portfolio.blog,
             beta: false,
             soon: false
         },
@@ -453,7 +454,12 @@ const welcomer = {
                     if (v.visible == "yes") {
                         a.setAttribute("data-iam-hidden","yes");
 
-                        div.setAttribute("data-iam-hidden","yes");
+                        div.setAttribute("data-iam-hidden","yes"); 
+                        setTimeout(function(){
+                              a.remove();
+                            div.remove();
+
+                        },100);
                     }
                 } catch (ear) {   }
             if (v.href.f == false) {
@@ -572,7 +578,7 @@ const welcomer = {
     vdjae: async function () {
         $.getJSON("/?blog=all", function (f) {
 
-            $(".adiv[adiv_gat='blog_bundle'] .nnum").html(f.length);
+           // $(".adiv[adiv_gat='blog_bundle'] .nnum").html(f.length);
         });
         const f = document.querySelector(".wallpaperVideo source").getAttribute("src"),
             url = await fetch(f).then((h) => { return h.blob() }).catch(function (v) { });
@@ -1297,21 +1303,33 @@ const welcomer = {
     },
     loader_svg: "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",
     load_gallery: function () {
+        var res = window.portfolio.data.gallery
+        $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+
+        welcomer.load_gallery_j = res;
+        return;
         $.getJSON("/?mnps=gallery", function (res) {
-            $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+            $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
 
             welcomer.load_gallery_j = res;
         });
+        
     },
     load_gallery_j: [],
     galleryload: function () {
         $("gridder_loader").attr("style", "opacity:1");
 
+    $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(window.portfolio.data.gallery.length);
+
+                welcomer.load_gallery_j = window.portfolio.data.gallery;
+                welcomer.galleryloadajax();
+                $("html").addClass("anim_djenerated");
+        return;
         if (this.load_gallery_j.length > 0) {
             this.galleryloadajax();
         } else {
             $.getJSON("/?mnps=gallery", function (res) {
-                $("#buttons .adiv:nth-child(6) .nnum").html(res.length);
+                $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
 
                 welcomer.load_gallery_j = res;
                 welcomer.galleryloadajax();

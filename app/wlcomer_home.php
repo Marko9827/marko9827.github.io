@@ -53,7 +53,7 @@ $rand = time();
     /*?>
         <meta http-equiv="Content-Security-Policy" 
         content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
-     */?>
+     */ ?>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
@@ -81,8 +81,8 @@ $rand = time();
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
     </script>
-    <?php  
-    
+    <?php
+
     $token = bin2hex(random_bytes(64));
     echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
@@ -123,7 +123,86 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" type="text/javascript">
+        /* BETA CODE */
+        window.portfolio = {
+            data: {
+                blog: <?php  echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"); ?>,
+                gallery: <?php 
+
+// count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+$fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+$i = 0;
+foreach ($fileList as $filename) {
+    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+    $path_parts = pathinfo($filename);
+    $IamNumberic = time() . rand();
+    if (!is_numeric("$path_parts[filename]")) {
+        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+        }
+        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+    } else {
+        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+    }
+    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+    $arr[$i]->title = "-";
+    $arr[$i]->description = "-";
+
+    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+    $arr[$i]->href = "-";
+    $arr[$i]->type = true;
+    $i++;
+} 
+echo json_encode($arr);
+?>,
+                projects:[]
+            },
+            projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+            gallery: <?php 
+
+            // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+            $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+            $i = 0;
+            foreach ($fileList as $filename) {
+                // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                $path_parts = pathinfo($filename);
+                $IamNumberic = time() . rand();
+                if (!is_numeric("$path_parts[filename]")) {
+                    rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                    $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                    if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                        #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                    }
+                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                } else {
+                    $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                }
+                // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                $arr[$i]->title = "-";
+                $arr[$i]->description = "-";
+
+                // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                $arr[$i]->href = "-";
+                $arr[$i]->type = true;
+                $i++;
+            } 
+            echo count($arr);
+            ?>,
+            blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+
+        };
+        /* BETA CODE */
+
         <?php
+
+    #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
+
         include ROOT . "welcomer_f.js";
         ?>
     </script>
@@ -174,7 +253,7 @@ media-src 'self';" />
             transition: .3s !important;
             opacity: 0.5;
         }
- 
+
         div#content_Space {
             background-color: transparent;
             background-image: -webkit-gradient(linear, left bottom, left top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent)), -webkit-gradient(linear, left top, right top, color-stop(9%, transparent), color-stop(10%, rgba(255, 255, 255, .2)), color-stop(12%, rgba(255, 255, 255, .2)), color-stop(13%, transparent), color-stop(29%, transparent), color-stop(30%, rgba(255, 255, 255, .1)), color-stop(31%, rgba(255, 255, 255, .1)), color-stop(32%, transparent), color-stop(49%, transparent), color-stop(50%, rgba(255, 255, 255, .1)), color-stop(51%, rgba(255, 255, 255, .1)), color-stop(52%, transparent), color-stop(69%, transparent), color-stop(70%, rgba(255, 255, 255, .1)), color-stop(71%, rgba(255, 255, 255, .1)), color-stop(72%, transparent), color-stop(89%, transparent), color-stop(90%, rgba(255, 255, 255, .1)), color-stop(91%, rgba(255, 255, 255, .1)), color-stop(92%, transparent), to(transparent));
@@ -911,22 +990,23 @@ media-src 'self';" />
             enable-background: new 0 0 512 512 !important;
         }
 
-        iframe{
-            border:none;
+        iframe {
+            border: none;
         }
-        body[data-url-id="/?p=blog"]  i.pdf_download{
-    display:none;
-}
 
-#clavs iframe[src="about:blank"]:not(.iframe_mask){
- pointer-events:none !important
-}
+        body[data-url-id="/?p=blog"] i.pdf_download {
+            display: none;
+        }
 
-/* aef
+        #clavs iframe[src="about:blank"]:not(.iframe_mask) {
+            pointer-events: none !important
+        }
+
+        /* aef
  */
-[data-iam-hidden="yes"]{
-    display:none !important;
-}
+        a[data-iam-hidden="yes"] {
+            display: none !important;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
@@ -954,7 +1034,7 @@ media-src 'self';" />
 
         <spjin>
             <p> <span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>
-                    <?php echo "2012 - ".  Date("Y"); ?>
+                    <?php echo "2012 - " . Date("Y"); ?>
                 </span></p>
             <spj>
                 <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
@@ -1047,7 +1127,7 @@ media-src 'self';" />
 <a href="https://t.me/nikoliccc02" target="_blank"><i style=" margin-bottom: -2px;
 " class="fab fa-telegram"></i> <span class="href_a_span">Telegram</span></a>
 
-*/?>
+*/ ?>
                 </div>
             </spj>
         </spjin>
@@ -1113,8 +1193,8 @@ media-src 'self';" />
             <svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
             </svg><span>Loading ...</span>
-            
-            <btns_i >
+
+            <btns_i>
                 <input type="text" placeholder="Search ..." data-hmm="search"
                     onkeyup="welcomer.search_Kompjiler(this);" />
                 <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
@@ -1137,7 +1217,7 @@ media-src 'self';" />
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
-</video>*/?>
+</video>*/ ?>
         <box_h></box_h>
         <br_ta class="active_scr">
 
@@ -1197,17 +1277,17 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </a>
 </div>
 </page>
-</pages> */?>
+</pages> */ ?>
 
 
 
 
 
 
-        <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe> 
+        <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe>
 
 
-        
+
     </div>
 
     <gridder_loader>
@@ -1221,7 +1301,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
-</video> */?>
+</video> */ ?>
         <div class="h5_div"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
                 class="">
                 <defs>
@@ -1346,7 +1426,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
 
 </ul>
-*/?>
+*/ ?>
     <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
 
     <section data-ui-type="slider" class="hidden_omega">
@@ -1432,7 +1512,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
             </btns_i>
             <btns_r class="btns_r_editor_right">
-         <i class="bi bi-arrow-left-short editor_btns undo"></i>
+                <i class="bi bi-arrow-left-short editor_btns undo"></i>
                 <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
                     class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
                     data-title="Download as html file"></i>
@@ -1442,7 +1522,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
-         
+
             </btns_r>
 
         </div_header>
@@ -1454,14 +1534,19 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
     </section>
 
     <div_not>
-            <div_panel>
-                <span></span>
-                <btns>
-                    <btn1>Yes</btn1>
-                    <btn2>Cancel</btn2>
-                </btns>
-            </div_panel>
-        </div_not>
+        <div_panel>
+            <span></span>
+            <btns>
+                <btn1>Yes</btn1>
+                <btn2>Cancel</btn2>
+            </btns>
+        </div_panel>
+    </div_not>
+    <style>
+        a[data-iam-hidden="yes"] {
+            display: none !important;
+        }
+    </style>
 </body>
 
 </html>

@@ -2828,6 +2828,13 @@ const welcomer = {
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
         }
         */
+       if(url == "projects"){
+        $("div_not").removeAttr("style");
+        $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
+
+        $("box_h").hide();
+        $("btns_i").removeAttr("style", "opacity: 0.4; pointer-events: none;");
+       }
     },
     pgloaderH: function (url = "") {
 

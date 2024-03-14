@@ -2780,6 +2780,7 @@ const welcomer = {
             // history.replaceState({}, "", `${window.location.origin}/?p=projects`);
             welcomer.blg_history_replace(`/?p=projects`);
             $("html").addClass("anim_djenerated");
+            
 
         } else if (url.includes("gallery")) {
             $("body").removeAttr("data-hmm");
@@ -2828,12 +2829,20 @@ const welcomer = {
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
         }
         */
-       if(url == "projects"){
+        $("#clavs grider_viewer").removeAttr("style"); 
+       if(url.includes("projects")){
+        setTimeout(() => {
+            
+  
         $("div_not").removeAttr("style");
         $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
 
         $("box_h").hide();
         $("btns_i").removeAttr("style", "opacity: 0.4; pointer-events: none;");
+        $("#clavs grider_viewer").attr("style","padding-top: 10px !important;");
+              }, 100);
+            } else{
+     
        }
     },
     pgloaderH: function (url = "") {

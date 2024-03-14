@@ -576,10 +576,7 @@ const welcomer = {
 
     },
     vdjae: async function () {
-        $.getJSON("/?blog=all", function (f) {
-
-           // $(".adiv[adiv_gat='blog_bundle'] .nnum").html(f.length);
-        });
+       
         const f = document.querySelector(".wallpaperVideo source").getAttribute("src"),
             url = await fetch(f).then((h) => { return h.blob() }).catch(function (v) { });
         const blob = URL.createObjectURL(url);
@@ -762,8 +759,178 @@ const welcomer = {
             success: function (v) { }
         })
     },
+    custom_evjents_page: function (id = "") {
+        $("div#clavs br_ta").addClass("active_scr");
+
+        if (f.title) {
+            $(".pdf_page_home_btn").show();
+            const urlParams = new URLSearchParams(`${window.location.origin}/${f.source}`);
+            
+            var res = "";
+            window.portfolio.data.blog.forEach(function(rr){
+                if(id == rr.id){
+                    res = window.atob(rr.page);
+                }
+            });
+            /*
+            
+            // $(".close_btnf").hide();*/
+            welcomer.gallery_temp = f.gallery;
+            // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+            welcomer.blg_history_replace(`/?p=blog&id=${id}`);
+            $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
+            $("div#clavs br_ta").addClass("active_scr");
+            $(ifrm).hide();
+            ifrm.document.open();
+            ifrm.document.write(`${res}`);
+
+            ifrm.document.querySelectorAll("img").forEach(function (v) {
+                $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
+                var a = $(v);
+                a.hover(
+                    function () {
+                        parent.welcomer.showAnchorTitle(a, a.data('title'));
+                    },
+                    function () {
+                        parent.welcomer.hideAnchorTitle();
+                    }
+                ).data('title', a.attr('title')).removeAttr('title');
+
+                a.mouseleave(function () {
+                    parent.welcomer.hideAnchorTitle();
+
+                });
+            });
+           
+            ifrm.document.close();
+           
+            $("div_header span").html(`Blog > ${f.title}`);
+            welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+
+            $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
+        } 
+    },
     custom_evjents: function () {
 
+    },
+    blog_loader_natjive: function(id = "all"){
+        var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
+        ifrm.removeAttribute("onload");
+        ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+        $("div_header").addClass("ld_completeld_complete2");
+        $(".F_bi_search").hide();
+        $("gridder_loader").attr("style", "opacity:1");
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
+
+        $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
+        if (id == "null" || id == null) {
+            id = "all";
+            welcomer.titleC("Blog > Marko Nikolić - Portfolio");
+            $("div_header span").html(`Marko Nikolić - Portfolio > Blog`);
+        }
+        try {
+            welcomer.terminator.ajax.blog_post.abort();
+        } catch (aer) {    }
+        var f = {};
+        window.portfolio.data.blog.forEach(function(res){
+            if(res.id == id){
+            f = res;
+            }
+        });
+ 
+        if (id == "all") {
+            // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
+            welcomer.blg_history_replace('/?p=blog');
+            welcomer.blogljoad_posts(f);
+            $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
+        } else {
+            $("div#clavs br_ta").addClass("active_scr");
+            function decodeEntities(hexString){
+                function hexToAscii(hexString) {
+                    var asciiString = '';
+                    for (var i = 0; i < hexString.length; i += 2) {
+                        asciiString += String.fromCharCode(parseInt(hexString.substr(i, 2), 16));
+                    }
+                    return asciiString;
+                }
+                
+                // Decode the hexadecimal string
+                var originalString = hexToAscii(hexString);
+                return hexString;
+            }
+            if (f.title) {
+                $(".pdf_page_home_btn").show();
+                const parser = new DOMParser();
+
+// Parse the HTML string
+// 
+// var res = parser.parseFromString(window.atob(f.page), 'text/html'); 
+                var res = decodeEntities(f.page);
+                // var blob = new Blob([res], { type: 'text/html' });
+                // res = await fetch(blob);
+                /*
+                
+                // $(".close_btnf").hide();*/
+                welcomer.gallery_temp = f.gallery;
+                // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+                welcomer.blg_history_replace(`/?p=blog&id=${id}`);
+                $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
+                
+                        $("div#clavs br_ta").addClass("active_scr");
+                        $(ifrm).hide();
+                        
+                        ifrm.document.open();
+                        ifrm.document.write(`${res}`);
+
+                        ifrm.document.querySelectorAll("img").forEach(function (v) {
+                            $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
+                            var a = $(v);
+                            a.hover(
+                                function () {
+                                    parent.welcomer.showAnchorTitle(a, a.data('title'));
+                                },
+                                function () {
+                                    parent.welcomer.hideAnchorTitle();
+                                }
+                            ).data('title', a.attr('title')).removeAttr('title');
+
+                            a.mouseleave(function () {
+                                parent.welcomer.hideAnchorTitle();
+
+                            });
+                        });
+                     
+                        ifrm.document.close();
+                        // $(ifrm).hide();
+                        
+                        // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
+                        $("div_header span").html(`Blog > ${f.title}`);
+                        welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+
+                        $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
+                  
+                $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
+                $("body").removeAttr("data-hmm");
+                document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
+                /*                      // history.replaceState({}, "", `${url}`);
+              */
+                $("div_header span").html(`Blog > ${f.title}`);
+
+                $("#clavs grider_viewer").hide();
+                $("iframe.iframe_mask").show();
+
+
+            } else {
+                // history.replaceState({}, "", `${window.location.origin}`);
+                welcomer.blg_history_replace('');
+
+                $("#clavs").attr("style", "transform: translateY(-100%);");
+                welcomer.loop_active = true;
+                $("iframe:not(.iframe_mask)").attr("src", "");
+                $("iframe:not(.iframe_mask)").removeAttr("style");
+            }
+        }
     },
     blogloader: function (id = "all") {
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
@@ -784,11 +951,21 @@ const welcomer = {
 
         }
         try {
-            welcomer.terminator.ajax.blog_post.abort();
+           // welcomer.terminator.ajax.blog_post.abort();
         } catch (aer) {
 
         }
-
+        if(id == "all"){
+            welcomer.blg_history_replace('/?p=blog');
+            welcomer.blogljoad_posts(window.portfolio.data.blog);
+            $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
+       
+        } else{
+            welcomer.blog_loader_natjive(id);
+        }
+        welcomer.titleC("Blog > Marko Nikolić - Portfolio")
+        $("html").addClass("anim_djenerated");
+        /*
         this.terminator.ajax.blog_post = $.ajax({
             url: "/?blog=" + id,
             type: "GET",
@@ -800,13 +977,13 @@ const welcomer = {
                     welcomer.blogljoad_posts(f);
                     $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
                 } else {
+                    welcomer.blog_loader_natjive(id);
+                    return;
                     $("div#clavs br_ta").addClass("active_scr");
 
                     if (f.title) {
                         $(".pdf_page_home_btn").show();
-                        /*
-
-                        // $(".close_btnf").hide();*/
+                      
                         welcomer.gallery_temp = f.gallery;
                         // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                         welcomer.blg_history_replace(`/?p=blog&id=${id}`);
@@ -840,29 +1017,7 @@ const welcomer = {
 
                                     });
                                 });
-                                /*
-                                ifrm.document.querySelectorAll(".pdf_shadow").forEach(function (v) {
-                                    const fsT = v.getAttribute("data-url");
-                                    v.setAttribute("style",`
-                                        height: 80vh !important;
-                                        max-height: 80vh !important;
-                                        min-height: 80vh !important;
-                                        width: -webkit-fill-available !important;
-                                        display: block;
-                                        margin: 20px 0px !important;
-                                        border-radius: 10px;
-                                    `);
-                                    v.attachShadow({ mode: 'open' });
-                                    $.ajax({
-                                        type: "GET",
-                                        url: fsT,
-                                        success: function (res) {
-                                            var c = document.createElement("div");
-                                            c.innerHTML = `${res}`;
-                                            v.appendChild(c);
-                                        }
-                                    });
-                                });*/
+                                
                                 ifrm.document.close();
                                 // $(ifrm).hide();
 
@@ -876,8 +1031,7 @@ const welcomer = {
                         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                         $("body").removeAttr("data-hmm");
                         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-                        /*                      // history.replaceState({}, "", `${url}`);
-                      */
+                      
                         $("div_header span").html(`Blog > ${f.title}`);
 
                         $("#clavs grider_viewer").hide();
@@ -902,6 +1056,7 @@ const welcomer = {
 
             }
         });
+        */
 
     },
     url_params: function () {
@@ -1058,7 +1213,7 @@ const welcomer = {
         $(Vjideo_sjpinner).hide();
     },
     blogljoad_posts: function (arr = []) {
-
+        
         var arrayr = [],
             categoryTemp = document.querySelector('div#clavs br_ta'),
             ljoader = document.querySelector("#reaload_page"),

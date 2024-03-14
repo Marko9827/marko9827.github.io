@@ -64,6 +64,10 @@ function exist_mime($filePath)
 
 }
 
+function data_print_r(){
+    
+}
+
 function headersExist()
 {
 

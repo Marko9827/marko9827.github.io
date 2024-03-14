@@ -84,7 +84,7 @@ class portfolio_marko
             </div>";
         return $ar;
     }
-     
+
     function Pages($h = "home")
     {
         if ($h == "home") {
@@ -154,11 +154,11 @@ class portfolio_marko
         #  file_put_contents("$path$fullname",$resizedImage);
         imagedestroy($sourceImage);
         imagedestroy($resizedImage);
-        
+
         $img = ob_get_clean();
-        if(!empty(($resizedImage))){
+        if (!empty(($resizedImage))) {
             echo $img;
-        } else{
+        } else {
             @readfile($uploadedFile);
         }
     }
@@ -190,52 +190,54 @@ class portfolio_marko
                 mkdir($dir);
         file_put_contents("$dir/$file", $contents);
     }
-    function Curl_getURL($url){
+    function Curl_getURL($url)
+    {
         exit();
         $ch = curl_init($url);
 
-// Set cURL options
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
+        // Set cURL options
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
 
-// Execute cURL session and get the response
-$response = curl_exec($ch);
+        // Execute cURL session and get the response
+        $response = curl_exec($ch);
 
-// Check if the request was successful
-if ($response === false) {
-    die('Failed to fetch data from the URL');
-}
+        // Check if the request was successful
+        if ($response === false) {
+            die('Failed to fetch data from the URL');
+        }
 
-// Close cURL session
-curl_close($ch);
+        // Close cURL session
+        curl_close($ch);
 
-// Process $response as needed
-return $response;
+        // Process $response as needed
+        return $response;
     }
-    function getRSSFeed(){
+    function getRSSFeed()
+    {
         header("Content-type: application/rss+xml; charset=utf-8");
 
-// GitHub repository information
-$repo_owner = 'marko9827';
-$repo_name = 'marko9827.github.io';
+        // GitHub repository information
+        $repo_owner = 'marko9827';
+        $repo_name = 'marko9827.github.io';
 
-// GitHub API URL to fetch commits
-$api_url = $this->Curl_getURL("https://api.github.com/repos/{$repo_owner}/{$repo_name}/commits");
+        // GitHub API URL to fetch commits
+        $api_url = $this->Curl_getURL("https://api.github.com/repos/{$repo_owner}/{$repo_name}/commits");
 
- 
-// Make a request to the GitHub API
-$response = file_get_contents($api_url);
 
-// Check if the request was successful
-if ($response === false) {
-    die('Failed to fetch commit information from GitHub API.');
-}
+        // Make a request to the GitHub API
+        $response = file_get_contents($api_url);
 
-// Decode the JSON response
-$commits = json_decode($response, true);
+        // Check if the request was successful
+        if ($response === false) {
+            die('Failed to fetch commit information from GitHub API.');
+        }
 
-// Start building the RSS feed
-$rss_feed = '<?xml version="1.0" encoding="UTF-8" ?>
+        // Decode the JSON response
+        $commits = json_decode($response, true);
+
+        // Start building the RSS feed
+        $rss_feed = '<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0">
     <channel>
         <title>Git Commit History Feed</title>
@@ -243,10 +245,10 @@ $rss_feed = '<?xml version="1.0" encoding="UTF-8" ?>
         <description>Git commit history feed for the {$repo_owner}/{$repo_name} repository.</description>
 ';
 
-// Add each commit to the RSS feed
-foreach ($commits as $commit) {
-    $commit_date = date('D, d M Y H:i:s O', strtotime($commit['commit']['author']['date']));
-    $rss_feed .= "
+        // Add each commit to the RSS feed
+        foreach ($commits as $commit) {
+            $commit_date = date('D, d M Y H:i:s O', strtotime($commit['commit']['author']['date']));
+            $rss_feed .= "
         <item>
             <title>{$commit['commit']['message']}</title>
             <description>{$commit['sha']}</description>
@@ -254,16 +256,16 @@ foreach ($commits as $commit) {
             <guid>{$commit['sha']}</guid>
             <pubDate>{$commit_date}</pubDate>
         </item>";
-}
+        }
 
-// Close the RSS feed
-$rss_feed .= '
+        // Close the RSS feed
+        $rss_feed .= '
     </channel>
 </rss>';
 
-// Output the RSS feed
-echo $rss_feed;
-exit();
+        // Output the RSS feed
+        echo $rss_feed;
+        exit();
     }
     function MetaTags()
     {
@@ -473,12 +475,47 @@ echo $v .",";
         $jsonContent = file_get_contents($filename);
         return json_decode($jsonContent, true);
     }
-    
+    function get_page_by_pln_thumb($img)
+    {
+        $r = ROOT . "data_s/blog/image/$img.png";
+        $image_data = file_get_contents($r);
+        $image_base64 = base64_encode($image_data);
+
+        $data_url = "data:image/png;base64,$image_base64";
+        return $data_url;
+    }
+    function get_page_by_pln($id, $r)
+    {
+        #ob_start();
+
+        $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+        $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
+
+
+
+
+        ?>
+
+
+        <?php
+        $currentUrl = $_SERVER['REQUEST_URI'];
+        $urlParts = explode('/', $currentUrl)[2];
+        $dataAfterSlash = $urlParts;
+
+        $response .= file_get_contents(ROOT . "data_s/blog/$id.html");
+        $response .= "
+                 <dnm_footer>Last modified: $r</dnm_footer>" .
+            "<style type='text/css'>$css</style>" .
+            "<script type='text/javascript'>$js </script>" .
+            '<div class="cursor " style="opacity: 0;></div>';
+
+        return $response;//htmlspecialchars_decode($response);
+    }
     // Function to get an item by ID from JSON data
     function getItemById($filename, $id)
     {
         $jsonContent = file_get_contents($filename);
-        $jsonData =  json_decode($jsonContent, true);
+        $jsonData = json_decode($jsonContent, true);
         foreach ($jsonData as $item) {
             if ($item['id'] == $id) {
                 return $item;
@@ -486,7 +523,7 @@ echo $v .",";
         }
         return null; // Item with the specified ID not found
     }
-    
+
     function RUN()
     {
         if (!empty($_GET['data'])) {
@@ -519,9 +556,9 @@ echo $v .",";
                         <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
                         <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
                         <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font"
-                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                            type="font/woff2">
+                        <link rel="preload" as="font" href="<?php echo CDN; ?>
+/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                        type="font/woff2">
                         <link
                             href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                             rel="stylesheet">
@@ -529,11 +566,11 @@ echo $v .",";
                             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                             rel="stylesheet">
                         <?php
-                     $currentUrl = $_SERVER['REQUEST_URI']; 
-                     $urlParts = explode('/', $currentUrl)[2];
-                     $dataAfterSlash = $urlParts;
-                     $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json",$_POST['id']);
-                     echo "<dnm_footer>Last modified: $dataAfterSlash ". $r["time"] ."</dnm_footer>";
+                        $currentUrl = $_SERVER['REQUEST_URI'];
+                        $urlParts = explode('/', $currentUrl)[2];
+                        $dataAfterSlash = $urlParts;
+                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
+                        echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
                         echo "<style type='text/css'>$css</style>";
                         echo "<script type='text/javascript'>$js </script>";
                         echo '<div class="cursor " style="opacity: 0;></div>';
@@ -548,7 +585,7 @@ echo $v .",";
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].png");
                     }
-                } else  if (!empty($_GET['thumb'])) {
+                } else if (!empty($_GET['thumb'])) {
                     if ($_GET['thumb'] == "true") {
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].png");
@@ -585,7 +622,7 @@ echo $v .",";
                     if ($off) {
                     }
                 } else if (!empty($_GET['rss'])) {
-                    if($_GET['rss'] == "versions"){
+                    if ($_GET['rss'] == "versions") {
                         $this->getRSSFeed();
                     }
                 } else {
@@ -946,14 +983,14 @@ echo $v .",";
                                                                                                                                                                                                                                                                     href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                                                                                                                                                                                                                                                                     rel="stylesheet">
                             <?php
-                            $currentUrl = $_SERVER['REQUEST_URI']; 
+                            $currentUrl = $_SERVER['REQUEST_URI'];
                             $urlParts = explode('/', $currentUrl);
-                             
+
                             $urlParts = array_filter($urlParts);
-                             
+
                             $dataAfterSlash = end($urlParts);
-                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json",$dataAfterSlash);
-                            echo "<dnm_footer>Last modified: ". $r["time"] ."</dnm_footer>";
+                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
+                            echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
                             echo "<style type='text/css'>$css</style>";
                             echo "<script type='text/javascript'>$js </script>";
 

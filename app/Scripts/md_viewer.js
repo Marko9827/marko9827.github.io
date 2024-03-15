@@ -21,4 +21,22 @@ document.body.onload = function(){
     fstyle.href = URL.createObjectURL(blob);
     fstyle.type = "stylesheet";
     document.head.appendChild(fstyle);
+
+    document.addEventListener('keydown', function(event) { 
+        if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+            event.preventDefault();
+        } 
+        if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
+            event.preventDefault(); 
+        }
+    });
 }
+
+document.addEventListener('keydown', function(event) { 
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+        event.preventDefault();
+    } 
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
+        event.preventDefault(); 
+    }
+});

@@ -417,11 +417,31 @@
     </div> <!-- outerContainer -->
     <div id="printContainer"></div>
     <script type="text/javascript">
+
+document.addEventListener('keydown', function(event) { 
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+        event.preventDefault();
+    } 
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
+        event.preventDefault(); 
+    }
+});
+
+document.onload =function(){  document.addEventListener('keydown', function(event) { 
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+        event.preventDefault();
+    } 
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
+        event.preventDefault(); 
+    }
+});}
         setTimeout(function() {
             PDFViewerApplication.open("<?php
                 //https://portfolio.localhost/?pdf_file=file&id=25_jul_2023_09_00/1690314349544
                 echo "/?pdf_file=file&id=$_GET[id]"; ?>");
         }, 1500);
+
+       
     </script>
 </body>
 

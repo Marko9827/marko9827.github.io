@@ -130,7 +130,7 @@ const welcomer = {
             title: "Blog/News &#128512",
             descr: "Blog/News &#128512",
             icon: "bi bi-rss",
-            name:"blog_old",
+            name: "blog_old",
             visible: "yes",
             href: {
                 f_u: "https://blog.eronelit.com/",
@@ -450,18 +450,18 @@ const welcomer = {
                 a = document.createElement("a"),
                 span = document.createElement("span"),
                 nnum = document.createElement("div");
-                try {
-                    if (v.visible == "yes") {
-                        a.setAttribute("data-iam-hidden","yes");
+            try {
+                if (v.visible == "yes") {
+                    a.setAttribute("data-iam-hidden", "yes");
 
-                        div.setAttribute("data-iam-hidden","yes"); 
-                        setTimeout(function(){
-                              a.remove();
-                            div.remove();
+                    div.setAttribute("data-iam-hidden", "yes");
+                    setTimeout(function () {
+                        a.remove();
+                        div.remove();
 
-                        },100);
-                    }
-                } catch (ear) {   }
+                    }, 100);
+                }
+            } catch (ear) { }
             if (v.href.f == false) {
                 a.href = v.href.f_u;
                 a.target = "_blank";
@@ -488,7 +488,7 @@ const welcomer = {
                     nnum.setAttribute("class", "nnum");
                     a.appendChild(nnum);
                 }
-         
+
                 if (v.beta) {
                     nnum.innerHTML = "Beta";
                     nnum.setAttribute("class", "nnum");
@@ -576,7 +576,7 @@ const welcomer = {
 
     },
     vdjae: async function () {
-       
+
         const f = document.querySelector(".wallpaperVideo source").getAttribute("src"),
             url = await fetch(f).then((h) => { return h.blob() }).catch(function (v) { });
         const blob = URL.createObjectURL(url);
@@ -765,10 +765,10 @@ const welcomer = {
         if (f.title) {
             $(".pdf_page_home_btn").show();
             const urlParams = new URLSearchParams(`${window.location.origin}/${f.source}`);
-            
+
             var res = "";
-            window.portfolio.data.blog.forEach(function(rr){
-                if(id == rr.id){
+            window.portfolio.data.blog.forEach(function (rr) {
+                if (id == rr.id) {
                     res = window.atob(rr.page);
                 }
             });
@@ -783,7 +783,9 @@ const welcomer = {
             $(ifrm).hide();
             ifrm.document.open();
             ifrm.document.write(`${res}`);
-
+            setTimeout(function () {
+                $("#clavs grider_viewer").hide();
+            }, 1000);
             ifrm.document.querySelectorAll("img").forEach(function (v) {
                 $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
                 var a = $(v);
@@ -801,19 +803,19 @@ const welcomer = {
 
                 });
             });
-           
+
             ifrm.document.close();
-           
+
             $("div_header span").html(`Blog > ${f.title}`);
             welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
             $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
-        } 
+        }
     },
     custom_evjents: function () {
 
     },
-    blog_loader_natjive: function(id = "all"){
+    blog_loader_natjive: function (id = "all") {
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
@@ -831,14 +833,14 @@ const welcomer = {
         }
         try {
             welcomer.terminator.ajax.blog_post.abort();
-        } catch (aer) {    }
+        } catch (aer) { }
         var f = {};
-        window.portfolio.data.blog.forEach(function(res){
-            if(res.id == id){
-            f = res;
+        window.portfolio.data.blog.forEach(function (res) {
+            if (res.id == id) {
+                f = res;
             }
         });
- 
+
         if (id == "all") {
             // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
             welcomer.blg_history_replace('/?p=blog');
@@ -846,7 +848,7 @@ const welcomer = {
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
         } else {
             $("div#clavs br_ta").addClass("active_scr");
-            function decodeEntities(hexString){
+            function decodeEntities(hexString) {
                 function hexToAscii(hexString) {
                     var asciiString = '';
                     for (var i = 0; i < hexString.length; i += 2) {
@@ -854,7 +856,7 @@ const welcomer = {
                     }
                     return asciiString;
                 }
-                
+
                 // Decode the hexadecimal string
                 var originalString = hexToAscii(hexString);
                 return hexString;
@@ -863,9 +865,9 @@ const welcomer = {
                 $(".pdf_page_home_btn").show();
                 const parser = new DOMParser();
 
-// Parse the HTML string
-// 
-// var res = parser.parseFromString(window.atob(f.page), 'text/html'); 
+                // Parse the HTML string
+                // 
+                // var res = parser.parseFromString(window.atob(f.page), 'text/html'); 
                 var res = decodeEntities(f.page);
                 // var blob = new Blob([res], { type: 'text/html' });
                 // res = await fetch(blob);
@@ -876,40 +878,40 @@ const welcomer = {
                 // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
                 welcomer.blg_history_replace(`/?p=blog&id=${id}`);
                 $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
-                
-                        $("div#clavs br_ta").addClass("active_scr");
-                        $(ifrm).hide();
-                        
-                        ifrm.document.open();
-                        ifrm.document.write(`${res}`);
 
-                        ifrm.document.querySelectorAll("img").forEach(function (v) {
-                            $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
-                            var a = $(v);
-                            a.hover(
-                                function () {
-                                    parent.welcomer.showAnchorTitle(a, a.data('title'));
-                                },
-                                function () {
-                                    parent.welcomer.hideAnchorTitle();
-                                }
-                            ).data('title', a.attr('title')).removeAttr('title');
+                $("div#clavs br_ta").addClass("active_scr");
+                $(ifrm).hide();
 
-                            a.mouseleave(function () {
-                                parent.welcomer.hideAnchorTitle();
+                ifrm.document.open();
+                ifrm.document.write(`${res}`);
 
-                            });
-                        });
-                     
-                        ifrm.document.close();
-                        // $(ifrm).hide();
-                        
-                        // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
-                        $("div_header span").html(`Blog > ${f.title}`);
-                        welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+                ifrm.document.querySelectorAll("img").forEach(function (v) {
+                    $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
+                    var a = $(v);
+                    a.hover(
+                        function () {
+                            parent.welcomer.showAnchorTitle(a, a.data('title'));
+                        },
+                        function () {
+                            parent.welcomer.hideAnchorTitle();
+                        }
+                    ).data('title', a.attr('title')).removeAttr('title');
 
-                        $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
-                  
+                    a.mouseleave(function () {
+                        parent.welcomer.hideAnchorTitle();
+
+                    });
+                });
+
+                ifrm.document.close();
+                // $(ifrm).hide();
+
+                // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
+                $("div_header span").html(`Blog > ${f.title}`);
+                welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+
+                $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
+
                 $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                 $("body").removeAttr("data-hmm");
                 document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
@@ -951,16 +953,16 @@ const welcomer = {
 
         }
         try {
-           // welcomer.terminator.ajax.blog_post.abort();
+            // welcomer.terminator.ajax.blog_post.abort();
         } catch (aer) {
 
         }
-        if(id == "all"){
+        if (id == "all") {
             welcomer.blg_history_replace('/?p=blog');
             welcomer.blogljoad_posts(window.portfolio.data.blog);
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
-       
-        } else{
+
+        } else {
             welcomer.blog_loader_natjive(id);
         }
         welcomer.titleC("Blog > Marko Nikolić - Portfolio")
@@ -1213,7 +1215,7 @@ const welcomer = {
         $(Vjideo_sjpinner).hide();
     },
     blogljoad_posts: function (arr = []) {
-        
+
         var arrayr = [],
             categoryTemp = document.querySelector('div#clavs br_ta'),
             ljoader = document.querySelector("#reaload_page"),
@@ -1468,17 +1470,17 @@ const welcomer = {
 
             welcomer.load_gallery_j = res;
         });
-        
+
     },
     load_gallery_j: [],
     galleryload: function () {
         $("gridder_loader").attr("style", "opacity:1");
 
-    $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(window.portfolio.data.gallery.length);
+        $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(window.portfolio.data.gallery.length);
 
-                welcomer.load_gallery_j = window.portfolio.data.gallery;
-                welcomer.galleryloadajax();
-                $("html").addClass("anim_djenerated");
+        welcomer.load_gallery_j = window.portfolio.data.gallery;
+        welcomer.galleryloadajax();
+        $("html").addClass("anim_djenerated");
         return;
         if (this.load_gallery_j.length > 0) {
             this.galleryloadajax();
@@ -2526,6 +2528,93 @@ const welcomer = {
                 t.callback(editor)
             }
         },
+        makeResizableDiv: function (div) {
+            const element = document.querySelector(div);
+            const resizers = document.querySelectorAll(div + ' .resizer')
+            const minimum_size = 20;
+            let original_width = 0;
+            let original_height = 0;
+            let original_x = 0;
+            let original_y = 0;
+            let original_mouse_x = 0;
+            let original_mouse_y = 0;
+            for (let i = 0; i < resizers.length; i++) {
+                const currentResizer = resizers[i];
+                currentResizer.addEventListener('mousedown', function (e) {
+                    e.preventDefault()
+                    original_width = parseFloat(getComputedStyle(element, null).getPropertyValue('width').replace('px', ''));
+                    original_height = parseFloat(getComputedStyle(element, null).getPropertyValue('height').replace('px', ''));
+                    original_x = element.getBoundingClientRect().left;
+                    original_y = element.getBoundingClientRect().top;
+                    original_mouse_x = e.pageX;
+                    original_mouse_y = e.pageY;
+                    window.addEventListener('mousemove', resize)
+                    window.addEventListener('mouseup', stopResize)
+                })
+
+                function resize(e) {
+                    if (currentResizer.classList.contains('bottom-right')) {
+                        const width = original_width + (e.pageX - original_mouse_x);
+                        const height = original_height + (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px !important'
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                        }
+                    }
+                    else if (currentResizer.classList.contains('bottom-left')) {
+                        const height = original_height + (e.pageY - original_mouse_y)
+                        const width = original_width - (e.pageX - original_mouse_x)
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px !important'
+                        }
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px'
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px'
+                        }
+                    }
+                    else if (currentResizer.classList.contains('top-right')) {
+                        const width = original_width + (e.pageX - original_mouse_x)
+                        const height = original_height - (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px !important'
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px'
+                        }
+                    }
+                    else {
+                        const width = original_width - (e.pageX - original_mouse_x)
+                        const height = original_height - (e.pageY - original_mouse_y)
+                        if (width > minimum_size) {
+                            element.style.width = width + 'px !important'
+                            element.style.left = original_x + (e.pageX - original_mouse_x) + 'px'
+                        }
+                        if (height > minimum_size) {
+                            element.style.height = height + 'px'
+                            element.style.top = original_y + (e.pageY - original_mouse_y) + 'px'
+                        }
+                    }
+                }
+
+                function stopResize() {
+                    window.removeEventListener('mousemove', resize)
+                }
+            }
+        },
+        resize_left: {
+            left: function (val, resizer) {
+                document.querySelector('section[data-ui-type="editor"] editor-wrapper').classList.add('resize_mode');
+                $(resizer).attr("style", `left: ${val}px !important;`);
+                $('section[data-ui-type="editor"] div#editor-container').attr("style", `width: ${val}px !important;`);
+                $('section[data-ui-type="editor"] iframe#preview-container').attr("style", `width: ${$("body").width() - val}px !important;`);
+
+                console.log(val);
+            },
+            rrsz: false
+        },
         callEditor: function (id = 0) {
 
             const data_ui_type = document.querySelector('section[data-ui-type="editor"] editor-wrapper'),
@@ -2555,7 +2644,32 @@ const welcomer = {
                 container.style.left = `${leftValue + movementX}px`;
                 container.style.top = `${topValue + movementY}px`;
             }
-            /*
+
+
+            var dragging_ = { enabled: false, left: 0 };
+
+        
+    /*
+            resizer.addEventListener('dragstart', function () {
+                welcomer.editor.resize_left.rrsz = true;
+
+                if (welcomer.editor.resize_left.rrsz) {
+                    welcomer.editor.resize_left.left(parseInt($('.cursor_pc_show').css("left")), resizer);
+                }
+            });
+            resizer.addEventListener('dragleave', function () {
+                document.querySelector('section[data-ui-type="editor"] editor-wrapper').removeAttribute("class");
+
+                welcomer.editor.resize_left.rrsz = false;
+            });
+           
+
+
+
+
+            //welcomer.editor.makeResizableDiv(`#${editor_container.id}`);
+            // this.makeResizableDiv(editor_container);
+         
             container.addEventListener("mousedown", () => {
                 editor_container.classList.add("disable_pointer");
                 iframe.classList.add("disable_pointer");
@@ -2715,7 +2829,7 @@ const welcomer = {
         })
     },
     pgloader: function (url = "") {
-        $("#clavs grider_viewer").removeAttr("style"); 
+        $("#clavs grider_viewer").removeAttr("style");
 
         const urlParams = new URLSearchParams(window.location.search);
         $(".pdf_page_home_btn").hide();
@@ -2782,13 +2896,13 @@ const welcomer = {
             // history.replaceState({}, "", `${window.location.origin}/?p=projects`);
             welcomer.blg_history_replace(`/?p=projects`);
             $("html").addClass("anim_djenerated");
-            
+
             setTimeout(() => {
-            
-  
-    
-                $("#clavs grider_viewer").attr("style","padding-top: 10px !important;");
-                      }, 100);
+
+
+
+                $("#clavs grider_viewer").attr("style", "padding-top: 10px !important;");
+            }, 100);
         } else if (url.includes("gallery")) {
             $("body").removeAttr("data-hmm");
             this.galleryload();
@@ -2800,7 +2914,7 @@ const welcomer = {
             welcomer.blg_history_replace(`/?p=gallery`);
             ;
 
-        } else if (url.includes("blog.eronelit.com") || url.includes("p=blog")) {
+        } else if (url.includes("blog.eronelit.com") || url.includes("p=blllog")) {
             $(ljoader).hide();
             $(Vjideo_sjpinner).show();
             $("div_header").removeClass("ld_completeld_complete");
@@ -2836,10 +2950,10 @@ const welcomer = {
             $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
         }
         */
-       if(url.includes("projects")){
+        if (url.includes("projects")) {
             $("#clavs grider_viewer").hide();
-       }
-       
+        }
+
     },
     pgloaderH: function (url = "") {
 
@@ -3930,32 +4044,12 @@ const welcomer = {
     }())
 }
 
-
-/*(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
-    var f = function () {
-        function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
-            a.preventDefault();
-            u(++l % c.children.length)
-        }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
-        if (self.performance && self.performance.memory)
-            var t = e(new f.Panel("MB", "#f08", "#201"));
-        u(0);
-        return {
-            REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
-                k = (performance || Date).now()
-            },
-            end: function () {
-                a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
-                    var d = performance.memory; t.update(d.usedJSHeapSize /
-                        1048576, d.jsHeapSizeLimit / 1048576)
-                } return c
-            }, update: function () { k = this.end() }, domElement: c, setMode: u
-        }
-    }; f.Panel = function (e, f, l) {
-        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
-        b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
-    }; return f
-});
-*/
-
+document.addEventListener('keydown', function(event) { 
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+        event.preventDefault();
+    } 
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
+        event.preventDefault(); 
+    }
+}); 
 window.welcomer = welcomer;

@@ -793,12 +793,20 @@ media-src 'self';" />
                 right: 0px;
                 pointer-events: none;
             }
-        }
+        } 
 
+section[data-ui-type="editor"] editor-wrapper.resize_mode div#editor-container,
+section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-container {
+            pointer-events: none !important;
+            filter: grayscale(1) !important;
+        }
         section[data-ui-type="editor"] div#resizer-container {
             border: none !important;
             padding: 0px;
             margin: 0px;
+            cursor: e-resize !important;
+            
+        user-select: none !important;
         }
 
         editor-history-rp {

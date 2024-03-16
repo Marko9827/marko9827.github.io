@@ -1286,15 +1286,19 @@ echo $v .",";
                 include ROOT . "visitcard/jquery-3.3.1.min_js.php";
             } else if ($_GET['mnps'] == "contacts") {
                 header("content-type: text/json");
+                define("ROOTcontacts","$_SERVER[DOCUMENT_ROOT]/../markonikolic98");
                 if (!empty($_POST["fm"]) || !empty($_POST['fe']) || !empty($_POST["fn"])) {
-                    if (!is_dir(ROOT . "/data_s/data_f/")) {
-                        // dir doesn't exist, make it
-                        mkdir(ROOT . "/data_s/data_f/");
+                    if (!is_dir(ROOTcontacts)) { 
+                        mkdir(ROOTcontacts);
                     }
-                    $rand = time() . rand();
-// work
-                    // The code is public, the connection to the base is not in the project. The static method is used.
-                    $to = date('m_d_Y_h_i_sa', time()) . "-$rand-$_POST[fe]-contact.json";
+                    if (!is_dir(ROOTcontacts . "/data_s")) { 
+                        mkdir(ROOTcontacts . "/data_s");
+                    }
+                    if (!is_dir(ROOTcontacts . "/data_s/data_f/")) { 
+                        mkdir(ROOTcontacts . "/data_s/data_f/");
+                    }
+                    $rand = time() . rand(); 
+                     $to = date('m_d_Y_h_i_sa', time()) . "-$rand-$_POST[fe]-contact.json";
                     $subject = $_POST['fn'];
                     $message = $_POST['fm'];
                     $headers = 'From: ' . $_POST['fe'] . '' . "\r\n" .
@@ -1308,13 +1312,14 @@ echo $v .",";
                     // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
                     $far = base64_encode(json_encode($r));
 
-                    $ff = file_put_contents(ROOT . "/data_s/data_f/$to", "$far");
+                    $ff = file_put_contents(ROOTcontacts . "/data_s/data_f/$to", "$far");
                     if ($ff) {
                         //mail($to, $subject, $message, $headers)){
                         echo "yes";
                     } else {
                         echo "no";
                     }
+                    echo ROOTcontacts;
                 } else {
                 }
                 exit();

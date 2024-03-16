@@ -268,10 +268,15 @@ const welcomer = {
 
     },
     cp: function () {
+         
         $("iframe.iframe_mask").removeAttr("style");
+        const form = $(".contanct_frm  form");
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
             f2 = Math.floor(Math.random() * 10);
+            if(df.classList.contains("yes")){
+                df.classList.remove("yes");
+                }
         if (df.classList.contains("open")) {
             document.body.classList.remove("open_f");
             df.classList.remove("open");
@@ -284,10 +289,21 @@ const welcomer = {
                 document.body.classList.add("open_f");
             }
             document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - Type and hit enter.`);
+         
             document.querySelector(".contanct_frm #norobot").value = "";
             this.rnd = f1 + f2;
             df.classList.add("open");
         }
+        document.querySelector(".contanct_frm #norobot").addEventListener("keyup", function(){
+            if(parseInt(document.querySelector(".contanct_frm #norobot").value) == welcomer.rnd){
+                $(".contanct_frm  form").scrollTop( $(".contanct_frm  form").height() );
+                df.classList.add("yes");
+            } else {
+                if(df.classList.contains("yes")){
+                df.classList.remove("yes");
+                }
+            }
+        });
     },
     validateEmail: function (email) {
         var regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;

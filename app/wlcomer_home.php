@@ -1040,6 +1040,23 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
             min-height: 25px !important;
             height: 25px !important;
         }
+
+        div.contanct_frm.open.yes fotter{
+            
+            transform: none !important;
+            background: var(--black-trasparent-color);
+        
+                }
+        
+        
+          div.contanct_frm.open.yes form{
+              padding-bottom:60px;
+          }
+        
+          div.contanct_frm.open .h5_div {
+            display: flex;
+            align-content: center;
+        }
     </style>
     <?php 
     /* if($_SERVER['HTTP_HOST'] == "portfolio.eronelit.com"){?>

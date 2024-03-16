@@ -2830,7 +2830,6 @@ const welcomer = {
     },
     pgloader: function (url = "") {
         $("#clavs grider_viewer").removeAttr("style");
-        $("#clavs grider_viewer").attr("style","pointer-events: none; ")
 
         const urlParams = new URLSearchParams(window.location.search);
         $(".pdf_page_home_btn").hide();
@@ -2865,6 +2864,7 @@ const welcomer = {
             const const_urlParams = new URLSearchParams(window.location.search);
             const const_myParam = const_urlParams.get("p");
             if (const_myParam == "blog") {
+                $("#clavs grider_viewer").removeAttr("style");
 
             } else {
                 $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());

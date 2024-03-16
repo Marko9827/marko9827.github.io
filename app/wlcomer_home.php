@@ -1041,6 +1041,8 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
             height: 25px !important;
         }
     </style>
+    <?php 
+    if($_SERVER['HTTP_HOST'] == "portfolio.eronelit.com"){?>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
     <script>
@@ -1050,6 +1052,7 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
 
         gtag('config', 'G-DFNVTLRPLX');
     </script>
+    <?php } ?>
 
 </head>
 

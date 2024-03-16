@@ -1308,7 +1308,7 @@ echo $v .",";
                     $r = array();
                     $r[0]->name = $subject;
                     $r[0]->message = "$_POST[fm]";
-                    $r[0]->email = "$_POST[fe]";
+                    $r[0]->email = "$_POST[fe]"; 
                     // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
                     $far = base64_encode(json_encode($r));
 

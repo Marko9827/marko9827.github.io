@@ -2830,6 +2830,7 @@ const welcomer = {
     },
     pgloader: function (url = "") {
         $("#clavs grider_viewer").removeAttr("style");
+        $("#clavs grider_viewer").attr("style","pointer-events: none; ")
 
         const urlParams = new URLSearchParams(window.location.search);
         $(".pdf_page_home_btn").hide();
@@ -2876,6 +2877,7 @@ const welcomer = {
                     // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
                     welcomer.blg_history_replace(`/?p=cv-pdf`);
                     document.querySelector(".pdf_download").setAttribute("style", "display: block;");
+                    $("#clavs grider_viewer").attr("style","pointer-events: none; ")
                 } else {
                     document.querySelector(".pdf_download").setAttribute("style", "display: none;");
                     /*

@@ -116,7 +116,7 @@ img.onload = async function () {
                         <p id="info_email" class="info_email_code"><i class="fas fa-map-marker-alt"></i><span>Serbia/Belgrade/Surčin</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-globe"></i><span>portfolio.eronelit.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/markonikolic98</span></p>
-                        <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>marko.nikolic.17&#64;singimail.rs</span></p>
+                        <p id="info_email" class="info_email_code"><i class="fas fa-at"></i><span>contact&#64;markonikolic98.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-github"></i><span onclick="open.window('https:\/\/github.com/marko9827');">github.com/marko9827</span></p>
                         <p></p>
                     </div>

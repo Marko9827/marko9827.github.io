@@ -970,7 +970,7 @@ alt="Image" class="img-responsive"></a>
 
           </form>
           <p> There is currently no active form for upgrading! <br>
-          */ ?> <p><i class="fa fa-envelope icon-fields"></i> Contact me on my email! <a style="color:blue;" href="mailto:marko.nikolic.17&#64;singimail.rs">marko.nikolic.17&#64;singimail.rs</a></p>
+          */ ?> <p><i class="fa fa-envelope icon-fields"></i> Contact me on my email! <a style="color:blue;" href="mailto:contact&#64;markonikolic98.com">contact&#64;markonikolic98.com</a></p>
         <div id="block-answer">
           <div id="answer"></div>
         </div>
@@ -1230,7 +1230,7 @@ alt="Image" class="img-responsive"></a>
 
 </html>
 <?php if (isset($_POST['submit'])) {
-  $to = "marko.nikolic.17&#64;singimail.rs"; // this is your Email address $from=$ _POST[ 'email-address']; // this is the sender 's Email address
+  $to = "contact&#64;markonikolic98.com"; // this is your Email address $from=$ _POST[ 'email-address']; // this is the sender 's Email address
 
   $first_name = $_POST['name '];
 

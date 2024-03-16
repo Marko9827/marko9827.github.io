@@ -396,7 +396,10 @@ const welcomer = {
             document.querySelector(".contanct_frm").classList.remove("cants");
 
             if (res == "yes") {
-
+                const df = document.querySelector(".contanct_frm");
+                if(df.classList.contains("yes")){
+                    df.classList.remove("yes");
+                    }
                 rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span onclick="welcomer.send_again();">Click here</span>.';
             } else {
                 rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';

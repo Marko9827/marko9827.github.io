@@ -1319,7 +1319,7 @@ echo $v .",";
                     } else {
                         echo "no";
                     }
-                    echo ROOTcontacts;
+           
                 } else {
                 }
                 exit();

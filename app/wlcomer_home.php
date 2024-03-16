@@ -1030,6 +1030,16 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
         a[data-iam-hidden="yes"] {
             display: none !important;
         }
+
+        body.open_f #logo_backscr_img.logo_backscr_img_cnt {
+            max-width: 25px !important;
+            min-width: 25px !important;
+            width: 25px !important;
+
+            max-height: 25px !important;
+            min-height: 25px !important;
+            height: 25px !important;
+        }
     </style>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
@@ -1325,8 +1335,8 @@ onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetad
 loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 <source src="/?src=vdwallpper" type="video/mp4">
 </video> */ ?>
-        <div class="h5_div"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
-                class="">
+        <div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
+                >
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>

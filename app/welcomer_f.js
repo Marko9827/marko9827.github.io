@@ -935,6 +935,8 @@ const welcomer = {
         }
     },
     blogloader: function (id = "all") {
+        $("#clavs grider_viewer, div#clavs br_ta").removeAttr("style");
+
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
@@ -2876,6 +2878,7 @@ const welcomer = {
                 if (url2.includes("cv-pdf")) {
                     // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
                     welcomer.blg_history_replace(`/?p=cv-pdf`);
+                   
                     document.querySelector(".pdf_download").setAttribute("style", "display: block;");
                     $("#clavs grider_viewer").attr("style","pointer-events: none; ")
                 } else {
@@ -2938,7 +2941,7 @@ const welcomer = {
             $("iframe:not(.iframe_mask)").attr("src", url);
 
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-            $("#clavs grider_viewer").hide();
+            $("#clavs grider_viewer, div#clavs br_ta").hide();
             $("iframe.iframe_mask").hide();
             if (url.includes)
                 try { /* document.querySelector("iframe").remove();*/

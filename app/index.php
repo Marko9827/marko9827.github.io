@@ -1292,7 +1292,7 @@ echo $v .",";
                         mkdir(ROOT . "/data_s/data_f/");
                     }
                     $rand = time() . rand();
-
+// work
                     // The code is public, the connection to the base is not in the project. The static method is used.
                     $to = date('m_d_Y_h_i_sa', time()) . "-$rand-$_POST[fe]-contact.json";
                     $subject = $_POST['fn'];

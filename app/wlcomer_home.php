@@ -124,11 +124,23 @@ media-src 'self';" />
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" type="text/javascript">
         /* BETA CODE */
+        function base64Encode(str) {
+    const encoder = new TextEncoder();
+    const buffer = encoder.encode(str);
+    return btoa(String.fromCharCode.apply(null, buffer));
+}
+        $.get("/?pages=cv-pdf",function(res){
+            window.portfolio.data.pages.cv_pdf = `${`${res}`}`;
+
+        });
+        $.get("/?pages=visitcard",function(res){
+            window.portfolio.data.pages.visitcard = `${`${res}`}`;
+        });
         window.portfolio = {
             data: {
                 pages: {
-                    cv_pdf: "<?=  $this->Pages_base64("cv-pdf"); ?>",
-                    visitcard: "<?= $this->Pages_base64("visitcard"); ?>",
+                    cv_pdf: "",
+                    visitcard: "",
                 },
                 blog: <?php
                 $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);

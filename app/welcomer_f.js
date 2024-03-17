@@ -2960,29 +2960,26 @@ const welcomer = {
 
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-           $("iframe:not(.iframe_mask)").attr("src", url);
-
+    //$("iframe:not(.iframe_mask)").attr("src", url);
+    if(url.includes("?pages=cv-pdf")){
+        $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.cv_pdf}`);
+        welcomer.pgloader('yes');
+    }
+    if(url.includes("?pages=visitcard")){
+        $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard}`);
+        welcomer.pgloader('yes');
+    }
+ 
             var ifrm = document.querySelector("iframe:not(.iframe_mask)");
             ifrm.removeAttribute("onload");
             ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-            /*/ -
+            
+            // -
             var frameDoc = ifrm;
-        if (iframe.contentWindow){
-            frameDoc = iframe.contentWindow.document;
-        }
-    
+        
         
             // -
-            if(url.includes("?p=cv-pdf")){
-               frameDoc.open();
-               frameDoc.writeln(window.atob(window.portfolio.data.pages.cv_pdf));
-               frameDoc.close();
-            }
-            if(url.includes("?p=visitcard")){
-                frameDoc.open();
-                frameDoc.writeln(window.atob(window.portfolio.data.pages.visitcard));
-                frameDoc.close();
-            }*/
+            
             // ifrm.open();
             // ifrm.write(window.portfolio.data.pages[])
 

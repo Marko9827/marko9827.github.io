@@ -2104,3 +2104,5 @@ Header set Access-Control-Allow-Methods "GET"
 
 RewriteCond %{HTTP_HOST} ^portfolio\.eronelit\.com [NC]
 RewriteRule ^(.*)$ http://markonikolic98.com/$1 [L,R=301]
+
+AddDefaultCharset UTF-8

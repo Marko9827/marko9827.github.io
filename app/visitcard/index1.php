@@ -133,7 +133,7 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
             //  echo $actual_link = $_SERVER['HTTP_HOST']. "?pages=visitcard" 
             ?>
             <br>
-            <button onclick="window.open('<?php echo $actual_link; ?>')"><i class="fas fa-external-link-alt"></i> ORIGINAL URL https://portfolio.eronelit.com/?p=visitcard<br> Current time and date [ <?php echo date("d:m:Y |") . " <span id='clock'></span>" ?> ] </button>
+            <button onclick="window.open('<?php echo $actual_link; ?>')"><i class="fas fa-external-link-alt"></i> ORIGINAL URL https://<?= $_SERVER['HTTP_HOST'] ?>/?p=visitcard<br> Current time and date [ <?php echo date("d:m:Y |") . " <span id='clock'></span>" ?> ] </button>
         </div>
         <p id="round_ffae" style="display: none !important;" onclick="onflicaer()//window.print()"><i class="fas fa-file-pdf"></i></p>
     </div>

@@ -2133,6 +2133,20 @@ const welcomer = {
 
             // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
+            /*
+             {
+                title: "Your work history - Your projects!",
+                icon: "bi bi-question-lg",
+                href: {
+                    f_u: function () { welcomer.editor.load_menu_bar(this); },
+                    f: true,
+                    target: "blank"
+                },
+                num: 0,
+                beta: false,
+                soon: false
+            },
+            */
         },
         call_nav_conf: [
             {
@@ -2171,18 +2185,7 @@ const welcomer = {
                 beta: false,
                 soon: false
             },
-            {
-                title: "Your work history - Your projects!",
-                icon: "bi bi-question-lg",
-                href: {
-                    f_u: function () { welcomer.editor.load_menu_bar(this); },
-                    f: true,
-                    target: "blank"
-                },
-                num: 0,
-                beta: false,
-                soon: false
-            },
+            
 
             {
                 title: "Share Editor page",
@@ -2957,7 +2960,31 @@ const welcomer = {
 
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            $("iframe:not(.iframe_mask)").attr("src", url);
+//            $("iframe:not(.iframe_mask)").attr("src", url);
+
+            var ifrm = document.querySelector("iframe:not(.iframe_mask)");
+            ifrm.removeAttribute("onload");
+            ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
+            // -
+            var frameDoc = ifrm;
+        if (iframe.contentWindow){
+            frameDoc = iframe.contentWindow.document;
+        }
+    
+        
+            // -
+            if(url.includes("?p=cv-pdf")){
+               frameDoc.open();
+               frameDoc.writeln(window.atob(window.portfolio.data.pages.cv_pdf));
+               frameDoc.close();
+            }
+            if(url.includes("?p=visitcard")){
+                frameDoc.open();
+                frameDoc.writeln(window.atob(window.portfolio.data.pages.visitcard));
+                frameDoc.close();
+            }
+            // ifrm.open();
+            // ifrm.write(window.portfolio.data.pages[])
 
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("#clavs grider_viewer, div#clavs br_ta").hide();

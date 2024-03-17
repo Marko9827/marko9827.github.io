@@ -84,7 +84,20 @@ class portfolio_marko
             </div>";
         return $ar;
     }
-
+    function Pages_base64($h = "home")
+    {
+        if ($h == "home") {
+             
+            $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/welcomer.php"));
+        }
+        if ($h == "cv-pdf") {
+            $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php"));
+        }
+        if ($h == "visitcard") {
+            $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/visitcard/index1.php"));
+        }
+        return $pages_base64;
+    }
     function Pages($h = "home")
     {
         if ($h == "home") {
@@ -941,9 +954,10 @@ echo $v .",";
                 header('Content-disposition: inline; filename="Eronelit background"');
                 readfile(ROOT . "/img/slika314.jpg");
             } else if (strpos($_GET['mnps'], 'image_og') !== false) {
-                header("Content-type: image/jpeg");
+                header("Content-type: image/png");
                 header('Content-disposition: inline; filename="Eronelit background"');
-                readfile(ROOT . "/README_files/readme_part1.png");
+                // readfile("$_SERVER[DOCUMENT_ROOT]/README_files/readme_part1.png");
+                $this->ServeThumb("$_SERVER[DOCUMENT_ROOT]/README_files/readme_part1.png",1000);
             } else if (strpos($_GET['mnps'], 'image-mask') !== false) {
                 header("Content-type: text/html");
                 include ROOT . "css/mask.php";

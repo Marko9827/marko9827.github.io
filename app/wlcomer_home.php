@@ -126,6 +126,10 @@ media-src 'self';" />
         /* BETA CODE */
         window.portfolio = {
             data: {
+                pages: {
+                    cv_pdf: "<?=  $this->Pages_base64("cv-pdf"); ?>",
+                    visitcard: "<?= $this->Pages_base64("visitcard"); ?>",
+                },
                 blog: <?php
                 $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
                 $i = 0;

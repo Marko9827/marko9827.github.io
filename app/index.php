@@ -517,9 +517,12 @@ echo $v .",";
     function get_page_by_pln_thumb($img)
     {
         $r = ROOT . "data_s/blog/image/$img.png";
-        $image_data = file_get_contents($r);
+        ob_start();
+        #$image_data = file_get_contents($r);
+        @readfile($r);
+        $image_data = ob_get_clean();
         $image_base64 = base64_encode($image_data);
-
+        
         $data_url = "data:image/png;base64,$image_base64";
         return $data_url;
     }

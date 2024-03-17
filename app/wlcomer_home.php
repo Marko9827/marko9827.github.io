@@ -161,7 +161,9 @@ media-src 'self';" />
                  
                     $r[$i]['page'] = "";
                     $r[$i]['page'] = $response;
-                 //   $r[$i]['thumbail'] = $this->get_page_by_pln_thumb(str_replace("/?blog=","", $val["thumbail"])); 
+                    $aer = str_replace("/?blog=","", $val["thumbail"],$aer);
+                    $aer = str_replace("?blog=","", $val["thumbail"], $aer);
+                    $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer); 
                     $i++;
                 }
                 echo json_encode($r);

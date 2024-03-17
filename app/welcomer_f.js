@@ -1201,6 +1201,14 @@ const welcomer = {
                 try {
                     for (var i = 0; i < v?.category.length; i++) {
                         if (tt_category_name == v.category[i]) {
+
+                            var img_src_d = `${v.thumbail}`;
+                            if(img_src_d.includes("data:")){
+                                img_src_d = `${v.thumbail}`;
+                            } else{
+                                img_src_d = `${v.thumbail}&thumb=true`;
+                            }        
+
                             $("grider_viewer").append(`<project
                         data-category="${window.btoa(v?.category)}"
                         ${thi} id-int="${div_not_i}" title="${v?.title}">
@@ -1210,7 +1218,7 @@ const welcomer = {
                         ${p_open}
                         <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
                         <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-                        src="${v.thumbail}&thumb=true" data-zoom-image="${v.thumbail}" alt="${v.title}">
+                        src="${img_src_d}" data-zoom-image="${v.thumbail}" alt="${v.title}">
                                </grider_box>
             
                         </project>`);
@@ -1288,6 +1296,13 @@ const welcomer = {
                 thi = `onclick='welcomer.blogloader(${v.id})'`;
 
             }
+            var img_src_d = `${v.thumbail}`;
+            if(img_src_d.includes("data:")){
+                img_src_d = `${v.thumbail}`;
+            } else{
+                img_src_d = `${v.thumbail}&thumb=true`;
+            }
+
             $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
             ${thi} id-int="${div_not_i}" title="${v?.title}">
@@ -1297,7 +1312,7 @@ const welcomer = {
             ${p_open}
             <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
             <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-            src="${v.thumbail}&thumb=true" data-zoom-image="${v.thumbail}" alt="${v.title}">
+            src="${img_src_d}" data-zoom-image="${img_src_d}" alt="${v.title}">
                    </grider_box>
 
             </project>`);
@@ -1568,8 +1583,13 @@ const welcomer = {
           
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
-            <img loading="lazy"  ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
-            src="${v[i].thumb}"  data-zoom-image="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
+            <img loading="lazy"  ${thi} 
+            ondragstart="return false;" 
+            onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
+            onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
+            src="${v[i].thumb}"  
+            data-zoom-image="${v[i].thumb}"
+            data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
@@ -1599,7 +1619,20 @@ const welcomer = {
             $(aer).parent().parent().removeAttr("style");
         }
         $(aer).removeAttr("onload");*/
-        img.src = d.getAttribute("src");
+
+        welcomer.urlToBlob(`${d.getAttribute("src")}`).then(blob => { 
+            const imgElement = document.createElement('img');
+            img.src = URL.createObjectURL(blob);
+            
+
+            const H = aer.getAttribute("data-zoom-image");
+            d.src = URL.createObjectURL(blob);
+
+            $(aer).parent().parent().removeAttr("style");
+          });
+          $(aer).removeAttr("onload");
+        return "";
+        img.src =  
         img.onload = async function () {
             const H = aer.getAttribute("data-zoom-image");
             d.src = H;
@@ -1675,19 +1708,46 @@ const welcomer = {
         } else {
             $(".zoomContainer:not(.dont_removme), .zoomer_exit:not(.dont_removme), #helper_id_helper:not(.dont_removme), #helper_id_helper3:not(.dont_removme)").remove();
         }
+        $(" preview_imagem").remove();
+    },
+    urlToBlob: async function(url) { 
+        const response = await fetch(url);
+        const blob = await response.blob();
+        return blob;
     },
     infoVa_img_gallery: function(url){
         var clickedElement = url;
         var imgH = new Image();
-        imgH.src = `${$(clickedElement).attr("src")}&thumb_or=t`;
+        
 
+        welcomer.urlToBlob(`${$(clickedElement).attr("data-zoom-image")}&thumb_or=t`).then(blob => { 
+    const imgElement = document.createElement('img');
+    imgH.src = URL.createObjectURL(blob);
+  });
+  imgH.onload = function(){
         $(imgH).ezPlus({
             zoomType: 'inner',
             containLensZoom: true,
             speed: 10
         });
-        $("body div#helper_id_helper3").remove();
-            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+    };
+        $("body div#helper_id_helper3, preview_imagem").remove();
+            $("body").append(`
+            
+            <preview_imagem style="
+            position: fixed;
+            left: 0px;
+           
+            width: 100%;
+            height: 100%;
+            z-index: 339;
+            display: flex;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            top: 0px;
+        "><img alt="loading" src="${welcomer.loader_svg}"></preview_imagem>
+            <div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>`);
          
     },
     infoVa: function (h = 0) {
@@ -3347,7 +3407,15 @@ const welcomer = {
     },
     toblob: function (d) {
         const img = new Image();
-        img.src = d.getAttribute("src");
+
+        var img_d = d.getAttribute("src");
+        if(img_d.includes("data:")){
+            img.src = img_d.replace("&thumb=true","");
+        } else{
+            img.src = d.getAttribute("src");
+        }
+        
+         
         img.onload = async function () {
             const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
             d.src = H;

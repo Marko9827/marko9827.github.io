@@ -101,8 +101,8 @@ $actual_link = "http://" . $_SERVER['HTTP_HOST'];
                 <img id="hrcod" src="/?mnps=source_9342805_generated_qr?<?php echo time(); ?>">
                 <div id="cont1">
                     <p id="info_email"><i class="fas fa-map-marker-alt"></i> Serbia/Belgrade/Surčin</p>
-                    <p id="info_email"><i class="fas fa-globe"></i> portfolio.eronelit.com</p>
-                    <p id="info_email"><i class="fab fa-linkedin"></i> linkedin.com/in/marko-nikolic-49385a283</p>
+                    <p id="info_email"><i class="fas fa-globe"></i> <?= $_SERVER['HTTP_HOST'] ?></p>
+                    <p id="info_email"><i class="fab fa-linkedin"></i> https://www.linkedin.com/in/markonikolic98/</p>
                     <p id="info_email"><i class="fas fa-at"></i> contact&#64;markonikolic98.com</p>
                     <p></p>
                 </div>

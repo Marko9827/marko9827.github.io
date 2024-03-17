@@ -2960,12 +2960,12 @@ const welcomer = {
 
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-//            $("iframe:not(.iframe_mask)").attr("src", url);
+           $("iframe:not(.iframe_mask)").attr("src", url);
 
             var ifrm = document.querySelector("iframe:not(.iframe_mask)");
             ifrm.removeAttribute("onload");
             ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-            // -
+            /*/ -
             var frameDoc = ifrm;
         if (iframe.contentWindow){
             frameDoc = iframe.contentWindow.document;
@@ -2982,7 +2982,7 @@ const welcomer = {
                 frameDoc.open();
                 frameDoc.writeln(window.atob(window.portfolio.data.pages.visitcard));
                 frameDoc.close();
-            }
+            }*/
             // ifrm.open();
             // ifrm.write(window.portfolio.data.pages[])
 

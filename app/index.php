@@ -26,9 +26,9 @@ class portfolio_marko
     public function __construct($root = "")
     {
         $fullUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-        if(strpos($fullUrl, '.php') !== false) {
+        if(strpos($fullUrl, '.php') !== false || strpos($fullUrl, '.aspx') !== false) {
             $this->error_page(404);
-        }else{
+        } else{
         $this->RUN();
         }
     }

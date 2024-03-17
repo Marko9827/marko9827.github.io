@@ -8,6 +8,7 @@ RewriteEngine on
 
 RedirectMatch 404 ^/app/?$
 RedirectMatch 404 ^/vendor/?$ 
+RedirectMatch 404 ^/*.php
 
 <Files *.yml>
     order allow,deny
@@ -18,11 +19,8 @@ RedirectMatch 404 ^/vendor/?$
     deny from all
 </Files>
 
-<Files *.json>
-    order allow,deny
-    deny from all
-</Files>
-
+ 
+ 
 <Files *.sql>
     order allow,deny
     deny from all

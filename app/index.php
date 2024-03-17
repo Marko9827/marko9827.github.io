@@ -1102,8 +1102,12 @@ echo $v .",";
                             header("Cache-Control: post-check=0, pre-check=0", false);
                             header("Pragma: no-cache");
                             header("content-type: image/png");
-                            @readfile($filename);
-                            #$this->ServeThumb("$filename", 640, ROOT . "data_s/data_wlp/thumb/$nmx", "");
+                            // @readfile($filename);
+                            if(!empty($_GET['thumb_or'])){
+                                @readfile($filename);
+                            }else{
+                            $this->ServeThumb("$filename", 640);
+                            }
                             exit();
                         }
                     }

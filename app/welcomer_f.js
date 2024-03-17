@@ -1569,7 +1569,7 @@ const welcomer = {
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
             <img loading="lazy"  ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
-            src="${this.loader_svg}"  data-zoom-image="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
+            src="${v[i].thumb}"  data-zoom-image="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
             </project>`);
@@ -1676,6 +1676,20 @@ const welcomer = {
             $(".zoomContainer:not(.dont_removme), .zoomer_exit:not(.dont_removme), #helper_id_helper:not(.dont_removme), #helper_id_helper3:not(.dont_removme)").remove();
         }
     },
+    infoVa_img_gallery: function(url){
+        var clickedElement = url;
+        var imgH = new Image();
+        imgH.src = `${$(clickedElement).attr("src")}&thumb_or=t`;
+
+        $(imgH).ezPlus({
+            zoomType: 'inner',
+            containLensZoom: true,
+            speed: 10
+        });
+        $("body div#helper_id_helper3").remove();
+            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
+         
+    },
     infoVa: function (h = 0) {
         /*welcomer.eronelit_gallery.call_ui( [
             "/?blog=13_jan_2024_18_34/1705167933024",
@@ -1683,16 +1697,9 @@ const welcomer = {
         ]);
         */
         var imgH = new Image();
-        imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
+        // imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
 
-        imgH.onload = function () {
-            $(imgH).ezPlus({
-                zoomType: 'inner',
-                containLensZoom: true,
-                speed: 1
-            });
-            $("body").append('<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>');
-        }
+        welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
     },
 
     openWindow: function (i = 0) {
@@ -2867,7 +2874,8 @@ const welcomer = {
         $("div_header").addClass("ld_completeld_complete");
         
             $("div_header").attr("data-url", url);
-        
+            
+          
     },
     pgloader: function (url = "") {
         $("#clavs grider_viewer").removeAttr("style");

@@ -2913,7 +2913,6 @@ const welcomer = {
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
-            // $("iframe:not(.iframe_mask)").attr("sandbox","allow-same-origin allow-scripts");
             try {
                 if (url2.includes("cv-pdf")) {
                     // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);

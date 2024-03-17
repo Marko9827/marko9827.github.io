@@ -130,17 +130,25 @@ media-src 'self';" />
     return btoa(String.fromCharCode.apply(null, buffer));
 }
         $.get("/?pages=cv-pdf",function(res){
-            window.portfolio.data.pages.cv_pdf = `${`${res}`}`;
+            window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
 
         });
         $.get("/?pages=visitcard",function(res){
-            window.portfolio.data.pages.visitcard = `${`${res}`}`;
+            window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
         });
         window.portfolio = {
             data: {
                 pages: {
-                    cv_pdf: "",
-                    visitcard: "",
+                    cv_pdf: {
+                        title:"CV",
+                        u:"cv-pdf",
+                        c:"",
+                    },
+                    visitcard: {
+                        title:"Visitcard",
+                        u:"visitcard",
+                        c:"",
+                    }
                 },
                 blog: <?php
                 $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
@@ -1072,6 +1080,9 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
           div.contanct_frm.open .h5_div {
             display: flex;
             align-content: center;
+        }
+        * {
+            cursor:unset !important;
         }
     </style>
     <?php 

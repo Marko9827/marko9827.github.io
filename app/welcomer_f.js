@@ -268,15 +268,15 @@ const welcomer = {
 
     },
     cp: function () {
-         
+
         $("iframe.iframe_mask").removeAttr("style");
         const form = $(".contanct_frm  form");
         const df = document.querySelector(".contanct_frm"),
             f1 = Math.floor(Math.random() * 10),
             f2 = Math.floor(Math.random() * 10);
-            if(df.classList.contains("yes")){
-                df.classList.remove("yes");
-                }
+        if (df.classList.contains("yes")) {
+            df.classList.remove("yes");
+        }
         if (df.classList.contains("open")) {
             document.body.classList.remove("open_f");
             df.classList.remove("open");
@@ -289,18 +289,18 @@ const welcomer = {
                 document.body.classList.add("open_f");
             }
             document.querySelector(".contanct_frm #norobot").setAttribute("placeholder", `${f1} + ${f2} = ? - Type and hit enter.`);
-         
+
             document.querySelector(".contanct_frm #norobot").value = "";
             this.rnd = f1 + f2;
             df.classList.add("open");
         }
-        document.querySelector(".contanct_frm #norobot").addEventListener("keyup", function(){
-            if(parseInt(document.querySelector(".contanct_frm #norobot").value) == welcomer.rnd){
-                $(".contanct_frm  form").scrollTop( $(".contanct_frm  form").height() );
+        document.querySelector(".contanct_frm #norobot").addEventListener("keyup", function () {
+            if (parseInt(document.querySelector(".contanct_frm #norobot").value) == welcomer.rnd) {
+                $(".contanct_frm  form").scrollTop($(".contanct_frm  form").height());
                 df.classList.add("yes");
             } else {
-                if(df.classList.contains("yes")){
-                df.classList.remove("yes");
+                if (df.classList.contains("yes")) {
+                    df.classList.remove("yes");
                 }
             }
         });
@@ -397,9 +397,9 @@ const welcomer = {
 
             if (res == "yes") {
                 const df = document.querySelector(".contanct_frm");
-                if(df.classList.contains("yes")){
+                if (df.classList.contains("yes")) {
                     df.classList.remove("yes");
-                    }
+                }
                 rest = '<i class="bi bi-emoji-laughing"></i><br>Thank you for contacting me!<br class="no_hide">If you send again? <span onclick="welcomer.send_again();">Click here</span>.';
             } else {
                 rest = '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';
@@ -2185,7 +2185,7 @@ const welcomer = {
                 beta: false,
                 soon: false
             },
-            
+
 
             {
                 title: "Share Editor page",
@@ -2672,39 +2672,39 @@ const welcomer = {
 
             var dragging_ = { enabled: false, left: 0 };
 
+
+            /*
+                    resizer.addEventListener('dragstart', function () {
+                        welcomer.editor.resize_left.rrsz = true;
         
-    /*
-            resizer.addEventListener('dragstart', function () {
-                welcomer.editor.resize_left.rrsz = true;
-
-                if (welcomer.editor.resize_left.rrsz) {
-                    welcomer.editor.resize_left.left(parseInt($('.cursor_pc_show').css("left")), resizer);
-                }
-            });
-            resizer.addEventListener('dragleave', function () {
-                document.querySelector('section[data-ui-type="editor"] editor-wrapper').removeAttribute("class");
-
-                welcomer.editor.resize_left.rrsz = false;
-            });
-           
-
-
-
-
-            //welcomer.editor.makeResizableDiv(`#${editor_container.id}`);
-            // this.makeResizableDiv(editor_container);
-         
-            container.addEventListener("mousedown", () => {
-                editor_container.classList.add("disable_pointer");
-                iframe.classList.add("disable_pointer");
-                container.addEventListener("mousemove", onMouseDrag);
-            });
-            document.addEventListener("mouseup", () => {
-                editor_container.classList.remove("disable_pointer");
-                iframe.classList.remove("disable_pointer");
-
-                container.removeEventListener("mousemove", onMouseDrag);
-            });*/
+                        if (welcomer.editor.resize_left.rrsz) {
+                            welcomer.editor.resize_left.left(parseInt($('.cursor_pc_show').css("left")), resizer);
+                        }
+                    });
+                    resizer.addEventListener('dragleave', function () {
+                        document.querySelector('section[data-ui-type="editor"] editor-wrapper').removeAttribute("class");
+        
+                        welcomer.editor.resize_left.rrsz = false;
+                    });
+                   
+        
+        
+        
+        
+                    //welcomer.editor.makeResizableDiv(`#${editor_container.id}`);
+                    // this.makeResizableDiv(editor_container);
+                 
+                    container.addEventListener("mousedown", () => {
+                        editor_container.classList.add("disable_pointer");
+                        iframe.classList.add("disable_pointer");
+                        container.addEventListener("mousemove", onMouseDrag);
+                    });
+                    document.addEventListener("mouseup", () => {
+                        editor_container.classList.remove("disable_pointer");
+                        iframe.classList.remove("disable_pointer");
+        
+                        container.removeEventListener("mousemove", onMouseDrag);
+                    });*/
             const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
                 editor_container_2 = document.createElement("div");
             editor_container_2.style.width = '100%';
@@ -2852,6 +2852,23 @@ const welcomer = {
 
         })
     },
+    pgloader_native: function (d = {}) {
+        $("#clavs grider_viewer").removeAttr("style");
+        const url = d.url,
+            hrl_url = `/?p=${d.url}`,
+            urlParams = new URLSearchParams(window.location.search);
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
+        $("grider_viewer").removeClass("g_gallery");
+        $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
+        $("#clavs grider_viewer").hide();
+        $("div#clavs svg.Vjideo_sjpinner").attr("style","opacity:0; transform:scale(0);");
+        $("div_header").removeClass("ld_completeld_complete2");
+        $("div_header").addClass("ld_completeld_complete");
+        
+            $("div_header").attr("data-url", url);
+        
+    },
     pgloader: function (url = "") {
         $("#clavs grider_viewer").removeAttr("style");
 
@@ -2896,13 +2913,14 @@ const welcomer = {
             $("div_header").removeClass("ld_completeld_complete2");
             $("div_header").addClass("ld_completeld_complete");
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
+            // $("iframe:not(.iframe_mask)").attr("sandbox","allow-same-origin allow-scripts");
             try {
                 if (url2.includes("cv-pdf")) {
                     // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
                     welcomer.blg_history_replace(`/?p=cv-pdf`);
-                   
+
                     document.querySelector(".pdf_download").setAttribute("style", "display: block;");
-                    $("#clavs grider_viewer").attr("style","pointer-events: none; ")
+                    $("#clavs grider_viewer").attr("style", "pointer-events: none; ")
                 } else {
                     document.querySelector(".pdf_download").setAttribute("style", "display: none;");
                     /*
@@ -2960,26 +2978,26 @@ const welcomer = {
 
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-    //$("iframe:not(.iframe_mask)").attr("src", url);
-    if(url.includes("?pages=cv-pdf")){
-        $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.cv_pdf}`);
-        welcomer.pgloader('yes');
-    }
-    if(url.includes("?pages=visitcard")){
-        $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard}`);
-        welcomer.pgloader('yes');
-    }
- 
+            //$("iframe:not(.iframe_mask)").attr("src", url);
+            if (url.includes("?pages=cv-pdf")) {
+                $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.cv_pdf.c}`);
+                welcomer.pgloader_native(window.portfolio.data.pages.cv_pdf);
+            }
+            if (url.includes("?pages=visitcard")) {
+                $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard.c}`);
+                welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
+            }
+
             var ifrm = document.querySelector("iframe:not(.iframe_mask)");
             ifrm.removeAttribute("onload");
             ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
-            
+
             // -
             var frameDoc = ifrm;
-        
-        
+
+
             // -
-            
+
             // ifrm.open();
             // ifrm.write(window.portfolio.data.pages[])
 
@@ -4092,12 +4110,12 @@ const welcomer = {
     }())
 }
 
-document.addEventListener('keydown', function(event) { 
-    if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
+document.addEventListener('keydown', function (event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
         event.preventDefault();
-    } 
-    if ((event.ctrlKey || event.metaKey) && event.key === 'p') { 
-        event.preventDefault(); 
     }
-}); 
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+        event.preventDefault();
+    }
+});
 window.welcomer = welcomer;

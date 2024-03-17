@@ -92,7 +92,7 @@ img.onload = async function () {
 </script>
 </head>
 
-<body ondragstart="return false;" onselect="return false;" id="body">
+<body ondragstart="return false;" oncontextmenu="return false;" onselect="return false;" id="body">
     <div id="meta_div">
         <div id="div_box_center">
             <div id="box_side" class="box3 box_div_id">

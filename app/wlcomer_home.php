@@ -40,6 +40,7 @@ header(
     "Content-Security-Policy: $csp"
 );
 $rand = time();
+ 
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" data-rand="<?php echo $rand; ?>">
@@ -139,6 +140,11 @@ media-src 'self';" />
         window.portfolio = {
             data: {
                 pages: {
+                    tg_channel:{
+                        title:"Telegram Channel",
+                        u:"tg-channel",
+                        c:""
+                    },
                     cv_pdf: {
                         title:"CV",
                         u:"cv-pdf",
@@ -1086,6 +1092,86 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
         * {
             cursor:unset !important;
         }
+        body:not([data-url-id*="?pages=tg_channel"])
+        .Ignoring_me_iframe.shadow_root:not(.opened),
+        i.tg_button {
+            display: none !important;
+        }
+        .Ignoring_me_iframe.shadow_root {
+            position: absolute;
+    top: 50px;
+    left: 0px;
+    width: 100%;
+    bottom: 0px;
+    height: -webkit-fill-available;
+    border: none;
+    background: var(--cdn_primary);
+    -webkit-transition: -webkit-filter .3s;
+    transition: -webkit-filter .3s;
+    -o-transition: filter .3s;
+    transition: filter .3s;
+    transition: filter .3s, -webkit-filter .3s;
+    overflow: auto;
+        }
+
+        body[data-url-id*="?pages=tg_channel"] 
+#clavs iframe:not(.iframe_mask):not([id=*"telegram-post"]) {
+    display: none !important;
+} 
+
+body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe {
+    display: block !important;
+    border: 2px solid #33afed !important;
+    margin: 10px !important;
+    width: -webkit-fill-available !important;
+    position: unset !important;
+    height: 80vh !important;
+    padding: 10px;
+    
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    border-radius: 10px;
+}
+
+body[data-url-id*="?pages=tg_channel"] iframe {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    border-radius: 10px;
+}
+
+body[data-url-id*="?pages=tg_channel"] i.tg_button {
+    display: block !important;
+}
+ 
+
+body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
+    display:none;
+}
+
+iframe {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    border-radius: 10px;
+}
+
+body[data-url-id*="?pages=tg_channel"] i.tg_button {
+    display: block !important;
+}
+ 
+
+body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
+    display:none;
+}
+body[data-url-id*="?pages=tg_channel"]
+div_header {
+    background: #24A1DE !important;
+}
     </style>
     <?php 
     /* if($_SERVER['HTTP_HOST'] == "portfolio.eronelit.com"){?>
@@ -1290,6 +1376,8 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
                 <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
                 <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"
                     title="Return to Blog home page"></i>
+                    <i class="bi bi-telegram tg_button" onclick="welcomer.Social.tg.open();"></i>
+
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
             </btns_r>
@@ -1368,6 +1456,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
         <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe>
+        <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></iframe>
 
 
 
@@ -1527,6 +1616,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
         </div-echatv>
     </section>
+    <section data-ui-type="social_feed" class="hidden_omega">
+    </section>
     <section data-ui-type="editor" class="hidden_omega">
         <div_header data-url="editor">
             <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
@@ -1602,7 +1693,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
                 <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
                 <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
-
+ 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
 

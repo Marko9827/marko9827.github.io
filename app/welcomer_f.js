@@ -28,8 +28,6 @@ const welcomer = {
     constructor: function () {
         this.isMobile();
 
-        //  this.fpsMeter(); test
-        // this.scroll_event();
         document.querySelector(".Ignoring_me_iframe").onload = function () {
             welcomer.pgloader('yes');
         }
@@ -57,7 +55,6 @@ const welcomer = {
             v.remove();
         });
         document.head.appendChild(styleClass);
-        //  this.style_rebuild();
 
     },
     loop_active: true,
@@ -69,6 +66,7 @@ const welcomer = {
     yesurls: [
         "blog",
         "cv-pdf",
+        "tg_channel",
         "gallery",
         "projects",
         "visitcard"
@@ -186,7 +184,7 @@ const welcomer = {
             descr: "Look at my Linkedin Official profile",
             icon: "bi bi-linkedin",
             href: {
-                f_u: "https://www.linkedin.com/in/markonikolic98/",// f_u: "https://www.linkedin.com/in/marko-nikolic-49385a283",
+                f_u: "https://www.linkedin.com/in/markonikolic98/",
                 f: false,
                 target: "blank"
             },
@@ -239,9 +237,9 @@ const welcomer = {
             descr: "Look at my Telegram profile",
             icon: "fab fa-telegram",
             href: {
-                f_u: "https://t.me/nikoliccc02",
-                f: false,
-                target: "blank"
+                f_u: "window.location.href = '/?p=tg_channel';",
+                f: true,
+                target: "self"
             },
             num: 0,
             beta: false,
@@ -250,7 +248,6 @@ const welcomer = {
 
     ],
     gallery_delegator: function (dlg = "a") {
-
 
         $('#image-popups').magnificPopup({
             delegate: dlg,
@@ -387,7 +384,6 @@ const welcomer = {
         data.append("fe", window.btoa(fld_email));
         data.append("fm", window.btoa(fld_msg));
 
-
         xhr.open('POST', '/?mnps=contacts', true);
         xhr.onload = function () {
 
@@ -422,7 +418,7 @@ const welcomer = {
     },
     generateGrid: function () {
         document.querySelector(".pdf_download").addEventListener("click", function () {
-            // welcomer.pdf();
+
             welcomer.pdf();
         });
 
@@ -461,7 +457,6 @@ const welcomer = {
             }
         }
         var buttons_box_shadow = document.querySelector("div#buttons");
-
 
         this.cards_links.forEach(function (v) {
             const div = document.createElement("div"),
@@ -606,8 +601,6 @@ const welcomer = {
         const response = await fetch("/?mnps=gallery"),
             responseJson = await response.json();
         return responseJson;
-
-
 
     },
     projects: [
@@ -791,11 +784,9 @@ const welcomer = {
                     res = window.atob(rr.page);
                 }
             });
-            /*
-            
-            // $(".close_btnf").hide();*/
+
             welcomer.gallery_temp = f.gallery;
-            // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+
             welcomer.blg_history_replace(`/?p=blog&id=${id}`);
             $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
             $("div#clavs br_ta").addClass("active_scr");
@@ -861,7 +852,7 @@ const welcomer = {
         });
 
         if (id == "all") {
-            // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
+
             welcomer.blg_history_replace('/?p=blog');
             welcomer.blogljoad_posts(f);
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
@@ -876,7 +867,6 @@ const welcomer = {
                     return asciiString;
                 }
 
-                // Decode the hexadecimal string
                 var originalString = hexToAscii(hexString);
                 return hexString;
             }
@@ -884,17 +874,10 @@ const welcomer = {
                 $(".pdf_page_home_btn").show();
                 const parser = new DOMParser();
 
-                // Parse the HTML string
-                // 
-                // var res = parser.parseFromString(window.atob(f.page), 'text/html'); 
                 var res = decodeEntities(f.page);
-                // var blob = new Blob([res], { type: 'text/html' });
-                // res = await fetch(blob);
-                /*
-                
-                // $(".close_btnf").hide();*/
+
                 welcomer.gallery_temp = f.gallery;
-                // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
+
                 welcomer.blg_history_replace(`/?p=blog&id=${id}`);
                 $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
 
@@ -923,9 +906,7 @@ const welcomer = {
                 });
 
                 ifrm.document.close();
-                // $(ifrm).hide();
 
-                // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
                 $("div_header span").html(`Blog > ${f.title}`);
                 welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
@@ -934,16 +915,14 @@ const welcomer = {
                 $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
                 $("body").removeAttr("data-hmm");
                 document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-                /*                      // history.replaceState({}, "", `${url}`);
-              */
+
                 $("div_header span").html(`Blog > ${f.title}`);
 
                 $("#clavs grider_viewer").hide();
                 $("iframe.iframe_mask").show();
 
-
             } else {
-                // history.replaceState({}, "", `${window.location.origin}`);
+
                 welcomer.blg_history_replace('');
 
                 $("#clavs").attr("style", "transform: translateY(-100%);");
@@ -971,10 +950,9 @@ const welcomer = {
             welcomer.titleC("Blog > Marko Nikolić - Portfolio");
             $("div_header span").html(`Marko Nikolić - Portfolio > Blog`);
 
-
         }
         try {
-            // welcomer.terminator.ajax.blog_post.abort();
+
         } catch (aer) {
 
         }
@@ -988,98 +966,6 @@ const welcomer = {
         }
         welcomer.titleC("Blog > Marko Nikolić - Portfolio")
         $("html").addClass("anim_djenerated");
-        /*
-        this.terminator.ajax.blog_post = $.ajax({
-            url: "/?blog=" + id,
-            type: "GET",
-            success: function (f) {
-                window.pazt_all = f;
-                if (id == "all") {
-                    // history.replaceState({}, "", `${window.location.origin}/?p=blog`);
-                    welcomer.blg_history_replace('/?p=blog');
-                    welcomer.blogljoad_posts(f);
-                    $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
-                } else {
-                    welcomer.blog_loader_natjive(id);
-                    return;
-                    $("div#clavs br_ta").addClass("active_scr");
-
-                    if (f.title) {
-                        $(".pdf_page_home_btn").show();
-                      
-                        welcomer.gallery_temp = f.gallery;
-                        // history.replaceState({}, "", `${window.location.origin}/?p=blog&id=${id}`);
-                        welcomer.blg_history_replace(`/?p=blog&id=${id}`);
-                        $("div_header").attr("data-url", `${window.location.origin}/?p=blog&id=${id}`);
-                        $.ajax({
-                            type: "POST",
-                            url: f.source,
-                            data: {
-                                id: id,
-                            },
-                            success: function (res) {
-                                $("div#clavs br_ta").addClass("active_scr");
-                                $(ifrm).hide();
-                                ifrm.document.open();
-                                ifrm.document.write(`${res}`);
-
-                                ifrm.document.querySelectorAll("img").forEach(function (v) {
-                                    $(v).attr("onclick", "parent.welcomer.infoVa_img(event)").attr("data-title", "Click (hovered image) for view image in full size");
-                                    var a = $(v);
-                                    a.hover(
-                                        function () {
-                                            parent.welcomer.showAnchorTitle(a, a.data('title'));
-                                        },
-                                        function () {
-                                            parent.welcomer.hideAnchorTitle();
-                                        }
-                                    ).data('title', a.attr('title')).removeAttr('title');
-
-                                    a.mouseleave(function () {
-                                        parent.welcomer.hideAnchorTitle();
-
-                                    });
-                                });
-                                
-                                ifrm.document.close();
-                                // $(ifrm).hide();
-
-                                // $("iframe:not(.iframe_mask)").contents().find("img").attr("onclick","parent.welcomer.infoVa_img(event)");
-                                $("div_header span").html(`Blog > ${f.title}`);
-                                welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
-
-                                $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
-                            }
-                        });
-                        $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
-                        $("body").removeAttr("data-hmm");
-                        document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-                      
-                        $("div_header span").html(`Blog > ${f.title}`);
-
-                        $("#clavs grider_viewer").hide();
-                        $("iframe.iframe_mask").show();
-
-
-                    } else {
-                        // history.replaceState({}, "", `${window.location.origin}`);
-                        welcomer.blg_history_replace('');
-
-                        $("#clavs").attr("style", "transform: translateY(-100%);");
-                        welcomer.loop_active = true;
-                        $("iframe:not(.iframe_mask)").attr("src", "");
-                        $("iframe:not(.iframe_mask)").removeAttr("style");
-                    }
-                }
-            }, complete: function () {
-                welcomer.titleC("Blog > Marko Nikolić - Portfolio")
-                $("html").addClass("anim_djenerated");
-
-
-
-            }
-        });
-        */
 
     },
     url_params: function () {
@@ -1093,7 +979,7 @@ const welcomer = {
                 this.blogloader(myParam_id);
             } else if (myParam == "editor") {
                 this.editor.start();
-                // welcomer.editor.start();
+
             } else {
                 this.pgloader(window.location.origin + "/?pages=" + myParam);
             }
@@ -1134,7 +1020,6 @@ const welcomer = {
         return ret_arr;
     },
     blogljoad_posts_category: function (tt_category_name) {
-        // window.arr_temp
 
         var arrayr = [],
             categoryTemp = document.querySelector('div#clavs br_ta'),
@@ -1152,14 +1037,13 @@ const welcomer = {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
-        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
+
         categoryTemp.classList.remove("active_scr");
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
 
         arr.forEach(function (v) {
-
 
             var thi = "class='is_touch'",
                 p_open = "";
@@ -1188,13 +1072,13 @@ const welcomer = {
                 ${thi} id-int="${div_not_i}" title="${v?.title}">
             <grider_box>
             <p><span>${v.title}</span></p>
-              
+
                 ${p_open}
                 <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
                 <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
                 src="${v.thumbail}" data-zoom-image="${v.thumbail}" alt="${v.title}">
                        </grider_box>
-    
+
                 </project>`);
                 div_not_i++;
             } else {
@@ -1203,28 +1087,28 @@ const welcomer = {
                         if (tt_category_name == v.category[i]) {
 
                             var img_src_d = `${v.thumbail}`;
-                            if(img_src_d.includes("data:")){
+                            if (img_src_d.includes("data:")) {
                                 img_src_d = `${v.thumbail}`;
-                            } else{
+                            } else {
                                 img_src_d = `${v.thumbail}&thumb=true`;
-                            }        
+                            }
 
                             $("grider_viewer").append(`<project
                         data-category="${window.btoa(v?.category)}"
                         ${thi} id-int="${div_not_i}" title="${v?.title}">
                     <grider_box>
                     <p><span>${v.title}</span></p>
-                      
+
                         ${p_open}
                         <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
                         <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
                         src="${img_src_d}" data-zoom-image="${v.thumbail}" alt="${v.title}">
                                </grider_box>
-            
+
                         </project>`);
                             div_not_i++;
                         }
-                        // arrayr.push(v.category[i]);
+
                     }
                 } catch (r) { }
             }
@@ -1232,8 +1116,6 @@ const welcomer = {
             tt_category_name_false = false;
 
         });
-
-
 
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
@@ -1259,7 +1141,7 @@ const welcomer = {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
-        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
+
         categoryTemp.classList.remove("active_scr");
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
@@ -1273,7 +1155,6 @@ const welcomer = {
                     arrayr.push(v.category[i]);
                 }
             } catch (r) { }
-
 
             var thi = "class='is_touch'",
                 p_open = "";
@@ -1297,9 +1178,9 @@ const welcomer = {
 
             }
             var img_src_d = `${v.thumbail}`;
-            if(img_src_d.includes("data:")){
+            if (img_src_d.includes("data:")) {
                 img_src_d = `${v.thumbail}`;
-            } else{
+            } else {
                 img_src_d = `${v.thumbail}&thumb=true`;
             }
 
@@ -1308,7 +1189,7 @@ const welcomer = {
             ${thi} id-int="${div_not_i}" title="${v?.title}">
         <grider_box>
         <p><span>${v.title}</span></p>
-          
+
             ${p_open}
             <fiv><i onclick="welcomer.blogloader(${v.id});" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
             <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
@@ -1360,14 +1241,7 @@ const welcomer = {
                 $("strV").remove();
             },
             success: function (v) {
-                /* IN TESTING      const c = JSON.parse(window.atob(`${v}`)); 
-                      console.log(c);
-                      $("body").append("<strV></strV>");
-                      for(var i = 0; i < c.entry.length; i++){
-                          $("strV").append(`${c.entry.content}`);
-          
-                      }
-                         */
+
             }
         })
     },
@@ -1390,7 +1264,6 @@ const welcomer = {
                 dh.setAttribute("data-index", i);
                 dh.setAttribute("data-name", afterSlash);
                 dh.appendChild(image);
-
 
                 document.querySelector(this2.scrolle.root_scroll).appendChild(dh);
 
@@ -1415,7 +1288,6 @@ const welcomer = {
                 }
             });
 
-            // new App_gallery().scroll_event(document.querySelector(new App_gallery().scrolle.root_scroll));
             this.scrollby_h(pr);
         },
         bundleSuggestedS: function (n) {
@@ -1552,7 +1424,7 @@ const welcomer = {
         $("grider_viewer").html("");
         var gallery = [];
         $("gridder_loader").attr("style", "opacity:1");
-        // history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+
         welcomer.blg_history_replace(`/?p=gallery`);
 
         var v = welcomer.load_gallery_j;
@@ -1580,7 +1452,7 @@ const welcomer = {
             $("grider_viewer").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
         <grider_box>
         <p><span>${v[i].title}</span></p>
-          
+
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
             <img loading="lazy"  ${thi} 
@@ -1595,7 +1467,6 @@ const welcomer = {
             </project>`);
             div_not_i++;
         }
-        // });
 
         $("gridder_loader").removeAttr("style");
         $("div_header").addClass("ld_completeld_complete2");
@@ -1609,36 +1480,27 @@ const welcomer = {
     },
     loaded_imgPrld: function (aer, id = 0) {
         const d = aer;
-        // $(`#clavs grider_viewer project[id-int="${id}"]`).addClass("section_loadet_img");
-        const img = new Image();
-        /*
-        img.src = d.getAttribute("src");
-        img.onload = async function () {
-            const H = URL.createObjectURL(await fetch(aer.getAttribute("data-zoom-image")).then(function (v) { return v.blob() }));
-            d.src = H;
-            $(aer).parent().parent().removeAttr("style");
-        }
-        $(aer).removeAttr("onload");*/
 
-        welcomer.urlToBlob(`${d.getAttribute("src")}`).then(blob => { 
+        const img = new Image();
+
+        welcomer.urlToBlob(`${d.getAttribute("src")}`).then(blob => {
             const imgElement = document.createElement('img');
             img.src = URL.createObjectURL(blob);
-            
 
             const H = aer.getAttribute("data-zoom-image");
             d.src = URL.createObjectURL(blob);
 
             $(aer).parent().parent().removeAttr("style");
-          });
-          $(aer).removeAttr("onload");
+        });
+        $(aer).removeAttr("onload");
         return "";
-        img.src =  
-        img.onload = async function () {
-            const H = aer.getAttribute("data-zoom-image");
-            d.src = H;
+        img.src =
+            img.onload = async function () {
+                const H = aer.getAttribute("data-zoom-image");
+                d.src = H;
 
-            $(aer).parent().parent().removeAttr("style");
-        }
+                $(aer).parent().parent().removeAttr("style");
+            }
         $(aer).removeAttr("onload");
 
     },
@@ -1655,12 +1517,10 @@ const welcomer = {
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
-        // $("iframe:not(.iframe_mask)").attr("onload", "welcomer.pgloader('yes');");
 
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
-
 
         this.projects.forEach(function (v) {
             var thi = "class='is_touch'",
@@ -1684,7 +1544,7 @@ const welcomer = {
             $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
             <grider_box>
             <p><span>${v.title}</span></p>
-              
+
                 ${p_open}
                 <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
                 <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
@@ -1710,34 +1570,33 @@ const welcomer = {
         }
         $(" preview_imagem").remove();
     },
-    urlToBlob: async function(url) { 
+    urlToBlob: async function (url) {
         const response = await fetch(url);
         const blob = await response.blob();
         return blob;
     },
-    infoVa_img_gallery: function(url){
+    infoVa_img_gallery: function (url) {
         var clickedElement = url;
         var imgH = new Image();
-        
 
-        welcomer.urlToBlob(`${$(clickedElement).attr("data-zoom-image")}&thumb_or=t`).then(blob => { 
-    const imgElement = document.createElement('img');
-    imgH.src = URL.createObjectURL(blob);
-  });
-  imgH.onload = function(){
-        $(imgH).ezPlus({
-            zoomType: 'inner',
-            containLensZoom: true,
-            speed: 10
+        welcomer.urlToBlob(`${$(clickedElement).attr("data-zoom-image")}&thumb_or=t`).then(blob => {
+            const imgElement = document.createElement('img');
+            imgH.src = URL.createObjectURL(blob);
         });
-    };
+        imgH.onload = function () {
+            $(imgH).ezPlus({
+                zoomType: 'inner',
+                containLensZoom: true,
+                speed: 10
+            });
+        };
         $("body div#helper_id_helper3, preview_imagem").remove();
-            $("body").append(`
-            
+        $("body").append(`
+
             <preview_imagem style="
             position: fixed;
             left: 0px;
-           
+
             width: 100%;
             height: 100%;
             z-index: 339;
@@ -1748,16 +1607,11 @@ const welcomer = {
             top: 0px;
         "><img alt="loading" src="${welcomer.loader_svg}"></preview_imagem>
             <div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>`);
-         
+
     },
     infoVa: function (h = 0) {
-        /*welcomer.eronelit_gallery.call_ui( [
-            "/?blog=13_jan_2024_18_34/1705167933024",
-            "/?blog=13_jan_2024_18_34/32423423515315135"
-        ]);
-        */
+
         var imgH = new Image();
-        // imgH.src = $(`project[id-int="${h}"] img`).attr('data-real-zoom-image');
 
         welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
     },
@@ -1799,10 +1653,9 @@ const welcomer = {
         this.constructor();
         $("gridder_loader img").attr("onload", "welcomer.loading_t(this)");
         if (!this.isChrome) {
-            //    $("canvas").addClass("low_GPU")
+
         }
         document.querySelector("iframe").addEventListener("load", function () {
-            // pgloader("yes");
 
         });
         this.load_gallery();
@@ -1814,17 +1667,7 @@ const welcomer = {
         });
         document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
         this.url_params();
-        /*if (this.energyAnim) {
-        
-         const application = new this.Application();
- 
-             //Initialize the CircleContainer objects
-             application.initializeCircleContainers();
- 
-             //Start the initial loop function for the first time
-             application.loop();
- 
-         }*/
+
         this.generateGrid();
     },
     bell_over: function (h) {
@@ -1832,7 +1675,7 @@ const welcomer = {
         document.querySelector("#logo_backscr_img").classList.add("activeBell");
         if (this.isChrome) {
             $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: url('#shadowed-goo') !important; filter: url('#shadowed-goo') !important; transform: rotate(45deg) scale(2);");
-            //; transform: rotateX(75deg) scale(4)
+
         } else {
             $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: unset !important; filter: unset !important ;  transform: rotate(45deg) scale(2);");
         }
@@ -1898,12 +1741,10 @@ const welcomer = {
                 $("iframe:not(.iframe_mask)").removeAttr("style");
                 $("html").removeClass("anim_djenerated");
 
-
                 welcomer.energyAnim = true;
             });
         },
         screenshoot: function (screenshotTarget) {
-            //  const screenshotTarget = document.body;
 
             html2canvas(screenshotTarget).then((canvas) => {
                 const base64image = canvas.toDataURL("image/png");
@@ -1945,7 +1786,6 @@ const welcomer = {
             },
             str_to_mb: function () {
 
-                // Convert a string to bytes
                 const str = welcomer.editor.editr_tijemp;
                 const bytes = new TextEncoder().encode(str).length;
 
@@ -1973,18 +1813,15 @@ const welcomer = {
                 var transaction = this.db.transaction([this.storeName], "readwrite");
                 var objectStore = transaction.objectStore(this.storeName);
 
-                // Retrieve the existing data using the key
                 var getRequest = objectStore.get(Number(welcomer.editor.getParams("id")));
 
                 getRequest.onsuccess = function (event) {
                     var data = getRequest.result;
 
                     if (data) {
-                        // Modify the data with the new value
+
                         data.data = dataF;
 
-
-                        // Update the data in the object store
                         var updateRequest = objectStore.put(data);
 
                         updateRequest.onsuccess = function (event) {
@@ -2022,7 +1859,7 @@ const welcomer = {
 
                 request.onsuccess = function (event) {
                     welcomer.editor.webDb.getAll();
-                    // Clear the input field
+
                 };
 
                 request.onerror = function (event) {
@@ -2081,13 +1918,11 @@ const welcomer = {
                 var transaction = this.db.transaction([this.storeName], "readonly");
                 var cursorRequest = transaction.objectStore(this.storeName).getAll();
 
-
                 cursorRequest.onsuccess = function (event) {
                     var cursor = event.target.result;
                     if (cursor) {
                         welcomer.editor.webDb.data = cursor;
-                        // Move to the next record
-                        // cursor.continue();
+
                         const urlParams = new URLSearchParams(window.location.search);
                         const myParam = urlParams.get("p");
                         const myParam_id = urlParams.get("id");
@@ -2120,14 +1955,12 @@ const welcomer = {
                     webDb.db = event.target.result;
                     welcomer.editor.webDb.getAll();
 
-
-
                 };
 
                 this.request.onupgradeneeded = function (event) {
                     var db = event.target.result;
                     var objectStore = db.createObjectStore(webDb.storeName, { keyPath: "id", autoIncrement: true });
-                    // You can add more fields as needed
+
                     objectStore.createIndex("id", "id", { unique: false });
                     objectStore.createIndex("name", "name", { unique: false });
                     objectStore.createIndex("time", "time", { unique: false });
@@ -2156,7 +1989,6 @@ const welcomer = {
                         peview = document.createElement("iframe"),
                         p = document.createElement("p");
 
-
                     peview.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(res.data.code);
                     p.innerHTML = "Click for edit.";
                     peview.classList.add("preview_dom");
@@ -2165,7 +1997,6 @@ const welcomer = {
                         welcomer.editor.edtr.setValue(res.data.code);
                         welcomer.blg_history_replace(`/?p=editor&id=${res.id}`);
                         edimls.removeAttribute("style");
-
 
                     };
                     edimls.setAttribute("data-title", "Load code");
@@ -2177,11 +2008,7 @@ const welcomer = {
             });
 
             edimls.setAttribute("style", "transform:none");
-            /*
-            <if_div>
-                <iframe class="preview_dom"></iframe><p>Preview. Click for edit.</p>
-            </if_div>
-            */
+
         },
         cdn: 'https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/',
         callEditor_r_h: function () {
@@ -2197,23 +2024,8 @@ const welcomer = {
             this.callEditor();
             this.webDb.start();
 
-
-            // customElements.define("editor-container", this.EditorWrapper);
             $('section[data-ui-type="editor"]').removeClass("hidden_omega");
-            /*
-             {
-                title: "Your work history - Your projects!",
-                icon: "bi bi-question-lg",
-                href: {
-                    f_u: function () { welcomer.editor.load_menu_bar(this); },
-                    f: true,
-                    target: "blank"
-                },
-                num: 0,
-                beta: false,
-                soon: false
-            },
-            */
+
         },
         call_nav_conf: [
             {
@@ -2252,7 +2064,6 @@ const welcomer = {
                 beta: false,
                 soon: false
             },
-
 
             {
                 title: "Share Editor page",
@@ -2325,7 +2136,7 @@ const welcomer = {
 
                     welcomer.editor.edtr.layout();
                 });
-                // Load Monaco Editor scripts
+
                 const loaderScript = document.createElement('script');
                 loaderScript.src = `${welcomer.editor.cdn}/vs/loader.js`;
                 loaderScript.onload = this.initEditor.bind();
@@ -2333,24 +2144,24 @@ const welcomer = {
             }
 
             initEditor() {
-                // Initialize Monaco Editor inside the shadow DOM
+
                 require.config({ paths: { 'vs': `${welcomer.editor.cdn}vs` } });
                 require(['vs/editor/editor.main'], () => {
                     const editorContainer = this.shadowRoot.getElementById('editor-container');
                     const editor = monaco.editor.create(editorContainer, {
                         value: `<!DOCTYPE html>
                         <html>
-                        
+
                         <head>
                             <title>Hello World!</title>
                             <meta name="viewport" content="width=device-width, initial-scale=1">
-                        
+
                         </head>
-                        
+
                         <body>
                             <!--- Hello world --->
                         </body>
-                        
+
                         </html>`,
                         language: 'html',
                         theme: 'vs-dark'
@@ -2370,7 +2181,7 @@ const welcomer = {
                 <title>Hello World!</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1">
             </head>
-        
+
             <body>
                 ${editor.getValue()}
             </body>
@@ -2386,7 +2197,6 @@ const welcomer = {
                         updatePreview();
                     });
 
-                    // Initial preview update
                     updatePreview();
                 });
             }
@@ -2430,22 +2240,20 @@ const welcomer = {
                     tabs2 = document.createElement("tab"),
                     tabs3 = document.createElement("tab");
 
-                // 
                 tabs_contentBox.appendChild(tabs1);
                 tabs_contentBox.appendChild(tabs2);
                 tabs_contentBox.appendChild(tabs3);
-                // 
+
                 this.main({
                     where: tab1,
                     callback: function () {
 
                     }
                 });
-                //
+
                 tabs.appendChild(tabs_tab);
 
                 main.appendChild(tabs);
-
 
             },
             tems: {
@@ -2464,7 +2272,7 @@ const welcomer = {
                     <meta name="viewport" content="width=device-width, initial-scale=1">
                 <style> ${this.tems.css}</style>
                     </head>
-            
+
                 <body>
                     ${this.tems.html}
 
@@ -2499,24 +2307,24 @@ const welcomer = {
                 if (id < 1) {
                     welcomer.editor.editor.tems[t.wht] = `<!DOCTYPE html>
                 <html>
-                
+
                 <head>
                     <title>Hello World!</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1">
-                
+
                 </head>
-                
+
                 <body>
                     <!--- Hello world --->
                     <!--- Click ? for more info! :) --->
                 </body>
-                
+
                 </html>`;
                 }
                 let typingTimer;
                 const typingTimeout = 1000;
                 require(['vs/editor/editor.main'], function () {
-                    // Your existing Monaco Editor initialization code
+
                     var editor = monaco.editor.create(editor_container_2, {
                         value: welcomer.editor.editr_tijemp,
                         language: 'html',
@@ -2549,7 +2357,7 @@ const welcomer = {
             <title>Hello World!</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-    
+
         <body>
             ${editor.getValue()}
         </body>
@@ -2569,16 +2377,11 @@ const welcomer = {
                         welcomer.editor.webDb.getCurrent(parseInt(welcomer.editor.getParams("id")));
                     }
                     function onTypingStopped() {
-                        /* welcomer.editor.editr_history.push({
-                            "code": editor.getValue(),
-                            "time": welcomer.editor.time()
-                        });*/
+
                         const urlParams = new URLSearchParams(window.location.search);
                         const myParam = urlParams.get("p");
                         const myParam_id = urlParams.get("id");
                         if (welcomer.editor.webDb.data.length < 1) { }
-
-
 
                         if (myParam !== null) {
                             if (myParam == "editor") {
@@ -2602,7 +2405,7 @@ const welcomer = {
                                 }
                             }
                         }
-                        // Add your logic here for what to do when typing stops
+
                     }
                     editor.onDidChangeModelContent(function () {
                         clearTimeout(typingTimer);
@@ -2611,7 +2414,6 @@ const welcomer = {
                         updatePreview();
                     });
 
-                    // Initial preview update
                     updatePreview();
 
                 });
@@ -2736,42 +2538,8 @@ const welcomer = {
                 container.style.top = `${topValue + movementY}px`;
             }
 
-
             var dragging_ = { enabled: false, left: 0 };
 
-
-            /*
-                    resizer.addEventListener('dragstart', function () {
-                        welcomer.editor.resize_left.rrsz = true;
-        
-                        if (welcomer.editor.resize_left.rrsz) {
-                            welcomer.editor.resize_left.left(parseInt($('.cursor_pc_show').css("left")), resizer);
-                        }
-                    });
-                    resizer.addEventListener('dragleave', function () {
-                        document.querySelector('section[data-ui-type="editor"] editor-wrapper').removeAttribute("class");
-        
-                        welcomer.editor.resize_left.rrsz = false;
-                    });
-                   
-        
-        
-        
-        
-                    //welcomer.editor.makeResizableDiv(`#${editor_container.id}`);
-                    // this.makeResizableDiv(editor_container);
-                 
-                    container.addEventListener("mousedown", () => {
-                        editor_container.classList.add("disable_pointer");
-                        iframe.classList.add("disable_pointer");
-                        container.addEventListener("mousemove", onMouseDrag);
-                    });
-                    document.addEventListener("mouseup", () => {
-                        editor_container.classList.remove("disable_pointer");
-                        iframe.classList.remove("disable_pointer");
-        
-                        container.removeEventListener("mousemove", onMouseDrag);
-                    });*/
             const shadowRoot = editor_container.attachShadow({ mode: 'open' }),
                 editor_container_2 = document.createElement("div");
             editor_container_2.style.width = '100%';
@@ -2785,24 +2553,24 @@ const welcomer = {
             if (id < 1) {
                 this.editr_tijemp = `<!DOCTYPE html>
                 <html>
-                
+
                 <head>
                     <title>Hello World!</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1">
-                
+
                 </head>
-                
+
                 <body>
                     <!--- Hello world --->
                     <!--- Click ? for more info! :) --->
                 </body>
-                
+
                 </html>`;
             }
             let typingTimer;
             const typingTimeout = 1000;
             require(['vs/editor/editor.main'], function () {
-                // Your existing Monaco Editor initialization code
+
                 var editor = monaco.editor.create(editor_container_2, {
                     value: welcomer.editor.editr_tijemp,
                     language: 'html',
@@ -2834,7 +2602,7 @@ const welcomer = {
             <title>Hello World!</title>
             <meta name="viewport" content="width=device-width, initial-scale=1">
         </head>
-    
+
         <body>
             ${editor.getValue()}
         </body>
@@ -2854,16 +2622,11 @@ const welcomer = {
                     welcomer.editor.webDb.getCurrent(parseInt(welcomer.editor.getParams("id")));
                 }
                 function onTypingStopped() {
-                    /* welcomer.editor.editr_history.push({
-                        "code": editor.getValue(),
-                        "time": welcomer.editor.time()
-                    });*/
+
                     const urlParams = new URLSearchParams(window.location.search);
                     const myParam = urlParams.get("p");
                     const myParam_id = urlParams.get("id");
                     if (welcomer.editor.webDb.data.length < 1) { }
-
-
 
                     if (myParam !== null) {
                         if (myParam == "editor") {
@@ -2887,7 +2650,7 @@ const welcomer = {
                             }
                         }
                     }
-                    // Add your logic here for what to do when typing stops
+
                 }
                 editor.onDidChangeModelContent(function () {
                     clearTimeout(typingTimer);
@@ -2896,7 +2659,6 @@ const welcomer = {
                     updatePreview();
                 });
 
-                // Initial preview update
                 updatePreview();
 
             });
@@ -2929,17 +2691,19 @@ const welcomer = {
         $("grider_viewer").removeClass("g_gallery");
         $("div_header span").html($("iframe:not(.iframe_mask)").contents().find("title").html());
         $("#clavs grider_viewer").hide();
-        $("div#clavs svg.Vjideo_sjpinner").attr("style","opacity:0; transform:scale(0);");
+        $("div#clavs svg.Vjideo_sjpinner").attr("style", "opacity:0; transform:scale(0);");
         $("div_header").removeClass("ld_completeld_complete2");
         $("div_header").addClass("ld_completeld_complete");
-        
-            $("div_header").attr("data-url", url);
-            
-          
+
+        $("div_header").attr("data-url", url);
+
     },
     pgloader: function (url = "") {
         $("#clavs grider_viewer").removeAttr("style");
-
+        try {
+            $(".Ignoring_me_iframe.shadow_root").removeClass("open");
+        } catch (aer) { }
+        $("body").attr("data-url-id", url);
         const urlParams = new URLSearchParams(window.location.search);
         $(".pdf_page_home_btn").hide();
         $(".close_btnf").show();
@@ -2950,7 +2714,7 @@ const welcomer = {
             if (!url.includes(window.location.origin)) {
                 $("div_header").attr("data-url", window.location.origin + hrl_url);
                 try {
-                    // history.replaceState({}, "", `${window.location.origin + hrl_url}`);
+
                     welcomer.blg_history_replace(hrl_url);
                 } catch (arV) { }
             } else {
@@ -2983,16 +2747,14 @@ const welcomer = {
             var url2 = $("iframe:not(.iframe_mask)").attr("src");
             try {
                 if (url2.includes("cv-pdf")) {
-                    // history.replaceState({}, "", `${window.location.origin}/?p=cv-pdf`);
+
                     welcomer.blg_history_replace(`/?p=cv-pdf`);
 
                     document.querySelector(".pdf_download").setAttribute("style", "display: block;");
                     $("#clavs grider_viewer").attr("style", "pointer-events: none; ")
                 } else {
                     document.querySelector(".pdf_download").setAttribute("style", "display: none;");
-                    /*
-                    Your work is saved on your computer (locally) via cookies. And it is not stored on the server!
-                    */
+
                 }
             } catch (res) {
                 document.querySelector(".pdf_download").setAttribute("style", "display: none;");
@@ -3005,13 +2767,11 @@ const welcomer = {
             $("div_header").attr("data-url", window.location.origin + "/?p=projects");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Projects");
-            // history.replaceState({}, "", `${window.location.origin}/?p=projects`);
+
             welcomer.blg_history_replace(`/?p=projects`);
             $("html").addClass("anim_djenerated");
 
             setTimeout(() => {
-
-
 
                 $("#clavs grider_viewer").attr("style", "padding-top: 10px !important;");
             }, 100);
@@ -3022,7 +2782,7 @@ const welcomer = {
             $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
             $("iframe.iframe_mask").removeAttr("style");
             $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
-            // history.replaceState({}, "", `${window.location.origin}/?p=gallery`);
+
             welcomer.blg_history_replace(`/?p=gallery`);
             ;
 
@@ -3040,12 +2800,11 @@ const welcomer = {
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("div_header").attr("data-url", window.location.origin + "/?p=blog");
 
-
         } else {
 
             $("body").removeAttr("data-hmm");
             document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
-            //$("iframe:not(.iframe_mask)").attr("src", url);
+
             if (url.includes("?pages=cv-pdf")) {
                 $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.cv_pdf.c}`);
                 welcomer.pgloader_native(window.portfolio.data.pages.cv_pdf);
@@ -3054,35 +2813,28 @@ const welcomer = {
                 $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard.c}`);
                 welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
             }
+            if (url.includes("?pages=tg_channel")) {
 
+                // $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard.c}`);
+                welcomer.pgloader_native('<p>Loading...</p>');
+                $(".ld_completeld_complete span").html("My Official Telegram channel");
+                welcomer.Social.tg.start();
+            }
             var ifrm = document.querySelector("iframe:not(.iframe_mask)");
             ifrm.removeAttribute("onload");
             ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
 
-            // -
             var frameDoc = ifrm;
-
-
-            // -
-
-            // ifrm.open();
-            // ifrm.write(window.portfolio.data.pages[])
 
             $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
             $("#clavs grider_viewer, div#clavs br_ta").hide();
             $("iframe.iframe_mask").hide();
             if (url.includes)
-                try { /* document.querySelector("iframe").remove();*/
+                try {
                 } catch (v) { }
 
         }
 
-
-        /*
-        if(url.includes("cv-pdf")){
-            $("div_header span").html("Marko Nikolić - Portfolio > Visit Card");
-        }
-        */
         if (url.includes("projects")) {
             $("#clavs grider_viewer").hide();
         }
@@ -3127,7 +2879,7 @@ const welcomer = {
         function handler() {
             if (this.readyState === this.DONE) {
                 if (this.status === 200) {
-                    // this.response is a Blob, because we set responseType above
+
                     var data_url = URL.createObjectURL(this.response);
                     $("iframe:not(.iframe_mask)").attr("src", data_url);
                 } else {
@@ -3159,7 +2911,7 @@ const welcomer = {
     },
     HcloseF: function () {
         this.hmm("You ", function () {
-            // history.replaceState({}, "", `${window.location.origin}`);
+
             welcomer.blg_history_replace('');
             this.titleC("Marko Nikolić - Portfolio")
             $("#clavs").attr("style", "transform: translateY(-100%);");
@@ -3197,12 +2949,10 @@ const welcomer = {
         }
         this.hmm(msg_title, function () {
 
-
             $("#clavs").attr("style", "transform: translateY(-100%);");
             welcomer.titleC(`Marko Nikolić - Portfolio`);
-            // history.replaceState({}, "", `${window.location.origin}`);
-            welcomer.blg_history_replace('/');
 
+            welcomer.blg_history_replace('/');
 
             welcomer.loop_active = true;
             setTimeout(function () {
@@ -3211,7 +2961,6 @@ const welcomer = {
                 $("iframe:not(.iframe_mask)").removeAttr("style");
                 $("html").removeClass("anim_djenerated");
             }, 1000);
-
 
             return false;
             if (myParam == "blog") {
@@ -3287,10 +3036,7 @@ const welcomer = {
     },
     hmm: function (qust = "", call) {
         $("div_not").attr("style", "top: 45px !important; opacity: 1 !important;");
-        // var answer = window.confirm(qust);
-        // if (answer) {
-        //     call();
-        //}
+
         $("div_not div_panel span").text(qust);
         $("#clavs iframe, #clavs grider_viewer").addClass("gridesr_filter");
         $("box_h").show();
@@ -3299,7 +3045,6 @@ const welcomer = {
             $("div_not").removeAttr("style");
             var tl = $("div_header span").text();
             $("#clavs iframe, #clavs grider_viewer").removeClass("gridesr_filter");
-
 
             $("box_h").hide();
 
@@ -3346,7 +3091,7 @@ const welcomer = {
             transform: "scale(2)",
             "text-align": "center",
             "font-size": "10px",
-            "padding": "uset", //1px",
+            "padding": "uset",
             "padding-top": "4px",
             "cursor": "none",
             "mix-blend-mode": "unset"
@@ -3386,7 +3131,7 @@ const welcomer = {
         $("grider_viewer").append(`<project  ${thi} id-int="${this.div_not_i}" title="${v.description}">
             <grider_box>
             <p><span>${v.title}</span></p>
-              
+
                 ${p_open}
                 <fiv><i onclick=" welcomer.infoVa(${this.div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
                 <img loading="lazy"  data-zoom-image="${v.img}" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${this.div_not_i});" src="${v.img}" alt="${v.title}">
@@ -3394,7 +3139,7 @@ const welcomer = {
 
                 </project>`);
         this.div_not_i++;
-        /* / welcomer.div_not_i++;*/
+
     },
     loading_t: function (d) {
         const img = new Image();
@@ -3409,13 +3154,12 @@ const welcomer = {
         const img = new Image();
 
         var img_d = d.getAttribute("src");
-        if(img_d.includes("data:")){
-            img.src = img_d.replace("&thumb=true","");
-        } else{
+        if (img_d.includes("data:")) {
+            img.src = img_d.replace("&thumb=true", "");
+        } else {
             img.src = d.getAttribute("src");
         }
-        
-         
+
         img.onload = async function () {
             const H = URL.createObjectURL(await fetch(img.src).then(function (v) { return v.blob() }));
             d.src = H;
@@ -3430,7 +3174,7 @@ const welcomer = {
         $("grider_viewer").html("");
         if (s == "") {
             this.projects.forEach(function (v) {
-                // welcomer.cr(v);
+
                 welcomer.cr(v);
             });
         } else {
@@ -3438,7 +3182,6 @@ const welcomer = {
                 if (v.title.indexOf(s) !== -1) {
                     welcomer.div_not_i = 0;
                     welcomer.cr(v);
-
 
                 }
 
@@ -3531,14 +3274,7 @@ const welcomer = {
         } else {
             parent.welcomer.parentTitler(element, text);
         }
-        /*
-    $('#anchorTitle')
-        .css({
-            'top': (offset.top - element.outerHeight() - 4) + 'px',
-            'left': offset.left + 'px'
-        })
-        .html(text)
-        .show();*/
+
     },
     hideAnchorTitle: function () {
         if ($('#anchorTitle').length > 0) {
@@ -3575,7 +3311,7 @@ const welcomer = {
         });
     },
     GPPU_ms: function () {
-        /* /return  this.getUnmaskedInfo().renderer; */
+
     },
     getUnmaskedInfo: function () {
         const gl = document.createElement('canvas').getContext('webgl');
@@ -3665,7 +3401,6 @@ const welcomer = {
             document.removeEventListener('mouseup', mouseUpHandler);
         };
 
-        // Attach the handler
         ele.addEventListener('mousedown', mouseDownHandler);
     },
     start: function () {
@@ -3682,7 +3417,6 @@ const welcomer = {
 
         const isMobile = this.isMobile();
 
-
         if (isMobile == true) {
             $(".cursor").remove();
             $(".anchorTitle").remove();
@@ -3695,10 +3429,8 @@ const welcomer = {
 
             this.get_events();
 
-
             var cursor = $(".cursor");
             cursor.addClass("cursor_pc_show");
-
 
             $(window).mousemove(function (e) {
                 cursor.css({
@@ -3709,9 +3441,6 @@ const welcomer = {
                     y: e.clientY - $('*[title]').height() / 2,
                     x: e.clientX - $('*[title]').width() / 2
                 };
-
-
-
 
             });
 
@@ -3755,16 +3484,13 @@ const welcomer = {
                     });
                 });
 
-
                 $("iframe").hover(function () {
                     $(".cursor").hide();
                 }).mouseleave(function () {
 
-
                     $(".cursor").show();
                 });
             }, 1500);
-
 
             $("#side-menu li:last-child").contextmenu(function () {
                 welcomer.Img_cursor();
@@ -3791,7 +3517,6 @@ const welcomer = {
                 cursor.html("");
             });
 
-
             $("#side-menu li:first-child").contextmenu(function () {
                 welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-home'></i>");
@@ -3802,7 +3527,6 @@ const welcomer = {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-
 
             $(".select-selected-all, select").contextmenu(function () {
                 welcomer.Img_cursor();
@@ -3818,7 +3542,6 @@ const welcomer = {
                 cursor.html("");
             });
 
-
             $(".save-btn-info").contextmenu(function () {
                 welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-save'></i>");
@@ -3832,8 +3555,6 @@ const welcomer = {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-
-
 
             setInterval(function () {
                 $(".container-galerry img").mousemove(function () {
@@ -3850,10 +3571,6 @@ const welcomer = {
                     cursor.html("");
                 });
             }, 1000);
-
-
-
-
 
             $("input[type='password']").click(function () {
 
@@ -3895,7 +3612,6 @@ const welcomer = {
                 cursor.html("");
             });
 
-
             $(".btn-success").contextmenu(function () {
                 welcomer.Img_cursor();
                 cursor.html("<i class='fas fa-pencil-alt'></i>");
@@ -3906,7 +3622,6 @@ const welcomer = {
                 welcomer.Img_no_cursor();
                 cursor.html("");
             });
-
 
             $(".col-xa-resizer").contextmenu(function () {
                 welcomer.Img_cursor();
@@ -3931,7 +3646,6 @@ const welcomer = {
                 });
             }, 1000);
 
-
             setInterval(function () {
                 $(".plugin_status[href]").contextmenu(function () {
                     welcomer.Img_cursor();
@@ -3944,7 +3658,6 @@ const welcomer = {
                     cursor.html("");
                 });
             }, 1000);
-
 
             welcomer.txt_cursor();
             setInterval(function () {
@@ -3990,13 +3703,12 @@ const welcomer = {
             cursor.html("");
         });
 
-
         if (window.location.host == "portfolio.eronelit.com") {
             if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.register('/sw.js').then(function (registration) {
-                    // console.log('SW registration succeeded with scope:', registration.scope);
+
                 }).catch(function (e) {
-                    // console.log('SW registration failed with error:', e);
+
                 });
             }
         }
@@ -4005,7 +3717,7 @@ const welcomer = {
         const style = document.createElement("style");
         var temp = "";
         style.setAttribute("type", "text/css");
-        //    style.rel = "stylesheet"
+
         style.setAttribute("data-what", "generated2");
         document.querySelectorAll("link[rel='stylesheet']").forEach(function (res) {
             temp += `@import '${res.getAttribute("href")}'; \n`;
@@ -4015,7 +3727,7 @@ const welcomer = {
         });
         style.innerHTML = temp;
         const blob = new Blob([temp], { type: "text/css" });
-        //  style.href = URL.createObjectURL(blob);
+
         document.head.appendChild(style);
         style.onload = function () {
             document.querySelectorAll("style:not([data-what='generated2']);").forEach(function (res) {
@@ -4038,7 +3750,6 @@ const welcomer = {
                 y: this.height / 2
             };
 
-
             this.circleContainers = [];
 
             window.addEventListener('resize', () => this.resizeCanvas(), false);
@@ -4051,7 +3762,6 @@ const welcomer = {
                 x: this.width / 2,
                 y: this.height / 2
             };
-
 
             this.circleContainers = [];
             this.initializeCircleContainers();
@@ -4132,6 +3842,94 @@ const welcomer = {
         render() {
             for (let i = 0; i < this.numberOfCircles; i++) {
                 this.circles[i].render(this.context);
+            }
+        }
+    },
+    Social: {
+        tg: {
+            conf: {
+                id: "nikoliccc02",
+                count: 15,
+            },
+            open: function () {
+                window.open(`https://t.me/${this.conf.id}`);
+            },
+            isInViewport: function (element) {
+                var rect = element.getBoundingClientRect();
+                return (
+                    rect.top >= 0 &&
+                    rect.left >= 0 &&
+                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+            },
+            start_scr: function () {
+                document.querySelectorAll(".Ignoring_me_iframe.shadow_root div iframe[data-src]").forEach(function(res){
+                    if (res.hasAttribute("data-src")) {
+                        if (welcomer.Social.tg.isInViewport(res)) {
+                            res.setAttribute("src", res.getAttribute("data-src"));
+                            res.removeAttribute("data-src");
+                            res.setAttribute("style",`height: 60vh !important; min-height: 60vh !important;max-width: 60vh !important;`);
+                        }
+                    }
+                });
+            },
+            start: function () {
+                var elm = document.querySelector(".Ignoring_me_iframe.shadow_root"),
+                    div = document.createElement("div");
+                  
+                // div.attachShadow({ mode: "open" });
+                elm.appendChild(div);
+                div.addEventListener("scroll", function () {
+                    welcomer.Social.tg.start_scr()
+                });
+                div.setAttribute("style", `
+            
+                position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                display: block;
+                overflow: auto;
+                z-index: 33333333333;
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                align-content: center;
+                align-items: center;
+            
+            `);
+
+
+                for (var i = 0; i < welcomer.Social.tg.conf.count; i++) {
+                    /*var script = document.createElement("script");
+                    script.src = "https://telegram.org/js/telegram-widget.js?22";
+                    script.async = true;
+                    script.setAttribute("data-telegram-post", `${welcomer.Social.tg.conf.id}/${i}`);
+                    script.setAttribute("data-width", "100%");
+                    script.setAttribute("onload", '$(this).remove()');
+                    div.appendChild(script);
+                    */
+
+                    var script = document.createElement("iframe");
+                    script.preload = "none";
+                    script.onerror = function () {
+                        script.remove();
+                    }
+                    script.setAttribute("style","    transform: scale(0); opacity: 0;");
+                    script.setAttribute("data-src", `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`);
+
+                    div.appendChild(script);
+
+                }
+                welcomer.Social.tg.start_scr();
+
+
+
+
+
             }
         }
     },

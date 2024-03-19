@@ -1516,6 +1516,13 @@ echo $v .",";
             } else if (strpos($_GET['pages'], 'cv-fpdf') !== false) {
                 //    include  ROOT."visitcard/333234/serbia.php";
                 include ROOT . "visitcard/ff_FA/cv_pdf2/index.php";
+            } else if (strpos($_GET['pages'], 'tg_feed') !== false) {
+                //    include  ROOT."visitcard/333234/serbia.php";
+               
+                // Telegram API token
+ 
+                exit();
+                
             } else if (strpos($_GET['pages'], 'cv-markonikolic-pdf') !== false) {
 
                 // header("Content-type:application/pdf");

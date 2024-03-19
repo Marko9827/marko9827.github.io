@@ -3913,11 +3913,13 @@ const welcomer = {
                     div.appendChild(script);
                     */
 
-                    var script = document.createElement("iframe");
-                    script.preload = "none";
+                    var script = document.createElement("iframe"); 
                     script.onerror = function () {
                         script.remove();
                     }
+                    script.setAttribute("preload","none");
+                    script.setAttribute("loading","lazy");
+
                     script.setAttribute("style","    transform: scale(0); opacity: 0;");
                     script.setAttribute("data-src", `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`);
 

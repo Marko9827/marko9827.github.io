@@ -3849,7 +3849,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 200,
+                count: 189,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);
@@ -3869,7 +3869,11 @@ const welcomer = {
                         if (welcomer.Social.tg.isInViewport(res)) {
                             res.setAttribute("src", res.getAttribute("data-src"));
                             res.removeAttribute("data-src");
-                            res.setAttribute("style",`height: 60vh !important; min-height: 60vh !important;max-width: 60vh !important;`);
+                            res.setAttribute("style",`
+                            height:     85vh !important; 
+                            min-height: 85vh !important;
+                            max-height:  85vh !important;
+                            max-width: 500px !important; `);
                         }
                     }
                 });
@@ -3903,7 +3907,7 @@ const welcomer = {
             `);
 
 
-                for (var i = 0; i < welcomer.Social.tg.conf.count; i++) {
+                for (var i =  welcomer.Social.tg.conf.count; i > 0; i--) {
                     /*var script = document.createElement("script");
                     script.src = "https://telegram.org/js/telegram-widget.js?22";
                     script.async = true;
@@ -3917,10 +3921,16 @@ const welcomer = {
                     script.onerror = function () {
                         script.remove();
                     }
+                    
+                    script.onload = function(){
+                        if($(script).contents().find(".tgme_widget_message_error").html() == "Post not found"){
+                            script.remove();
+                        }  
+                    };
                     script.setAttribute("preload","none");
                     script.setAttribute("loading","lazy");
 
-                    script.setAttribute("style","    transform: scale(0); opacity: 0;");
+                    script.setAttribute("style","  height:0px !important; max-height: 0px !important;  transform: scale(0); opacity: 0;");
                     script.setAttribute("data-src", `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`);
 
                     div.appendChild(script);

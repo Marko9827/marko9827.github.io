@@ -92,7 +92,7 @@ class portfolio_marko
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://$_SERVER[HTTP_HOST]/?pages=$url");
-    
+
 
         $response = curl_exec($ch);
 
@@ -112,12 +112,12 @@ class portfolio_marko
             $pages_base64 = base64_encode($aer);
         }
         if ($h == "cv-pdf") {
-            
+
             ob_start();
-            include_once("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
+            include_once ("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
             $pages_base64 = base64_encode(utf8_decode(ob_get_contents()));
             ob_get_clean();
- 
+
         }
         if ($h == "visitcard") {
             $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/visitcard/index1.php"));
@@ -522,7 +522,7 @@ echo $v .",";
         @readfile($r);
         $image_data = ob_get_clean();
         $image_base64 = base64_encode($image_data);
-        
+
         $data_url = "data:image/png;base64,$image_base64";
         return $data_url;
     }
@@ -1106,10 +1106,10 @@ echo $v .",";
                             header("Pragma: no-cache");
                             header("content-type: image/png");
                             // @readfile($filename);
-                            if(!empty($_GET['thumb_or'])){
+                            if (!empty ($_GET['thumb_or'])) {
                                 @readfile($filename);
-                            }else{
-                            $this->ServeThumb("$filename", 640);
+                            } else {
+                                $this->ServeThumb("$filename", 640);
                             }
                             exit();
                         }
@@ -1518,11 +1518,79 @@ echo $v .",";
                 include ROOT . "visitcard/ff_FA/cv_pdf2/index.php";
             } else if (strpos($_GET['pages'], 'tg_feed') !== false) {
                 //    include  ROOT."visitcard/333234/serbia.php";
-               
-                // Telegram API token
- 
-                exit();
+                $token = '';
+
+                // ID of the channel or group
+                $channelId = '';   
+                $url = "https://api.telegram.org/bot$token/getUpdates";
                 
+                // Initialize cURL session
+                $ch = curl_init();
+                
+                // Set cURL options
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disabling SSL verification for simplicity, consider enabling in production
+                
+                // Execute cURL request
+                $response = curl_exec($ch);
+
+                // Check for errors
+                if ($response === false) {
+                    echo 'cURL Error: ' . curl_error($ch);
+                    curl_close($ch);
+                    exit;
+                }
+
+                // Close cURL session
+                curl_close($ch);
+
+                // Decode JSON response
+
+                echo $response;
+                exit();
+                $data = json_decode($response, true);
+
+                // Check if request was successful
+                if ($data['ok']) {
+                    // Start creating RSS feed
+                    $rss = '<?xml version="1.0" encoding="UTF-8" ?>
+                    <rss version="2.0">
+                        <channel>
+                            <title>Telegram Feed</title>
+                            <link>https://t.me/YOUR_CHANNEL_OR_GROUP</link>
+                            <description>Latest messages from Telegram</description>';
+
+                    // Iterate through messages
+                    foreach ($data['result'] as $message) {
+                        $messageText = $message['content'];
+                        $messageDate = date("r", $message['date']);
+                        $messageLink = "https://t.me/c/$chatId/{$message['id']}";
+
+                        // Add message to RSS feed
+                        $rss .= "
+                            <item>
+                                <title><![CDATA[$messageText]]></title>
+                                <link>$messageLink</link>
+                                <pubDate>$messageDate</pubDate>
+                                <description><![CDATA[$messageText]]></description>
+                            </item>";
+                    }
+
+                    // Close RSS feed
+                    $rss .= '
+                        </channel>
+                    </rss>';
+
+                    // Set content type and output RSS feed
+                    header('Content-Type: application/rss+xml; charset=utf-8');
+                    echo $rss;
+                } else {
+                    // Handle error if request fails
+                    echo "Error fetching messages from Telegram.";
+                }
+                exit();
+
             } else if (strpos($_GET['pages'], 'cv-markonikolic-pdf') !== false) {
 
                 // header("Content-type:application/pdf");

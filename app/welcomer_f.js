@@ -3849,7 +3849,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 189,
+                count: 191,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);
@@ -3869,11 +3869,17 @@ const welcomer = {
                         if (welcomer.Social.tg.isInViewport(res)) {
                             res.setAttribute("src", res.getAttribute("data-src"));
                             res.removeAttribute("data-src");
+                            res.onload = function(){
                             res.setAttribute("style",`
                             height:     85vh !important; 
                             min-height: 85vh !important;
                             max-height:  85vh !important;
-                            max-width: 500px !important; `);
+                            max-width: 500px !important; 
+                          url(${welcomer.loader_svg}),linear-gradient(45deg, #24a1de, #24a1de);
+                          background-repeat: no-repeat;
+                          background-position: center;
+                            `);
+                            }
                         }
                     }
                 });

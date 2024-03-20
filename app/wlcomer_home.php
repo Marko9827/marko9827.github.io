@@ -1189,6 +1189,27 @@ height:     85vh !important;
 }
 
 .Ignoring_me_iframe.shadow_root div {
+    
+            
+    position: absolute;
+                left: 0px;
+                top: 0px;
+                width: 100%;
+                height: 100%;
+                opacity: 1;
+                display: block;
+                overflow: auto;
+                z-index: 33333333333;
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                align-content: center;
+                align-items: center;
+            
+            
+}
+
+.Ignoring_me_iframe.shadow_root div {
     overflow-x: hidden;
     overflow-y: auto;
     overflow-y: scroll;

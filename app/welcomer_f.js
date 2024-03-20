@@ -3892,6 +3892,7 @@ const welcomer = {
                 div.addEventListener("scroll", function () {
                     welcomer.Social.tg.start_scr()
                 });
+                /*
                 div.setAttribute("style", `
             
                 position: absolute;
@@ -3909,7 +3910,7 @@ const welcomer = {
                 align-content: center;
                 align-items: center;
             
-            `);
+            `); */
 
 
                 for (var i =  welcomer.Social.tg.conf.count; i > 0; i--) {

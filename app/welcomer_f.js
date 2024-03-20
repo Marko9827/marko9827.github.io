@@ -58,7 +58,7 @@ const welcomer = {
 
     },
     loop_active: true,
-    Dots_color: 195,
+    Dots_color: 197,
     isChrome: /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor),
     energyAnim: true,
     domain: "/?mnps=dbe&q=",

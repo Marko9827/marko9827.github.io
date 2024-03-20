@@ -3870,15 +3870,14 @@ const welcomer = {
                             res.setAttribute("src", res.getAttribute("data-src"));
                             res.removeAttribute("data-src");
                             res.onload = function(){
-                            res.setAttribute("style",`
+                                res.setAttribute("style",``);
+                                /*res.setAttribute("style",`
                             height:     85vh !important; 
                             min-height: 85vh !important;
                             max-height:  85vh !important;
                             max-width: 500px !important; 
-                          url(${welcomer.loader_svg}),linear-gradient(45deg, #24a1de, #24a1de);
-                          background-repeat: no-repeat;
-                          background-position: center;
-                            `);
+                         
+                            `);*/
                             }
                         }
                     }
@@ -3936,7 +3935,7 @@ const welcomer = {
                     script.setAttribute("preload","none");
                     script.setAttribute("loading","lazy");
 
-                    script.setAttribute("style","  height:0px !important; max-height: 0px !important;  transform: scale(0); opacity: 0;");
+                    // script.setAttribute("style","  height:0px !important; max-height: 0px !important;  transform: scale(0); opacity: 0;");
                     script.setAttribute("data-src", `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`);
 
                     div.appendChild(script);

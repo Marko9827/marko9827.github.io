@@ -23,6 +23,24 @@ if (!empty ($_GET['p'])) {
 class portfolio_marko
 {
 
+    function minifyJS($inputFile) {
+        // Read the JavaScript file
+        $jsContent = $inputFile;
+        
+        // Remove single-line comments
+        $jsContent = preg_replace('/\/\/.*?\n/', '', $jsContent);
+        
+        // Remove multi-line comments
+        $jsContent = preg_replace('/\/\*.*?\*\//s', '', $jsContent);
+        
+        // Remove leading and trailing white spaces
+        $jsContent = trim($jsContent);
+        
+        // Write minified JS to output file
+        // file_put_contents($outputFile, $jsContent);
+        return $jsContent;
+    }
+
     public function __construct($root = "")
     {
         $fullUrl = (isset ($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];

@@ -249,8 +249,9 @@ media-src 'self';" />
         <?php
 
         #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-        
+       
         include ROOT . "welcomer_f.js";
+       
         ?>
     </script>
 
@@ -1227,7 +1228,6 @@ height:     85vh !important;
     transition: 0.5s;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
-    opacity: 0;
 }
 
 

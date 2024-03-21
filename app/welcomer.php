@@ -164,6 +164,8 @@ if (!empty($_GET['drc'])) {
     exit;
 } else if (!empty($_GET['src'])) {
     if ($_GET['src'] == "vdwallpper") {
+   
+      
         ignore_user_abort(false);
         include ROOT . "Content/vstream.php";
         // $this->include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
@@ -189,7 +191,11 @@ if (!empty($_GET['drc'])) {
             header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
             header('Accept-Ranges: bytes');
             header('Content-Length:' . filesize($reqpath));
-            @readfile($reqpath);
+            header('Content-Disposition: inline; filename="' . basename($reqpath) . '"');
+            $stream = fopen($reqpath, 'rb');
+            fpassthru($stream);
+            fclose($stream);
+         #   @readfile($reqpath);
             /*
 
             $stream = new eronelit_VideoStream($filetry2);

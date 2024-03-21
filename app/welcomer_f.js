@@ -58,7 +58,7 @@ const welcomer = {
 
     },
     loop_active: true,
-    Dots_color: 197,
+    Dots_color: 196,
     isChrome: /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor),
     energyAnim: true,
     domain: "/?mnps=dbe&q=",
@@ -3849,7 +3849,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 191,
+                count: 194,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);
@@ -3884,6 +3884,7 @@ const welcomer = {
                 });
             },
             start: function () {
+                $(document).ready(function(){
                 var elm = document.querySelector(".Ignoring_me_iframe.shadow_root"),
                     div = document.createElement("div");
                   
@@ -3946,7 +3947,7 @@ const welcomer = {
 
 
 
-
+            });
 
             }
         }

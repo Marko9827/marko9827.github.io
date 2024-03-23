@@ -1289,7 +1289,7 @@ body {background:#000000e6 !important;}
         - Tip: Reload page... */?>
      &#x1F54A; &#128148; 	
      In memory of the victims of the<br>terrorist attack in Moscow on March 22, 2024,<br>my entire personal website will be black and white...  🙏🤍
-<br><br>
+<br>
 Stay in your homes and take care of your loved ones...</p>
     <div id="content_Space"></div>
     <hh_anim_start>

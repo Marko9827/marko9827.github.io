@@ -1266,15 +1266,15 @@ body {background:#000000e6 !important;}
     </style>
     <?php 
      if($_SERVER['HTTP_HOST'] == "markonikolic98.com"){?>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+    <!-- Google tag (gtag.js) --> 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-        gtag('config', 'G-DFNVTLRPLX', {'cookie_domain': '<?= $_SERVER['HTTP_HOST'] ?>'});
-    </script>
+  gtag('config', 'G-NZPKRC33WQ');
+</script>
     <?php } 
     ?>
 

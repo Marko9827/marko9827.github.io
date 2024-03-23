@@ -1265,7 +1265,7 @@ body video, #clavs, spjin{
 body {background:#000000e6 !important;}
     </style>
     <?php 
-    /* if($_SERVER['HTTP_HOST'] == "portfolio.eronelit.com"){?>
+     if($_SERVER['HTTP_HOST'] == "markonikolic98.com"){?>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DFNVTLRPLX"></script>
     <script>
@@ -1273,9 +1273,9 @@ body {background:#000000e6 !important;}
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'G-DFNVTLRPLX');
+        gtag('config', 'G-DFNVTLRPLX', {'cookie_domain': '<?= $_SERVER['HTTP_HOST'] ?>'});
     </script>
-    <?php } */
+    <?php } 
     ?>
 
 </head>
@@ -1289,7 +1289,7 @@ body {background:#000000e6 !important;}
         - Tip: Reload page... */?>
      &#x1F54A; &#128148; 	
      In memory of the victims of the<br>terrorist attack in Moscow on March 22, 2024,<br>my entire personal website will be black and white...  🙏🤍
-<br>
+<br><br>
 Stay in your homes and take care of your loved ones...</p>
     <div id="content_Space"></div>
     <hh_anim_start>

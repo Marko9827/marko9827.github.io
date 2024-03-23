@@ -1255,6 +1255,14 @@ height:     85vh !important;
     -ms-flex-align: center;
     align-items: center
 }
+
+body video, #clavs, spjin{
+    filter:grayscale(1);
+}
+
+
+ 
+body {background:#000000e6 !important;}
     </style>
     <?php 
     /* if($_SERVER['HTTP_HOST'] == "portfolio.eronelit.com"){?>
@@ -1277,8 +1285,11 @@ height:     85vh !important;
         loop autoplay muted autobuffer playsinline class="wallpaperVideo">
         <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
     </video>
-    <p class="p-c">Do you love random videos?<br>
-        - Tip: Reload page... </p>
+    <p class="p-c"><?php /*Do you love random videos?<br>
+        - Tip: Reload page... */?>
+     &#x1F54A; &#128148; 	
+Black and white<br>
+- 22.03.2024 Moscow</p>
     <div id="content_Space"></div>
     <hh_anim_start>
 

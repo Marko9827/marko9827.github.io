@@ -4,6 +4,9 @@ const welcomer = {
     lang: [
 
     ],
+    conf:{
+        black:true,
+    },
     gallery_temp: [],
     infoVa_img: function (event) {
         if (welcomer.gallery_temp.length > 0) {
@@ -1673,12 +1676,21 @@ const welcomer = {
     bell_over: function (h) {
 
         document.querySelector("#logo_backscr_img").classList.add("activeBell");
+        if(this.conf.black){
+            if (this.isChrome) {
+                $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; transform: rotate(45deg) scale(2);");
+    
+            } else {
+                $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; transform: rotate(45deg) scale(2);");
+            }
+        }else{
         if (this.isChrome) {
             $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: url('#shadowed-goo') !important; filter: url('#shadowed-goo') !important; transform: rotate(45deg) scale(2);");
 
         } else {
             $("#canvas, .wallpaperVideo").attr("style", "opacity: 1; -webkit-filter: unset !important; filter: unset !important ;  transform: rotate(45deg) scale(2);");
         }
+    }
     },
     bell_out: function (o) {
         document.querySelector("#logo_backscr_img").classList.remove("activeBell");

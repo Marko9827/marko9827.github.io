@@ -40,7 +40,7 @@ header(
     "Content-Security-Policy: $csp"
 );
 $rand = time();
- 
+
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" data-rand="<?php echo $rand; ?>">
@@ -126,50 +126,50 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>" type="text/javascript">
         /* BETA CODE */
         function base64Encode(str) {
-    const encoder = new TextEncoder();
-    const buffer = encoder.encode(str);
-    return btoa(String.fromCharCode.apply(null, buffer));
-}
-        $.get("/?pages=cv-pdf",function(res){
+            const encoder = new TextEncoder();
+            const buffer = encoder.encode(str);
+            return btoa(String.fromCharCode.apply(null, buffer));
+        }
+        $.get("/?pages=cv-pdf", function (res) {
             window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
 
         });
-        $.get("/?pages=visitcard",function(res){
+        $.get("/?pages=visitcard", function (res) {
             window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
         });
         window.portfolio = {
             data: {
                 pages: {
-                    tg_channel:{
-                        title:"Telegram Channel",
-                        u:"tg-channel",
-                        c:""
+                    tg_channel: {
+                        title: "Telegram Channel",
+                        u: "tg-channel",
+                        c: ""
                     },
                     cv_pdf: {
-                        title:"CV",
-                        u:"cv-pdf",
-                        c:"",
+                        title: "CV",
+                        u: "cv-pdf",
+                        c: "",
                     },
                     visitcard: {
-                        title:"Visitcard",
-                        u:"visitcard",
-                        c:"",
+                        title: "Visitcard",
+                        u: "visitcard",
+                        c: "",
                     }
                 },
                 blog: <?php
                 $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
                 $i = 0;
                 foreach ($r as $key => $val) {
-  $curlR = SITE_HOST . "$val[source]";
+                    $curlR = SITE_HOST . "$val[source]";
                     $queryString = parse_url($curlR, PHP_URL_QUERY);
-                     
-                    $response = $this->get_page_by_pln(str_replace("blog=","", $queryString), $val["time"]);
-                 
+
+                    $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"]);
+
                     $r[$i]['page'] = "";
                     $r[$i]['page'] = $response;
-                    $aer = str_replace("/?blog=","", $val["thumbail"],$aer);
-                    $aer = str_replace("?blog=","", $val["thumbail"], $aer);
-                    $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer); 
+                    $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
+                    $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
+                    $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
                     $i++;
                 }
                 echo json_encode($r);
@@ -249,13 +249,13 @@ media-src 'self';" />
         <?php
 
         #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-       
+        
         include ROOT . "welcomer_f.js";
-       
+
         ?>
     </script>
 
-    <?php if (!empty($_GET['tp'])) {
+    <?php if (!empty ($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
             ?>
             <style type="text/css">
@@ -826,20 +826,21 @@ media-src 'self';" />
                 right: 0px;
                 pointer-events: none;
             }
-        } 
+        }
 
-section[data-ui-type="editor"] editor-wrapper.resize_mode div#editor-container,
-section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-container {
+        section[data-ui-type="editor"] editor-wrapper.resize_mode div#editor-container,
+        section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-container {
             pointer-events: none !important;
             filter: grayscale(1) !important;
         }
+
         section[data-ui-type="editor"] div#resizer-container {
             border: none !important;
             padding: 0px;
             margin: 0px;
             cursor: e-resize !important;
-            
-        user-select: none !important;
+
+            user-select: none !important;
         }
 
         editor-history-rp {
@@ -1074,208 +1075,212 @@ section[data-ui-type="editor"] editor-wrapper.resize_mode iframe#preview-contain
             height: 25px !important;
         }
 
-        div.contanct_frm.open.yes fotter{
-            
+        div.contanct_frm.open.yes fotter {
+
             transform: none !important;
             background: var(--black-trasparent-color);
-        
-                }
-        
-        
-          div.contanct_frm.open.yes form{
-              padding-bottom:60px;
-          }
-        
-          div.contanct_frm.open .h5_div {
+
+        }
+
+
+        div.contanct_frm.open.yes form {
+            padding-bottom: 60px;
+        }
+
+        div.contanct_frm.open .h5_div {
             display: flex;
             align-content: center;
         }
+
         * {
-            cursor:unset !important;
+            cursor: unset !important;
         }
-        body:not([data-url-id*="?pages=tg_channel"])
-        .Ignoring_me_iframe.shadow_root:not(.opened),
+
+        body:not([data-url-id*="?pages=tg_channel"]) .Ignoring_me_iframe.shadow_root:not(.opened),
         i.tg_button {
             display: none !important;
         }
+
         .Ignoring_me_iframe.shadow_root {
             position: absolute;
-    top: 50px;
-    left: 0px;
-    width: 100%;
-    bottom: 0px;
-    height: -webkit-fill-available;
-    border: none;
-    background: var(--cdn_primary);
-    -webkit-transition: -webkit-filter .3s;
-    transition: -webkit-filter .3s;
-    -o-transition: filter .3s;
-    transition: filter .3s;
-    transition: filter .3s, -webkit-filter .3s;
-    overflow: auto;
+            top: 50px;
+            left: 0px;
+            width: 100%;
+            bottom: 0px;
+            height: -webkit-fill-available;
+            border: none;
+            background: var(--cdn_primary);
+            -webkit-transition: -webkit-filter .3s;
+            transition: -webkit-filter .3s;
+            -o-transition: filter .3s;
+            transition: filter .3s;
+            transition: filter .3s, -webkit-filter .3s;
+            overflow: auto;
         }
 
-        body[data-url-id*="?pages=tg_channel"] 
-#clavs iframe:not(.iframe_mask):not([id=*"telegram-post"]) {
-    display: none !important;
-} 
+        body[data-url-id*="?pages=tg_channel"] #clavs iframe:not(.iframe_mask):not([id=*"telegram-post"]) {
+            display: none !important;
+        }
 
-body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe {
-    display: block !important;
-    border: 2px solid #33afed !important;
-    margin: 10px !important;
-    width: -webkit-fill-available !important;
-    position: unset !important;
-    height: 80vh !important;
-    padding: 10px;
-    
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    -webkit-transition: .3s !important;
-    border-radius: 10px;
-}
+        body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe {
+            display: block !important;
+            border: 2px solid #33afed !important;
+            margin: 10px !important;
+            width: -webkit-fill-available !important;
+            position: unset !important;
+            height: 80vh !important;
+            padding: 10px;
 
-body[data-url-id*="?pages=tg_channel"] iframe {
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    -webkit-transition: .3s !important;
-    border-radius: 10px;
-}
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            -webkit-transition: .3s !important;
+            border-radius: 10px;
+        }
 
-body[data-url-id*="?pages=tg_channel"] i.tg_button {
-    display: block !important;
-}
- 
+        body[data-url-id*="?pages=tg_channel"] iframe {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            -webkit-transition: .3s !important;
+            border-radius: 10px;
+        }
 
-body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
-    display:none;
-}
-
-iframe {
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    -webkit-transition: .3s !important;
-    border-radius: 10px;
-}
-
-body[data-url-id*="?pages=tg_channel"] i.tg_button {
-    display: block !important;
-}
- 
-
-body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
-    display:none;
-}
-body[data-url-id*="?pages=tg_channel"]
-div_header {
-    background: #24A1DE !important;
-}
+        body[data-url-id*="?pages=tg_channel"] i.tg_button {
+            display: block !important;
+        }
 
 
-body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe[data-src]
-{ 
-  background-image:  url(<?= "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="; ?>),linear-gradient(45deg, #24a1de, #24a1de) !important;
-  background-repeat: no-repeat  !important;
-  background-position: center !important;
-}
-body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe 
-{
-height:     85vh !important; 
-                            min-height: 85vh !important;
-                            max-height:  85vh !important;
-                            max-width: 500px !important; 
-}
+        body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
+            display: none;
+        }
 
-.Ignoring_me_iframe.shadow_root div {
-    
-            
-    position: absolute;
-                left: 0px;
-                top: 0px;
-                width: 100%;
-                height: 100%;
-                opacity: 1;
-                display: block;
-                overflow: auto;
-                z-index: 33333333333;
-                display: flex;
-                flex-wrap: nowrap;
-                flex-direction: column;
-                align-content: center;
-                align-items: center;
-            
-            
-}
+        iframe {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            -webkit-transition: .3s !important;
+            border-radius: 10px;
+        }
 
-.Ignoring_me_iframe.shadow_root div {
-    overflow-x: hidden;
-    overflow-y: auto;
-    overflow-y: scroll;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    overflow-y: auto !important;
-    -ms-scroll-snap-type: y mandatory;
-    -webkit-scroll-snap-type: y mandatory;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    -webkit-transition: 0.5s;
-    -o-transition: 0.5s;
-    transition: 0.5s;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-}
+        body[data-url-id*="?pages=tg_channel"] i.tg_button {
+            display: block !important;
+        }
 
 
-.Ignoring_me_iframe.shadow_root div iframe {
-      height: 100%;
-    scroll-snap-align: center;
-    -ms-flex-negative: 0;
-    flex-shrink: 0; 
-    -webkit-transform-origin: center center;
-    -ms-transform-origin: center center;
-    transform-origin: center center;
-    -webkit-transform: scale(1);
-    -ms-transform: scale(1);
-    transform: scale(1);
-    transition: -webkit-transform 0.5s;
-    -webkit-transition: -webkit-transform 0.5s;
-    -o-transition: transform 0.5s;
-    transition: transform 0.5s;
-    transition: transform 0.5s, -webkit-transform 0.5s;
-    position: relative;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center
-}
+        body[data-url-id*="?pages=tg_channel"] i.bi.bi-share {
+            display: none;
+        }
 
-body video, #clavs, spjin{
-    filter:grayscale(1);
-}
+        body[data-url-id*="?pages=tg_channel"] div_header {
+            background: #24A1DE !important;
+        }
 
 
- 
-body {background:#000000e6 !important;}
+        body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe[data-src] {
+            background-image: url(<?= "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="; ?>), linear-gradient(45deg, #24a1de, #24a1de) !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+        }
+
+        body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe {
+            height: 85vh !important;
+            min-height: 85vh !important;
+            max-height: 85vh !important;
+            max-width: 500px !important;
+        }
+
+        .Ignoring_me_iframe.shadow_root div {
+
+
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            opacity: 1;
+            display: block;
+            overflow: auto;
+            z-index: 33333333333;
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            align-content: center;
+            align-items: center;
+
+
+        }
+
+        .Ignoring_me_iframe.shadow_root div {
+            overflow-x: hidden;
+            overflow-y: auto;
+            overflow-y: scroll;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            overflow-y: auto !important;
+            -ms-scroll-snap-type: y mandatory;
+            -webkit-scroll-snap-type: y mandatory;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transition: 0.5s;
+            -o-transition: 0.5s;
+            transition: 0.5s;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+        }
+
+
+        .Ignoring_me_iframe.shadow_root div iframe {
+            height: 100%;
+            scroll-snap-align: center;
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            -webkit-transform-origin: center center;
+            -ms-transform-origin: center center;
+            transform-origin: center center;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            transition: -webkit-transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
+            -o-transition: transform 0.5s;
+            transition: transform 0.5s;
+            transition: transform 0.5s, -webkit-transform 0.5s;
+            position: relative;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center
+        }
+
+        body video,
+        #clavs,
+        spjin {
+            filter: grayscale(1);
+        }
+
+
+
+        body {
+            background: #000000e6 !important;
+        }
     </style>
-    <?php 
-     if($_SERVER['HTTP_HOST'] == "markonikolic98.com"){?>
-    <!-- Google tag (gtag.js) --> 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <?php
+    if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
 
-  gtag('config', 'G-NZPKRC33WQ');
-</script>
-    <?php } 
+            gtag('config', 'G-NZPKRC33WQ');
+        </script>
+    <?php }
     ?>
 
 </head>
@@ -1285,12 +1290,15 @@ body {background:#000000e6 !important;}
         loop autoplay muted autobuffer playsinline class="wallpaperVideo">
         <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
     </video>
-    <p class="p-c"><?php /*Do you love random videos?<br>
-        - Tip: Reload page... */?>
-     &#x1F54A; &#128148; 	
-     In memory of the victims of the<br>terrorist attack in Moscow on March 22, 2024,<br>my entire personal website will be black and white...  🙏🤍
-<br><br>
-Stay in your homes and take care of your loved ones...</p>
+    <p class="p-c">
+        <?php /*Do you love random videos?<br>
+- Tip: Reload page... */ ?>
+        &#x1F54A; &#128148;
+        In memory of the victims of the<br>terrorist attack in Moscow on March 22, 2024,<br>my entire personal website
+        will be black and white... 🙏🤍
+        <br><br>
+        Stay in your homes and take care of your loved ones...
+    </p>
     <div id="content_Space"></div>
     <hh_anim_start>
 
@@ -1471,7 +1479,7 @@ Stay in your homes and take care of your loved ones...</p>
                 <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
                 <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"
                     title="Return to Blog home page"></i>
-                    <i class="bi bi-telegram tg_button" onclick="welcomer.Social.tg.open();"></i>
+                <i class="bi bi-telegram tg_button" onclick="welcomer.Social.tg.open();"></i>
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                 <i class="bi bi-x-lg close_btnf" onclick="welcomer.Hclose(this);" title="Close"></i>
@@ -1555,22 +1563,192 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
 
-    </div>
+        </div>
 
-    <gridder_loader>
-        <img alt="loading" loading="lazy"
-            src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="
-            height="55" width="55">
-    </gridder_loader>
+        <gridder_loader>
+            <img alt="loading" loading="lazy"
+                src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="
+                height="55" width="55">
+        </gridder_loader>
+
+
+        <canvas id="canvas">Your browser doesn't support canvas</canvas>
+
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
+            style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">
+            <defs>
+                <filter id="shadowed-goo">
+
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
+                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
+                        result="shadow" />
+                    <feOffset in="shadow" dx="1" dy="1" result="shadow" />
+                    <feBlend in2="shadow" in="goo" result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+                <filter id="goo">
+                    <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+                        result="goo" />
+                    <feBlend in2="goo" in="SourceGraphic" result="mix" />
+                </filter>
+            </defs>
+        </svg>
+        <div class="cursor" style="opacity: 0;"></div>
+        <info_box>
+            <info_msg onclick="$(this).removeClass('info_box_active');">
+                <dv_h></dv_h>
+                <info_div>
+                    <img src="/favicon.svg" alt="for Testing" title="aefaef" />
+                    <h4></h4>
+                </info_div>
+                <p></p>
+
+            </info_msg>
+        </info_box>
+        <?php /*<ul id="btns_bottom">
+
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
+
+</ul>
+*/ ?>
+        <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
+
+        <section data-ui-type="slider" class="hidden_omega">
+            <arr_bundle>
+                <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+                    style="transform:scale(1)" onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i>
+                <i class="bi bi-arrow-left-circle-fill catascrollEchatTv"
+                    onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
+
+            </arr_bundle>
+            <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
+                    class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
+            <i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i>
+            <div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();">
+
+            </div-echatv>
+        </section>
+        <section data-ui-type="social_feed" class="hidden_omega">
+        </section>
+        <section data-ui-type="editor" class="hidden_omega">
+            <div_header data-url="editor">
+                <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+                    <defs>
+                        <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                            <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                            <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                        </radialGradient>
+                    </defs>
+                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                        transform="rotate(334.41 50 50)">
+                        <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                            repeatCount="indefinite"></animateTransform>
+                    </rect>
+                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                        transform="rotate(255.072 50 50)">
+                        <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
+                            dur="12s" repeatCount="indefinite"></animateTransform>
+                    </rect>
+                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                        transform="rotate(139.903 50 50)">
+                        <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                            repeatCount="indefinite"></animateTransform>
+                    </rect>
+                </svg>
+                <span>Marko Nikolić - Portfolio > Editor - BETA</span>
+                <span class="editor_t">> Editor - BETA</span>
+
+                <btns_i>
+                    <input type="text" placeholder="Search project" data-hmm="search"
+                        onkeyup="welcomer.search_Kompjiler(this);" />
+                    <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
+                        title="Close Search"></i>
+
+                </btns_i>
+                <btns_r class="btns_r_editor_right">
+                    <i class="bi bi-arrow-left-short editor_btns undo"></i>
+                    <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
+                        class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
+                        data-title="Download as html file"></i>
+
+                    <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
+                    <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
+
+                    <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
+                    <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
+
+                </btns_r>
+
+            </div_header>
+            <editor-history-rp>
+
+            </editor-history-rp>
+            <editor-wrapper>
+            </editor-wrapper>
+        </section>
+
+        <div_not>
+            <div_panel>
+                <span></span>
+                <btns>
+                    <btn1>Yes</btn1>
+                    <btn2>Cancel</btn2>
+                </btns>
+            </div_panel>
+        </div_not>
+        <style>
+            a[data-iam-hidden="yes"] {
+                display: none !important;
+            }
+        </style>
+    </div>
     <div class="contanct_frm">
-        <?php /* <iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" src="/?mnps=image-mask"></iframe>
-<video  class="iframe_mask" style="opacity:0;" 
-onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 
-loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
-<source src="/?src=vdwallpper" type="video/mp4">
-</video> */ ?>
-        <div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"
-                >
+
+        <div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100"
+                preserveAspectRatio="xMidYMid slice">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
@@ -1578,12 +1756,14 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                         <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
                     </radialGradient>
                     <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
+                        </animate>
                         <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
                         <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
                     </radialGradient>
                     <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
+                        </animate>
                         <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
                         <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
                     </radialGradient>
@@ -1593,12 +1773,14 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                         <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
                     </radialGradient>
                     <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
+                        </animate>
                         <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
                         <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
                     </radialGradient>
                     <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
+                        </animate>
                         <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
                         <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                     </radialGradient>
@@ -1647,175 +1829,6 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
             <button type="button" id="sendbtn">Send message</button>
         </fotter>
     </div>
-
-    <canvas id="canvas">Your browser doesn't support canvas</canvas>
-
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-        style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">
-        <defs>
-            <filter id="shadowed-goo">
-
-                <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                    result="goo" />
-                <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
-                <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
-                    result="shadow" />
-                <feOffset in="shadow" dx="1" dy="1" result="shadow" />
-                <feBlend in2="shadow" in="goo" result="goo" />
-                <feBlend in2="goo" in="SourceGraphic" result="mix" />
-            </filter>
-            <filter id="goo">
-                <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                    result="goo" />
-                <feBlend in2="goo" in="SourceGraphic" result="mix" />
-            </filter>
-        </defs>
-    </svg>
-    <div class="cursor" style="opacity: 0;"></div>
-    <info_box>
-        <info_msg onclick="$(this).removeClass('info_box_active');">
-            <dv_h></dv_h>
-            <info_div>
-                <img src="/favicon.svg" alt="for Testing" title="aefaef" />
-                <h4></h4>
-            </info_div>
-            <p></p>
-
-        </info_msg>
-    </info_box>
-    <?php /*<ul id="btns_bottom">
-
-<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-<li><i class="fas fa-inbox"></i> <span>Примљене</span></li>
-
-</ul>
-*/ ?>
-    <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
-
-    <section data-ui-type="slider" class="hidden_omega">
-        <arr_bundle>
-            <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
-                style="transform:scale(1)" onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i>
-            <i class="bi bi-arrow-left-circle-fill catascrollEchatTv"
-                onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
-
-        </arr_bundle>
-        <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
-                class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
-        <i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i>
-        <div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();">
-
-        </div-echatv>
-    </section>
-    <section data-ui-type="social_feed" class="hidden_omega">
-    </section>
-    <section data-ui-type="editor" class="hidden_omega">
-        <div_header data-url="editor">
-            <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
-                <defs>
-                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
-                    </radialGradient>
-                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
-                    </radialGradient>
-                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
-                    </radialGradient>
-                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
-                    </radialGradient>
-                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
-                    </radialGradient>
-                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
-                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
-                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
-                    </radialGradient>
-                </defs>
-                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                    transform="rotate(334.41 50 50)">
-                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
-                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                        repeatCount="indefinite"></animateTransform>
-                </rect>
-                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                    transform="rotate(255.072 50 50)">
-                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
-                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
-                        repeatCount="indefinite"></animateTransform>
-                </rect>
-                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                    transform="rotate(139.903 50 50)">
-                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                        repeatCount="indefinite"></animateTransform>
-                </rect>
-            </svg>
-            <span>Marko Nikolić - Portfolio > Editor - BETA</span>
-            <span class="editor_t">> Editor - BETA</span>
-
-            <btns_i>
-                <input type="text" placeholder="Search project" data-hmm="search"
-                    onkeyup="welcomer.search_Kompjiler(this);" />
-                <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
-                    title="Close Search"></i>
-
-            </btns_i>
-            <btns_r class="btns_r_editor_right">
-                <i class="bi bi-arrow-left-short editor_btns undo"></i>
-                <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
-                    class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
-                    data-title="Download as html file"></i>
-
-                <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
-                <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
- 
-                <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
-                <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
-
-            </btns_r>
-
-        </div_header>
-        <editor-history-rp>
-
-        </editor-history-rp>
-        <editor-wrapper>
-        </editor-wrapper>
-    </section>
-
-    <div_not>
-        <div_panel>
-            <span></span>
-            <btns>
-                <btn1>Yes</btn1>
-                <btn2>Cancel</btn2>
-            </btns>
-        </div_panel>
-    </div_not>
-    <style>
-        a[data-iam-hidden="yes"] {
-            display: none !important;
-        }
-    </style>
 </body>
 
 </html>

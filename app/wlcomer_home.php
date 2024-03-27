@@ -1257,17 +1257,7 @@ media-src 'self';" />
             align-items: center
         }
 
-        body video,
-        #clavs,
-        spjin {
-            filter: grayscale(1);
-        }
-
-
-
-        body {
-            background: #000000e6 !important;
-        }
+     
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -1291,13 +1281,8 @@ media-src 'self';" />
         <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
     </video>
     <p class="p-c">
-        <?php /*Do you love random videos?<br>
-- Tip: Reload page... */ ?>
-        &#x1F54A; &#128148;
-        In memory of the victims of the<br>terrorist attack in Moscow on March 22, 2024,<br>my entire personal website
-        will be black and white... 🙏🤍
-        <br><br>
-        Stay in your homes and take care of your loved ones...
+   Do you love random videos?<br>
+- Tip: Reload page... 
     </p>
     <div id="content_Space"></div>
     <hh_anim_start>

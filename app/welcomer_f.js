@@ -3861,7 +3861,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 200,
+                count: 206,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);

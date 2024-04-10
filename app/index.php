@@ -379,9 +379,9 @@ echo $v .",";
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
             <meta property="og:description" content="This website for my PortFolio." />
-            <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&v=<?php echo time(); ?>" />
+            <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="630">

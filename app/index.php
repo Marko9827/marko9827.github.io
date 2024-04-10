@@ -10,7 +10,7 @@ header_remove("Expect-CT");
 define("CDN", "https://cdn.eronelit.com/");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]/app/");
 define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");
-if (!empty ($_GET['p'])) {
+if (!empty($_GET['p'])) {
     if ($_GET['p'] == "blog") {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
@@ -23,19 +23,20 @@ if (!empty ($_GET['p'])) {
 class portfolio_marko
 {
 
-    function minifyJS($inputFile) {
+    function minifyJS($inputFile)
+    {
         // Read the JavaScript file
         $jsContent = $inputFile;
-        
+
         // Remove single-line comments
         $jsContent = preg_replace('/\/\/.*?\n/', '', $jsContent);
-        
+
         // Remove multi-line comments
         $jsContent = preg_replace('/\/\*.*?\*\//s', '', $jsContent);
-        
+
         // Remove leading and trailing white spaces
         $jsContent = trim($jsContent);
-        
+
         // Write minified JS to output file
         // file_put_contents($outputFile, $jsContent);
         return $jsContent;
@@ -43,7 +44,7 @@ class portfolio_marko
 
     public function __construct($root = "")
     {
-        $fullUrl = (isset ($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+        $fullUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
         if (strpos($fullUrl, '.php') !== false || strpos($fullUrl, '.html') !== false || strpos($fullUrl, '.aspx') !== false) {
             $this->error_page(404);
         } else {
@@ -213,7 +214,7 @@ class portfolio_marko
         imagedestroy($resizedImage);
 
         $img = ob_get_clean();
-        if (!empty (($resizedImage))) {
+        if (!empty(($resizedImage))) {
             echo $img;
         } else {
             @readfile($uploadedFile);
@@ -224,7 +225,7 @@ class portfolio_marko
         $array = json_decode(file_get_contents(ROOT . ROOT . "data_s/blog/blgd.json"), true);
         $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
-        if (!empty ($id)) {
+        if (!empty($id)) {
             foreach ($array as $index => $element) {
                 if ($element['id'] == $id) {
                 }
@@ -261,7 +262,7 @@ class portfolio_marko
 
         // Check if the request was successful
         if ($response === false) {
-            die ('Failed to fetch data from the URL');
+            die('Failed to fetch data from the URL');
         }
 
         // Close cURL session
@@ -287,7 +288,7 @@ class portfolio_marko
 
         // Check if the request was successful
         if ($response === false) {
-            die ('Failed to fetch commit information from GitHub API.');
+            die('Failed to fetch commit information from GitHub API.');
         }
 
         // Decode the JSON response
@@ -326,15 +327,19 @@ class portfolio_marko
     }
     function MetaTags()
     {
-        $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+        $person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
-        if (!empty ($_GET['id']) || !empty ($_GET['blog'])) {
+
+        if (!empty($_GET['id']) || !empty($_GET['blog'])) {
             $off = false;
-            foreach ($array as $index => $element) {
-                if ($element['id'] == $_GET['id']) {
-                    $data = $element;
+           
+            foreach ($person as $key => $value) {
+                if ("$value[id]" == "$_GET[id]") {
+                   $data = $value;
+                  
                 }
             }
+           
             echo '<title >';
 
 
@@ -381,12 +386,12 @@ echo $v .",";
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="630">
             <meta property="og:locale" content="en_GB" />
-            <?php
+            <?php 
         } else {
             ?>
             <title>
                 <?php
-                if (!empty ($_GET['p'])) {
+                if (!empty($_GET['p'])) {
                     if ($_GET['p'] == "cv-pdf") {
                         echo "Marko Nikolić - Portfolio > CV";
                     } else if ($_GET['p'] == "visitcard") {
@@ -457,7 +462,7 @@ echo $v .",";
         #header("HTTP/1.1 200 OK");
         #   header("robots: noindex, nofollow");
 
-        die ('
+        die('
     <!DOCTYPE html>
     <html lang=en>
       <meta charset=utf-8>
@@ -586,13 +591,13 @@ echo $v .",";
 
     function RUN()
     {
-        if (!empty ($_GET['data'])) {
+        if (!empty($_GET['data'])) {
             if ($_GET['data'] == "sitemap") {
                 $this->sitemapGenerator();
             }
             if ($_GET['data'] == "") {
             }
-        } else if (!empty ($_GET['blog'])) {
+        } else if (!empty($_GET['blog'])) {
             $url = ROOT . "data_s/blog/image/";
             $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
             $file = ROOT . "data_s/blog/$_GET[blog].html";
@@ -602,7 +607,7 @@ echo $v .",";
             }
             if (file_exists($file)) {
                 header("content-type: text/html");
-                if (file_exists($file) && !empty ($_POST['id'])) {
+                if (file_exists($file) && !empty($_POST['id'])) {
                     $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
                     $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
 
@@ -639,12 +644,12 @@ echo $v .",";
                 }
                 // 23_jul_2023_09_26/1690103453287
             } else if (file_exists("$url$_GET[blog].png")) {
-                if (!empty ($_GET['for'])) {
+                if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].png");
                     }
-                } else if (!empty ($_GET['thumb'])) {
+                } else if (!empty($_GET['thumb'])) {
                     if ($_GET['thumb'] == "true") {
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].png");
@@ -654,7 +659,7 @@ echo $v .",";
                     readfile("$url$_GET[blog].png");
                 }
             } else if (file_exists("$url$_GET[blog].jpg")) {
-                if (!empty ($_GET['for'])) {
+                if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
                         $this->ServeThumb("$url$_GET[blog].jpg");
@@ -671,7 +676,7 @@ echo $v .",";
                 $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
                 $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
-                if (!empty ($_GET['id'])) {
+                if (!empty($_GET['id'])) {
                     $off = false;
                     foreach ($array as $index => $element) {
                         if ($element['id'] == $_GET['id']) {
@@ -680,7 +685,7 @@ echo $v .",";
                     }
                     if ($off) {
                     }
-                } else if (!empty ($_GET['rss'])) {
+                } else if (!empty($_GET['rss'])) {
                     if ($_GET['rss'] == "versions") {
                         $this->getRSSFeed();
                     }
@@ -690,7 +695,7 @@ echo $v .",";
                 exit();
             } else if ($_GET['blog'] == "search") {
                 // $found_key = array_search('blue', $colors);
-                if (!empty ($_GET['q'])) {
+                if (!empty($_GET['q'])) {
                     header("content-type: text/json");
                     $arrayF = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
                     $searchKey = "title";
@@ -735,12 +740,12 @@ echo $v .",";
                 include ROOT . "ERROR_PG.php";
             }
             exit();
-        } else if (!empty ($_GET['pdf_file'])) {
+        } else if (!empty($_GET['pdf_file'])) {
             $file = ROOT . "data_s/blog/image/$_GET[id].pdf";
             if ($_GET['pdf_file'] == "view") {
                 include ROOT . "Scripts/pdf_viewer.php";
             } else if ($_GET['pdf_file'] == "file") {
-                if (!empty ($_GET['id'])) {
+                if (!empty($_GET['id'])) {
                     if (file_exists($file)) {
                         header("content-type: application/pdf");
                         readfile($file);
@@ -749,7 +754,7 @@ echo $v .",";
             } else {
             }
             exit();
-        } else if (!empty ($_GET['mnps'])) {
+        } else if (!empty($_GET['mnps'])) {
 
             $img_background_3_jpg = ROOT . "img/background-3.jpg";
             $img_background_1_jpg = ROOT . "img/background-1.jpg";
@@ -773,7 +778,7 @@ echo $v .",";
                 include ROOT . "welcomer_f.js";
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
-                if (!empty ($_POST['what'])) {
+                if (!empty($_POST['what'])) {
                     if ($_POST['what'] == "blog") {
                         $url = "https://blog.eronelit.com/feeds/posts/default";
                         $fileContents = file_get_contents($url);
@@ -914,11 +919,11 @@ echo $v .",";
             // projct >
             // ?mnps=image-in-pr-img&image-in-pr-img-s-png=
             else if (strpos($_GET['mnps'], 'image-in-pr-img') !== false) {
-                if (!empty ($_GET['image-in-pr-img-s-png'])) {
+                if (!empty($_GET['image-in-pr-img-s-png'])) {
                     header('Content-type: image/png');
                     header('Content-disposition: inline; filename="Eronelit background"');
                     readfile("img/" . $_GET['image-in-pr-img-s-png'] . ".png");
-                } else if (!empty ($_GET['image-in-pr-img-s-jpg'])) {
+                } else if (!empty($_GET['image-in-pr-img-s-jpg'])) {
                     header('Content-type: image/jpeg');
                     header('Content-disposition: inline; filename="Eronelit background"');
                     readfile("img/" . $_GET['image-in-pr-img-s-jpg'] . ".jpg");
@@ -1018,7 +1023,7 @@ echo $v .",";
                 readfile($file_url);
             } else if ($_GET['mnps'] == 'blog') {
 
-                if (!empty ($_GET['f'])) {
+                if (!empty($_GET['f'])) {
                     header("content-type: text/html");
                     $file = ROOT . "data_s/blog/$_GET[f].html";
                     if (file_exists($file)) {
@@ -1058,13 +1063,13 @@ echo $v .",";
                     } else {
                         $this->error_page(404);
                     }
-                } else if (!empty ($_GET['q'])) {
+                } else if (!empty($_GET['q'])) {
                     if ($_GET['q'] == "all") {
                         header("content-type: text/json");
                         $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
                         $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
 
-                        if (!empty ($_GET['id'])) {
+                        if (!empty($_GET['id'])) {
                             foreach ($array as $index => $element) {
                                 if ($element['id'] == $_GET['id']) {
                                     echo json_encode($element);
@@ -1081,9 +1086,9 @@ echo $v .",";
             } else if ($_GET['mnps'] == 'gallery') {
 
                 $arr = array();
-                if (!empty ($_GET['img'])) {
+                if (!empty($_GET['img'])) {
                     $url = ROOT . "data_s/data_wlp/";
-                    if (!empty ($_GET["blog"])) {
+                    if (!empty($_GET["blog"])) {
                         $url = ROOT . "data_s/blog/image/";
                     }
 
@@ -1109,7 +1114,7 @@ echo $v .",";
                     } else {
                         $this->error_page(404);
                     }
-                } else if (!empty ($_GET['thumb'])) {
+                } else if (!empty($_GET['thumb'])) {
                     $url = ROOT . "data_s/data_wlp/";
                     $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
                     $i = 0;
@@ -1124,7 +1129,7 @@ echo $v .",";
                             header("Pragma: no-cache");
                             header("content-type: image/png");
                             // @readfile($filename);
-                            if (!empty ($_GET['thumb_or'])) {
+                            if (!empty($_GET['thumb_or'])) {
                                 @readfile($filename);
                             } else {
                                 $this->ServeThumb("$filename", 640);
@@ -1266,7 +1271,7 @@ echo $v .",";
             // -- arial font
             else if (strpos($_GET['mnps'], "arial_font") !== false) {
 
-                if (!empty ($_GET['FGC_source'])) {
+                if (!empty($_GET['FGC_source'])) {
                     header('Content-type: application/ttf');
                     header('Content-disposition: inline; filename="Eronelit font"');
                     readfile(ROOT . "/fonts/D4/" . $_GET['FGC_source'] . ".ttf");
@@ -1296,7 +1301,7 @@ echo $v .",";
             else if (strpos($_GET['mnps'], "FPCARGOsourceG") !== false) {
 
 
-                if (!empty ($_GET['FPCARGOsourceG0F1'])) {
+                if (!empty($_GET['FPCARGOsourceG0F1'])) {
 
                     header('Content-type: application/woff2');
                     header('Content-disposition: inline; filename="Eronelit font"');
@@ -1351,7 +1356,7 @@ echo $v .",";
             } else if ($_GET['mnps'] == "contacts") {
                 header("content-type: text/json");
                 define("ROOTcontacts", "$_SERVER[DOCUMENT_ROOT]/../markonikolic98");
-                if (!empty ($_POST["fm"]) || !empty ($_POST['fe']) || !empty ($_POST["fn"])) {
+                if (!empty($_POST["fm"]) || !empty($_POST['fe']) || !empty($_POST["fn"])) {
                     if (!is_dir(ROOTcontacts)) {
                         mkdir(ROOTcontacts);
                     }
@@ -1388,7 +1393,7 @@ echo $v .",";
                 }
                 exit();
             } else if ($_GET['mnps'] == 'dbe') {
-                if (!empty ($_GET['q'])) {
+                if (!empty($_GET['q'])) {
                     if (strpos($_GET['q'], ".png") !== false) {
                         header("Content-type: image/png");
                     } elseif (strpos($_GET['q'], ".svg") !== false) {
@@ -1421,7 +1426,7 @@ echo $v .",";
             else {
                 $this->error_page(404);
             }
-        } else if (!empty ($_GET['pages'])) {
+        } else if (!empty($_GET['pages'])) {
             if (strpos($_GET['pages'], 'visitcard') !== false) {
                 $this->Pages("visitcard");
             } else if (strpos($_GET['pages'], 'vc-js-1') !== false) {
@@ -1539,17 +1544,17 @@ echo $v .",";
                 $token = '';
 
                 // ID of the channel or group
-                $channelId = '';   
+                $channelId = '';
                 $url = "https://api.telegram.org/bot$token/getUpdates";
-                
+
                 // Initialize cURL session
                 $ch = curl_init();
-                
+
                 // Set cURL options
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // Disabling SSL verification for simplicity, consider enabling in production
-                
+
                 // Execute cURL request
                 $response = curl_exec($ch);
 

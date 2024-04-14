@@ -1309,7 +1309,7 @@ const welcomer = {
             document.querySelectorAll(this2.scrolle.dh).forEach(function (res) {
 
                 if (pr == res.getAttribute("data-name")) {
-                    console.log(res.getAttribute("data-name"));
+                    // console.log(res.getAttribute("data-name"));
                     welcomer.eronelit_gallery.byEvent(parseInt(res.getAttribute("data-index")));
                 }
             });
@@ -1432,7 +1432,7 @@ const welcomer = {
 
         var v = welcomer.load_gallery_j;
         for (var i = 0; i < v.length; i++) {
-            console.log(v[i]);
+       
             console.clear();
             var thi = "class='is_touch'",
                 p_open = "";
@@ -2516,7 +2516,7 @@ const welcomer = {
                 $('section[data-ui-type="editor"] div#editor-container').attr("style", `width: ${val}px !important;`);
                 $('section[data-ui-type="editor"] iframe#preview-container').attr("style", `width: ${$("body").width() - val}px !important;`);
 
-                console.log(val);
+              
             },
             rrsz: false
         },
@@ -3861,7 +3861,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 207,
+                count: 280,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);

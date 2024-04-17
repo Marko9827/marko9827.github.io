@@ -1111,7 +1111,13 @@ echo $v .",";
                             # $this->ServefThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
                         }
                         readfile("$url$_GET[img].jpeg");
-                    } else {
+                    } else if (file_exists("$url$_GET[img].svg")) {
+                        header("content-type: image/svg+xml");
+                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$_GET[img].jpeg")) {
+                            # $this->ServefThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
+                        }
+                        include "$url$_GET[img].svg";
+                    }else {
                         $this->error_page(404);
                     }
                 } else if (!empty($_GET['thumb'])) {

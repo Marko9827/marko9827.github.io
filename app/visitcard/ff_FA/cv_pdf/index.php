@@ -117,7 +117,7 @@ img.onload = async function () {
                     <br>
                     <span class="separator seperator_white"></span>
                     <div id="cont1">
-                        <p id="info_email" class="info_email_code"><i class="fas fa-heartbeat"></i><span>Born : 16/03/1998</span></p>
+                        <p id="info_email" class="info_email_code"><i class="fas fa-heartbeat"></i><span>Born : 16/03</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-map-marker-alt"></i><span>Serbia/Belgrade/Surčin</span></p>
                         <p id="info_email" class="info_email_code"><i class="fas fa-globe"></i><span>portfolio.eronelit.com</span></p>
                         <p id="info_email" class="info_email_code"><i class="fab fa-linkedin"></i><span>linkedin.com/in/markonikolic98</span></p>

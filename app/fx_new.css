@@ -82,3 +82,18 @@ div#clavs br_ta ta_f:hover {
             align-items: center
         }
     
+
+        .zoomer_exit {
+            padding: 2px 7.4px !important;
+        }
+        .zoomer_exit.zoomer_exit-share{
+            top: 65px !important;
+        }
+
+        /*
+        
+grider_viewer.gridsH.grids:hover project:not(:hover) {
+    opacity:0.5 !important;
+    filter:grayscale(1) !important;
+} 
+        */

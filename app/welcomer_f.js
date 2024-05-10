@@ -702,6 +702,7 @@ const welcomer = {
             href: "",
             type: true
         },
+        
         {
             title: "EchaTv[Echat] - Streaming Platform",
             description: "My video Streaming platform [Tiktok, Instagram, Youtube].",
@@ -716,6 +717,14 @@ const welcomer = {
             href: "https://echat.eronelit.com/?s=p&id=943703156",
             type: true
         },
+        {
+            title: "AI in cyber security",
+            description: "AI is also used, which simulates and learns from every second and up to the results of a cyber attack. Simulations last from 3 to 5 minutes...",
+            img: "/?blog=10_dec_2023_11_45/1702118968197",
+            href: "/?p=blog&id=1702118968197",
+            type: true
+        },
+         
     ],
     history: [],
     cursor: $(".cursor"),
@@ -1513,7 +1522,7 @@ const welcomer = {
             div_header = document.querySelector("div_header"),
             iframe = document.createElement("iframe"),
             clavs = document.getElementById("clavs"),
-            div_not_i = 0,
+            div_not_i = welcomer.projects.length,
             div_not = document.querySelector("div_not");
 
         $(ljoader).hide();
@@ -1524,7 +1533,41 @@ const welcomer = {
         $("grider_viewer").show().removeAttr("style");
         $("div_header").removeClass("ld_completeld_complete");
         $("grider_viewer").html("");
+        div_not_i--;
+        welcomer.projects.forEach(function (h) {
+            var v = welcomer.projects[div_not_i];
+            var thi = "class='is_touch'",
+            p_open = "";
+        if (v.href !== "") {
+            if (v.type) {
+                p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+           <i class="bi bi-link"></i> Open link
+           </p_open>`;
+            } else {
+                p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+          <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+           </p_open>`;
+            }
+        }
+        if (welcomer.isMobile()) {
 
+            thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+
+        }
+        $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+        <grider_box>
+        <p><span>${v.title}</span></p>
+
+            ${p_open}
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+            <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+            src="${v.img}" data-zoom-image="${v.img}" alt="${v.title}">
+                   </grider_box>
+
+            </project>`);
+            div_not_i--;
+        });
+        /*
         this.projects.forEach(function (v) {
             var thi = "class='is_touch'",
                 p_open = "";
@@ -1557,6 +1600,7 @@ const welcomer = {
                 </project>`);
             div_not_i++;
         });
+        */
         $("div_header").addClass("ld_completeld_complete2");
         $(ljoader).show();
         $("div_header span").html("Marko Nikolić - Portfolio > Projects");

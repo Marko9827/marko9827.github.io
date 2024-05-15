@@ -1,5 +1,36 @@
 [
     {
+        "id": "442305411",
+        "title": "AI i DNA. Sada... Šta bi bilo kada bi bilo?...",
+        "time": "14.may.2024 21:00",
+        "source": "/?blog=14_may_2024_21_00",
+        "keywords": " future ,brain ,humanbrain ,neurology ,science ,tech ,resources ,cpu ,quantum ,futurist ,quantumcomputing ,medicine ,ai",
+        "thumbail": "/?blog=14_may_2024_21_00/442305411",
+        "category": [
+            "ai",
+            "science" 
+        ], 
+        "gallery": [ 
+            "/?blog=14_may_2024_21_00/2342342332434",
+            
+            "/?blog=14_may_2024_21_00/442305411"
+        ]
+    },
+    {
+        "id": "4423041",
+        "title": "Book - Novi rat...",
+        "time": "09.may.2024 00:14",
+        "source": "/?blog=09_may_2024_00_14",
+        "keywords": "alien ,alieninvasion , wargames, creaturedesign ,digitalart ,extraterrestrial ,fantasyart ,fantasycreature ,monster ,otherworldly ,reptilian ,scifi ,scifiart ,scificharacter ,spacewarrior ,terranconflict ,artworktitle ,reptilianwarrior ,terranenemy",
+        "thumbail": "/?blog=09_may_2024_00_14/4423041",
+        "category": [
+            "deviantart",
+            "book",
+            "image"
+        ], 
+        "gallery": []
+    },
+    {
         "id": "4423041",
         "title": "Book - Novi rat...",
         "time": "09.may.2024 00:14",
@@ -108,7 +139,8 @@
         "thumbail": "/?blog=10_april_2024_01_20/42342323423423423413",
         "category": [
             "book",
-            "scifi"
+            "scifi",
+            "princess"
         ],
         "gallery": []
     },

@@ -1262,14 +1262,15 @@ const welcomer = {
             var this2 = welcomer.eronelit_gallery;
 
             document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
-            var a = json.length - 1;
-            for (var i = 1; i < json.length; i++) {
+            var a = json.length ,
+            v = json.length - 1;
+            for (var i = 0; i < json.length; i++) {
                 var dh = document.createElement("dh"),
                     image = document.createElement("img"),
                     afterSlash = json[i].split("/")[2];
                 image.src = json[i];
 
-                dh.innerHTML = `<dhn>${i}/${a}</dhn>`;
+                dh.innerHTML = `<dhn>${v}/${a}</dhn>`;
                 image.setAttribute("loading", "lazy");
                 image.setAttribute("style", "opacity:0; transform: scale(0);");
                 image.setAttribute("onload", "$(this).removeAttr('style');");
@@ -1278,7 +1279,7 @@ const welcomer = {
                 dh.appendChild(image);
 
                 document.querySelector(this2.scrolle.root_scroll).appendChild(dh);
-
+                v++;
             }
             document.querySelector('section[data-ui-type="slider"]').classList.remove("hidden_omega");
         },

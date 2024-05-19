@@ -827,7 +827,8 @@ const welcomer = {
             });
 
             ifrm.document.close();
-
+  //          $("div#clavs").prepend(`<img class="img_background_rljs" src="${f.thumbail}" alt="${f.title}" loading="lazy" />`);
+  
             $("div_header span").html(`Blog > ${f.title}`);
             welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
@@ -869,6 +870,7 @@ const welcomer = {
             welcomer.blogljoad_posts(f);
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
         } else {
+           
             $("div#clavs br_ta").addClass("active_scr");
             function decodeEntities(hexString) {
                 function hexToAscii(hexString) {
@@ -1148,8 +1150,8 @@ const welcomer = {
             clavs = document.getElementById("clavs"),
             div_not_i = 0,
             div_not = document.querySelector("div_not");
-
-        $(ljoader).hide();
+            var imgf = document.createElement("img");
+         $(ljoader).hide();
         $(Vjideo_sjpinner).show();
         document.getElementById("clavs").setAttribute("style", " opacity:1; transform:unset; ");
         $("iframe:not(.iframe_mask)").hide();
@@ -1219,7 +1221,7 @@ const welcomer = {
             document.querySelectorAll('div#clavs br_ta ta_f').forEach(function (r) { r.classList.remove('active') });
             active_scrf_2.classList.add("active");
         };
-        $("div#clavs br_ta").append(active_scrf_2);
+         $("div#clavs br_ta").append(active_scrf_2);
         arrayrH.forEach(function (re) {
             const active_scrf = document.createElement("ta_f");
             active_scrf.innerHTML = re;

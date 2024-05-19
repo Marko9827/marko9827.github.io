@@ -67,15 +67,9 @@ $rand = time();
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-    <link rel="preload" as="font"
-        href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-        type="font/woff2">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+    <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
@@ -104,25 +98,20 @@ img-src 'self' data: blob:;
 manifest-src 'self';
 media-src 'self';" />
 */ ?>
-    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
-        as="style" />
+    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" as="style" />
     <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
     <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
 
 
 
 
-    <script nonce="<?php echo NONCE; ?>" defer
-        src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
+    <script nonce="<?php echo NONCE; ?>" defer src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
 
-    <script nonce="<?php echo NONCE; ?>"
-        src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script nonce="<?php echo NONCE; ?>"
-        src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
+    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
-        type="text/javascript"></script>
+    <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" type="text/javascript">
         /* BETA CODE */
         function base64Encode(str) {
@@ -130,11 +119,11 @@ media-src 'self';" />
             const buffer = encoder.encode(str);
             return btoa(String.fromCharCode.apply(null, buffer));
         }
-        $.get("/?pages=cv-pdf", function (res) {
+        $.get("/?pages=cv-pdf", function(res) {
             window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
 
         });
-        $.get("/?pages=visitcard", function (res) {
+        $.get("/?pages=visitcard", function(res) {
             window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
         });
         window.portfolio = {
@@ -157,90 +146,90 @@ media-src 'self';" />
                     }
                 },
                 blog: <?php
-                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
-                $i = 0;
-                foreach ($r as $key => $val) {
-                    $curlR = SITE_HOST . "$val[source]";
-                    $queryString = parse_url($curlR, PHP_URL_QUERY);
+                        $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
+                        $i = 0;
+                        foreach ($r as $key => $val) {
+                            $curlR = SITE_HOST . "$val[source]";
+                            $queryString = parse_url($curlR, PHP_URL_QUERY);
 
-                    $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"]);
+                            $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"]);
 
-                    $r[$i]['page'] = "";
-                    $r[$i]['page'] = $response;
-                    $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
-                    $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
-                    $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
-                    $i++;
-                }
-                echo json_encode($r);
-                ?>,
+                            $r[$i]['page'] = "";
+                            $r[$i]['page'] = $response;
+                            $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
+                            $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
+                            $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
+                            $i++;
+                        }
+                        echo json_encode($r);
+                        ?>,
                 gallery: <?php
 
-                // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                $i = 0;
-                foreach ($fileList as $filename) {
-                    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                    $path_parts = pathinfo($filename);
-                    $IamNumberic = time() . rand();
-                    if (!is_numeric("$path_parts[filename]")) {
-                        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                        }
-                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                    } else {
-                        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+                            // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                            $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                            $i = 0;
+                            foreach ($fileList as $filename) {
+                                // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                                $path_parts = pathinfo($filename);
+                                $IamNumberic = time() . rand();
+                                if (!is_numeric("$path_parts[filename]")) {
+                                    rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                                    $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                                    if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                        #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                                    }
+                                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                                } else {
+                                    $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
 
-                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                    }
-                    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                    $arr[$i]->title = "-";
-                    $arr[$i]->description = "-";
+                                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                                }
+                                // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                                $arr[$i]->title = "-";
+                                $arr[$i]->description = "-";
 
-                    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                    $arr[$i]->href = "-";
-                    $arr[$i]->type = true;
-                    $i++;
-                }
-                echo json_encode($arr);
-                ?>,
+                                // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                                $arr[$i]->href = "-";
+                                $arr[$i]->type = true;
+                                $i++;
+                            }
+                            echo json_encode($arr);
+                            ?>,
                 projects: []
             },
             projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
             gallery: <?php
 
-            // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-            $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-            $i = 0;
-            foreach ($fileList as $filename) {
-                // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                $path_parts = pathinfo($filename);
-                $IamNumberic = time() . rand();
-                if (!is_numeric("$path_parts[filename]")) {
-                    rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                    $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                    if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                        #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                    }
-                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                } else {
-                    $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+                        // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                        $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                        $i = 0;
+                        foreach ($fileList as $filename) {
+                            // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                            $path_parts = pathinfo($filename);
+                            $IamNumberic = time() . rand();
+                            if (!is_numeric("$path_parts[filename]")) {
+                                rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                                $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                                if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                    #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                                }
+                                $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                            } else {
+                                $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
 
-                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                }
-                // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                $arr[$i]->title = "-";
-                $arr[$i]->description = "-";
+                                $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                            }
+                            // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                            $arr[$i]->title = "-";
+                            $arr[$i]->description = "-";
 
-                // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                $arr[$i]->href = "-";
-                $arr[$i]->type = true;
-                $i++;
-            }
-            echo count($arr);
-            ?>,
+                            // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                            $arr[$i]->href = "-";
+                            $arr[$i]->type = true;
+                            $i++;
+                        }
+                        echo count($arr);
+                        ?>,
             blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
 
         };
@@ -249,15 +238,15 @@ media-src 'self';" />
         <?php
 
         #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-        
+
         include ROOT . "welcomer_f.js";
 
         ?>
     </script>
 
-    <?php if (!empty ($_GET['tp'])) {
+    <?php if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
-            ?>
+    ?>
             <style type="text/css">
                 * {
                     pointer-events: none !important;
@@ -268,14 +257,12 @@ media-src 'self';" />
                     display: none;
                 }
             </style>
-        <?php }
+    <?php }
     } ?>
     <style type="text/css">
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
-        ?>
-
-        .zoomContainer:not(:hover, :focus) * {
+        ?>.zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
             width: 100% !important;
@@ -938,9 +925,7 @@ media-src 'self';" />
         }
 
         /*  */
-        <?php include ROOT . "css/document_root.css"; ?>
-
-        div#clavs br_ta {
+        <?php include ROOT . "css/document_root.css"; ?>div#clavs br_ta {
             position: sticky;
             background: var(--black-trasparent-color);
             top: 51.1px;
@@ -1257,7 +1242,25 @@ media-src 'self';" />
             align-items: center
         }
 
-     
+        img.img_background_rljs {
+
+            position: fixed;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    bottom: 0px;
+    -webkit-filter: blur(4px);
+            filter: blur(4px);
+    -o-object-fit: cover;
+       object-fit: cover;
+    background: black;
+    opacity: 0.5;
+    z-index: -1;
+    pointer-events: none;
+
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -1265,7 +1268,10 @@ media-src 'self';" />
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
             gtag('js', new Date());
 
             gtag('config', 'G-NZPKRC33WQ');
@@ -1276,13 +1282,12 @@ media-src 'self';" />
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
-        loop autoplay muted autobuffer playsinline class="wallpaperVideo">
+    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" loop autoplay muted autobuffer playsinline class="wallpaperVideo">
         <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
     </video>
     <p class="p-c">
-   Do you love random videos?<br>
-- Tip: Reload page... 
+        Do you love random videos?<br>
+        - Tip: Reload page...
     </p>
     <div id="content_Space"></div>
     <hh_anim_start>
@@ -1331,26 +1336,20 @@ media-src 'self';" />
                             <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                         </radialGradient>
                     </defs>
-                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                        transform="rotate(334.41 50 50)">
+                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
                         <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                            repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform>
                     </rect>
-                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                        transform="rotate(255.072 50 50)">
+                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)">
                         <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
-                            dur="12s" repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform>
                     </rect>
-                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                        transform="rotate(139.903 50 50)">
+                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
                         <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                            repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
                     </rect>
                 </svg>
                 <br class="hide_noy"><br class="hide_noy">
@@ -1362,11 +1361,8 @@ media-src 'self';" />
                 </div>
                 <br class="hide_noy"><br>
                 <arr_bundle>
-                    <i onclick="welcomer.bundleSuggestedS(1);"
-                        class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
-                        style="transform:scale(1)"></i>
-                    <i onclick="welcomer.bundleSuggestedS('2');" class="bi bi-arrow-left-circle-fill catascrollEchatTv"
-                        style="transform:scale(0);"></i>
+                    <i onclick="welcomer.bundleSuggestedS(1);" class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv" style="transform:scale(1)"></i>
+                    <i onclick="welcomer.bundleSuggestedS('2');" class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i>
 
 
                 </arr_bundle>
@@ -1424,26 +1420,20 @@ media-src 'self';" />
                         <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                     </radialGradient>
                 </defs>
-                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                    transform="rotate(334.41 50 50)">
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
                     <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform>
                 </rect>
-                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                    transform="rotate(255.072 50 50)">
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)">
                     <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform>
                 </rect>
-                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                    transform="rotate(139.903 50 50)">
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
                     <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg>
             <i id="reaload_page" title="Reload" onclick="welcomer.reload_me(this);" class="bi bi-arrow-clockwise"></i>
@@ -1452,18 +1442,14 @@ media-src 'self';" />
             </svg><span>Loading ...</span>
 
             <btns_i>
-                <input type="text" placeholder="Search ..." data-hmm="search"
-                    onkeyup="welcomer.search_Kompjiler(this);" />
-                <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
-                    title="Close Search"></i>
+                <input type="text" placeholder="Search ..." data-hmm="search" onkeyup="welcomer.search_Kompjiler(this);" />
+                <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i>
 
             </btns_i>
             <btns_r>
-                <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);"
-                    title="Search project..."></i>
+                <i class="bi bi-search F_bi_search" data-hmm="true" onclick="welcomer.search_Kompjiler(this);" title="Search project..."></i>
                 <i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i>
-                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"
-                    title="Return to Blog home page"></i>
+                <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');" title="Return to Blog home page"></i>
                 <i class="bi bi-telegram tg_button" onclick="welcomer.Social.tg.open();"></i>
 
                 <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
@@ -1551,33 +1537,27 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         </div>
 
         <gridder_loader>
-            <img alt="loading" loading="lazy"
-                src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4="
-                height="55" width="55">
+            <img alt="loading" loading="lazy" src="data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=" height="55" width="55">
         </gridder_loader>
 
 
         <canvas id="canvas">Your browser doesn't support canvas</canvas>
 
-        <svg xmlns="http://www.w3.org/2000/svg" version="1.1"
-            style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;">
             <defs>
                 <filter id="shadowed-goo">
 
                     <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                        result="goo" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
                     <feGaussianBlur in="goo" stdDeviation="3" result="shadow" />
-                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2"
-                        result="shadow" />
+                    <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 -0.2" result="shadow" />
                     <feOffset in="shadow" dx="1" dy="1" result="shadow" />
                     <feBlend in2="shadow" in="goo" result="goo" />
                     <feBlend in2="goo" in="SourceGraphic" result="mix" />
                 </filter>
                 <filter id="goo">
                     <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" />
-                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
-                        result="goo" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
                     <feBlend in2="goo" in="SourceGraphic" result="mix" />
                 </filter>
             </defs>
@@ -1607,14 +1587,11 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
         <section data-ui-type="slider" class="hidden_omega">
             <arr_bundle>
-                <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
-                    style="transform:scale(1)" onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i>
-                <i class="bi bi-arrow-left-circle-fill catascrollEchatTv"
-                    onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
+                <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv" style="transform:scale(1)" onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i>
+                <i class="bi bi-arrow-left-circle-fill catascrollEchatTv" onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i>
 
             </arr_bundle>
-            <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
-                    class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
+            <span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;" class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span>
             <i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i>
             <div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();">
 
@@ -1661,43 +1638,33 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                             <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                         </radialGradient>
                     </defs>
-                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                        transform="rotate(334.41 50 50)">
+                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
                         <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                            repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform>
                     </rect>
-                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                        transform="rotate(255.072 50 50)">
+                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)">
                         <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
-                            dur="12s" repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform>
                     </rect>
-                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                        transform="rotate(139.903 50 50)">
+                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
                         <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                         <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                            repeatCount="indefinite"></animateTransform>
+                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
                     </rect>
                 </svg>
                 <span>Marko Nikolić - Portfolio > Editor - BETA</span>
                 <span class="editor_t">> Editor - BETA</span>
 
                 <btns_i>
-                    <input type="text" placeholder="Search project" data-hmm="search"
-                        onkeyup="welcomer.search_Kompjiler(this);" />
-                    <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
-                        title="Close Search"></i>
+                    <input type="text" placeholder="Search project" data-hmm="search" onkeyup="welcomer.search_Kompjiler(this);" />
+                    <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i>
 
                 </btns_i>
                 <btns_r class="btns_r_editor_right">
                     <i class="bi bi-arrow-left-short editor_btns undo"></i>
-                    <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i
-                        class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();"
-                        data-title="Download as html file"></i>
+                    <i class="bi bi-arrow-right-short editor_btns redo  " title="redo" data-title="redo"></i> <i class="bi bi-file-earmark-arrow-down celvon" onclick="welcomer.editor.d();" data-title="Download as html file"></i>
 
                     <!-- <i class="bi bi-house pdf_page_home_btn" onclick="welcomer.blogloader('all');"></i> -->
                     <i class="bi bi-question-lg" onclick="welcomer.editor.load_menu_bar(this);"></i>
@@ -1732,8 +1699,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
     </div>
     <div class="contanct_frm">
 
-        <div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100"
-                preserveAspectRatio="xMidYMid slice">
+        <div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
@@ -1770,26 +1736,20 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                         <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                     </radialGradient>
                 </defs>
-                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                    transform="rotate(334.41 50 50)">
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
                     <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform>
                 </rect>
-                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                    transform="rotate(255.072 50 50)">
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)">
                     <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform>
                 </rect>
-                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                    transform="rotate(139.903 50 50)">
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
                     <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                        repeatCount="indefinite"></animateTransform>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
 

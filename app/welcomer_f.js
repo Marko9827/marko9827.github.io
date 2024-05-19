@@ -825,11 +825,9 @@ const welcomer = {
 
                 });
             });
-
+            
             ifrm.document.close();
-  //          $("div#clavs").prepend(`<img class="img_background_rljs" src="${f.thumbail}" alt="${f.title}" loading="lazy" />`);
-  
-            $("div_header span").html(`Blog > ${f.title}`);
+             $("div_header span").html(`Blog > ${f.title}`);
             welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
             $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
@@ -839,6 +837,7 @@ const welcomer = {
 
     },
     blog_loader_natjive: function (id = "all") {
+     
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
@@ -847,7 +846,7 @@ const welcomer = {
         $("gridder_loader").attr("style", "opacity:1");
         $(".pdf_page_home_btn").hide();
         $(".close_btnf").show();
-
+        $(" div.bra").remove();
         $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
         if (id == "null" || id == null) {
             id = "all";
@@ -869,6 +868,7 @@ const welcomer = {
             welcomer.blg_history_replace('/?p=blog');
             welcomer.blogljoad_posts(f);
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
+       
         } else {
            
             $("div#clavs br_ta").addClass("active_scr");
@@ -921,6 +921,8 @@ const welcomer = {
 
                 ifrm.document.close();
 
+                $("div#clavs").prepend(`<div class="bra"><img class="img_background_rljs" src="${f.thumbail}" alt="${$("title").html()}" loading="lazy" /></div>`);  
+                $("#clavs grider_viewer").html("");
                 $("div_header span").html(`Blog > ${f.title}`);
                 welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
 
@@ -948,7 +950,7 @@ const welcomer = {
     },
     blogloader: function (id = "all") {
         $("#clavs grider_viewer, div#clavs br_ta").removeAttr("style");
-
+        $(" div.bra").remove();
         var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
         ifrm.removeAttribute("onload");
         ifrm = ifrm.contentWindow || ifrm.contentDocument.document || ifrm.contentDocument;
@@ -976,6 +978,7 @@ const welcomer = {
             $('#clavs iframe:not(.iframe_mask)').removeAttr("src");
 
         } else {
+            
             welcomer.blog_loader_natjive(id);
         }
         welcomer.titleC("Blog > Marko Nikolić - Portfolio")

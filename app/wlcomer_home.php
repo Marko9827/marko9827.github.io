@@ -1242,23 +1242,33 @@ media-src 'self';" />
             align-items: center
         }
 
-        img.img_background_rljs {
+        div.bra {
+            position: fixed;
+            background: black;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        div.bra img.img_background_rljs {
 
             position: fixed;
-    left: 0px;
-    right: 0px;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    bottom: 0px;
-    -webkit-filter: blur(4px);
-            filter: blur(4px);
-    -o-object-fit: cover;
-       object-fit: cover;
-    background: black;
-    opacity: 0.5;
-    z-index: -1;
-    pointer-events: none;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            bottom: 0px;
+            -webkit-filter: blur(4px);
+            filter: blur(2px);
+            -o-object-fit: cover;
+            object-fit: cover;
+            background: black;
+            opacity: 0.9;
+            z-index: -1;
+            pointer-events: none;
 
         }
     </style>

@@ -1271,6 +1271,28 @@ media-src 'self';" />
             pointer-events: none;
 
         }
+
+        div#buttons.box_shadow img.aepraaa3 {
+    background: transparent;
+    border: none;
+    position: absolute;
+    z-index: -1;
+    left: 0px;
+    top: 0px;
+    padding: 0px;
+    border-radius: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+    object-fit: cover;
+    pointer-events: none;
+    opacity: 0;
+}
+ 
+
+div#buttons.box_shadow .adiv:hover img.aepraaa3 {
+    opacity:0.5;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

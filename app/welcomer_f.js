@@ -240,9 +240,9 @@ const welcomer = {
             descr: "Look at my Telegram profile",
             icon: "fab fa-telegram",
             href: {
-                f_u: "window.location.href = '/?p=tg_channel';",
-                f: true,
-                target: "self"
+                f_u: `https://t.me/nikoliccc02`, //"window.location.href = '/?p=tg_channel';",
+                f: false,
+                target: "blank"
             },
             num: 0,
             beta: false,
@@ -466,7 +466,9 @@ const welcomer = {
                 i = document.createElement("i"),
                 a = document.createElement("a"),
                 span = document.createElement("span"),
+                img = document.createElement("img"),
                 nnum = document.createElement("div");
+                img.setAttribute("class","aepraaa3");
             try {
                 if (v.visible == "yes") {
                     a.setAttribute("data-iam-hidden", "yes");
@@ -583,6 +585,8 @@ const welcomer = {
                     div.appendChild(nnum);
                 }
                 div.appendChild(span);
+                
+                div.appendChild(img);
 
                 buttons_box_shadow.appendChild(div);
             }
@@ -3911,7 +3915,7 @@ const welcomer = {
         tg: {
             conf: {
                 id: "nikoliccc02",
-                count: 280,
+                count: 323,
             },
             open: function () {
                 window.open(`https://t.me/${this.conf.id}`);
@@ -3946,6 +3950,8 @@ const welcomer = {
                 });
             },
             start: function () {
+                this.open();
+                return;
                 $(document).ready(function(){
                 var elm = document.querySelector(".Ignoring_me_iframe.shadow_root"),
                     div = document.createElement("div");

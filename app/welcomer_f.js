@@ -145,7 +145,7 @@ const welcomer = {
             title: "Editor",
             descr: "Html5/css/javascript editor, other languages coming soon...",
             icon: "bi bi-file-code",
-            adiv_gat: "blog_bundle",
+            adiv_gat: "editor_bundle",
             href: {
                 f_u: 'welcomer.blg_history_replace(`/?p=editor`); welcomer.editor.start();',
                 f: true,

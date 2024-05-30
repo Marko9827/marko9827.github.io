@@ -115,33 +115,6 @@ const welcomer = {
             soon: false
         },
         {
-            title: "Contact me",
-            descr: "Contact me",
-            icon: "bi bi-inbox",
-            href: {
-                f_u: "welcomer.cp();",
-                f: true,
-                target: "blank"
-            },
-            num: 0,
-            beta: false,
-            soon: false
-        },
-        {
-            title: "Blog/News &#128512",
-            descr: "Blog/News &#128512",
-            icon: "bi bi-rss",
-            name: "blog_old",
-            visible: "yes",
-            href: {
-                f_u: "https://blog.eronelit.com/",
-                f: false,
-                target: "blank"
-            },
-            num: 323,
-            beta: false,
-            soon: false
-        }, {
             title: "Gallery - Photos",
             descr: "My photos gallery | Comming soon",
             icon: "bi bi-images",
@@ -182,6 +155,34 @@ const welcomer = {
             beta: false,
             soon: false
         },
+        {
+            title: "Contact me",
+            descr: "Contact me",
+            icon: "bi bi-inbox",
+            href: {
+                f_u: "welcomer.cp();",
+                f: true,
+                target: "blank"
+            },
+            num: 0,
+            beta: false,
+            soon: false
+        },
+        {
+            title: "Blog/News &#128512",
+            descr: "Blog/News &#128512",
+            icon: "bi bi-rss",
+            name: "blog_old",
+            visible: "yes",
+            href: {
+                f_u: "https://blog.eronelit.com/",
+                f: false,
+                target: "blank"
+            },
+            num: 323,
+            beta: false,
+            soon: false
+        }, 
         {
             title: "My Linkedin",
             descr: "Look at my Linkedin Official profile",
@@ -419,6 +420,16 @@ const welcomer = {
             URL.revokeObjectURL(H);
         }, 1000);
     },
+    generateGrid_backrs: function (what = "", fsrc) {
+        var srcf = "";
+        if(what == "gallery_bundle"){
+          srcf =  window.portfolio.data.gallery[window.portfolio.data.gallery.length - 1]['img']
+        }
+        if(what == "blog_bundle"){
+            srcf = window.portfolio.data.blog[0]['thumbail'];
+        }
+        fsrc(srcf);
+    },
     generateGrid: function () {
         document.querySelector(".pdf_download").addEventListener("click", function () {
 
@@ -495,6 +506,13 @@ const welcomer = {
                 const adiv_gat = v.blog_bundle || "";
                 if (!adiv_gat == "") {
                     a.setAttribute("adiv_gat", adiv_gat);
+                    a.appendChild(img);
+                     welcomer.generateGrid_backrs(adiv_gat, function(res){
+                        img.src = res;
+                        img.onerror = function(){
+                            img.setAttribute("style","display:none;");
+                        }
+                    });
                 }
 
                 a.title = v.descr;
@@ -524,7 +542,7 @@ const welcomer = {
                     a.appendChild(nnum);
                 }
                 a.appendChild(span);
-
+                
                 buttons_box_shadow.appendChild(a);
             } else {
                 div.onclick = function () {
@@ -546,6 +564,7 @@ const welcomer = {
                         }
                     }
                 };
+                 
 
                 div.onmouseover = function () {
                     welcomer.bell_over(div);
@@ -556,6 +575,13 @@ const welcomer = {
                 const adiv_gat = v.adiv_gat || "";
                 if (!adiv_gat == "") {
                     div.setAttribute("adiv_gat", adiv_gat);
+          
+                    welcomer.generateGrid_backrs(adiv_gat, function(res){
+                        img.src = res;
+                        img.onerror = function(){
+                            img.setAttribute("style","display:none;");
+                        }
+                    });
                 }
                 div.classList.add("adiv");
                 div.title = v.descr;

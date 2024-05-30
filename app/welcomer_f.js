@@ -421,12 +421,35 @@ const welcomer = {
         }, 1000);
     },
     generateGrid_backrs: function (what = "", fsrc) {
-        var srcf = "";
-        if(what == "gallery_bundle"){
-          srcf =  window.portfolio.data.gallery[window.portfolio.data.gallery.length - 1]['img']
+        var srcf = "",
+        getRandomNumber = function(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        if(what == "gallery_bundle"){ 
+            srcf =  window.portfolio.data.gallery[getRandomNumber(5 ,(window.portfolio.data.gallery.length - 1))]['img'];
+            setInterval(() => {
+                // .adiv['blog_bundle'] {}
+                // #buttons.adiv[adiv_gat="gallery_bundle"]
+                var img_bundle = document.querySelector("#buttons .adiv[adiv_gat='gallery_bundle'] img");
+                img_bundle.classList.add("loading");
+                setTimeout(() => {
+                    
+           
+                img_bundle.src = window.portfolio.data.gallery[getRandomNumber(5 ,(window.portfolio.data.gallery.length - 1))]['img'];
+              
+                    img_bundle.onload = function(){
+                  setTimeout(() => {
+                    try{
+                        img_bundle.classList.remove("loading");
+                        }catch(aer){}
+                  }, 500);
+                
+                }       }, 500);
+            }, 5500);
         }
         if(what == "blog_bundle"){
             srcf = window.portfolio.data.blog[0]['thumbail'];
+           
         }
         fsrc(srcf);
     },

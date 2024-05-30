@@ -1288,9 +1288,11 @@ media-src 'self';" />
     pointer-events: none;
     opacity: 0;
 }
- 
+div#buttons.box_shadow .adiv:hover img.aepraaa3.loading {
+ opacity: 0 !important;
+}
 
-div#buttons.box_shadow .adiv:hover img.aepraaa3 {
+div#buttons.box_shadow .adiv:hover img.aepraaa3:not(.loading) {
     opacity:0.5;
 }
     </style>

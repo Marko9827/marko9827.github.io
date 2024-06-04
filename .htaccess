@@ -2088,7 +2088,7 @@ Header always set Content-Security-Policy "upgrade-insecure-requests;"
 </IfModule>
 
  
-Header set Access-Control-Allow-Methods "GET"
+#Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
 
 #Header set X-Frame-Options *.eronelit.com
@@ -2106,3 +2106,15 @@ RewriteCond %{HTTP_HOST} ^portfolio\.eronelit\.com [NC]
 RewriteRule ^(.*)$ http://markonikolic98.com/$1 [L,R=301]
 
 AddDefaultCharset UTF-8
+
+
+<IfModule mod_headers.c>
+    Header set Access-Control-Allow-Origin "*"
+    Header set Access-Control-Allow-Methods "POST, GET, OPTIONS"
+    Header set Access-Control-Allow-Headers "Authorization, Content-Type"
+</IfModule>
+
+# Handle OPTIONS requests
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=200,L]

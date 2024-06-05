@@ -164,36 +164,7 @@ media-src 'self';" />
                             // $varr;
                             // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
                             // $varr = array();
-                            foreach ($val["shared_links"] as $var) {
-                                
-                                $varr .= " $var";
-                            }
-                         
-                            $url = "https://api.eronelit.com/graph";
-                            $postData = [
-                                'token' => '32M052k350QaeofkaeopfF',
-                                'key' => '3402340234239J939592369',
-                                'type' =>  'share_validator',
-                                'shared' => $var
-                            ]; 
-                            $ch = curl_init(); 
-                            curl_setopt($ch, CURLOPT_URL, $url); 
-                            curl_setopt($ch, CURLOPT_POST, 1); 
-                            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-                            curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
-                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                                'Content-Type: application/x-www-form-urlencoded',
-                                'Authorization: Bearer 32M052k350QaeofkaeopfF'
-                            ]);
-                            $response = curl_exec($ch); 
-                            header("content-type: text/json");
-                            if(curl_errno($ch)) { 
-                                echo "[]";
-                            } else { 
-                                $r[$i]['shared_lnks'] = $response;
-                            } 
-                            curl_close($ch);
+                           
                             
                             // -
                             $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);

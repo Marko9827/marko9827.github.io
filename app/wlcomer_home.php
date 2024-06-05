@@ -157,10 +157,11 @@ media-src 'self';" />
                             $curlR = SITE_HOST . "$val[source]";
                             $queryString = parse_url($curlR, PHP_URL_QUERY);
                             // -
-                            $varr = "";
-                            // foreach ($val['shared_links'] as $val3){
-                            // array_push($varr, array($this->SharedUlrF("$val3")));
-                            // }
+                            $varr = array();
+                        foreach ($val['shared_links'] as $key => $val3){
+                        #    array_push($varr, array(sharedUlr("$val3")));
+                          }
+                        #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
                             // $varr;
                             // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
                             // $varr = array();

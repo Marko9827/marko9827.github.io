@@ -2,6 +2,144 @@
 session_start();
 $HOST_URL = ROOT;
 
+function getUrls($string)
+{
+    $regex = '/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i';
+    preg_match_all($regex, $string, $matches, PREG_PATTERN_ORDER);
+    // return (array_reverse($matches[0]));
+    return ($matches[0]);
+}
+
+function getTitle($url)
+{
+    $page = file_get_contents($url);
+    $title = preg_match('/<title[^>]*>(.*?)<\/title>/ims', $page, $match) ? $match[1] : null;
+    if ($title !== null) {
+        return $title;
+    } else {
+        return "";
+    }
+}
+function get_img($singlemeal)
+{
+    $sites_html = file_get_contents($singlemeal);
+
+    $html = new \DOMDocument();
+    @$html->loadHTML($sites_html);
+    $meta_og_img = null;
+    //Get all meta tags and loop through them.
+    foreach ($html->getElementsByTagName('meta') as $meta) {
+        //If the property attribute of the meta tag is og:image
+        if ($meta->getAttribute('property') == 'og:image') {
+            //Assign the value from content attribute to $meta_og_img
+            $meta_og_img = $meta->getAttribute('content');
+        }
+    }
+
+    if (strpos($meta_og_img, get_host_from_url($singlemeal)) !== false) {
+
+        // return get_host_from_url($singlemeal) . "/" . $meta_og_img; //$base64; //"data:image/jpg;base64,$base64";
+        return $meta_og_img;
+        //  return $meta_og_img;
+    } else {
+        return $meta_og_img; //$base64; //"data:image/jpg;base64,$base64";
+    }
+}
+function headersToArray($str)
+{
+    $headers = array();
+    $headersTmpArray = explode("\r\n", $str);
+    for ($i = 0; $i < count($headersTmpArray); ++$i) {
+        // we dont care about the two \r\n lines at the end of the headers
+        if (strlen($headersTmpArray[$i]) > 0) {
+            // the headers start with HTTP status codes, which do not contain a colon so we can filter them out too
+            if (strpos($headersTmpArray[$i], ":")) {
+                $headerName = substr($headersTmpArray[$i], 0, strpos($headersTmpArray[$i], ":"));
+                $headerValue = substr($headersTmpArray[$i], strpos($headersTmpArray[$i], ":") + 1);
+                $headers[$headerName] = $headerValue;
+            }
+        }
+    }
+    return $headers;
+}
+function yt($url)
+{
+
+    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $value);
+
+    //explode("v=", $url);
+    $videoId = $value[1];
+
+    return "https://img.youtube.com/vi/$videoId/hqdefault.jpg";
+}
+function get_host_from_url($link)
+{
+    $str = str_replace(["www.", "https://", "http://"], [''], $link);
+    $link = explode("/", $str);
+    return strtolower($link[0]);
+}
+
+function get_icon_image($url)
+{
+    $base64_url = file_get_contents($url); //"http://www.google.com/s2/favicons?domain=$url");
+    $base64 = base64_encode($base64_url);
+
+    $mime = $base64_url;
+    $rvaev = "data:image/jpg;base64,$base64";
+    if (exif_imagetype($rvaev)) {
+        return $rvaev;
+    } else if (getimagesize($rvaev)) {
+        return $rvaev;
+    } else {
+        return "/?url=source&sourcedash=icons/heart-broken-solid.svg";
+    }
+    # return $rvaev;
+}
+function getWebsiteMeta($url) { 
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    $html = curl_exec($ch);
+    curl_close($ch); 
+    if ($html === false) {
+        return null;
+    } 
+    $doc = new DOMDocument();
+    @$doc->loadHTML($html); 
+    $xpath = new DOMXPath($doc); 
+    $title = '';
+    $titleNode = $xpath->query('//title')->item(0);
+    if ($titleNode) {
+        $title = $titleNode->textContent;
+    } 
+    $description = '';
+    $descriptionNode = $xpath->query('//meta[@name="description"]/@content')->item(0);
+    if ($descriptionNode) {
+        $description = $descriptionNode->textContent;
+    } 
+    $ogImage = '';
+    $ogImageNode = $xpath->query('//meta[@property="og:image"]/@content')->item(0);
+    if ($ogImageNode) {
+        $ogImage = $ogImageNode->textContent;
+    } 
+    $favicon = '';
+    $faviconNode = $xpath->query('//link[@rel="icon"]/@href')->item(0);
+    if ($faviconNode) {
+        $favicon = $faviconNode->textContent;
+    } 
+    if ($favicon && !filter_var($favicon, FILTER_VALIDATE_URL)) {
+        $parsedUrl = parse_url($url);
+        $favicon = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . '/' . ltrim($favicon, '/');
+    }
+
+    return [
+        'title' => $title,
+        'description' => $description,
+        'og_image' => $ogImage,
+        'favicon' => $favicon,
+    ];
+}
 function img_t($url)
 {
     global $HOST_URL;
@@ -16,7 +154,7 @@ function MarkDownTOstring($path)
 {
 
 
-
+    $html = "";
     $markdown = file_get_contents($path);
     $converter = new League\CommonMark\CommonMarkConverter();
     $html .= "<style type='text/css'> " . file_get_contents(ROOT . "svc/md/style.css") . " </style>";
@@ -63,38 +201,94 @@ function exist_mime($filePath)
     return $mime;
 }
 
-function sharedUlr($aerea){
-    $url = "https://api.eronelit.com/graph";
-    $postData = [
-        'token' => '32M052k350QaeofkaeopfF',
-        'key' => '3402340234239J939592369',
-        'type' =>  'share_validator',
-        'shared' => $aerea
-    ]; 
-    $ch = curl_init(); 
-    curl_setopt($ch, CURLOPT_URL, $url); 
-    curl_setopt($ch, CURLOPT_POST, 1); 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-    curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/x-www-form-urlencoded',
-        'Authorization: Bearer 32M052k350QaeofkaeopfF'
-    ]);
-    $response = curl_exec($ch); 
- 
-    if(curl_errno($ch)) { 
-        echo "[]";
-    } else { 
-        echo  $response;
-    } 
-    curl_close($ch);
+function sharedUlr($aerea)
+{
+    $shared = $aerea;
+
+    //   if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+    if (isset($shared)) {
+        $url_shared2 = filter_var(htmlspecialchars($shared), FILTER_SANITIZE_STRING);
+        header('Content-type:application/json');
+        $array = array();
+        $i = 0;
+        $var = 0;
+        $url_shared = $url_shared2;
+        if (!empty($url_shared)) {
+            if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
+                echo 0;
+            } else {
+                $array[$var]->link_id = 0;
+                $url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+
+                $tags =  get_meta_tags($url_shared);
+                if ($tags['description'] !== null) {
+                    $description = $tags['description'];
+                }
+                preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
+                $r = 0;
+
+                if ($match[1] == null) {
+                    $r = 0;
+                } else {
+                    $r = $match[1];
+                }
+
+                if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                    $array[$var]->title = getTitle($url_trjim);
+                    $array[$var]->description = "Shared Image";
+                    $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
+                    $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+                    $array[$var]->match =  $r;
+                    $array[$var]->link = $url_trjim;
+                } else {
+                    $array[$var]->title = getTitle($url_trjim);
+                    $array[$var]->description = $description;
+                    $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
+                    $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+
+                    // 
+                    $array[$var]->match =  $r;
+                    $array[$var]->link = $url_trjim;
+                }
+
+                if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                    $array[$var]->type = "image";
+                } else {
+                    $array[$var]->type = "video";
+                }
+            }
+        } else {
+            error_page(404);
+        }
+        if (json_encode($array) !== null) {
+            echo json_encode($array);
+            exit();
+        } else {
+
+            error_page(404);
+        }
+        // }
+    }
 }
+function finclude($_r)
+{
+    include "$_SERVER[DOCUMENT_ROOT]/$_r";
+}
+
 
 function data_print_r()
 {
 }
+function validateJson($jsonString)
+{
+    $data = json_decode($jsonString);
 
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        $errorMessage = json_last_error_msg();
+        return ["valid" => false, "error" => $errorMessage];
+    }
+    return ["valid" => true, "data" => $data];
+}
 function headersExist()
 {
 
@@ -195,7 +389,7 @@ if (!empty($_GET['drc'])) {
 
         ignore_user_abort(false);
         include ROOT . "Content/vstream.php";
-        // $this->include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
+        // include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
@@ -266,6 +460,90 @@ if (!empty($_GET['drc'])) {
     if ($_GET['svc'] == "edt3") {
         include ROOT . "svc/editor.php";
     } else if ($_GET['svc'] == "share_api") {
+
+
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+        
+        if (!empty($_POST['shared'])) {
+            $url_shared2 = $_POST['shared'];
+            // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
+            header('Content-type:application/json');
+            $array = array();
+            $i = 0;
+            $var = 0;
+            $url_shared = $url_shared2;
+            if (!empty($url_shared)) {
+                if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
+                    echo 0;
+                } else {
+                    $array[$var]->link_id = 0;
+                    $url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+    
+                    $tags =  get_meta_tags($url_shared);
+                    if ($tags['description'] !== null) {
+                        $description = $tags['description'];
+                    }
+                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
+                    $r = 0;
+    
+                    if ($match[1] == null) {
+                        $r = 0;
+                    } else {
+                        $r = $match[1];
+                    }
+    
+                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                        $array[$var]->title = getTitle($url_trjim);
+                        $array[$var]->description = "Shared Image";
+                        $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
+                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+                        $array[$var]->match =  $r;
+                        $array[$var]->link = $url_trjim;
+                    } else {
+                        $array[$var]->title = getTitle($url_trjim);
+                        $array[$var]->description = $description;
+                        $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
+                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+    
+                        // 
+                        $array[$var]->match =  $r;
+                        $array[$var]->link = $url_trjim;
+                    }
+    
+                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                        $array[$var]->type = "image";
+                    } else {
+                        $array[$var]->type = "video";
+                    }
+                }
+            } else {
+                error_page(404);
+            }
+            if (json_encode($array) !== null) {
+                echo json_encode($array);
+                exit();
+            } else {
+    
+                error_page(404);
+            }
+        }
+
+
+        // header("Access-Control-Allow-Origin: https://www.example.com");
+        // header("Access-Control-Allow-Headers: Authorization, Content-Type");
+
+        // } else {
+
+        // error_page(404);
+        // }
+
+        exit();
+
+
         $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
         $url = "https://api.eronelit.com/graph";
         $postData = [
@@ -273,24 +551,28 @@ if (!empty($_GET['drc'])) {
             'key' => '3402340234239J939592369',
             'type' =>  'share_validator',
             'shared' => $aerea
-        ]; 
-        $ch = curl_init(); 
-        curl_setopt($ch, CURLOPT_URL, $url); 
-        curl_setopt($ch, CURLOPT_POST, 1); 
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/x-www-form-urlencoded',
             'Authorization: Bearer 32M052k350QaeofkaeopfF'
         ]);
-        $response = curl_exec($ch); 
+        $response = curl_exec($ch);
         header("content-type: text/json");
-        if(curl_errno($ch)) { 
+        if (curl_errno($ch)) {
             echo "[]";
-        } else { 
-            echo  $response;
-        } 
+        } else {
+            if (validateJson($response)) {
+                echo  $response;
+            } else {
+                echo "[]";
+            }
+        }
         curl_close($ch);
         exit();
     } else {

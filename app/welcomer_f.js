@@ -437,13 +437,10 @@ const welcomer = {
       });
     },
     formv: async function (data) {
-      
+      var data = {
+        shared: data
+      };
       var response = await fetch("/?svc=share_api", {
-        headers: { 
-          Accept: 'application.json',
-          'Content-Type': 'application/json',
-          
-        },
         method: "POST",
         body: JSON.stringify(data),
       });

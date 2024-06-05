@@ -9,12 +9,8 @@
         "category": [ 
             "deviantart" 
         ],  
-        "shared_links":[
-            {
-                "url":"https://www.deviantart.com/marko9827/art/What-is-it-really-Life-Tree-or-only-word-Hmm-1059236454",
-                "title":"",
-                "thumbail":""
-            }
+        "shared_links":[ 
+            "https://www.deviantart.com/marko9827/art/What-is-it-really-Life-Tree-or-only-word-Hmm-1059236454"
         ],
         "gallery": [ 
         ]

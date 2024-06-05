@@ -103,7 +103,9 @@ media-src 'self';" />
     <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
 
 
+    <?php
 
+    ?>
 
     <script nonce="<?php echo NONCE; ?>" defer src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
@@ -146,19 +148,66 @@ media-src 'self';" />
                     }
                 },
                 blog: <?php
+
+
                         $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
                         $i = 0;
+
                         foreach ($r as $key => $val) {
                             $curlR = SITE_HOST . "$val[source]";
                             $queryString = parse_url($curlR, PHP_URL_QUERY);
+                            // -
+                            $varr = "";
+                            // foreach ($val['shared_links'] as $val3){
+                            // array_push($varr, array($this->SharedUlrF("$val3")));
+                            // }
+                            // $varr;
+                            // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
+                            // $varr = array();
+                            foreach ($val["shared_links"] as $var) {
+                                
+                                $varr .= " $var";
+                            }
+                         
+                            $url = "https://api.eronelit.com/graph";
+                            $postData = [
+                                'token' => '32M052k350QaeofkaeopfF',
+                                'key' => '3402340234239J939592369',
+                                'type' =>  'share_validator',
+                                'shared' => $var
+                            ]; 
+                            $ch = curl_init(); 
+                            curl_setopt($ch, CURLOPT_URL, $url); 
+                            curl_setopt($ch, CURLOPT_POST, 1); 
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+                            curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                                'Content-Type: application/x-www-form-urlencoded',
+                                'Authorization: Bearer 32M052k350QaeofkaeopfF'
+                            ]);
+                            $response = curl_exec($ch); 
+                            header("content-type: text/json");
+                            if(curl_errno($ch)) { 
+                                echo "[]";
+                            } else { 
+                                $r[$i]['shared_lnks'] = $response;
+                            } 
+                            curl_close($ch);
+                            
+                            // -
+                            $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
 
-                            $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"]);
 
                             $r[$i]['page'] = "";
                             $r[$i]['page'] = $response;
                             $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
                             $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
                             $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
+                            #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
+
+                            // $shared_links = sharedUlr(sharedUlr);
+
                             $i++;
                         }
                         echo json_encode($r);
@@ -1103,9 +1152,9 @@ media-src 'self';" />
             overflow: auto;
         }
 
-        body[data-url-id*="?pages=tg_channel"] #clavs iframe:not(.iframe_mask):not([id=*"telegram-post"]) {
+        /* body[data-url-id*="?pages=tg_channel"] #clavs iframe:not(.iframe_mask):not([id=*"telegram-post"]) {
             display: none !important;
-        }
+        }*/
 
         body[data-url-id*="?pages=tg_channel"] .Ignoring_me_iframe.shadow_root div iframe {
             display: block !important;
@@ -1273,28 +1322,268 @@ media-src 'self';" />
         }
 
         div#buttons.box_shadow img.aepraaa3 {
-    background: transparent;
-    border: none;
-    position: absolute;
-    z-index: -1;
-    left: 0px;
-    top: 0px;
-    padding: 0px;
-    border-radius: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 0.3;
-    object-fit: cover;
-    pointer-events: none;
-    opacity: 0;
-}
-div#buttons.box_shadow .adiv:hover img.aepraaa3.loading {
- opacity: 0 !important;
-}
+            background: transparent;
+            border: none;
+            position: absolute;
+            z-index: -1;
+            left: 0px;
+            top: 0px;
+            padding: 0px;
+            border-radius: 0px;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            object-fit: cover;
+            pointer-events: none;
+            opacity: 0;
+        }
 
-div#buttons.box_shadow .adiv:hover img.aepraaa3:not(.loading) {
-    opacity:0.5;
-}
+        div#buttons.box_shadow .adiv:hover img.aepraaa3.loading {
+            opacity: 0 !important;
+        }
+
+        div#buttons.box_shadow .adiv:hover img.aepraaa3:not(.loading) {
+            opacity: 0.5;
+        }
+
+        /* */
+
+        br_box br_aer {
+
+            /*  */
+            overflow-x: scroll;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            overflow-x: auto !important;
+            -ms-scroll-snap-type: x mandatory;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            -webkit-transition: margin-left 0.5s;
+            -o-transition: margin-left 0.5s;
+            scroll-behavior: smooth;
+            transition: margin-left 0.5s;
+            -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 25%, white 80%, transparent 100%);
+            mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+            /* z-index: 333333; */
+            position: absolute;
+            width: 100%;
+            padding-bottom: 50px;
+            right: 0px;
+            left: 0px;
+            padding-top: 25px;
+            color: white;
+        }
+
+        br_box br_aer.snaped {
+            bottom: 30px;
+            padding: 0px;
+            padding-bottom: 10px;
+            position: unset;
+        }
+
+        br_box br_aer baer {
+            scroll-snap-align: center;
+            -ms-flex-negative: 0;
+            flex-shrink: 0;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            border-radius: 10px;
+            -webkit-transform-origin: center center;
+            -ms-transform-origin: center center;
+            transform-origin: center center;
+            -webkit-transform: scale(1);
+            -ms-transform: scale(1);
+            transform: scale(1);
+            transition: -webkit-transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
+            -o-transition: transform 0.5s;
+            transition: transform 0.5s;
+            transition: transform 0.5s, -webkit-transform 0.5s;
+            position: relative;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            margin: 0px 5px;
+        }
+
+        br_box br_aer img {
+            pointer-events: none;
+        }
+
+        br_box br_aer baer img:not(.favicon) {
+            width: 50px;
+            border-radius: 10px;
+            height: 50px;
+            min-width: 50px;
+            min-height: 50px;
+            max-width: 50px;
+            max-height: 50px;
+        }
+
+        br_box br_aer baer img {
+            -o-object-fit: cover;
+            object-fit: cover;
+        }
+
+        br_box br_aer baer {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            width: 250px !important;
+        }
+
+        br_box br_aer img.favicon {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            max-width: 16px !important;
+            max-height: 16px !important;
+            min-width: 16px !important;
+            max-height: 16px !important;
+        }
+
+
+
+        br_box br_aer ber_f {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            padding-left: 10px;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+        }
+
+        br_box br_aer bar_t img {
+            margin-right: 5px;
+        }
+
+        br_box br_aer bar_t {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: inline-flex;
+        }
+
+        br_box br_aer baer {
+            border-radius: 10px !important;
+            padding: 5px;
+            font-weight: normal;
+            position: relative;
+        }
+
+        br_box br_aer baer:hover * {}
+
+        br_box br_aer baer:hover {
+            background: white;
+        }
+
+
+        br_box br_aer bar_t {
+            white-space: nowrap;
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        br_box br_aer span {
+            white-space: nowrap;
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            max-width: 165px;
+
+        }
+
+
+        br_box pe {
+            padding-left: 10px;
+            bottom: 106px;
+            color: white;
+        }
+
+        br_box {
+            display: grid;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            bottom: 0px;
+            border-radius: 10px;
+            /* transform: translateY(500px); */
+            transition: .3s;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            bottom: 0px;
+            border-radius: 10px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            enable-background: new 0 0 512 512 !important;
+            border-radius: 0px !important;
+            padding-top: 10px;
+            left: 0px;
+            position: static;
+        }
+
+        br_box .bra {
+            position: absolute;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 100%;
+            right: 0px;
+            pointer-events: none;
+            background: black;
+            z-index: -1;
+            border-radius: 10px;
+        }
+
+        br_box img.img_background_rljs {
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            bottom: 0px;
+            -webkit-filter: blur(4px);
+            filter: blur(2px) !important;
+            -o-object-fit: cover;
+            object-fit: cover;
+            background: black;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        br_box img.img_background_rljs {
+            opacity: 0.4 !important;
+        }
+
+        dnm_footer {
+            transition: .3s;
+            /* opacity: 0; */
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

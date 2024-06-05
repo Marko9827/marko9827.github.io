@@ -433,23 +433,76 @@ const welcomer = {
         "https://www.deviantart.com/marko9827/art/What-is-it-really-Life-Tree-or-only-word-Hmm-1059236454";
 
       welcomer.url_preview_card.formv(url, {
-        key: "3402340234239J939592369",
         shared: url,
-        type: "share_validator",
       });
     },
-    formv: async function (url, data) {
-      var response = await fetch("https://api.localhost/graph", {
-        headers: {
-          Authorization: "Bearer 32M052k350QaeofkaeopfF",
-          "Content-Type": "application/json",
+    formv: async function (data) {
+      
+      var response = await fetch("/?svc=share_api", {
+        headers: { 
+          Accept: 'application.json',
+          'Content-Type': 'application/json',
+          
         },
         method: "POST",
         body: JSON.stringify(data),
       });
       return response.json();
     },
-    card: function (url) {},
+    card: function (url) {
+      /*
+      br_aer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+
+br_aer baer img {
+    width: 50px;
+    object-fit:cover;
+    border-radius:10px;
+    height:50px;
+}
+
+baer {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+
+br_aer  img.favicon {
+    width:16px;
+    height:16px;
+}
+
+<br_box><div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
+<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+</span>
+</ber_f>
+</baer><baer>
+<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+</span>
+</ber_f>
+</baer><baer>
+<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+</span>
+</ber_f>
+</baer><baer>
+<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+</span>
+</ber_f>
+</baer>
+</br_aer></br_box>
+      
+      */
+    },
   },
   generateGrid_backrs: function (what = "", fsrc) {
     var srcf = "",
@@ -462,8 +515,7 @@ const welcomer = {
           getRandomNumber(5, window.portfolio.data.gallery.length - 1)
         ]["img"];
       setInterval(() => {
-        // .adiv['blog_bundle'] {}
-        // #buttons.adiv[adiv_gat="gallery_bundle"]
+         
         var img_bundle = document.querySelector(
           "#buttons .adiv[adiv_gat='gallery_bundle'] img"
         );
@@ -1456,8 +1508,7 @@ const welcomer = {
     scrollby_h: function (pr) {
       var this2 = welcomer.eronelit_gallery;
       document.querySelectorAll(this2.scrolle.dh).forEach(function (res) {
-        if (pr == res.getAttribute("data-name")) {
-          // console.log(res.getAttribute("data-name"));
+        if (pr == res.getAttribute("data-name")) { 
           welcomer.eronelit_gallery.byEvent(
             parseInt(res.getAttribute("data-index"))
           );
@@ -3069,9 +3120,8 @@ const welcomer = {
           .html(`${window.portfolio.data.pages.visitcard.c}`);
         welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
       }
-      if (url.includes("?pages=tg_channel")) {
-        // $("iframe:not(.iframe_mask)").contents().find("html").html(`${window.portfolio.data.pages.visitcard.c}`);
-        welcomer.pgloader_native("<p>Loading...</p>");
+      if (url.includes("?pages=tg_channel")) { 
+            welcomer.pgloader_native("<p>Loading...</p>");
         $(".ld_completeld_complete span").html("My Official Telegram channel");
         welcomer.Social.tg.start();
       }
@@ -4205,8 +4255,7 @@ const welcomer = {
           var elm = document.querySelector(".Ignoring_me_iframe.shadow_root"),
             div = document.createElement("div");
 
-          // div.attachShadow({ mode: "open" });
-          elm.appendChild(div);
+           elm.appendChild(div);
           div.addEventListener("scroll", function () {
             welcomer.Social.tg.start_scr();
           });
@@ -4258,8 +4307,7 @@ const welcomer = {
             script.setAttribute("preload", "none");
             script.setAttribute("loading", "lazy");
 
-            // script.setAttribute("style","  height:0px !important; max-height: 0px !important;  transform: scale(0); opacity: 0;");
-            script.setAttribute(
+             script.setAttribute(
               "data-src",
               `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`
             );

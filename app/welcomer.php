@@ -61,11 +61,38 @@ function exist_mime($filePath)
     // Close the finfo resource
     finfo_close($finfo);
     return $mime;
-
 }
 
-function data_print_r(){
-    
+function sharedUlr($aerea){
+    $url = "https://api.eronelit.com/graph";
+    $postData = [
+        'token' => '32M052k350QaeofkaeopfF',
+        'key' => '3402340234239J939592369',
+        'type' =>  'share_validator',
+        'shared' => $aerea
+    ]; 
+    $ch = curl_init(); 
+    curl_setopt($ch, CURLOPT_URL, $url); 
+    curl_setopt($ch, CURLOPT_POST, 1); 
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+    curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/x-www-form-urlencoded',
+        'Authorization: Bearer 32M052k350QaeofkaeopfF'
+    ]);
+    $response = curl_exec($ch); 
+ 
+    if(curl_errno($ch)) { 
+        echo "[]";
+    } else { 
+        echo  $response;
+    } 
+    curl_close($ch);
+}
+
+function data_print_r()
+{
 }
 
 function headersExist()
@@ -164,8 +191,8 @@ if (!empty($_GET['drc'])) {
     exit;
 } else if (!empty($_GET['src'])) {
     if ($_GET['src'] == "vdwallpper") {
-   
-      
+
+
         ignore_user_abort(false);
         include ROOT . "Content/vstream.php";
         // $this->include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
@@ -195,7 +222,7 @@ if (!empty($_GET['drc'])) {
             $stream = fopen($reqpath, 'rb');
             fpassthru($stream);
             fclose($stream);
-         #   @readfile($reqpath);
+            #   @readfile($reqpath);
             /*
 
             $stream = new eronelit_VideoStream($filetry2);
@@ -238,7 +265,34 @@ if (!empty($_GET['drc'])) {
 
     if ($_GET['svc'] == "edt3") {
         include ROOT . "svc/editor.php";
-
+    } else if ($_GET['svc'] == "share_api") {
+        $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
+        $url = "https://api.eronelit.com/graph";
+        $postData = [
+            'token' => '32M052k350QaeofkaeopfF',
+            'key' => '3402340234239J939592369',
+            'type' =>  'share_validator',
+            'shared' => $aerea
+        ]; 
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_POST, 1); 
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData)); 
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8'); 
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer 32M052k350QaeofkaeopfF'
+        ]);
+        $response = curl_exec($ch); 
+        header("content-type: text/json");
+        if(curl_errno($ch)) { 
+            echo "[]";
+        } else { 
+            echo  $response;
+        } 
+        curl_close($ch);
+        exit();
     } else {
         $filetry = ROOT . "svc/$_GET[svc]";
         $rr = ["css", "js", "jpg", "png", "txt", "md"];

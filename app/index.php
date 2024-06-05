@@ -133,10 +133,9 @@ class portfolio_marko
         if ($h == "cv-pdf") {
 
             ob_start();
-            include_once ("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
+            include_once("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
             $pages_base64 = base64_encode(utf8_decode(ob_get_contents()));
             ob_get_clean();
-
         }
         if ($h == "visitcard") {
             $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/visitcard/index1.php"));
@@ -332,41 +331,40 @@ class portfolio_marko
 
         if (!empty($_GET['id']) || !empty($_GET['blog'])) {
             $off = false;
-           
+
             foreach ($person as $key => $value) {
                 if ("$value[id]" == "$_GET[id]") {
-                   $data = $value;
-                  
+                    $data = $value;
                 }
             }
-           
+
             echo '<title >';
 
 
             $title = "Blog > $data[title] | Marko Nikolić - Portfolio";
             echo $title;
-            ?>
+?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
             <meta name="description" content="<?php echo "$data[title]"; ?> | This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
-            /*$t = "";
+                                            /*$t = "";
 foreach($data->keywords as $index => $v){
 echo $v .",";
 }*/
-            $faf = $data["keywords"];
-            $c = count($data["keywords"]);
-            $ci = 0;
-            foreach ($faf as $v) {
-                echo $v;
-                if ($ci < $c) {
-                    echo ",";
-                }
-                $ci++;
-            }
-            ?>">
+                                            $faf = $data["keywords"];
+                                            $c = count($data["keywords"]);
+                                            $ci = 0;
+                                            foreach ($faf as $v) {
+                                                echo $v;
+                                                if ($ci < $c) {
+                                                    echo ",";
+                                                }
+                                                $ci++;
+                                            }
+                                            ?>">
 
             <meta name="theme-color" content="#333">
             <meta property="og:type" content="website" />
@@ -386,9 +384,9 @@ echo $v .",";
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="630">
             <meta property="og:locale" content="en_GB" />
-            <?php 
+        <?php
         } else {
-            ?>
+        ?>
             <title>
                 <?php
                 if (!empty($_GET['p'])) {
@@ -424,8 +422,7 @@ echo $v .",";
             <meta property="og:description" content="This website for my PortFolio." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" itemprop="image"
-                content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
@@ -537,6 +534,64 @@ echo $v .",";
         $jsonContent = file_get_contents($filename);
         return json_decode($jsonContent, true);
     }
+    function sharedUlrF($aerea)
+    {
+        $url = "https://api.eronelit.com/graph";
+        $token = "32M052k350QaeofkaeopfF";
+        $data = [
+            'token' => '32M052k350QaeofkaeopfF',
+            'key' => '3402340234239J939592369',
+            'type' =>  'share_validator',
+            'shared' => $aerea
+        ];
+        $ch = curl_init($url);
+        $r = "";
+        $jsonData = json_encode($data);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => $jsonData,
+            CURLOPT_HTTPHEADER => [
+                "Authorization: Bearer $token",
+                "Content-Type: application/json"
+            ],
+        ]);
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+        } else {
+            $r =  $response;
+        }
+        curl_close($ch);
+        return $r;
+    }
+    function sharedUlr($aerea)
+    {
+        $url = "https://api.localhost/graph";
+        $postData = [
+            'token' => '32M052k350QaeofkaeopfF',
+            'key' => '3402340234239J939592369',
+            'type' =>  'share_validator',
+            'shared' => $aerea
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer 32M052k350QaeofkaeopfF'
+        ]);
+        $response = curl_exec($ch);
+
+        if (curl_errno($ch)) {
+        } else {
+            echo  $response;
+        }
+        curl_close($ch);
+    }
     function get_page_by_pln_thumb($img)
     {
         $r = ROOT . "data_s/blog/image/$img.png";
@@ -549,20 +604,17 @@ echo $v .",";
         $data_url = "data:image/png;base64,$image_base64";
         return $data_url;
     }
-    function get_page_by_pln($id, $r)
+    function get_page_by_pln($id, $r, $all = array())
     {
         #ob_start();
 
         $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
         $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
+        $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
+
+        $response = "";
 
 
-
-
-        ?>
-
-
-        <?php
         $currentUrl = $_SERVER['REQUEST_URI'];
         $urlParts = explode('/', $currentUrl)[2];
         $dataAfterSlash = $urlParts;
@@ -570,11 +622,37 @@ echo $v .",";
         $response .= file_get_contents(ROOT . "data_s/blog/$id.html");
         $response .= "
                  <dnm_footer>Last modified: $r</dnm_footer>" .
-            "<style type='text/css'>$css</style>" .
+            "<style type='text/css'>$css $css_viewer</style>" .
             "<script type='text/javascript'>$js </script>" .
-            '<div class="cursor " style="opacity: 0;></div>';
+            '<div class="cursor " style="opacity: 0;"></div>
+            <!--
+            <br_box>
+            <div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
+            <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+            <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+            </span>
+            </ber_f>
+            </baer><baer>
+            <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+            <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+            </span>
+            </ber_f>
+            </baer><baer>
+            <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+            <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+            </span>
+            </ber_f>
+            </baer><baer>
+            <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
+            <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
+            </span>
+            </ber_f>
+            </baer>
+            </br_aer></br_box> -->
+            
+            </div>';
 
-        return $response;//htmlspecialchars_decode($response);
+        return $response; //htmlspecialchars_decode($response);
     }
     // Function to get an item by ID from JSON data
     function getItemById($filename, $id)
@@ -616,29 +694,25 @@ echo $v .",";
                     } else {
                         echo file_get_contents($file);
                     } ?>
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font" href="<?php echo CDN; ?>
+                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                    <link rel="preload" as="font" href="<?php echo CDN; ?>
 /node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
-                        <link
-                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                            rel="stylesheet">
-                        <link
-                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                            rel="stylesheet">
-                        <?php
-                        $currentUrl = $_SERVER['REQUEST_URI'];
-                        $urlParts = explode('/', $currentUrl)[2];
-                        $dataAfterSlash = $urlParts;
-                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
-                        echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
-                        echo "<style type='text/css'>$css</style>";
-                        echo "<script type='text/javascript'>$js </script>";
-                        echo '<div class="cursor " style="opacity: 0;></div>';
-                        exit();
+                    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+                    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+                    <?php
+                    $currentUrl = $_SERVER['REQUEST_URI'];
+                    $urlParts = explode('/', $currentUrl)[2];
+                    $dataAfterSlash = $urlParts;
+                    $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
+                    echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
+                    echo "<style type='text/css'>$css</style>";
+                    echo "<script type='text/javascript'>$js </script>";
+                    echo '<div class="cursor " style="opacity: 0;></div>';
+                    exit();
                 } else {
                     $this->error_page(404);
                 }
@@ -1032,34 +1106,28 @@ echo $v .",";
 
 
                         echo file_get_contents($file);
-                        ?>
-                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                                                                                                                                                                                                                                                                <link rel="preload" as="font"
-                                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                                                                                                                                                                                                                                                                    type="font/woff2">
-                                                                                                                                                                                                                                                                <link
-                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                                                                                                                                                                                                                                                                    rel="stylesheet">
-                                                                                                                                                                                                                                                                <link
-                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                                                                                                                                                                                                                                                                    rel="stylesheet">
-                            <?php
-                            $currentUrl = $_SERVER['REQUEST_URI'];
-                            $urlParts = explode('/', $currentUrl);
+                    ?>
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                        <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
+                        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+                        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<?php
+                        $currentUrl = $_SERVER['REQUEST_URI'];
+                        $urlParts = explode('/', $currentUrl);
 
-                            $urlParts = array_filter($urlParts);
+                        $urlParts = array_filter($urlParts);
 
-                            $dataAfterSlash = end($urlParts);
-                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
-                            echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
-                            echo "<style type='text/css'>$css</style>";
-                            echo "<script type='text/javascript'>$js </script>";
+                        $dataAfterSlash = end($urlParts);
+                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
+                        echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
+                        echo "<style type='text/css'>$css</style>";
+                        echo "<script type='text/javascript'>$js </script>";
 
-                            exit();
+                        exit();
                     } else {
                         $this->error_page(404);
                     }
@@ -1117,7 +1185,7 @@ echo $v .",";
                             # $this->ServefThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
                         }
                         include "$url$_GET[img].svg";
-                    }else {
+                    } else {
                         $this->error_page(404);
                     }
                 } else if (!empty($_GET['thumb'])) {
@@ -1312,7 +1380,7 @@ echo $v .",";
                     header('Content-type: application/woff2');
                     header('Content-disposition: inline; filename="Eronelit font"');
                     if (readfile("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1'])) {
-                        include_once ("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
+                        include_once("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
                     } else {
                         return false;
                     }
@@ -1394,7 +1462,6 @@ echo $v .",";
                     } else {
                         echo "no";
                     }
-
                 } else {
                 }
                 exit();
@@ -1619,7 +1686,6 @@ echo $v .",";
                     echo "Error fetching messages from Telegram.";
                 }
                 exit();
-
             } else if (strpos($_GET['pages'], 'cv-markonikolic-pdf') !== false) {
 
                 // header("Content-type:application/pdf");

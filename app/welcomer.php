@@ -481,7 +481,7 @@ if (!empty($_GET['drc'])) {
                     echo 0;
                 } else {
                     $array[$var]->link_id = 0;
-                    $url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+                    //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
     
                     $tags =  get_meta_tags($url_shared);
                     if ($tags['description'] !== null) {

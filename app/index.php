@@ -23,6 +23,67 @@ if (!empty($_GET['p'])) {
 class portfolio_marko
 {
 
+    function streamVideo($filePathf)
+    {
+        $filePath = "$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/image/$filePathf";
+        $filePath = str_replace("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/image/$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/image/", "$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/image/", $filePath);
+
+        $size = filesize($filePath);
+        $length = $size;
+        $start = 0;
+        $end = $size - 1;
+
+        if (isset($_SERVER['HTTP_RANGE'])) {
+            $range = $_SERVER['HTTP_RANGE'];
+            $range = str_replace('bytes=', '', $range);
+            $range = explode('-', $range);
+
+            if (count($range) === 2) {
+                $start = $range[0];
+                $end = $range[1] ? $range[1] : $size - 1;
+            } else {
+                $start = $range[0];
+            }
+
+            $length = ($end - $start) + 1;
+
+            header("HTTP/1.1 206 Partial Content");
+            header("Content-Range: bytes $start-$end/$size");
+        } else {
+            header("HTTP/1.1 200 OK");
+        }
+
+        $f = @fopen($filePath, 'rb');
+
+        if (!$f) {
+            header("HTTP/1.1 500 Internal Server Error");
+            exit;
+        }
+
+        // Set headers
+        header("Content-Type: video/mp4");
+        header("Content-Length: $length");
+        header("Accept-Ranges: bytes");
+
+        // Seek to the requested start position
+        fseek($f, $start);
+
+        // Send the file content in chunks
+        $chunkSize = 1024 * 1024; // 1MB per chunk
+
+        while (!feof($f) && ($pos = ftell($f)) <= $end) {
+            if (connection_aborted()) break;
+
+            $remaining = $end - $pos + 1;
+            $chunk = min($chunkSize, $remaining);
+
+            echo fread($f, $chunk);
+            flush();
+        }
+
+        fclose($f);
+    }
+
     function minifyJS($inputFile)
     {
         // Read the JavaScript file
@@ -623,9 +684,9 @@ echo $v .",";
         $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
         $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
         $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
-      
 
-      
+
+
         $response = "";
 
 
@@ -636,7 +697,7 @@ echo $v .",";
         $response .= self::removeStyleTags(file_get_contents(ROOT . "data_s/blog/$id.html"));
         $response .= "
                  <dnm_footer>Last modified: $r</dnm_footer>" .
-            
+
             "<style type='text/css'>
             @import url('https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
             @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
@@ -724,7 +785,7 @@ echo $v .",";
 /node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
                     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
                     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                    <?php
+                <?php
                     $currentUrl = $_SERVER['REQUEST_URI'];
                     $urlParts = explode('/', $currentUrl)[2];
                     $dataAfterSlash = $urlParts;
@@ -738,6 +799,66 @@ echo $v .",";
                     $this->error_page(404);
                 }
                 // 23_jul_2023_09_26/1690103453287
+            } else if (file_exists("$url$_GET[blog].mp4")) {
+                if ($_GET['t'] == "v") {
+                ?>
+
+                    <html>
+
+                    <head>
+                        <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                        <style>
+                            * {
+                                margin: 0px;
+                                padding: 0px;
+                            }
+
+                            div#my-video {
+                                position: fixed;
+                                left: 0px;
+                                top: 0px;
+                                width: 100%;
+                                height: 100%;
+                            }
+                        </style>
+                    </head>
+
+                    <body onload="f();">
+                        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="/?blog=<?= $_GET['blog'] ?>00" data-setup="{}">
+                            <source src="/?blog=<?= $_GET['blog'] ?>" type="video/mp4" />
+                            <p class="vjs-no-js">
+                                To view this video please enable JavaScript, and consider upgrading to a
+                                web browser that supports HTML5 video.
+                            </p>
+                        </video>
+                        <script async type="text/javascript">
+                            f =function(){
+                                document.addEventListener("contextmenu",function(e){
+                                    e.preventDefault();
+                                    return false;
+                                });
+                                document.addEventListener("selectstart",function(e){
+                                    e.preventDefault();
+                                    return false;
+                                });
+                                document.addEventListener("dragstart",function(e){
+                                    e.preventDefault();
+                                    return false;
+                                });
+                                document.querySelectorAll("script").forEach(function(res){
+                                    res.remove();
+                                    console.clear();
+                                });
+                            }
+                        </script>
+                        <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                    </body>
+
+                    </html>
+                    <?php
+                } else {
+                    $this->streamVideo("$url$_GET[blog].mp4");
+                }
             } else if (file_exists("$url$_GET[blog].png")) {
                 if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
@@ -1200,6 +1321,8 @@ echo $v .",";
                             # $this->ServefThumb("$url$_GET[img].png", 640, ROOT."data_s/data_wlp/thumb/$_GET[img]","");
                         }
                         readfile("$url$_GET[img].jpeg");
+                    } else if (file_exists("$url$_GET[img].mp4")) {
+                        streamVideo("$url$_GET[img].mp4");
                     } else if (file_exists("$url$_GET[img].svg")) {
                         header("content-type: image/svg+xml");
                         if (!file_exists(ROOT . "data_s/data_wlp/thumb/$_GET[img].jpeg")) {

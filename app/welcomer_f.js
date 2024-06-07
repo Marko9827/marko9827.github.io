@@ -438,7 +438,7 @@ const welcomer = {
     },
     formv: async function (data) {
       var data = {
-        shared: data
+        shared: data,
       };
       var response = await fetch("/?svc=share_api", {
         method: "POST",
@@ -512,7 +512,6 @@ br_aer  img.favicon {
           getRandomNumber(5, window.portfolio.data.gallery.length - 1)
         ]["img"];
       setInterval(() => {
-         
         var img_bundle = document.querySelector(
           "#buttons .adiv[adiv_gat='gallery_bundle'] img"
         );
@@ -1061,7 +1060,11 @@ br_aer  img.favicon {
         $(ifrm).hide();
 
         ifrm.document.open();
-        ifrm.document.write(`${res} <style type="text/css">${window.atob(window.portfolio.data.blog_style_bundle)}</style>`);
+        ifrm.document.write(
+          `${res} <style type="text/css">${window.atob(
+            window.portfolio.data.blog_style_bundle
+          )}</style>`
+        );
 
         ifrm.document.querySelectorAll("img").forEach(function (v) {
           $(v)
@@ -1442,25 +1445,44 @@ br_aer  img.favicon {
     });
   },
   eronelit_gallery: {
+    isImage: async  function (url) {
+       
+      const regex = /&t=v/i;
+      return regex.test(url);
+    },
     call_ui: function (json = []) {
       var this2 = welcomer.eronelit_gallery;
 
       document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
       var a = json.length,
-        v = 1 ;
+        v = 1;
       for (var i = 0; i < json.length; i++) {
         var dh = document.createElement("dh"),
           image = document.createElement("img"),
+          iframe = document.createElement("iframe"),
           afterSlash = json[i].split("/")[2];
         image.src = json[i];
 
+        iframe.src = json[i];
+
         dh.innerHTML = `<dhn>${v}/${a}</dhn>`;
-        image.setAttribute("loading", "lazy");
-        image.setAttribute("style", "opacity:0; transform: scale(0);");
-        image.setAttribute("onload", "$(this).removeAttr('style');");
-        dh.setAttribute("data-index", i);
-        dh.setAttribute("data-name", afterSlash);
-        dh.appendChild(image);
+        const regex = /&t=v/i;
+ 
+           if (!regex.test(json[i])) {
+            image.setAttribute("loading", "lazy");
+            image.setAttribute("style", "opacity:0; transform: scale(0);");
+            image.setAttribute("onload", "$(this).removeAttr('style');");
+            dh.setAttribute("data-index", i);
+            dh.setAttribute("data-name", afterSlash);
+            dh.appendChild(image);
+          } else {
+            iframe.setAttribute("loading", "lazy");
+            iframe.setAttribute("style", "opacity:0; transform: scale(0);");
+            iframe.setAttribute("onload", "$(this).removeAttr('style');");
+            dh.setAttribute("data-index", i);
+            dh.setAttribute("data-name", afterSlash);
+            dh.appendChild(iframe);
+          } 
 
         document.querySelector(this2.scrolle.root_scroll).appendChild(dh);
         v++;
@@ -1505,7 +1527,7 @@ br_aer  img.favicon {
     scrollby_h: function (pr) {
       var this2 = welcomer.eronelit_gallery;
       document.querySelectorAll(this2.scrolle.dh).forEach(function (res) {
-        if (pr == res.getAttribute("data-name")) { 
+        if (pr == res.getAttribute("data-name")) {
           welcomer.eronelit_gallery.byEvent(
             parseInt(res.getAttribute("data-index"))
           );
@@ -3117,8 +3139,8 @@ br_aer  img.favicon {
           .html(`${window.portfolio.data.pages.visitcard.c}`);
         welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
       }
-      if (url.includes("?pages=tg_channel")) { 
-            welcomer.pgloader_native("<p>Loading...</p>");
+      if (url.includes("?pages=tg_channel")) {
+        welcomer.pgloader_native("<p>Loading...</p>");
         $(".ld_completeld_complete span").html("My Official Telegram channel");
         welcomer.Social.tg.start();
       }
@@ -4252,7 +4274,7 @@ br_aer  img.favicon {
           var elm = document.querySelector(".Ignoring_me_iframe.shadow_root"),
             div = document.createElement("div");
 
-           elm.appendChild(div);
+          elm.appendChild(div);
           div.addEventListener("scroll", function () {
             welcomer.Social.tg.start_scr();
           });
@@ -4304,7 +4326,7 @@ br_aer  img.favicon {
             script.setAttribute("preload", "none");
             script.setAttribute("loading", "lazy");
 
-             script.setAttribute(
+            script.setAttribute(
               "data-src",
               `https://t.me/${welcomer.Social.tg.conf.id}/${i}?embed=2`
             );

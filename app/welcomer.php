@@ -7,15 +7,77 @@ $HOST_URL = ROOT;
  * @param string $css The CSS code to be minified.
  * @return string The minified CSS code.
  */
-function minifyCSS($css) {
-    $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css); 
+function minifyCSS($css)
+{
+    $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
     $css = str_replace(': ', ':', $css);
- 
+
     $css = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $css);
 
     return $css;
 }
- 
+function streamVideo($filePathf)
+{
+    $filePath = "$filePathf.mp4";
+
+    $size = filesize($filePath);
+    $length = $size;
+    $start = 0;
+    $end = $size - 1;
+
+    if (isset($_SERVER['HTTP_RANGE'])) {
+        $range = $_SERVER['HTTP_RANGE'];
+        $range = str_replace('bytes=', '', $range);
+        $range = explode('-', $range);
+
+        if (count($range) === 2) {
+            $start = $range[0];
+            $end = $range[1] ? $range[1] : $size - 1;
+        } else {
+            $start = $range[0];
+        }
+
+        $length = ($end - $start) + 1;
+
+        header("HTTP/1.1 206 Partial Content");
+        header("Content-Range: bytes $start-$end/$size");
+    } else {
+        header("HTTP/1.1 200 OK");
+    }
+
+    $f = @fopen($filePath, 'rb');
+
+    if (!$f) {
+        header("HTTP/1.1 500 Internal Server Error");
+        exit;
+    }
+
+    // Set headers
+    header("Content-Type: video/mp4");
+    header("Content-Length: $length");
+    header("Accept-Ranges: bytes");
+
+    // Seek to the requested start position
+    fseek($f, $start);
+
+    // Send the file content in chunks
+    $chunkSize = 1024 * 1024; // 1MB per chunk
+
+    while (!feof($f) && ($pos = ftell($f)) <= $end) {
+        if (connection_aborted()) break;
+
+        $remaining = $end - $pos + 1;
+        $chunk = min($chunkSize, $remaining);
+
+        echo fread($f, $chunk);
+        flush();
+    }
+
+    fclose($f);
+}
+
+
+
 function getUrls($string)
 {
     $regex = '/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i';
@@ -474,173 +536,202 @@ if (!empty($_GET['drc'])) {
 
     if ($_GET['svc'] == "edt3") {
         include ROOT . "svc/editor.php";
+    } else if($_GET['svc'] == "streamVideo") {ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+        streamVideo($_GET['v']);
     } else if ($_GET['svc'] == "embed") {
 
-        header("content-type: text/css");
-        $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
-        $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
+        header("content-type: text/html");
+?>
+        <html>
 
-        echo minifyCSS("$css $css_viewer");
-        exit();
-    } else if ($_GET['svc'] == "share_api") {
+        <head>
+            <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+
+            <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+            <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
+        </head>
+
+        <body>
+            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+                <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" /> 
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+
+            <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+        </body>
+
+        </html><?php
+                exit();
+            } else if ($_GET['svc'] == "share_api") {
 
 
 
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
 
 
-        if (!empty($_POST['shared'])) {
-            $url_shared2 = $_POST['shared'];
-            // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
-            header('Content-type:application/json');
-            $array = array();
-            $i = 0;
-            $var = 0;
-            $url_shared = $url_shared2;
-            if (!empty($url_shared)) {
-                if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
-                    echo 0;
+                if (!empty($_POST['shared'])) {
+                    $url_shared2 = $_POST['shared'];
+                    // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
+                    header('Content-type:application/json');
+                    $array = array();
+                    $i = 0;
+                    $var = 0;
+                    $url_shared = $url_shared2;
+                    if (!empty($url_shared)) {
+                        if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
+                            echo 0;
+                        } else {
+                            $array[$var]->link_id = 0;
+                            //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+
+                            $tags =  get_meta_tags($url_shared);
+                            if ($tags['description'] !== null) {
+                                $description = $tags['description'];
+                            }
+                            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
+                            $r = 0;
+
+                            if ($match[1] == null) {
+                                $r = 0;
+                            } else {
+                                $r = $match[1];
+                            }
+
+                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                                $array[$var]->title = getTitle($url_trjim);
+                                $array[$var]->description = "Shared Image";
+                                $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
+                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+                                $array[$var]->match =  $r;
+                                $array[$var]->link = $url_trjim;
+                            } else {
+                                $array[$var]->title = getTitle($url_trjim);
+                                $array[$var]->description = $description;
+                                $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
+                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+
+                                // 
+                                $array[$var]->match =  $r;
+                                $array[$var]->link = $url_trjim;
+                            }
+
+                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                                $array[$var]->type = "image";
+                            } else {
+                                $array[$var]->type = "video";
+                            }
+                        }
+                    } else {
+                        error_page(404);
+                    }
+                    if (json_encode($array) !== null) {
+                        echo json_encode($array);
+                        exit();
+                    } else {
+
+                        error_page(404);
+                    }
+                }
+
+
+                // header("Access-Control-Allow-Origin: https://www.example.com");
+                // header("Access-Control-Allow-Headers: Authorization, Content-Type");
+
+                // } else {
+
+                // error_page(404);
+                // }
+
+                exit();
+
+
+                $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
+                $url = "https://api.eronelit.com/graph";
+                $postData = [
+                    'token' => '32M052k350QaeofkaeopfF',
+                    'key' => '3402340234239J939592369',
+                    'type' =>  'share_validator',
+                    'shared' => $aerea
+                ];
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/x-www-form-urlencoded',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF'
+                ]);
+                $response = curl_exec($ch);
+                header("content-type: text/json");
+                if (curl_errno($ch)) {
+                    echo "[]";
                 } else {
-                    $array[$var]->link_id = 0;
-                    //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
-
-                    $tags =  get_meta_tags($url_shared);
-                    if ($tags['description'] !== null) {
-                        $description = $tags['description'];
-                    }
-                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
-                    $r = 0;
-
-                    if ($match[1] == null) {
-                        $r = 0;
+                    if (validateJson($response)) {
+                        echo  $response;
                     } else {
-                        $r = $match[1];
-                    }
-
-                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                        $array[$var]->title = getTitle($url_trjim);
-                        $array[$var]->description = "Shared Image";
-                        $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
-                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-                        $array[$var]->match =  $r;
-                        $array[$var]->link = $url_trjim;
-                    } else {
-                        $array[$var]->title = getTitle($url_trjim);
-                        $array[$var]->description = $description;
-                        $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
-                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-
-                        // 
-                        $array[$var]->match =  $r;
-                        $array[$var]->link = $url_trjim;
-                    }
-
-                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                        $array[$var]->type = "image";
-                    } else {
-                        $array[$var]->type = "video";
+                        echo "[]";
                     }
                 }
-            } else {
-                error_page(404);
-            }
-            if (json_encode($array) !== null) {
-                echo json_encode($array);
+                curl_close($ch);
                 exit();
             } else {
+                $filetry = ROOT . "svc/$_GET[svc]";
+                $rr = ["css", "js", "jpg", "png", "txt", "md", "mp4"];
 
-                error_page(404);
+                # header("content-type: image/png");
+
+                foreach ($rr as $val) {
+
+                    if (file_exists("$filetry.$val")) {
+
+                        $fileT = "$filetry.$val";
+                        $fff3 = "text/txt";
+                        if ($val == "css") {
+                            $fff3 = "text/css";
+                        }
+                        if ($val == "js") {
+                            $fff3 = "text/javascript";
+                        }
+                        if ($val == "jpg") {
+                            $fff3 = "image/jpeg";
+                        }
+                        if ($val == "png") {
+                            $fff3 = "image/png";
+                        }
+                        if ($val == "md") {
+                            header("content-type: text/html");
+                            echo MarkDownTOstring("$fileT");
+                            exit();
+                        }
+                        if ($val == "mp4"){
+                            
+                            streamVideo($fff3);
+                        }else{
+
+                        header("Content-Type: " . $fff3);
+                        header('Content-Length' . filesize($fileT));
+
+                        // header("Content-type: " . image_type_to_mime_type($mime_type));
+
+                        @readfile($fileT);
+                        exit();
+                        }
+                    }
+                }
+                if ($exist) {
+                    include ROOT . "ERROR_PG.php";
+                }
             }
-        }
-
-
-        // header("Access-Control-Allow-Origin: https://www.example.com");
-        // header("Access-Control-Allow-Headers: Authorization, Content-Type");
-
-        // } else {
-
-        // error_page(404);
-        // }
-
-        exit();
-
-
-        $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
-        $url = "https://api.eronelit.com/graph";
-        $postData = [
-            'token' => '32M052k350QaeofkaeopfF',
-            'key' => '3402340234239J939592369',
-            'type' =>  'share_validator',
-            'shared' => $aerea
-        ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Authorization: Bearer 32M052k350QaeofkaeopfF'
-        ]);
-        $response = curl_exec($ch);
-        header("content-type: text/json");
-        if (curl_errno($ch)) {
-            echo "[]";
         } else {
-            if (validateJson($response)) {
-                echo  $response;
-            } else {
-                echo "[]";
-            }
+            include ROOT . "wlcomer_home.php";
         }
-        curl_close($ch);
-        exit();
-    } else {
-        $filetry = ROOT . "svc/$_GET[svc]";
-        $rr = ["css", "js", "jpg", "png", "txt", "md"];
-
-        # header("content-type: image/png");
-
-        foreach ($rr as $val) {
-
-            if (file_exists("$filetry.$val")) {
-
-                $fileT = "$filetry.$val";
-                $fff3 = "text/txt";
-                if ($val == "css") {
-                    $fff3 = "text/css";
-                }
-                if ($val == "js") {
-                    $fff3 = "text/javascript";
-                }
-                if ($val == "jpg") {
-                    $fff3 = "image/jpeg";
-                }
-                if ($val == "png") {
-                    $fff3 = "image/png";
-                }
-                if ($val == "md") {
-                    header("content-type: text/html");
-                    echo MarkDownTOstring("$fileT");
-                    exit();
-                }
-
-                header("Content-Type: " . $fff3);
-                header('Content-Length' . filesize($fileT));
-
-                // header("Content-type: " . image_type_to_mime_type($mime_type));
-
-                @readfile($fileT);
-                exit();
-            }
-        }
-        if ($exist) {
-            include ROOT . "ERROR_PG.php";
-        }
-    }
-} else {
-    include ROOT . "wlcomer_home.php";
-}

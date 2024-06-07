@@ -147,6 +147,12 @@ media-src 'self';" />
                         c: "",
                     }
                 },
+                blog_style_bundle: "<?php 
+                
+                $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+                 $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
+              # echo minifyCSS("$css $css_viewer")
+                ?>",
                 blog: <?php
 
 
@@ -175,7 +181,7 @@ media-src 'self';" />
                             $r[$i]['page'] = $response;
                             $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
                             $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
-                            $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
+                            // $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
                             #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
 
                             // $shared_links = sharedUlr(sharedUlr);

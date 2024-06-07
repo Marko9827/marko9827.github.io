@@ -15,7 +15,11 @@
     cursor: none !important;
     text-decoration: none !important;
 }
-
+blockquote {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
+    border-radius: 5px;
+}
 :root {
     --cdn_primary: #ffff;
     --btn-disable: #fff;

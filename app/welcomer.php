@@ -1,7 +1,21 @@
 <?php
 session_start();
 $HOST_URL = ROOT;
+/**
+ * Minifies CSS code by removing unnecessary whitespace and comments.
+ *
+ * @param string $css The CSS code to be minified.
+ * @return string The minified CSS code.
+ */
+function minifyCSS($css) {
+    $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css); 
+    $css = str_replace(': ', ':', $css);
+ 
+    $css = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $css);
 
+    return $css;
+}
+ 
 function getUrls($string)
 {
     $regex = '/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i';
@@ -95,39 +109,40 @@ function get_icon_image($url)
     }
     # return $rvaev;
 }
-function getWebsiteMeta($url) { 
+function getWebsiteMeta($url)
+{
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     $html = curl_exec($ch);
-    curl_close($ch); 
+    curl_close($ch);
     if ($html === false) {
         return null;
-    } 
+    }
     $doc = new DOMDocument();
-    @$doc->loadHTML($html); 
-    $xpath = new DOMXPath($doc); 
+    @$doc->loadHTML($html);
+    $xpath = new DOMXPath($doc);
     $title = '';
     $titleNode = $xpath->query('//title')->item(0);
     if ($titleNode) {
         $title = $titleNode->textContent;
-    } 
+    }
     $description = '';
     $descriptionNode = $xpath->query('//meta[@name="description"]/@content')->item(0);
     if ($descriptionNode) {
         $description = $descriptionNode->textContent;
-    } 
+    }
     $ogImage = '';
     $ogImageNode = $xpath->query('//meta[@property="og:image"]/@content')->item(0);
     if ($ogImageNode) {
         $ogImage = $ogImageNode->textContent;
-    } 
+    }
     $favicon = '';
     $faviconNode = $xpath->query('//link[@rel="icon"]/@href')->item(0);
     if ($faviconNode) {
         $favicon = $faviconNode->textContent;
-    } 
+    }
     if ($favicon && !filter_var($favicon, FILTER_VALIDATE_URL)) {
         $parsedUrl = parse_url($url);
         $favicon = $parsedUrl['scheme'] . '://' . $parsedUrl['host'] . '/' . ltrim($favicon, '/');
@@ -459,6 +474,14 @@ if (!empty($_GET['drc'])) {
 
     if ($_GET['svc'] == "edt3") {
         include ROOT . "svc/editor.php";
+    } else if ($_GET['svc'] == "embed") {
+
+        header("content-type: text/css");
+        $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+        $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
+
+        echo minifyCSS("$css $css_viewer");
+        exit();
     } else if ($_GET['svc'] == "share_api") {
 
 
@@ -467,7 +490,7 @@ if (!empty($_GET['drc'])) {
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
 
-        
+
         if (!empty($_POST['shared'])) {
             $url_shared2 = $_POST['shared'];
             // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
@@ -482,20 +505,20 @@ if (!empty($_GET['drc'])) {
                 } else {
                     $array[$var]->link_id = 0;
                     //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
-    
+
                     $tags =  get_meta_tags($url_shared);
                     if ($tags['description'] !== null) {
                         $description = $tags['description'];
                     }
                     preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
                     $r = 0;
-    
+
                     if ($match[1] == null) {
                         $r = 0;
                     } else {
                         $r = $match[1];
                     }
-    
+
                     if (getimagesize(get_icon_image(get_img($url_trjim)))) {
                         $array[$var]->title = getTitle($url_trjim);
                         $array[$var]->description = "Shared Image";
@@ -508,12 +531,12 @@ if (!empty($_GET['drc'])) {
                         $array[$var]->description = $description;
                         $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
                         $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-    
+
                         // 
                         $array[$var]->match =  $r;
                         $array[$var]->link = $url_trjim;
                     }
-    
+
                     if (getimagesize(get_icon_image(get_img($url_trjim)))) {
                         $array[$var]->type = "image";
                     } else {
@@ -527,7 +550,7 @@ if (!empty($_GET['drc'])) {
                 echo json_encode($array);
                 exit();
             } else {
-    
+
                 error_page(404);
             }
         }

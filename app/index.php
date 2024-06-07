@@ -604,14 +604,28 @@ echo $v .",";
         $data_url = "data:image/png;base64,$image_base64";
         return $data_url;
     }
+    /**
+     * Removes all <style> tags from an HTML string.
+     *
+     * @param string $html The HTML content to process.
+     * @return string The processed HTML content without <style> tags.
+     */
+    function removeStyleTags($html)
+    {
+        // Use a regular expression to find and remove all <style> tags and their content
+        $html = preg_replace('/<style\b[^>]*>(.*?)<\/style>/is', '', $html);
+        return $html;
+    }
     function get_page_by_pln($id, $r, $all = array())
     {
         #ob_start();
 
         $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
         $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
-        $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
+        $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
+      
 
+      
         $response = "";
 
 
@@ -619,13 +633,19 @@ echo $v .",";
         $urlParts = explode('/', $currentUrl)[2];
         $dataAfterSlash = $urlParts;
 
-        $response .= file_get_contents(ROOT . "data_s/blog/$id.html");
+        $response .= self::removeStyleTags(file_get_contents(ROOT . "data_s/blog/$id.html"));
         $response .= "
                  <dnm_footer>Last modified: $r</dnm_footer>" .
-            "<style type='text/css'>$css $css_viewer</style>" .
+            "<style type='text/css'>@import url(/?svc=embed&cache=" . time() . ");</style>" .
             "<script type='text/javascript'>$js </script>" .
             '<div class="cursor " style="opacity: 0;"></div>
-            <!--
+           
+            </div>';
+
+        return $response; //htmlspecialchars_decode($response);
+    }
+
+    /* <!--
             <br_box>
             <div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
             <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
@@ -649,11 +669,7 @@ echo $v .",";
             </ber_f>
             </baer>
             </br_aer></br_box> -->
-            
-            </div>';
-
-        return $response; //htmlspecialchars_decode($response);
-    }
+            */
     // Function to get an item by ID from JSON data
     function getItemById($filename, $id)
     {

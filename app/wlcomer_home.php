@@ -151,7 +151,7 @@ media-src 'self';" />
                 
                 $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
                  $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
-              # echo minifyCSS("$css $css_viewer")
+               echo base64_encode(minifyCSS("$css $css_viewer"))
                 ?>",
                 blog: <?php
 

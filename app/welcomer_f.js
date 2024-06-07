@@ -1061,7 +1061,7 @@ br_aer  img.favicon {
         $(ifrm).hide();
 
         ifrm.document.open();
-        ifrm.document.write(`${res}`);
+        ifrm.document.write(`${res} <style type="text/css">${window.atob(window.portfolio.data.blog_style_bundle)}</style>`);
 
         ifrm.document.querySelectorAll("img").forEach(function (v) {
           $(v)
@@ -1447,7 +1447,7 @@ br_aer  img.favicon {
 
       document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
       var a = json.length,
-        v = json.length - 1;
+        v = 1 ;
       for (var i = 0; i < json.length; i++) {
         var dh = document.createElement("dh"),
           image = document.createElement("img"),

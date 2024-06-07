@@ -636,7 +636,7 @@ echo $v .",";
         $response .= self::removeStyleTags(file_get_contents(ROOT . "data_s/blog/$id.html"));
         $response .= "
                  <dnm_footer>Last modified: $r</dnm_footer>" .
-            "<style type='text/css'>@import url(/?svc=embed&cache=" . time() . ");</style>" .
+            "<style type='text/css'>".minifyCSS("$css $css_viewer")."</style>" .
             "<script type='text/javascript'>$js </script>" .
             '<div class="cursor " style="opacity: 0;"></div>
            

@@ -267,7 +267,7 @@ class portfolio_marko
 
         };*/
         ob_start();
-        imagejpeg($resizedImage); //, "$path.jpg");
+         imagejpeg($resizedImage); //, "$path.jpg");
         if ($jpg) {
             imagejpeg($resizedImage); //, "$path.jpg");
         } else {
@@ -868,7 +868,7 @@ echo $v .",";
                 if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
-                        $this->ServeThumb("$url$_GET[blog].png");
+                        $this->ServeThumb("$url$_GET[blog].png",600);
                     }
                 } else if (!empty($_GET['thumb'])) {
                     if ($_GET['thumb'] == "true") {

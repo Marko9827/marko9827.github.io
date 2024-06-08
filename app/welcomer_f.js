@@ -618,7 +618,9 @@ br_aer  img.favicon {
       if (v.href.f == false) {
         a.href = v.href.f_u;
         a.target = "_blank";
-
+        a.setAttribute("rel","nofollow noreferrer");
+        a.setAttribute("role","link");
+        
         a.onmouseover = function () {
           welcomer.bell_over(a);
         };

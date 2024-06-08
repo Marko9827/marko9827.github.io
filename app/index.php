@@ -18,7 +18,12 @@ if (!empty($_GET['p'])) {
     }
 }
 
-
+if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
+    $redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    header('HTTP/1.1 301 Moved Permanently');
+    header('Location: ' . $redirect);
+    exit();
+}
 //  header("Access-Control-Allow-Origin: *"); 
 class portfolio_marko
 {
@@ -878,7 +883,7 @@ echo $v .",";
                 if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
-                        $this->ServeThumb("$url$_GET[blog].jpg");
+                        $this->ServeThumb("$url$_GET[blog].jpg",500);
                     }
                 } else {
                     header("content-type: image/jpeg");

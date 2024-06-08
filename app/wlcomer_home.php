@@ -12,6 +12,23 @@ define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost
 
 define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
 
+if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
+    ob_start("ob_gzhandler");
+} else {
+    ob_start();
+}
+ob_start(function ($b) {
+    $comments_pattern = "#/\*[^(\*/)]*\*/#";
+    $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
+   # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
+    // Remove HTML comments, except for conditional comments
+    $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b); 
+    $html = preg_replace('/>\s+</', '><', $html); 
+    $html = preg_replace('/^\s+|\s+$/m', '', $html);  
+    $html = preg_replace('/\s{2,}/', ' ', $html);
+    $html = preg_replace('/[\r\n]/','',$html); 
+   return $html;// preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+});
 $urlCdn = "";
 
 $cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
@@ -40,7 +57,7 @@ header(
     "Content-Security-Policy: $csp"
 );
 $rand = time();
-
+ob_start();
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" data-rand="<?php echo $rand; ?>">
@@ -101,6 +118,7 @@ media-src 'self';" />
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" as="style" />
     <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
     <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
+    <link rel="preload" href="/?svc=jsc" as="script" />
 
 
     <?php
@@ -114,161 +132,8 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" type="text/javascript">
-        /* BETA CODE */
-        function base64Encode(str) {
-            const encoder = new TextEncoder();
-            const buffer = encoder.encode(str);
-            return btoa(String.fromCharCode.apply(null, buffer));
-        }
-        $.get("/?pages=cv-pdf", function(res) {
-            window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
-
-        });
-        $.get("/?pages=visitcard", function(res) {
-            window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
-        });
-        window.portfolio = {
-            data: {
-                pages: {
-                    tg_channel: {
-                        title: "Telegram Channel",
-                        u: "tg-channel",
-                        c: ""
-                    },
-                    cv_pdf: {
-                        title: "CV",
-                        u: "cv-pdf",
-                        c: "",
-                    },
-                    visitcard: {
-                        title: "Visitcard",
-                        u: "visitcard",
-                        c: "",
-                    }
-                },
-                blog_style_bundle: "<?php 
-                
-                $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
-                 $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
-               echo base64_encode(minifyCSS("$css $css_viewer"))
-                ?>",
-                blog: <?php
-
-
-                        $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
-                        $i = 0;
-
-                        foreach ($r as $key => $val) {
-                            $curlR = SITE_HOST . "$val[source]";
-                            $queryString = parse_url($curlR, PHP_URL_QUERY);
-                            // -
-                            $varr = array();
-                        foreach ($val['shared_links'] as $key => $val3){
-                        #    array_push($varr, array(sharedUlr("$val3")));
-                          }
-                        #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
-                            // $varr;
-                            // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
-                            // $varr = array();
-                           
-                            
-                            // -
-                            $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
-
-
-                            $r[$i]['page'] = "";
-                            $r[$i]['page'] = $response;
-                            $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
-                            $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
-                            // $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
-                            #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
-
-                            // $shared_links = sharedUlr(sharedUlr);
-
-                            $i++;
-                        }
-                        echo json_encode($r);
-                        ?>,
-                gallery: <?php
-
-                            // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                            $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                            $i = 0;
-                            foreach ($fileList as $filename) {
-                                // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                                $path_parts = pathinfo($filename);
-                                $IamNumberic = time() . rand();
-                                if (!is_numeric("$path_parts[filename]")) {
-                                    rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                                    $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                                    if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                                        #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                                    }
-                                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                                } else {
-                                    $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
-
-                                    $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                                }
-                                // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                                $arr[$i]->title = "-";
-                                $arr[$i]->description = "-";
-
-                                // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                                $arr[$i]->href = "-";
-                                $arr[$i]->type = true;
-                                $i++;
-                            }
-                            echo json_encode($arr);
-                            ?>,
-                projects: []
-            },
-            projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
-            gallery: <?php
-
-                        // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                        $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                        $i = 0;
-                        foreach ($fileList as $filename) {
-                            // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                            $path_parts = pathinfo($filename);
-                            $IamNumberic = time() . rand();
-                            if (!is_numeric("$path_parts[filename]")) {
-                                rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                                $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                                if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                                    #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                                }
-                                $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                            } else {
-                                $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
-
-                                $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                            }
-                            // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                            $arr[$i]->title = "-";
-                            $arr[$i]->description = "-";
-
-                            // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                            $arr[$i]->href = "-";
-                            $arr[$i]->type = true;
-                            $i++;
-                        }
-                        echo count($arr);
-                        ?>,
-            blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
-
-        };
-        /* BETA CODE */
-
-        <?php
-
-        #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-
-        include ROOT . "welcomer_f.js";
-
-        ?>
+    <script nonce="<?php echo NONCE; ?>" type="text/javascript" src="/?svc=jsc">
+       
     </script>
 
     <?php if (!empty($_GET['tp'])) {
@@ -2080,6 +1945,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </html>
 <?php
 
+ob_start('minify_html');
 
 exit();
 /*

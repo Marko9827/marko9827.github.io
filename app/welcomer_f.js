@@ -235,7 +235,7 @@ const welcomer = {
       descr: "Look at my Telegram profile",
       icon: "fab fa-telegram",
       href: {
-        f_u: `https://t.me/nikoliccc02`, //"window.location.href = '/?p=tg_channel';",
+        f_u: `https://t.me/nikoliccc02`, 
         f: false,
         target: "blank",
       },
@@ -598,6 +598,12 @@ br_aer  img.favicon {
         img = document.createElement("img"),
         nnum = document.createElement("div");
       img.setAttribute("class", "aepraaa3");
+      img.setAttribute("title", v.title);
+      img.setAttribute("onerror","$(this).attr('style','display: none;');");
+      img.setAttribute("onload","$(this).attr('style','');");
+      
+
+       
       try {
         if (v.visible == "yes") {
           a.setAttribute("data-iam-hidden", "yes");
@@ -1378,7 +1384,7 @@ br_aer  img.favicon {
       } else {
         img_src_d = `${v.thumbail}&thumb=true`;
       }
-
+      
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
             ${thi} id-int="${div_not_i}" title="${v?.title}">

@@ -257,6 +257,25 @@ function getHeaderWrongToken()
     }
     exit();
 }
+/**
+ * Minify HTML content.
+ *
+ * @param string $html The HTML content to minify.
+ * @return string The minified HTML content.
+ */
+function minifyHtml($buffer) { 
+    $search = array(
+        '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
+        '/[^\S ]+\</s',     // strip whitespaces before tags, except space
+        '/(\s)+/s'         // shorten multiple whitespace sequences
+    );
+    $replace = array(
+        '>',
+        '<',
+        '\\1'
+    );
+    return preg_replace($search, $replace, $buffer);
+}
 function getHeaderFromMe($header = "")
 {
     $header_token = "";
@@ -486,13 +505,14 @@ if (!empty($_GET['drc'])) {
             // header("Content-Type: video/mp4"); 
             $ppath = $filetry2; //ROOT . "cinematic_3/cinematic_MainMenu.mp4";
             $reqpath = $ppath;
+        
             header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
             header('Accept-Ranges: bytes');
             header('Content-Length:' . filesize($reqpath));
             header('Content-Disposition: inline; filename="' . basename($reqpath) . '"');
             $stream = fopen($reqpath, 'rb');
             fpassthru($stream);
-            fclose($stream);
+            fclose($stream); 
             #   @readfile($reqpath);
             /*
 
@@ -568,6 +588,166 @@ error_reporting(E_ALL);
 
         </html><?php
                 exit();
+            } 
+            else if ($_GET['svc'] == "jsc")
+            {
+                header("content-type: text/javascript");
+                ?>
+            
+  /* BETA CODE */
+  function base64Encode(str) {
+    const encoder = new TextEncoder();
+    const buffer = encoder.encode(str);
+    return btoa(String.fromCharCode.apply(null, buffer));
+}
+$.get("/?pages=cv-pdf", function(res) {
+    window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
+
+});
+$.get("/?pages=visitcard", function(res) {
+    window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
+});
+window.portfolio = {
+    data: {
+        pages: {
+            tg_channel: {
+                title: "Telegram Channel",
+                u: "tg-channel",
+                c: ""
+            },
+            cv_pdf: {
+                title: "CV",
+                u: "cv-pdf",
+                c: "",
+            },
+            visitcard: {
+                title: "Visitcard",
+                u: "visitcard",
+                c: "",
+            }
+        },
+        blog_style_bundle: "<?php
+
+                            $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+                            $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
+                            echo base64_encode(minifyCSS("$css $css_viewer"))
+                            ?>",
+        blog: <?php
+
+
+                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
+                $i = 0;
+
+                foreach ($r as $key => $val) {
+                    $curlR = SITE_HOST . "$val[source]";
+                    $queryString = parse_url($curlR, PHP_URL_QUERY);
+                    // -
+                    $varr = array();
+                    foreach ($val['shared_links'] as $key => $val3) {
+                        #    array_push($varr, array(sharedUlr("$val3")));
+                    }
+                    #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
+                    // $varr;
+                    // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
+                    // $varr = array();
+
+
+                    // -
+                    $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
+
+
+                    $r[$i]['page'] = "";
+                    $r[$i]['page'] = $response;
+                    $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
+                    $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
+                    // $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
+                    #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
+
+                    // $shared_links = sharedUlr(sharedUlr);
+
+                    $i++;
+                }
+                echo json_encode($r);
+                ?>,
+        gallery: <?php
+
+                    // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                    $i = 0;
+                    foreach ($fileList as $filename) {
+                        // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                        $path_parts = pathinfo($filename);
+                        $IamNumberic = time() . rand();
+                        if (!is_numeric("$path_parts[filename]")) {
+                            rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                            $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                            if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                            }
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                        } else {
+                            $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                        }
+                        // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                        $arr[$i]->title = "-";
+                        $arr[$i]->description = "-";
+
+                        // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                        $arr[$i]->href = "-";
+                        $arr[$i]->type = true;
+                        $i++;
+                    }
+                    echo json_encode($arr);
+                    ?>,
+        projects: []
+    },
+    projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+    gallery: <?php
+
+                // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                $i = 0;
+                foreach ($fileList as $filename) {
+                    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                    $path_parts = pathinfo($filename);
+                    $IamNumberic = time() . rand();
+                    if (!is_numeric("$path_parts[filename]")) {
+                        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                        }
+                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                    } else {
+                        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                    }
+                    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                    $arr[$i]->title = "-";
+                    $arr[$i]->description = "-";
+
+                    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                    $arr[$i]->href = "-";
+                    $arr[$i]->type = true;
+                    $i++;
+                }
+                echo count($arr);
+                ?>,
+    blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+
+};
+/* BETA CODE */
+
+<?php
+
+#    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
+
+include ROOT . "welcomer_f.js";
+ 
+
             } else if ($_GET['svc'] == "share_api") {
 
 
@@ -733,5 +913,10 @@ error_reporting(E_ALL);
                 }
             }
         } else {
+
+      
             include ROOT . "wlcomer_home.php";
+         
+ 
+          #  echo $this->minifyHtml($t);
         }

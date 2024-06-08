@@ -91,7 +91,8 @@ ob_start();
     <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
+    
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
     </script>
     <?php
 
@@ -1945,7 +1946,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </html>
 <?php
 
-ob_start('minify_html');
+ 
 
 exit();
 /*

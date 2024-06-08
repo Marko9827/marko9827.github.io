@@ -1034,7 +1034,7 @@ br_aer  img.favicon {
         f = res;
       }
     });
-
+    if(!f.title){window.location.href = "/";}
     if (id == "all") {
       welcomer.blg_history_replace("/?p=blog");
       welcomer.blogljoad_posts(f);

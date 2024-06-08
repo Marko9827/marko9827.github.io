@@ -876,6 +876,13 @@ br_aer  img.favicon {
       href: "/?p=blog&id=1702118968197",
       type: true,
     },
+    {
+      title:"Lead developer in Mediaexperts.ch...",
+      description: "We help property developers, real estate agents, and property owner...",
+      img:"/?blog=07_jun_2024_16_11/1717770544145",
+      href: "/?p=blog&id=1717770544145",
+      type: true
+    }
   ],
   history: [],
   cursor: $(".cursor"),
@@ -1890,10 +1897,11 @@ br_aer  img.favicon {
   openWindow: function (i = 0) {
     if (this.projects[i].href !== "") {
       const urls = this.projects[i].href;
-      window.open(urls);
+      window.location.href = urls;
       return "";
       if (urls.includes("download")) {
-        window.open(urls);
+         
+        window.location.href = urls;
       } else {
         $.get(urls, function (v) {
           var blob = new Blob([v], { type: "octet/stream" });

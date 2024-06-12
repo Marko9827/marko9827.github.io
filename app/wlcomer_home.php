@@ -1428,6 +1428,21 @@ media-src 'self';" />
             transition: .3s;
             /* opacity: 0; */
         }
+
+        <?php if($_GET['vp'] == "livestream"){
+?>
+.box_shadow_txtf.box_shadow {
+margin:auto !important;}
+
+div#buttons, arr_bundle {
+
+display:none !important;}
+
+span.box_shadow_h {
+    display: none !important;
+}
+<?php
+        } ?>
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -1452,9 +1467,12 @@ media-src 'self';" />
     <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" loop autoplay muted autobuffer playsinline class="wallpaperVideo">
         <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
     </video>
-    <p class="p-c">
+    <p class="p-c"><?php if($_GET['vp'] == "livestream"){ 
+        echo "Live stream... Please wait...";
+     }else{?>
         Do you love random videos?<br>
         - Tip: Reload page...
+        <?php } ?>
     </p>
     <div id="content_Space"></div>
     <hh_anim_start>
@@ -1525,6 +1543,7 @@ media-src 'self';" />
                     <sp>-</sp><span>Scientist theories/news</span>
                     <sp>-</sp><span>Writing books</span>
                     <sp>-</sp><span>Photographer</span>
+                    <?php if($_GET['vp'] == "livestream")  { echo "<br><br>Live stream | I am here soon | Please wait me..."; }?>
                 </div>
                 <br class="hide_noy"><br>
                 <arr_bundle>

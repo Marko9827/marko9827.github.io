@@ -235,7 +235,7 @@ const welcomer = {
       descr: "Look at my Telegram profile",
       icon: "fab fa-telegram",
       href: {
-        f_u: `https://t.me/nikoliccc02`, 
+        f_u: `https://t.me/nikoliccc02`,
         f: false,
         target: "blank",
       },
@@ -446,7 +446,7 @@ const welcomer = {
       });
       return response.json();
     },
-    card: function (url) {
+    card: function (parent, url) {
       /*
       br_aer {
     display: flex;
@@ -490,15 +490,27 @@ br_aer  img.favicon {
 <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
 </span>
 </ber_f>
-</baer><baer>
-<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
-<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
-</span>
+</baer>
+
+<baer>
+<img src="/?blog=02_jun_2024_22_10/3423413441">
+<ber_f>
+  <bar_t>
+    <img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span>
+  </bar_t>
+  <span>domain.com</span>
 </ber_f>
 </baer>
 </br_aer></br_box>
       
       */
+      //  var bar_box = document.createElement("br_box");
+      var br_aer = document.createElement("br_aer"),
+        baer = document.createElement("baer"),
+        span = document.createElement("span"),
+        span_img = document.createElement("span"),
+        ber_f = document.createElement("ber_f"),
+        img = document.createElement("img");
     },
   },
   generateGrid_backrs: function (what = "", fsrc) {
@@ -599,11 +611,9 @@ br_aer  img.favicon {
         nnum = document.createElement("div");
       img.setAttribute("class", "aepraaa3");
       img.setAttribute("title", v.title);
-      img.setAttribute("onerror","$(this).attr('style','display: none;');");
-      img.setAttribute("onload","$(this).attr('style','');");
-      
+      img.setAttribute("onerror", "$(this).attr('style','display: none;');");
+      img.setAttribute("onload", "$(this).attr('style','');");
 
-       
       try {
         if (v.visible == "yes") {
           a.setAttribute("data-iam-hidden", "yes");
@@ -618,9 +628,9 @@ br_aer  img.favicon {
       if (v.href.f == false) {
         a.href = v.href.f_u;
         a.target = "_blank";
-        a.setAttribute("rel","nofollow noreferrer");
-        a.setAttribute("role","link");
-        
+        a.setAttribute("rel", "nofollow noreferrer");
+        a.setAttribute("role", "link");
+
         a.onmouseover = function () {
           welcomer.bell_over(a);
         };
@@ -879,12 +889,13 @@ br_aer  img.favicon {
       type: true,
     },
     {
-      title:"Lead developer in Mediaexperts.ch...",
-      description: "We help property developers, real estate agents, and property owner...",
-      img:"/?blog=07_jun_2024_16_11/1717770544145",
+      title: "Lead developer in Mediaexperts.ch...",
+      description:
+        "We help property developers, real estate agents, and property owner...",
+      img: "/?blog=07_jun_2024_16_11/1717770544145",
       href: "/?p=blog&id=1717770544145",
-      type: true
-    }
+      type: true,
+    },
   ],
   history: [],
   cursor: $(".cursor"),
@@ -946,6 +957,88 @@ br_aer  img.favicon {
       success: function (v) {},
     });
   },
+  fetchJsonData: async function (url) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("There was a problem with the fetch operation:", error);
+    }
+  },
+  cards_generate: function (j = {}, f = []) {
+ 
+    console.clear();
+    console.log(j, f);
+    var shared_links = "";
+    for (var i = 0; i < f.length; i++) { 
+      $.ajax({
+        url: `/?svc=favicon`,
+        type: "POST",
+        dataType: 'json',
+        data:{
+          url: `${f[i]}`
+        },
+        beforeSend:function(){
+
+        },
+        success: function (jsjonF) {
+          $.each(jsjonF, function (jsjon) {
+            shared_links += `<baer>
+<img src="/?svc=favicon&url=${jsjon["url"]}">
+<ber_f>
+<bar_t>
+ <span>${jsjon["title"]}</span>
+</bar_t>
+<span>${jsjon["url"]}</span>
+</ber_f>
+</baer>`;
+          });
+
+          br_box = `
+          <br_box>
+            <div class="bra">
+              <img class="img_background_rljs" src="${j["thumbail"]}" alt="Blog > Marko Nikolić - Portfolio" loading="lazy">
+            <br_aer class="snaped">
+              ${shared_links}
+            </br_aer>
+          </div>
+          </br_box>`;
+        },
+        beforeSend: function(){
+          
+        },
+        complete: function(){ 
+        
+          $("#clavs iframe:not(.iframe_mask)").on("load", function () {
+            var iframeDocument = $(this).contents();
+            iframeDocument.find("body").append(`${br_box}`);
+          });
+         
+        }
+      });
+    }
+    var br_box = "";
+    if (f.length > 0) {
+      br_box = `
+    <br_box>
+      <div class="bra">
+        <img class="img_background_rljs" src="${j["thumbail"]}" alt="Blog > Marko Nikolić - Portfolio" loading="lazy">
+      <br_aer class="snaped">
+        ${shared_links}
+      </br_aer>
+    </div>
+    </br_box>`;
+    }
+
+    $("#clavs iframe:not(.iframe_mask)").on("load", function () {
+      var iframeDocument = $(this).contents();
+      iframeDocument.find("body").append(`${br_box}`);
+    });
+  },
   custom_evjents_page: function (id = "") {
     $("div#clavs br_ta").addClass("active_scr");
 
@@ -972,7 +1065,13 @@ br_aer  img.favicon {
       $("div#clavs br_ta").addClass("active_scr");
       $(ifrm).hide();
       ifrm.document.open();
-      ifrm.document.write(`${res}`);
+      /*
+      window.portfolio.data.blog[0]['shared_links']
+      */
+
+      ifrm.document.write(
+        `${res} ${welcomer.cards_generate(f, f["shared_links"])}`
+      );
       setTimeout(function () {
         $("#clavs grider_viewer").hide();
       }, 1000);
@@ -1036,7 +1135,9 @@ br_aer  img.favicon {
         f = res;
       }
     });
-    if(!f.title){window.location.href = "/";}
+    if (!f.title) {
+      window.location.href = "/";
+    }
     if (id == "all") {
       welcomer.blg_history_replace("/?p=blog");
       welcomer.blogljoad_posts(f);
@@ -1078,8 +1179,12 @@ br_aer  img.favicon {
         ifrm.document.write(
           `${res} <style type="text/css">${window.atob(
             window.portfolio.data.blog_style_bundle
-          )}</style>`
+          )}</style> ${welcomer.cards_generate(f, f["shared_links"])}`
         );
+        $("#clavs iframe:not(.iframe_mask)").on("load", function () {
+          //    var iframeDocument = $(this).contents();
+          //  iframeDocument.find('body').append(`${welcomer.cards_generate(f,f['shared_links'])}`);
+        });
 
         ifrm.document.querySelectorAll("img").forEach(function (v) {
           $(v)
@@ -1106,7 +1211,7 @@ br_aer  img.favicon {
         });
 
         ifrm.document.close();
-
+        ifrm.onload = function () {};
         $("div#clavs").prepend(
           `<div class="bra"><img class="img_background_rljs" src="${
             f.thumbail
@@ -1393,7 +1498,7 @@ br_aer  img.favicon {
       } else {
         img_src_d = `${v.thumbail}&thumb=true`;
       }
-      
+
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
             ${thi} id-int="${div_not_i}" title="${v?.title}">
@@ -1460,8 +1565,7 @@ br_aer  img.favicon {
     });
   },
   eronelit_gallery: {
-    isImage: async  function (url) {
-       
+    isImage: async function (url) {
       const regex = /&t=v/i;
       return regex.test(url);
     },
@@ -1482,22 +1586,22 @@ br_aer  img.favicon {
 
         dh.innerHTML = `<dhn>${v}/${a}</dhn>`;
         const regex = /&t=v/i;
- 
-           if (!regex.test(json[i])) {
-            image.setAttribute("loading", "lazy");
-            image.setAttribute("style", "opacity:0; transform: scale(0);");
-            image.setAttribute("onload", "$(this).removeAttr('style');");
-            dh.setAttribute("data-index", i);
-            dh.setAttribute("data-name", afterSlash);
-            dh.appendChild(image);
-          } else {
-            iframe.setAttribute("loading", "lazy");
-            iframe.setAttribute("style", "opacity:0; transform: scale(0);");
-            iframe.setAttribute("onload", "$(this).removeAttr('style');");
-            dh.setAttribute("data-index", i);
-            dh.setAttribute("data-name", afterSlash);
-            dh.appendChild(iframe);
-          } 
+
+        if (!regex.test(json[i])) {
+          image.setAttribute("loading", "lazy");
+          image.setAttribute("style", "opacity:0; transform: scale(0);");
+          image.setAttribute("onload", "$(this).removeAttr('style');");
+          dh.setAttribute("data-index", i);
+          dh.setAttribute("data-name", afterSlash);
+          dh.appendChild(image);
+        } else {
+          iframe.setAttribute("loading", "lazy");
+          iframe.setAttribute("style", "opacity:0; transform: scale(0);");
+          iframe.setAttribute("onload", "$(this).removeAttr('style');");
+          dh.setAttribute("data-index", i);
+          dh.setAttribute("data-name", afterSlash);
+          dh.appendChild(iframe);
+        }
 
         document.querySelector(this2.scrolle.root_scroll).appendChild(dh);
         v++;
@@ -1902,7 +2006,6 @@ br_aer  img.favicon {
       window.location.href = urls;
       return "";
       if (urls.includes("download")) {
-         
         window.location.href = urls;
       } else {
         $.get(urls, function (v) {

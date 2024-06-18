@@ -16,6 +16,57 @@ function minifyCSS($css)
 
     return $css;
 }
+function is_youtube_url($url)
+{
+    $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=%\?]{11})/';
+    return preg_match($pattern, $url, $matches) ? $matches[5] : false;
+}
+
+function get_youtube_thumbnail($url)
+{
+    $video_id = is_youtube_url($url);
+    if ($video_id) {
+        return "https://img.youtube.com/vi/$video_id/hqdefault.jpg";
+    } else {
+        return false;
+    }
+}
+function get_meta_tags_from_url($url)
+{
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    $html = curl_exec($ch);
+    curl_close($ch);
+
+
+    if ($html === false) {
+        return false;
+    }
+    $doc = new DOMDocument();
+    @$doc->loadHTML($html);
+
+
+    $meta_data = [
+        'title' => '',
+        'description' => ''
+    ];
+    $title_tags = $doc->getElementsByTagName('title');
+    if ($title_tags->length > 0) {
+        $meta_data['title'] = $title_tags->item(0)->nodeValue;
+    }
+    $meta_tags = $doc->getElementsByTagName('meta');
+    foreach ($meta_tags as $meta) {
+        if (strtolower($meta->getAttribute('name')) === 'description') {
+            $meta_data['description'] = $meta->getAttribute('content');
+            break;
+        }
+    }
+
+    return $meta_data;
+}
 function streamVideo($filePathf)
 {
     $filePath = "$filePathf.mp4";
@@ -263,7 +314,8 @@ function getHeaderWrongToken()
  * @param string $html The HTML content to minify.
  * @return string The minified HTML content.
  */
-function minifyHtml($buffer) { 
+function minifyHtml($buffer)
+{
     $search = array(
         '/\>[^\S ]+/s',     // strip whitespaces after tags, except space
         '/[^\S ]+\</s',     // strip whitespaces before tags, except space
@@ -370,7 +422,14 @@ function finclude($_r)
 {
     include "$_SERVER[DOCUMENT_ROOT]/$_r";
 }
-
+function image_error($url, $image)
+{
+    if (getimagesize($url)) {
+        $image($url);
+    } else {
+        include '/app/aer.svg';
+    }
+}
 
 function data_print_r()
 {
@@ -505,14 +564,14 @@ if (!empty($_GET['drc'])) {
             // header("Content-Type: video/mp4"); 
             $ppath = $filetry2; //ROOT . "cinematic_3/cinematic_MainMenu.mp4";
             $reqpath = $ppath;
-        
+
             header("Content-Type: video/mp4"); #Optional if you'll only load it from other pages
             header('Accept-Ranges: bytes');
             header('Content-Length:' . filesize($reqpath));
             header('Content-Disposition: inline; filename="' . basename($reqpath) . '"');
             $stream = fopen($reqpath, 'rb');
             fpassthru($stream);
-            fclose($stream); 
+            fclose($stream);
             #   @readfile($reqpath);
             /*
 
@@ -556,9 +615,10 @@ if (!empty($_GET['drc'])) {
 
     if ($_GET['svc'] == "edt3") {
         include ROOT . "svc/editor.php";
-    } else if($_GET['svc'] == "streamVideo") {ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+    } else if ($_GET['svc'] == "streamVideo") {
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
         streamVideo($_GET['v']);
     } else if ($_GET['svc'] == "embed") {
 
@@ -575,7 +635,7 @@ error_reporting(E_ALL);
 
         <body>
             <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
-                <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" /> 
+                <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" />
                 <p class="vjs-no-js">
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that
@@ -588,43 +648,41 @@ error_reporting(E_ALL);
 
         </html><?php
                 exit();
-            } 
-            else if ($_GET['svc'] == "jsc")
-            {
+            } else if ($_GET['svc'] == "jsc") {
                 header("content-type: text/javascript");
                 ?>
-            
-  /* BETA CODE */
-  function base64Encode(str) {
-    const encoder = new TextEncoder();
-    const buffer = encoder.encode(str);
-    return btoa(String.fromCharCode.apply(null, buffer));
-}
-$.get("/?pages=cv-pdf", function(res) {
-    window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
 
-});
-$.get("/?pages=visitcard", function(res) {
-    window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
-});
-window.portfolio = {
-    data: {
+        /* BETA CODE */
+        function base64Encode(str) {
+        const encoder = new TextEncoder();
+        const buffer = encoder.encode(str);
+        return btoa(String.fromCharCode.apply(null, buffer));
+        }
+        $.get("/?pages=cv-pdf", function(res) {
+        window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
+
+        });
+        $.get("/?pages=visitcard", function(res) {
+        window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
+        });
+        window.portfolio = {
+        data: {
         pages: {
-            tg_channel: {
-                title: "Telegram Channel",
-                u: "tg-channel",
-                c: ""
-            },
-            cv_pdf: {
-                title: "CV",
-                u: "cv-pdf",
-                c: "",
-            },
-            visitcard: {
-                title: "Visitcard",
-                u: "visitcard",
-                c: "",
-            }
+        tg_channel: {
+        title: "Telegram Channel",
+        u: "tg-channel",
+        c: ""
+        },
+        cv_pdf: {
+        title: "CV",
+        u: "cv-pdf",
+        c: "",
+        },
+        visitcard: {
+        title: "Visitcard",
+        u: "visitcard",
+        c: "",
+        }
         },
         blog_style_bundle: "<?php
 
@@ -702,58 +760,90 @@ window.portfolio = {
                     echo json_encode($arr);
                     ?>,
         projects: []
-    },
-    projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
-    gallery: <?php
+        },
+        projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+        gallery: <?php
 
-                // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                $i = 0;
-                foreach ($fileList as $filename) {
-                    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                    $path_parts = pathinfo($filename);
-                    $IamNumberic = time() . rand();
-                    if (!is_numeric("$path_parts[filename]")) {
-                        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                    // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                    $i = 0;
+                    foreach ($fileList as $filename) {
+                        // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                        $path_parts = pathinfo($filename);
+                        $IamNumberic = time() . rand();
+                        if (!is_numeric("$path_parts[filename]")) {
+                            rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                            $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                            if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                            }
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                        } else {
+                            $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
                         }
-                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                    } else {
-                        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+                        // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                        $arr[$i]->title = "-";
+                        $arr[$i]->description = "-";
 
-                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                        // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                        $arr[$i]->href = "-";
+                        $arr[$i]->type = true;
+                        $i++;
                     }
-                    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                    $arr[$i]->title = "-";
-                    $arr[$i]->description = "-";
+                    echo count($arr);
+                    ?>,
+        blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
 
-                    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                    $arr[$i]->href = "-";
-                    $arr[$i]->type = true;
-                    $i++;
-                }
-                echo count($arr);
-                ?>,
-    blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+        };
+        /* BETA CODE */
 
-};
-/* BETA CODE */
+    <?php
 
-<?php
+                #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
 
-#    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-
-include ROOT . "welcomer_f.js";
- 
-
+                include ROOT . "welcomer_f.js";
             } else if ($_GET['svc'] == "icon_deviantart") {
                 header("content-type: image/svg+xml");
-                ?>
-                
-<svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg"  style="background:black"><path d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33" fill="#00e59b"/></svg>
-                <?php 
+    ?>
+
+        <svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg" style="background:black">
+            <path d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33" fill="#00e59b" />
+        </svg>
+<?php
+            } else if ($_GET['svc'] == "favicon") {
+                header("Access-Control-Allow-Methods: POST");
+                if (!empty($_POST['url'])) {
+
+                    if (!empty($_GET['icon'])) {
+                        if (is_youtube_url($_POST['url'])) {
+                            header("content-type: image/png");
+                            echo  file_get_contents(get_youtube_thumbnail($_POST['url']));
+                            exit();
+                        } else {
+                            echo  file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$_POST[url]");
+                        }
+                        exit();
+                    } else {
+
+                        $url_shared2_f = "";
+                        if (is_youtube_url($_POST['url'])) {
+                            $url_shared2_f = file_get_contents(get_youtube_thumbnail($_POST['url']));
+                        } else {
+                            $url_shared2_f =  file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$_POST[url]");
+                        }
+
+
+                        $arr = array();
+                        $arr[0] = get_meta_tags_from_url($_POST['url']);
+                        $arr[0]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
+                        $arr[0]['url'] = $_POST['url'];
+                        header("content-type: text/json");
+                        echo json_encode($arr);
+                        exit();
+                    }
+                }
             } else if ($_GET['svc'] == "share_api") {
 
 
@@ -899,18 +989,18 @@ include ROOT . "welcomer_f.js";
                             echo MarkDownTOstring("$fileT");
                             exit();
                         }
-                        if ($val == "mp4"){
-                            
+                        if ($val == "mp4") {
+
                             streamVideo($fff3);
-                        }else{
+                        } else {
 
-                        header("Content-Type: " . $fff3);
-                        header('Content-Length' . filesize($fileT));
+                            header("Content-Type: " . $fff3);
+                            header('Content-Length' . filesize($fileT));
 
-                        // header("Content-type: " . image_type_to_mime_type($mime_type));
+                            // header("Content-type: " . image_type_to_mime_type($mime_type));
 
-                        @readfile($fileT);
-                        exit();
+                            @readfile($fileT);
+                            exit();
                         }
                     }
                 }
@@ -920,9 +1010,9 @@ include ROOT . "welcomer_f.js";
             }
         } else {
 
-      
+
             include ROOT . "wlcomer_home.php";
-         
- 
-          #  echo $this->minifyHtml($t);
+
+
+            #  echo $this->minifyHtml($t);
         }

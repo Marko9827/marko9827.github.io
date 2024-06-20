@@ -5,6 +5,32 @@ const welcomer = {
   conf: {
     black: true,
   },
+  langs: [
+    {
+      name: "en",
+      data: {
+        detectedsLinksIn_postmaxn: "Detected links in post:",
+      },
+    },
+    {
+      name: "rs",
+      data: {
+        detectedsLinksIn_postmaxn: "Откривене линкови у посту:",
+      },
+    },
+  ],
+  lang: function () {
+    var lang = "en";
+
+
+    this.langs.forEach((element) => {
+      if (element.name == lang) {
+        arr = element.data;
+      }
+    });
+    return arr;
+  },
+  f: $,
   gallery_temp: [],
   infoVa_img: function (event) {
     if (welcomer.gallery_temp.length > 0) {
@@ -969,75 +995,151 @@ br_aer  img.favicon {
       console.error("There was a problem with the fetch operation:", error);
     }
   },
-  cards_generate: function (j = {}, f = []) {
- 
-    console.clear();
-    console.log(j, f);
-    var shared_links = "";
-    for (var i = 0; i < f.length; i++) { 
-      $.ajax({
-        url: `/?svc=favicon`,
-        type: "POST",
-        dataType: 'json',
-        data:{
-          url: `${f[i]}`
-        },
-        beforeSend:function(){
+  cards_generate_xhr: null,
+  cards_generate: function (fh = {}) {
+    var shared_links = "",
+      br_box = document.createElement("br_box"),
+      div_bra = document.createElement("div"),
+      img = document.createElement("img"),
+      br_aer = document.createElement("br_aer");
+    br_aer.setAttribute("class", "snaped");
+    //
+    div_bra.setAttribute("class", "bra");
+    //
+    img.setAttribute("class", "img_background_rljs");
+    img.setAttribute("src", fh?.thumbail);
+    // img.setAttribute("alt", "Blog > Marko Nikolić - Portfolio");
+    img.setAttribute("loading", "lazy");
+    //
 
-        },
-        success: function (jsjonF) {
-          $.each(jsjonF, function (jsjon) {
-            shared_links += `<baer>
-<img src="/?svc=favicon&url=${jsjon["url"]}">
-<ber_f>
-<bar_t>
- <span>${jsjon["title"]}</span>
-</bar_t>
-<span>${jsjon["url"]}</span>
+    div_bra.appendChild(img);
+    div_bra.appendChild(br_aer);
+    br_box.appendChild(div_bra);
+    try {
+      welcomer.cards_generate_xhr.abort();
+    } catch (aerear) {}
+
+    welcomer.cards_generate_xhr = new XMLHttpRequest();
+    welcomer.cards_generate_xhr.open("POST", "/?svc=favicon", true);
+    // welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+    welcomer.cards_generate_xhr.onreadystatechange = function () {
+      if (welcomer.cards_generate_xhr.readyState === 4) {
+        if (welcomer.cards_generate_xhr.status === 200) {
+          var responseData = JSON.parse(
+            welcomer.cards_generate_xhr.responseText
+          );
+          var jsjonF = responseData || [];
+          for (var i = 0; i < jsjonF.length; i++) {
+            var jsjon = jsjonF[i];
+            var baer = document.createElement("baer"),
+              ber_f = document.createElement("ber_f"),
+              span = document.createElement("span"),
+              bar_t = document.createElement("bar_t"),
+              span_2 = document.createElement("span"),
+              img = document.createElement("img");
+            img.setAttribute("src", `${jsjon["icon"]}`);
+            bar_t.appendChild(span);
+            span.innerHTML = `${jsjon["title"]}`;
+            ber_f.appendChild(span_2);
+            span_2.innerHTML = `${jsjon["url"]}`;
+            baer.appendChild(img);
+            baer.appendChild(ber_f);
+            br_aer.appendChild(baer);
+
+            shared_links += `<a title="Click (hovered link) for open... " class="baer" target="_blank" rel="nofollow noreferrer" href="${jsjon["url"]}">
+<img src="${jsjon["thumbail"]}"><ber_f>
+<bar_t><img src="${jsjon["icon"]}" class="favicon" height="16" 
+width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
+</span>
 </ber_f>
-</baer>`;
-          });
+</a>`;
+          }
+          if(jsjonF.length > 0){
+          $("#clavs iframe:not(.iframe_mask)")
+            .contents()
+            .find("body br_box")
+            .remove();
+          $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
+<br_box>
+<div class="bra">
+<img class="img_background_rljs" src="${
+            fh?.thumbail
+          }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
+<pe>${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
+<br_aer class="snaped">${shared_links} 
+</br_aer></br_box>`);
+          $("#clavs iframe:not(.iframe_mask)")
+            .contents()
+            .find("a.baer")
+            .each(function () {
+              $(this).attr(
+                "data-title",
+                "Click (hovered image) for view image in full size"
+              );
+              var a = $(this);
+              a.hover(
+                function () {
+                  parent.welcomer.showAnchorTitle(a, a.data("title"));
+                },
+                function () {
+                  parent.welcomer.hideAnchorTitle();
+                }
+              )
+                .data("title", a.attr("title"))
+                .removeAttr("title");
 
-          br_box = `
-          <br_box>
-            <div class="bra">
-              <img class="img_background_rljs" src="${j["thumbail"]}" alt="Blog > Marko Nikolić - Portfolio" loading="lazy">
-            <br_aer class="snaped">
-              ${shared_links}
-            </br_aer>
-          </div>
-          </br_box>`;
-        },
-        beforeSend: function(){
-          
-        },
-        complete: function(){ 
-        
-          $("#clavs iframe:not(.iframe_mask)").on("load", function () {
-            var iframeDocument = $(this).contents();
-            iframeDocument.find("body").append(`${br_box}`);
-          });
-         
+              a.mouseleave(function () {
+                parent.welcomer.hideAnchorTitle();
+              });
+            });
+          }
+        } else {
         }
-      });
-    }
-    var br_box = "";
-    if (f.length > 0) {
-      br_box = `
-    <br_box>
-      <div class="bra">
-        <img class="img_background_rljs" src="${j["thumbail"]}" alt="Blog > Marko Nikolić - Portfolio" loading="lazy">
-      <br_aer class="snaped">
-        ${shared_links}
-      </br_aer>
-    </div>
-    </br_box>`;
-    }
+      }
+    };
+    const jsonData = new FormData();
+    jsonData.append("urlf", JSON.stringify(fh.shared_links));
+    welcomer.cards_generate_xhr.send(jsonData);
 
-    $("#clavs iframe:not(.iframe_mask)").on("load", function () {
-      var iframeDocument = $(this).contents();
-      iframeDocument.find("body").append(`${br_box}`);
-    });
+    return;
+    welcomer.cards_generate_xhr = fetch(`/?svc=favicon`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(datfa),
+    })
+      .then((response) => {
+        if (response.ok) {
+          var jsjonF = response.json();
+          $.each(jsjonF, function (jsjon) {
+            var baer = document.createElement("baer"),
+              ber_f = document.createElement("ber_f"),
+              span = document.createElement("span"),
+              bar_t = document.createElement("bar_t"),
+              span_2 = document.createElement("span"),
+              img = document.createElement("img");
+            img.setAttribute("src", `/?svc=favicon&url=${jsjon["url"]}`);
+            bar_t.appendChild(span);
+            span.innerHTML = `${jsjon["title"]}`;
+            ber_f.appendChild(span_2);
+            span_2.innerHTML = `${jsjon["url"]}`;
+
+            baer.appendChild(ber_f);
+            br_aer.appendChild(baer);
+          });
+        }
+      })
+      .finally(() => {
+        $("#clavs iframe:not(.iframe_mask)")
+          .contents()
+          .find("body br_box")
+          .remove();
+        $("#clavs iframe:not(.iframe_mask)")
+          .contents()
+          .find("body")
+          .append(br_box);
+      });
   },
   custom_evjents_page: function (id = "") {
     $("div#clavs br_ta").addClass("active_scr");
@@ -1069,9 +1171,7 @@ br_aer  img.favicon {
       window.portfolio.data.blog[0]['shared_links']
       */
 
-      ifrm.document.write(
-        `${res} ${welcomer.cards_generate(f, f["shared_links"])}`
-      );
+      ifrm.document.write(`${res}`);
       setTimeout(function () {
         $("#clavs grider_viewer").hide();
       }, 1000);
@@ -1179,11 +1279,12 @@ br_aer  img.favicon {
         ifrm.document.write(
           `${res} <style type="text/css">${window.atob(
             window.portfolio.data.blog_style_bundle
-          )}</style> ${welcomer.cards_generate(f, f["shared_links"])}`
+          )}</style>  `
         );
         $("#clavs iframe:not(.iframe_mask)").on("load", function () {
           //    var iframeDocument = $(this).contents();
           //  iframeDocument.find('body').append(`${welcomer.cards_generate(f,f['shared_links'])}`);
+          welcomer.cards_generate(f);
         });
 
         ifrm.document.querySelectorAll("img").forEach(function (v) {

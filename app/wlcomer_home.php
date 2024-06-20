@@ -1226,7 +1226,7 @@ media-src 'self';" />
             position: unset;
         }
 
-        br_box br_aer baer {
+        br_box br_aer .baer {
             scroll-snap-align: center;
             -ms-flex-negative: 0;
             flex-shrink: 0;
@@ -1259,7 +1259,7 @@ media-src 'self';" />
             pointer-events: none;
         }
 
-        br_box br_aer baer img:not(.favicon) {
+        br_box br_aer .baer img:not(.favicon) {
             width: 50px;
             border-radius: 10px;
             height: 50px;
@@ -1267,14 +1267,16 @@ media-src 'self';" />
             min-height: 50px;
             max-width: 50px;
             max-height: 50px;
+            background: black;
+            object-fit: scale-down;
         }
 
-        br_box br_aer baer img {
+        br_box br_aer .baer img {
             -o-object-fit: cover;
             object-fit: cover;
         }
 
-        br_box br_aer baer {
+        br_box br_aer .baer {
             display: -webkit-box;
             display: -ms-flexbox;
             display: flex;
@@ -1330,17 +1332,17 @@ media-src 'self';" />
             display: inline-flex;
         }
 
-        br_box br_aer baer {
+        br_box br_aer .baer {
             border-radius: 10px !important;
             padding: 5px;
             font-weight: normal;
             position: relative;
         }
 
-        br_box br_aer baer:hover * {}
+        br_box br_aer .baer:hover * {}
 
-        br_box br_aer baer:hover {
-            background: white;
+        br_box br_aer .baer:hover {
+            /* background: white; */
         }
 
 
@@ -1388,6 +1390,10 @@ media-src 'self';" />
             padding-top: 10px;
             left: 0px;
             position: static;
+            
+    border: 2px solid rgb(255 255 255 / 18%);
+    border-radius: 4px !important;
+
         }
 
         br_box .bra {

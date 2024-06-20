@@ -16,6 +16,23 @@ function minifyCSS($css)
 
     return $css;
 }
+function get_thumbail_from_url($url){
+    $html = file_get_contents($url);
+    if ($html === false) {
+        die('Error fetching HTML from URL.');
+    } 
+    $doc = new DOMDocument(); 
+    libxml_use_internal_errors(true);
+    $doc->loadHTML($html);
+    libxml_clear_errors(); 
+    $xpath = new DOMXPath($doc);
+    $metaTags = $xpath->query('//meta[@property="og:image"]'); 
+    if ($metaTags->length > 0) {
+         $ogImage = $metaTags->item(0)->getAttribute('content');
+        return "data:image/png;base64," . base64_encode(file_get_contents($ogImage));
+    } 
+    return null;
+}
 function is_youtube_url($url)
 {
     $pattern = '/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch\?v=|embed\/|v\/|.+\?v=)?([^&=%\?]{11})/';
@@ -813,36 +830,40 @@ if (!empty($_GET['drc'])) {
         </svg>
 <?php
             } else if ($_GET['svc'] == "favicon") {
-                header("Access-Control-Allow-Methods: POST");
-                if (!empty($_POST['url'])) {
-
-                    if (!empty($_GET['icon'])) {
-                        if (is_youtube_url($_POST['url'])) {
-                            header("content-type: image/png");
-                            echo  file_get_contents(get_youtube_thumbnail($_POST['url']));
+               # header("Access-Control-Allow-Methods: POST"); 
+                if (!empty($_POST['urlf'])) {
+                    $arrf = json_decode("$_POST[urlf]",true);
+                    //["https://www.deviantart.com/marko9827/art/Alien-girl-poses-for-a-photo-shoot-7-1060834365","https://youtu.be/DDWDbZK0zdo"];
+                    $arr = array();
+                    $ii = 0;
+                
+                    foreach ($arrf as $val) {
+                        if (!empty($_GET['icon'])) {
+                            if (is_youtube_url($val)) {
+                                header("content-type: image/png");
+                                echo file_get_contents(get_youtube_thumbnail($val));
+                                exit();
+                            } else {
+                                echo file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
+                            }
                             exit();
-                        } else {
-                            echo  file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$_POST[url]");
+                        } else { 
+                            $url_shared2_f = "";
+                            if (is_youtube_url($val)) {
+                                $url_shared2_f = file_get_contents(get_youtube_thumbnail($val));
+                            } else {
+                                $url_shared2_f = file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
+                            }  
+                            $arr[$ii] = get_meta_tags_from_url($val);
+                            $arr[$ii]['thumbail'] = get_thumbail_from_url($val);
+                            $arr[$ii]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
+                            $arr[$ii]['url'] = $val;
+                            $ii++;
                         }
-                        exit();
-                    } else {
-
-                        $url_shared2_f = "";
-                        if (is_youtube_url($_POST['url'])) {
-                            $url_shared2_f = file_get_contents(get_youtube_thumbnail($_POST['url']));
-                        } else {
-                            $url_shared2_f =  file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$_POST[url]");
-                        }
-
-
-                        $arr = array();
-                        $arr[0] = get_meta_tags_from_url($_POST['url']);
-                        $arr[0]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
-                        $arr[0]['url'] = $_POST['url'];
-                        header("content-type: text/json");
-                        echo json_encode($arr);
-                        exit();
                     }
+                    header("content-type: text/json");
+                    echo json_encode($arr);
+                    exit();
                 }
             } else if ($_GET['svc'] == "share_api") {
 

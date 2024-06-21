@@ -4,6 +4,8 @@ br_box {
     max-width: -moz-fit-content;
     max-width: fit-content;
     margin: auto;
+    border: 2px solid white;
+    border-radius: 10px !important;
   }
   
   br_box br_aer {

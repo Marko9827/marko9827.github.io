@@ -1019,6 +1019,8 @@ br_aer  img.favicon {
       welcomer.cards_generate_xhr.abort();
     } catch (aerear) {}
 
+    
+
     welcomer.cards_generate_xhr = new XMLHttpRequest();
     welcomer.cards_generate_xhr.open("POST", "/?svc=favicon", true);
     // welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
@@ -1098,6 +1100,8 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
       }
     };
     const jsonData = new FormData();
+    var json_f = fh.shared_links;
+    
     jsonData.append("urlf", JSON.stringify(fh.shared_links));
     var shared_links_loader = "";
     if(fh.shared_links.length > 0){

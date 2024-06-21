@@ -718,8 +718,11 @@ if (!empty($_GET['drc'])) {
                     $queryString = parse_url($curlR, PHP_URL_QUERY);
                     // -
                     $varr = array();
+                    $var_shared = 0;
                     foreach ($val['shared_links'] as $key => $val3) {
                         #    array_push($varr, array(sharedUlr("$val3")));
+                        $varr[$var_shared] = base64_encode($val3);
+                        $var_shared++;
                     }
                     #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
                     // $varr;
@@ -730,7 +733,7 @@ if (!empty($_GET['drc'])) {
                     // -
                     $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
 
-
+                    $r[$i]['shared_links'] = $varr;
                     $r[$i]['page'] = "";
                     $r[$i]['page'] = $response;
                     $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
@@ -837,7 +840,8 @@ if (!empty($_GET['drc'])) {
                     $arr = array();
                     $ii = 0;
                 
-                    foreach ($arrf as $val) {
+                    foreach ($arrf as $val2) {
+                        $val = base64_decode($val2);
                         if (!empty($_GET['icon'])) {
                             if (is_youtube_url($val)) {
                                 header("content-type: image/png");

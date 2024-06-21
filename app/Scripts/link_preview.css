@@ -220,7 +220,7 @@ br_box {
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
     enable-background: new 0 0 512 512 !important;
-    border-radius: 0px !important;
+    border-radius: 5px !important;
     padding-top: 10px;
     left: 0px;
     position: static;

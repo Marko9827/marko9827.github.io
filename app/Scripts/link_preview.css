@@ -3,6 +3,7 @@ br_box {
     max-width: -webkit-fit-content;
     max-width: -moz-fit-content;
     max-width: fit-content;
+    margin: auto;
   }
   
   br_box br_aer {

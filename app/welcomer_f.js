@@ -1065,7 +1065,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
 <img class="img_background_rljs" src="${
             fh?.thumbail
           }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
-<pe>${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
+<pe><i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
 <br_aer class="snaped">${shared_links} 
 </br_aer></br_box><br><br><br>`);
           $("#clavs iframe:not(.iframe_mask)")
@@ -1120,7 +1120,7 @@ width="16"><span></span></bar_t><span>  </span>
 <img class="img_background_rljs" src="${
     fh?.thumbail
   }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
-<pe>${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
+<pe><i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
 <br_aer class="snaped">${shared_links_loader} 
 </br_aer></br_box><br><br><br>`);
   }

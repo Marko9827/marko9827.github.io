@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
 
 br_box {
     max-width: -webkit-fit-content;
@@ -271,7 +273,10 @@ br_box {
   }
   
   /*  */
-  
+  .loading_data {
+    pointer-events: none !important;
+  }
+
   .loading_data bar_t span,
   .loading_data bar_t {
     width: 100%;

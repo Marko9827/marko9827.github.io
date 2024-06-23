@@ -60,11 +60,12 @@ $rand = time();
 ob_start();
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en-us" class="no-js" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en-us" class="no-js"  prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
-
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
     <?php
     $this->MetaTags();
 
@@ -72,12 +73,14 @@ ob_start();
         <meta http-equiv="Content-Security-Policy" 
         content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
      */ ?>
+    <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
 
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
-
+    
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">

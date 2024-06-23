@@ -10,12 +10,20 @@ const welcomer = {
       name: "en",
       data: {
         detectedsLinksIn_postmaxn: "Detected links in post:",
+        my_cv: "My CV",
+        my_cv_dscr: "Look at my CV",
+        my_projects: "My projects",
+        my_projects_dscr: "Погледајте моје пројекте"
       },
     },
     {
       name: "rs",
       data: {
         detectedsLinksIn_postmaxn: "Откривене линкови у посту:",
+        my_cv: "Мој ЦВ",
+        my_cv_dscr: "Погледај мој ЦВ",
+        my_projects: "Моји пројекти",
+        my_projects_dscr: "Look at my Projects"
       },
     },
   ],
@@ -1019,8 +1027,6 @@ br_aer  img.favicon {
       welcomer.cards_generate_xhr.abort();
     } catch (aerear) {}
 
-    
-
     welcomer.cards_generate_xhr = new XMLHttpRequest();
     welcomer.cards_generate_xhr.open("POST", "/?svc=favicon", true);
     // welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
@@ -1056,55 +1062,59 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
 </ber_f>
 </a>`;
           }
-          if(jsjonF.length > 0){
-          $("#clavs iframe:not(.iframe_mask)")
-            .contents()
-            .find("body br_box")
-            .remove();
-          $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
+          if (jsjonF.length > 0) {
+            $("#clavs iframe:not(.iframe_mask)")
+              .contents()
+              .find("body br_box")
+              .remove();
+            $("#clavs iframe:not(.iframe_mask)").contents().find("body")
+              .append(`
 <br_box>
 <div class="bra">
 <img class="img_background_rljs" src="${
-            fh?.thumbail
-          }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
-<pe><i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
+              fh?.thumbail
+            }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
+<pe><i class="bi bi-link-45deg"></i> ${
+              welcomer.lang()["detectedsLinksIn_postmaxn"]
+            }</pe>
 <br_aer class="snaped">${shared_links} 
 </br_aer></br_box><br><br><br>`);
-          $("#clavs iframe:not(.iframe_mask)")
-            .contents()
-            .find("a.baer")
-            .each(function () {
-              $(this).attr(
-                "data-title",
-                "Click (hovered image) for view image in full size"
-              );
-              var a = $(this);
-              a.hover(
-                function () {
-                  parent.welcomer.showAnchorTitle(a, a.data("title"));
-                },
-                function () {
-                  parent.welcomer.hideAnchorTitle();
-                }
-              )
-                .data("title", a.attr("title"))
-                .removeAttr("title");
+            $("#clavs iframe:not(.iframe_mask)")
+              .contents()
+              .find("a.baer")
+              .each(function () {
+                $(this).attr(
+                  "data-title",
+                  "Click (hovered image) for view image in full size"
+                );
+                var a = $(this);
+                a.hover(
+                  function () {
+                    parent.welcomer.showAnchorTitle(a, a.data("title"));
+                  },
+                  function () {
+                    parent.welcomer.hideAnchorTitle();
+                  }
+                )
+                  .data("title", a.attr("title"))
+                  .removeAttr("title");
 
-              a.mouseleave(function () {
-                parent.welcomer.hideAnchorTitle();
+                a.mouseleave(function () {
+                  parent.welcomer.hideAnchorTitle();
+                });
               });
-            });
           }
-        } else { }
+        } else {
+        }
       }
     };
     const jsonData = new FormData();
     var json_f = fh.shared_links;
-    
+
     jsonData.append("urlf", JSON.stringify(fh.shared_links));
     var shared_links_loader = "";
-    if(fh.shared_links.length > 0){
-      fh.shared_links.forEach(function(){
+    if (fh.shared_links.length > 0) {
+      fh.shared_links.forEach(function () {
         shared_links_loader += `<a title="Loading" class="baer loading_data" target="_blank" rel="nofollow noreferrer" role="button" href="#">
 <img src="${welcomer.loader_svg}"><ber_f>
 <bar_t><img src="${welcomer.loader_svg}" class="favicon" height="16" 
@@ -1112,24 +1122,24 @@ width="16"><span></span></bar_t><span>  </span>
 </ber_f>
 </a>`;
       });
-       
-    $("#clavs iframe:not(.iframe_mask)")
-    .contents()
-    .find("body br_box")
-    .remove();
-  $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
+
+      $("#clavs iframe:not(.iframe_mask)")
+        .contents()
+        .find("body br_box")
+        .remove();
+      $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
 <br_box>
 <div class="bra">
 <img class="img_background_rljs" src="${
-    fh?.thumbail
-  }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
-<pe><i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
+        fh?.thumbail
+      }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
+<pe><i class="bi bi-link-45deg"></i> ${
+        welcomer.lang()["detectedsLinksIn_postmaxn"]
+      }</pe>
 <br_aer class="snaped">${shared_links_loader} 
 </br_aer></br_box><br><br><br>`);
-  }
-     welcomer.cards_generate_xhr.send(jsonData);
-
-   
+    }
+    welcomer.cards_generate_xhr.send(jsonData);
   },
   custom_evjents_page: function (id = "") {
     $("div#clavs br_ta").addClass("active_scr");

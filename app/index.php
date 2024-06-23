@@ -77,7 +77,8 @@ class portfolio_marko
         $chunkSize = 1024 * 1024; // 1MB per chunk
 
         while (!feof($f) && ($pos = ftell($f)) <= $end) {
-            if (connection_aborted()) break;
+            if (connection_aborted())
+                break;
 
             $remaining = $end - $pos + 1;
             $chunk = min($chunkSize, $remaining);
@@ -199,7 +200,7 @@ class portfolio_marko
         if ($h == "cv-pdf") {
 
             ob_start();
-            include_once("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
+            include_once ("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
             $pages_base64 = base64_encode(utf8_decode(ob_get_contents()));
             ob_get_clean();
         }
@@ -267,7 +268,7 @@ class portfolio_marko
 
         };*/
         ob_start();
-         imagejpeg($resizedImage); //, "$path.jpg");
+        imagejpeg($resizedImage); //, "$path.jpg");
         if ($jpg) {
             imagejpeg($resizedImage); //, "$path.jpg");
         } else {
@@ -394,6 +395,7 @@ class portfolio_marko
     {
         $person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
+     
 
         if (!empty($_GET['id']) || !empty($_GET['blog'])) {
             $off = false;
@@ -409,28 +411,28 @@ class portfolio_marko
 
             $title = "Blog > $data[title] | Marko Nikolić";
             echo $title;
-?>
+            ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
             <meta name="description" content="<?php echo "$data[title]"; ?> | This website for my PortFolio. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
-                                            /*$t = "";
+            /*$t = "";
 foreach($data->keywords as $index => $v){
 echo $v .",";
 }*/
-                                            $faf = $data["keywords"];
-                                            $c = count($data["keywords"]);
-                                            $ci = 0;
-                                            foreach ($faf as $v) {
-                                                echo $v;
-                                                if ($ci < $c) {
-                                                    echo ",";
-                                                }
-                                                $ci++;
-                                            }
-                                            ?>">
+            $faf = $data["keywords"];
+            $c = count($data["keywords"]);
+            $ci = 0;
+            foreach ($faf as $v) {
+                echo $v;
+                if ($ci < $c) {
+                    echo ",";
+                }
+                $ci++;
+            }
+            ?>">
 
             <meta name="theme-color" content="#333">
             <meta property="og:type" content="website" />
@@ -445,14 +447,18 @@ echo $v .",";
             <meta property="og:description" content="This website for my PortFolio." />
             <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image:secure_url"
+                content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="630">
             <meta property="og:locale" content="en_GB" />
-        <?php
+            <?php
+
+
+         
         } else {
-        ?>
+            ?>
             <title>
                 <?php
                 if (!empty($_GET['p'])) {
@@ -488,7 +494,8 @@ echo $v .",";
             <meta property="og:description" content="This website for my PortFolio." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" itemprop="image"
+                content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
@@ -496,6 +503,8 @@ echo $v .",";
             <meta property="og:locale" content="en_GB" />
             <?php
         }
+
+        
     }
     function error_page($status)
     {
@@ -607,7 +616,7 @@ echo $v .",";
         $data = [
             'token' => '32M052k350QaeofkaeopfF',
             'key' => '3402340234239J939592369',
-            'type' =>  'share_validator',
+            'type' => 'share_validator',
             'shared' => $aerea
         ];
         $ch = curl_init($url);
@@ -626,7 +635,7 @@ echo $v .",";
 
         if (curl_errno($ch)) {
         } else {
-            $r =  $response;
+            $r = $response;
         }
         curl_close($ch);
         return $r;
@@ -637,7 +646,7 @@ echo $v .",";
         $postData = [
             'token' => '32M052k350QaeofkaeopfF',
             'key' => '3402340234239J939592369',
-            'type' =>  'share_validator',
+            'type' => 'share_validator',
             'shared' => $aerea
         ];
         $ch = curl_init();
@@ -654,7 +663,7 @@ echo $v .",";
 
         if (curl_errno($ch)) {
         } else {
-            echo  $response;
+            echo $response;
         }
         curl_close($ch);
     }
@@ -688,7 +697,7 @@ echo $v .",";
 
         $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
         $js = file_get_contents(ROOT . "/Scripts/md_viewer.js");
-        $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
+        $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
 
 
 
@@ -781,85 +790,90 @@ echo $v .",";
                     } else {
                         echo file_get_contents($file);
                     } ?>
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                    <link rel="preload" as="font" href="<?php echo CDN; ?>
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                        <link rel="preload" as="font" href="<?php echo CDN; ?>
 /node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
-                    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                <?php
-                    $currentUrl = $_SERVER['REQUEST_URI'];
-                    $urlParts = explode('/', $currentUrl)[2];
-                    $dataAfterSlash = $urlParts;
-                    $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
-                    echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
-                    echo "<style type='text/css'>$css</style>";
-                    echo "<script type='text/javascript'>$js </script>";
-                    echo '<div class="cursor " style="opacity: 0;></div>';
-                    exit();
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <?php
+                        $currentUrl = $_SERVER['REQUEST_URI'];
+                        $urlParts = explode('/', $currentUrl)[2];
+                        $dataAfterSlash = $urlParts;
+                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
+                        echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
+                        echo "<style type='text/css'>$css</style>";
+                        echo "<script type='text/javascript'>$js </script>";
+                        echo '<div class="cursor " style="opacity: 0;></div>';
+                        exit();
                 } else {
                     $this->error_page(404);
                 }
                 // 23_jul_2023_09_26/1690103453287
             } else if (file_exists("$url$_GET[blog].mp4")) {
                 if ($_GET['t'] == "v") {
-                ?>
+                    ?>
 
-                    <html>
+                            <html>
 
-                    <head>
-                        <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
-                        <style>
-                            * {
-                                margin: 0px;
-                                padding: 0px;
-                            }
+                            <head>
+                                <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                                <style>
+                                    * {
+                                        margin: 0px;
+                                        padding: 0px;
+                                    }
 
-                            div#my-video {
-                                position: fixed;
-                                left: 0px;
-                                top: 0px;
-                                width: 100%;
-                                height: 100%;
-                            }
-                        </style>
-                    </head>
+                                    div#my-video {
+                                        position: fixed;
+                                        left: 0px;
+                                        top: 0px;
+                                        width: 100%;
+                                        height: 100%;
+                                    }
+                                </style>
+                            </head>
 
-                    <body onload="f();">
-                        <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="/?blog=<?= $_GET['blog'] ?>00" data-setup="{}">
-                            <source src="/?blog=<?= $_GET['blog'] ?>" type="video/mp4" />
-                            <p class="vjs-no-js">
-                                To view this video please enable JavaScript, and consider upgrading to a
-                                web browser that supports HTML5 video.
-                            </p>
-                        </video>
-                        <script async type="text/javascript">
-                            f =function(){
-                                document.addEventListener("contextmenu",function(e){
-                                    e.preventDefault();
-                                    return false;
-                                });
-                                document.addEventListener("selectstart",function(e){
-                                    e.preventDefault();
-                                    return false;
-                                });
-                                document.addEventListener("dragstart",function(e){
-                                    e.preventDefault();
-                                    return false;
-                                });
-                                document.querySelectorAll("script").forEach(function(res){
-                                    res.remove();
-                                    console.clear();
-                                });
-                            }
-                        </script>
-                        <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
-                    </body>
+                            <body onload="f();">
+                                <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+                                    poster="/?blog=<?= $_GET['blog'] ?>00" data-setup="{}">
+                                    <source src="/?blog=<?= $_GET['blog'] ?>" type="video/mp4" />
+                                    <p class="vjs-no-js">
+                                        To view this video please enable JavaScript, and consider upgrading to a
+                                        web browser that supports HTML5 video.
+                                    </p>
+                                </video>
+                                <script async type="text/javascript">
+                                    f = function () {
+                                        document.addEventListener("contextmenu", function (e) {
+                                            e.preventDefault();
+                                            return false;
+                                        });
+                                        document.addEventListener("selectstart", function (e) {
+                                            e.preventDefault();
+                                            return false;
+                                        });
+                                        document.addEventListener("dragstart", function (e) {
+                                            e.preventDefault();
+                                            return false;
+                                        });
+                                        document.querySelectorAll("script").forEach(function (res) {
+                                            res.remove();
+                                            console.clear();
+                                        });
+                                    }
+                                </script>
+                                <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                            </body>
 
-                    </html>
+                            </html>
                     <?php
                 } else {
                     $this->streamVideo("$url$_GET[blog].mp4");
@@ -868,7 +882,7 @@ echo $v .",";
                 if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
-                        $this->ServeThumb("$url$_GET[blog].png",600);
+                        $this->ServeThumb("$url$_GET[blog].png", 600);
                     }
                 } else if (!empty($_GET['thumb'])) {
                     if ($_GET['thumb'] == "true") {
@@ -883,7 +897,7 @@ echo $v .",";
                 if (!empty($_GET['for'])) {
                     if ($_GET['for'] == "og") {
                         header("content-type: image/png");
-                        $this->ServeThumb("$url$_GET[blog].jpg",500);
+                        $this->ServeThumb("$url$_GET[blog].jpg", 500);
                     }
                 } else {
                     header("content-type: image/jpeg");
@@ -1253,28 +1267,34 @@ echo $v .",";
 
 
                         echo file_get_contents($file);
-                    ?>
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
-                        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-                        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<?php
-                        $currentUrl = $_SERVER['REQUEST_URI'];
-                        $urlParts = explode('/', $currentUrl);
+                        ?>
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" as="font"
+                                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                                                                                                                                                                                                                                                                    type="font/woff2">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                            <?php
+                            $currentUrl = $_SERVER['REQUEST_URI'];
+                            $urlParts = explode('/', $currentUrl);
 
-                        $urlParts = array_filter($urlParts);
+                            $urlParts = array_filter($urlParts);
 
-                        $dataAfterSlash = end($urlParts);
-                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
-                        echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
-                        echo "<style type='text/css'>$css</style>";
-                        echo "<script type='text/javascript'>$js </script>";
+                            $dataAfterSlash = end($urlParts);
+                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
+                            echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
+                            echo "<style type='text/css'>$css</style>";
+                            echo "<script type='text/javascript'>$js </script>";
 
-                        exit();
+                            exit();
                     } else {
                         $this->error_page(404);
                     }
@@ -1529,7 +1549,7 @@ echo $v .",";
                     header('Content-type: application/woff2');
                     header('Content-disposition: inline; filename="Eronelit font"');
                     if (readfile("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1'])) {
-                        include_once("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
+                        include_once ("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
                     } else {
                         return false;
                     }

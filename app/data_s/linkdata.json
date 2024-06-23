@@ -1,0 +1,100 @@
+{
+    '@context': 'https://schema.org',
+    '@graph': [
+        {
+            '@type': 'Organization',
+            '@id': 'https://danatar.best/#organization',
+            'name': 'Dana Taranova',
+            'url': 'https://danatar.best'
+        },
+        {
+            '@type': 'WebSite',
+            '@id': 'https://danatar.best/#website',
+            'url': 'https://danatar.best',
+            'name': 'Dana Taranova',
+            'alternateName': 'Dana Taranova',
+            'publisher': {
+                '@id': 'https://danatar.best/#organization'
+            },
+            'inLanguage': 'en-US',
+            'potentialAction': {
+                '@type': 'SearchAction',
+                'target': 'https://danatar.best/?s={search_term_string}',
+                'query-input': 'required name=search_term_string'
+            }
+        },
+        {
+            '@type': 'ImageObject',
+            '@id': 'https://danatar.best/wp-content/uploads/2023/11/dana-logo.svg',
+            'url': 'https://danatar.best/wp-content/uploads/2023/11/dana-logo.svg',
+            'width': '200',
+            'height': '200',
+            'caption': 'Dana Taranova Logotip',
+            'inLanguage': 'en-US'
+        },
+        {
+            '@type': 'WebPage',
+            '@id': 'https://danatar.best/#webpage',
+            'url': 'https://danatar.best/',
+            'name': 'Dana Taranova \u2013 Danatar. Exclusive content. Offical Website. Danatar',
+            'datePublished': '2023-11-22T12:55:27+03:00',
+            'dateModified': '2024-06-03T09:27:46+03:00',
+            'about': {
+                '@id': 'https://danatar.best/#organization'
+            },
+            'isPartOf': {
+                '@id': 'https://danatar.best/#website'
+            },
+            'primaryImageOfPage': {
+                '@id': 'https://danatar.best/wp-content/uploads/2023/11/dana-logo.svg'
+            },
+            'inLanguage': 'en-US'
+        },
+        {
+            '@type': 'Person',
+            '@id': 'https://danatar.best/author/dana/',
+            'name': 'dana',
+            'url': 'https://danatar.best/author/dana/',
+            'image': {
+                '@type': 'ImageObject',
+                '@id': 'https://secure.gravatar.com/avatar/0c9f73d2a9c1ee7ede7fabf8de0342ba?s=96&amp;d=mm&amp;r=g',
+                'url': 'https://secure.gravatar.com/avatar/0c9f73d2a9c1ee7ede7fabf8de0342ba?s=96&amp;d=mm&amp;r=g',
+                'caption': 'dana',
+                'inLanguage': 'en-US'
+            },
+            'sameAs': [
+                'https://danatar.best'
+            ],
+            'worksFor': {
+                '@id': 'https://danatar.best/#organization'
+            }
+        },
+        {
+            '@type': 'Article',
+            'headline': 'Dana Taranova \u2013 Danatar. Exclusive content. Offical Website. Danatar',
+            'keywords': 'Dana Taranova',
+            'datePublished': '2023-11-22T12:55:27+03:00',
+            'dateModified': '2024-06-03T09:27:46+03:00',
+            'author': {
+                '@id': 'https://danatar.best/author/dana/',
+                'name': 'dana'
+            },
+            'publisher': {
+                '@id': 'https://danatar.best/#organization'
+            },
+            'description': 'This subscription is 6-7 exclusive videos per month, where all the videos are filled with aesthetics. You will see the beauty of sports movements Dana Taranova.',
+            'name': 'Dana Taranova \u2013 Danatar. Exclusive content. Offical Website. Danatar',
+            '@id': 'https://danatar.best/#richSnippet',
+            'isPartOf': {
+                '@id': 'https://danatar.best/#webpage'
+            },
+            'image': {
+                '@id': 'https://danatar.best/wp-content/uploads/2023/11/dana-logo.svg'
+            },
+            'inLanguage': 'en-US',
+            'mainEntityOfPage': {
+                '@id': 'https://danatar.best/#webpage'
+            }
+        }
+    ]
+}

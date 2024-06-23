@@ -407,7 +407,7 @@ class portfolio_marko
             echo '<title >';
 
 
-            $title = "Blog > $data[title] | Marko Nikolić - Portfolio";
+            $title = "Blog > $data[title] | Marko Nikolić";
             echo $title;
 ?>
             </title>
@@ -457,16 +457,16 @@ echo $v .",";
                 <?php
                 if (!empty($_GET['p'])) {
                     if ($_GET['p'] == "cv-pdf") {
-                        echo "Marko Nikolić - Portfolio > CV";
+                        echo "Marko Nikolić > CV";
                     } else if ($_GET['p'] == "visitcard") {
-                        echo "Marko Nikolić - Portfolio > Visitcard";
+                        echo "Marko Nikolić > Visitcard";
                     } else if ($_GET['p'] == "Projects") {
-                        echo "Marko Nikolić - Portfolio > Projects";
+                        echo "Marko Nikolić > Projects";
                     } else {
-                        echo "Marko Nikolić - Portfolio";
+                        echo "Marko Nikolić";
                     }
                 } else {
-                    echo "Marko Nikolić - Portfolio";
+                    echo "Marko Nikolić";
                 }
                 ?>
             </title>
@@ -484,7 +484,7 @@ echo $v .",";
             <meta name="twitter:site" content="@markoni62595164" />
             <meta name="twitter:creator" content="@markoni62595164" />
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
-            <meta property="og:title" content="Marko Nikolić - Portfolio" />
+            <meta property="og:title" content="Marko Nikolić" />
             <meta property="og:description" content="This website for my PortFolio." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
@@ -718,7 +718,7 @@ echo $v .",";
 
     /* <!--
             <br_box>
-            <div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
+            <div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
             <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
             <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
             </span>
@@ -1470,7 +1470,7 @@ echo $v .",";
                 header("Content-type: text/css");
                 include ROOT . "fonts/D3/D3.php";
             }
-            // - portfolio old
+            // old
             else if (strpos($_GET['mnps'], "portfolio-v3-old-s-h") !== false) {
                 include ROOT . "old_portfolio/index.php";
             } else if (strpos($_GET['mnps'], "portfolio-v3-old-s-s-stylesheet") !== false) {
@@ -1480,7 +1480,7 @@ echo $v .",";
                 header("Content-type: application/javascript");
                 include ROOT . "old_portfolio/script.php";
             }
-            // - portfolio old
+            // old
             else if (strpos($_GET['mnps'], "stylesheet-3") !== false) {
                 header("Content-type: text/css");
             } else if (strpos($_GET['mnps'], "stylesheet-js-fai") !== false) {

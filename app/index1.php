@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Marko Nikolić - Portfolio</title>
+    <title>Marko Nikolić</title>
     <link rel="icon" href="logo.ico" type="image/ico" />
-    <meta name="description" content="This website for my PortFolio. ">
+    <meta name="description" content="Is my personal website. ">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="author" content="Marko Nikolic">
     <link rel="stylesheet" id="template_css" href="css/style1f.css">

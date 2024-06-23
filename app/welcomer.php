@@ -16,22 +16,38 @@ function minifyCSS($css)
 
     return $css;
 }
-function get_thumbail_from_url($url){
-    $html = file_get_contents($url);
+function get_fromC($url)
+{
+
+    $options = array(
+        'http' => array(
+            'method' => 'GET',
+            'header' => 'User-Agent: Mozilla/5.0 (Linux; U; Android 4.0; en-us; GT-I9300 Build/IMM76D) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30 \r\n'
+        )
+    );
+    $context = stream_context_create($options);
+    $webPageContents = file_get_contents($url, false, $context);
+    return $webPageContents;
+}
+
+function get_thumbail_from_url($url)
+{
+    $html = get_fromC($url);
     if ($html === false) {
-        die('Error fetching HTML from URL.');
-    } 
-    $doc = new DOMDocument(); 
+        return "data:image/png;base64," . base64_encode(file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$url"));
+    }
+    $doc = new DOMDocument();
     libxml_use_internal_errors(true);
     $doc->loadHTML($html);
-    libxml_clear_errors(); 
+    libxml_clear_errors();
     $xpath = new DOMXPath($doc);
-    $metaTags = $xpath->query('//meta[@property="og:image"]'); 
+    $metaTags = $xpath->query('//meta[@property="og:image"]');
     if ($metaTags->length > 0) {
-         $ogImage = $metaTags->item(0)->getAttribute('content');
-        return "data:image/png;base64," . base64_encode(file_get_contents($ogImage));
-    } 
-    return null;
+        $ogImage = $metaTags->item(0)->getAttribute('content');
+        return "data:image/png;base64," . base64_encode(get_fromC($ogImage));
+    }
+
+    return "data:image/png;base64," . base64_encode(file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$url"));
 }
 function is_youtube_url($url)
 {
@@ -45,7 +61,7 @@ function get_youtube_thumbnail($url)
     if ($video_id) {
         return "https://img.youtube.com/vi/$video_id/hqdefault.jpg";
     } else {
-        return false;
+        return "https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$url";
     }
 }
 function get_meta_tags_from_url($url)
@@ -132,7 +148,8 @@ function streamVideo($filePathf)
     $chunkSize = 1024 * 1024; // 1MB per chunk
 
     while (!feof($f) && ($pos = ftell($f)) <= $end) {
-        if (connection_aborted()) break;
+        if (connection_aborted())
+            break;
 
         $remaining = $end - $pos + 1;
         $chunk = min($chunkSize, $remaining);
@@ -211,7 +228,7 @@ function yt($url)
 
     preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $value);
 
-    //explode("v=", $url);
+    explode("v=", $url);
     $videoId = $value[1];
 
     return "https://img.youtube.com/vi/$videoId/hqdefault.jpg";
@@ -385,7 +402,7 @@ function sharedUlr($aerea)
                 $array[$var]->link_id = 0;
                 $url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
 
-                $tags =  get_meta_tags($url_shared);
+                $tags = get_meta_tags($url_shared);
                 if ($tags['description'] !== null) {
                     $description = $tags['description'];
                 }
@@ -403,16 +420,16 @@ function sharedUlr($aerea)
                     $array[$var]->description = "Shared Image";
                     $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
                     $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-                    $array[$var]->match =  $r;
+                    $array[$var]->match = $r;
                     $array[$var]->link = $url_trjim;
                 } else {
                     $array[$var]->title = getTitle($url_trjim);
                     $array[$var]->description = $description;
-                    $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
+                    $array[$var]->thumbnail = get_icon_image(get_img($url_trjim));
                     $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
 
                     // 
-                    $array[$var]->match =  $r;
+                    $array[$var]->match = $r;
                     $array[$var]->link = $url_trjim;
                 }
 
@@ -595,10 +612,10 @@ if (!empty($_GET['drc'])) {
             $stream = new eronelit_VideoStream($filetry2);
             $stream->start();*/
         } /*else{
-   // header("Content-Type: video/mp4"); 
-   $files = glob($filetry . '/*.mp4');
-   $stream = new eronelit_VideoStream($files[0]);
-   $stream->start();
+ // header("Content-Type: video/mp4"); 
+ $files = glob($filetry . '/*.mp4');
+ $stream = new eronelit_VideoStream($files[0]);
+ $stream->start();
 }*/
 
         exit();
@@ -640,404 +657,409 @@ if (!empty($_GET['drc'])) {
     } else if ($_GET['svc'] == "embed") {
 
         header("content-type: text/html");
-?>
-        <html>
+        ?>
+                            <html>
 
-        <head>
-            <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+                            <head>
+                                <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 
-            <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-            <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
-        </head>
+                                <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+                                <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
+                            </head>
 
-        <body>
-            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
-                <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" />
-                <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a
-                    web browser that
-                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                </p>
-            </video>
+                            <body>
+                                <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
+                                    data-setup="{}">
+                                    <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" />
+                                    <p class="vjs-no-js">
+                                        To view this video please enable JavaScript, and consider upgrading to a
+                                        web browser that
+                                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                                    </p>
+                                </video>
 
-            <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-        </body>
+                                <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+                            </body>
 
-        </html><?php
-                exit();
-            } else if ($_GET['svc'] == "jsc") {
-                header("content-type: text/javascript");
-                ?>
-
-        /* BETA CODE */
-        function base64Encode(str) {
-        const encoder = new TextEncoder();
-        const buffer = encoder.encode(str);
-        return btoa(String.fromCharCode.apply(null, buffer));
-        }
-        $.get("/?pages=cv-pdf", function(res) {
-        window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
-
-        });
-        $.get("/?pages=visitcard", function(res) {
-        window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
-        });
-        window.portfolio = {
-        data: {
-        pages: {
-        tg_channel: {
-        title: "Telegram Channel",
-        u: "tg-channel",
-        c: ""
-        },
-        cv_pdf: {
-        title: "CV",
-        u: "cv-pdf",
-        c: "",
-        },
-        visitcard: {
-        title: "Visitcard",
-        u: "visitcard",
-        c: "",
-        }
-        },
-        blog_style_bundle: "<?php
-
-                            $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
-                            $css_viewer  = file_get_contents(ROOT . "/Scripts/link_preview.css");
-                            echo base64_encode(minifyCSS("$css $css_viewer"))
-                            ?>",
-        blog: <?php
-
-
-                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
-                $i = 0;
-
-                foreach ($r as $key => $val) {
-                    $curlR = SITE_HOST . "$val[source]";
-                    $queryString = parse_url($curlR, PHP_URL_QUERY);
-                    // -
-                    $varr = array();
-                    $var_shared = 0;
-                    foreach ($val['shared_links'] as $key => $val3) {
-                        #    array_push($varr, array(sharedUlr("$val3")));
-                        $varr[$var_shared] = base64_encode($val3);
-                        $var_shared++;
-                    }
-                    #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
-                    // $varr;
-                    // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
-                    // $varr = array();
-
-
-                    // -
-                    $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
-
-                    $r[$i]['shared_links'] = $varr;
-                    $r[$i]['page'] = "";
-                    $r[$i]['page'] = $response;
-                    $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
-                    $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
-                    // $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
-                    #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
-
-                    // $shared_links = sharedUlr(sharedUlr);
-
-                    $i++;
-                }
-                echo json_encode($r);
-                ?>,
-        gallery: <?php
-
-                    // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                    $i = 0;
-                    foreach ($fileList as $filename) {
-                        // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                        $path_parts = pathinfo($filename);
-                        $IamNumberic = time() . rand();
-                        if (!is_numeric("$path_parts[filename]")) {
-                            rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                            $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                            if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                                #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                            }
-                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                        } else {
-                            $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
-
-                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                        }
-                        // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                        $arr[$i]->title = "-";
-                        $arr[$i]->description = "-";
-
-                        // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                        $arr[$i]->href = "-";
-                        $arr[$i]->type = true;
-                        $i++;
-                    }
-                    echo json_encode($arr);
-                    ?>,
-        projects: []
-        },
-        projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
-        gallery: <?php
-
-                    // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
-                    $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
-                    $i = 0;
-                    foreach ($fileList as $filename) {
-                        // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
-                        $path_parts = pathinfo($filename);
-                        $IamNumberic = time() . rand();
-                        if (!is_numeric("$path_parts[filename]")) {
-                            rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
-                            $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
-                            if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
-                                #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
-                            }
-                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
-                        } else {
-                            $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
-
-                            $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
-                        }
-                        // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
-                        $arr[$i]->title = "-";
-                        $arr[$i]->description = "-";
-
-                        // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
-                        $arr[$i]->href = "-";
-                        $arr[$i]->type = true;
-                        $i++;
-                    }
-                    echo count($arr);
-                    ?>,
-        blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
-
-        };
-        /* BETA CODE */
-
-    <?php
-
-                #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-
-                include ROOT . "welcomer_f.js";
-            } else if ($_GET['svc'] == "icon_deviantart") {
-                header("content-type: image/svg+xml");
-    ?>
-
-        <svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg" style="background:black">
-            <path d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33" fill="#00e59b" />
-        </svg>
-<?php
-            } else if ($_GET['svc'] == "favicon") {
-               # header("Access-Control-Allow-Methods: POST"); 
-                if (!empty($_POST['urlf'])) {
-                    $arrf = json_decode("$_POST[urlf]",true);
-                    //["https://www.deviantart.com/marko9827/art/Alien-girl-poses-for-a-photo-shoot-7-1060834365","https://youtu.be/DDWDbZK0zdo"];
-                    $arr = array();
-                    $ii = 0;
-                
-                    foreach ($arrf as $val2) {
-                        $val = base64_decode($val2);
-                        if (!empty($_GET['icon'])) {
-                            if (is_youtube_url($val)) {
-                                header("content-type: image/png");
-                                echo file_get_contents(get_youtube_thumbnail($val));
-                                exit();
-                            } else {
-                                echo file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
-                            }
+                            </html><?php
                             exit();
-                        } else { 
-                            $url_shared2_f = "";
-                            if (is_youtube_url($val)) {
-                                $url_shared2_f = file_get_contents(get_youtube_thumbnail($val));
-                            } else {
-                                $url_shared2_f = file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
-                            }  
-                            $arr[$ii] = get_meta_tags_from_url($val);
-                            $arr[$ii]['thumbail'] = get_thumbail_from_url($val);
-                            $arr[$ii]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
-                            $arr[$ii]['url'] = $val;
-                            $ii++;
-                        }
-                    }
-                    header("content-type: text/json");
-                    echo json_encode($arr);
-                    exit();
-                }
-            } else if ($_GET['svc'] == "share_api") {
+    } else if ($_GET['svc'] == "jsc") {
+        header("content-type: text/javascript");
+        ?>
+
+                                /* BETA CODE */
+                                function base64Encode(str) {
+                                const encoder = new TextEncoder();
+                                const buffer = encoder.encode(str);
+                                return btoa(String.fromCharCode.apply(null, buffer));
+                                }
+                                $.get("/?pages=cv-pdf", function(res) {
+                                window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;
+
+                                });
+                                $.get("/?pages=visitcard", function(res) {
+                                window.portfolio.data.pages.visitcard.c = `${`${res}`}`;
+                                });
+                                window.portfolio = {
+                                data: {
+                                pages: {
+                                tg_channel: {
+                                title: "Telegram Channel",
+                                u: "tg-channel",
+                                c: ""
+                                },
+                                cv_pdf: {
+                                title: "CV",
+                                u: "cv-pdf",
+                                c: "",
+                                },
+                                visitcard: {
+                                title: "Visitcard",
+                                u: "visitcard",
+                                c: "",
+                                }
+                                },
+                                blog_style_bundle: "<?php
+
+                                $css = file_get_contents(ROOT . "/Scripts/md_viewer.css");
+                                $css_viewer = file_get_contents(ROOT . "/Scripts/link_preview.css");
+                                echo base64_encode(minifyCSS("$css $css_viewer"))
+                                    ?>",
+                                blog: <?php
 
 
+                                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
+                                $i = 0;
 
-                ini_set('display_errors', 1);
-                ini_set('display_startup_errors', 1);
-                error_reporting(E_ALL);
+                                foreach ($r as $key => $val) {
+                                    $curlR = SITE_HOST . "$val[source]";
+                                    $queryString = parse_url($curlR, PHP_URL_QUERY);
+                                    // -
+                                    $varr = array();
+                                    $var_shared = 0;
+                                    foreach ($val['shared_links'] as $key => $val3) {
+                                        #    array_push($varr, array(sharedUlr("$val3")));
+                                        $varr[$var_shared] = base64_encode($val3);
+                                        $var_shared++;
+                                    }
+                                    #  $r[$i]['shared_linksf'] = sharedUlr("https://www.instagram.com/darijadakavracevic/");
+                                    // $varr;
+                                    // $var = json_decode($this->sharedUlr($val["shared_links"]),true);
+                                    // $varr = array();
+                        
+
+                                    // -
+                                    $response = $this->get_page_by_pln(str_replace("blog=", "", $queryString), $val["time"], $val);
+
+                                    $r[$i]['shared_links'] = $varr;
+                                    $r[$i]['page'] = "";
+                                    $r[$i]['page'] = $response;
+                                    $aer = str_replace("/?blog=", "", $val["thumbail"], $aer);
+                                    $aer = str_replace("?blog=", "", $val["thumbail"], $aer);
+                                    // $r[$i]['thumbail'] = $this->get_page_by_pln_thumb($aer);
+                                    #  $r[$i]['ulrs'] = $this->SharedUlr("$val3");
+                        
+                                    // $shared_links = sharedUlr(sharedUlr);
+                        
+                                    $i++;
+                                }
+                                echo json_encode($r);
+                                ?>,
+                                gallery: <?php
+
+                                // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                                $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                                $i = 0;
+                                foreach ($fileList as $filename) {
+                                    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                                    $path_parts = pathinfo($filename);
+                                    $IamNumberic = time() . rand();
+                                    if (!is_numeric("$path_parts[filename]")) {
+                                        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                                        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                                        }
+                                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                                    } else {
+                                        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                                    }
+                                    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                                    $arr[$i]->title = "-";
+                                    $arr[$i]->description = "-";
+
+                                    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                                    $arr[$i]->href = "-";
+                                    $arr[$i]->type = true;
+                                    $i++;
+                                }
+                                echo json_encode($arr);
+                                ?>,
+                                projects: []
+                                },
+                                projects: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+                                gallery: <?php
+
+                                // count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) 
+                                $fileList = glob(ROOT . 'data_s/data_wlp/*.{png,jpg,jpeg}', GLOB_BRACE);
+                                $i = 0;
+                                foreach ($fileList as $filename) {
+                                    // rename("/tmp/tmp_file.txt", "/home/user/login/docs/my_file.txt");
+                                    $path_parts = pathinfo($filename);
+                                    $IamNumberic = time() . rand();
+                                    if (!is_numeric("$path_parts[filename]")) {
+                                        rename(ROOT . "data_s/data_wlp/$path_parts[filename].$path_parts[extension]", "data_s/data_wlp/$IamNumberic.$path_parts[extension]");
+                                        $arr[$i]->img = "/?mnps=gallery&img=$IamNumberic";
+                                        if (!file_exists(ROOT . "data_s/data_wlp/thumb/$IamNumberic.$path_parts[extension]")) {
+                                            #  $this->SerzveThumb("$filename", 640, ROOT."data_s/data_wlp/thumb/","$IamNumberic.$path_parts[extension]");
+                                        }
+                                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$IamNumberic";
+                                    } else {
+                                        $arr[$i]->img = "/?mnps=gallery&img=$path_parts[filename]";
+
+                                        $arr[$i]->thumb = "/?mnps=gallery&thumb=$path_parts[filename]";
+                                    }
+                                    // $arr[$i]->img = "data:image/png;base64,".base64_encode(file_get_contents($filename));
+                                    $arr[$i]->title = "-";
+                                    $arr[$i]->description = "-";
+
+                                    // "data:image/png;base64,".base64_encode(file_get_contents($filename));// "/?mnps=gallery&img=$path_parts[filename]";
+                                    $arr[$i]->href = "-";
+                                    $arr[$i]->type = true;
+                                    $i++;
+                                }
+                                echo count($arr);
+                                ?>,
+                                blog: <?= count(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true)) ?>,
+
+                                };
+                                /* BETA CODE */
+
+            <?php
+
+            #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
+    
+            include ROOT . "welcomer_f.js";
+    } else if ($_GET['svc'] == "icon_deviantart") {
+        header("content-type: image/svg+xml");
+        ?>
+
+                                    <svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg" style="background:black">
+                                        <path
+                                            d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33"
+                                            fill="#00e59b" />
+                                    </svg>
+        <?php
+    } else if ($_GET['svc'] == "favicon") {
+        # header("Access-Control-Allow-Methods: POST"); 
+        if (!empty($_POST['urlf'])) {
+            $arrf = json_decode("$_POST[urlf]", true);
+            $arr = array();
+            $ii = 0;
 
 
-                if (!empty($_POST['shared'])) {
-                    $url_shared2 = $_POST['shared'];
-                    // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
-                    header('Content-type:application/json');
-                    $array = array();
-                    $i = 0;
-                    $var = 0;
-                    $url_shared = $url_shared2;
-                    if (!empty($url_shared)) {
-                        if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
-                            echo 0;
-                        } else {
-                            $array[$var]->link_id = 0;
-                            //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+            foreach ($arrf as $val2) {
+                $val = base64_decode($val2);
 
-                            $tags =  get_meta_tags($url_shared);
-                            if ($tags['description'] !== null) {
-                                $description = $tags['description'];
-                            }
-                            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
-                            $r = 0;
 
-                            if ($match[1] == null) {
-                                $r = 0;
-                            } else {
-                                $r = $match[1];
-                            }
-
-                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                                $array[$var]->title = getTitle($url_trjim);
-                                $array[$var]->description = "Shared Image";
-                                $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
-                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-                                $array[$var]->match =  $r;
-                                $array[$var]->link = $url_trjim;
-                            } else {
-                                $array[$var]->title = getTitle($url_trjim);
-                                $array[$var]->description = $description;
-                                $array[$var]->thumbnail =  get_icon_image(get_img($url_trjim));
-                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-
-                                // 
-                                $array[$var]->match =  $r;
-                                $array[$var]->link = $url_trjim;
-                            }
-
-                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                                $array[$var]->type = "image";
-                            } else {
-                                $array[$var]->type = "video";
-                            }
-                        }
-                    } else {
-                        error_page(404);
-                    }
-                    if (json_encode($array) !== null) {
-                        echo json_encode($array);
+                if (!empty($_GET['icon'])) {
+                    if (is_youtube_url($val)) {
+                        header("content-type: image/png");
+                        echo file_get_contents(get_youtube_thumbnail($val));
                         exit();
                     } else {
-
-                        error_page(404);
+                        echo file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
                     }
-                }
-
-
-                // header("Access-Control-Allow-Origin: https://www.example.com");
-                // header("Access-Control-Allow-Headers: Authorization, Content-Type");
-
-                // } else {
-
-                // error_page(404);
-                // }
-
-                exit();
-
-
-                $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
-                $url = "https://api.eronelit.com/graph";
-                $postData = [
-                    'token' => '32M052k350QaeofkaeopfF',
-                    'key' => '3402340234239J939592369',
-                    'type' =>  'share_validator',
-                    'shared' => $aerea
-                ];
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_POST, 1);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/x-www-form-urlencoded',
-                    'Authorization: Bearer 32M052k350QaeofkaeopfF'
-                ]);
-                $response = curl_exec($ch);
-                header("content-type: text/json");
-                if (curl_errno($ch)) {
-                    echo "[]";
+                    exit();
                 } else {
-                    if (validateJson($response)) {
-                        echo  $response;
+                    $url_shared2_f = "";
+                    if (is_youtube_url($val)) {
+                        $url_shared2_f = file_get_contents(get_youtube_thumbnail($val));
                     } else {
-                        echo "[]";
+                        $url_shared2_f = file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
                     }
-                }
-                curl_close($ch);
-                exit();
-            } else {
-                $filetry = ROOT . "svc/$_GET[svc]";
-                $rr = ["css", "js", "jpg", "png", "txt", "md", "mp4"];
-
-                # header("content-type: image/png");
-
-                foreach ($rr as $val) {
-
-                    if (file_exists("$filetry.$val")) {
-
-                        $fileT = "$filetry.$val";
-                        $fff3 = "text/txt";
-                        if ($val == "css") {
-                            $fff3 = "text/css";
-                        }
-                        if ($val == "js") {
-                            $fff3 = "text/javascript";
-                        }
-                        if ($val == "jpg") {
-                            $fff3 = "image/jpeg";
-                        }
-                        if ($val == "png") {
-                            $fff3 = "image/png";
-                        }
-                        if ($val == "md") {
-                            header("content-type: text/html");
-                            echo MarkDownTOstring("$fileT");
-                            exit();
-                        }
-                        if ($val == "mp4") {
-
-                            streamVideo($fff3);
-                        } else {
-
-                            header("Content-Type: " . $fff3);
-                            header('Content-Length' . filesize($fileT));
-
-                            // header("Content-type: " . image_type_to_mime_type($mime_type));
-
-                            @readfile($fileT);
-                            exit();
-                        }
-                    }
-                }
-                if ($exist) {
-                    include ROOT . "ERROR_PG.php";
+                    $arr[$ii] = get_meta_tags_from_url($val);
+                    $arr[$ii]['thumbail'] = get_thumbail_from_url($val);
+                    $arr[$ii]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
+                    $arr[$ii]['url'] = $val;
+                    $ii++;
                 }
             }
-        } else {
-
-
-            include ROOT . "wlcomer_home.php";
-
-
-            #  echo $this->minifyHtml($t);
+            header("content-type: text/json");
+            echo json_encode($arr);
+            exit();
         }
+    } else if ($_GET['svc'] == "share_api") {
+
+
+
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
+
+        if (!empty($_POST['shared'])) {
+            $url_shared2 = $_POST['shared'];
+            // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
+            header('Content-type:application/json');
+            $array = array();
+            $i = 0;
+            $var = 0;
+            $url_shared = $url_shared2;
+            if (!empty($url_shared)) {
+                if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
+                    echo 0;
+                } else {
+                    $array[$var]->link_id = 0;
+                    //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+
+                    $tags = get_meta_tags($url_shared);
+                    if ($tags['description'] !== null) {
+                        $description = $tags['description'];
+                    }
+                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
+                    $r = 0;
+
+                    if ($match[1] == null) {
+                        $r = 0;
+                    } else {
+                        $r = $match[1];
+                    }
+
+                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                        $array[$var]->title = getTitle($url_trjim);
+                        $array[$var]->description = "Shared Image";
+                        $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
+                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+                        $array[$var]->match = $r;
+                        $array[$var]->link = $url_trjim;
+                    } else {
+                        $array[$var]->title = getTitle($url_trjim);
+                        $array[$var]->description = $description;
+                        $array[$var]->thumbnail = get_icon_image(get_img($url_trjim));
+                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+
+                        // 
+                        $array[$var]->match = $r;
+                        $array[$var]->link = $url_trjim;
+                    }
+
+                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                        $array[$var]->type = "image";
+                    } else {
+                        $array[$var]->type = "video";
+                    }
+                }
+            } else {
+                error_page(404);
+            }
+            if (json_encode($array) !== null) {
+                echo json_encode($array);
+                exit();
+            } else {
+
+                error_page(404);
+            }
+        }
+
+
+        // header("Access-Control-Allow-Origin: https://www.example.com");
+        // header("Access-Control-Allow-Headers: Authorization, Content-Type");
+
+        // } else {
+
+        // error_page(404);
+        // }
+
+        exit();
+
+
+        $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
+        $url = "https://api.eronelit.com/graph";
+        $postData = [
+            'token' => '32M052k350QaeofkaeopfF',
+            'key' => '3402340234239J939592369',
+            'type' => 'share_validator',
+            'shared' => $aerea
+        ];
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded',
+            'Authorization: Bearer 32M052k350QaeofkaeopfF'
+        ]);
+        $response = curl_exec($ch);
+        header("content-type: text/json");
+        if (curl_errno($ch)) {
+            echo "[]";
+        } else {
+            if (validateJson($response)) {
+                echo $response;
+            } else {
+                echo "[]";
+            }
+        }
+        curl_close($ch);
+        exit();
+    } else {
+        $filetry = ROOT . "svc/$_GET[svc]";
+        $rr = ["css", "js", "jpg", "png", "txt", "md", "mp4"];
+
+        # header("content-type: image/png");
+
+        foreach ($rr as $val) {
+
+            if (file_exists("$filetry.$val")) {
+
+                $fileT = "$filetry.$val";
+                $fff3 = "text/txt";
+                if ($val == "css") {
+                    $fff3 = "text/css";
+                }
+                if ($val == "js") {
+                    $fff3 = "text/javascript";
+                }
+                if ($val == "jpg") {
+                    $fff3 = "image/jpeg";
+                }
+                if ($val == "png") {
+                    $fff3 = "image/png";
+                }
+                if ($val == "md") {
+                    header("content-type: text/html");
+                    echo MarkDownTOstring("$fileT");
+                    exit();
+                }
+                if ($val == "mp4") {
+
+                    streamVideo($fff3);
+                } else {
+
+                    header("Content-Type: " . $fff3);
+                    header('Content-Length' . filesize($fileT));
+
+                    // header("Content-type: " . image_type_to_mime_type($mime_type));
+
+                    @readfile($fileT);
+                    exit();
+                }
+            }
+        }
+        if ($exist) {
+            include ROOT . "ERROR_PG.php";
+        }
+    }
+} else {
+
+
+    include ROOT . "wlcomer_home.php";
+
+
+    #  echo $this->minifyHtml($t);
+}

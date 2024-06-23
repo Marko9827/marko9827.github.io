@@ -1095,8 +1095,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
               });
             });
           }
-        } else {
-        }
+        } else { }
       }
     };
     const jsonData = new FormData();

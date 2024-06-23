@@ -22,7 +22,7 @@ const welcomer = {
   lang: function () {
     var lang = "en";
 
-
+    var arr = "";
     this.langs.forEach((element) => {
       if (element.name == lang) {
         arr = element.data;

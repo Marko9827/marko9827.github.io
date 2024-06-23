@@ -144,7 +144,7 @@ media-src 'self';" />
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" type="text/javascript" src="/?svc=jsc">
+    <script nonce="<?php echo NONCE; ?>" type="module" src="/?svc=jsc">
 
     </script>
 
@@ -1555,7 +1555,7 @@ media-src 'self';" />
                     <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
                         transform="rotate(255.072 50 50)">
                         <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
-                        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                         <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
                         <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
                             dur="12s" repeatCount="indefinite"></animateTransform>
                     </rect>

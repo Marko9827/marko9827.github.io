@@ -13,7 +13,8 @@ const welcomer = {
         my_cv: "My CV",
         my_cv_dscr: "Look at my CV",
         my_projects: "My projects",
-        my_projects_dscr: "Погледајте моје пројекте",
+        my_projects_dscr: "Look at my Projects",
+        category_title: "Click for open %s category."
       },
     },
     {
@@ -23,7 +24,8 @@ const welcomer = {
         my_cv: "Мој ЦВ",
         my_cv_dscr: "Погледај мој ЦВ",
         my_projects: "Моји пројекти",
-        my_projects_dscr: "Look at my Projects",
+        my_projects_dscr: "Погледајте моје пројекте",
+          category_title: "Кликните да отворите категорију %s."
       },
     },
   ],
@@ -1464,6 +1466,9 @@ width="16"><span></span></bar_t><span>  </span>
     }
     return div_not_i;
   },
+  capitalize_str: function(text) {
+    return text.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+},
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
@@ -1586,6 +1591,9 @@ width="16"><span></span></bar_t><span>  </span>
     var imgf = document.createElement("img");
     $(ljoader).hide();
     $(Vjideo_sjpinner).show();
+
+    var ttt_f = this;
+
     document
       .getElementById("clavs")
       .setAttribute("style", " opacity:1; transform:unset; ");
@@ -1596,7 +1604,7 @@ width="16"><span></span></bar_t><span>  </span>
     $("div_header").removeClass("ld_completeld_complete");
     $("grider_viewer").html("");
     window.arr_temp = arr;
-    $("div#clavs br_ta").html("");
+    $("div#clavs br_ta").html('<i class="br_ta_funnel bi bi-funnel"></i>');
     arr.forEach(function (v) {
       try {
         for (var i = 0; i < v?.category.length; i++) {
@@ -1656,12 +1664,14 @@ width="16"><span></span></bar_t><span>  </span>
     });
     var arrayrH = welcomer.remove_duplicates(arrayr),
       active_scrf_2 = document.createElement("ta_f");
+      active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
     active_scrf_2.setAttribute("data-c", arrayrH.length);
     /* active_scrf_2.innerHTML = `All <span>${
       document.querySelectorAll("grider_viewer project").length
     }</span>`;*/
+ 
     active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc("All")}</span>`;
-
+    
     active_scrf_2.setAttribute("data-category", "All");
 
     active_scrf_2.onclick = function () {
@@ -1679,6 +1689,7 @@ width="16"><span></span></bar_t><span>  </span>
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
+      active_scrf.setAttribute("data-title", `Click "${ttt_f.capitalize_str(re)}" for open All category`);
 
       active_scrf.innerHTML = `${re} <span>${welcomer.blogljoad_posts_category_cbc(re)}</span>`;
 

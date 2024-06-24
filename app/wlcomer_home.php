@@ -1609,12 +1609,19 @@ media-src 'self';" />
             text-transform: capitalize !important;
         }
 
+        i.br_ta_funnel.bi.bi-funnel {
+            margin-top: 6px;
+            margin-left: 6px;
+            margin-right: 6px;
+            pointer-events: none;
+        }
+
         /* 
         div#clavs br_ta ta_f span {
     transform:translateX(30px);
     font-size:0px !important;
     width:0px !important;
-    
+
     padding:0px !important;
 }
  
@@ -1629,7 +1636,7 @@ div#clavs br_ta ta_f.active span {
         */
 
         #clavs grider_viewer project img.loader_post {
-            z-index: 33;
+            z-index: -1;
             width: 50px !important;
             height: 50px !important;
             border: none !important;

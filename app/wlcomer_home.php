@@ -1605,11 +1605,16 @@ media-src 'self';" />
             align-content: center;
         }
 
+        div#clavs br_ta ta_f {
+            text-transform: capitalize !important;
+        }
+
         /* 
         div#clavs br_ta ta_f span {
     transform:translateX(30px);
     font-size:0px !important;
     width:0px !important;
+    
     padding:0px !important;
 }
  

@@ -1373,6 +1373,9 @@ width="16"><span></span></bar_t><span>  </span>
       welcomer.blg_history_replace("/?p=blog");
       welcomer.blogljoad_posts(window.portfolio.data.blog);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
+      setTimeout(function(){
+        $("br_ta ta_f:first-child").click();
+      },500);
     } else {
       welcomer.blog_loader_natjive(id);
     }
@@ -1624,19 +1627,29 @@ width="16"><span></span></bar_t><span>  </span>
       welcomer.blogljoad_posts_category(active_scrf_2.innerHTML);
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
+        $(r).find("span").html("");  
       });
       active_scrf_2.classList.add("active");
+     $(r).find("span").html(`${document.querySelectorAll("grider_viewer project").length}</span>`);
+
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
-      active_scrf.innerHTML = re;
+   
+        active_scrf.innerHTML = `${re}`;
+ 
+       active_scrf.setAttribute("data-category", re);
       active_scrf.onclick = function () {
         document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
           r.classList.remove("active");
+          $(r).find("span").html("");
+
         });
-        welcomer.blogljoad_posts_category(active_scrf.innerHTML);
+        welcomer.blogljoad_posts_category(active_scrf.getAttribute("data-category"));
         active_scrf.classList.add("active");
+        active_scrf.innerHTML = `${re} <span>${document.querySelectorAll("grider_viewer project").length}</span>`;
+
       };
       $("div#clavs br_ta").append(active_scrf);
     });
@@ -3475,6 +3488,7 @@ width="16"><span></span></bar_t><span>  </span>
     msg_title = "Return to Blog Home page?";
     this.hmm(msg_title, function () {
       welcomer.blogloader("all");
+  
     });
     return false;
   },
@@ -3747,13 +3761,29 @@ width="16"><span></span></bar_t><span>  </span>
     }
     if (attr == "closeMe") {
       this.hmmQ("Close search?", function () {
+        var a = document.createElement("a");
+        const urlParamsf = new URLSearchParams(window.location.search);
+
+        a.setAttribute("rel","nofollow noreferrer");
+        a.setAttribute("role","link");
+        a.setAttribute("target","_top");
+        document.body.appendChild(a);
+        //window.location.href = "/?p=blog";
+        if (urlParamsf.get("p") == "blog") {
+          a.href = "/?p=blog";
+        } else {
+          a.href = "/?p=projects";
+        }
+        a.click();
+      /*
         hd.removeClass("ld_completeld_complete_search");
         $("btns_i input[type='text']").val("");
-        if ($("body").attr("data-url-id") == "/?p=blog") {
+        if (urlParams.get("p") == "blog") {
           welcomer.blogloader("all");
         } else {
           welcomer.projectsload();
         }
+        */
       });
     }
   },

@@ -60,12 +60,12 @@ $rand = time();
 ob_start();
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en-us" class="no-js"  prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
+
     <?php
     $this->MetaTags();
 
@@ -80,7 +80,7 @@ ob_start();
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
 
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
-    
+
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
@@ -1451,6 +1451,67 @@ media-src 'self';" />
             /* opacity: 0; */
         }
 
+        /* AEFAEF */
+
+
+
+        div#clavs br_ta ta_f.active span {
+            content: "3";
+            color: black;
+            padding: 6px;
+            background: white;
+            z-index: 3;
+            font-weight: bold;
+            font-family: arial;
+            width: 20px;
+            height: 20px;
+
+            font-size: 10px !important;
+        }
+
+        div#clavs br_ta ta_f.active span {
+            color: transparent;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            position: relative;
+            top: 0px;
+            color: var(--black-trasparent-color);
+            right: 0px;
+            border-bottom-left-radius: 5px;
+            border-left: 2px solid;
+            border-bottom: 2px solid;
+            margin-left: 5px;
+            border-top: 2px solid;
+            border-top-left-radius: 5px;
+        }
+
+        div#clavs br_ta ta_f.active {
+            padding-right: 0px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -ms-flex-line-pack: center;
+            align-content: center;
+        }
+
+        div#clavs br_ta ta_f:not(.active) span {
+            display: none;
+        }
+
         <?php if ($_GET['vp'] == "livestream") {
             ?>
             .box_shadow_txtf.box_shadow {
@@ -1558,7 +1619,7 @@ media-src 'self';" />
                     <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
                         transform="rotate(255.072 50 50)">
                         <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
-                         <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
                         <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
                             dur="12s" repeatCount="indefinite"></animateTransform>
                     </rect>

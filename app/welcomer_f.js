@@ -1623,14 +1623,16 @@ width="16"><span></span></bar_t><span>  </span>
     var arrayrH = welcomer.remove_duplicates(arrayr),
       active_scrf_2 = document.createElement("ta_f");
     active_scrf_2.innerHTML = "All";
+    active_scrf_2.setAttribute("data-category", "All");
+
     active_scrf_2.onclick = function () {
-      welcomer.blogljoad_posts_category(active_scrf_2.innerHTML);
+      welcomer.blogljoad_posts_category(active_scrf_2.getAttribute("data-category"));
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
         $(r).find("span").html("");  
       });
-      active_scrf_2.classList.add("active");
-     $(r).find("span").html(`${document.querySelectorAll("grider_viewer project").length}</span>`);
+     active_scrf_2.classList.add("active");
+     active_scrf_2.innerHTML = `All <span>${document.querySelectorAll("grider_viewer project").length}</span>`;
 
     };
     $("div#clavs br_ta").append(active_scrf_2);

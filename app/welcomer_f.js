@@ -13,7 +13,7 @@ const welcomer = {
         my_cv: "My CV",
         my_cv_dscr: "Look at my CV",
         my_projects: "My projects",
-        my_projects_dscr: "Погледајте моје пројекте"
+        my_projects_dscr: "Погледајте моје пројекте",
       },
     },
     {
@@ -23,7 +23,7 @@ const welcomer = {
         my_cv: "Мој ЦВ",
         my_cv_dscr: "Погледај мој ЦВ",
         my_projects: "Моји пројекти",
-        my_projects_dscr: "Look at my Projects"
+        my_projects_dscr: "Look at my Projects",
       },
     },
   ],
@@ -1373,9 +1373,9 @@ width="16"><span></span></bar_t><span>  </span>
       welcomer.blg_history_replace("/?p=blog");
       welcomer.blogljoad_posts(window.portfolio.data.blog);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
-      setTimeout(function(){
+      setTimeout(function () {
         $("br_ta ta_f:first-child").click();
-      },500);
+      }, 500);
     } else {
       welcomer.blog_loader_natjive(id);
     }
@@ -1436,6 +1436,33 @@ width="16"><span></span></bar_t><span>  </span>
       ret_arr.push(key);
     }
     return ret_arr;
+  },
+  blogljoad_posts_category_cbc: function (tt_category_name = "") {
+    var arrayr = [],
+      categoryTemp = document.querySelector("div#clavs br_ta"),
+      ljoader = document.querySelector("#reaload_page"),
+      Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+      div_header = document.querySelector("div_header"),
+      tt_category_name_false = false,
+      iframe = document.createElement("iframe"),
+      clavs = document.getElementById("clavs"),
+      arr = window.arr_temp,
+      rtunr_str = "",
+      div_not_i = 0,
+      div_not = document.querySelector("div_not");
+    if (tt_category_name == "All" || tt_category_name == "all") {
+      div_not_i = window.portfolio.data.blog.length;
+    } else {
+      for (var ii = 0; ii < window.portfolio.data.blog.length; ii++) {
+        var v = window.portfolio.data.blog[ii];
+        for (var i = 0; i < v?.category?.length; i++) {
+          if (tt_category_name == v.category[i]) {
+            div_not_i++;
+          }
+        }
+      }
+    }
+    return div_not_i;
   },
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
@@ -1576,6 +1603,9 @@ width="16"><span></span></bar_t><span>  </span>
           arrayr.push(v.category[i]);
         }
       } catch (r) {}
+      arrayr.forEach(function (x) {
+        arrayr[x] = (arrayr[x] || 0) + 1;
+      });
 
       var thi = "class='is_touch'",
         p_open = "";
@@ -1613,6 +1643,10 @@ width="16"><span></span></bar_t><span>  </span>
             <fiv><i onclick="welcomer.blogloader(${
               v.id
             });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+                        <img src="${
+                          welcomer.loader_svg
+                        }" class="loader_post" height="50" width="50" />
+
             <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
             src="${img_src_d}" data-zoom-image="${img_src_d}" alt="${v.title}">
                    </grider_box>
@@ -1622,36 +1656,43 @@ width="16"><span></span></bar_t><span>  </span>
     });
     var arrayrH = welcomer.remove_duplicates(arrayr),
       active_scrf_2 = document.createElement("ta_f");
-    active_scrf_2.innerHTML = "All";
+    active_scrf_2.setAttribute("data-c", arrayrH.length);
+    /* active_scrf_2.innerHTML = `All <span>${
+      document.querySelectorAll("grider_viewer project").length
+    }</span>`;*/
+    active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc("All")}</span>`;
+
     active_scrf_2.setAttribute("data-category", "All");
 
     active_scrf_2.onclick = function () {
-      welcomer.blogljoad_posts_category(active_scrf_2.getAttribute("data-category"));
+      welcomer.blogljoad_posts_category(
+        active_scrf_2.getAttribute("data-category")
+      );
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
-        $(r).find("span").html("");  
+        // $(r).find("span").html("");
       });
-     active_scrf_2.classList.add("active");
-     active_scrf_2.innerHTML = `All <span>${document.querySelectorAll("grider_viewer project").length}</span>`;
-
+      active_scrf_2.classList.add("active");
+      // active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`;
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
-   
-        active_scrf.innerHTML = `${re}`;
- 
-       active_scrf.setAttribute("data-category", re);
+      active_scrf.setAttribute("data-c", arrayrH.length);
+
+      active_scrf.innerHTML = `${re} <span>${welcomer.blogljoad_posts_category_cbc(re)}</span>`;
+
+      active_scrf.setAttribute("data-category", re);
       active_scrf.onclick = function () {
         document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
           r.classList.remove("active");
-          $(r).find("span").html("");
-
+          // $(r).find("span").html("");
         });
-        welcomer.blogljoad_posts_category(active_scrf.getAttribute("data-category"));
+        welcomer.blogljoad_posts_category(
+          active_scrf.getAttribute("data-category")
+        );
         active_scrf.classList.add("active");
-        active_scrf.innerHTML = `${re} <span>${document.querySelectorAll("grider_viewer project").length}</span>`;
-
+       
       };
       $("div#clavs br_ta").append(active_scrf);
     });
@@ -1918,7 +1959,7 @@ width="16"><span></span></bar_t><span>  </span>
 
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
-            <img loading="lazy"  ${thi} 
+             <img loading="lazy"  ${thi} 
             ondragstart="return false;" 
             onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
             onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
@@ -3490,7 +3531,6 @@ width="16"><span></span></bar_t><span>  </span>
     msg_title = "Return to Blog Home page?";
     this.hmm(msg_title, function () {
       welcomer.blogloader("all");
-  
     });
     return false;
   },
@@ -3766,9 +3806,9 @@ width="16"><span></span></bar_t><span>  </span>
         var a = document.createElement("a");
         const urlParamsf = new URLSearchParams(window.location.search);
 
-        a.setAttribute("rel","nofollow noreferrer");
-        a.setAttribute("role","link");
-        a.setAttribute("target","_top");
+        a.setAttribute("rel", "nofollow noreferrer");
+        a.setAttribute("role", "link");
+        a.setAttribute("target", "_top");
         document.body.appendChild(a);
         //window.location.href = "/?p=blog";
         if (urlParamsf.get("p") == "blog") {
@@ -3777,7 +3817,7 @@ width="16"><span></span></bar_t><span>  </span>
           a.href = "/?p=projects";
         }
         a.click();
-      /*
+        /*
         hd.removeClass("ld_completeld_complete_search");
         $("btns_i input[type='text']").val("");
         if (urlParams.get("p") == "blog") {

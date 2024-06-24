@@ -1455,6 +1455,8 @@ media-src 'self';" />
 
 
 
+
+
         div#clavs br_ta ta_f.active span {
             content: "3";
             color: black;
@@ -1509,7 +1511,126 @@ media-src 'self';" />
         }
 
         div#clavs br_ta ta_f:not(.active) span {
-            display: none;
+            /* display: none; */
+        }
+
+        div#clavs br_ta ta_f span {
+            -webkit-transform: translateX(30px);
+            -ms-transform: translateX(30px);
+            transform: translateX(30px);
+            font-size: 0px !important;
+            width: 0px !important;
+            padding: 0px !important;
+        }
+
+        div#clavs br_ta ta_f:hover span {
+
+            -webkit-transform: none !important;
+
+            -ms-transform: none !important;
+
+            transform: none !important;
+            font-size: 10px !important;
+            width: 20px !important;
+            padding: 6px !important;
+        }
+
+
+        div#clavs br_ta ta_f.active span {
+
+            -webkit-transform: none !important;
+
+            -ms-transform: none !important;
+
+            transform: none !important;
+            font-size: 10px !important;
+            width: 20px !important;
+            padding: 6px !important;
+        }
+
+        div#clavs br_ta ta_f span {
+            content: "3";
+            color: black;
+            padding: 6px;
+            background: white;
+            z-index: 3;
+            font-weight: bold;
+            font-family: arial;
+            width: 20px;
+            height: 20px;
+
+            font-size: 10px !important;
+        }
+
+        div#clavs br_ta ta_f span {
+            font-weight: bold;
+        }
+
+        div#clavs br_ta ta_f span {
+            color: transparent;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            position: relative;
+            top: 0px;
+            color: var(--black-trasparent-color);
+            right: 0px;
+            border-bottom-left-radius: 5px;
+            border-left: 2px solid;
+            border-bottom: 2px solid;
+            margin-left: 5px;
+            border-top: 2px solid;
+            border-top-left-radius: 5px;
+        }
+
+        div#clavs br_ta ta_f {
+            padding-right: 0px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -ms-flex-line-pack: center;
+            align-content: center;
+        }
+
+        /* 
+        div#clavs br_ta ta_f span {
+    transform:translateX(30px);
+    font-size:0px !important;
+    width:0px !important;
+    padding:0px !important;
+}
+ 
+div#clavs br_ta ta_f.active span {
+
+    transform:none !important;
+    font-size: 10px !important;
+    width:20px !important;
+    padding: 6px !important;
+}
+
+        */
+
+        #clavs grider_viewer project img.loader_post {
+            z-index: 33;
+            width: 50px !important;
+            height: 50px !important;
+            border: none !important;
+            margin: auto;
+            pointer-events: none;
+            top: 0px !important;
         }
 
         <?php if ($_GET['vp'] == "livestream") {

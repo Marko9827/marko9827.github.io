@@ -2041,7 +2041,25 @@ width="16"><span></span></bar_t><span>  </span>
   loaded_imgPrld_error: function (aer, id = 0) {
     $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
   },
+  loaded_imgPrld_f: async function(aer, id = 0) {
+    const d = aer;
+
+    try {
+        const response = await fetch(d.getAttribute("src"));
+        if (!response.ok) {
+            throw new Error(':(');
+        }
+        const blob = await response.blob();
+        const imageUrl = URL.createObjectURL(blob);
+        d.src = URL.createObjectURL(blob);
+        $(aer).parent().parent().removeAttr("style");
+    } catch (error) {
+        console.error(':(', error);
+    }
+},
   loaded_imgPrld: function (aer, id = 0) {
+    this.loaded_imgPrld_f(aer,id);
+    return "";
     const d = aer;
 
     const img = new Image();

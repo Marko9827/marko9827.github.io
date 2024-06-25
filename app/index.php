@@ -492,7 +492,7 @@ echo $v .",";
                         echo "Marko Nikolić > Projects";
                     } else if ($_GET['p'] == "blog") {
                         if (!empty($_GET['c'])) {
-                            echo "Blog > $_GET[c] > Marko Nikolić";
+                            echo "Blog > $_GET[c] | Marko Nikolić";
                         }
                     } else {
                         echo "Marko Nikolić";

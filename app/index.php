@@ -462,6 +462,24 @@ echo $v .",";
 
 
         } else {
+            $ttitle_attr = "";
+            if (!empty($_GET['p'])) {
+                if ($_GET['p'] == "cv-pdf") {
+                    $ttitle_attr =  "Marko Nikolić > CV";
+                } else if ($_GET['p'] == "visitcard") {
+                    $ttitle_attr =  "Marko Nikolić > Visitcard";
+                } else if ($_GET['p'] == "Projects") {
+                    $ttitle_attr =  "Marko Nikolić > Projects";
+                } else if ($_GET['p'] == "blog") {
+                    if (!empty($_GET['c'])) {
+                        $ttitle_attr =  "Blog > $_GET[c] > Marko Nikolić";
+                    }
+                } else {
+                    $ttitle_attr =  "Marko Nikolić";
+                }
+            } else {
+                $ttitle_attr =  "Marko Nikolić";
+            }
             ?>
             <title>
                 <?php
@@ -498,7 +516,7 @@ echo $v .",";
             <meta name="twitter:site" content="@markoni62595164" />
             <meta name="twitter:creator" content="@markoni62595164" />
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
-            <meta property="og:title" content="Marko Nikolić" />
+            <meta property="og:title" content="<?php echo $ttitle_attr; ?>" />
             <meta property="og:description" content="Is my personal website." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />

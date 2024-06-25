@@ -1248,10 +1248,10 @@ width="16"><span></span></bar_t><span>  </span>
       const urlParamsf = new URLSearchParams(window.location.search),
       urlParamsf_f = urlParamsf.get("c");
        
-      if(urlParamsf_f.length > 0){
+      if(urlParamsf.has("c")){
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
-        welcomer.titleC(`Blog > ${urlParamsf_f[0].toUpperCase() + urlParamsf_f.slice(1)} - Marko Nikolić`);
-      }else{
+        welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
+      } else{
         welcomer.blg_history_replace("/?p=blog");
       }
       welcomer.blogljoad_posts(f);
@@ -1390,7 +1390,7 @@ width="16"><span></span></bar_t><span>  </span>
       const urlParamsf = new URLSearchParams(window.location.search),
       urlParamsf_f = `${urlParamsf.get("c")}`;
 
-      if(urlParamsf_f.length > 0){
+      if(urlParamsf.has("c")){
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`); 
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
       }else{
@@ -1403,7 +1403,7 @@ width="16"><span></span></bar_t><span>  </span>
       setTimeout(function () {
         const urlParamsf = new URLSearchParams(window.location.search),
         urlParamsf_f = `${urlParamsf.get("c")}`;
-        if(urlParamsf_f.length > 0){
+      if(urlParamsf_f !== null || urlParamsf_f !== "null"){
          $(`br_ta ta_f[data-category="${urlParamsf_f}"]`).click();
         }else{
         $("br_ta ta_f:first-child").click();
@@ -1747,7 +1747,11 @@ width="16"><span></span></bar_t><span>  </span>
           active_scrf.getAttribute("data-category")
         );
         active_scrf.classList.add("active");
-        history.replaceState({}, "", `/?p=blog&c=${re}`);
+        if(active_scrf.getAttribute("data-category") !== "All" || active_scrf.getAttribute("data-category") !== "all"){
+          history.replaceState({}, "", `/?p=blog&c=${active_scrf.getAttribute("data-category")}`);
+        welcomer.titleC(`Blog > ${active_scrf.getAttribute("data-category")} - Marko Nikolić`);
+        }
+
       };
       $("div#clavs br_ta").append(active_scrf);
     });

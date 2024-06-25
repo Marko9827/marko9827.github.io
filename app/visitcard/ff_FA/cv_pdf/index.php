@@ -50,7 +50,7 @@ ob_start(function ($b) {
     <meta name="twitter:creator" content="@markoni62595164" />
     <meta property="og:url" content="<?php echo SITE_HOST; ?>" />
     <meta property="og:title" content="Marko Nikolić - Portfolio" />
-    <meta property="og:description" content="This website for my PortFolio." />
+    <meta property="og:description" content="Is my personal website." />
     <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
     <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />
     <meta property="og:image:url" itemprop="image" content="<?php echo SITE_HOST; ?>/README_files/readme_part1.png?<?php echo time(); ?>" />

@@ -397,7 +397,7 @@ class portfolio_marko
         $data = null;
      
 
-        if (!empty($_GET['id']) || !empty($_GET['blog'])) {
+        if (!empty($_GET['id']) || !empty($_GET['c']) || !empty($_GET['blog'])) {
             $off = false;
 
             foreach ($person as $key => $value) {
@@ -405,16 +405,20 @@ class portfolio_marko
                     $data = $value;
                 }
             }
+            $c_category_get = "";
+            if(!empty($_GET['c'])){
+                $c_category_get = " $_GET[c] ";
+            }
 
             echo '<title >';
 
 
-            $title = "Blog > $data[title] | Marko Nikolić";
+            $title = "Blog > $c_category_get $data[title] | Marko Nikolić";
             echo $title;
             ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="<?php echo "$data[title]"; ?> | This website for my PortFolio. ">
+            <meta name="description" content="<?php echo "$data[title]"; ?> | Is my personal website. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
@@ -444,7 +448,7 @@ echo $v .",";
             <meta name="twitter:creator" content="@markoni62595164" />
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
-            <meta property="og:description" content="This website for my PortFolio." />
+            <meta property="og:description" content="Is my personal website." />
             <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url"
@@ -477,7 +481,7 @@ echo $v .",";
                 ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="This website for my PortFolio. ">
+            <meta name="description" content="Is my personal website. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
             <meta name="author" content="Marko Nikolic">
 
@@ -491,7 +495,7 @@ echo $v .",";
             <meta name="twitter:creator" content="@markoni62595164" />
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="Marko Nikolić" />
-            <meta property="og:description" content="This website for my PortFolio." />
+            <meta property="og:description" content="Is my personal website." />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
             <meta property="og:image:url" itemprop="image"

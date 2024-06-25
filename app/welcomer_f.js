@@ -14,7 +14,7 @@ const welcomer = {
         my_cv_dscr: "Look at my CV",
         my_projects: "My projects",
         my_projects_dscr: "Look at my Projects",
-        category_title: "Click for open %s category."
+        category_title: "Click for open %s category.",
       },
     },
     {
@@ -25,7 +25,7 @@ const welcomer = {
         my_cv_dscr: "Погледај мој ЦВ",
         my_projects: "Моји пројекти",
         my_projects_dscr: "Погледајте моје пројекте",
-          category_title: "Кликните да отворите категорију %s."
+        category_title: "Кликните да отворите категорију %s.",
       },
     },
   ],
@@ -511,7 +511,7 @@ br_aer  img.favicon {
     height:16px;
 }
 
-<br_box><div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
+<br_box><div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
 <img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
 <bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
 </span>
@@ -1018,7 +1018,7 @@ br_aer  img.favicon {
     //
     img.setAttribute("class", "img_background_rljs");
     img.setAttribute("src", fh?.thumbail);
-    // img.setAttribute("alt", "Blog > Marko Nikolić - Portfolio");
+    // img.setAttribute("alt", "Blog > Marko Nikolić");
     img.setAttribute("loading", "lazy");
     //
 
@@ -1075,7 +1075,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
 <div class="bra">
 <img class="img_background_rljs" src="${
               fh?.thumbail
-            }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
+            }" alt="Blog > Marko Nikolić" loading="lazy"></div>
 <pe><i class="bi bi-link-45deg"></i> ${
               welcomer.lang()["detectedsLinksIn_postmaxn"]
             }</pe>
@@ -1134,7 +1134,7 @@ width="16"><span></span></bar_t><span>  </span>
 <div class="bra">
 <img class="img_background_rljs" src="${
         fh?.thumbail
-      }" alt="Blog > Marko Nikolić - Portfolio" loading="lazy"></div>
+      }" alt="Blog > Marko Nikolić" loading="lazy"></div>
 <pe><i class="bi bi-link-45deg"></i> ${
         welcomer.lang()["detectedsLinksIn_postmaxn"]
       }</pe>
@@ -1203,11 +1203,12 @@ width="16"><span></span></bar_t><span>  </span>
 
       ifrm.document.close();
       $("div_header span").html(`Blog > ${f.title}`);
-      welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+      welcomer.titleC(` ${f.title} > Blog > Marko Nikolić`);
 
       $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
     }
   },
+  
   custom_evjents: function () {},
   blog_loader_natjive: function (id = "all") {
     var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
@@ -1225,9 +1226,12 @@ width="16"><span></span></bar_t><span>  </span>
     $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
     if (id == "null" || id == null) {
       id = "all";
-      welcomer.titleC("Blog > Marko Nikolić - Portfolio");
-      $("div_header span").html(`Marko Nikolić - Portfolio > Blog`);
+      welcomer.titleC("Blog > Marko Nikolić");
+      $("div_header span").html(`Marko Nikolić > Blog`);
     }
+
+   
+
     try {
       welcomer.terminator.ajax.blog_post.abort();
     } catch (aer) {}
@@ -1241,7 +1245,15 @@ width="16"><span></span></bar_t><span>  </span>
       window.location.href = "/";
     }
     if (id == "all") {
-      welcomer.blg_history_replace("/?p=blog");
+      const urlParamsf = new URLSearchParams(window.location.search),
+      urlParamsf_f = urlParamsf.get("c");
+       
+      if(urlParamsf_f.length > 0){
+        history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
+        welcomer.titleC(`Blog > ${urlParamsf_f[0].toUpperCase() + urlParamsf_f.slice(1)} - Marko Nikolić`);
+      }else{
+        welcomer.blg_history_replace("/?p=blog");
+      }
       welcomer.blogljoad_posts(f);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
     } else {
@@ -1267,6 +1279,8 @@ width="16"><span></span></bar_t><span>  </span>
         var res = decodeEntities(f.page);
 
         welcomer.gallery_temp = f.gallery;
+
+        
 
         welcomer.blg_history_replace(`/?p=blog&id=${id}`);
         $("div_header").attr(
@@ -1322,7 +1336,7 @@ width="16"><span></span></bar_t><span>  </span>
         );
         $("#clavs grider_viewer").html("");
         $("div_header span").html(`Blog > ${f.title}`);
-        welcomer.titleC(` ${f.title} > Blog > Marko Nikolić - Portfolio`);
+        welcomer.titleC(` ${f.title} > Blog > Marko Nikolić`);
 
         $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr(
           "style"
@@ -1366,22 +1380,39 @@ width="16"><span></span></bar_t><span>  </span>
     $("#clavs iframe:not(.iframe_mask)").attr("style", "opacity:0");
     if (id == "null" || id == null) {
       id = "all";
-      welcomer.titleC("Blog > Marko Nikolić - Portfolio");
-      $("div_header span").html(`Marko Nikolić - Portfolio > Blog`);
+      welcomer.titleC("Blog > Marko Nikolić");
+      $("div_header span").html(`Marko Nikolić > Blog`);
     }
     try {
     } catch (aer) {}
     if (id == "all") {
-      welcomer.blg_history_replace("/?p=blog");
+      // welcomer.blg_history_replace("/?p=blog");
+      const urlParamsf = new URLSearchParams(window.location.search),
+      urlParamsf_f = `${urlParamsf.get("c")}`;
+
+      if(urlParamsf_f.length > 0){
+        history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`); 
+        welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
+      }else{
+        welcomer.blg_history_replace("/?p=blog");
+        welcomer.titleC("Blog > Marko Nikolić");
+      }
+
       welcomer.blogljoad_posts(window.portfolio.data.blog);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
       setTimeout(function () {
+        const urlParamsf = new URLSearchParams(window.location.search),
+        urlParamsf_f = `${urlParamsf.get("c")}`;
+        if(urlParamsf_f.length > 0){
+         $(`br_ta ta_f[data-category="${urlParamsf_f}"]`).click();
+        }else{
         $("br_ta ta_f:first-child").click();
-      }, 500);
+        }
+      }, 100);
     } else {
       welcomer.blog_loader_natjive(id);
     }
-    welcomer.titleC("Blog > Marko Nikolić - Portfolio");
+   
     $("html").addClass("anim_djenerated");
   },
   url_params: function () {
@@ -1466,9 +1497,12 @@ width="16"><span></span></bar_t><span>  </span>
     }
     return div_not_i;
   },
-  capitalize_str: function(text) {
-    return text.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-},
+  capitalize_str: function (text) {
+    return text
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  },
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
@@ -1572,7 +1606,7 @@ width="16"><span></span></bar_t><span>  </span>
 
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
-    $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+    $("div_header span").html("Marko Nikolić > Blog");
     $(".F_bi_search").show();
     $("gridder_loader").removeAttr("style");
 
@@ -1664,14 +1698,16 @@ width="16"><span></span></bar_t><span>  </span>
     });
     var arrayrH = welcomer.remove_duplicates(arrayr),
       active_scrf_2 = document.createElement("ta_f");
-      active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
+    active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
     active_scrf_2.setAttribute("data-c", arrayrH.length);
     /* active_scrf_2.innerHTML = `All <span>${
       document.querySelectorAll("grider_viewer project").length
     }</span>`;*/
- 
-    active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc("All")}</span>`;
-    
+
+    active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc(
+      "All"
+    )}</span>`;
+    active_scrf_2.setAttribute("class", "active");
     active_scrf_2.setAttribute("data-category", "All");
 
     active_scrf_2.onclick = function () {
@@ -1680,18 +1716,26 @@ width="16"><span></span></bar_t><span>  </span>
       );
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
+
         // $(r).find("span").html("");
       });
       active_scrf_2.classList.add("active");
+      history.replaceState({}, "", `/?p=blog`);
+
       // active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`;
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
-      active_scrf.setAttribute("data-title", `Click "${ttt_f.capitalize_str(re)}" for open All category`);
+      active_scrf.setAttribute(
+        "data-title",
+        `Click "${ttt_f.capitalize_str(re)}" for open All category`
+      );
 
-      active_scrf.innerHTML = `${re} <span>${welcomer.blogljoad_posts_category_cbc(re)}</span>`;
+      active_scrf.innerHTML = `${re} <span>${welcomer.blogljoad_posts_category_cbc(
+        re
+      )}</span>`;
 
       active_scrf.setAttribute("data-category", re);
       active_scrf.onclick = function () {
@@ -1703,7 +1747,7 @@ width="16"><span></span></bar_t><span>  </span>
           active_scrf.getAttribute("data-category")
         );
         active_scrf.classList.add("active");
-       
+        history.replaceState({}, "", `/?p=blog&c=${re}`);
       };
       $("div#clavs br_ta").append(active_scrf);
     });
@@ -1711,7 +1755,7 @@ width="16"><span></span></bar_t><span>  </span>
 
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
-    $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+    $("div_header span").html("Marko Nikolić > Blog");
     $(".F_bi_search").show();
     $("gridder_loader").removeAttr("style");
 
@@ -1917,7 +1961,7 @@ width="16"><span></span></bar_t><span>  </span>
         $("html").addClass("anim_djenerated");
       });
     }
-    welcomer.titleC("Gallery > Marko Nikolić - Portfolio");
+    welcomer.titleC("Gallery > Marko Nikolić");
   },
   galleryloadajax: function () {
     var ljoader = document.querySelector("#reaload_page"),
@@ -1986,7 +2030,7 @@ width="16"><span></span></bar_t><span>  </span>
     $("gridder_loader").removeAttr("style");
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
-    $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+    $("div_header span").html("Marko Nikolić > Gallery");
     $(".F_bi_search").hide();
     $(Vjideo_sjpinner).hide();
   },
@@ -2106,7 +2150,7 @@ width="16"><span></span></bar_t><span>  </span>
         */
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
-    $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+    $("div_header span").html("Marko Nikolić > Projects");
     $(".F_bi_search").show();
 
     $(Vjideo_sjpinner).hide();
@@ -2302,7 +2346,7 @@ width="16"><span></span></bar_t><span>  </span>
 
       welcomer.hmm(msg_title, function () {
         welcomer.blg_history_replace("/");
-        welcomer.titleC("Marko Nikolić - Portfolio");
+        welcomer.titleC("Marko Nikolić");
         $("#clavs").attr("style", "transform: translateY(-100%);");
         welcomer.loop_active = true;
 
@@ -3371,7 +3415,7 @@ width="16"><span></span></bar_t><span>  </span>
       this.projectsload();
       $("div_header").attr("data-url", window.location.origin + "/?p=projects");
       $("iframe.iframe_mask").removeAttr("style");
-      $("div_header span").html("Marko Nikolić - Portfolio > Projects");
+      $("div_header span").html("Marko Nikolić > Projects");
 
       welcomer.blg_history_replace(`/?p=projects`);
       $("html").addClass("anim_djenerated");
@@ -3388,7 +3432,7 @@ width="16"><span></span></bar_t><span>  </span>
 
       $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
       $("iframe.iframe_mask").removeAttr("style");
-      $("div_header span").html("Marko Nikolić - Portfolio > Gallery");
+      $("div_header span").html("Marko Nikolić > Gallery");
 
       welcomer.blg_history_replace(`/?p=gallery`);
     } else if (url.includes("blog.eronelit.com") || url.includes("p=blllog")) {
@@ -3399,7 +3443,7 @@ width="16"><span></span></bar_t><span>  </span>
 
       $("body").attr("data-hmm", "ld_completeld_complete3");
 
-      $("div_header span").html("Marko Nikolić - Portfolio > Blog");
+      $("div_header span").html("Marko Nikolić > Blog");
       document
         .getElementById("clavs")
         .setAttribute("style", " opacity:1; transform:unset; ");
@@ -3525,7 +3569,7 @@ width="16"><span></span></bar_t><span>  </span>
   HcloseF: function () {
     this.hmm("You ", function () {
       welcomer.blg_history_replace("");
-      this.titleC("Marko Nikolić - Portfolio");
+      this.titleC("Marko Nikolić");
       $("#clavs").attr("style", "transform: translateY(-100%);");
       welcomer.loop_active = true;
       setTimeout(function () {
@@ -3559,7 +3603,7 @@ width="16"><span></span></bar_t><span>  </span>
     }
     this.hmm(msg_title, function () {
       $("#clavs").attr("style", "transform: translateY(-100%);");
-      welcomer.titleC(`Marko Nikolić - Portfolio`);
+      welcomer.titleC(`Marko Nikolić`);
 
       welcomer.blg_history_replace("/");
 

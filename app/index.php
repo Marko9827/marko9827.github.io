@@ -395,9 +395,9 @@ class portfolio_marko
     {
         $person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
-     
 
-        if (!empty($_GET['id'])   || !empty($_GET['blog'])) {
+
+        if (!empty($_GET['id']) || !empty($_GET['blog'])) {
             $off = false;
 
             foreach ($person as $key => $value) {
@@ -406,7 +406,7 @@ class portfolio_marko
                 }
             }
             $c_category_get = "";
-            if(!empty($_GET['c'])){
+            if (!empty($_GET['c'])) {
                 $c_category_get = " $_GET[c] ";
             }
 
@@ -460,7 +460,7 @@ echo $v .",";
             <?php
 
 
-         
+
         } else {
             ?>
             <title>
@@ -472,10 +472,10 @@ echo $v .",";
                         echo "Marko Nikolić > Visitcard";
                     } else if ($_GET['p'] == "Projects") {
                         echo "Marko Nikolić > Projects";
-                    } else if($_GET['p'] == "blog") {
-                        if(!empty($_GET['c'])) {
-                        echo "Blog > $_GET[c] > Marko Nikolić";
-                    }
+                    } else if ($_GET['p'] == "blog") {
+                        if (!empty($_GET['c'])) {
+                            echo "Blog > $_GET[c] > Marko Nikolić";
+                        }
                     } else {
                         echo "Marko Nikolić";
                     }
@@ -512,7 +512,7 @@ echo $v .",";
             <?php
         }
 
-        
+
     }
     function error_page($status)
     {

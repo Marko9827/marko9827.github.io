@@ -397,7 +397,7 @@ class portfolio_marko
         $data = null;
      
 
-        if (!empty($_GET['id']) || !empty($_GET['c']) || !empty($_GET['blog'])) {
+        if (!empty($_GET['id'])   || !empty($_GET['blog'])) {
             $off = false;
 
             foreach ($person as $key => $value) {
@@ -472,6 +472,10 @@ echo $v .",";
                         echo "Marko Nikolić > Visitcard";
                     } else if ($_GET['p'] == "Projects") {
                         echo "Marko Nikolić > Projects";
+                    } else if($_GET['c'] == "blog") {
+                        if(!empty($_GET['c'])) {
+                        echo "Blog > $_GET[c] > Marko Nikolić";
+                    }
                     } else {
                         echo "Marko Nikolić";
                     }

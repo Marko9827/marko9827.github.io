@@ -1732,8 +1732,18 @@ width="16"><span></span></bar_t><span>  </span>
         "data-title",
         `Click "${ttt_f.capitalize_str(re)}" for open All category`
       );
+      var t = "";
+      if(re == "telegram" || re == "Telegram"){
+        t = `<i class="bi bi-telegram"></i> `;
+      } else if(re == "science" || re == "Science"){
+        // t = `<i class="bi bi-book"></i> `;
+      } else if(re == "Scifi" || re == "scifi"){
+        // t = `<i class="bi bi-telegram"></i> `;
+      } else{
 
-      active_scrf.innerHTML = `${re} <span>${welcomer.blogljoad_posts_category_cbc(
+      }
+
+      active_scrf.innerHTML = `${t} ${re} <span>${welcomer.blogljoad_posts_category_cbc(
         re
       )}</span>`;
 

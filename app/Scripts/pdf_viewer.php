@@ -1,3 +1,4 @@
+ 
 <!DOCTYPE html>
 <?php $t = time(); ?>
 <html dir="ltr" mozdisallowselectionprint>
@@ -436,8 +437,7 @@ document.onload =function(){  document.addEventListener('keydown', function(even
     }
 });}
         setTimeout(function() {
-            PDFViewerApplication.open("<?php
-                //https://portfolio.localhost/?pdf_file=file&id=25_jul_2023_09_00/1690314349544
+            PDFViewerApplication.open("<?php 
                 echo "/?pdf_file=file&id=$_GET[id]"; ?>");
         }, 1500);
 

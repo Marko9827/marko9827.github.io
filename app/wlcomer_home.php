@@ -1616,6 +1616,11 @@ media-src 'self';" />
             pointer-events: none;
         }
 
+        div#clavs br_ta ta_f[data-category="telegram"] i {
+            margin-right: 5px;
+            padding-right: 2px;
+        }
+
         /* 
         div#clavs br_ta ta_f span {
     transform:translateX(30px);

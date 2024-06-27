@@ -1717,12 +1717,13 @@ width="16"><span></span></bar_t><span>  </span>
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
 
-        // $(r).find("span").html("");
+        /* $(r).find("span").html(""); */
       });
       active_scrf_2.classList.add("active");
       history.replaceState({}, "", `/?p=blog`);
 
-      // active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`;
+      /* active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`; */
+
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
@@ -1736,9 +1737,12 @@ width="16"><span></span></bar_t><span>  </span>
       if(re == "telegram" || re == "Telegram"){
         t = `<i class="bi bi-telegram"></i> `;
       } else if(re == "science" || re == "Science"){
-        // t = `<i class="bi bi-book"></i> `;
+        /* t = `<i class="bi bi-book"></i> `; */
       } else if(re == "Scifi" || re == "scifi"){
-        // t = `<i class="bi bi-telegram"></i> `;
+        /* t = `<i class="bi bi-telegram"></i> `; */
+      } else if(re == "deviantart" || re == "Deviantart") {
+                /* t = `<i class="bi bi-telegram"></i> `; */
+
       } else{
 
       }
@@ -1751,7 +1755,7 @@ width="16"><span></span></bar_t><span>  </span>
       active_scrf.onclick = function () {
         document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
           r.classList.remove("active");
-          // $(r).find("span").html("");
+          /* $(r).find("span").html(""); */
         });
         welcomer.blogljoad_posts_category(
           active_scrf.getAttribute("data-category")

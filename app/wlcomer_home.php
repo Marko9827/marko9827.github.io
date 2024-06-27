@@ -147,7 +147,7 @@ media-src 'self';" />
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" type="module" src="/?svc=jsc">
+    <script nonce="<?php echo NONCE; ?>"  src="/?svc=jsc">
 
     </script>
 

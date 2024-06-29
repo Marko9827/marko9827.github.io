@@ -215,7 +215,8 @@
         ],
         "thumbail": "/?blog=07_jun_2024_16_11/1717770544145",
         "category": [
-            "science"
+            "science",
+            "video"
         ],
         "shared_links": [
             
@@ -1048,6 +1049,10 @@
         "time": "24.jul.2023 14:42AM",
         "source": "/?blog=24_jul_2023_14_42",
         "keywords": "",
+        "category":[
+            "science",
+            "video"
+        ],
         "thumbail": "/?blog=24_jul_2023_14_42/1690202714334",
         "gallery": []
     },

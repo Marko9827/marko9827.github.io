@@ -861,7 +861,7 @@ media-src 'self';" />
 
         div#clavs br_ta ta_f.active,
         div#clavs br_ta ta_f:hover {
-            background: var(--hard_white) !important;
+            background: var(--hard_white) ;
             color: var(--black-trasparent-color);
         }
 
@@ -1668,6 +1668,21 @@ div#clavs br_ta ta_f.active span {
 
             <?php
         } ?>
+
+ta_f[data-category="video"].active   {
+    background: #b90808 !important;
+    color: white !important;
+    
+}
+ta_f[data-category="video"] i {
+    margin-right:5px;
+}
+
+ta_f[data-category="video"].active span {
+    border-color:white !important;
+    background:transparent !important;
+    color:white !important;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

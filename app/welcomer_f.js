@@ -1743,7 +1743,10 @@ width="16"><span></span></bar_t><span>  </span>
       } else if(re == "deviantart" || re == "Deviantart") {
                 /* t = `<i class="bi bi-telegram"></i> `; */
 
-      } else{
+      } else if(re == "video" || re == "Video") {
+         t = `<i class="bi bi-film"></i> `;  
+
+}  else{
 
       }
 

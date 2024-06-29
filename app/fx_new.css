@@ -24,7 +24,7 @@ div#clavs br_ta ta_f {
 
 div#clavs br_ta ta_f.active,
 div#clavs br_ta ta_f:hover {
-        background:var(--hard_white) !important;
+        background:var(--hard_white) ;
     color:var(--black-trasparent-color);
 }
 
@@ -97,3 +97,17 @@ grider_viewer.gridsH.grids:hover project:not(:hover) {
     filter:grayscale(1) !important;
 } 
         */
+ta_f[data-category="video"].active   {
+    background: #b90808 !important;
+    color: white !important;
+    
+}
+ta_f[data-category="video"] i {
+    margin-right:5px;
+}
+
+ta_f[data-category="video"].active span {
+    border-color:white !important;
+    background:transparent !important;
+    color:white !important;
+}

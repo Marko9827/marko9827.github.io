@@ -177,7 +177,7 @@ const welcomer = {
       icon: "bi bi-file-code",
       adiv_gat: "editor_bundle",
       href: {
-        f_u: "welcomer.blg_history_replace(`/?p=editor`); welcomer.editor.start();",
+        f_u: "welcomer.editor.startf();",
         f: true,
         target: "blank",
       },
@@ -2652,7 +2652,10 @@ width="16"><span></span></bar_t><span>  </span>
           edimls.setAttribute("data-title", "Load code");
           if_div.appendChild(peview);
           if_div.appendChild(p);
+      
           edimls.appendChild(if_div);
+          setTimeout(function(){          preview.setAttribute("style", "position: unset !important; height: 131px !important; pointer-events: none !important;");
+},100);
         }
       });
 
@@ -2667,6 +2670,14 @@ width="16"><span></span></bar_t><span>  </span>
       welcomer.blg_history_replace(`/?p=editor`);
     },
     start: function () {
+      this.call_nav();
+      this.callEditor();
+      this.webDb.start();
+
+      $('section[data-ui-type="editor"]').removeClass("hidden_omega");
+      $('div#clavs').attr("style","opacity: 1;");
+    },
+    startf: function () {
       this.call_nav();
       this.callEditor();
       this.webDb.start();
@@ -2713,6 +2724,18 @@ width="16"><span></span></bar_t><span>  </span>
         beta: false,
         soon: false,
       },
+      {
+        title: "Your work history - Your projects!",
+        icon: "bi bi-clock-history",
+        href: {
+            f_u: function () { welcomer.editor.load_menu_bar(this); },
+            f: true,
+            target: "blank"
+        },
+        num: 0,
+        beta: false,
+        soon: false
+    },
 
       {
         title: "Share Editor page",

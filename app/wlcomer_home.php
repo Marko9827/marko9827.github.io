@@ -954,7 +954,9 @@ media-src 'self';" />
         #clavs iframe[src="about:blank"]:not(.iframe_mask) {
             pointer-events: none !important
         }
-
+        if_div iframe {
+            position: unset !important;
+        }
         /* aef
  */
         a[data-iam-hidden="yes"] {

@@ -894,13 +894,25 @@ echo $v .",";
                                             res.remove();
                                             console.clear();
                                         });
+                                        document.addEventListener('keydown', function(event) {
+    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+        event.preventDefault();
+         
+    }
+    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+        event.preventDefault();
+         
+    }
+});
                                     }
                                 </script>
                                 <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
                             </body>
 
                             </html>
+
                     <?php
+                    exit();
                 } else {
                     $this->streamVideo("$url$_GET[blog].mp4");
                 }

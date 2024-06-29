@@ -1857,7 +1857,16 @@ width="16"><span></span></bar_t><span>  </span>
           wlc.bundleSuggestedS(1);
         }
       });
-
+      document.addEventListener('keydown', function(event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+            event.preventDefault();
+             
+        }
+        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+            event.preventDefault();
+             
+        }
+      });
       this.scrollby_h(pr);
     },
     bundleSuggestedS: function (n) {
@@ -4789,12 +4798,6 @@ width="16"><span></span></bar_t><span>  </span>
   })(),
 };
 
-document.addEventListener("keydown", function (event) {
-  if ((event.ctrlKey || event.metaKey) && event.key === "s") {
-    event.preventDefault();
-  }
-  if ((event.ctrlKey || event.metaKey) && event.key === "p") {
-    event.preventDefault();
-  }
-});
+ 
 window.welcomer = welcomer;
+

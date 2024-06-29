@@ -539,8 +539,8 @@ br_aer  img.favicon {
 </baer>
 </br_aer></br_box>
       
-      */
-      //  var bar_box = document.createElement("br_box");
+      *g/
+      / /  var bar_box = document.createElement("br_box"); */
       var br_aer = document.createElement("br_aer"),
         baer = document.createElement("baer"),
         span = document.createElement("span"),
@@ -1013,14 +1013,15 @@ br_aer  img.favicon {
       img = document.createElement("img"),
       br_aer = document.createElement("br_aer");
     br_aer.setAttribute("class", "snaped");
-    //
+  
     div_bra.setAttribute("class", "bra");
-    //
+    
     img.setAttribute("class", "img_background_rljs");
     img.setAttribute("src", fh?.thumbail);
-    // img.setAttribute("alt", "Blog > Marko Nikolić");
+    /*
+    /f/ img.setAttribute("alt", "Blog > Marko Nikolić"); */
     img.setAttribute("loading", "lazy");
-    //
+    /* / */
 
     div_bra.appendChild(img);
     div_bra.appendChild(br_aer);
@@ -1031,7 +1032,9 @@ br_aer  img.favicon {
 
     welcomer.cards_generate_xhr = new XMLHttpRequest();
     welcomer.cards_generate_xhr.open("POST", "/?svc=favicon", true);
-    // welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+    /*
+    /f/ welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
+    */
     welcomer.cards_generate_xhr.onreadystatechange = function () {
       if (welcomer.cards_generate_xhr.readyState === 4) {
         if (welcomer.cards_generate_xhr.status === 200) {
@@ -1298,8 +1301,6 @@ width="16"><span></span></bar_t><span>  </span>
           )}</style>  `
         );
         $("#clavs iframe:not(.iframe_mask)").on("load", function () {
-          //    var iframeDocument = $(this).contents();
-          //  iframeDocument.find('body').append(`${welcomer.cards_generate(f,f['shared_links'])}`);
           welcomer.cards_generate(f);
         });
 
@@ -1386,7 +1387,7 @@ width="16"><span></span></bar_t><span>  </span>
     try {
     } catch (aer) {}
     if (id == "all") {
-      // welcomer.blg_history_replace("/?p=blog");
+ 
       const urlParamsf = new URLSearchParams(window.location.search),
       urlParamsf_f = `${urlParamsf.get("c")}`;
 
@@ -2671,6 +2672,7 @@ width="16"><span></span></bar_t><span>  </span>
       this.webDb.start();
 
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
+      $('div#clavs').attr("style","opacity: 1;");
     },
     call_nav_conf: [
       {
@@ -3913,7 +3915,7 @@ width="16"><span></span></bar_t><span>  </span>
         a.setAttribute("role", "link");
         a.setAttribute("target", "_top");
         document.body.appendChild(a);
-        //window.location.href = "/?p=blog";
+      
         if (urlParamsf.get("p") == "blog") {
           a.href = "/?p=blog";
         } else {

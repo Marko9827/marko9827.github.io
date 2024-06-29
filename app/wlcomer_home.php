@@ -145,10 +145,12 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
+    <script nonce="<?php echo NONCE; ?>"  src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" src="/?svc=jsc">
-
+    <script nonce="<?php echo NONCE; ?>" async src="/?svc=jsc">
+        
     </script>
 
     <?php if (!empty($_GET['tp'])) {

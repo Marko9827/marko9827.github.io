@@ -147,7 +147,7 @@ media-src 'self';" />
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>"  src="/?svc=jsc">
+    <script nonce="<?php echo NONCE; ?>" src="/?svc=jsc">
 
     </script>
 
@@ -861,7 +861,7 @@ media-src 'self';" />
 
         div#clavs br_ta ta_f.active,
         div#clavs br_ta ta_f:hover {
-            background: var(--hard_white) ;
+            background: var(--hard_white);
             color: var(--black-trasparent-color);
         }
 
@@ -1668,21 +1668,44 @@ div#clavs br_ta ta_f.active span {
 
             <?php
         } ?>
+        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
+ 
+        ta_f[data-category="deviantart"] i {
+            margin-right: 5px;
+        }
+ ta_f[data-category="deviantart"]:hover,
+        ta_f[data-category="deviantart"].active {
+            background: #00e59b !important;
+        }
 
-ta_f[data-category="video"].active   {
-    background: #b90808 !important;
-    color: white !important;
-    
-}
-ta_f[data-category="video"] i {
-    margin-right:5px;
-}
+        ta_f[data-category="video"].active span,
+        ta_f[data-category="video"]:hover span,
+        ta_f[data-category="deviantart"]:hover span,
+        ta_f[data-category="deviantart"].active span {
+            background: transparent !important;
 
+        }
+
+
+
+        ta_f[data-category="video"].active,
+        ta_f[data-category="video"]:hover {
+            background: #b90808 !important;
+            color: white !important;
+
+        }
+
+        ta_f i {
+            margin-right: 5px;
+        }
+
+        ta_f[data-category="video"]:hover span,
 ta_f[data-category="video"].active span {
-    border-color:white !important;
-    background:transparent !important;
-    color:white !important;
-}
+            border-color: white !important;
+            background: transparent !important;
+            color: white !important;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

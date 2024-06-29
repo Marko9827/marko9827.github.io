@@ -1742,7 +1742,7 @@ width="16"><span></span></bar_t><span>  </span>
         /* t = `<i class="bi bi-telegram"></i> `; */
       } else if(re == "deviantart" || re == "Deviantart") {
                 /* t = `<i class="bi bi-telegram"></i> `; */
-
+        t = `    <i class="fab fa-deviantart"></i> `;
       } else if(re == "video" || re == "Video") {
          t = `<i class="bi bi-film"></i> `;  
 

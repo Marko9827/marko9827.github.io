@@ -1,5 +1,7 @@
 "use strict";
 
+window.draggable = { style_left: "", style_top: "", enabled: false };
+
 const welcomer = {
   lang: [],
   conf: {
@@ -29,6 +31,96 @@ const welcomer = {
       },
     },
   ],
+  trcars: {
+    dragstart: function (e) {
+      e.preventDefault();
+      dragging = true;
+      var main = document.querySelector("iframe#preview-container");
+    },
+    dragmove: function (e) {
+      if (dragging) {
+        document.getElementById("shield").style.display = "block";
+        if (stack != " horizontal") {
+          var percentage = (e.pageX / window.innerWidth) * 100;
+          if (percentage > 5 && percentage < 98) {
+            var mainPercentage = 100 - percentage;
+            document.getElementById("textareacontainer").style.width =
+              percentage + "%";
+            document.getElementById("iframecontainer").style.width =
+              mainPercentage + "%";
+            fixDragBtn();
+          }
+        } else {
+          var containertop = Number(
+            w3_getStyleValue(
+              document.getElementById("container"),
+              "top"
+            ).replace("px", "")
+          );
+          var percentage =
+            ((e.pageY - containertop + 20) /
+              (window.innerHeight - containertop + 20)) *
+            100;
+          if (percentage > 5 && percentage < 98) {
+            var mainPercentage = 100 - percentage;
+            document.getElementById("textareacontainer").style.height =
+              percentage + "%";
+            document.getElementById("iframecontainer").style.height =
+              mainPercentage + "%";
+            fixDragBtn();
+          }
+        }
+        showFrameSize();
+      }
+    },
+    dragend: function () {
+      document.getElementById("shield").style.display = "none";
+      dragging = false;
+      var vend = navigator.vendor;
+      if (window.editor && vend.indexOf("Apple") == -1) {
+        window.editor.refresh();
+      }
+    },
+  },
+  trcp_s: function (t = 0) {
+    if (t == 0) {
+      window.draggable.enabled = false;
+      $("editor-wrapper").removeClass("active_f");
+    }
+    if (t == 1) {
+      if (window.draggable.enabled) {
+        welcomer.trcp(parseInt(window.draggable.style_left));
+      }
+    }
+    if (t == 2) {
+      window.draggable.enabled = true;
+    }
+  },
+  trcp: function (left_fH = 0) {
+    var left_f = left_fH - 4;
+    var full_size = $('section[data-ui-type="editor"]').width();
+
+    $("editor-wrapper").addClass("active_f");
+
+    $('section[data-ui-type="editor"]')
+      .find("#editor-container")
+      .attr("style", `width: ${left_f}px !important;`);
+    $('section[data-ui-type="editor"] iframe#preview-container').attr(
+      "style",
+      `width: ${
+        $('section[data-ui-type="editor"]').width() - left_f
+      }px !important;`
+    );
+
+    $('section[data-ui-type="editor"] div#resizer-container').attr(
+      "style",
+      `left: ${left_f}px !important;`
+    );
+    $('section[data-ui-type="editor"] div#resizer-container').addClass(
+      "active"
+    );
+    welcomer.editor.edtr.layout();
+  },
   lang: function () {
     var lang = "en";
 
@@ -1013,9 +1105,9 @@ br_aer  img.favicon {
       img = document.createElement("img"),
       br_aer = document.createElement("br_aer");
     br_aer.setAttribute("class", "snaped");
-  
+
     div_bra.setAttribute("class", "bra");
-    
+
     img.setAttribute("class", "img_background_rljs");
     img.setAttribute("src", fh?.thumbail);
     /*
@@ -1211,7 +1303,7 @@ width="16"><span></span></bar_t><span>  </span>
       $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
     }
   },
-  
+
   custom_evjents: function () {},
   blog_loader_natjive: function (id = "all") {
     var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
@@ -1233,8 +1325,6 @@ width="16"><span></span></bar_t><span>  </span>
       $("div_header span").html(`Marko Nikolić > Blog`);
     }
 
-   
-
     try {
       welcomer.terminator.ajax.blog_post.abort();
     } catch (aer) {}
@@ -1249,12 +1339,12 @@ width="16"><span></span></bar_t><span>  </span>
     }
     if (id == "all") {
       const urlParamsf = new URLSearchParams(window.location.search),
-      urlParamsf_f = urlParamsf.get("c");
-       
-      if(urlParamsf.has("c")){
+        urlParamsf_f = urlParamsf.get("c");
+
+      if (urlParamsf.has("c")) {
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
-      } else{
+      } else {
         welcomer.blg_history_replace("/?p=blog");
       }
       welcomer.blogljoad_posts(f);
@@ -1282,8 +1372,6 @@ width="16"><span></span></bar_t><span>  </span>
         var res = decodeEntities(f.page);
 
         welcomer.gallery_temp = f.gallery;
-
-        
 
         welcomer.blg_history_replace(`/?p=blog&id=${id}`);
         $("div_header").attr(
@@ -1387,14 +1475,13 @@ width="16"><span></span></bar_t><span>  </span>
     try {
     } catch (aer) {}
     if (id == "all") {
- 
       const urlParamsf = new URLSearchParams(window.location.search),
-      urlParamsf_f = `${urlParamsf.get("c")}`;
+        urlParamsf_f = `${urlParamsf.get("c")}`;
 
-      if(urlParamsf.has("c")){
-        history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`); 
+      if (urlParamsf.has("c")) {
+        history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
-      }else{
+      } else {
         welcomer.blg_history_replace("/?p=blog");
         welcomer.titleC("Blog > Marko Nikolić");
       }
@@ -1403,17 +1490,17 @@ width="16"><span></span></bar_t><span>  </span>
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
       setTimeout(function () {
         const urlParamsf = new URLSearchParams(window.location.search),
-        urlParamsf_f = `${urlParamsf.get("c")}`;
-      if(urlParamsf_f !== null || urlParamsf_f !== "null"){
-         $(`br_ta ta_f[data-category="${urlParamsf_f}"]`).click();
-        }else{
-        $("br_ta ta_f:first-child").click();
+          urlParamsf_f = `${urlParamsf.get("c")}`;
+        if (urlParamsf_f !== null || urlParamsf_f !== "null") {
+          $(`br_ta ta_f[data-category="${urlParamsf_f}"]`).click();
+        } else {
+          $("br_ta ta_f:first-child").click();
         }
       }, 100);
     } else {
       welcomer.blog_loader_natjive(id);
     }
-   
+
     $("html").addClass("anim_djenerated");
   },
   url_params: function () {
@@ -1724,7 +1811,6 @@ width="16"><span></span></bar_t><span>  </span>
       history.replaceState({}, "", `/?p=blog`);
 
       /* active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`; */
-
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
@@ -1735,20 +1821,18 @@ width="16"><span></span></bar_t><span>  </span>
         `Click "${ttt_f.capitalize_str(re)}" for open All category`
       );
       var t = "";
-      if(re == "telegram" || re == "Telegram"){
+      if (re == "telegram" || re == "Telegram") {
         t = `<i class="bi bi-telegram"></i> `;
-      } else if(re == "science" || re == "Science"){
+      } else if (re == "science" || re == "Science") {
         /* t = `<i class="bi bi-book"></i> `; */
-      } else if(re == "Scifi" || re == "scifi"){
+      } else if (re == "Scifi" || re == "scifi") {
         /* t = `<i class="bi bi-telegram"></i> `; */
-      } else if(re == "deviantart" || re == "Deviantart") {
-                /* t = `<i class="bi bi-telegram"></i> `; */
+      } else if (re == "deviantart" || re == "Deviantart") {
+        /* t = `<i class="bi bi-telegram"></i> `; */
         t = `    <i class="fab fa-deviantart"></i> `;
-      } else if(re == "video" || re == "Video") {
-         t = `<i class="bi bi-film"></i> `;  
-
-}  else{
-
+      } else if (re == "video" || re == "Video") {
+        t = `<i class="bi bi-film"></i> `;
+      } else {
       }
 
       active_scrf.innerHTML = `${t} ${re} <span>${welcomer.blogljoad_posts_category_cbc(
@@ -1765,11 +1849,21 @@ width="16"><span></span></bar_t><span>  </span>
           active_scrf.getAttribute("data-category")
         );
         active_scrf.classList.add("active");
-        if(active_scrf.getAttribute("data-category") !== "All" || active_scrf.getAttribute("data-category") !== "all"){
-          history.replaceState({}, "", `/?p=blog&c=${active_scrf.getAttribute("data-category")}`);
-        welcomer.titleC(`Blog > ${active_scrf.getAttribute("data-category")} - Marko Nikolić`);
+        if (
+          active_scrf.getAttribute("data-category") !== "All" ||
+          active_scrf.getAttribute("data-category") !== "all"
+        ) {
+          history.replaceState(
+            {},
+            "",
+            `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
+          );
+          welcomer.titleC(
+            `Blog > ${active_scrf.getAttribute(
+              "data-category"
+            )} - Marko Nikolić`
+          );
         }
-
       };
       $("div#clavs br_ta").append(active_scrf);
     });
@@ -1861,14 +1955,12 @@ width="16"><span></span></bar_t><span>  </span>
           wlc.bundleSuggestedS(1);
         }
       });
-      document.addEventListener('keydown', function(event) {
-        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-            event.preventDefault();
-             
+      document.addEventListener("keydown", function (event) {
+        if ((event.ctrlKey || event.metaKey) && event.key === "s") {
+          event.preventDefault();
         }
-        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-            event.preventDefault();
-             
+        if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+          event.preventDefault();
         }
       });
       this.scrollby_h(pr);
@@ -2068,24 +2160,24 @@ width="16"><span></span></bar_t><span>  </span>
   loaded_imgPrld_error: function (aer, id = 0) {
     $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
   },
-  loaded_imgPrld_f: async function(aer, id = 0) {
+  loaded_imgPrld_f: async function (aer, id = 0) {
     const d = aer;
 
     try {
-        const response = await fetch(d.getAttribute("src"));
-        if (!response.ok) {
-            throw new Error(':(');
-        }
-        const blob = await response.blob();
-        const imageUrl = URL.createObjectURL(blob);
-        d.src = URL.createObjectURL(blob);
-        $(aer).parent().parent().removeAttr("style");
+      const response = await fetch(d.getAttribute("src"));
+      if (!response.ok) {
+        throw new Error(":(");
+      }
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      d.src = URL.createObjectURL(blob);
+      $(aer).parent().parent().removeAttr("style");
     } catch (error) {
-        console.error(':(', error);
+      console.error(":(", error);
     }
-},
+  },
   loaded_imgPrld: function (aer, id = 0) {
-    this.loaded_imgPrld_f(aer,id);
+    this.loaded_imgPrld_f(aer, id);
     return "";
     const d = aer;
 
@@ -2652,10 +2744,14 @@ width="16"><span></span></bar_t><span>  </span>
           edimls.setAttribute("data-title", "Load code");
           if_div.appendChild(peview);
           if_div.appendChild(p);
-      
+
           edimls.appendChild(if_div);
-          setTimeout(function(){          preview.setAttribute("style", "position: unset !important; height: 131px !important; pointer-events: none !important;");
-},100);
+          setTimeout(function () {
+            preview.setAttribute(
+              "style",
+              "position: unset !important; height: 131px !important; pointer-events: none !important;"
+            );
+          }, 100);
         }
       });
 
@@ -2675,7 +2771,7 @@ width="16"><span></span></bar_t><span>  </span>
       this.webDb.start();
 
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
-      $('div#clavs').attr("style","opacity: 1;");
+      $("div#clavs").attr("style", "opacity: 1;");
     },
     startf: function () {
       this.call_nav();
@@ -2683,7 +2779,7 @@ width="16"><span></span></bar_t><span>  </span>
       this.webDb.start();
 
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
-      $('div#clavs').attr("style","opacity: 1;");
+      $("div#clavs").attr("style", "opacity: 1;");
     },
     call_nav_conf: [
       {
@@ -2728,14 +2824,16 @@ width="16"><span></span></bar_t><span>  </span>
         title: "Your work history - Your projects!",
         icon: "bi bi-clock-history",
         href: {
-            f_u: function () { welcomer.editor.load_menu_bar(this); },
-            f: true,
-            target: "blank"
+          f_u: function () {
+            welcomer.editor.load_menu_bar(this);
+          },
+          f: true,
+          target: "blank",
         },
         num: 0,
         beta: false,
-        soon: false
-    },
+        soon: false,
+      },
 
       {
         title: "Share Editor page",
@@ -3214,6 +3312,7 @@ width="16"><span></span></bar_t><span>  </span>
         ),
         editor_container = document.createElement("div"),
         resizer = document.createElement("div"),
+        div_resizer = document.createElement("div-sh"),
         iframe = document.createElement("iframe"),
         buttons = {
           history: "",
@@ -3231,6 +3330,7 @@ width="16"><span></span></bar_t><span>  </span>
       iframe.id = "preview-container";
       resizer.id = "resizer-container";
       iframe.sandbox = "allow-same-origin allow-scripts";
+      resizer.appendChild(div_resizer);
       data_ui_type.appendChild(editor_container);
       data_ui_type.appendChild(resizer);
       data_ui_type.appendChild(iframe);
@@ -3242,6 +3342,32 @@ width="16"><span></span></bar_t><span>  </span>
         container.style.left = `${leftValue + movementX}px`;
         container.style.top = `${topValue + movementY}px`;
       }
+
+      var resizers = document.querySelector("div#resizer-container"),
+        pointerArea = document.querySelector("div#resizer-container");
+
+      resizer.addEventListener("mousedown", function (e) {
+        e.preventDefault();
+        welcomer.trcp(parseInt(window.draggable.style_left));
+      }); 
+      resizer.addEventListener("onmouseup", function (e) {
+        e.preventDefault();
+        welcomer.trcp_s(0);
+      });
+
+      if (window.addEventListener) {              
+        document.getElementById("dragbar").addEventListener("mousedown", function(e) {dragstart(e);});
+        document.getElementById("dragbar").addEventListener("touchstart", function(e) {dragstart(e);});
+        window.addEventListener("mousemove", function(e) { 
+          if(window.draggable.style)
+        });
+        window.addEventListener("touchmove", function(e) { 
+
+        });
+        window.addEventListener("mouseup", dragend);
+        window.addEventListener("touchend", dragend);
+      }
+ 
 
       var dragging_ = { enabled: false, left: 0 };
 
@@ -3938,7 +4064,7 @@ width="16"><span></span></bar_t><span>  </span>
         a.setAttribute("role", "link");
         a.setAttribute("target", "_top");
         document.body.appendChild(a);
-      
+
         if (urlParamsf.get("p") == "blog") {
           a.href = "/?p=blog";
         } else {
@@ -4826,6 +4952,14 @@ width="16"><span></span></bar_t><span>  </span>
   })(),
 };
 
- 
 window.welcomer = welcomer;
 
+document.addEventListener("mousemove", function (event) {
+  var draggable = document.querySelector('section[data-ui-type="editor"]');
+  const newX = event.clientX;
+  const newY = event.clientY;
+
+  window.draggable.style_left = `${newX}px`;
+  window.draggable.style_top = `${newY}px`;
+  // console.log(window.draggable);
+});

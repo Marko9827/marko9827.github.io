@@ -145,12 +145,13 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>"  src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script nonce="<?php echo NONCE; ?>"
+        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" async src="/?svc=jsc">
-        
+
     </script>
 
     <?php if (!empty($_GET['tp'])) {
@@ -954,9 +955,11 @@ media-src 'self';" />
         #clavs iframe[src="about:blank"]:not(.iframe_mask) {
             pointer-events: none !important
         }
+
         if_div iframe {
             position: unset !important;
         }
+
         /* aef
  */
         a[data-iam-hidden="yes"] {
@@ -1671,14 +1674,16 @@ div#clavs br_ta ta_f.active span {
             }
 
             <?php
-        } ?>
-        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        } ?> 
+
+@import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
         @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
- 
+
         ta_f[data-category="deviantart"] i {
             margin-right: 5px;
         }
- ta_f[data-category="deviantart"]:hover,
+
+        ta_f[data-category="deviantart"]:hover,
         ta_f[data-category="deviantart"].active {
             background: #00e59b !important;
         }
@@ -1705,10 +1710,60 @@ div#clavs br_ta ta_f.active span {
         }
 
         ta_f[data-category="video"]:hover span,
-ta_f[data-category="video"].active span {
+        ta_f[data-category="video"].active span {
             border-color: white !important;
             background: transparent !important;
             color: white !important;
+        }
+
+        editor-wrapper {
+            background: #333;
+            position: absolute;
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+        }
+        section[data-ui-type="editor"] div#resizer-container {
+    display: flex;
+    width: 8px !important;
+    min-width: 8px !important;
+    max-width: 8px !important;
+}
+
+
+editor-wrapper {
+    background:black;
+}
+
+editor-wrapper.active_f div#resizer-container {
+    /* border-right:1px solid black !important; */
+   /* filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
+   /* -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
+  /* enable-background: new 0 0 512 512 !important; */
+}
+
+editor-wrapper.active_f iframe#preview-container  {
+     opacity:0.8 !important;
+    pointer-events: none !important;
+}
+
+editor-wrapper.active_f div#editor-container {
+    opacity:0.8 !important;
+    pointer-events: none !important;
+}
+      
+        editor-wrapper div-sh {
+            
+    background: white;
+    display: block;
+    margin: auto;
+    width: 2px;
+    height: 40%;
+    border-radius: 50px;
+    pointer-events: none !important;
+
         }
     </style>
     <?php

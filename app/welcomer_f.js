@@ -3347,10 +3347,11 @@ width="16"><span></span></bar_t><span>  </span>
       data_ui_type.appendChild(size_r);
       data_ui_type.appendChild(iframe);
 
+      
 
       window.onresize = function(){
-        $("size_r").show();
-        $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
+         var aerf = $("editor-wrapper").width() - $('section[data-ui-type="editor"] iframe#preview-container').width();
+        welcomer.trcp(parseInt(aer));
        
       }
 
@@ -3367,9 +3368,16 @@ width="16"><span></span></bar_t><span>  </span>
         pointerArea = document.querySelector("div#resizer-container");
   
   
-        
+        window.resize_is_active_timeout = null;
+        window.resize_is_active = false;
+        if (window.addEventListener) {   
+          
+          window.addEventListener('resize', function(event){
+            $("size_r").show();
+            $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
+          
+          });
 
-        if (window.addEventListener) {              
           resizer.addEventListener("mousedown",  function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
           resizer.addEventListener("touchstart", function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
           window.addEventListener("mousemove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });

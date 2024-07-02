@@ -108,7 +108,7 @@ const welcomer = {
     $('section[data-ui-type="editor"] iframe#preview-container').attr(
       "style",
       `width: ${
-        $('section[data-ui-type="editor"]').width() - left_f
+        $('section[data-ui-type="editor"]').width() - left_f - 10
       }px !important;`
     );
 
@@ -3345,7 +3345,20 @@ width="16"><span></span></bar_t><span>  </span>
 
       var resizers = document.querySelector("div#resizer-container"),
         pointerArea = document.querySelector("div#resizer-container");
+  
+  
+        
 
+        if (window.addEventListener) {              
+          resizer.addEventListener("mousedown",  function(e) { e.preventDefault(); window.draggable.enabled = true;  });
+          resizer.addEventListener("touchstart", function(e) { e.preventDefault(); window.draggable.enabled = true;  });
+          window.addEventListener("mousemove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
+          window.addEventListener("touchmove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
+          window.addEventListener("mouseup",     function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); });
+          window.addEventListener("touchend",    function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); });
+        }
+        
+        /*
       resizer.addEventListener("mousedown", function (e) {
         e.preventDefault();
         welcomer.trcp(parseInt(window.draggable.style_left));
@@ -3355,18 +3368,21 @@ width="16"><span></span></bar_t><span>  </span>
         welcomer.trcp_s(0);
       });
 
+     
       if (window.addEventListener) {              
         document.getElementById("dragbar").addEventListener("mousedown", function(e) {dragstart(e);});
         document.getElementById("dragbar").addEventListener("touchstart", function(e) {dragstart(e);});
         window.addEventListener("mousemove", function(e) { 
-          if(window.draggable.style)
+            if(window.draggable.style){
+
+            }
         });
         window.addEventListener("touchmove", function(e) { 
 
         });
         window.addEventListener("mouseup", dragend);
         window.addEventListener("touchend", dragend);
-      }
+      }*/
  
 
       var dragging_ = { enabled: false, left: 0 };
@@ -4959,7 +4975,7 @@ document.addEventListener("mousemove", function (event) {
   const newX = event.clientX;
   const newY = event.clientY;
 
-  window.draggable.style_left = `${newX}px`;
-  window.draggable.style_top = `${newY}px`;
+  window.draggable.style_left = newX;
+  window.draggable.style_top =  newY;
   // console.log(window.draggable);
 });

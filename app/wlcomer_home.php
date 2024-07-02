@@ -1674,9 +1674,9 @@ div#clavs br_ta ta_f.active span {
             }
 
             <?php
-        } ?> 
+        } ?>
 
-@import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
         @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
@@ -1725,46 +1725,72 @@ div#clavs br_ta ta_f.active span {
             height: 100%;
             z-index: 3;
         }
+
         section[data-ui-type="editor"] div#resizer-container {
-    display: flex;
-    width: 8px !important;
-    min-width: 8px !important;
-    max-width: 8px !important;
-}
+            display: flex;
+            width: 8px !important;
+            min-width: 8px !important;
+            max-width: 8px !important;
+        }
 
 
-editor-wrapper {
-    background:black;
-}
+        editor-wrapper {
+            background: black;
+        }
 
-editor-wrapper.active_f div#resizer-container {
-    /* border-right:1px solid black !important; */
-   /* filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
-   /* -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
-  /* enable-background: new 0 0 512 512 !important; */
-}
+        editor-wrapper.active_f div#resizer-container {
+            /* border-right:1px solid black !important; */
+            /* filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
+            /* -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) invert(1) !important; */
+            /* enable-background: new 0 0 512 512 !important; */
+        }
 
-editor-wrapper.active_f iframe#preview-container  {
-     opacity:0.8 !important;
-    pointer-events: none !important;
-}
+        editor-wrapper.active_f iframe#preview-container {
+            opacity: 0.8 !important;
+            pointer-events: none !important;
+        }
 
-editor-wrapper.active_f div#editor-container {
-    opacity:0.8 !important;
-    pointer-events: none !important;
-}
-      
+        editor-wrapper.active_f div#editor-container {
+            opacity: 0.8 !important;
+            pointer-events: none !important;
+        }
+
         editor-wrapper div-sh {
-            
-    background: white;
-    display: block;
-    margin: auto;
-    width: 2px;
-    height: 40%;
-    border-radius: 50px;
-    pointer-events: none !important;
+
+            background: white;
+            display: block;
+            margin: auto;
+            width: 2px;
+            height: 40%;
+            border-radius: 50px;
+            pointer-events: none !important;
 
         }
+
+
+        section[data-ui-type="editor"] size_r {
+            position: absolute;
+            top: 51px;
+            right: 0px;
+            z-index: 3333;
+            background: rgb(255 255 255 / 48%);
+            color: #333;
+            padding: 5px 10px;
+            font-size: 13px;
+            border-bottom-left-radius: 5px;
+            border-left: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        section[data-ui-type="editor"] iframe#preview-container {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+            transition:  none !important;
+        }
+
+        section[data-ui-type="editor"] size_r i {
+    margin-right: 5px;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

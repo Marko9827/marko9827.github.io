@@ -100,6 +100,11 @@ const welcomer = {
     var left_f = left_fH - 4;
     var full_size = $('section[data-ui-type="editor"]').width();
 
+    function convertPxToPercentage(pxValue, parentValue) {
+      return (pxValue / parentValue) * 100;
+  }
+
+
     $("editor-wrapper").addClass("active_f");
 
     $('section[data-ui-type="editor"]')
@@ -112,6 +117,8 @@ const welcomer = {
       }px !important;`
     );
 
+    
+
     $('section[data-ui-type="editor"] div#resizer-container').attr(
       "style",
       `left: ${left_f}px !important;`
@@ -119,6 +126,8 @@ const welcomer = {
     $('section[data-ui-type="editor"] div#resizer-container').addClass(
       "active"
     );
+    $("size_r").show();
+    $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
     welcomer.editor.edtr.layout();
   },
   lang: function () {
@@ -3312,6 +3321,7 @@ width="16"><span></span></bar_t><span>  </span>
         ),
         editor_container = document.createElement("div"),
         resizer = document.createElement("div"),
+        size_r = document.createElement("size_r"),
         div_resizer = document.createElement("div-sh"),
         iframe = document.createElement("iframe"),
         buttons = {
@@ -3330,10 +3340,20 @@ width="16"><span></span></bar_t><span>  </span>
       iframe.id = "preview-container";
       resizer.id = "resizer-container";
       iframe.sandbox = "allow-same-origin allow-scripts";
+      size_r.setAttribute("style","display: none;");
       resizer.appendChild(div_resizer);
       data_ui_type.appendChild(editor_container);
       data_ui_type.appendChild(resizer);
+      data_ui_type.appendChild(size_r);
       data_ui_type.appendChild(iframe);
+
+
+      window.onresize = function(){
+        $("size_r").show();
+        $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
+       
+      }
+
       const container = resizer;
       function onMouseDrag({ movementX, movementY }) {
         let getContainerStyle = window.getComputedStyle(container);
@@ -3350,12 +3370,12 @@ width="16"><span></span></bar_t><span>  </span>
         
 
         if (window.addEventListener) {              
-          resizer.addEventListener("mousedown",  function(e) { e.preventDefault(); window.draggable.enabled = true;  });
-          resizer.addEventListener("touchstart", function(e) { e.preventDefault(); window.draggable.enabled = true;  });
+          resizer.addEventListener("mousedown",  function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
+          resizer.addEventListener("touchstart", function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
           window.addEventListener("mousemove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
           window.addEventListener("touchmove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
-          window.addEventListener("mouseup",     function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); });
-          window.addEventListener("touchend",    function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); });
+          window.addEventListener("mouseup",     function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); $('section[data-ui-type="editor"] size_r').hide(); });
+          window.addEventListener("touchend",    function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); $('section[data-ui-type="editor"] size_r').hide(); });
         }
         
         /*

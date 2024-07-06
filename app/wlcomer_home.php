@@ -1791,6 +1791,63 @@ div#clavs br_ta ta_f.active span {
         section[data-ui-type="editor"] size_r i {
     margin-right: 5px;
 }
+
+
+@media screen and (max-width: 600px) {
+
+section[data-ui-type="editor"] iframe#preview-container {
+    position: to;
+    top: 0px !important;
+    height: 50% !important;
+}
+
+editor-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+section[data-ui-type="editor"] div#editor-container {
+    top: unset;
+    right: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+}
+
+}
+
+id_mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    align-items: center;
+    z-index: 33333;
+}
+ 
+id_mask spanf {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
+id_mask svg#logo_edi {
+    width:50px;
+    height:50px;
+    border-radius: 350px !important;
+    border: 2px solid;
+    padding: 4px;
+    margin: auto;
+}
+
+id_mask span {
+    text-align: center;
+}
+
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

@@ -78,6 +78,7 @@ ob_start();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
     <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
 
@@ -87,6 +88,9 @@ ob_start();
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+    <!--  -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js" as="script">
+    <!--  -->
     <link rel="preload" as="font"
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
         type="font/woff2">
@@ -101,6 +105,7 @@ ob_start();
     <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
 
+    <script async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
     </script>
     <?php
@@ -1785,69 +1790,85 @@ div#clavs br_ta ta_f.active span {
         section[data-ui-type="editor"] iframe#preview-container {
             border-top-right-radius: 0px;
             border-bottom-right-radius: 0px;
-            transition:  none !important;
+            transition: none !important;
         }
 
         section[data-ui-type="editor"] size_r i {
-    margin-right: 5px;
-}
+            margin-right: 5px;
+        }
 
 
-@media screen and (max-width: 600px) {
+        @media screen and (max-width: 600px) {
 
-section[data-ui-type="editor"] iframe#preview-container {
-    position: to;
-    top: 0px !important;
-    height: 50% !important;
-}
+            section[data-ui-type="editor"] iframe#preview-container {
+                position: to;
+                top: 0px !important;
+                height: 50% !important;
+            }
 
-editor-wrapper {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
-}
+            editor-wrapper {
+                display: flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+            }
 
-section[data-ui-type="editor"] div#editor-container {
-    top: unset;
-    right: 0px !important;
-    left: 0px !important;
-    width: 100% !important;
-}
+            section[data-ui-type="editor"] div#editor-container {
+                top: unset;
+                right: 0px !important;
+                left: 0px !important;
+                width: 100% !important;
+            }
 
-}
+        }
 
-id_mask {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: white;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: nowrap;
-    align-items: center;
-    z-index: 33333;
-}
+        id_mask {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            flex-wrap: nowrap;
+            align-items: center;
+            z-index: 33333;
+        }
+
+        id_mask spanf {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+        }
+
+        id_mask img#logo_edi {
+            width: 50px;
+            height: 50px;
+            border-radius: 350px !important;
+            border: 2px solid;
+            padding: 4px;
+            margin: auto;
+        }
+
+        id_mask span {
+            text-align: center;
+        }
+
+        editor-wrapper a {
+            background: #333;
+            color: white !important;
+            padding: 10px !important;
+            line-height: normal;
+            margin-top: 30px !important;
+            display: block;
+            outline: none ;
+            border-radius: 6px;
+        }
  
-id_mask spanf {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: column;
+        editor-wrapper * {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+    enable-background: new 0 0 512 512;
 }
-
-id_mask svg#logo_edi {
-    width:50px;
-    height:50px;
-    border-radius: 350px !important;
-    border: 2px solid;
-    padding: 4px;
-    margin: auto;
-}
-
-id_mask span {
-    text-align: center;
-}
-
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

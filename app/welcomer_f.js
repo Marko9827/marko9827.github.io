@@ -102,8 +102,7 @@ const welcomer = {
 
     function convertPxToPercentage(pxValue, parentValue) {
       return (pxValue / parentValue) * 100;
-  }
-
+    }
 
     $("editor-wrapper").addClass("active_f");
 
@@ -117,8 +116,6 @@ const welcomer = {
       }px !important;`
     );
 
-    
-
     $('section[data-ui-type="editor"] div#resizer-container').attr(
       "style",
       `left: ${left_f}px !important;`
@@ -127,7 +124,13 @@ const welcomer = {
       "active"
     );
     $("size_r").show();
-    $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
+    $("size_r").html(
+      `<i class="bi bi-rulers"></i> ${$(
+        'section[data-ui-type="editor"] iframe#preview-container'
+      ).width()}px x ${$(
+        'section[data-ui-type="editor"] iframe#preview-container'
+      ).height()}px`
+    );
     welcomer.editor.edtr.layout();
   },
   lang: function () {
@@ -1532,6 +1535,9 @@ width="16"><span></span></bar_t><span>  </span>
     const myParam = urlParams.get("p");
     return window.location.origin + "/?p=" + myParam;
   },
+  api: {
+    
+  },
   isMobile: function () {
     var isMobile = false;
 
@@ -2490,9 +2496,36 @@ width="16"><span></span></bar_t><span>  </span>
     }
   },
   editor: {
-    editor_fail_message: function(aet){
-      var id_mask = document.createElement("id_mask");
-      id_mask.innerHTML = `<spanf><svg id="logo_edi" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s" repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)" transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s" repeatCount="indefinite"></animateTransform></rect></svg> <br><span>Editor is not supported for<br>mobile Browsers!</span></spanf>`;
+    editor_fail_message: function (aet) {
+      console.clear();
+      var id_mask = document.createElement("id_mask"),
+      spanf = document.createElement("spanf"),
+      br = document.createElement("br"),
+      img = document.createElement("img"),
+      span = document.createElement("span"),
+      baer_ = document.createElement("a");
+      img.src = "/?svc=logo_plain"; 
+      img.id= "logo_edi";
+      img.loading = "lazy";
+      baer_.innerHTML = '<i class="bi bi-house"></i> Go home page';
+      spanf.appendChild(img);
+      spanf.appendChild(br);
+      span.innerHTML = `Editor is not supported for<br>mobile Browsers!<br>`;
+      span.appendChild(baer_);
+      spanf.appendChild(span);
+
+      baer_.href = "/";
+      baer_.setAttribute("target","_top");
+      baer_.setAttribute("data-title","Go home page");
+
+      id_mask.appendChild(spanf);
+      
+      $(" div#clavs span").html("Marko Nikolić > Editor");
+      $(".btns_r_editor_right i").hide();
+      $("div#clavs i.close_btnf").attr("onclick","window.location.href = '/';"); 
+
+      // $("btns_r").hide();
+      // id_mask.innerHTML = `<spanf>  <img src="/?svc=logo_plain" id="logo_edi"> <br><span>Editor is not supported for<br>mobile Browsers!<br><baer_><i class="bi bi-house"></i> Go home page</baer_></span></spanf>`; 
       $(aet).append(id_mask);
     },
     close: function () {
@@ -2781,9 +2814,13 @@ width="16"><span></span></bar_t><span>  </span>
     },
     start: function () {
       this.call_nav();
+      if(welcomer.isMobile()){
+        $("editor-wrapper").html("");
+        welcomer.editor.editor_fail_message('editor-wrapper'); 
+      } else {
       this.callEditor();
       this.webDb.start();
-
+      }
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
     },
@@ -3076,6 +3113,11 @@ width="16"><span></span></bar_t><span>  </span>
           template: "",
         }
       ) {
+        if(welcomer.isMobile()){
+          $("editor-wrapper").html("");
+          welcomer.editor.editor_fail_message('editor-wrapper');
+ 
+        } else{
         let editor_f;
         const editor_container = document.createElement("div");
         const shadowRoot = editor_container.attachShadow({ mode: "open" }),
@@ -3127,8 +3169,7 @@ width="16"><span></span></bar_t><span>  </span>
             editor.getModel().undo();
           });
           welcomer.editor.edtr = editor;
-          document
-            .querySelector(
+          document.querySelector(
               'section[data-ui-type="editor"] div#editor-container'
             )
             .addEventListener("resize", function () {
@@ -3216,6 +3257,7 @@ width="16"><span></span></bar_t><span>  </span>
         });
         where.append(editor_container);
         t.callback(editor);
+        }
       },
     },
     makeResizableDiv: function (div) {
@@ -3321,6 +3363,8 @@ width="16"><span></span></bar_t><span>  </span>
       rrsz: false,
     },
     callEditor: function (id = 0) {
+
+      
       const data_ui_type = document.querySelector(
           'section[data-ui-type="editor"] editor-wrapper'
         ),
@@ -3345,21 +3389,20 @@ width="16"><span></span></bar_t><span>  </span>
       iframe.id = "preview-container";
       resizer.id = "resizer-container";
       iframe.sandbox = "allow-same-origin allow-scripts";
-      size_r.setAttribute("style","display: none;");
+      size_r.setAttribute("style", "display: none;");
       resizer.appendChild(div_resizer);
       data_ui_type.appendChild(editor_container);
       data_ui_type.appendChild(resizer);
       data_ui_type.appendChild(size_r);
       data_ui_type.appendChild(iframe);
 
-      
-
-      window.onresize = function(){
-         var aerf = $("editor-wrapper").width() - $('section[data-ui-type="editor"] iframe#preview-container').width();
-        welcomer.trcp(parseInt(aer));
+      window.onresize = function () {
+        var aerf =
+          $("editor-wrapper").width() -
+          $('section[data-ui-type="editor"] iframe#preview-container').width();
+        welcomer.trcp(parseInt(aerf));
+      };
        
-      }
-
       const container = resizer;
       function onMouseDrag({ movementX, movementY }) {
         let getContainerStyle = window.getComputedStyle(container);
@@ -3371,27 +3414,58 @@ width="16"><span></span></bar_t><span>  </span>
 
       var resizers = document.querySelector("div#resizer-container"),
         pointerArea = document.querySelector("div#resizer-container");
-  
-  
-        window.resize_is_active_timeout = null;
-        window.resize_is_active = false;
-        if (window.addEventListener) {   
-          
-          window.addEventListener('resize', function(event){
-            $("size_r").show();
-            $("size_r").html(`<i class="bi bi-rulers"></i> ${$('section[data-ui-type="editor"] iframe#preview-container').width()}px x ${$('section[data-ui-type="editor"] iframe#preview-container').height()}px`);
-          
-          });
 
-          resizer.addEventListener("mousedown",  function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
-          resizer.addEventListener("touchstart", function(e) { e.preventDefault(); window.draggable.enabled = true; $('section[data-ui-type="editor"] size_r').show(); });
-          window.addEventListener("mousemove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
-          window.addEventListener("touchmove",   function(e) { e.preventDefault(); if(window.draggable.enabled){ welcomer.trcp(parseInt(window.draggable.style_left)); } });
-          window.addEventListener("mouseup",     function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); $('section[data-ui-type="editor"] size_r').hide(); });
-          window.addEventListener("touchend",    function(e) { e.preventDefault(); window.draggable.enabled = false; $('editor-wrapper').removeClass("active_f"); $('section[data-ui-type="editor"] size_r').hide(); });
-        }
-        
-        /*
+      window.resize_is_active_timeout = null;
+      window.resize_is_active = false;
+      if (window.addEventListener) {
+        window.addEventListener("resize", function (event) {
+          $("size_r").show();
+          $("size_r").html(
+            `<i class="bi bi-rulers"></i> ${$(
+              'section[data-ui-type="editor"] iframe#preview-container'
+            ).width()}px x ${$(
+              'section[data-ui-type="editor"] iframe#preview-container'
+            ).height()}px`
+          );
+        });
+
+        resizer.addEventListener("mousedown", function (e) {
+          e.preventDefault();
+          window.draggable.enabled = true;
+          $('section[data-ui-type="editor"] size_r').show();
+        });
+        resizer.addEventListener("touchstart", function (e) {
+          e.preventDefault();
+          window.draggable.enabled = true;
+          $('section[data-ui-type="editor"] size_r').show();
+        });
+        window.addEventListener("mousemove", function (e) {
+          e.preventDefault();
+          if (window.draggable.enabled) {
+            welcomer.trcp(parseInt(window.draggable.style_left));
+          }
+        });
+        window.addEventListener("touchmove", function (e) {
+          e.preventDefault();
+          if (window.draggable.enabled) {
+            welcomer.trcp(parseInt(window.draggable.style_left));
+          }
+        });
+        window.addEventListener("mouseup", function (e) {
+          e.preventDefault();
+          window.draggable.enabled = false;
+          $("editor-wrapper").removeClass("active_f");
+          $('section[data-ui-type="editor"] size_r').hide();
+        });
+        window.addEventListener("touchend", function (e) {
+          e.preventDefault();
+          window.draggable.enabled = false;
+          $("editor-wrapper").removeClass("active_f");
+          $('section[data-ui-type="editor"] size_r').hide();
+        });
+      }
+
+      /*
       resizer.addEventListener("mousedown", function (e) {
         e.preventDefault();
         welcomer.trcp(parseInt(window.draggable.style_left));
@@ -3416,7 +3490,6 @@ width="16"><span></span></bar_t><span>  </span>
         window.addEventListener("mouseup", dragend);
         window.addEventListener("touchend", dragend);
       }*/
- 
 
       var dragging_ = { enabled: false, left: 0 };
 
@@ -3984,24 +4057,24 @@ width="16"><span></span></bar_t><span>  </span>
   },
   Img_cursor: function () {
     this.cursor.css({
-      "transform": "scale(2)",
+      transform: "scale(2)",
       "text-align": "center",
       "font-size": "10px",
-      "padding": "uset",
+      padding: "uset",
       "padding-top": "4px",
-      "cursor": "none",
+      cursor: "none",
       "mix-blend-mode": "unset",
     });
   },
   Img_no_cursor: function () {
     this.cursor.css({
-      "transform": "scale(1)",
+      transform: "scale(1)",
       "font-size": "unset",
-      "padding": "unset",
+      padding: "unset",
       "padding-top": "unset",
       "border-radius": "50%",
       "mix-blend-mode": "difference",
-      "display": "unset",
+      display: "unset",
     });
   },
   cr: function (v) {
@@ -5009,6 +5082,6 @@ document.addEventListener("mousemove", function (event) {
   const newY = event.clientY;
 
   window.draggable.style_left = newX;
-  window.draggable.style_top =  newY;
+  window.draggable.style_top = newY;
   // console.log(window.draggable);
 });

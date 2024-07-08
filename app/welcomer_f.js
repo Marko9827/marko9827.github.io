@@ -97,6 +97,7 @@ const welcomer = {
     }
   },
   trcp: function (left_fH = 0) {
+    if(left_fH < $("editor-wrapper").width() - 50 || $("div#editor-container").width() < 100)  {
     var left_f = left_fH - 4;
     var full_size = $('section[data-ui-type="editor"]').width();
 
@@ -131,6 +132,7 @@ const welcomer = {
         'section[data-ui-type="editor"] iframe#preview-container'
       ).height()}px`
     );
+  }
     welcomer.editor.edtr.layout();
   },
   lang: function () {
@@ -2828,7 +2830,9 @@ width="16"><span></span></bar_t><span>  </span>
       this.call_nav();
       this.callEditor();
       this.webDb.start();
-
+      welcomer.blg_history_replace(
+        `/?p=editor`
+      );
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
     },

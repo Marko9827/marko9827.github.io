@@ -1890,7 +1890,9 @@ div#clavs br_ta ta_f.active span {
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
             enable-background: new 0 0 512 512;
         }
-
+        div#logContainer.active {
+      height: 60%;
+}
 
         div#logContainer {
             position: absolute;
@@ -1898,7 +1900,7 @@ div#clavs br_ta ta_f.active span {
             background: #333;
             z-index: 33333;
             width: 50%;
-            height: 150px;
+            height: 60%;
             bottom: 0px;
             width: calc(60% - 8px);
             border-top: 2px solid black;
@@ -1906,6 +1908,8 @@ div#clavs br_ta ta_f.active span {
             border-left: 0px solid;
             border-bottom-left-radius: 5px;
             font-size: 12px;
+            height: 32px;  
+            transition: height .3s !important;
         }
 
         div#logContainer .log {
@@ -1925,8 +1929,7 @@ div#clavs br_ta ta_f.active span {
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
             enable-background: new 0 0 512 512;
             border: 0px;
-            transition: .3s;
-            transform: translateY(118px);
+         
         }
 
         div#logContainer log_msg {
@@ -1960,8 +1963,11 @@ div#clavs br_ta ta_f.active span {
             align-items: flex-start;
             font-family: revert-layer;
             margin: 5px;
-            height: 150px !important;
-            border-radius: 6px;
+
+            height: -webkit-fit-content;         
+               height: -moz-fit-content;         
+                  height: fit-content;       
+                       border-radius: 6px;
             filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
             enable-background: new 0 0 512 512;
@@ -2058,8 +2064,20 @@ div#clavs br_ta ta_f.active span {
             border-bottom-color: #179fff !important;
         }
 
-        div#logContainer span.error:hover i,
-        div#logContainer span.error:hover {
+        
+        div#logContainer span.info.active,
+        div#logContainer span.info.active i,
+        div#logContainer span.info:hover i,
+        div#logContainer span.info:hover {
+            color: #179fff !important;
+            border-bottom-color: #179fff !important;
+        }
+
+
+        div#logContainer span.errors.active i,
+        div#logContainer span.errors.active,
+        div#logContainer span.errors:hover i,
+        div#logContainer span.errors:hover {
             color: var(--red) !important;
             border-bottom-color: var(--red) !important;
         }
@@ -2070,6 +2088,8 @@ div#clavs br_ta ta_f.active span {
             color: var(--red);
         }
 
+        div#logContainer divf_ span.warnings.active,
+        div#logContainer divf_ span.warnings.active *,
         div#logContainer divf_ span.warnings:hover,
         div#logContainer divf_ span.warnings:hover * {
             border-color: orange;

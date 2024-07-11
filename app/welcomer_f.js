@@ -97,45 +97,51 @@ const welcomer = {
     }
   },
   trcp: function (left_fH = 0) {
-    if(left_fH < $("editor-wrapper").width() - 50 || $("div#editor-container").width() < 100)  {
-    var left_f = left_fH - 4;
-    var full_size = $('section[data-ui-type="editor"]').width();
+    if (
+      left_fH < $("editor-wrapper").width() - 50 ||
+      $("div#editor-container").width() < 100
+    ) {
+      var left_f = left_fH - 4;
+      var full_size = $('section[data-ui-type="editor"]').width();
 
-    function convertPxToPercentage(pxValue, parentValue) {
-      return (pxValue / parentValue) * 100;
+      function convertPxToPercentage(pxValue, parentValue) {
+        return (pxValue / parentValue) * 100;
+      }
+
+      $("editor-wrapper").addClass("active_f");
+
+      $('section[data-ui-type="editor"]')
+        .find("#editor-container")
+        .attr("style", `width: ${left_f}px !important;`);
+      $('section[data-ui-type="editor"] iframe#preview-container').attr(
+        "style",
+        `width: ${
+          $('section[data-ui-type="editor"]').width() - left_f - 10
+        }px !important;`
+      );
+
+      $('section[data-ui-type="editor"] div#resizer-container').attr(
+        "style",
+        `left: ${left_f}px !important;`
+      );
+      $('section[data-ui-type="editor"] div#resizer-container').addClass(
+        "active"
+      );
+      $("size_r").show();
+      $("size_r").html(
+        `<i class="bi bi-rulers"></i> ${$(
+          'section[data-ui-type="editor"] iframe#preview-container'
+        ).width()}px x ${$(
+          'section[data-ui-type="editor"] iframe#preview-container'
+        ).height()}px`
+      );
+      $("div#logContainer").attr(
+        "style",
+        `width: ${$(
+          'section[data-ui-type="editor"] iframe#preview-container'
+        ).width()}px;`
+      );
     }
-
-    $("editor-wrapper").addClass("active_f");
-
-    $('section[data-ui-type="editor"]')
-      .find("#editor-container")
-      .attr("style", `width: ${left_f}px !important;`);
-    $('section[data-ui-type="editor"] iframe#preview-container').attr(
-      "style",
-      `width: ${
-        $('section[data-ui-type="editor"]').width() - left_f - 10
-      }px !important;`
-    );
-
-    $('section[data-ui-type="editor"] div#resizer-container').attr(
-      "style",
-      `left: ${left_f}px !important;`
-    );
-    $('section[data-ui-type="editor"] div#resizer-container').addClass(
-      "active"
-    );
-    $("size_r").show();
-    $("size_r").html(
-      `<i class="bi bi-rulers"></i> ${$(
-        'section[data-ui-type="editor"] iframe#preview-container'
-      ).width()}px x ${$(
-        'section[data-ui-type="editor"] iframe#preview-container'
-      ).height()}px`
-    );
-    $("div#logContainer").attr("style",`width: ${$(
-      'section[data-ui-type="editor"] iframe#preview-container'
-    ).width()}px;`);
-  }
     welcomer.editor.edtr.layout();
   },
   lang: function () {
@@ -1540,9 +1546,7 @@ width="16"><span></span></bar_t><span>  </span>
     const myParam = urlParams.get("p");
     return window.location.origin + "/?p=" + myParam;
   },
-  api: {
-    
-  },
+  api: {},
   isMobile: function () {
     var isMobile = false;
 
@@ -2504,13 +2508,13 @@ width="16"><span></span></bar_t><span>  </span>
     editor_fail_message: function (aet) {
       console.clear();
       var id_mask = document.createElement("id_mask"),
-      spanf = document.createElement("spanf"),
-      br = document.createElement("br"),
-      img = document.createElement("img"),
-      span = document.createElement("span"),
-      baer_ = document.createElement("a");
-      img.src = "/?svc=logo_plain"; 
-      img.id= "logo_edi";
+        spanf = document.createElement("spanf"),
+        br = document.createElement("br"),
+        img = document.createElement("img"),
+        span = document.createElement("span"),
+        baer_ = document.createElement("a");
+      img.src = "/?svc=logo_plain";
+      img.id = "logo_edi";
       img.loading = "lazy";
       baer_.innerHTML = '<i class="bi bi-house"></i> Go home page';
       spanf.appendChild(img);
@@ -2520,17 +2524,20 @@ width="16"><span></span></bar_t><span>  </span>
       spanf.appendChild(span);
 
       baer_.href = "/";
-      baer_.setAttribute("target","_top");
-      baer_.setAttribute("data-title","Go home page");
+      baer_.setAttribute("target", "_top");
+      baer_.setAttribute("data-title", "Go home page");
 
       id_mask.appendChild(spanf);
-      
+
       $(" div#clavs span").html("Marko Nikolić > Editor");
       $(".btns_r_editor_right i").hide();
-      $("div#clavs i.close_btnf").attr("onclick","window.location.href = '/';"); 
+      $("div#clavs i.close_btnf").attr(
+        "onclick",
+        "window.location.href = '/';"
+      );
 
       // $("btns_r").hide();
-      // id_mask.innerHTML = `<spanf>  <img src="/?svc=logo_plain" id="logo_edi"> <br><span>Editor is not supported for<br>mobile Browsers!<br><baer_><i class="bi bi-house"></i> Go home page</baer_></span></spanf>`; 
+      // id_mask.innerHTML = `<spanf>  <img src="/?svc=logo_plain" id="logo_edi"> <br><span>Editor is not supported for<br>mobile Browsers!<br><baer_><i class="bi bi-house"></i> Go home page</baer_></span></spanf>`;
       $(aet).append(id_mask);
     },
     close: function () {
@@ -2819,12 +2826,12 @@ width="16"><span></span></bar_t><span>  </span>
     },
     start: function () {
       this.call_nav();
-      if(welcomer.isMobile()){
+      if (welcomer.isMobile()) {
         $("editor-wrapper").html("");
-        welcomer.editor.editor_fail_message('editor-wrapper'); 
+        welcomer.editor.editor_fail_message("editor-wrapper");
       } else {
-      this.callEditor();
-      this.webDb.start();
+        this.callEditor();
+        this.webDb.start();
       }
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
@@ -2833,9 +2840,7 @@ width="16"><span></span></bar_t><span>  </span>
       this.call_nav();
       this.callEditor();
       this.webDb.start();
-      welcomer.blg_history_replace(
-        `/?p=editor`
-      );
+      welcomer.blg_history_replace(`/?p=editor`);
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
     },
@@ -3120,29 +3125,28 @@ width="16"><span></span></bar_t><span>  </span>
           template: "",
         }
       ) {
-        if(welcomer.isMobile()){
+        if (welcomer.isMobile()) {
           $("editor-wrapper").html("");
-          welcomer.editor.editor_fail_message('editor-wrapper');
- 
-        } else{
-        let editor_f;
-        const editor_container = document.createElement("div");
-        const shadowRoot = editor_container.attachShadow({ mode: "open" }),
-          editor_container_2 = document.createElement("div");
-        editor_container_2.style.width = "100%";
-        editor_container_2.style.height = "100%";
-        shadowRoot.appendChild(editor_container_2);
-        const styleLink = document.createElement("link");
-        styleLink.rel = "stylesheet";
-        styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
-        shadowRoot.appendChild(styleLink);
-        require.config({
-          paths: {
-            vs: "https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs",
-          },
-        });
-        if (id < 1) {
-          welcomer.editor.editor.tems[t.wht] = `<!DOCTYPE html>
+          welcomer.editor.editor_fail_message("editor-wrapper");
+        } else {
+          let editor_f;
+          const editor_container = document.createElement("div");
+          const shadowRoot = editor_container.attachShadow({ mode: "open" }),
+            editor_container_2 = document.createElement("div");
+          editor_container_2.style.width = "100%";
+          editor_container_2.style.height = "100%";
+          shadowRoot.appendChild(editor_container_2);
+          const styleLink = document.createElement("link");
+          styleLink.rel = "stylesheet";
+          styleLink.href = `${welcomer.editor.cdn}vs/editor/editor.main.css`;
+          shadowRoot.appendChild(styleLink);
+          require.config({
+            paths: {
+              vs: "https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs",
+            },
+          });
+          if (id < 1) {
+            welcomer.editor.editor.tems[t.wht] = `<!DOCTYPE html>
                 <html>
 
                 <head>
@@ -3157,37 +3161,38 @@ width="16"><span></span></bar_t><span>  </span>
                 </body>
 
                 </html>`;
-        }
-        let typingTimer;
-        const typingTimeout = 1000;
-        require(["vs/editor/editor.main"], function () {
-          var editor = monaco.editor.create(editor_container_2, {
-            value: welcomer.editor.editr_tijemp,
-            language: "html",
-            theme: "vs-dark",
-            automaticLayout: true,
-            cursorStyle: "hidden",
-          });
-          editor_f = editor;
-          buttons.undo.addEventListener("click", function () {
-            editor.getModel().undo();
-          });
-          buttons.redo.addEventListener("click", function () {
-            editor.getModel().undo();
-          });
-          welcomer.editor.edtr = editor;
-          document.querySelector(
-              'section[data-ui-type="editor"] div#editor-container'
-            )
-            .addEventListener("resize", function () {
+          }
+          let typingTimer;
+          const typingTimeout = 1000;
+          require(["vs/editor/editor.main"], function () {
+            var editor = monaco.editor.create(editor_container_2, {
+              value: welcomer.editor.editr_tijemp,
+              language: "html",
+              theme: "vs-dark",
+              automaticLayout: true,
+              cursorStyle: "hidden",
+            });
+            editor_f = editor;
+            buttons.undo.addEventListener("click", function () {
+              editor.getModel().undo();
+            });
+            buttons.redo.addEventListener("click", function () {
+              editor.getModel().undo();
+            });
+            welcomer.editor.edtr = editor;
+            document
+              .querySelector(
+                'section[data-ui-type="editor"] div#editor-container'
+              )
+              .addEventListener("resize", function () {
+                welcomer.editor.edtr.layout();
+              });
+            window.addEventListener("resize", function () {
               welcomer.editor.edtr.layout();
             });
-          window.addEventListener("resize", function () {
-            welcomer.editor.edtr.layout();
-          });
-          function updatePreview() {
-            var previewFrame = iframe;
-            var previewContent = `
+            function updatePreview() {
+              var previewFrame = iframe;
+              var previewContent = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -3201,69 +3206,69 @@ width="16"><span></span></bar_t><span>  </span>
         </html>
         `;
 
-            previewFrame.src =
-              "data:text/html;charset=utf-8," +
-              encodeURIComponent(previewContent);
-
-            try {
-              document.querySelector(
-                `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
-                  "id"
-                )}"]`
-              ).src =
+              previewFrame.src =
                 "data:text/html;charset=utf-8," +
                 encodeURIComponent(previewContent);
-            } catch (a) {}
 
-            welcomer.editor.editr_tijemp = editor.getValue();
-          }
-          if (welcomer.editor.getParams("id") !== null) {
-            welcomer.editor.webDb.getCurrent(
-              parseInt(welcomer.editor.getParams("id"))
-            );
-          }
-          function onTypingStopped() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const myParam = urlParams.get("p");
-            const myParam_id = urlParams.get("id");
-            if (welcomer.editor.webDb.data.length < 1) {
+              try {
+                document.querySelector(
+                  `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
+                    "id"
+                  )}"]`
+                ).src =
+                  "data:text/html;charset=utf-8," +
+                  encodeURIComponent(previewContent);
+              } catch (a) {}
+
+              welcomer.editor.editr_tijemp = editor.getValue();
             }
+            if (welcomer.editor.getParams("id") !== null) {
+              welcomer.editor.webDb.getCurrent(
+                parseInt(welcomer.editor.getParams("id"))
+              );
+            }
+            function onTypingStopped() {
+              const urlParams = new URLSearchParams(window.location.search);
+              const myParam = urlParams.get("p");
+              const myParam_id = urlParams.get("id");
+              if (welcomer.editor.webDb.data.length < 1) {
+              }
 
-            if (myParam !== null) {
-              if (myParam == "editor") {
-                if (myParam_id == null) {
-                  welcomer.editor.edtr_id = 0;
-                  welcomer.blg_history_replace(
-                    `/?p=editor&id=${welcomer.editor.edtr_id}`
-                  );
-                  welcomer.editor.webDb.add({
-                    id: welcomer.editor.edtr_id,
-                    name: "Hello World!!!",
-                    time: welcomer.editor.time(),
-                    code: welcomer.editor.editr_tijemp,
-                  });
-                } else {
-                  welcomer.editor.webDb.edit({
-                    id: myParam_id,
-                    name: "Hello World!!!",
-                    time: welcomer.editor.time(),
-                    code: welcomer.editor.editr_tijemp,
-                  });
+              if (myParam !== null) {
+                if (myParam == "editor") {
+                  if (myParam_id == null) {
+                    welcomer.editor.edtr_id = 0;
+                    welcomer.blg_history_replace(
+                      `/?p=editor&id=${welcomer.editor.edtr_id}`
+                    );
+                    welcomer.editor.webDb.add({
+                      id: welcomer.editor.edtr_id,
+                      name: "Hello World!!!",
+                      time: welcomer.editor.time(),
+                      code: welcomer.editor.editr_tijemp,
+                    });
+                  } else {
+                    welcomer.editor.webDb.edit({
+                      id: myParam_id,
+                      name: "Hello World!!!",
+                      time: welcomer.editor.time(),
+                      code: welcomer.editor.editr_tijemp,
+                    });
+                  }
                 }
               }
             }
-          }
-          editor.onDidChangeModelContent(function () {
-            clearTimeout(typingTimer);
+            editor.onDidChangeModelContent(function () {
+              clearTimeout(typingTimer);
 
-            typingTimer = setTimeout(onTypingStopped, typingTimeout);
+              typingTimer = setTimeout(onTypingStopped, typingTimeout);
+              updatePreview();
+            });
+
             updatePreview();
           });
-
-          updatePreview();
-        });
-        where.append(editor_container);
-        t.callback(editor);
+          where.append(editor_container);
+          t.callback(editor);
         }
       },
     },
@@ -3369,9 +3374,8 @@ width="16"><span></span></bar_t><span>  </span>
       },
       rrsz: false,
     },
-    puthtml: function(ifrm, data = ""){
-       
-      ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`;//.appendChild(scriptTag);
+    puthtml: function (ifrm, data = "") {
+      ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`; //.appendChild(scriptTag);
       const script = `
       (function() {
           const originalLog = console.log;
@@ -3388,20 +3392,17 @@ width="16"><span></span></bar_t><span>  </span>
           };
       })();
   `;
-  const scriptTag = document.createElement('script');
-  scriptTag.textContent = script;
-  ifrm.contentWindow.document.body.appendChild(scriptTag);
-
+      const scriptTag = document.createElement("script");
+      scriptTag.textContent = script;
+      ifrm.contentWindow.document.body.appendChild(scriptTag);
     },
-    appendLog: (message, type = 'log') => {
-      const logElement = document.createElement('div');
+    appendLog: (message, type = "log") => {
+      const logElement = document.createElement("div");
       logElement.className = `log ${type}`;
       logElement.textContent = message;
       logContainer.appendChild(logElement);
     },
     callEditor: function (id = 0) {
-
-      
       const data_ui_type = document.querySelector(
           'section[data-ui-type="editor"] editor-wrapper'
         ),
@@ -3421,7 +3422,7 @@ width="16"><span></span></bar_t><span>  </span>
             "section[data-ui-type='editor'] i.editor_btns.redo"
           ),
         };
-        logContainer.id = "logContainer";
+      logContainer.id = "logContainer";
 
       $(data_ui_type).find("#editor-container").remove();
       $(data_ui_type).find("iframe").remove();
@@ -3435,56 +3436,87 @@ width="16"><span></span></bar_t><span>  </span>
       data_ui_type.appendChild(resizer);
       data_ui_type.appendChild(size_r);
 
-      var jsonfs31 = [ 
+      var jsonfs31 = [
+        {
+          icon: "bi bi-grid-3x2-gap",
+          name: "All",
+          class: "all active",
+          f: function () {},
+        },
         {
           icon: "bi bi-info-circle-fill",
           name: "Messages",
-          class: "info messages active",
-          f: function(){
-            
-          }
+          class: "info messages",
+          f: function () {},
         },
         {
           icon: "bi bi-exclamation-triangle-fill",
           name: "Errors",
           class: "errors",
-          f: function(){
-
-          }
+          f: function () {},
         },
         {
           icon: "bi bi-exclamation-triangle",
           name: "Warnings",
           class: "warnings",
-          f: function(){
-
-          }
+          f: function () {},
         },
         {
           icon: "bi bi-caret-up-fill",
-          name: "Expand",
+          name: "Open",
           class: "expand",
-          f: function(){
-
-          }
-        }
+          f: function (t) {},
+        },
       ];
 
-      if(document.querySelectorAll("div#logContainer").length < 1){
-      data_ui_type.appendChild(logContainer);
-      jsonfs31.forEach(function(f){
-        var span = document.createElement("span");
-        span.setAttribute("class",`${f.class}`);
-        span.innerHTML = ` <i class="${f.icon}"></i> ${f.name}`;
-        span.onclick = f?.f;
-        divf_.appendChild(span);
-      });
-      logContainer.appendChild(divf_);
+      if (document.querySelectorAll("div#logContainer").length < 1) {
+      //  data_ui_type.appendChild(logContainer);
+        jsonfs31.forEach(function (f) {
+          var span = document.createElement("span");
+          span.setAttribute("class", `${f.class}`);
+          span.innerHTML = ` <i class="${f.icon}"></i> ${f.name}`;
+          span.addEventListener("click", function () {
+            if (f.class == "expand") {
+            } else {
+              document
+                .querySelectorAll("div#logContainer divf_ span")
+                .forEach(function (f) {
+                  try {
+                    if (f.classList.contains("active")) {
+                      f.classList.remove("active");
+                    }
+                  } catch (aer) {}
+                });
+            }
+            if (f.class == "errors") {
+              if (span.classList.contains("active")) {
+                span.classList.remove("active");
+              } else {
+                span.classList.add("active");
+              }
+            }
+            if (f.class.includes("info") || f.class.includes("warnings") || f.class.includes("all")) {
+              if (span.classList.contains("active")) {
+                span.classList.remove("active");
+              } else {
+                span.classList.add("active");
+              }
+            }
+            if (f.class == "expand") {
+              if (logContainer.classList.contains("active")) {
+                logContainer.classList.remove("active");
+                span.innerHTML = ` <i class="bi bi-caret-up-fill"></i> Open`;
+              } else {
+                logContainer.classList.add("active");
+                span.innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
+              }
+            }
+          });
+          divf_.appendChild(span);
+        });
+        logContainer.appendChild(divf_);
       }
 
-     
-      
-     
       /*
       logContainer.innerHTML = `<divf_>
       <span class="info active">
@@ -3492,8 +3524,6 @@ width="16"><span></span></bar_t><span>  </span>
 </span>
 <span class="error"><i class="bi bi-exclamation-triangle-fill"></i> Error
 </span></divf_>`;*/
-
-
 
       /*
       <divf_><span class="info active"><i class="bi bi-info-circle-fill"></i> Message
@@ -3503,11 +3533,11 @@ width="16"><span></span></bar_t><span>  </span>
 */
 
       data_ui_type.appendChild(iframe);
-       
-    window.addEventListener('message', (event) => {
+
+      window.addEventListener("message", (event) => {
         const { type, message } = event.data;
         welcomer.editor.appendLog(message, type);
-    });
+      });
 
       window.onresize = function () {
         var aerf =
@@ -3515,7 +3545,7 @@ width="16"><span></span></bar_t><span>  </span>
           $('section[data-ui-type="editor"] iframe#preview-container').width();
         welcomer.trcp(parseInt(aerf));
       };
-       
+
       const container = resizer;
       function onMouseDrag({ movementX, movementY }) {
         let getContainerStyle = window.getComputedStyle(container);
@@ -3540,9 +3570,12 @@ width="16"><span></span></bar_t><span>  </span>
               'section[data-ui-type="editor"] iframe#preview-container'
             ).height()}px`
           );
-          $("div#logContainer").attr("style",`width: ${$(
-            'section[data-ui-type="editor"] iframe#preview-container'
-          ).width()}px;`);
+          $("div#logContainer").attr(
+            "style",
+            `width: ${$(
+              'section[data-ui-type="editor"] iframe#preview-container'
+            ).width()}px;`
+          );
         });
 
         resizer.addEventListener("mousedown", function (e) {
@@ -3664,37 +3697,35 @@ width="16"><span></span></bar_t><span>  </span>
           });
         window.addEventListener("resize", function () {
           welcomer.editor.edtr.layout();
-        });  
-        const appendLog = function(message, type = 'log') {
-          const logElement = document.createElement('div');
-          if(type == "log"){
-            logElement.setAttribute("class","log info");
-          logElement.innerHTML = `<i class="bi bi-x-circle-fill"></i> <log_msg><span>${message}</span><spant> 06:03 07/10/2024</spant></log_msg>`;
+        });
+        const appendLog = function (message, type = "log") {
+          const logElement = document.createElement("div");
+          if (type == "log") {
+            logElement.setAttribute("class", "log info");
+            logElement.innerHTML = `<i class="bi bi-x-circle-fill"></i> <log_msg><span>${message}</span><spant> 06:03 07/10/2024</spant></log_msg>`;
           }
-          if(type == "error"){
-            logElement.setAttribute("class","log error");
+          if (type == "error") {
+            logElement.setAttribute("class", "log error");
             logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i> <log_msg><span>${message}</span><spant> 06:03 07/10/2024</spant></log_msg>`;
           }
-          if (message !== ""){
-          logContainer.appendChild(logElement);
+          if (message !== "") {
+            logContainer.appendChild(logElement);
           }
         };
-      
-  
-      const originalLog = console.log;
-      const originalError = console.error;
-  
-      console.log = function(...args) {
-          originalLog.apply(console, args);
-          appendLog(args.join(' '), 'log');
-      };
-  
-      console.error = function(...args) {
-          originalError.apply(console, args);
-          appendLog(args.join(' '), 'error');
-      };  
 
-        
+        const originalLog = console.log;
+        const originalError = console.error;
+
+        console.log = function (...args) {
+          originalLog.apply(console, args);
+          appendLog(args.join(" "), "log");
+        };
+
+        console.error = function (...args) {
+          originalError.apply(console, args);
+          appendLog(args.join(" "), "error");
+        };
+
         function updatePreview() {
           var previewFrame = iframe;
           var previewContent = `
@@ -3711,8 +3742,7 @@ width="16"><span></span></bar_t><span>  </span>
         </html>
         `;
 
-     
-        /*
+          /*
         <div class="log error"><i class="bi bi-info-circle-fill"></i> <log_msg><span>aefaefeafafaefafefaeeafaef</span><spant>06:03 07/10/2024</spant></log_msg>
 </div>
         previewFrame.src =
@@ -3728,12 +3758,14 @@ width="16"><span></span></bar_t><span>  </span>
             ).src =
               "data:text/html;charset=utf-8," +
               encodeURIComponent(previewContent);*/
-              welcomer.editor.puthtml(document.querySelector(
+            welcomer.editor.puthtml(
+              document.querySelector(
                 `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
                   "id"
                 )}"]`
-              ), previewContent);
-
+              ),
+              previewContent
+            );
           } catch (a) {}
 
           welcomer.editor.editr_tijemp = editor.getValue();
@@ -5243,18 +5275,17 @@ document.addEventListener("mousemove", function (event) {
   // console.log(window.draggable);
 });
 
-
-(function() {
+(function () {
   const originalLog = console.log;
   const originalError = console.error;
 
-  console.log = function(...args) {
-      originalLog.apply(console, args);
-  //    window.parent.postMessage({ type: 'log', message: args.join(' ') }, '*');
+  console.log = function (...args) {
+    originalLog.apply(console, args);
+    //    window.parent.postMessage({ type: 'log', message: args.join(' ') }, '*');
   };
 
-  console.error = function(...args) {
-      originalError.apply(console, args);
+  console.error = function (...args) {
+    originalError.apply(console, args);
     //  window.parent.postMessage({ type: 'error', message: args.join(' ') }, '*');
   };
 })();

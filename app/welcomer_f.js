@@ -132,6 +132,9 @@ const welcomer = {
         'section[data-ui-type="editor"] iframe#preview-container'
       ).height()}px`
     );
+    $("div#logContainer").attr("style",`width: ${$(
+      'section[data-ui-type="editor"] iframe#preview-container'
+    ).width()}px;`);
   }
     welcomer.editor.edtr.layout();
   },
@@ -3366,6 +3369,36 @@ width="16"><span></span></bar_t><span>  </span>
       },
       rrsz: false,
     },
+    puthtml: function(ifrm, data = ""){
+       
+      ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`;//.appendChild(scriptTag);
+      const script = `
+      (function() {
+          const originalLog = console.log;
+          const originalError = console.error;
+
+          console.log = function(...args) {
+              originalLog.apply(console, args);
+              window.parent.welcomer.editor.appendLog({ type: 'log', message: args.join(' ') }, '*');
+          };
+
+          console.error = function(...args) {
+              originalError.apply(console, args);
+              window.parent.welcomer.editor.appendLog({ type: 'error', message: args.join(' ') }, '*');
+          };
+      })();
+  `;
+  const scriptTag = document.createElement('script');
+  scriptTag.textContent = script;
+  ifrm.contentWindow.document.body.appendChild(scriptTag);
+
+    },
+    appendLog: (message, type = 'log') => {
+      const logElement = document.createElement('div');
+      logElement.className = `log ${type}`;
+      logElement.textContent = message;
+      logContainer.appendChild(logElement);
+    },
     callEditor: function (id = 0) {
 
       
@@ -3376,6 +3409,8 @@ width="16"><span></span></bar_t><span>  </span>
         resizer = document.createElement("div"),
         size_r = document.createElement("size_r"),
         div_resizer = document.createElement("div-sh"),
+        divf_ = document.createElement("divf_"),
+        logContainer = document.createElement("div"),
         iframe = document.createElement("iframe"),
         buttons = {
           history: "",
@@ -3386,6 +3421,7 @@ width="16"><span></span></bar_t><span>  </span>
             "section[data-ui-type='editor'] i.editor_btns.redo"
           ),
         };
+        logContainer.id = "logContainer";
 
       $(data_ui_type).find("#editor-container").remove();
       $(data_ui_type).find("iframe").remove();
@@ -3398,7 +3434,62 @@ width="16"><span></span></bar_t><span>  </span>
       data_ui_type.appendChild(editor_container);
       data_ui_type.appendChild(resizer);
       data_ui_type.appendChild(size_r);
+
+      var jsonfs31 = [ 
+        {
+          icon: "bi bi-info-circle-fill",
+          name: "Messages",
+          class: "info messages active"
+        },
+        {
+          icon: "bi bi-exclamation-triangle-fill",
+          name: "Errors",
+          class: "errors"
+        },
+        {
+          icon: "bi bi-exclamation-triangle",
+          name: "Warnings",
+          class: "warnings"
+        }
+      ];
+
+      if(document.querySelectorAll("div#logContainer").length < 1){
+      // data_ui_type.appendChild(logContainer);
+      jsonfs31.forEach(function(f){
+        var span = document.createElement("span");
+        span.setAttribute("class",`${f.class}`);
+        span.innerHTML = ` <i class="${f.icon}"></i> ${f.name}`;
+        divf_.appendChild(span);
+      });
+      logContainer.appendChild(divf_);
+      }
+
+     
+      
+     
+      /*
+      logContainer.innerHTML = `<divf_>
+      <span class="info active">
+      <i class="bi bi-info-circle-fill"></i> Message 3
+</span>
+<span class="error"><i class="bi bi-exclamation-triangle-fill"></i> Error
+</span></divf_>`;*/
+
+
+
+      /*
+      <divf_><span class="info active"><i class="bi bi-info-circle-fill"></i> Message
+</span>
+<span class="error"><i class="bi bi-exclamation-triangle-fill"></i> Error
+</span></divf_>
+*/
+
       data_ui_type.appendChild(iframe);
+       
+    window.addEventListener('message', (event) => {
+        const { type, message } = event.data;
+        welcomer.editor.appendLog(message, type);
+    });
 
       window.onresize = function () {
         var aerf =
@@ -3431,6 +3522,9 @@ width="16"><span></span></bar_t><span>  </span>
               'section[data-ui-type="editor"] iframe#preview-container'
             ).height()}px`
           );
+          $("div#logContainer").attr("style",`width: ${$(
+            'section[data-ui-type="editor"] iframe#preview-container'
+          ).width()}px;`);
         });
 
         resizer.addEventListener("mousedown", function (e) {
@@ -3552,7 +3646,37 @@ width="16"><span></span></bar_t><span>  </span>
           });
         window.addEventListener("resize", function () {
           welcomer.editor.edtr.layout();
-        });
+        });  
+        const appendLog = function(message, type = 'log') {
+          const logElement = document.createElement('div');
+          if(type == "log"){
+            logElement.setAttribute("class","log info");
+          logElement.innerHTML = `<i class="bi bi-x-circle-fill"></i> <log_msg><span>${message}</span><spant> 06:03 07/10/2024</spant></log_msg>`;
+          }
+          if(type == "error"){
+            logElement.setAttribute("class","log error");
+            logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i> <log_msg><span>${message}</span><spant> 06:03 07/10/2024</spant></log_msg>`;
+          }
+          if (message !== ""){
+          logContainer.appendChild(logElement);
+          }
+        };
+      
+  
+      const originalLog = console.log;
+      const originalError = console.error;
+  
+      console.log = function(...args) {
+          originalLog.apply(console, args);
+          appendLog(args.join(' '), 'log');
+      };
+  
+      console.error = function(...args) {
+          originalError.apply(console, args);
+          appendLog(args.join(' '), 'error');
+      };  
+
+        
         function updatePreview() {
           var previewFrame = iframe;
           var previewContent = `
@@ -3569,18 +3693,29 @@ width="16"><span></span></bar_t><span>  </span>
         </html>
         `;
 
-          previewFrame.src =
+     
+        /*
+        <div class="log error"><i class="bi bi-info-circle-fill"></i> <log_msg><span>aefaefeafafaefafefaeeafaef</span><spant>06:03 07/10/2024</spant></log_msg>
+</div>
+        previewFrame.src =
             "data:text/html;charset=utf-8," +
-            encodeURIComponent(previewContent);
-
+            encodeURIComponent(previewContent);*/
+          welcomer.editor.puthtml(previewFrame, previewContent);
           try {
+            /*
             document.querySelector(
               `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
                 "id"
               )}"]`
             ).src =
               "data:text/html;charset=utf-8," +
-              encodeURIComponent(previewContent);
+              encodeURIComponent(previewContent);*/
+              welcomer.editor.puthtml(document.querySelector(
+                `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
+                  "id"
+                )}"]`
+              ), previewContent);
+
           } catch (a) {}
 
           welcomer.editor.editr_tijemp = editor.getValue();
@@ -5089,3 +5224,19 @@ document.addEventListener("mousemove", function (event) {
   window.draggable.style_top = newY;
   // console.log(window.draggable);
 });
+
+
+(function() {
+  const originalLog = console.log;
+  const originalError = console.error;
+
+  console.log = function(...args) {
+      originalLog.apply(console, args);
+  //    window.parent.postMessage({ type: 'log', message: args.join(' ') }, '*');
+  };
+
+  console.error = function(...args) {
+      originalError.apply(console, args);
+    //  window.parent.postMessage({ type: 'error', message: args.join(' ') }, '*');
+  };
+})();

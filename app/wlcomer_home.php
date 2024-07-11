@@ -1798,6 +1798,7 @@ div#clavs br_ta ta_f.active span {
         }
 
 
+
         @media screen and (max-width: 600px) {
 
             section[data-ui-type="editor"] iframe#preview-container {
@@ -1807,8 +1808,14 @@ div#clavs br_ta ta_f.active span {
             }
 
             editor-wrapper {
+                display: -webkit-box;
+                display: -ms-flexbox;
                 display: flex;
+                -ms-flex-wrap: nowrap;
                 flex-wrap: nowrap;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
                 flex-direction: column;
             }
 
@@ -1826,17 +1833,31 @@ div#clavs br_ta ta_f.active span {
             width: 100%;
             height: 100%;
             background: white;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -ms-flex-line-pack: center;
             align-content: center;
+            -ms-flex-wrap: nowrap;
             flex-wrap: nowrap;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
             z-index: 33333;
         }
 
         id_mask spanf {
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -ms-flex-wrap: nowrap;
             flex-wrap: nowrap;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
         }
 
@@ -1860,15 +1881,198 @@ div#clavs br_ta ta_f.active span {
             line-height: normal;
             margin-top: 30px !important;
             display: block;
-            outline: none ;
+            outline: none;
             border-radius: 6px;
         }
- 
+
         editor-wrapper * {
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    enable-background: new 0 0 512 512;
-}
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            enable-background: new 0 0 512 512;
+        }
+
+
+        div#logContainer {
+            position: absolute;
+            right: 0px;
+            background: #333;
+            z-index: 33333;
+            width: 50%;
+            height: 150px;
+            bottom: 0px;
+            width: calc(60% - 8px);
+            border-top: 2px solid black;
+            border-radius: 0px;
+            border-left: 0px solid;
+            border-bottom-left-radius: 5px;
+            font-size: 12px;
+        }
+
+        div#logContainer .log {
+            padding: 5px 10px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            font-family: revert-layer !important;
+            margin: 5px;
+            border-radius: 6px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+            enable-background: new 0 0 512 512;
+            border: 0px;
+        }
+
+        div#logContainer log_msg {
+            display: -ms-grid;
+            display: grid;
+        }
+
+        div#logContainer,
+        div#logContainer * {
+            color: white;
+        }
+
+        div#logContainer i {
+            margin-right: 7px;
+        }
+
+        div#logContainer .log.info {
+            background: #179fff4f;
+        }
+
+
+        div#logContainer .log {
+            padding: 5px 10px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+            font-family: revert-layer;
+            margin: 5px;
+            height: 150px !important;
+            border-radius: 6px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+            enable-background: new 0 0 512 512;
+            border: 0px;
+        }
+
+        div#logContainer log_msg {
+            display: -ms-grid;
+            display: grid;
+        }
+
+        div#logContainer,
+        div#logContainer * {
+            color: white;
+        }
+
+        div#logContainer i {
+            margin-right: 7px;
+        }
+
+        div#logContainer .log.info {
+            background: #179fff4f;
+        }
+
+        div#logContainer .log.error {
+            background: var(--red);
+        }
+
+        div#logContainer divf_ {
+            position: sticky;
+            left: 0px;
+            right: 0px;
+            top: 0px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: flex-start;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            margin-left: 0px;
+            margin-right: 0px;
+            background: #333 !important;
+            z-index: 3333;
+        }
+
+
+        div#logContainer divf_ span {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            padding: 5px 10px;
+
+            border-bottom: 2px solid;
+            border-color: transparent;
+        }
+
+        div#logContainer {
+            padding-left: 0px !important;
+        }
+
+        div#logContainer divf_ * {
+            -webkit-filter: none !important;
+            filter: none !important;
+        }
+
+        div#logContainer divf_ span:hover {
+            background: rgb(34 34 34 / 13%);
+            border-bottom-color: rgb(255 255 255 / 13%);
+        }
+
+        div#logContainer span.active {
+            border-bottom: 2px solid;
+            background: #222;
+            -webkit-filter: none !important;
+            filter: none !important;
+        }
+
+        div#logContainer span.info.active,
+        div#logContainer span.info.active i,
+        div#logContainer span.info:hover i,
+        div#logContainer span.info:hover {
+            color: #179fff !important;
+            border-bottom-color: #179fff !important;
+        }
+
+        div#logContainer span.error:hover i,
+        div#logContainer span.error:hover {
+            color: var(--red) !important;
+            border-bottom-color: var(--red) !important;
+        }
+
+        div#logContainer divf_ span.errors:hover,
+        div#logContainer divf_ span.errors:hover * {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        div#logContainer divf_ span.warnings:hover,
+        div#logContainer divf_ span.warnings:hover * {
+            border-color: orange;
+            color: orange;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

@@ -1925,6 +1925,8 @@ div#clavs br_ta ta_f.active span {
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
             enable-background: new 0 0 512 512;
             border: 0px;
+            transition: .3s;
+            transform: translateY(118px);
         }
 
         div#logContainer log_msg {
@@ -2073,6 +2075,13 @@ div#clavs br_ta ta_f.active span {
             border-color: orange;
             color: orange;
         }
+
+        div#logContainer divf_ span.expand {
+    right: 0px;
+    position: absolute;
+}
+
+
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

@@ -3439,26 +3439,44 @@ width="16"><span></span></bar_t><span>  </span>
         {
           icon: "bi bi-info-circle-fill",
           name: "Messages",
-          class: "info messages active"
+          class: "info messages active",
+          f: function(){
+            
+          }
         },
         {
           icon: "bi bi-exclamation-triangle-fill",
           name: "Errors",
-          class: "errors"
+          class: "errors",
+          f: function(){
+
+          }
         },
         {
           icon: "bi bi-exclamation-triangle",
           name: "Warnings",
-          class: "warnings"
+          class: "warnings",
+          f: function(){
+
+          }
+        },
+        {
+          icon: "bi bi-caret-up-fill",
+          name: "Expand",
+          class: "expand",
+          f: function(){
+
+          }
         }
       ];
 
       if(document.querySelectorAll("div#logContainer").length < 1){
-      // data_ui_type.appendChild(logContainer);
+      data_ui_type.appendChild(logContainer);
       jsonfs31.forEach(function(f){
         var span = document.createElement("span");
         span.setAttribute("class",`${f.class}`);
         span.innerHTML = ` <i class="${f.icon}"></i> ${f.name}`;
+        span.onclick = f?.f;
         divf_.appendChild(span);
       });
       logContainer.appendChild(divf_);

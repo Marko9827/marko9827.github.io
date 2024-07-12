@@ -3545,10 +3545,18 @@ width="16"><span></span></bar_t><span>  </span>
               if (span.classList.contains("active")) {
                 span.classList.remove("active");
               } else {
+                document.querySelectorAll("div#logContainer .log").forEach(function(f){
+                  $(f).hide();
+                });
+                document.querySelectorAll("div#logContainer .log.error").forEach(function(f){
+                  $(f).show();
+                });
                 span.classList.add("active");
               }
             }
             if (f.class.includes("info") || f.class.includes("warnings") || f.class.includes("all")) {
+              logContainer.classList.add("active");
+              document.querySelector("div#logContainer divf_ span.expand").innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
               if (span.classList.contains("active")) {
                 span.classList.remove("active");
               } else {
@@ -3563,7 +3571,19 @@ width="16"><span></span></bar_t><span>  </span>
                 logContainer.classList.add("active");
                 span.innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
               }
+            } 
+
+            if (f.class.includes("all")) {
+              
+                 span.classList.add("active");
+                document.querySelectorAll("div#logContainer .log").forEach(function(f){
+                  $(f).show();
+                });
+                
+                
             }
+
+            
           });
           divf_.appendChild(span);
         });

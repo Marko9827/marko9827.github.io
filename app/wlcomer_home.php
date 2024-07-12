@@ -2050,6 +2050,7 @@ div#clavs br_ta ta_f.active span {
             border-bottom-color: rgb(255 255 255 / 13%);
         }
 
+        div#logContainer span:hover,
         div#logContainer span.active {
             border-bottom: 2px solid;
             background: #222;

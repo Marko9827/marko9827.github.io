@@ -175,7 +175,7 @@ media-src 'self';" />
             </style>
         <?php }
     } ?>
-    <style type="text/css">
+    <style type="text/css" >
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
         ?>
@@ -1066,6 +1066,7 @@ media-src 'self';" />
             filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
             enable-background: new 0 0 512 512 !important;
+            transition: .3s !important;
             -webkit-transition: .3s !important;
             border-radius: 10px;
         }
@@ -2089,7 +2090,9 @@ div#clavs br_ta ta_f.active span {
             border-color: var(--red);
             color: var(--red);
         }
-
+        div#logContainer divf_ span.warnings{
+            background: orange;
+        }
         div#logContainer divf_ span.warnings.active,
         div#logContainer divf_ span.warnings.active *,
         div#logContainer divf_ span.warnings:hover,
@@ -2103,7 +2106,27 @@ div#clavs br_ta ta_f.active span {
     position: absolute;
 }
 
+div#logContainer .log.warnings{
+            background: orange;
+        }
 
+div#logContainer .log:not(.error,.warnings) {
+    display: none !important;
+}
+ 
+div#logContainer:hover .log:hover {
+    opacity: 1;
+}
+
+div#logContainer:hover .log {
+    opacity: 0.7;
+-webkit-transition:  .3s;
+-o-transition:  .3s;
+transition:  .3s;
+}
+div#logContainer .log *  {
+    pointer-events: none;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

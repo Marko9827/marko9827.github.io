@@ -3449,7 +3449,7 @@ width="16"><span></span></bar_t><span>  </span>
       logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
-      <spant>${welcomer.editor .clock()}</spant>
+      <spant>${welcomer.editor.clock()}</spant>
     </log_msg>`;
    
       logContainer.appendChild(logElement);

@@ -3561,6 +3561,12 @@ width="16"><span></span></bar_t><span>  </span>
                 span.classList.remove("active");
               } else {
                 span.classList.add("active");
+                document.querySelectorAll("div#logContainer .log").forEach(function(f){
+                  $(f).hide();
+                });
+                document.querySelectorAll(`div#logContainer .log.${f.class}`).forEach(function(f){
+                  $(f).show();
+                });
               }
             }
             if (f.class == "expand") {

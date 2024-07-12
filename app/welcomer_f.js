@@ -3374,33 +3374,86 @@ width="16"><span></span></bar_t><span>  </span>
       },
       rrsz: false,
     },
-    puthtml: function (ifrm, data = "") {
+    puthtml: function (ifrm, data = "", f = true) {
+      if(f){
       ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`; //.appendChild(scriptTag);
-      const script = `
+      }
+      if(f == false){
+      const scriptc = `
       (function() {
           const originalLog = console.log;
           const originalError = console.error;
-
+          const originalError = console.warn;
           console.log = function(...args) {
               originalLog.apply(console, args);
-              window.parent.welcomer.editor.appendLog({ type: 'log', message: args.join(' ') }, '*');
+              window.parent.welcomer.editor.appendLog({ type: 'message', message: args.join(' ') }, '*');
           };
 
           console.error = function(...args) {
               originalError.apply(console, args);
               window.parent.welcomer.editor.appendLog({ type: 'error', message: args.join(' ') }, '*');
           };
+           console.warn = function(...args) {
+              originalError.apply(console, args);
+              window.parent.welcomer.editor.appendLog({ type: 'warning', message: args.join(' ') }, '*');
+          };
       })();
   `;
-      const scriptTag = document.createElement("script");
-      scriptTag.textContent = script;
-      ifrm.contentWindow.document.body.appendChild(scriptTag);
+  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document; 
+  const script = iframeDoc.createElement('script');
+  script.type = 'text/javascript';
+  script.text = scriptc; 
+  iframeDoc.body.appendChild(script);
+      }
     },
-    appendLog: (message, type = "log") => {
+    isLogging: {
+      Typing: false,
+      istimeout: null,
+      istypingComplete: function(){
+        welcomer.editor.isLogging.Typing = true;
+      }
+    }, 
+    appendLog: (c = {message: "", type: "log"}) => {
       const logElement = document.createElement("div");
-      logElement.className = `log ${type}`;
-      logElement.textContent = message;
+       logElement.className = `log ${c.type}`;
+      // logElement.textContent = message;
+      logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
+    <log_msg
+      ><span>${c.message}</span>
+      <spant>06:03 07/10/2024</spant>
+    </log_msg>`;
+   
       logContainer.appendChild(logElement);
+    },
+    clock: function(){
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+
+      hours = hours % 12;
+      hours = hours ? hours : 12; 
+      hours = String(hours).padStart(2, '0');
+
+      const formattedTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+      return formattedTime;
+    },
+    appendLogF: (c = {message: "", type: "log"}) => {
+      if(c.message !== ""){
+      const logElement = document.createElement("div"),
+      d = new Date();
+      
+       logElement.className = `log ${c.type}`;
+      // logElement.textContent = message;
+      logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
+    <log_msg
+      ><span>${c.message}</span>
+      <spant>${welcomer.editor .clock()}</spant>
+    </log_msg>`;
+   
+      logContainer.appendChild(logElement);
+      }
     },
     callEditor: function (id = 0) {
       const data_ui_type = document.querySelector(
@@ -3470,7 +3523,7 @@ width="16"><span></span></bar_t><span>  </span>
       ];
 
       if (document.querySelectorAll("div#logContainer").length < 1) {
-      //  data_ui_type.appendChild(logContainer);
+        data_ui_type.appendChild(logContainer);
         jsonfs31.forEach(function (f) {
           var span = document.createElement("span");
           span.setAttribute("class", `${f.class}`);
@@ -3514,6 +3567,9 @@ width="16"><span></span></bar_t><span>  </span>
           });
           divf_.appendChild(span);
         });
+        setTimeout(() => {
+          console.clear();
+        }, 1000);
         logContainer.appendChild(divf_);
       }
 
@@ -3683,12 +3739,145 @@ width="16"><span></span></bar_t><span>  </span>
           automaticLayout: true,
           cursorStyle: "hidden",
         });
+ 
+        let typingTimer; // Timer identifier
+        const doneTypingInterval = 2000; // Time in ms (2 seconds)
+        // ---
+        function validateHTML(content) {
+          let errors = [];
+          const lines = content.split('\n');
+  
+          const singleTagPattern = /<([a-zA-Z]+)([^<]*)>/g;
+          const closingTagPattern = /<\/([a-zA-Z]+)>/g;
+  
+          let singleTags = [];
+          lines.forEach((line, index) => {
+            let match;
+            while ((match = singleTagPattern.exec(line)) !== null) {
+              singleTags.push({ tag: match[1], line: index + 1, column: match.index + 1 });
+            }
+            while ((match = closingTagPattern.exec(line)) !== null) {
+              const tag = match[1];
+              const foundTag = singleTags.find(t => t.tag === tag);
+              if (foundTag) {
+                singleTags = singleTags.filter(t => t.tag !== tag);
+              } else {
+                errors.push({
+                  startLineNumber: index + 1,
+                  startColumn: match.index + 1,
+                  endLineNumber: index + 1,
+                  endColumn: match.index + match[0].length,
+                  message: `Unmatched closing tag </${tag}>`,
+                  severity: monaco.MarkerSeverity.Error
+                });
+              }
+            }
+          });
+  
+          singleTags.forEach(tag => {
+            errors.push({
+              startLineNumber: tag.line,
+              startColumn: tag.column,
+              endLineNumber: tag.line,
+              endColumn: tag.column + tag.tag.length + 2,
+              message: `Unclosed tag <${tag.tag}>`,
+              severity: monaco.MarkerSeverity.Error
+            });
+          });
+  
+          return errors;
+        }
+  
+        function validateCSS(content) {
+          let errors = [];
+          const cssParser = new CSSParser();
+          const parsedCSS = cssParser.parse(content);
+          
+          parsedCSS.errors.forEach(error => {
+            errors.push({
+              startLineNumber: error.line,
+              startColumn: error.column,
+              endLineNumber: error.line,
+              endColumn: error.column + error.length,
+              message: error.message,
+              severity: monaco.MarkerSeverity.Error
+            });
+          });
+  
+          return errors;
+        }
+  
+        function validateJavaScript(content) {
+          let errors = [];
+          const esprima = require('esprima');
+          
+          try {
+            esprima.parseScript(content, {}, (node, meta) => {});
+          } catch (e) {
+            errors.push({
+              startLineNumber: e.lineNumber,
+              startColumn: e.column,
+              endLineNumber: e.lineNumber,
+              endColumn: e.column + e.description.length,
+              message: e.description,
+              severity: monaco.MarkerSeverity.Error
+            });
+          }
+  
+          return errors;
+        }
+  
+        function updateMarkers() {
+          const content = editor.getValue();
+          const htmlContent = content.match(/<html>[\s\S]*<\/html>/g) ? content.match(/<html>[\s\S]*<\/html>/g)[0] : '';
+          const cssContent = content.match(/<style>[\s\S]*<\/style>/g) ? content.match(/<style>[\s\S]*<\/style>/g)[0].replace(/<\/?style>/g, '') : '';
+          const jsContent = content.match(/<script>[\s\S]*<\/script>/g) ? content.match(/<script>[\s\S]*<\/script>/g)[0].replace(/<\/?script>/g, '') : '';
+  
+          const htmlErrors = validateHTML(htmlContent);
+          const cssErrors = validateCSS(cssContent);
+          const jsErrors = validateJavaScript(jsContent);
+  
+          const errors = [...htmlErrors, ...cssErrors, ...jsErrors];
+          const model = editor.getModel();
+          monaco.editor.setModelMarkers(model, 'htmlOwner', errors);
+          logErrors(errors);
+        }
+        // ---
+        function logErrors(errors) {
+          // const logContainer = document.getElementById('log');
+          // logContainer.innerHTML = '';
+          $("div#logContainer .log").remove();
+          if (errors.length === 0) {
+            // logContainer.innerHTML = '<p>No errors found.</p>';
+          } else {
+            errors.forEach(error => {
+              // const errorElement = document.createElement('p');
+              // errorElement.textContent = `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`;
+              // logContainer.appendChild(errorElement);
+
+              welcomer.editor.appendLogF({message:`Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`,type: "error"});
+            });
+          }
+          $("div#logContainer divf_ span.errors").html(`<i class="bi bi-exclamation-triangle-fill"></i> Errors ${errors.length}`);
+        }
+        function updateMarkers() {
+          const content = editor.getValue();
+          const errors = validateHTML(content);
+          const model = editor.getModel();
+          monaco.editor.setModelMarkers(model, 'htmlOwner', errors);
+          logErrors(errors);
+        }
+  
+        editor.onDidChangeModelContent(updateMarkers);
+        updateMarkers();
+      
         buttons.undo.addEventListener("click", function () {
           editor.getModel().undo();
         });
         buttons.redo.addEventListener("click", function () {
           editor.getModel().undo();
         });
+
         welcomer.editor.edtr = editor;
         document
           .querySelector('section[data-ui-type="editor"] div#editor-container')
@@ -3699,6 +3888,7 @@ width="16"><span></span></bar_t><span>  </span>
           welcomer.editor.edtr.layout();
         });
         const appendLog = function (message, type = "log") {
+          return "";
           const logElement = document.createElement("div");
           if (type == "log") {
             logElement.setAttribute("class", "log info");
@@ -3726,6 +3916,33 @@ width="16"><span></span></bar_t><span>  </span>
           appendLog(args.join(" "), "error");
         };
 
+        function logDiagnostics() {
+          const model = editor.getModel();
+          const markers = monaco.editor.getModelMarkers({ resource: model.uri });
+          
+          markers.forEach(marker => {
+              let logMethod = console.log;
+              let type = 'Info';
+
+              switch (marker.severity) {
+                  case monaco.MarkerSeverity.Error:
+                      logMethod = console.error;
+                      type = 'Error';
+                      break;
+                  case monaco.MarkerSeverity.Warning:
+                      logMethod = console.warn;
+                      type = 'Warning';
+                      break;
+                  case monaco.MarkerSeverity.Info:
+                      logMethod = console.info;
+                      type = 'Info';
+                      break;
+              }
+
+              logMethod(`[${type}] Line ${marker.startLineNumber}, Column ${marker.startColumn}: ${marker.message}`);
+          });
+      }
+
         function updatePreview() {
           var previewFrame = iframe;
           var previewContent = `
@@ -3748,16 +3965,9 @@ width="16"><span></span></bar_t><span>  </span>
         previewFrame.src =
             "data:text/html;charset=utf-8," +
             encodeURIComponent(previewContent);*/
+
           welcomer.editor.puthtml(previewFrame, previewContent);
-          try {
-            /*
-            document.querySelector(
-              `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
-                "id"
-              )}"]`
-            ).src =
-              "data:text/html;charset=utf-8," +
-              encodeURIComponent(previewContent);*/
+          try { 
             welcomer.editor.puthtml(
               document.querySelector(
                 `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(

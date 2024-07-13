@@ -4,7 +4,7 @@
         "title": "Diary - Alss'sea preparing for her 14-Birthday...",
         "time": "13.april.2024 11:45",
         "source": "/?blog=13_april_2024_11_45",
-        "keywords": "aliengirl,   spacegirl,  marko nikolic portfolio,  marko nikolic portfolio blog",
+        "keywords": ["aliengirl","book","princess","spacegirl", "marko nikolic portfolio",  "marko nikolic portfolio blog"],
         "thumbail": "/?blog=13_april_2024_11_45/1720867464514",
         "category": [
             "book",
@@ -12,7 +12,9 @@
             "princess",
             "deviantart"
         ],
-        "gallery": []
+        "gallery": [
+
+        ]
     },
     {
         "id": "1073568435",

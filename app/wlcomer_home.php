@@ -17,7 +17,7 @@ if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
 } else {
     ob_start();
 }
-ob_start(function ($b) {
+ ob_start(function ($b) {
     $comments_pattern = "#/\*[^(\*/)]*\*/#";
     $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
     # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
@@ -58,6 +58,8 @@ header(
 );
 $rand = time();
 ob_start();
+header('Content-Type: text/html; charset=utf-8');
+
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -2126,6 +2128,15 @@ transition:  .3s;
 }
 div#logContainer .log *  {
     pointer-events: none;
+}
+
+@media screen and (max-width: 600px) {
+section[data-ui-type="editor"] iframe#preview-container,
+    section[data-ui-type="editor"] div#editor-container {
+        max-width: 100% !important;
+        min-width: 100% !important;
+        width: 100% !important;
+    }
 }
     </style>
     <?php

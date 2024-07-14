@@ -17,7 +17,7 @@ if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
 } else {
     ob_start();
 }
- ob_start(function ($b) {
+ob_start(function ($b) {
     $comments_pattern = "#/\*[^(\*/)]*\*/#";
     $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
     # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
@@ -153,7 +153,8 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script nonce="<?php echo NONCE; ?>"
+        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
@@ -161,7 +162,7 @@ media-src 'self';" />
 
     </script>
 
-    
+
 
     <?php if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
@@ -178,7 +179,7 @@ media-src 'self';" />
             </style>
         <?php }
     } ?>
-    <style type="text/css" >
+    <style type="text/css">
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
         ?>
@@ -1895,9 +1896,10 @@ div#clavs br_ta ta_f.active span {
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
             enable-background: new 0 0 512 512;
         }
+
         div#logContainer.active {
-      height: 60%;
-}
+            height: 60%;
+        }
 
         div#logContainer {
             position: absolute;
@@ -1913,7 +1915,8 @@ div#clavs br_ta ta_f.active span {
             border-left: 0px solid;
             border-bottom-left-radius: 5px;
             font-size: 12px;
-            height: 32px;  
+            height: 32px;
+            overflow: auto;
             transition: height .3s !important;
         }
 
@@ -1934,7 +1937,7 @@ div#clavs br_ta ta_f.active span {
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
             enable-background: new 0 0 512 512;
             border: 0px;
-         
+
         }
 
         div#logContainer log_msg {
@@ -1969,10 +1972,10 @@ div#clavs br_ta ta_f.active span {
             font-family: revert-layer;
             margin: 5px;
 
-            height: -webkit-fit-content;         
-               height: -moz-fit-content;         
-                  height: fit-content;       
-                       border-radius: 6px;
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
+            height: fit-content;
+            border-radius: 6px;
             filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
             enable-background: new 0 0 512 512;
@@ -2070,7 +2073,7 @@ div#clavs br_ta ta_f.active span {
             border-bottom-color: #179fff !important;
         }
 
-        
+
         div#logContainer span.info.active,
         div#logContainer span.info.active i,
         div#logContainer span.info:hover i,
@@ -2093,9 +2096,7 @@ div#clavs br_ta ta_f.active span {
             border-color: var(--red);
             color: var(--red);
         }
-        div#logContainer divf_ span.warnings{
-            background: orange;
-        }
+
         div#logContainer divf_ span.warnings.active,
         div#logContainer divf_ span.warnings.active *,
         div#logContainer divf_ span.warnings:hover,
@@ -2105,113 +2106,140 @@ div#clavs br_ta ta_f.active span {
         }
 
         div#logContainer divf_ span.expand {
-    right: 0px;
-    position: absolute;
-}
+            right: 0px;
+            position: absolute;
+        }
 
-div#logContainer .log.warnings{
+        div#logContainer .log.warnings {
             background: orange;
         }
 
-div#logContainer .log:not(.error,.warnings) {
-    display: none !important;
+        div#logContainer .log:not(.error, .warnings) {
+            display: none !important;
+        }
+
+        div#logContainer:hover .log:hover {
+            opacity: 1;
+        }
+
+        div#logContainer:hover .log {
+            opacity: 0.7;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+        }
+
+        div#logContainer .log * {
+            pointer-events: none;
+        }
+
+        @media screen and (max-width: 600px) {
+
+            section[data-ui-type="editor"] iframe#preview-container,
+            section[data-ui-type="editor"] div#editor-container {
+                max-width: 100% !important;
+                min-width: 100% !important;
+                width: 100% !important;
+            }
+
+            /*  */
+
+            div#logContainer divf_ span {
+                display: grid;
+                text-align: center;
+                justify-content: center;
+                justify-items: center;
+                width: 100%;
+                position: unset !important;
+            }
+
+            div#logContainer divf_ span i {
+                margin: auto;
+            }
+
+            div#logContainer:not(.active) {
+                height: 51px;
+            }
+
+            div#logContainer divf_ span {
+                /* width: 100%; */
+                /* position: unset !important; */
+            }
+
+            /*  */
+        }
+
+       
+ .anchorTitle {
+            background: rgb(0 0 0 / 0.9);
+        }
+
+        .anchorTitle img.is_touch.in_hover {
+            position: absolute;
+            left: 0px;
+            z-index: -34;
+            top: 0px;
+            -o-object-fit: cover;
+               object-fit: cover;
+            height: 100%;
+            width: 100%;
+            -webkit-filter: blur(1px);
+                    filter: blur(1px);
+            opacity: 0.5;
+            background: black;
+        }
+
+        body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:hover,
+        body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:hover {
+            opacity: 1;
+        }
+
+        body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) *,
+        body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
+            opacity: 0.7;
+        }
+
+        body[data-url-id="/?p=projects"] div#clavs:hover {
+            background: rgb(0 0 0 / 60%) !important;
+        }
+
+
+        body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:hover {
+            opacity: 1;
+        }
+
+
+        body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
+            opacity: 0.7;
+        }
+
+        body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project img.loader_post {
+            opacity: 0;
+        }
+
+        body[data-url-id="yes"] div#clavs:hover {
+            background: rgb(0 0 0 / 60%) !important;
+        }
+
+
+        body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer project:hover,
+        body[data-url-id="yes"] div#clavs:hover grider_viewer project:hover {
+            -webkit-transform: scale(1.05) !important;
+                -ms-transform: scale(1.05) !important;
+                    transform: scale(1.05) !important;
+        }
+
+
+        editor-wrapper id_mask a {
+    opacity: 0.8;
+    -webkit-transition: .3s !important;
+    -o-transition: .3s !important;
+    transition: .3s !important;
 }
- 
-div#logContainer:hover .log:hover {
+
+editor-wrapper id_mask a:hover  {
     opacity: 1;
 }
-
-div#logContainer:hover .log {
-    opacity: 0.7;
--webkit-transition:  .3s;
--o-transition:  .3s;
-transition:  .3s;
-}
-div#logContainer .log *  {
-    pointer-events: none;
-}
-
-@media screen and (max-width: 600px) {
-section[data-ui-type="editor"] iframe#preview-container,
-    section[data-ui-type="editor"] div#editor-container {
-        max-width: 100% !important;
-        min-width: 100% !important;
-        width: 100% !important;
-    }
-    
-    /*  */
-
-    div#logContainer divf_ span {
-    display: grid;
-    text-align: center;
-    justify-content: center;
-    justify-items: center;
-    width:100%;
-    position:unset !important;
-}
-
-div#logContainer divf_ span i {
-    margin:auto;
-}
-
-div#logContainer:not(.active) {
-    height: 51px;
-}
-
-div#logContainer divf_ span {
-    /* width: 100%; */
-    /* position: unset !important; */
-}
-    /*  */
-}
-
-.anchorTitle{
-    background: rgb(0 0 0 / 0.9);
-}
-.anchorTitle img.is_touch.in_hover {
-    position: absolute;
-    left: 0px;
-    z-index: -34;
-    top: 0px;
-    object-fit: cover;
-    height: 100%;
-    width: 100%;
-    filter: blur(1px);
-    opacity: 0.5;
-    background: black;
-}
-
-body[data-url-id="yes"]          div#clavs:hover  grider_viewer:hover project:hover,
-body[data-url-id="/?p=projects"] div#clavs:hover  grider_viewer:hover project:hover {
-    opacity:1;
-}
-
-body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) *,
-body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
-    opacity:0.7;
-} 
-
-body[data-url-id="/?p=projects"] div#clavs:hover {
-    background:rgb(0 0 0 / 60%) !important;
-} 
-
-
-body[data-url-id="yes"] div#clavs:hover  grider_viewer:hover project:hover {
-    opacity:1;
-}
-
-
-body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
-    opacity:0.7;
-} 
-
-body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project img.loader_post {
-    opacity:0;
-}
-
-body[data-url-id="yes"] div#clavs:hover {
-    background:rgb(0 0 0 / 60%) !important;
-} 
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -2780,7 +2808,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </body>
 
 </html>
-<?php 
+<?php
 exit();
 /*
 <div class="embed_posts"><p>Povezan post: </p><iframe src="/?blog=24_sept_2023_12_01" height="825" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe></div>
@@ -2807,4 +2835,3 @@ div#logContainer divf_ span {
 */
 
 ?>
-

@@ -2534,7 +2534,7 @@ width="16"><span></span></bar_t><span>  </span>
       baer_.innerHTML = '<i class="bi bi-house"></i> Go home page';
       spanf.appendChild(img);
       spanf.appendChild(br);
-      span.innerHTML = `Editor is not supported for<br>mobile Browsers!<br>`;
+      span.innerHTML = `<i class="bi bi-window-fullscreen"></i> Editor is not supported for<br>small screens!<br>`;
       span.appendChild(baer_);
       spanf.appendChild(span);
 
@@ -2841,7 +2841,7 @@ width="16"><span></span></bar_t><span>  </span>
     },
     start: function () {
       this.call_nav();
-      if (welcomer.isMobile()) {
+      if (document.body.offsetWidth < 601) {
         $("editor-wrapper").html("");
         welcomer.editor.editor_fail_message("editor-wrapper");
       } else {
@@ -3140,7 +3140,7 @@ width="16"><span></span></bar_t><span>  </span>
           template: "",
         }
       ) {
-        if (welcomer.isMobile()) {
+        if (document.body.offsetWidth < 601) {
           $("editor-wrapper").html("");
           welcomer.editor.editor_fail_message("editor-wrapper");
         } else {
@@ -3204,6 +3204,10 @@ width="16"><span></span></bar_t><span>  </span>
               });
             window.addEventListener("resize", function () {
               welcomer.editor.edtr.layout();
+              if (document.body.offsetWidth < 601) {
+                $("editor-wrapper").html("");
+                welcomer.editor.editor_fail_message("editor-wrapper");
+              }
             });
             function updatePreview() {
               var previewFrame = iframe;
@@ -3673,7 +3677,14 @@ width="16"><span></span></bar_t><span>  </span>
               'section[data-ui-type="editor"] iframe#preview-container'
             ).width()}px;`
           );
+
+          if (document.body.offsetWidth < 601) {
+            $("editor-wrapper").html("");
+            welcomer.editor.editor_fail_message("editor-wrapper");
+          }
         });
+
+
 
         resizer.addEventListener("mousedown", function (e) {
           e.preventDefault();

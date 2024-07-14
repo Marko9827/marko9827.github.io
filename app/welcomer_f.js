@@ -921,6 +921,7 @@ br_aer  img.favicon {
     return responseJson;
   },
   projects: [
+     
     {
       title: "E-student",
       description: "E-student, platforma za studente",
@@ -973,6 +974,7 @@ br_aer  img.favicon {
       href: "",
       type: true,
     },
+    
     {
       title: "IP Calculator",
       description: "Eronelit Dashboard - Plugin IP Calculator",
@@ -1047,6 +1049,14 @@ br_aer  img.favicon {
       href: "/?p=blog&id=1717770544145",
       type: true,
     },
+    {
+      title: "Pegasus project - Connection PC and Brain with no chips is possible!",
+      description: "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
+      img: "/?blog=13_jul_2024_23_40/43515315",
+      href: "",
+      soon: true,
+      type: true,
+    }
   ],
   history: [],
   cursor: $(".cursor"),
@@ -2260,6 +2270,11 @@ width="16"><span></span></bar_t><span>  </span>
           <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
            </p_open>`;
         }
+      }
+      if (v?.soon == true) {
+        p_open = ` <p_open style="pointer-events: none !important;" title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+        <i class="bi bi-signpost-split"></i> Coming soon
+         </p_open>`;
       }
       if (welcomer.isMobile()) {
         thi = "onclick='welcomer.openLink(" + div_not_i + ")'";

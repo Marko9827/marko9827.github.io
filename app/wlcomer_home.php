@@ -76,6 +76,7 @@ header('Content-Type: text/html; charset=utf-8');
         content="default-src 'self' wss: data: blob: *.google-analytics.com *.googletagmanager.com *.eronelit.com *.gstatic.com fonts.googleapis.com 'unsafe-inline'; img-src: self *.eronelit.com data: blob: 'unsafe-inline' ">
      */ ?>
     <link rel='dns-prefetch' href='//fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='//cdn.eronelit.com' />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2137,7 +2138,61 @@ section[data-ui-type="editor"] iframe#preview-container,
         min-width: 100% !important;
         width: 100% !important;
     }
+    
+    /*  */
+
+    div#logContainer divf_ span {
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    width:100%;
+    position:unset !important;
 }
+
+div#logContainer divf_ span i {
+    margin:auto;
+}
+
+div#logContainer:not(.active) {
+    height: 51px;
+}
+
+div#logContainer divf_ span {
+    /* width: 100%; */
+    /* position: unset !important; */
+}
+    /*  */
+}
+
+.anchorTitle{
+    background: rgb(0 0 0 / 0.9);
+}
+.anchorTitle img.is_touch.in_hover {
+    position: absolute;
+    left: 0px;
+    z-index: -34;
+    top: 0px;
+    object-fit: cover;
+    height: 100%;
+    width: 100%;
+    filter: blur(1px);
+    opacity: 0.5;
+    background: black;
+}
+
+body[data-url-id="/?p=projects"] div#clavs:hover  grider_viewer:hover project:hover {
+    opacity:1;
+}
+
+
+body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
+    opacity:0.7;
+} 
+
+body[data-url-id="/?p=projects"] div#clavs:hover {
+    background:rgb(0 0 0 / 60%) !important;
+} 
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -2706,13 +2761,31 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </body>
 
 </html>
-<?php
-
-
-
+<?php 
 exit();
 /*
 <div class="embed_posts"><p>Povezan post: </p><iframe src="/?blog=24_sept_2023_12_01" height="825" width="504" frameborder="0" allowfullscreen="" title="Embedded post"></iframe></div>
+div#logContainer divf_ span {
+    display: grid;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    width:100%;
+    position:unset !important;
+}
+
+div#logContainer divf_ span i {
+    margin:auto;
+}
+
+ 
+
+div#logContainer divf_ span {
+    /* width: 100%; *l/
+    /* position: unset !important; *l/
+}
+
 */
 
 ?>
+

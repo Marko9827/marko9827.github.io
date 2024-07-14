@@ -2181,16 +2181,35 @@ div#logContainer divf_ span {
     background: black;
 }
 
+body[data-url-id="yes"]          div#clavs:hover  grider_viewer:hover project:hover,
 body[data-url-id="/?p=projects"] div#clavs:hover  grider_viewer:hover project:hover {
     opacity:1;
 }
 
-
+body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) *,
 body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
     opacity:0.7;
 } 
 
 body[data-url-id="/?p=projects"] div#clavs:hover {
+    background:rgb(0 0 0 / 60%) !important;
+} 
+
+
+body[data-url-id="yes"] div#clavs:hover  grider_viewer:hover project:hover {
+    opacity:1;
+}
+
+
+body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
+    opacity:0.7;
+} 
+
+body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project img.loader_post {
+    opacity:0;
+}
+
+body[data-url-id="yes"] div#clavs:hover {
     background:rgb(0 0 0 / 60%) !important;
 } 
     </style>

@@ -1079,6 +1079,46 @@ br_aer  img.favicon {
       }
     );
   },
+  mobile_hover_tooltip: function(t = {
+    title:"",
+    description:"",
+    complete: function(){} 
+  }){
+
+    const div_preview = document.createElement("div_preview"),
+    div_bck = document.createElement("div_bck"),
+    div_h2 = document.createElement("div_h2"),
+    divh2 = document.createElement("divh2"),
+    div_h = document.createElement("div_h"),
+    div_t = document.createElement("div_t");
+
+
+    div_h2.appendChild(divh2);
+
+    div_h.innerHTML = `${t.title}`;
+    div_t.innerHTML = `${t.description}`;
+     
+
+    /*
+    <div_preview>
+    <div_bck></div_bck>
+    <div_h2>
+    <divh2></divh2>
+    </div_h2>
+    <div_h>
+    is possible!</div_h><div_t>Is possible no only in theory?!
+    <br><br>Pegasus project is project, Cooon! 
+    <img loading="lazy" class="is_touch in_hover" ondragstart="return false;"
+     src="/?blog=13_jul_2024_23_40/43515315" 
+     data-zoom-image="https://portfolio.localhost/?p=projects" 
+     alt="Pegasus project - Connection PC and Brain with no chips is possible!">
+     </div_t></div_preview>
+    */
+
+    if (typeof t.complete === 'function') {
+      t.complete(div_preview);
+  }
+  },
   scrolj: function () {
     const catascrollEchatTv_right = document.querySelector(
         ".catascrollEchatTv_right"

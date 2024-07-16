@@ -2169,8 +2169,8 @@ div#clavs br_ta ta_f.active span {
             /*  */
         }
 
-       
- .anchorTitle {
+
+        .anchorTitle {
             background: rgb(0 0 0 / 0.9);
         }
 
@@ -2180,11 +2180,11 @@ div#clavs br_ta ta_f.active span {
             z-index: -34;
             top: 0px;
             -o-object-fit: cover;
-               object-fit: cover;
+            object-fit: cover;
             height: 100%;
             width: 100%;
             -webkit-filter: blur(1px);
-                    filter: blur(1px);
+            filter: blur(1px);
             opacity: 0.5;
             background: black;
         }
@@ -2225,21 +2225,152 @@ div#clavs br_ta ta_f.active span {
         body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer project:hover,
         body[data-url-id="yes"] div#clavs:hover grider_viewer project:hover {
             -webkit-transform: scale(1.05) !important;
-                -ms-transform: scale(1.05) !important;
-                    transform: scale(1.05) !important;
+            -ms-transform: scale(1.05) !important;
+            transform: scale(1.05) !important;
         }
 
 
         editor-wrapper id_mask a {
-    opacity: 0.8;
-    -webkit-transition: .3s !important;
-    -o-transition: .3s !important;
-    transition: .3s !important;
-}
+            opacity: 0.8;
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+        }
 
-editor-wrapper id_mask a:hover  {
-    opacity: 1;
-}
+        editor-wrapper id_mask a:hover {
+            opacity: 1;
+        }
+
+        div_preview {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            right: 12px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+            background: var(--black-trasparent-color);
+            z-index: 33333;
+            border-top: 2px solid;
+            color: white;
+            font-size: 12px;
+            padding: 10px;
+            border-top-color: #444;
+            display: -ms-grid;
+            display: grid;
+            overflow: auto;
+            max-height: 150px !important;
+        }
+
+
+
+        div_preview img {
+            display: none;
+        }
+
+        div_preview div_h {
+            font-size: 14px;
+            border-bottom: 1px solid white;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+
+        div_preview div_h2 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+        }
+
+        div_preview divh2 {
+            width: 30%;
+            padding: 2px;
+            background: white;
+            border-radius: 40px;
+            margin: 65px auto !important;
+        }
+
+        div_preview div_bck {
+            background-image: -o-linear-gradient(45deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 0%));
+            background-image: linear-gradient(45deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 0%));
+            display: block;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+        }
+
+
+/*  */
+div_preview img {
+            display: none;
+        }
+
+        div_preview div_h {
+            font-size: 14px;
+            border-bottom: 1px solid white;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+
+
+        div_preview div_h2 {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+        }
+
+        div_preview divh2 {
+            width: 30%;
+            padding: 2px;
+            background: white;
+            border-radius: 40px;
+            margin: 7px auto !important;
+            margin-left: 0px !important;
+        }
+
+        div_preview div_bck {
+            background-image: -o-linear-gradient(45deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 0%));
+            background-image: linear-gradient(45deg, rgb(0 0 0 / 0%), rgb(0 0 0 / 0%));
+            display: block;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            -webkit-backdrop-filter: blur(3px);
+            backdrop-filter: blur(3px);
+        }
+     
+ 
+        /*
+
+<div_preview><div_bck></div_bck><div_h2><divh2></divh2><data_exp>Close - Description</data_exp></div_h2><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t></div_preview>
+
+
+<div_preview><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t><br></div_preview>        */
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

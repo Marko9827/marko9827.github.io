@@ -2288,7 +2288,7 @@ width="16"><span></span></bar_t><span>  </span>
             ${p_open}
             <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
             <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-            src="${v.img}" data-zoom-image="${v.img}" alt="${v.title}">
+            src="${v.img}" data-titlef="${v.description}" data-zoom-image="${v.img}" alt="${v.title}">
                    </grider_box>
 
             </project>`);
@@ -2347,19 +2347,20 @@ width="16"><span></span></bar_t><span>  </span>
     $(" preview_imagem").remove();
   },
   urlToBlob: async function (url) {
+    /*
     const response = await fetch(url);
-    const blob = await response.blob();
-    return blob;
+    const blob = await response.blob();*/
+    return url;
   },
   infoVa_img_gallery: function (url) {
     var clickedElement = url;
     var imgH = new Image();
 
     welcomer
-      .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}&thumb_or=t`)
+      .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
       .then((blob) => {
         const imgElement = document.createElement("img");
-        imgH.src = URL.createObjectURL(blob);
+        imgH.src = blob;// URL.createObjectURL(blob);
       });
     imgH.onload = function () {
       $(imgH).ezPlus({

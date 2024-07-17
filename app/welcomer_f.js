@@ -218,6 +218,9 @@ const welcomer = {
   domain: "/?mnps=dbe&q=",
   div_not_i: 0,
   yesurls: ["blog", "cv-pdf", "tg_channel", "gallery", "projects", "visitcard"],
+  projectsc:function(){
+      window.top.location.href = "/?p=projects";
+  },
   cards_links: [
     {
       title: "My CV",
@@ -237,7 +240,7 @@ const welcomer = {
       descr: "Look at my Projects",
       icon: "bi bi-box2-heart",
       href: {
-        f_u: "welcomer.pgloader('/?p=projects');",
+        f_u: `welcomer.projectsc();`,
         f: true,
         target: "",
       },

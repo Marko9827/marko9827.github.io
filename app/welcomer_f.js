@@ -363,7 +363,7 @@ const welcomer = {
         f: false,
         target: "blank",
       },
-      num: 2249,
+      num: 2363,
       beta: false,
       soon: false,
     },
@@ -1113,8 +1113,7 @@ br_aer  img.favicon {
 
      } else {
       div_preview.setAttribute("class","closed");    
-      span.innerHTML  = `<i class="bi bi-caret-up-fill"></i> Open`;
-
+      span.innerHTML  = `<i class="bi bi-caret-up-fill"></i> Open`; 
     }
   }
   

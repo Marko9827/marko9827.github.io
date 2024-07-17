@@ -2170,6 +2170,7 @@ div#clavs br_ta ta_f.active span {
         }
 
 
+
         .anchorTitle {
             background: rgb(0 0 0 / 0.9);
         }
@@ -2364,12 +2365,16 @@ div#clavs br_ta ta_f.active span {
             -webkit-backdrop-filter: blur(3px);
             backdrop-filter: blur(3px);
         }
- 
+
 
         div_preview.closed {
-            height: 53px;
+            max-height: 53px;
+            height: -webkit-fit-content;
+            height: -moz-fit-content;
+            height: fit-content;
         }
-        div_preview:not(.closed) dtitle{
+
+        div_preview.closed div_t {
             display: none;
         }
 
@@ -2383,10 +2388,16 @@ div#clavs br_ta ta_f.active span {
             white-space: nowrap;
         }
 
-        div_preview.closed div_t {
-            display: none;
+        div_preview dtitle {
+            border-left: 2px solid white;
+            padding-left: 5px;
+            margin: 4px 0px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
         }
-
+        div_preview.closed dtitle {
+    height: 17px;
+}
         /*
 
 <div_preview><div_bck></div_bck><div_h2><divh2></divh2><data_exp>Close - Description</data_exp></div_h2><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t></div_preview>

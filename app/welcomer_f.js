@@ -237,7 +237,7 @@ const welcomer = {
       descr: "Look at my Projects",
       icon: "bi bi-box2-heart",
       href: {
-        f_u: "welcomer.pgloader('projects');",
+        f_u: "welcomer.pgloader('/?p=projects');",
         f: true,
         target: "",
       },
@@ -1079,26 +1079,57 @@ br_aer  img.favicon {
       }
     );
   },
+  mobile_hover_tooltip_t: function(){
+    this.mobile_hover_tooltip({
+      title:"Pegasus project - Connection PC and Brain with no chips is possible!",
+      description: "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
+      complete:function(res){
+        document.querySelector("body").appendChild(res);
+      }
+    });
+  },
   mobile_hover_tooltip: function(t = {
     title:"",
     description:"",
     complete: function(){} 
   }){
-
+    document.querySelectorAll("div_preview").forEach(function(r){
+      r.remove();
+    });
     const div_preview = document.createElement("div_preview"),
     div_bck = document.createElement("div_bck"),
     div_h2 = document.createElement("div_h2"),
     divh2 = document.createElement("divh2"),
     div_h = document.createElement("div_h"),
-    div_t = document.createElement("div_t");
+    div_t = document.createElement("div_t"),
+    dtitle = document.createElement("dtitle"),
+    span = document.createElement("span");
+    span.innerHTML = `<i class="bi bi-caret-down-fill"></i> Close`;
 
+    span.onclick = function(){
+    if(div_preview.getAttribute("class") == "closed"){
+      div_preview.removeAttribute("class");
+      span.innerHTML = `<i class="bi bi-caret-down-fill"></i> Close`;
 
-    div_h2.appendChild(divh2);
+     } else {
+      div_preview.setAttribute("class","closed");    
+      span.innerHTML  = `<i class="bi bi-caret-up-fill"></i> Open`;
+
+    }
+  }
+  
+  dtitle.innerHTML = `${t.title}`;
 
     div_h.innerHTML = `${t.title}`;
     div_t.innerHTML = `${t.description}`;
-     
-
+    
+    
+    div_h2.appendChild(divh2); 
+    div_h2.appendChild(span);
+    div_preview.appendChild(div_bck);
+    div_preview.appendChild(div_h2);
+    div_preview.appendChild(dtitle);
+    div_preview.appendChild(div_t);
     /*
     <div_preview>
     <div_bck></div_bck>
@@ -2385,6 +2416,9 @@ width="16"><span></span></bar_t><span>  </span>
       ).remove();
     }
     $(" preview_imagem").remove();
+    document.querySelectorAll("div_preview").forEach(function(r){
+      r.remove();
+    });
   },
   urlToBlob: async function (url) {
     /*
@@ -2431,6 +2465,18 @@ width="16"><span></span></bar_t><span>  </span>
     var imgH = new Image();
 
     welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
+    if(document.body.offsetWidth < 750){
+    var title_f = $(`project[id-int="${h}"] p span`).html(),
+    description = $(`project[id-int="${h}"]`).attr("title");
+ 
+    welcomer.mobile_hover_tooltip({
+      title: `${title_f}`,
+      description: `${description}`,
+      complete:function(res){
+        document.querySelector("body").appendChild(res);
+      }
+    }); 
+  }
   },
 
   openWindow: function (i = 0) {

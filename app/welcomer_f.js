@@ -1492,7 +1492,7 @@ width="16"><span></span></bar_t><span>  </span>
         ifrm.document.write(
           `${res} <style type="text/css">${window.atob(
             window.portfolio.data.blog_style_bundle
-          )}</style>  `
+          )}</style> <script>document.body.setAttribute("oncontextmenu","return false;");</script>`
         );
         $("#clavs iframe:not(.iframe_mask)").on("load", function () {
           welcomer.cards_generate(f);

@@ -309,6 +309,18 @@ p_open {
     opacity: 1;
 }
 
+p_open.open_img {
+    bottom: -50%;
+    top: unset !important;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+}
+
+#clavs grider_viewer .is_touch:hover p_open.open_img  {
+    top: unset !important;
+    bottom:45px !important;
+}
 
 #clavs grider_viewer project p span {
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));

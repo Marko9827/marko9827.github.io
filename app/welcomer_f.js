@@ -1869,14 +1869,20 @@ width="16"><span></span></bar_t><span>  </span>
       } else {
         img_src_d = `${v.thumbail}&thumb=true`;
       }
-
+      var p_image = "";
+      if(welcomer.isimagec(v?.category)){
+        p_image = `<p_open class="open_img" onclick="welcomer.blogloader(1073568435);">
+            <i class="bi bi-image-fill"></i> Open image
+            <img style="" />
+            </p_open>`;
+      }
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
             ${thi} id-int="${div_not_i}" title="${v?.title}">
         <grider_box>
         <p><span>${v.title}</span></p>
 
-            ${p_open}
+            ${p_open} ${p_image}
             <fiv><i onclick="welcomer.blogloader(${
               v.id
             });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
@@ -2309,6 +2315,17 @@ width="16"><span></span></bar_t><span>  </span>
     };
     $(aer).removeAttr("onload");
   },
+  isimagec: function(arr = []){
+    var is_image = false;
+
+    for(var i = 0; i < arr.length; i++){
+      if(arr[i] == "image"){
+        is_image = true;
+      }
+    }
+   
+    return is_image;
+  },
   projectsload: function () {
     var ljoader = document.querySelector("#reaload_page"),
       Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
@@ -2344,6 +2361,7 @@ width="16"><span></span></bar_t><span>  </span>
            </p_open>`;
         }
       }
+       
       if (v?.soon == true) {
         p_open = ` <p_open style="pointer-events: none !important;" title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
         <i class="bi bi-signpost-split"></i> Coming soon

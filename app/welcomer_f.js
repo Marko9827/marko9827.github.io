@@ -1706,12 +1706,13 @@ width="16"><span></span></bar_t><span>  </span>
     spoiler_t.innerHeight = "Please wait...";
     spoiler_t.appendChild(img);
     document.body.classList.remove("spoiler_active");
-     
+    setTimeout(() => {
+      spoiler_iframe.remove();
+      spoiler_t.remove();
+      b_spoiler_iframe.remove();
+      },500);
       v.c();
-      setTimeout(() => {
-        spoiler_iframe.remove();
-        spoiler_t.remove();
-        b_spoiler_iframe.remove();  },500);
+     
    }
   }} else{
     v.c();
@@ -5393,7 +5394,7 @@ width="16"><span></span></bar_t><span>  </span>
 
 ">`);   
 document.body.appendChild(img);
-    setTimeout(() => {
+    setTimeout(async ()   => {
       
     
     var video_wall = document.querySelector("video");
@@ -5401,7 +5402,16 @@ document.body.appendChild(img);
     // video_wall.src = `/?src=vdwallpper&v=`;
     video_wall.play();
     video_wall.classList.remove('video_is_hidden');   
-    fetch(`/?src=vdwallpper&v=${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`)
+    await fetch(`/?src=vdwallpper`,
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json', 
+      },
+      body: JSON.stringify({
+        v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`
+      })
+  })
     .then(response => response.blob())
     .then(blob => {
       video_wall.src = URL.createObjectURL(blob);

@@ -582,25 +582,72 @@ if (!empty($_GET['drc'])) {
 } else if (!empty($_GET['src'])) {
     if ($_GET['src'] == "vdwallpper") {
 
+        set_time_limit(60);
 
-        ignore_user_abort(false);
-        include ROOT . "Content/vstream.php";
+      #  ignore_user_abort(false);
+       # include ROOT . "Content/vstream.php";
         // include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
+        header("Expires: Tue, 01 Jan 2000 00:00:00 GMT"); // Date in the past
+        header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // Always modified
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); // HTTP/1.1
+        header("Cache-Control: post-check=0, pre-check=0", false); // HTTP/1.1 (for IE)
+        header("Pragma: no-cache"); // HTTP/1.0
 
-        $filetry = ROOT . "Content/videos/";
-        $files = glob($filetry . '/*.mp4');
+        $filetry =  ROOT . "Content/videos/";
+        $files = glob("$filetry/*.mp4");
 
 
-
+ 
         foreach (array_keys($files, $_SESSION['vname']) as $key) {
             unset($files[$key]);
-        }
+        } 
         $file = array_rand($files);
         $filetry2 = $files[$file];
         $_SESSION['vname'] = $filetry2;
+        $videoFile = $filetry2;
+        if (!file_exists($videoFile)) {
+    header("HTTP/1.1 404 Not Found");
+    exit;
+}
+
+// Get the file size and MIME type
+$size = filesize($videoFile);
+$mime = 'video/mp4';
+
+// Set common headers
+header("Content-Type: $mime");
+header("Accept-Ranges: bytes");
+
+// Handle partial content requests (HTTP_RANGE)
+if (isset($_SERVER['HTTP_RANGE'])) {
+    $range = $_SERVER['HTTP_RANGE'];
+    list($param, $range) = explode('=', $range);
+    list($start, $end) = explode('-', $range);
+    $start = intval($start);
+    $end = $end ? intval($end) : $size - 1;
+
+    if ($start > $end || $end >= $size) {
+        header("HTTP/1.1 416 Requested Range Not Satisfiable");
+        header("Content-Range: bytes */$size");
+        exit;
+    }
+
+    $length = $end - $start + 1;
+    header("HTTP/1.1 206 Partial Content");
+    header("Content-Range: bytes $start-$end/$size");
+    header("Content-Length: " . $length);
+
+    // Output the requested range of the video
+    $file = fopen($videoFile, 'rb');
+    fseek($file, $start);
+    echo fread($file, $length);
+    fclose($file);
+} else {
+    // Serve the entire video file
+    header("Content-Length: $size");
+    readfile($videoFile);
+}
+        exit();
         if (file_exists($filetry2)) {
             // header("Content-Type: video/mp4"); 
             $ppath = $filetry2; //ROOT . "cinematic_3/cinematic_MainMenu.mp4";
@@ -661,6 +708,10 @@ $stream->start();
         ini_set('display_startup_errors', 1);
         error_reporting(E_ALL);
         streamVideo($_GET['v']);
+    } else if ($_GET['svc'] == "mask") {
+        header("Content-Type: image/png");
+        @readfile("$_SERVER[DOCUMENT_ROOT]/app/img/mask.png");
+        exit();
     } else if ($_GET['svc'] == "embed") {
 
         header("content-type: text/html");

@@ -17,6 +17,7 @@ const welcomer = {
         my_projects: "My projects",
         my_projects_dscr: "Look at my Projects",
         category_title: "Click for open %s category.",
+        robot: "Are you a robot?<br>If you don't?<sspan>Click</sspan> to see hidden...<br><i class='bi bi-eye'></i>"
       },
     },
     {
@@ -190,8 +191,8 @@ const welcomer = {
     document.querySelector(".Ignoring_me_iframe").onmouseout = function () {
       welcomer.cursor_hide(this);
     };
-    document.querySelector(".wallpaperVideo").play();
-    this.vdjae();
+    // document.querySelector(".wallpaperVideo").play();
+    // this.vdjae();
     this.custom_evjents();
     document
       .querySelector(".wallpaperVideo")
@@ -217,6 +218,7 @@ const welcomer = {
   energyAnim: true,
   domain: "/?mnps=dbe&q=",
   div_not_i: 0,
+  spolr: ["cv-pdf","visitcard"],
   yesurls: ["blog", "cv-pdf", "tg_channel", "gallery", "projects", "visitcard"],
   projectsc:function(){
       window.top.location.href = "/?p=projects";
@@ -904,20 +906,31 @@ br_aer  img.favicon {
     });
     document.querySelector(".wallpaperVideo").play();
     document.querySelector(".wallpaperVideo").removeAttribute("style");
-    this.vdjae();
+    // this.vdjae();
   },
   vdjae: async function () {
+    
+      $("img#svg_loader_img").css({"opacity": "0"});
+      setTimeout(() => {
+        $("img#svg_loader_img").remove();
+      }, 1000);
+   
+ 
+ 
+
+
     const f = document
         .querySelector(".wallpaperVideo source")
         .getAttribute("src"),
-      url = await fetch(f)
+      url = await  fetch(f)
         .then((h) => {
           return h.blob();
         })
         .catch(function (v) {});
     const blob = URL.createObjectURL(url);
     document.querySelector(".wallpaperVideo source").setAttribute("src", blob);
-  },
+  
+    },
   getDataGallery: async function () {
     const response = await fetch("/?mnps=gallery"),
       responseJson = await response.json();
@@ -1654,6 +1667,58 @@ width="16"><span></span></bar_t><span>  </span>
 
     return txt.value;
   },
+  spoiler: function(v = {c, u: ""}){
+    
+    var f = welcomer.spolr,
+    no_spoler = false;
+    console.log(v);
+    // for(var i = 0; i < f.length; i++){
+    if(v.u.includes("cv-pdf") || v.u.includes("visitcard")){
+      no_spoler = true;
+    }
+    if(no_spoler){ 
+   
+    var spoiler_t = document.createElement("spiler_t"),
+   spoiler_iframe = document.createElement("spoiler_iframe"),
+   b_spoiler_iframe = document.createElement("b_spoiler_iframe"),
+     img = document.createElement("img");
+   img.id = "spoiler_svg_loader";
+   img.src = `${welcomer.loader_svg}`;
+   img.setAttribute("style",`
+   position: fixed;
+   right: 10px;
+   top: 10px;
+   width: 30px;
+   height: 30px;
+   pointer-events: none;
+   opacity:0;
+   object-fit: scale-down; 
+   transition: .3s;
+
+">`); 
+   document.body.classList.add("spoiler_active");
+   spoiler_t.innerHTML = `Sorry - Are you a robot?<br>If you don't? <sspan>Click</sspan> to see hidden...<br><i class="bi bi-eye"></i>`;
+   if(document.querySelectorAll('spiler_t').length < 1){
+   document.body.appendChild(spoiler_iframe);
+   document.body.appendChild(spoiler_t);
+   document.body.appendChild(b_spoiler_iframe);
+   spoiler_t.onclick = function() {
+    spoiler_t.innerHeight = "Please wait...";
+    spoiler_t.appendChild(img);
+    document.body.classList.remove("spoiler_active");
+     
+      v.c();
+      setTimeout(() => {
+        spoiler_iframe.remove();
+        spoiler_t.remove();
+        b_spoiler_iframe.remove();  },500);
+   }
+  }} else{
+    v.c();
+    
+  }
+
+  },
   remove_duplicates: function (arr) {
     var obj = {};
     var ret_arr = [];
@@ -1869,12 +1934,12 @@ width="16"><span></span></bar_t><span>  </span>
       } else {
         img_src_d = `${v.thumbail}&thumb=true`;
       }
-      var p_image = "";
+      var p_image =  ``;
       if(welcomer.isimagec(v?.category)){
-        p_image = `<p_open class="open_img" onclick="welcomer.blogloader(1073568435);">
+        /* p_image = `<p_open class="open_img" onclick="welcomer.blogloader(1073568435);">
             <i class="bi bi-image-fill"></i> Open image
             <img style="" />
-            </p_open>`;
+            </p_open>`; */
       }
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
@@ -2319,7 +2384,9 @@ width="16"><span></span></bar_t><span>  </span>
     var is_image = false;
 
     for(var i = 0; i < arr.length; i++){
-      if(arr[i] == "image"){
+      console.log(arr.length, arr[i]);
+      var arr_i = arr[i];
+      if(arr_i.includes("image")){
         is_image = true;
       }
     }
@@ -4222,6 +4289,7 @@ width="16"><span></span></bar_t><span>  </span>
     $("div_header").attr("data-url", url);
   },
   pgloader: function (url = "") {
+    this.spoiler({ u: url, c: function(){
     $("#clavs grider_viewer").removeAttr("style");
     try {
       $(".Ignoring_me_iframe.shadow_root").removeClass("open");
@@ -4243,7 +4311,7 @@ width="16"><span></span></bar_t><span>  </span>
         $("div_header").attr("data-url", url);
       }
     }
-    this.loop_active = false;
+    welcomer.loop_active = false;
     var ljoader = document.querySelector("#reaload_page"),
       Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
       div_header = document.querySelector("div_header"),
@@ -4288,10 +4356,10 @@ width="16"><span></span></bar_t><span>  </span>
           .querySelector(".pdf_download")
           .setAttribute("style", "display: none;");
       }
-      this.loadorNot();
+      welcomer.loadorNot();
     } else if (url.includes("projects")) {
       $("body").removeAttr("data-hmm");
-      this.projectsload();
+      welcomer.projectsload();
       $("div_header").attr("data-url", window.location.origin + "/?p=projects");
       $("iframe.iframe_mask").removeAttr("style");
       $("div_header span").html("Marko Nikolić > Projects");
@@ -4307,7 +4375,7 @@ width="16"><span></span></bar_t><span>  </span>
       }, 100);
     } else if (url.includes("gallery")) {
       $("body").removeAttr("data-hmm");
-      this.galleryload();
+      welcomer.galleryload();
 
       $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
       $("iframe.iframe_mask").removeAttr("style");
@@ -4374,6 +4442,7 @@ width="16"><span></span></bar_t><span>  </span>
     if (url.includes("projects")) {
       $("#clavs grider_viewer").hide();
     }
+  }});
   },
   pgloaderH: function (url = "") {
     var ljoader = document.querySelector("#reaload_page"),
@@ -5305,7 +5374,52 @@ width="16"><span></span></bar_t><span>  </span>
           .then(function (registration) {})
           .catch(function (e) {});
       }
-    }
+    } 
+    
+  
+    const img = document.createElement("img");
+    img.id = "svg_loader_img";
+    img.src = `${welcomer.loader_svg}`;
+    img.setAttribute("style",`
+    position: fixed;
+    right: 10px;
+    top: 10px;
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+    opacity:0;
+    object-fit: scale-down; 
+    transition: .3s;
+
+">`);   
+document.body.appendChild(img);
+    setTimeout(() => {
+      
+    
+    var video_wall = document.querySelector("video");
+    
+    // video_wall.src = `/?src=vdwallpper&v=`;
+    video_wall.play();
+    video_wall.classList.remove('video_is_hidden');   
+    fetch(`/?src=vdwallpper&v=${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`)
+    .then(response => response.blob())
+    .then(blob => {
+      video_wall.src = URL.createObjectURL(blob);
+     try{ document.querySelector("img#svg_loader_img").setAttribute("style","opacity: 0;");
+     }catch(ae0){}setTimeout(() => {
+          document.querySelector("img#svg_loader_img").remove();
+      }, 1000);
+      return video_wall.play();
+    });
+  }, 1000); 
+  const blob = new Blob([`console.clear();`], { type: 'text/javascript' }),
+  S = document.createElement("script");
+  S.src = URL.createObjectURL(blob);
+  S.onload = function(){
+    setTimeout(() => { 
+    URL.revokeObjectURL(blob);}, 1000);
+  }
+    // document.body.appendChild(S);
   },
   style_rebuild: function () {
     const style = document.createElement("style");

@@ -211,11 +211,14 @@ class portfolio_marko
     }
     function Pages($h = "home")
     {
+         
         if ($h == "home") {
-            ob_start(function ($b) {
+           /* ob_start(function ($b) {
                 return $b; // return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
-            });
+            });*/
+            
             include "$_SERVER[DOCUMENT_ROOT]/app/welcomer.php";
+            
         }
         if ($h == "cv-pdf") {
             include "$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php";

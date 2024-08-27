@@ -97,11 +97,10 @@ header('Content-Type: text/html; charset=utf-8');
     <link rel="preload" as="font"
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
         type="font/woff2">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
@@ -109,8 +108,7 @@ header('Content-Type: text/html; charset=utf-8');
     <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
 
     <script async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
-    </script>
+  
     <?php
 
     $token = bin2hex(random_bytes(64));
@@ -153,12 +151,12 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>"
+    <script nonce="<?php echo NONCE; ?>" defer async
         src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" async src="/?svc=jsc">
+    <script nonce="<?php echo NONCE; ?>" defer  src="/?svc=jsc">
 
     </script>
 
@@ -2404,14 +2402,20 @@ div#clavs br_ta ta_f.active span {
 
 
 <div_preview><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t><br></div_preview>        */
-    </style>
+    video.video_is_hidden {
+        opacity: 0 !important;
+        
+    }
+   </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
+    </script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
-
+            
             function gtag() {
                 dataLayer.push(arguments);
             }
@@ -2425,9 +2429,9 @@ div#clavs br_ta ta_f.active span {
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
-        loop autoplay muted autobuffer playsinline class="wallpaperVideo">
-        <source src="<?php echo SITE_HOST; ?>/?src=vdwallpper&v=<?php echo time(); ?>" type="video/mp4">
+    <video   style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
+        loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
+ 
     </video>
     <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
         echo "Live stream... Please wait...";

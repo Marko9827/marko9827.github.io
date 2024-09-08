@@ -2,9 +2,41 @@
 
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
+window.portfolio = {
+  data: {
+    host:"",
+    gallery:[],
+    pages: {
+      tg_channel: {
+        title: "Telegram Channel",
+        u: "tg-channel",
+        c: "",
+      },
+      cv_pdf: {
+        title: "CV",
+        u: "cv-pdf",
+        c: "",
+      },
+      visitcard: {
+        title: "Visitcard",
+        u: "visitcard",
+        c: "",
+      },
+    },
+  },
+};
+
+function base64Encode(str) {
+  const encoder = new TextEncoder();
+  const buffer = encoder.encode(str);
+  return btoa(String.fromCharCode.apply(null, buffer));
+}
+
 const welcomer = {
   lang: [],
   conf: {
+    token:"",
+    api: "/feed",
     black: true,
   },
   langs: [
@@ -17,7 +49,8 @@ const welcomer = {
         my_projects: "My projects",
         my_projects_dscr: "Look at my Projects",
         category_title: "Click for open %s category.",
-        robot: "Are you a robot?<br>If you don't?<sspan>Click</sspan> to see hidden...<br><i class='bi bi-eye'></i>"
+        robot:
+          "Are you a robot?<br>If you don't?<sspan>Click</sspan> to see hidden...<br><i class='bi bi-eye'></i>",
       },
     },
     {
@@ -218,187 +251,12 @@ const welcomer = {
   energyAnim: true,
   domain: "/?mnps=dbe&q=",
   div_not_i: 0,
-  spolr: ["cv-pdf","visitcard"],
+  spolr: ["cv-pdf", "visitcard"],
   yesurls: ["blog", "cv-pdf", "tg_channel", "gallery", "projects", "visitcard"],
-  projectsc:function(){
-      window.top.location.href = "/?p=projects";
+  projectsc: function () {
+    window.top.location.href = "/?p=projects";
   },
-  cards_links: [
-    {
-      title: "My CV",
-      descr: "Look at my CV",
-      icon: "bi bi-file-earmark-person-fill",
-      href: {
-        f_u: "welcomer.pgloader('/?pages=cv-pdf');",
-        f: true,
-        target: "",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My projects",
-      descr: "Look at my Projects",
-      icon: "bi bi-box2-heart",
-      href: {
-        f_u: `welcomer.projectsc();`,
-        f: true,
-        target: "",
-      },
-      num: 16,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My Visitcard",
-      descr: "Visit my Visit card",
-      icon: "bi bi-file-earmark-person-fill",
-      href: {
-        f_u: "welcomer.pgloader('/?pages=visitcard');",
-        f: true,
-        target: "",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "Gallery - Photos",
-      descr: "My photos gallery | Comming soon",
-      icon: "bi bi-images",
-      adiv_gat: "gallery_bundle",
-      href: {
-        f_u: "welcomer.galleryload();",
-        f: true,
-        target: "blank",
-      },
-      num: window.portfolio.gallery,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "Blog",
-      descr: "Blog/News &#128512",
-      icon: "bi bi-files-alt",
-      adiv_gat: "blog_bundle",
-      href: {
-        f_u: "welcomer.blogloader('all');",
-        f: true,
-        target: "blank",
-      },
-      num: window.portfolio.blog,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "Editor",
-      descr: "Html5/css/javascript editor, other languages coming soon...",
-      icon: "bi bi-file-code",
-      adiv_gat: "editor_bundle",
-      href: {
-        f_u: "welcomer.editor.startf();",
-        f: true,
-        target: "blank",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "Contact me",
-      descr: "Contact me",
-      icon: "bi bi-inbox",
-      href: {
-        f_u: "welcomer.cp();",
-        f: true,
-        target: "blank",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "Blog/News &#128512",
-      descr: "Blog/News &#128512",
-      icon: "bi bi-rss",
-      name: "blog_old",
-      visible: "yes",
-      href: {
-        f_u: "https://blog.eronelit.com/",
-        f: false,
-        target: "blank",
-      },
-      num: 323,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My Linkedin",
-      descr: "Look at my Linkedin Official profile",
-      icon: "bi bi-linkedin",
-      href: {
-        f_u: "https://www.linkedin.com/in/markonikolic98/",
-        f: false,
-        target: "blank",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My Github",
-      descr: "Look at my Github profile",
-      icon: "bi bi-github",
-      href: {
-        f_u: "https://github.com/Marko9827",
-        f: false,
-        target: "blank",
-      },
-      num: 172,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My Instagram",
-      descr: "Look at my Instagram profile",
-      icon: "bi bi-instagram",
-      href: {
-        f_u: "https://www.instagram.com/nikoliccc02/",
-        f: false,
-        target: "blank",
-      },
-      num: 2363,
-      beta: false,
-      soon: false,
-    },
-    {
-      title: "My Deviantart",
-      descr: "Look at my Deviantart profile",
-      icon: "fab fa-deviantart",
-      href: {
-        f_u: "https://www.deviantart.com/marko9827",
-        f: false,
-        target: "blank",
-      },
-      num: 37,
-      beta: false,
-      soon: false,
-    },
-
-    {
-      title: "Telegram",
-      descr: "Look at my Telegram profile",
-      icon: "fab fa-telegram",
-      href: {
-        f_u: `https://t.me/nikoliccc02`,
-        f: false,
-        target: "blank",
-      },
-      num: 0,
-      beta: false,
-      soon: false,
-    },
+  cards_links: [ 
   ],
   gallery_delegator: function (dlg = "a") {
     $("#image-popups").magnificPopup({
@@ -909,35 +767,28 @@ br_aer  img.favicon {
     // this.vdjae();
   },
   vdjae: async function () {
-    
-      $("img#svg_loader_img").css({"opacity": "0"});
-      setTimeout(() => {
-        $("img#svg_loader_img").remove();
-      }, 1000);
-   
- 
- 
-
+    $("img#svg_loader_img").css({ opacity: "0" });
+    setTimeout(() => {
+      $("img#svg_loader_img").remove();
+    }, 1000);
 
     const f = document
         .querySelector(".wallpaperVideo source")
         .getAttribute("src"),
-      url = await  fetch(f)
+      url = await fetch(f)
         .then((h) => {
           return h.blob();
         })
         .catch(function (v) {});
     const blob = URL.createObjectURL(url);
     document.querySelector(".wallpaperVideo source").setAttribute("src", blob);
-  
-    },
+  },
   getDataGallery: async function () {
     const response = await fetch("/?mnps=gallery"),
       responseJson = await response.json();
     return responseJson;
   },
   projects: [
-     
     {
       title: "E-student",
       description: "E-student, platforma za studente",
@@ -990,7 +841,7 @@ br_aer  img.favicon {
       href: "",
       type: true,
     },
-    
+
     {
       title: "IP Calculator",
       description: "Eronelit Dashboard - Plugin IP Calculator",
@@ -1066,13 +917,15 @@ br_aer  img.favicon {
       type: true,
     },
     {
-      title: "Pegasus project - Connection PC and Brain with no chips is possible!",
-      description: "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
+      title:
+        "Pegasus project - Connection PC and Brain with no chips is possible!",
+      description:
+        "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
       img: "/?blog=13_jul_2024_23_40/43515315",
       href: "",
       soon: true,
       type: true,
-    }
+    },
   ],
   history: [],
   cursor: $(".cursor"),
@@ -1095,51 +948,53 @@ br_aer  img.favicon {
       }
     );
   },
-  mobile_hover_tooltip_t: function(){
+  mobile_hover_tooltip_t: function () {
     this.mobile_hover_tooltip({
-      title:"Pegasus project - Connection PC and Brain with no chips is possible!",
-      description: "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
-      complete:function(res){
+      title:
+        "Pegasus project - Connection PC and Brain with no chips is possible!",
+      description:
+        "Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
+      complete: function (res) {
         document.querySelector("body").appendChild(res);
-      }
+      },
     });
   },
-  mobile_hover_tooltip: function(t = {
-    title:"",
-    description:"",
-    complete: function(){} 
-  }){
-    document.querySelectorAll("div_preview").forEach(function(r){
+  mobile_hover_tooltip: function (
+    t = {
+      title: "",
+      description: "",
+      complete: function () {},
+    }
+  ) {
+    document.querySelectorAll("div_preview").forEach(function (r) {
       r.remove();
     });
     const div_preview = document.createElement("div_preview"),
-    div_bck = document.createElement("div_bck"),
-    div_h2 = document.createElement("div_h2"),
-    divh2 = document.createElement("divh2"),
-    div_h = document.createElement("div_h"),
-    div_t = document.createElement("div_t"),
-    dtitle = document.createElement("dtitle"),
-    span = document.createElement("span");
+      div_bck = document.createElement("div_bck"),
+      div_h2 = document.createElement("div_h2"),
+      divh2 = document.createElement("divh2"),
+      div_h = document.createElement("div_h"),
+      div_t = document.createElement("div_t"),
+      dtitle = document.createElement("dtitle"),
+      span = document.createElement("span");
     span.innerHTML = `<i class="bi bi-caret-down-fill"></i> Close`;
 
-    span.onclick = function(){
-    if(div_preview.getAttribute("class") == "closed"){
-      div_preview.removeAttribute("class");
-      span.innerHTML = `<i class="bi bi-caret-down-fill"></i> Close`;
+    span.onclick = function () {
+      if (div_preview.getAttribute("class") == "closed") {
+        div_preview.removeAttribute("class");
+        span.innerHTML = `<i class="bi bi-caret-down-fill"></i> Close`;
+      } else {
+        div_preview.setAttribute("class", "closed");
+        span.innerHTML = `<i class="bi bi-caret-up-fill"></i> Open`;
+      }
+    };
 
-     } else {
-      div_preview.setAttribute("class","closed");    
-      span.innerHTML  = `<i class="bi bi-caret-up-fill"></i> Open`; 
-    }
-  }
-  
-  dtitle.innerHTML = `${t.title}`;
+    dtitle.innerHTML = `${t.title}`;
 
     div_h.innerHTML = `${t.title}`;
     div_t.innerHTML = `${t.description}`;
-    
-    
-    div_h2.appendChild(divh2); 
+
+    div_h2.appendChild(divh2);
     div_h2.appendChild(span);
     div_preview.appendChild(div_bck);
     div_preview.appendChild(div_h2);
@@ -1161,9 +1016,9 @@ br_aer  img.favicon {
      </div_t></div_preview>
     */
 
-    if (typeof t.complete === 'function') {
+    if (typeof t.complete === "function") {
       t.complete(div_preview);
-  }
+    }
   },
   scrolj: function () {
     const catascrollEchatTv_right = document.querySelector(
@@ -1667,24 +1522,24 @@ width="16"><span></span></bar_t><span>  </span>
 
     return txt.value;
   },
-  spoiler: function(v = {c, u: ""}){
-    
+  spoiler: function (v = { c, u: "" }) {
     var f = welcomer.spolr,
-    no_spoler = false;
-    console.log(v);
+      no_spoler = false;
+    // console.log(v);
     // for(var i = 0; i < f.length; i++){
-    if(v.u.includes("cv-pdf") || v.u.includes("visitcard")){
+    if (v.u.includes("cv-pdf") || v.u.includes("visitcard")) {
       no_spoler = true;
     }
-    if(no_spoler){ 
-   
-    var spoiler_t = document.createElement("spiler_t"),
-   spoiler_iframe = document.createElement("spoiler_iframe"),
-   b_spoiler_iframe = document.createElement("b_spoiler_iframe"),
-     img = document.createElement("img");
-   img.id = "spoiler_svg_loader";
-   img.src = `${welcomer.loader_svg}`;
-   img.setAttribute("style",`
+    if (no_spoler) {
+      var spoiler_t = document.createElement("spiler_t"),
+        spoiler_iframe = document.createElement("spoiler_iframe"),
+        b_spoiler_iframe = document.createElement("b_spoiler_iframe"),
+        img = document.createElement("img");
+      img.id = "spoiler_svg_loader";
+      img.src = `${welcomer.loader_svg}`;
+      img.setAttribute(
+        "style",
+        `
    position: fixed;
    right: 10px;
    top: 10px;
@@ -1695,30 +1550,29 @@ width="16"><span></span></bar_t><span>  </span>
    object-fit: scale-down; 
    transition: .3s;
 
-">`); 
-   document.body.classList.add("spoiler_active");
-   spoiler_t.innerHTML = `Sorry - Are you a robot?<br>If you don't? <sspan>Click</sspan> to see hidden...<br><i class="bi bi-eye"></i>`;
-   if(document.querySelectorAll('spiler_t').length < 1){
-   document.body.appendChild(spoiler_iframe);
-   document.body.appendChild(spoiler_t);
-   document.body.appendChild(b_spoiler_iframe);
-   spoiler_t.onclick = function() {
-    spoiler_t.innerHeight = "Please wait...";
-    spoiler_t.appendChild(img);
-    document.body.classList.remove("spoiler_active");
-    setTimeout(() => {
-      spoiler_iframe.remove();
-      spoiler_t.remove();
-      b_spoiler_iframe.remove();
-      },500);
+">`
+      );
+      document.body.classList.add("spoiler_active");
+      spoiler_t.innerHTML = `Sorry - Are you a robot?<br>If you don't? <sspan>Click</sspan> to see hidden...<br><i class="bi bi-eye"></i>`;
+      if (document.querySelectorAll("spiler_t").length < 1) {
+        document.body.appendChild(spoiler_iframe);
+        document.body.appendChild(spoiler_t);
+        document.body.appendChild(b_spoiler_iframe);
+        spoiler_t.onclick = function () {
+          spoiler_t.innerHeight = "Please wait...";
+          spoiler_t.appendChild(img);
+          document.body.classList.remove("spoiler_active");
+          setTimeout(() => {
+            spoiler_iframe.remove();
+            spoiler_t.remove();
+            b_spoiler_iframe.remove();
+          }, 500);
+          v.c();
+        };
+      }
+    } else {
       v.c();
-     
-   }
-  }} else{
-    v.c();
-    
-  }
-
+    }
   },
   remove_duplicates: function (arr) {
     var obj = {};
@@ -1935,8 +1789,8 @@ width="16"><span></span></bar_t><span>  </span>
       } else {
         img_src_d = `${v.thumbail}&thumb=true`;
       }
-      var p_image =  ``;
-      if(welcomer.isimagec(v?.category)){
+      var p_image = ``;
+      if (welcomer.isimagec(v?.category)) {
         /* p_image = `<p_open class="open_img" onclick="welcomer.blogloader(1073568435);">
             <i class="bi bi-image-fill"></i> Open image
             <img style="" />
@@ -2089,6 +1943,9 @@ width="16"><span></span></bar_t><span>  </span>
           afterSlash = json[i].split("/")[2];
         image.src = json[i];
 
+        if(json[i].includes("&t=v")){
+            json[i] = json[i].replace(`${window.portfolio.host}app&id=${window.portfolio.id}&blog=`,"/?blog=");
+        }
         iframe.src = json[i];
 
         dh.innerHTML = `<dhn>${v}/${a}</dhn>`;
@@ -2241,6 +2098,10 @@ width="16"><span></span></bar_t><span>  </span>
     });
   },
   load_gallery_j: [],
+  galleryloadT: function(){
+    window.top.location.href = "/?p=gallery";
+
+  },
   galleryload: function () {
     $("gridder_loader").attr("style", "opacity:1");
 
@@ -2320,8 +2181,8 @@ width="16"><span></span></bar_t><span>  </span>
             ondragstart="return false;" 
             onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
             onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
-            src="${v[i].thumb}"  
-            data-zoom-image="${v[i].thumb}"
+            src="${v[i].img}"  
+            data-zoom-image="${v[i].img}"
             data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                    </grider_box>
 
@@ -2351,6 +2212,7 @@ width="16"><span></span></bar_t><span>  </span>
       const imageUrl = URL.createObjectURL(blob);
       d.src = URL.createObjectURL(blob);
       $(aer).parent().parent().removeAttr("style");
+      $(aer).removeAttr("onload");
     } catch (error) {
       console.error(":(", error);
     }
@@ -2381,17 +2243,17 @@ width="16"><span></span></bar_t><span>  </span>
     };
     $(aer).removeAttr("onload");
   },
-  isimagec: function(arr = []){
+  isimagec: function (arr = []) {
     var is_image = false;
 
-    for(var i = 0; i < arr.length; i++){
-      console.log(arr.length, arr[i]);
+    for (var i = 0; i < arr.length; i++) {
+      // console.log(arr.length, arr[i]);
       var arr_i = arr[i];
-      if(arr_i.includes("image")){
+      if (arr_i.includes("image")) {
         is_image = true;
       }
     }
-   
+
     return is_image;
   },
   projectsload: function () {
@@ -2429,7 +2291,7 @@ width="16"><span></span></bar_t><span>  </span>
            </p_open>`;
         }
       }
-       
+
       if (v?.soon == true) {
         p_open = ` <p_open style="pointer-events: none !important;" title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
         <i class="bi bi-signpost-split"></i> Coming soon
@@ -2504,7 +2366,7 @@ width="16"><span></span></bar_t><span>  </span>
       ).remove();
     }
     $(" preview_imagem").remove();
-    document.querySelectorAll("div_preview").forEach(function(r){
+    document.querySelectorAll("div_preview").forEach(function (r) {
       r.remove();
     });
   },
@@ -2522,7 +2384,7 @@ width="16"><span></span></bar_t><span>  </span>
       .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
       .then((blob) => {
         const imgElement = document.createElement("img");
-        imgH.src = blob;// URL.createObjectURL(blob);
+        imgH.src = blob; // URL.createObjectURL(blob);
       });
     imgH.onload = function () {
       $(imgH).ezPlus({
@@ -2553,18 +2415,18 @@ width="16"><span></span></bar_t><span>  </span>
     var imgH = new Image();
 
     welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
-    if(document.body.offsetWidth < 750){
-    var title_f = $(`project[id-int="${h}"] p span`).html(),
-    description = $(`project[id-int="${h}"]`).attr("title");
- 
-    welcomer.mobile_hover_tooltip({
-      title: `${title_f}`,
-      description: `${description}`,
-      complete:function(res){
-        document.querySelector("body").appendChild(res);
-      }
-    }); 
-  }
+    if (document.body.offsetWidth < 750) {
+      var title_f = $(`project[id-int="${h}"] p span`).html(),
+        description = $(`project[id-int="${h}"]`).attr("title");
+
+      welcomer.mobile_hover_tooltip({
+        title: `${title_f}`,
+        description: `${description}`,
+        complete: function (res) {
+          document.querySelector("body").appendChild(res);
+        },
+      });
+    }
   },
 
   openWindow: function (i = 0) {
@@ -3025,6 +2887,9 @@ width="16"><span></span></bar_t><span>  </span>
       }
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
+    },
+    startfV: function(){
+      window.top.location.href = "/?p=editor";
     },
     startf: function () {
       this.call_nav();
@@ -3569,11 +3434,11 @@ width="16"><span></span></bar_t><span>  </span>
       rrsz: false,
     },
     puthtml: function (ifrm, data = "", f = true) {
-      if(f){
-      ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`; //.appendChild(scriptTag);
+      if (f) {
+        ifrm.contentWindow.document.querySelector("html").innerHTML = `${data}`; //.appendChild(scriptTag);
       }
-      if(f == false){
-      const scriptc = `
+      if (f == false) {
+        const scriptc = `
       (function() {
           const originalLog = console.log;
           const originalError = console.error;
@@ -3593,60 +3458,61 @@ width="16"><span></span></bar_t><span>  </span>
           };
       })();
   `;
-  const iframeDoc = iframe.contentDocument || iframe.contentWindow.document; 
-  const script = iframeDoc.createElement('script');
-  script.type = 'text/javascript';
-  script.text = scriptc; 
-  iframeDoc.body.appendChild(script);
+        const iframeDoc =
+          iframe.contentDocument || iframe.contentWindow.document;
+        const script = iframeDoc.createElement("script");
+        script.type = "text/javascript";
+        script.text = scriptc;
+        iframeDoc.body.appendChild(script);
       }
     },
     isLogging: {
       Typing: false,
       istimeout: null,
-      istypingComplete: function(){
+      istypingComplete: function () {
         welcomer.editor.isLogging.Typing = true;
-      }
-    }, 
-    appendLog: (c = {message: "", type: "log"}) => {
+      },
+    },
+    appendLog: (c = { message: "", type: "log" }) => {
       const logElement = document.createElement("div");
-       logElement.className = `log ${c.type}`;
+      logElement.className = `log ${c.type}`;
       // logElement.textContent = message;
       logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
       <spant>06:03 07/10/2024</spant>
     </log_msg>`;
-   
+
       logContainer.appendChild(logElement);
     },
-    clock: function(){
+    clock: function () {
       const now = new Date();
       let hours = now.getHours();
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      const ampm = hours >= 12 ? "PM" : "AM";
 
       hours = hours % 12;
-      hours = hours ? hours : 12; 
-      hours = String(hours).padStart(2, '0');
+      hours = hours ? hours : 12;
+      hours = String(hours).padStart(2, "0");
 
       const formattedTime = `${hours}:${minutes}:${seconds} ${ampm}`;
       return formattedTime;
     },
-    appendLogF: (c = {message: "", type: "log"}) => {
-      if(c.message !== ""){
-      const logElement = document.createElement("div"),
-      d = new Date();
-      
-       logElement.className = `log ${c.type}`;
-      // logElement.textContent = message;
-      logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
+    appendLogF: (c = { message: "", type: "log" }) => {
+      if (c.message !== "") {
+        const logElement = document.createElement("div"),
+          d = new Date();
+
+        logElement.className = `log ${c.type}`;
+        // logElement.textContent = message;
+        logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
       <spant>${welcomer.editor.clock()}</spant>
     </log_msg>`;
-   
-      logContainer.appendChild(logElement);
+
+        logContainer.appendChild(logElement);
       }
     },
     callEditor: function (id = 0) {
@@ -3739,28 +3605,42 @@ width="16"><span></span></bar_t><span>  </span>
               if (span.classList.contains("active")) {
                 span.classList.remove("active");
               } else {
-                document.querySelectorAll("div#logContainer .log").forEach(function(f){
-                  $(f).hide();
-                });
-                document.querySelectorAll("div#logContainer .log.error").forEach(function(f){
-                  $(f).show();
-                });
+                document
+                  .querySelectorAll("div#logContainer .log")
+                  .forEach(function (f) {
+                    $(f).hide();
+                  });
+                document
+                  .querySelectorAll("div#logContainer .log.error")
+                  .forEach(function (f) {
+                    $(f).show();
+                  });
                 span.classList.add("active");
               }
             }
-            if (f.class.includes("info") || f.class.includes("warnings") || f.class.includes("all")) {
+            if (
+              f.class.includes("info") ||
+              f.class.includes("warnings") ||
+              f.class.includes("all")
+            ) {
               logContainer.classList.add("active");
-              document.querySelector("div#logContainer divf_ span.expand").innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
+              document.querySelector(
+                "div#logContainer divf_ span.expand"
+              ).innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
               if (span.classList.contains("active")) {
                 span.classList.remove("active");
               } else {
                 span.classList.add("active");
-                document.querySelectorAll("div#logContainer .log").forEach(function(f){
-                  $(f).hide();
-                });
-                document.querySelectorAll(`div#logContainer .log.${f.class}`).forEach(function(f){
-                  $(f).show();
-                });
+                document
+                  .querySelectorAll("div#logContainer .log")
+                  .forEach(function (f) {
+                    $(f).hide();
+                  });
+                document
+                  .querySelectorAll(`div#logContainer .log.${f.class}`)
+                  .forEach(function (f) {
+                    $(f).show();
+                  });
               }
             }
             if (f.class == "expand") {
@@ -3771,19 +3651,16 @@ width="16"><span></span></bar_t><span>  </span>
                 logContainer.classList.add("active");
                 span.innerHTML = ` <i class="bi bi-caret-down-fill"></i> Close`;
               }
-            } 
-
-            if (f.class.includes("all")) {
-              
-                 span.classList.add("active");
-                document.querySelectorAll("div#logContainer .log").forEach(function(f){
-                  $(f).show();
-                });
-                
-                
             }
 
-            
+            if (f.class.includes("all")) {
+              span.classList.add("active");
+              document
+                .querySelectorAll("div#logContainer .log")
+                .forEach(function (f) {
+                  $(f).show();
+                });
+            }
           });
           divf_.appendChild(span);
         });
@@ -3858,8 +3735,6 @@ width="16"><span></span></bar_t><span>  </span>
             welcomer.editor.editor_fail_message("editor-wrapper");
           }
         });
-
-
 
         resizer.addEventListener("mousedown", function (e) {
           e.preventDefault();
@@ -3966,28 +3841,32 @@ width="16"><span></span></bar_t><span>  </span>
           automaticLayout: true,
           cursorStyle: "hidden",
         });
- 
+
         let typingTimer; // Timer identifier
         const doneTypingInterval = 2000; // Time in ms (2 seconds)
         // ---
         function validateHTML(content) {
           let errors = [];
-          const lines = content.split('\n');
-  
+          const lines = content.split("\n");
+
           const singleTagPattern = /<([a-zA-Z]+)([^<]*)>/g;
           const closingTagPattern = /<\/([a-zA-Z]+)>/g;
-  
+
           let singleTags = [];
           lines.forEach((line, index) => {
             let match;
             while ((match = singleTagPattern.exec(line)) !== null) {
-              singleTags.push({ tag: match[1], line: index + 1, column: match.index + 1 });
+              singleTags.push({
+                tag: match[1],
+                line: index + 1,
+                column: match.index + 1,
+              });
             }
             while ((match = closingTagPattern.exec(line)) !== null) {
               const tag = match[1];
-              const foundTag = singleTags.find(t => t.tag === tag);
+              const foundTag = singleTags.find((t) => t.tag === tag);
               if (foundTag) {
-                singleTags = singleTags.filter(t => t.tag !== tag);
+                singleTags = singleTags.filter((t) => t.tag !== tag);
               } else {
                 errors.push({
                   startLineNumber: index + 1,
@@ -3995,49 +3874,49 @@ width="16"><span></span></bar_t><span>  </span>
                   endLineNumber: index + 1,
                   endColumn: match.index + match[0].length,
                   message: `Unmatched closing tag </${tag}>`,
-                  severity: monaco.MarkerSeverity.Error
+                  severity: monaco.MarkerSeverity.Error,
                 });
               }
             }
           });
-  
-          singleTags.forEach(tag => {
+
+          singleTags.forEach((tag) => {
             errors.push({
               startLineNumber: tag.line,
               startColumn: tag.column,
               endLineNumber: tag.line,
               endColumn: tag.column + tag.tag.length + 2,
               message: `Unclosed tag <${tag.tag}>`,
-              severity: monaco.MarkerSeverity.Error
+              severity: monaco.MarkerSeverity.Error,
             });
           });
-  
+
           return errors;
         }
-  
+
         function validateCSS(content) {
           let errors = [];
           const cssParser = new CSSParser();
           const parsedCSS = cssParser.parse(content);
-          
-          parsedCSS.errors.forEach(error => {
+
+          parsedCSS.errors.forEach((error) => {
             errors.push({
               startLineNumber: error.line,
               startColumn: error.column,
               endLineNumber: error.line,
               endColumn: error.column + error.length,
               message: error.message,
-              severity: monaco.MarkerSeverity.Error
+              severity: monaco.MarkerSeverity.Error,
             });
           });
-  
+
           return errors;
         }
-  
+
         function validateJavaScript(content) {
           let errors = [];
-          const esprima = require('esprima');
-          
+          const esprima = require("esprima");
+
           try {
             esprima.parseScript(content, {}, (node, meta) => {});
           } catch (e) {
@@ -4047,26 +3926,36 @@ width="16"><span></span></bar_t><span>  </span>
               endLineNumber: e.lineNumber,
               endColumn: e.column + e.description.length,
               message: e.description,
-              severity: monaco.MarkerSeverity.Error
+              severity: monaco.MarkerSeverity.Error,
             });
           }
-  
+
           return errors;
         }
-  
+
         function updateMarkers() {
           const content = editor.getValue();
-          const htmlContent = content.match(/<html>[\s\S]*<\/html>/g) ? content.match(/<html>[\s\S]*<\/html>/g)[0] : '';
-          const cssContent = content.match(/<style>[\s\S]*<\/style>/g) ? content.match(/<style>[\s\S]*<\/style>/g)[0].replace(/<\/?style>/g, '') : '';
-          const jsContent = content.match(/<script>[\s\S]*<\/script>/g) ? content.match(/<script>[\s\S]*<\/script>/g)[0].replace(/<\/?script>/g, '') : '';
-  
+          const htmlContent = content.match(/<html>[\s\S]*<\/html>/g)
+            ? content.match(/<html>[\s\S]*<\/html>/g)[0]
+            : "";
+          const cssContent = content.match(/<style>[\s\S]*<\/style>/g)
+            ? content
+                .match(/<style>[\s\S]*<\/style>/g)[0]
+                .replace(/<\/?style>/g, "")
+            : "";
+          const jsContent = content.match(/<script>[\s\S]*<\/script>/g)
+            ? content
+                .match(/<script>[\s\S]*<\/script>/g)[0]
+                .replace(/<\/?script>/g, "")
+            : "";
+
           const htmlErrors = validateHTML(htmlContent);
           const cssErrors = validateCSS(cssContent);
           const jsErrors = validateJavaScript(jsContent);
-  
+
           const errors = [...htmlErrors, ...cssErrors, ...jsErrors];
           const model = editor.getModel();
-          monaco.editor.setModelMarkers(model, 'htmlOwner', errors);
+          monaco.editor.setModelMarkers(model, "htmlOwner", errors);
           logErrors(errors);
         }
         // ---
@@ -4077,27 +3966,32 @@ width="16"><span></span></bar_t><span>  </span>
           if (errors.length === 0) {
             // logContainer.innerHTML = '<p>No errors found.</p>';
           } else {
-            errors.forEach(error => {
+            errors.forEach((error) => {
               // const errorElement = document.createElement('p');
               // errorElement.textContent = `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`;
               // logContainer.appendChild(errorElement);
 
-              welcomer.editor.appendLogF({message:`Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`,type: "error"});
+              welcomer.editor.appendLogF({
+                message: `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`,
+                type: "error",
+              });
             });
           }
-          $("div#logContainer divf_ span.errors").html(`<i class="bi bi-exclamation-triangle-fill"></i> Errors ${errors.length}`);
+          $("div#logContainer divf_ span.errors").html(
+            `<i class="bi bi-exclamation-triangle-fill"></i> Errors ${errors.length}`
+          );
         }
         function updateMarkers() {
           const content = editor.getValue();
           const errors = validateHTML(content);
           const model = editor.getModel();
-          monaco.editor.setModelMarkers(model, 'htmlOwner', errors);
+          monaco.editor.setModelMarkers(model, "htmlOwner", errors);
           logErrors(errors);
         }
-  
+
         editor.onDidChangeModelContent(updateMarkers);
         updateMarkers();
-      
+
         buttons.undo.addEventListener("click", function () {
           editor.getModel().undo();
         });
@@ -4145,30 +4039,34 @@ width="16"><span></span></bar_t><span>  </span>
 
         function logDiagnostics() {
           const model = editor.getModel();
-          const markers = monaco.editor.getModelMarkers({ resource: model.uri });
-          
-          markers.forEach(marker => {
-              let logMethod = console.log;
-              let type = 'Info';
-
-              switch (marker.severity) {
-                  case monaco.MarkerSeverity.Error:
-                      logMethod = console.error;
-                      type = 'Error';
-                      break;
-                  case monaco.MarkerSeverity.Warning:
-                      logMethod = console.warn;
-                      type = 'Warning';
-                      break;
-                  case monaco.MarkerSeverity.Info:
-                      logMethod = console.info;
-                      type = 'Info';
-                      break;
-              }
-
-              logMethod(`[${type}] Line ${marker.startLineNumber}, Column ${marker.startColumn}: ${marker.message}`);
+          const markers = monaco.editor.getModelMarkers({
+            resource: model.uri,
           });
-      }
+
+          markers.forEach((marker) => {
+            let logMethod = console.log;
+            let type = "Info";
+
+            switch (marker.severity) {
+              case monaco.MarkerSeverity.Error:
+                logMethod = console.error;
+                type = "Error";
+                break;
+              case monaco.MarkerSeverity.Warning:
+                logMethod = console.warn;
+                type = "Warning";
+                break;
+              case monaco.MarkerSeverity.Info:
+                logMethod = console.info;
+                type = "Info";
+                break;
+            }
+
+            logMethod(
+              `[${type}] Line ${marker.startLineNumber}, Column ${marker.startColumn}: ${marker.message}`
+            );
+          });
+        }
 
         function updatePreview() {
           var previewFrame = iframe;
@@ -4194,7 +4092,7 @@ width="16"><span></span></bar_t><span>  </span>
             encodeURIComponent(previewContent);*/
 
           welcomer.editor.puthtml(previewFrame, previewContent);
-          try { 
+          try {
             welcomer.editor.puthtml(
               document.querySelector(
                 `editor-history-rp iframe.preview_dom[data-id="${welcomer.editor.getParams(
@@ -4290,160 +4188,174 @@ width="16"><span></span></bar_t><span>  </span>
     $("div_header").attr("data-url", url);
   },
   pgloader: function (url = "") {
-    this.spoiler({ u: url, c: function(){
-    $("#clavs grider_viewer").removeAttr("style");
-    try {
-      $(".Ignoring_me_iframe.shadow_root").removeClass("open");
-    } catch (aer) {}
-    $("body").attr("data-url-id", url);
-    const urlParams = new URLSearchParams(window.location.search);
-    $(".pdf_page_home_btn").hide();
-    $(".close_btnf").show();
-    $("grider_viewer").removeClass("g_gallery");
-
-    if (url !== "yes") {
-      var hrl_url = url.replace("pages", "p");
-      if (!url.includes(window.location.origin)) {
-        $("div_header").attr("data-url", window.location.origin + hrl_url);
-        try {
-          welcomer.blg_history_replace(hrl_url);
-        } catch (arV) {}
-      } else {
-        $("div_header").attr("data-url", url);
-      }
-    }
-    welcomer.loop_active = false;
-    var ljoader = document.querySelector("#reaload_page"),
-      Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
-      div_header = document.querySelector("div_header"),
-      iframe = document.createElement("iframe"),
-      clavs = document.getElementById("clavs");
-
-    document
-      .querySelector(".pdf_download")
-      .setAttribute("style", "display: none;");
-
-    if (url == "yes") {
-      $(ljoader).show();
-      $(Vjideo_sjpinner).hide();
-
-      const const_urlParams = new URLSearchParams(window.location.search);
-      const const_myParam = const_urlParams.get("p");
-      if (const_myParam == "blog") {
+    this.spoiler({
+      u: url,
+      c: function () {
         $("#clavs grider_viewer").removeAttr("style");
-      } else {
-        $("div_header span").html(
-          $("iframe:not(.iframe_mask)").contents().find("title").html()
-        );
-      }
-      $("div_header").removeClass("ld_completeld_complete2");
-      $("div_header").addClass("ld_completeld_complete");
-      var url2 = $("iframe:not(.iframe_mask)").attr("src");
-      try {
-        if (url2.includes("cv-pdf")) {
-          welcomer.blg_history_replace(`/?p=cv-pdf`);
+        try {
+          $(".Ignoring_me_iframe.shadow_root").removeClass("open");
+        } catch (aer) {}
+        $("body").attr("data-url-id", url);
+        const urlParams = new URLSearchParams(window.location.search);
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
+        $("grider_viewer").removeClass("g_gallery");
 
-          document
-            .querySelector(".pdf_download")
-            .setAttribute("style", "display: block;");
-          $("#clavs grider_viewer").attr("style", "pointer-events: none; ");
-        } else {
-          document
-            .querySelector(".pdf_download")
-            .setAttribute("style", "display: none;");
+        if (url !== "yes") {
+          var hrl_url = url.replace("pages", "p");
+          if (!url.includes(window.location.origin)) {
+            $("div_header").attr("data-url", window.location.origin + hrl_url);
+            try {
+              welcomer.blg_history_replace(hrl_url);
+            } catch (arV) {}
+          } else {
+            $("div_header").attr("data-url", url);
+          }
         }
-      } catch (res) {
+        welcomer.loop_active = false;
+        var ljoader = document.querySelector("#reaload_page"),
+          Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+          div_header = document.querySelector("div_header"),
+          iframe = document.createElement("iframe"),
+          clavs = document.getElementById("clavs");
+
         document
           .querySelector(".pdf_download")
           .setAttribute("style", "display: none;");
-      }
-      welcomer.loadorNot();
-    } else if (url.includes("projects")) {
-      $("body").removeAttr("data-hmm");
-      welcomer.projectsload();
-      $("div_header").attr("data-url", window.location.origin + "/?p=projects");
-      $("iframe.iframe_mask").removeAttr("style");
-      $("div_header span").html("Marko Nikolić > Projects");
 
-      welcomer.blg_history_replace(`/?p=projects`);
-      $("html").addClass("anim_djenerated");
+        if (url == "yes") {
+          $(ljoader).show();
+          $(Vjideo_sjpinner).hide();
 
-      setTimeout(() => {
-        $("#clavs grider_viewer").attr(
-          "style",
-          "padding-top: 10px !important;"
-        );
-      }, 100);
-    } else if (url.includes("gallery")) {
-      $("body").removeAttr("data-hmm");
-      welcomer.galleryload();
+          const const_urlParams = new URLSearchParams(window.location.search);
+          const const_myParam = const_urlParams.get("p");
+          if (const_myParam == "blog") {
+            $("#clavs grider_viewer").removeAttr("style");
+          } else {
+            $("div_header span").html(
+              $("iframe:not(.iframe_mask)").contents().find("title").html()
+            );
+          }
+          $("div_header").removeClass("ld_completeld_complete2");
+          $("div_header").addClass("ld_completeld_complete");
+          var url2 = $("iframe:not(.iframe_mask)").attr("src");
+          try {
+            if (url2.includes("cv-pdf")) {
+              welcomer.blg_history_replace(`/?p=cv-pdf`);
 
-      $("div_header").attr("data-url", window.location.origin + "/?p=Gallery");
-      $("iframe.iframe_mask").removeAttr("style");
-      $("div_header span").html("Marko Nikolić > Gallery");
+              document
+                .querySelector(".pdf_download")
+                .setAttribute("style", "display: block;");
+              $("#clavs grider_viewer").attr("style", "pointer-events: none; ");
+            } else {
+              document
+                .querySelector(".pdf_download")
+                .setAttribute("style", "display: none;");
+            }
+          } catch (res) {
+            document
+              .querySelector(".pdf_download")
+              .setAttribute("style", "display: none;");
+          }
+          welcomer.loadorNot();
+        } else if (url.includes("projects")) {
+          $("body").removeAttr("data-hmm");
+          welcomer.projectsload();
+          $("div_header").attr(
+            "data-url",
+            window.location.origin + "/?p=projects"
+          );
+          $("iframe.iframe_mask").removeAttr("style");
+          $("div_header span").html("Marko Nikolić > Projects");
 
-      welcomer.blg_history_replace(`/?p=gallery`);
-    } else if (url.includes("blog.eronelit.com") || url.includes("p=blllog")) {
-      $(ljoader).hide();
-      $(Vjideo_sjpinner).show();
-      $("div_header").removeClass("ld_completeld_complete");
-      $("div_header").addClass("ld_completeld_complete2");
+          welcomer.blg_history_replace(`/?p=projects`);
+          $("html").addClass("anim_djenerated");
 
-      $("body").attr("data-hmm", "ld_completeld_complete3");
+          setTimeout(() => {
+            $("#clavs grider_viewer").attr(
+              "style",
+              "padding-top: 10px !important;"
+            );
+          }, 100);
+        } else if (url.includes("gallery")) {
+          $("body").removeAttr("data-hmm");
+          welcomer.galleryload();
 
-      $("div_header span").html("Marko Nikolić > Blog");
-      document
-        .getElementById("clavs")
-        .setAttribute("style", " opacity:1; transform:unset; ");
-      $("iframe:not(.iframe_mask)").attr("src", url);
-      $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-      $("div_header").attr("data-url", window.location.origin + "/?p=blog");
-    } else {
-      $("body").removeAttr("data-hmm");
-      document
-        .getElementById("clavs")
-        .setAttribute("style", " opacity:1; transform:unset; ");
+          $("div_header").attr(
+            "data-url",
+            window.location.origin + "/?p=Gallery"
+          );
+          $("iframe.iframe_mask").removeAttr("style");
+          $("div_header span").html("Marko Nikolić > Gallery");
 
-      if (url.includes("?pages=cv-pdf")) {
-        $("iframe:not(.iframe_mask)")
-          .contents()
-          .find("html")
-          .html(`${window.portfolio.data.pages.cv_pdf.c}`);
-        welcomer.pgloader_native(window.portfolio.data.pages.cv_pdf);
-      }
-      if (url.includes("?pages=visitcard")) {
-        $("iframe:not(.iframe_mask)")
-          .contents()
-          .find("html")
-          .html(`${window.portfolio.data.pages.visitcard.c}`);
-        welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
-      }
-      if (url.includes("?pages=tg_channel")) {
-        welcomer.pgloader_native("<p>Loading...</p>");
-        $(".ld_completeld_complete span").html("My Official Telegram channel");
-        welcomer.Social.tg.start();
-      }
-      var ifrm = document.querySelector("iframe:not(.iframe_mask)");
-      ifrm.removeAttribute("onload");
-      ifrm =
-        ifrm.contentWindow ||
-        ifrm.contentDocument.document ||
-        ifrm.contentDocument;
+          welcomer.blg_history_replace(`/?p=gallery`);
+        } else if (
+          url.includes("blog.eronelit.com") ||
+          url.includes("p=blllog")
+        ) {
+          $(ljoader).hide();
+          $(Vjideo_sjpinner).show();
+          $("div_header").removeClass("ld_completeld_complete");
+          $("div_header").addClass("ld_completeld_complete2");
 
-      var frameDoc = ifrm;
+          $("body").attr("data-hmm", "ld_completeld_complete3");
 
-      $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
-      $("#clavs grider_viewer, div#clavs br_ta").hide();
-      $("iframe.iframe_mask").hide();
-      if (url.includes)
-        try {
-        } catch (v) {}
-    }
+          $("div_header span").html("Marko Nikolić > Blog");
+          document
+            .getElementById("clavs")
+            .setAttribute("style", " opacity:1; transform:unset; ");
+          $("iframe:not(.iframe_mask)").attr("src", url);
+          $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
+          $("div_header").attr("data-url", window.location.origin + "/?p=blog");
+        } else {
+          $("body").removeAttr("data-hmm");
+          document
+            .getElementById("clavs")
+            .setAttribute("style", " opacity:1; transform:unset; ");
 
-    if (url.includes("projects")) {
-      $("#clavs grider_viewer").hide();
-    }
-  }});
+          if (url.includes("?pages=cv-pdf")) {
+            $("iframe:not(.iframe_mask)")
+              .contents()
+              .find("html")
+              .html(`${window.portfolio.data.pages.cv_pdf.c}`);
+            welcomer.pgloader_native(window.portfolio.data.pages.cv_pdf);
+          }
+          if (url.includes("?pages=visitcard")) {
+            $("iframe:not(.iframe_mask)")
+              .contents()
+              .find("html")
+              .html(`${window.portfolio.data.pages.visitcard.c}`);
+            welcomer.pgloader_native(window.portfolio.data.pages.visitcard);
+          }
+          if (url.includes("?pages=tg_channel")) {
+            welcomer.pgloader_native("<p>Loading...</p>");
+            $(".ld_completeld_complete span").html(
+              "My Official Telegram channel"
+            );
+            welcomer.Social.tg.start();
+          }
+          var ifrm = document.querySelector("iframe:not(.iframe_mask)");
+          ifrm.removeAttribute("onload");
+          ifrm =
+            ifrm.contentWindow ||
+            ifrm.contentDocument.document ||
+            ifrm.contentDocument;
+
+          var frameDoc = ifrm;
+
+          $("iframe:not(.iframe_mask)").attr("data-temp-url", url);
+          $("#clavs grider_viewer, div#clavs br_ta").hide();
+          $("iframe.iframe_mask").hide();
+          if (url.includes)
+            try {
+            } catch (v) {}
+        }
+
+        if (url.includes("projects")) {
+          $("#clavs grider_viewer").hide();
+        }
+      },
+    });
   },
   pgloaderH: function (url = "") {
     var ljoader = document.querySelector("#reaload_page"),
@@ -4542,10 +4454,12 @@ width="16"><span></span></bar_t><span>  </span>
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");
+   
     var msg_title =
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
     if (containeds.includes("?p=blog&id=")) {
+      // window.top.location.href = "/?p=blog";
       welcomer.blogloader("all");
 
       return false;
@@ -5020,8 +4934,52 @@ width="16"><span></span></bar_t><span>  </span>
 
     ele.addEventListener("mousedown", mouseDownHandler);
   },
+  _get_data: function (
+    v = { headers: {}, type:"GET" , url: "", error: function () {}, response: function (error, data) {} }
+  ) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open(v.type , v.url, true);
+    xhr.responseType = "json";
+    for (let key in v.headers) {
+      if (v.headers.hasOwnProperty(key)) {
+          // console.log(key + ": " + myObject[key]);
+
+          xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+
+      }
+  }
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        var data = xhr.response;
+        v.response("", data);
+      } else {
+        console.error("Request failed. Returned status of " + xhr.status);
+        v.response(xhr.status, null);
+      }
+    };
+    xhr.onerror = function () {
+      console.error("Request failed");
+    };
+    xhr.send();
+  },
   start: function () {
-    this.start_v2();
+    var conff = this.conf;
+    this._get_data({
+      url: conff['api'],
+      type:"POST",
+      headers:{
+        "Content-Type" :"application/json",
+        "Authorization":"Bearer " + conff['token']
+      },
+      response: async function (error, data) {
+        window.portfolio = data;
+        welcomer.projects = window.portfolio.data.projects;
+        welcomer.cards_links = window.portfolio.data.menu;
+        window.portfolio.data.pages.cv_pdf.c = await fetch("/?pages=cv-pdf").then(response => {return response.text()});
+        window.portfolio.data.pages.visitcard.c = await fetch("/?pages=visitcard").then(response => {return response.text()});
+      
+        welcomer.start_v2();
 
     $.ajaxSetup({
       cache: true,
@@ -5032,18 +4990,18 @@ width="16"><span></span></bar_t><span>  </span>
       },
     });
 
-    const isMobile = this.isMobile();
+    const isMobile = welcomer.isMobile();
 
     if (isMobile == true) {
       $(".cursor").remove();
       $(".anchorTitle").remove();
     }
     if (isMobile == false) {
-      this.touchpcSimulator("buttons");
+      welcomer.touchpcSimulator("buttons");
 
       $("body").append('<div id="anchorTitle" class="anchorTitle"></div>');
 
-      this.get_events();
+      welcomer.get_events();
 
       var cursor = $(".cursor");
       cursor.addClass("cursor_pc_show");
@@ -5375,13 +5333,14 @@ width="16"><span></span></bar_t><span>  </span>
           .then(function (registration) {})
           .catch(function (e) {});
       }
-    } 
-    
-  
+    }
+
     const img = document.createElement("img");
     img.id = "svg_loader_img";
     img.src = `${welcomer.loader_svg}`;
-    img.setAttribute("style",`
+    img.setAttribute(
+      "style",
+      `
     position: fixed;
     right: 10px;
     top: 10px;
@@ -5392,44 +5351,60 @@ width="16"><span></span></bar_t><span>  </span>
     object-fit: scale-down; 
     transition: .3s;
 
-">`);   
-document.body.appendChild(img);
-    setTimeout(async ()   => {
-      
-    
-    var video_wall = document.querySelector("video");
-    
-    // video_wall.src = `/?src=vdwallpper&v=`;
-    video_wall.play();
-    video_wall.classList.remove('video_is_hidden');   
-    await fetch(`/?src=vdwallpper`,
-    {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/json', 
-      },
-      body: JSON.stringify({
-        v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`
-      })
-  })
-    .then(response => response.blob())
-    .then(blob => {
-      video_wall.src = URL.createObjectURL(blob);
-     try{ document.querySelector("img#svg_loader_img").setAttribute("style","opacity: 0;");
-     }catch(ae0){}setTimeout(() => {
-          document.querySelector("img#svg_loader_img").remove();
+">`
+    );
+    document.body.appendChild(img);
+    setTimeout(async () => {
+      const video_wall = document.querySelector("video");
+      const data = {
+        v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`,
+      };
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "/?src=vdwallpper", true);
+      xhr.responseType = "blob";
+
+      xhr.setRequestHeader(
+        "Content-Type",
+        "application/x-www-form-urlencoded; charset=UTF-8"
+      );
+
+      xhr.onload = function () {
+        if (xhr.status === 200) {
+          const blob = xhr.response;
+
+          video_wall.src = URL.createObjectURL(blob);
+
+          try {
+            document
+              .querySelector("img#svg_loader_img")
+              .setAttribute("style", "opacity: 0;");
+          } catch (ae0) {}
+
+          setTimeout(() => {
+            document.querySelector("img#svg_loader_img").remove();
+          }, 1000);
+          video_wall.play();
+          video_wall.classList.remove("video_is_hidden");
+        } else {
+          console.error("Error:", xhr.statusText);
+        }
+      };
+
+      // Send the POST request with form data
+      xhr.send(`v=${data.v}`);
+    }, 1000);
+    const blob = new Blob([`console.clear();`], { type: "text/javascript" }),
+      S = document.createElement("script");
+    S.src = URL.createObjectURL(blob);
+    S.onload = function () {
+      setTimeout(() => {
+        URL.revokeObjectURL(blob);
       }, 1000);
-      return video_wall.play();
-    });
-  }, 1000); 
-  const blob = new Blob([`console.clear();`], { type: 'text/javascript' }),
-  S = document.createElement("script");
-  S.src = URL.createObjectURL(blob);
-  S.onload = function(){
-    setTimeout(() => { 
-    URL.revokeObjectURL(blob);}, 1000);
-  }
+    };
     // document.body.appendChild(S);
+  },
+});
   },
   style_rebuild: function () {
     const style = document.createElement("style");

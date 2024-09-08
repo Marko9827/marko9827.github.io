@@ -8,6 +8,7 @@ use \League\CommonMark\CommonMarkConverter;
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
 define("CDN", "https://cdn.eronelit.com/");
+define("API_HOST","https://api.eronelit.com/app&id=A03429468246&blog=");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]/app/");
 define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");
 if (!empty($_GET['p'])) {
@@ -24,10 +25,26 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
     header('Location: ' . $redirect);
     exit();
 }
+
+
 //  header("Access-Control-Allow-Origin: *"); 
 class portfolio_marko
 {
-
+    function fetchUrlData($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $response = curl_exec($ch);
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            return "cURL Error: $error";
+        }
+        curl_close($ch);
+        return $response;
+    }
     function streamVideo($filePathf)
     {
         $filePath = "$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/image/$filePathf";
@@ -200,7 +217,7 @@ class portfolio_marko
         if ($h == "cv-pdf") {
 
             ob_start();
-            include_once ("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
+            include_once("$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php");
             $pages_base64 = base64_encode(utf8_decode(ob_get_contents()));
             ob_get_clean();
         }
@@ -209,16 +226,62 @@ class portfolio_marko
         }
         return $pages_base64;
     }
+    private function get_data(
+        $r = [
+            "data" => [],
+            "url" => "",
+            "headers" => []
+        ]
+    ) {
+        $data_json = json_encode($r['data']);
+
+        $ch = curl_init($r['url']);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo json_encode([]);
+
+        } else {
+            return $response;
+
+        }
+
+        curl_close($ch);
+    }
+    function minifyCSS($css)
+    {
+        $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
+        $css = str_replace(': ', ':', $css);
+
+        $css = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $css);
+
+        return $css;
+    }
     function Pages($h = "home")
     {
-         
+        if ($h == "feed") {
+
+            $r = $this->get_data([
+                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "headers" => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                ]
+            ]);
+            header("Content-Type: text/json");
+            echo $r;
+            exit();
+
+        }
         if ($h == "home") {
-           /* ob_start(function ($b) {
-                return $b; // return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s'], ['>', '<', '\\1'], $b);
-            });*/
-            
+
+
             include "$_SERVER[DOCUMENT_ROOT]/app/welcomer.php";
-            
+
         }
         if ($h == "cv-pdf") {
             include "$_SERVER[DOCUMENT_ROOT]/app/visitcard/ff_FA/cv_pdf/index.php";
@@ -396,7 +459,17 @@ class portfolio_marko
     }
     function MetaTags()
     {
-        $person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+
+
+        $r = json_decode($this->get_data([
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]), true);
+        $person = $r['data']['blog'];
+        //$person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
 
 
@@ -452,10 +525,9 @@ echo $v .",";
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
             <meta property="og:description" content="Is my personal website." />
-            <meta property="og:image" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url"
-                content="<?php echo SITE_HOST . $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image:url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
+            <meta property="og:image:secure_url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:type" content="image/png" />
             <meta property="og:image:width" content="1024">
             <meta property="og:image:height" content="630">
@@ -468,20 +540,20 @@ echo $v .",";
             $ttitle_attr = "";
             if (!empty($_GET['p'])) {
                 if ($_GET['p'] == "cv-pdf") {
-                    $ttitle_attr =  "Marko Nikolić > CV";
+                    $ttitle_attr = "Marko Nikolić > CV";
                 } else if ($_GET['p'] == "visitcard") {
-                    $ttitle_attr =  "Marko Nikolić > Visitcard";
+                    $ttitle_attr = "Marko Nikolić > Visitcard";
                 } else if ($_GET['p'] == "Projects") {
-                    $ttitle_attr =  "Marko Nikolić > Projects";
+                    $ttitle_attr = "Marko Nikolić > Projects";
                 } else if ($_GET['p'] == "blog") {
                     if (!empty($_GET['c'])) {
-                        $ttitle_attr =  "Blog > $_GET[c] > Marko Nikolić";
+                        $ttitle_attr = "Blog > $_GET[c] > Marko Nikolić";
                     }
                 } else {
-                    $ttitle_attr =  "Marko Nikolić";
+                    $ttitle_attr = "Marko Nikolić";
                 }
             } else {
-                $ttitle_attr =  "Marko Nikolić";
+                $ttitle_attr = "Marko Nikolić";
             }
             ?>
             <title>
@@ -846,8 +918,11 @@ echo $v .",";
                     $this->error_page(404);
                 }
                 // 23_jul_2023_09_26/1690103453287
-            } else if (file_exists("$url$_GET[blog].mp4")) {
+            } else if (!empty($_GET['t'])) {
                 if ($_GET['t'] == "v") {
+                    $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
+                    $host = $parsed_url['host'];
+                    if($host == "$_SERVER[HTTP_HOST]"){
                     ?>
 
                             <html>
@@ -872,8 +947,8 @@ echo $v .",";
 
                             <body onload="f();">
                                 <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
-                                    poster="/?blog=<?= $_GET['blog'] ?>00" data-setup="{}">
-                                    <source src="/?blog=<?= $_GET['blog'] ?>" type="video/mp4" />
+                                    poster="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>00" data-setup="{}">
+                                    <source src="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>" type="video/mp4" />
                                     <p class="vjs-no-js">
                                         To view this video please enable JavaScript, and consider upgrading to a
                                         web browser that supports HTML5 video.
@@ -897,16 +972,16 @@ echo $v .",";
                                             res.remove();
                                             console.clear();
                                         });
-                                        document.addEventListener('keydown', function(event) {
-    if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-        event.preventDefault();
-         
-    }
-    if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-        event.preventDefault();
-         
-    }
-});
+                                        document.addEventListener('keydown', function (event) {
+                                            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                                                event.preventDefault();
+
+                                            }
+                                            if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                                                event.preventDefault();
+
+                                            }
+                                        });
                                     }
                                 </script>
                                 <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
@@ -914,8 +989,9 @@ echo $v .",";
 
                             </html>
 
-                    <?php
-                    exit();
+                        <?php
+                        }else{$this->error_page(404);}
+                        exit();
                 } else {
                     $this->streamVideo("$url$_GET[blog].mp4");
                 }
@@ -1422,40 +1498,7 @@ echo $v .",";
                         }
                     }
 
-                    /*
-                    if (file_exists("$url$_GET[thumb].png")) {
-                        header("content-type: image/png");
-                        $this->ServefThumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
-                        #   readfile("$url$_GET[img].png"); 
-                    } else if (file_exists("$url$_GET[thumb].jpg")) {
-                        header("content-type: image/jpeg");
-                        $this->ServeTfhumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
-                        #  readfile("$url$_GET[img].jpg"); 
-                    } else if (file_exists("$url$_GET[thumb].jpeg")) {
-                        header("content-type: image/jpeg");
-                        $this->ServeThfumb("$url$_GET[thumb].png", 640, ROOT . "data_s/data_wlp/thumb/$_GET[thumb]", "");
-                        #  readfile("$url$_GET[thumb].jpeg");
 
-                    } else {
-                        $url = ROOT . "data_s/data_wlp/";
-                        if (file_exists("$url$_GET[thumb].png")) {
-                            header("content-type: image/png");
-
-                            readfile("$url$_GET[thumb].png");
-
-                        } else if (file_exists("$url$_GET[img].jpg")) {
-                            header("content-type: image/jpeg");
-
-                            readfile("$url$_GET[thumb].jpg");
-                        } else if (file_exists("$url$_GET[thumb].jpeg")) {
-                            header("content-type: image/jpeg");
-
-                            readfile("$url$_GET[thumb].jpeg");
-
-                        } else {
-                            $this->error_page(404);
-                        }
-                    }*/
 
                     exit();
                 } else {
@@ -1590,7 +1633,7 @@ echo $v .",";
                     header('Content-type: application/woff2');
                     header('Content-disposition: inline; filename="Eronelit font"');
                     if (readfile("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1'])) {
-                        include_once ("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
+                        include_once("https://fonts.gstatic.com/" . $_GET['FPCARGOsourceG0F1']);
                     } else {
                         return false;
                     }
@@ -1925,10 +1968,20 @@ echo $v .",";
                 }
                 exit;
             } else {
-                $this->Pages("home");
+                if (!empty($_GET['api'])) {
+                    $this->Pages("$_GET[api]");
+
+                } else {
+                    $this->Pages("home");
+                }
             }
         } else {
-            $this->Pages("home");
+            if (!empty($_GET['api'])) {
+                $this->Pages("$_GET[api]");
+
+            } else {
+                $this->Pages("home");
+            }
         }
     }
 }

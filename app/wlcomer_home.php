@@ -12,6 +12,11 @@ define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost
 
 define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
 
+header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Methods: GET"); 
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type"); 
+
+
 if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
     ob_start("ob_gzhandler");
 } else {
@@ -59,7 +64,13 @@ header(
 $rand = time();
 ob_start();
 header('Content-Type: text/html; charset=utf-8');
-
+if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
+    // If not GET, return a 405 Method Not Allowed response
+    header('HTTP/1.1 405 Method Not Allowed');
+    header('Allow: GET');
+    echo 'Method Not Allowed';
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -69,7 +80,7 @@ header('Content-Type: text/html; charset=utf-8');
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <?php
-    $this->MetaTags();
+    self::MetaTags();
 
     /*?>
         <meta http-equiv="Content-Security-Policy" 
@@ -151,12 +162,12 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <script nonce="<?php echo NONCE; ?>" defer async
+    <script nonce="<?php echo NONCE; ?>"  
         src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
-    <script nonce="<?php echo NONCE; ?>" defer  src="/?svc=jsc">
+    <script nonce="<?php echo NONCE; ?>" defer async src="/?svc=jsc">
 
     </script>
 

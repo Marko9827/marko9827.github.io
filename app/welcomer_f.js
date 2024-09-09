@@ -4317,7 +4317,7 @@ width="16"><span></span></bar_t><span>  </span>
             $("iframe:not(.iframe_mask)")
               .contents()
               .find("html")
-              .html(`${window.portfolio.data.pages.cv_pdf.c}`);
+              .html(`${window.portfolio.data.pages.cv_pdf.c2}`);
             welcomer.pgloader_native(window.portfolio.data.pages.cv_pdf);
           }
           if (url.includes("?pages=visitcard")) {
@@ -4976,8 +4976,9 @@ width="16"><span></span></bar_t><span>  </span>
         window.portfolio = data;
         welcomer.projects = window.portfolio.data.projects;
         welcomer.cards_links = window.portfolio.data.menu;
-        window.portfolio.data.pages.cv_pdf.c = await fetch("/?pages=cv-pdf").then(response => {return response.text()});
-        window.portfolio.data.pages.visitcard.c = await fetch("/?pages=visitcard").then(response => {return response.text()});
+        // window.portfolio.data.pages.cv_pdf.c = await fetch("/?pages=cv-pdf").then(response => {return response.text()});
+        // window.portfolio.data.pages.visitcard.c = "";
+        // await fetch("/?pages=visitcard").then(response => {return response.text()});
       
         welcomer.start_v2();
 

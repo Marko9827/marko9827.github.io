@@ -35,7 +35,7 @@ function base64Encode(str) {
 const welcomer = {
   lang: [],
   conf: {
-    token:"",
+    token:`${window.stmp}`,
     api: "/feed",
     black: true,
   },

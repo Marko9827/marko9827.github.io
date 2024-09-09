@@ -261,10 +261,28 @@ class portfolio_marko
 
         return $css;
     }
+    function Getbearer() {
+        $headers = null; 
+        if (isset($_SERVER['Authorization'])) {
+            $headers = trim($_SERVER["Authorization"]);
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {  
+            $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
+        } elseif (function_exists('apache_request_headers')) {
+            $requestHeaders = apache_request_headers(); 
+            if (isset($requestHeaders['Authorization'])) {
+                $headers = trim($requestHeaders['Authorization']);
+            }
+        } 
+        if (!empty($headers) && preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+            return $matches[1]; 
+        } 
+        return null; 
+    }
     function Pages($h = "home")
     {
+        session_start();
         if ($h == "feed") {
-
+            if($this->Getbearer() == $_SESSION['Bearer_token_temp']){
             $r = $this->get_data([
                 "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
                 "headers" => [
@@ -274,12 +292,16 @@ class portfolio_marko
             ]);
             header("Content-Type: text/json");
             echo $r;
+        }else{
+            $this->error_page(403);
+            exit();
+        }
             exit();
 
         }
         if ($h == "home") {
-
-
+          #  session_start();
+            $_SESSION['Bearer_token_temp'] = bin2hex(random_bytes(30 / 2));
             include "$_SERVER[DOCUMENT_ROOT]/app/welcomer.php";
 
         }

@@ -7,6 +7,7 @@ $HOST_URL = ROOT;
  * @param string $css The CSS code to be minified.
  * @return string The minified CSS code.
  */
+
 function minifyCSS($css)
 {
     $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
@@ -862,6 +863,7 @@ if (!empty($_GET['drc'])) {
 
         #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
         ob_start();
+        echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
         include ROOT . "welcomer_f.js";
         echo ob_get_clean();
         exit();

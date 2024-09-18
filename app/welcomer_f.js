@@ -184,7 +184,7 @@ const welcomer = {
            project.setAttribute("id-int",i);
           //  project.setAttribute("title",arr[i]['name']);
             project.innerHTML = `<grider_box>
-             <p><span>Open Album</span></p> 
+             <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
                  ${p_open}
                  <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
 
@@ -2384,10 +2384,7 @@ width="16"><span></span></bar_t><span>  </span>
   galleryload: function () {
     $("gridder_loader").attr("style", "opacity:1");
 
-    $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(
-      window.portfolio.data.gallery.length
-    );
-
+ 
     welcomer.load_gallery_j = window.portfolio.data.gallery;
     welcomer.galleryloadajax();
     $("html").addClass("anim_djenerated");
@@ -5331,13 +5328,13 @@ width="16"><span></span></bar_t><span>  </span>
   
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type ,  v.url, true);
+    xhr.open(v.type , v.url, true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-           xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+            xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }
@@ -5763,14 +5760,15 @@ width="16"><span></span></bar_t><span>  </span>
 
 ">`
     );
+    $("#buttons .adiv[adiv_gat='gallery_bundle']").prepend(`<div class="nnum">${window.portfolio.data.gallery.Gallery_count}</div>`);
+
     document.body.appendChild(img);
     setTimeout(async () => {
       const video_wall = document.querySelector("video");
       const data = {
         v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`,
       };
-
-      const xhr = new XMLHttpRequest();
+       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/?src=vdwallpper", true);
       xhr.responseType = "blob";
 
@@ -5814,6 +5812,8 @@ width="16"><span></span></bar_t><span>  </span>
     };
     // document.body.appendChild(S);
   },
+  
+
 });
   },
   style_rebuild: function () {

@@ -5337,7 +5337,7 @@ width="16"><span></span></bar_t><span>  </span>
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-          // xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+           xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }

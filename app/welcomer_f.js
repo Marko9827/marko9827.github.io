@@ -67,19 +67,37 @@ const welcomer = {
   ],
   pages: {
     gallery:{
+      ldp: function(id){
+        var url = window.portfolio.data.gallery.gallery[0].gallery[0]['href'],
+        a = document.createElement("a");
+        a.target = "_blank";
+        a.href = url;
+        a.setAttribute("rel", "nofollow noreferrer");
+        a.setAttribute("role", "link"); 
+        window.open(url);
+        // a.click();
+        if(!url == "-"){ 
+        // document.body.appendChild(a);
+        }
+        if(!url == "-"){
+        // a.remove();
+      }
+       
+      },
       ldaff:function(){
 
       },
       t: function(){
+       
           this.call_albums({
             where:"grider_viewer#gallery-container",
             arr: window.portfolio.data.gallery.gallery,
             callback:function(e){
-         
-              
             },
             type:"albums"
           });
+       
+           
       },
       lda: function(what = ""){
         welcomer.blg_history_replace(`${window.location.origin}/?p=gallery&album=${what}`);
@@ -158,7 +176,8 @@ const welcomer = {
       },
       call_albums: function(varr = { where:"", arr: [], callback:function(){} }, type = "albums"){
          var arr = varr.arr,
-         div_not_i = 0;
+         div_not_i = 0,
+         live = ["deviantart"];
      
          
          document.querySelector(varr.where).innerHTML = "";
@@ -182,15 +201,20 @@ const welcomer = {
            name = arr[i]['name'];
            image = `${arr[i]['gallery'][0]['img']}&album=${arr[i]['name']}&v=${i}`;
            project.setAttribute("id-int",i);
+           var is_live = "";
+           if(arr[i]['name'])
           //  project.setAttribute("title",arr[i]['name']);
+        if(arr[i]['name'] == "deviantart"){
+          is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+        }
             project.innerHTML = `<grider_box>
              <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
-                 ${p_open}
+                 ${p_open} ${is_live}
                  <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
 
                  <sp_clv><i class="bi bi-images"></i><p-title>${name}
 </p-title></sp_clv>
-
+${is_live}
                  <img 
 
                  loading="lazy"  
@@ -225,11 +249,19 @@ const welcomer = {
         project.setAttribute("style","transform: scale(0) !important;");
         project.setAttribute("id-int", `${div_not_i}`);
         project.setAttribute("box-ui", `uit-${varr.type}`);
+        var a_project = "";
+        if(v[i].href == "-"){} else{
+          a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]['href']}" target="_blank" data-int="${div_not_i}"> <i onclick="welcomer.infoVa(1);" class="bi bi-fullscreen"></i> View on Deviantart</a>`;
+        } 
+ 
+       
+
+        
               project.innerHTML = `
           <grider_box>
-          
+
   
-              ${p_open}
+              ${p_open} ${a_project}
               <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
                <img loading="lazy"  ${thi} 
               ondragstart="return false;" 
@@ -239,7 +271,7 @@ const welcomer = {
               data-zoom-image="${v[i].img}"
               data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                      </grider_box>`;
-                     
+              
               document.querySelector("grider_viewer#gallery-container").appendChild(project);
               div_not_i++;
         }
@@ -2379,7 +2411,6 @@ width="16"><span></span></bar_t><span>  </span>
   load_gallery_j: [],
   galleryloadT: function(){
     window.top.location.href = "/?p=gallery";
-
   },
   galleryload: function () {
     $("gridder_loader").attr("style", "opacity:1");
@@ -2426,7 +2457,7 @@ width="16"><span></span></bar_t><span>  </span>
     var gallery = [];
     $("gridder_loader").attr("style", "opacity:1");
 
-    welcomer.blg_history_replace(`/?p=gallery`);
+  
 
     var v = welcomer.load_gallery_j;
     for (var i = 0; i < v.length; i++) {
@@ -2473,8 +2504,17 @@ width="16"><span></span></bar_t><span>  </span>
     $("div_header span").html("Marko Nikolić > Gallery");
     $(".F_bi_search").hide();
     $(Vjideo_sjpinner).hide();
+     
   }
 
+  const params = new URLSearchParams(window.location.search);
+  if(params.has("album")){
+   
+    welcomer.blg_history_replace(`/?p=gallery&album=${params.get("album")}`);
+    this.lda(params.get("album"));
+  }else{ 
+     welcomer.blg_history_replace(`/?p=gallery`);
+    }
   },
   loaded_imgPrld_error: function (aer, id = 0) {
     $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
@@ -2760,6 +2800,7 @@ width="16"><span></span></bar_t><span>  </span>
     var imgH = new Image();
 
     welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
+    /*
     if (document.body.offsetWidth < 750) {
       var title_f = $(`project[id-int="${h}"] p span`).html(),
         description = $(`project[id-int="${h}"]`).attr("title");
@@ -2771,7 +2812,7 @@ width="16"><span></span></bar_t><span>  </span>
           document.querySelector("body").appendChild(res);
         },
       });
-    }
+    }*/
   },
 
   openWindow: function (i = 0) {
@@ -2786,8 +2827,8 @@ width="16"><span></span></bar_t><span>  </span>
           var blob = new Blob([v], { type: "octet/stream" });
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
-
           a.href = url;
+
 
           a.download =
             url.replace("blob:" + window.location.origin, "") + ".rar";
@@ -5328,13 +5369,13 @@ width="16"><span></span></bar_t><span>  </span>
   
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type , v.url, true);
+    xhr.open(v.type ,v.url, true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-           xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+          xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }

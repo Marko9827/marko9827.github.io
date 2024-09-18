@@ -2513,6 +2513,78 @@ div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer img_drps {
   opacity: 1;
     z-index:333333333;
 }
+
+
+span_live {
+    position: absolute;
+    bottom: 30px;
+    z-index: 33333;
+    left: 0px;
+    right: 0px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: flex-end;
+    align-content: center;
+    pointer-events: none;
+}
+
+span_live btn_l {
+    background: hwb(0deg 0% 0% / 58%);
+    color: white;
+    border-radius: 6px !important;
+    margin: 4px;
+    padding: 4px 10px;
+    font-size: 13px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+}
+
+@keyframes span_live_i {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+span_live btn_l i {
+    margin-right:4px;
+    animation: span_live_i 2s infinite
+}
+
+ 
+ 
+a.fiv_d {
+    position: absolute;
+    font-size: 11px;
+    bottom: 32px !important;
+    top: unset !important; 
+    display: flex;
+    align-content: center;
+    align-items: center;
+    left: 5px;
+    flex-wrap: nowrap;
+    width: fit-content !important;
+    background: rgb(0 0 0 / 52%);
+    opacity: 1;
+    z-index: 333;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+}
+
+a.fiv_d i {
+    margin-right:6px;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

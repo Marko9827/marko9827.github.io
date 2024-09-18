@@ -235,7 +235,7 @@ const welcomer = {
               ondragstart="return false;" 
               onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
               onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" 
-              src="${v[i].img}"  
+              src="${v[i].thumb}"  
               data-zoom-image="${v[i].img}"
               data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                      </grider_box>`;
@@ -5334,7 +5334,7 @@ width="16"><span></span></bar_t><span>  </span>
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-            xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+           xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }

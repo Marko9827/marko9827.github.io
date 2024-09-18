@@ -243,8 +243,7 @@ class portfolio_marko
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            echo json_encode([]);
-
+            echo json_encode([]); 
         } else {
             return $response;
 

@@ -10,11 +10,11 @@ define("CDN", "https://cdn.eronelit.com/"); //SITE_HOST);//"https://cdn.eronelit
 define("SOUND_API", "");
 define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
 
-define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
+define("NONCE", "$_SESSION[Bearer_token_temp]");
 
-header("Access-Control-Allow-Origin: *"); 
-header("Access-Control-Allow-Methods: GET"); 
-header("Access-Control-Allow-Headers: X-Requested-With, Content-Type"); 
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
 
 
 if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
@@ -32,7 +32,7 @@ ob_start(function ($b) {
     $html = preg_replace('/^\s+|\s+$/m', '', $html);
     $html = preg_replace('/\s{2,}/', ' ', $html);
     $html = preg_replace('/[\r\n]/', '', $html);
-    return $html;// preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+    return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
 });
 $urlCdn = "";
 
@@ -40,27 +40,28 @@ $cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cl
 $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
 
 
-$csp = " frame-ancestors 'self';
-  block-all-mixed-content;
-  default-src 'self' $cdn_urls;
-  script-src 'self' blog: data:  $cdn_urls 'unsafe-inline';
-  style-src 'self' $cdn_urls  'unsafe-inline';
-  'style-src-elem'  'self' $cdn_urls  'unsafe-inline';
+$csp = "  
+  default-src 'self' $cdn_urls  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
+script-src 'self' 'nonce-$_SESSION[Bearer_token_temp]'  $cdn_urls;  
+style-src  'self'  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
+style-src-elem   'self'  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
   object-src 'none';
   frame-src 'self';
   child-src 'self';
   img-src 'self' $cdn_urls data: blob:  'unsafe-inline';
   font-src 'self' data: $font_src  'unsafe-inline'; 
-  connect-src 'self' $cdn_urls ws: wss: ;
+  connect-src 'self' $cdn_urls wss: ;
   manifest-src 'self';
   base-uri 'self';
   form-action 'self';
-  media-src 'self' data: blob: $cdn_urls;
-  prefetch-src 'self';
-  worker-src 'self'; report-uri https://" . SERVER_AJAXS . "/report-csp-endpoint;";
+  media-src 'self' data: blob: $cdn_urls; 
+  worker-src 'self'; frame-ancestors 'self';
+  block-all-mixed-content;";
 header(
-    "Content-Security-Policy: $csp"
+    "Content-Security-Policy:  $csp"
 );
+header("X-Frame-Options: DENY");
+
 $rand = time();
 ob_start();
 header('Content-Type: text/html; charset=utf-8');
@@ -94,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
-    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet">
+    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
 
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
@@ -109,17 +110,16 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
         type="font/woff2">
     <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link
-         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
-    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <script nonce="<?php echo NONCE; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css">
+        rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <script nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
 
-    <script async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
-  
+    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>" async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
+
     <?php
 
     $token = bin2hex(random_bytes(64));
@@ -161,10 +161,10 @@ media-src 'self';" />
         src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
     <script nonce="<?php echo NONCE; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <?php if($_GET['p'] == "editor"){ ?>
-    <script nonce="<?php echo NONCE; ?>"  
-        src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-<?php } ?>
+    <?php if ($_GET['p'] == "editor") { ?>
+        <script nonce="<?php echo NONCE; ?>"
+            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <?php } ?>
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" defer async src="/?svc=jsc">
@@ -175,8 +175,8 @@ media-src 'self';" />
 
     <?php if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
-            ?>
-            <style type="text/css">
+    ?>
+            <style type="text/css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
                 * {
                     pointer-events: none !important;
                     transition: .3s !important
@@ -186,13 +186,12 @@ media-src 'self';" />
                     display: none;
                 }
             </style>
-        <?php }
+    <?php }
     } ?>
-    <style type="text/css">
+    <style type="text/css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
-        ?>
-        .zoomContainer:not(:hover, :focus) * {
+        ?>.zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
             width: 100% !important;
@@ -855,8 +854,7 @@ media-src 'self';" />
         }
 
         /*  */
-        <?php include ROOT . "css/document_root.css"; ?>
-        div#clavs br_ta {
+        <?php include ROOT . "css/document_root.css"; ?>div#clavs br_ta {
             position: sticky;
             background: var(--black-trasparent-color);
             top: 51.1px;
@@ -1678,25 +1676,22 @@ div#clavs br_ta ta_f.active span {
         }
 
         <?php if ($_GET['vp'] == "livestream") {
-            ?>
-            .box_shadow_txtf.box_shadow {
-                margin: auto !important;
-            }
+        ?>.box_shadow_txtf.box_shadow {
+            margin: auto !important;
+        }
 
-            div#buttons,
-            arr_bundle {
+        div#buttons,
+        arr_bundle {
 
-                display: none !important;
-            }
+            display: none !important;
+        }
 
-            span.box_shadow_h {
-                display: none !important;
-            }
+        span.box_shadow_h {
+            display: none !important;
+        }
 
-            <?php
-        } ?>
-
-        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        <?php
+        } ?>@import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
         @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
@@ -2404,29 +2399,130 @@ div#clavs br_ta ta_f.active span {
             border-top-left-radius: 5px;
             border-bottom-left-radius: 5px;
         }
+
         div_preview.closed dtitle {
-    height: 17px;
-}
+            height: 17px;
+        }
+
         /*
 
 <div_preview><div_bck></div_bck><div_h2><divh2></divh2><data_exp>Close - Description</data_exp></div_h2><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t></div_preview>
 
 
 <div_preview><div_h>Pegasus project - Connection PC and Brain with no chips is possible!</div_h><div_t>Is possible no only in theory?!<br><br>Pegasus project is project, Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br> More coming soon! <img loading="lazy" class="is_touch in_hover" ondragstart="return false;" src="/?blog=13_jul_2024_23_40/43515315" data-zoom-image="https://portfolio.localhost/?p=projects" alt="Pegasus project - Connection PC and Brain with no chips is possible!"></div_t><br></div_preview>        */
-    video.video_is_hidden {
-        opacity: 0 !important;
+        video.video_is_hidden {
+            opacity: 0 !important;
+
+        }
+
         
-    }
-   </style>
+
+        backdrop-filter:blur(3px) !important;
+}
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] div_header{
+    display: block !important;
+}
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] div_header #logo_backscr_img {
+    opacity:1;
+}
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer { 
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: calc(100% - 50px );
+    display: block;
+}
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo {
+    opacity: 0.5;
+    pointer-events: none;
+}
+div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo.active{
+    opacity: 1 !important;
+    pointer-events: unset !important;
+}
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer  sp_clv {
+    position: absolute;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    bottom: 0px;
+    top: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    z-index: 33333;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project:not([box-ui="uit-gallery"]) fiv {
+    display:none !important;
+}
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer{
+    padding: 5px !important;
+}
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer  sp_clv i  {
+    font-size: 40px;
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer p-title
+{    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
+    transition: .3s;
+    text-transform:capitalize;
+}
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project img {
+    opacity:0.7;
+} 
+
+div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer img_drps {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 15px);
+    background: rgb( 0 0 0 / 0.5);
+    z-index: -1;
+    border-radius: 10px !important;
+}
+#clavs grider_viewer project:hover p_open {
+  top: 45px !important;
+  opacity: 1;
+    z-index:333333333;
+}
+    </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
-    </script>
+        </script>
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
-            
+
             function gtag() {
                 dataLayer.push(arguments);
             }
@@ -2440,13 +2536,13 @@ div#clavs br_ta ta_f.active span {
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-    <video   style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
+    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
- 
+
     </video>
     <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
-        echo "Live stream... Please wait...";
-    } else { ?>
+                        echo "Live stream... Please wait...";
+                    } else { ?>
             Do you love random videos?<br>
             - Tip: Reload page...
         <?php } ?>
@@ -2774,7 +2870,89 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 </ul>
 */ ?>
         <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
+        <section data-ui-type="gallery" class="hidden_omega">
+        <div_header data-url="editor">
+                <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+                    <defs>
+                        <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                            <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                            <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                        </radialGradient>
+                        <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                            <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
+                            </animate>
+                            <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                            <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                        </radialGradient>
+                    </defs>
+                    <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                        transform="rotate(334.41 50 50)">
+                        <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                            repeatCount="indefinite"></animateTransform>
+                    </rect>
+                    <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                        transform="rotate(255.072 50 50)">
+                        <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
+                            dur="12s" repeatCount="indefinite"></animateTransform>
+                    </rect>
+                    <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                        transform="rotate(139.903 50 50)">
+                        <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                        <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                            repeatCount="indefinite"></animateTransform>
+                    </rect>
+                </svg>
+                <span>Marko Nikolić > Gallery</span>
+                 
 
+                <btns_i>
+                    <input type="text" placeholder="Search project" data-hmm="search"
+                        onkeyup="welcomer.search_Kompjiler(this);" />
+                    <i class="bi bi-x-lg" data-hmm="closeMe" onclick="welcomer.search_Kompjiler(this);"
+                        title="Close Search"></i>
+
+                </btns_i>
+                <btns_r class="btns_r_editor_right">
+                    <i class="bi bi-arrow-left-short editor_btns undo gallery_home" data-title="Back to Gallery" onclick="welcomer.pages.gallery.call_back();"></i>
+                   
+
+                    <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
+                    <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>
+
+                </btns_r>
+
+            </div_header>
+            <grider_viewer></grider_viewer>
+        </section>
         <section data-ui-type="slider" class="hidden_omega">
             <arr_bundle>
                 <i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
@@ -2894,7 +3072,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                 </btns>
             </div_panel>
         </div_not>
-        <style>
+        <style nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
             a[data-iam-hidden="yes"] {
                 display: none !important;
             }

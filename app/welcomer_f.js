@@ -65,6 +65,245 @@ const welcomer = {
       },
     },
   ],
+  pages: {
+    gallery:{
+      ldaff:function(){
+
+      },
+      t: function(){
+          this.call_albums({
+            where:"grider_viewer#gallery-container",
+            arr: window.portfolio.data.gallery.gallery,
+            callback:function(e){
+         
+              
+            },
+            type:"albums"
+          });
+      },
+      lda: function(what = ""){
+        welcomer.blg_history_replace(`${window.location.origin}/?p=gallery&album=${what}`);
+        // if(what)
+        var aerls = window.portfolio.data.gallery.gallery;
+        for(var i = 0; i < aerls.length; i++){
+          if(`${what}` == `${aerls[i]['name']}`){
+          // welcomer.eronelit_gallery.call_ui(`${aerls[i]['gallery']}`);
+          welcomer.load_gallery_j = aerls[i]['gallery'];
+          // welcomer.pages.gallery.galleryloadajaxv2(`${aerls[i]['name']}`);
+          this.call_albums({
+            where:"grider_viewer#gallery-container",
+            arr: aerls[i]['gallery'],
+            callback:function(e){
+           
+              
+            },
+            type:"gallery"
+          });
+          }
+        }
+     
+      },
+      galleryloadajaxv2: function(name = ""){
+    
+     var div_not_i= 0,
+     gallery = [];
+      $("gridder_loader").attr("style", "opacity:1");
+  
+      // welcomer.blg_history_replace(`/?p=gallery&`);
+  
+      var v = welcomer.load_gallery_j;
+      for (var i = 0; i < v.length; i++) {
+    
+        var thi = "class='is_touch'",
+          p_open = "";
+        if (v[i].href !== "") {
+          if (v[i].type) {
+            p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
+             <i class="bi bi-link"></i> Open link
+             </p_open>`;
+          } else {
+            p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
+            <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+             </p_open>`;
+          }
+        }
+        if (welcomer.isMobile()) {
+          thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
+        }
+        $("grider_viewer#gallery-container").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
+          <grider_box>
+          <p><span>${v[i].title}</span></p>
+  
+              ${p_open}
+              <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+               <img loading="lazy"  ${thi} 
+              ondragstart="return false;" 
+              onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
+              onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
+              src="${v[i].img}"  
+              data-zoom-image="${v[i].img}"
+              data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
+                     </grider_box>
+  
+              </project>`);
+        div_not_i++;
+      }
+   
+     
+      },
+      call_back: function(){
+        document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.remove("active");
+
+        this.call();
+      },
+      call_albums: function(varr = { where:"", arr: [], callback:function(){} }, type = "albums"){
+         var arr = varr.arr,
+         div_not_i = 0;
+     
+         
+         document.querySelector(varr.where).innerHTML = "";
+         if(varr.type == "albums"){
+         document.querySelector(varr.where).setAttribute("class","gridsH grids ");
+         } else{
+          document.querySelector(varr.where).setAttribute("class","gridsH grids g_gallery ");
+          document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.add("active");
+        }
+         
+         for(var i = 0; i < arr.length; i++){
+          var p_open = "";
+
+
+ 
+          if(varr.type == "albums"){
+           var project = document.createElement("project");
+           p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]['name']}')">
+           <i class="bi bi-link"></i> Open Album
+           </p_open>`,
+           name = arr[i]['name'];
+           image = `${arr[i]['gallery'][0]['img']}&album=${arr[i]['name']}&v=${i}`;
+           project.setAttribute("id-int",i);
+          //  project.setAttribute("title",arr[i]['name']);
+            project.innerHTML = `<grider_box>
+             <p><span>Open Album</span></p> 
+                 ${p_open}
+                 <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
+
+                 <sp_clv><i class="bi bi-images"></i><p-title>${name}
+</p-title></sp_clv>
+
+                 <img 
+
+                 loading="lazy"  
+                 ondragstart="return false;" 
+                 onload="welcomer.loaded_img(this, ${i});" 
+                 src="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" 
+                 data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" 
+                 alt="${name}"
+
+                 ></grider_box>`;
+         document.querySelector(varr.where).appendChild(project);
+          }
+        }
+        var v = arr,
+        div_not_i = 0;
+        for(var i = 0; i < v.length; i++){
+         
+        if(varr.type == "gallery"){
+          var thi = "class='is_touch'",
+          p_open = "",
+          project = document.createElement("project");
+          
+          
+        if (welcomer.isMobile()) {
+          thi = `onclick="welcomer.openLink(${div_not_i})"`;
+        }
+        
+ 
+              // $("grider_viewer#gallery-container").append(`<project 
+              
+              //style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
+        project.setAttribute("style","transform: scale(0) !important;");
+        project.setAttribute("id-int", `${div_not_i}`);
+        project.setAttribute("box-ui", `uit-${varr.type}`);
+              project.innerHTML = `
+          <grider_box>
+          
+  
+              ${p_open}
+              <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+               <img loading="lazy"  ${thi} 
+              ondragstart="return false;" 
+              onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
+              onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" 
+              src="${v[i].img}"  
+              data-zoom-image="${v[i].img}"
+              data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
+                     </grider_box>`;
+                     
+              document.querySelector("grider_viewer#gallery-container").appendChild(project);
+              div_not_i++;
+        }
+      }
+         varr?.callback({l:arr.length,r:arr});
+      },
+      callv2: function(){
+        window.location.href = "/?p=gallery";
+      },
+      call:function(){
+        if(document.querySelectorAll("div#clavs.gallery_mode section[data-ui-type='gallery']:not(.hidden_omega)").length < 1){
+        const data_ui_type = document.querySelector(
+        'section[data-ui-type="gallery"]'
+      ),
+      hmdata_ = document.querySelector(
+        'section[data-ui-type="gallery"]'
+      ),
+      editor_container = document.createElement("grider_viewer"),
+      resizer = document.createElement("div"),
+      size_r = document.createElement("size_r"),
+      div_resizer = document.createElement("div-sh"),
+      divf_ = document.createElement("divf_"),
+      logContainer = document.createElement("div"),
+      iframe = document.createElement("iframe"),
+      grider_viewer = document.createElement("grider_viewer"),
+      buttons = {
+        history: "",
+        undo: document.querySelector(
+          "section[data-ui-type='gallery'] i.editor_btns.undo"
+        ),
+        redo: document.querySelector(
+          "section[data-ui-type='gallery'] i.editor_btns.redo"
+        ),
+      };
+      editor_container.setAttribute("class","gridsH grids g_gallery ");
+    logContainer.id = "logContainer";
+    editor_container.innerHTML = "";
+    $(data_ui_type).find("#gallery-container").remove();
+    $(data_ui_type).find("iframe").remove();
+    editor_container.id = "gallery-container";
+    iframe.id = "preview-container";
+    resizer.id = "resizer-container";
+    iframe.sandbox = "allow-same-origin allow-scripts";
+    size_r.setAttribute("style", "display: none;"); 
+    data_ui_type.appendChild(editor_container); 
+    logContainer.classList.remove("hidden_omega");
+    var jsonfs31 = [];
+    document.querySelectorAll("iframe").forEach(element => {
+        element.setAttribute("style","display:none;");
+    });
+    hmdata_.removeAttribute("class");
+      // $(data_ui_type).removeClass("hidden_omega");
+      document.querySelector("div#clavs").setAttribute("style","transform: none !important; opacity: 1; rgb( 0 0 0 / 0.6) !important");
+      document.querySelector("div#clavs").setAttribute("class","gallery_mode");
+      document.querySelector("hh_anim_start").setAttribute("style","display: none;");
+      document.querySelector("p.p-c").setAttribute("style","display: none;");
+      document.querySelector("div#clavs div_header:not([data-url])").setAttribute("style","display: none !important;");
+      welcomer.blg_history_replace(`${window.location.origin}/?p=gallery`);
+
+    }
+    this.t();
+  }
+    }
+  },
   trcars: {
     dragstart: function (e) {
       e.preventDefault();
@@ -529,10 +768,12 @@ br_aer  img.favicon {
   },
   generateGrid_backrs: function (what = "", fsrc) {
     var srcf = "",
+
       getRandomNumber = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       };
     if (what == "gallery_bundle") {
+      /*
       srcf =
         window.portfolio.data.gallery[
           getRandomNumber(5, window.portfolio.data.gallery.length - 1)
@@ -556,7 +797,7 @@ br_aer  img.favicon {
             }, 500);
           };
         }, 500);
-      }, 10500);
+      }, 10500);*/
     }
     if (what == "blog_bundle") {
       srcf = window.portfolio.data.blog[0]["thumbail"];
@@ -1618,6 +1859,33 @@ width="16"><span></span></bar_t><span>  </span>
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   },
+  blogloader_img: function(id = ""){
+// parent.welcomer.infoVa_img
+    var arr = window.portfolio.data.blog;
+    // arr.forEach(function(v){
+    for (var i = 0; i < arr.length; i++){
+        if(arr[i].id == id){
+            var imgg = document.createElement("img");
+          imgg.src = arr[i].thumbail;
+          
+          imgg.onload = function(){
+           
+            $(imgg).ezPlus({
+              zoomType: "inner",
+              containLensZoom: true,
+              speed: 10,
+            });
+            $("body").append(
+              '<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>'
+            );
+            imgg.remove();
+          }
+          document.appendChild(imgg); 
+       
+        }
+    } 
+    // });
+  },
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
@@ -1646,6 +1914,15 @@ width="16"><span></span></bar_t><span>  </span>
     arr.forEach(function (v) {
       var thi = "class='is_touch'",
         p_open = "";
+
+         var p_image = ``;
+      if (welcomer.isimagec(v?.category,"image")) {
+         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(${v.id});">
+            <i class="bi bi-image-fill"></i> Open image
+            
+            </p_open>`;  
+      }
+
       if (v.id !== "") {
         if (v.type) {
           p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${div_not_i});" >
@@ -1657,9 +1934,11 @@ width="16"><span></span></bar_t><span>  </span>
            </p_open>`;
         }
       }
+
       p_open = ` <p_open title="Open: /?p=blog&id=${v.id}" onclick="welcomer.blogloader(${v.id});" >
             <i class="bi bi-link"></i> Open post
             </p_open>`;
+      p_open += ` ${p_image}`;
       if (welcomer.isMobile()) {
         thi = `onclick='welcomer.blogloader(${v.id})'`;
       }
@@ -1790,11 +2069,11 @@ width="16"><span></span></bar_t><span>  </span>
         img_src_d = `${v.thumbail}&thumb=true`;
       }
       var p_image = ``;
-      if (welcomer.isimagec(v?.category)) {
-        /* p_image = `<p_open class="open_img" onclick="welcomer.blogloader(1073568435);">
+      if (welcomer.isimagec(v?.category,"image")) {
+         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);">
             <i class="bi bi-image-fill"></i> Open image
-            <img style="" />
-            </p_open>`; */
+             
+            </p_open>`;  
       }
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
@@ -2127,6 +2406,7 @@ width="16"><span></span></bar_t><span>  </span>
     welcomer.titleC("Gallery > Marko Nikolić");
   },
   galleryloadajax: function () {
+    if(welcomer.load_gallery_j.length > 0){
     var ljoader = document.querySelector("#reaload_page"),
       Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
       div_header = document.querySelector("div_header"),
@@ -2153,7 +2433,7 @@ width="16"><span></span></bar_t><span>  </span>
 
     var v = welcomer.load_gallery_j;
     for (var i = 0; i < v.length; i++) {
-      console.clear();
+      
       var thi = "class='is_touch'",
         p_open = "";
       if (v[i].href !== "") {
@@ -2196,6 +2476,8 @@ width="16"><span></span></bar_t><span>  </span>
     $("div_header span").html("Marko Nikolić > Gallery");
     $(".F_bi_search").hide();
     $(Vjideo_sjpinner).hide();
+  }
+
   },
   loaded_imgPrld_error: function (aer, id = 0) {
     $(`#clavs grider_viewer project[id-int="${id}"]`).remove();
@@ -2212,6 +2494,23 @@ width="16"><span></span></bar_t><span>  </span>
       const imageUrl = URL.createObjectURL(blob);
       d.src = URL.createObjectURL(blob);
       $(aer).parent().parent().removeAttr("style");
+      $(aer).removeAttr("onload");
+    } catch (error) {
+      console.error(":(", error);
+    }
+  },
+  loaded_imgPrldV2: async function(aer, id = 0){
+    const d = aer;
+
+    try {
+      const response = await fetch(d.getAttribute("src"));
+      if (!response.ok) {
+        throw new Error(":(");
+      }
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      d.src = URL.createObjectURL(blob);
+      $(aer).parent().parent().attr("style"," transform: none; pointer-events: unset; opacity: 1;");
       $(aer).removeAttr("onload");
     } catch (error) {
       console.error(":(", error);
@@ -2243,16 +2542,20 @@ width="16"><span></span></bar_t><span>  </span>
     };
     $(aer).removeAttr("onload");
   },
-  isimagec: function (arr = []) {
+  isimagec: function (arr = [], what = "image") {
     var is_image = false;
-
-    for (var i = 0; i < arr.length; i++) {
+/*
+    for/ (var i = 0; i < arr.length; i++) {
       // console.log(arr.length, arr[i]);
       var arr_i = arr[i];
-      if (arr_i.includes("image")) {
+      if (arr_i.includes("image") == true) {
         is_image = true;
+        console.log(arr.length,arr_i.includes("image"));
+        return true;
       }
-    }
+    }*/
+    is_image = arr.indexOf(what) !== -1;
+ 
 
     return is_image;
   },
@@ -2314,41 +2617,86 @@ width="16"><span></span></bar_t><span>  </span>
 
             </project>`);
       div_not_i--;
-    });
-    /*
-        this.projects.forEach(function (v) {
-            var thi = "class='is_touch'",
-                p_open = "";
-            if (v.href !== "") {
-                if (v.type) {
-                    p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
-               <i class="bi bi-link"></i> Open link
-               </p_open>`;
-                } else {
-                    p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
-              <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
-               </p_open>`;
-                }
-            }
-            if (welcomer.isMobile()) {
+    });  
+    $("div_header").addClass("ld_completeld_complete2");
+    $(ljoader).show();
+    $("div_header span").html("Marko Nikolić > Projects");
+    $(".F_bi_search").show();
 
-                thi = "onclick='welcomer.openLink(" + div_not_i + ")'"
+    $(Vjideo_sjpinner).hide();
+  },
+  Gallery_projectsloadV_2: function(r){
+    var lts = window.portfolio.data.gallery.gallery,
+    ts = [];
+    for (var i = 0; i < lts.length; i++){
+        if(lts[i]['name'] == r){
+            ts = lts[i];
+        }
+        if(r == "/"){
+          ts = lts;
+        }
+    }
+    return ts;
+  },
+  Gallery_projectsload: function (r = "") {
+    var ljoader = document.querySelector("#reaload_page"),
+      Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+      div_header = document.querySelector("div_header"),
+      iframe = document.createElement("iframe"),
+      clavs = document.getElementById("clavs"),
+      div_not_i = welcomer.projects.length,
+      div_not = document.querySelector("div_not");
 
-            }
-            $("grider_viewer").append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
-            <grider_box>
-            <p><span>${v.title}</span></p>
+    $(ljoader).hide();
+    $(Vjideo_sjpinner).show();
+    document
+      .getElementById("clavs")
+      .setAttribute("style", " opacity:1; transform:unset; ");
+    $("iframe:not(.iframe_mask)").hide();
 
-                ${p_open}
-                <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
-                <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
-                src="${v.img}" data-zoom-image="${v.img}" alt="${v.title}">
-                       </grider_box>
+    $("grider_viewer").show().removeAttr("style");
+    $("div_header").removeClass("ld_completeld_complete");
+    $("grider_viewer").html("");
+    div_not_i--;
+    welcomer.projects.forEach(function (h) {
+      var v = welcomer.projects[div_not_i];
+      var thi = "class='is_touch'",
+        p_open = "";
+      if (v.href !== "") {
+        if (v.type) {
+          p_open = ` <p_open title="Open: ${v.href}" onclick="welcomer.openWindow(${div_not_i});" >
+           <i class="bi bi-link"></i> Open link
+           </p_open>`;
+        } else {
+          p_open = ` <p_open title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+          <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
+           </p_open>`;
+        }
+      }
 
-                </project>`);
-            div_not_i++;
-        });
-        */
+      if (v?.soon == true) {
+        p_open = ` <p_open style="pointer-events: none !important;" title="Download: ${v.title}" onclick="welcomer.openWindow(${div_not_i});" >
+        <i class="bi bi-signpost-split"></i> Coming soon
+         </p_open>`;
+      }
+      if (welcomer.isMobile()) {
+        thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
+      }
+      $(
+        "grider_viewer"
+      ).append(`<project  ${thi} id-int="${div_not_i}" title="${v.description}">
+        <grider_box>
+        <p><span>${v.title}</span></p>
+
+            ${p_open}
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-info-circle" title="Preview project image. Detailed preview of the whole project coming soon!"></i></fiv>
+            <img loading="lazy" ${thi} ondragstart="return false;" onload="welcomer.loaded_img(this, ${div_not_i});" 
+            src="${v.img}" data-titlef="${v.description}" data-zoom-image="${v.img}" alt="${v.title}">
+                   </grider_box>
+
+            </project>`);
+      div_not_i--;
+    });  
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
     $("div_header span").html("Marko Nikolić > Projects");
@@ -3515,6 +3863,42 @@ width="16"><span></span></bar_t><span>  </span>
         logContainer.appendChild(logElement);
       }
     },
+    callGallery:  function(){
+      const data_ui_type = document.querySelector(
+        'section[data-ui-type="gallery"] gallery_box'
+      ),
+      editor_container = document.createElement("div"),
+      resizer = document.createElement("div"),
+      size_r = document.createElement("size_r"),
+      div_resizer = document.createElement("div-sh"),
+      divf_ = document.createElement("divf_"),
+      logContainer = document.createElement("div"),
+      iframe = document.createElement("iframe"),
+      buttons = {
+        history: "",
+        undo: document.querySelector(
+          "section[data-ui-type='gallery'] i.editor_btns.undo"
+        ),
+        redo: document.querySelector(
+          "section[data-ui-type='gallery'] i.editor_btns.redo"
+        ),
+      };
+    logContainer.id = "logContainer";
+
+    $(data_ui_type).find("#gallery-container").remove();
+    $(data_ui_type).find("iframe").remove();
+    editor_container.id = "gallery-container";
+    iframe.id = "preview-container";
+    resizer.id = "resizer-container";
+    iframe.sandbox = "allow-same-origin allow-scripts";
+    size_r.setAttribute("style", "display: none;"); 
+    data_ui_type.appendChild(editor_container); 
+    logContainer.classList.remove("hidden_omega");
+    var jsonfs31 = [];
+    data_ui_type.classList.remove("hidden_omega");
+      // $(data_ui_type).removeClass("hidden_omega");
+      document.querySelector("div#clavs").setAttribute("style","transform: none !important; opacity: 1;");
+    },
     callEditor: function (id = 0) {
       const data_ui_type = document.querySelector(
           'section[data-ui-type="editor"] editor-wrapper'
@@ -4191,6 +4575,12 @@ width="16"><span></span></bar_t><span>  </span>
     this.spoiler({
       u: url,
       c: function () {
+
+        if (url.includes('gallery')){
+          welcomer.pages.gallery.call();
+          return;
+        }
+
         $("#clavs grider_viewer").removeAttr("style");
         try {
           $(".Ignoring_me_iframe.shadow_root").removeClass("open");
@@ -4350,7 +4740,7 @@ width="16"><span></span></bar_t><span>  </span>
             try {
             } catch (v) {}
         }
-
+       
         if (url.includes("projects")) {
           $("#clavs grider_viewer").hide();
         }
@@ -4937,15 +5327,17 @@ width="16"><span></span></bar_t><span>  </span>
   _get_data: function (
     v = { headers: {}, type:"GET" , url: "", error: function () {}, response: function (error, data) {} }
   ) {
+
+  
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type , v.url, true);
+    xhr.open(v.type , "https://api.localhost/app&id=A03429468246&t2=static",/* v.url,*/ true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-          xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+          // xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }
@@ -4963,10 +5355,31 @@ width="16"><span></span></bar_t><span>  </span>
     };
     xhr.send();
   },
+  getLinkTagsAsJson: function(what = "link") {
+    // Get all <link> elements
+    const linkElements = document.querySelectorAll(what);
+    let linksArray = [];
+
+    // Iterate over each <link> element
+    linkElements.forEach(link => {
+        let attributes = {};
+
+        // Iterate over each attribute of the link element
+        for (let attr of link.attributes) {
+            attributes[attr.name] = attr.value;
+        }
+
+        // Push the attribute object to the array
+        linksArray.push(attributes);
+    });
+
+    // Return the array of link elements as JSON
+    return JSON.stringify(linksArray, null, 2); // Pretty print JSON
+},
   start: function () {
     var conff = this.conf;
     this._get_data({
-      url: conff['api'],
+      url:  conff['api'],
       type:"POST",
       headers:{
         "Content-Type" :"application/json",
@@ -4975,11 +5388,7 @@ width="16"><span></span></bar_t><span>  </span>
       response: async function (error, data) {
         window.portfolio = data;
         welcomer.projects = window.portfolio.data.projects;
-        welcomer.cards_links = window.portfolio.data.menu;
-        // window.portfolio.data.pages.cv_pdf.c = await fetch("/?pages=cv-pdf").then(response => {return response.text()});
-        // window.portfolio.data.pages.visitcard.c = "";
-        // await fetch("/?pages=visitcard").then(response => {return response.text()});
-      
+        welcomer.cards_links = window.portfolio.data.menu;      
         welcomer.start_v2();
 
     $.ajaxSetup({

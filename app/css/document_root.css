@@ -1102,3 +1102,7 @@ b_spoiler_iframe {
     background: rgba(0, 0, 0, 0.902);
     z-index: 33;
 }
+
+p_open {
+  font-size: 12px !important;
+}

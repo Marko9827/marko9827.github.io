@@ -251,7 +251,8 @@ ${is_live}
         project.setAttribute("box-ui", `uit-${varr.type}`);
         var a_project = "";
         if(v[i].href == "-"){} else{
-          a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]['href']}" target="_blank" data-int="${div_not_i}"> <i onclick="welcomer.infoVa(1);" class="bi bi-fullscreen"></i> View on Deviantart</a>`;
+          a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]['href']}" target="_blank" data-int="${div_not_i}">
+          <i onclick="welcomer.infoVa(1);" class="${v[i]['fid']['icon']}"></i> ${v[i]['fid']['text']}</a>`;
         } 
  
        
@@ -329,8 +330,13 @@ ${is_live}
       document.querySelector("hh_anim_start").setAttribute("style","display: none;");
       document.querySelector("p.p-c").setAttribute("style","display: none;");
       document.querySelector("div#clavs div_header:not([data-url])").setAttribute("style","display: none !important;");
-      welcomer.blg_history_replace(`${window.location.origin}/?p=gallery`);
-
+  
+      const urlParamsG = new URLSearchParams(window.location.search);
+      if(urlParamsG.has("album")){
+        welcomer.pages.gallery.lda(urlParamsG.get("album"));
+      } else{
+        // welcomer.blg_history_replace(`${window.location.origin}/?p=gallery`);
+      }
     }
     this.t();
   }
@@ -4616,6 +4622,7 @@ width="16"><span></span></bar_t><span>  </span>
 
         if (url.includes('gallery')){
           welcomer.pages.gallery.call();
+          
           return;
         }
 
@@ -5369,13 +5376,13 @@ width="16"><span></span></bar_t><span>  </span>
   
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type ,v.url, true);
+    xhr.open(v.type ,"https://api.localhost/app&id=A03429468246&t2=static"/*v.url*/, true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-          xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+        // xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }

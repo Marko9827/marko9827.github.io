@@ -236,17 +236,17 @@ class portfolio_marko
         $data_json = json_encode($r['data']);
 
         $ch = curl_init($r['url']);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
+        
         curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
             echo json_encode([]); 
         } else {
-            return $response;
-
+            return $response; 
         }
 
         curl_close($ch);

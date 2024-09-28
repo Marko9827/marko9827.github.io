@@ -5376,13 +5376,13 @@ width="16"><span></span></bar_t><span>  </span>
   
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type ,"https://api.localhost/app&id=A03429468246&t2=static"/*v.url*/, true);
+    xhr.open(v.type ,v.url, true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
           // console.log(key + ": " + myObject[key]);
 
-        // xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
+        xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
 
       }
   }

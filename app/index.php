@@ -240,9 +240,7 @@ class portfolio_marko
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
         curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
-        curl_setopt($ch, CURLOPT_POST, true);
-
-        
+        curl_setopt($ch, CURLOPT_POST, true); 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
         $response = curl_exec($ch);
@@ -305,7 +303,8 @@ class portfolio_marko
                         $r = $this->get_data([
                             "url" => "https://api.eronelit.com/graph",
                             "headers" => [
-                                
+                             
+
                                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
                             ],
                             "data" => [

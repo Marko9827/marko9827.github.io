@@ -8,7 +8,7 @@ use \League\CommonMark\CommonMarkConverter;
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
 define("CDN", "https://cdn.eronelit.com/");
-define("API_HOST","https://api.eronelit.com/app&id=A03429468246&blog=");
+define("API_HOST", "https://api.eronelit.com/app&id=A03429468246&blog=");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]/app/");
 define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");
 if (!empty($_GET['p'])) {
@@ -233,20 +233,23 @@ class portfolio_marko
             "headers" => []
         ]
     ) {
-        $data_json = json_encode($r['data']);
+ 
 
         $ch = curl_init($r['url']);
+      
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
         curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
+        curl_setopt($ch, CURLOPT_POST, true);
+
         
         curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_json);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
         $response = curl_exec($ch);
         if (curl_errno($ch)) {
-            echo json_encode([]); 
+            echo json_encode([]);
         } else {
-            return $response; 
+            return $response;
         }
 
         curl_close($ch);
@@ -260,46 +263,73 @@ class portfolio_marko
 
         return $css;
     }
-    function Getbearer() {
-        $headers = null; 
+    function Getbearer()
+    {
+        $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {  
+        } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
-            $requestHeaders = apache_request_headers(); 
+            $requestHeaders = apache_request_headers();
             if (isset($requestHeaders['Authorization'])) {
                 $headers = trim($requestHeaders['Authorization']);
             }
-        } 
+        }
         if (!empty($headers) && preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-            return $matches[1]; 
-        } 
-        return null; 
+            return $matches[1];
+        }
+        return null;
     }
     function Pages($h = "home")
     {
         session_start();
         if ($h == "feed") {
-            if($this->Getbearer() == $_SESSION['Bearer_token_temp']){
-            $r = $this->get_data([
-                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-                "headers" => [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                ]
-            ]);
-            header("Content-Type: text/json");
-            echo $r;
-        }else{
-            $this->error_page(403);
-            exit();
-        }
+            if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
+                $r = [];
+           
+                if (isset($_POST['type'])) {
+                    if ($_POST['type'] == "f") {
+                        $r = $this->get_data([
+                            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                            "headers" => [
+                                'Content-Type: application/json',
+                                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                            ]
+                        ]);
+                        header("Content-Type: text/json");
+                        echo $r;
+                        exit();
+                    }
+                    if ($_POST['type'] == "s") {
+                        $r = $this->get_data([
+                            "url" => "https://api.eronelit.com/graph",
+                            "headers" => [
+                                
+                                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                            ],
+                            "data" => [
+                                "urlf" => $_POST['urlf']
+                            ]
+                        ]);
+                        header("Content-Type: text/json");
+                        echo $r;
+                        exit();
+                    }
+                } else{
+                    $this->error_page(404);
+                    exit(); 
+                }
+
+            } else {
+                $this->error_page(403);
+                exit();
+            }
             exit();
 
         }
         if ($h == "home") {
-          #  session_start();
+            #  session_start();
             $_SESSION['Bearer_token_temp'] = bin2hex(random_bytes(30 / 2));
             include "$_SERVER[DOCUMENT_ROOT]/app/welcomer.php";
 
@@ -943,76 +973,78 @@ echo $v .",";
                 if ($_GET['t'] == "v") {
                     $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
                     $host = $parsed_url['host'];
-                    if($host == "$_SERVER[HTTP_HOST]"){
-                    ?>
+                    if ($host == "$_SERVER[HTTP_HOST]") {
+                        ?>
 
-                            <html>
+                                <html>
 
-                            <head>
-                                <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
-                                <style>
-                                    * {
-                                        margin: 0px;
-                                        padding: 0px;
-                                    }
+                                <head>
+                                    <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                                    <style>
+                                        * {
+                                            margin: 0px;
+                                            padding: 0px;
+                                        }
 
-                                    div#my-video {
-                                        position: fixed;
-                                        left: 0px;
-                                        top: 0px;
-                                        width: 100%;
-                                        height: 100%;
-                                    }
-                                </style>
-                            </head>
+                                        div#my-video {
+                                            position: fixed;
+                                            left: 0px;
+                                            top: 0px;
+                                            width: 100%;
+                                            height: 100%;
+                                        }
+                                    </style>
+                                </head>
 
-                            <body onload="f();">
-                                <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
-                                    poster="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>00" data-setup="{}">
-                                    <source src="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>" type="video/mp4" />
-                                    <p class="vjs-no-js">
-                                        To view this video please enable JavaScript, and consider upgrading to a
-                                        web browser that supports HTML5 video.
-                                    </p>
-                                </video>
-                                <script async type="text/javascript">
-                                    f = function () {
-                                        document.addEventListener("contextmenu", function (e) {
-                                            e.preventDefault();
-                                            return false;
-                                        });
-                                        document.addEventListener("selectstart", function (e) {
-                                            e.preventDefault();
-                                            return false;
-                                        });
-                                        document.addEventListener("dragstart", function (e) {
-                                            e.preventDefault();
-                                            return false;
-                                        });
-                                        document.querySelectorAll("script").forEach(function (res) {
-                                            res.remove();
-                                            console.clear();
-                                        });
-                                        document.addEventListener('keydown', function (event) {
-                                            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-                                                event.preventDefault();
+                                <body onload="f();">
+                                    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+                                        poster="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>00" data-setup="{}">
+                                        <source src="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>" type="video/mp4" />
+                                        <p class="vjs-no-js">
+                                            To view this video please enable JavaScript, and consider upgrading to a
+                                            web browser that supports HTML5 video.
+                                        </p>
+                                    </video>
+                                    <script async type="text/javascript">
+                                        f = function () {
+                                            document.addEventListener("contextmenu", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.addEventListener("selectstart", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.addEventListener("dragstart", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.querySelectorAll("script").forEach(function (res) {
+                                                res.remove();
+                                                console.clear();
+                                            });
+                                            document.addEventListener('keydown', function (event) {
+                                                if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                                                    event.preventDefault();
 
-                                            }
-                                            if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-                                                event.preventDefault();
+                                                }
+                                                if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                                                    event.preventDefault();
 
-                                            }
-                                        });
-                                    }
-                                </script>
-                                <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
-                            </body>
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                                </body>
 
-                            </html>
+                                </html>
 
                         <?php
-                        }else{$this->error_page(404);}
-                        exit();
+                    } else {
+                        $this->error_page(404);
+                    }
+                    exit();
                 } else {
                     $this->streamVideo("$url$_GET[blog].mp4");
                 }

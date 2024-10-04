@@ -36,6 +36,7 @@ const welcomer = {
   lang: [],
   conf: {
     token:`${window.stmp}`,
+    graph: "/feed",
     api: "/feed",
     black: true,
   },
@@ -1374,9 +1375,25 @@ br_aer  img.favicon {
     try {
       welcomer.cards_generate_xhr.abort();
     } catch (aerear) {}
+    var conff = this.conf;
 
     welcomer.cards_generate_xhr = new XMLHttpRequest();
-    welcomer.cards_generate_xhr.open("POST", "/?svc=favicon", true);
+    welcomer.cards_generate_xhr.open("POST", conff['graph'], true);
+     welcomer.cards_generate_xhr.setRequestHeader(`Authorization`,`Bearer ${conff['token']}`);
+    //
+    // this._get_data({
+    //   url:  conff['api'],
+    //   type:"POST",
+      
+    //   headers:{
+    //     "Content-Type" :"application/json",
+    //     "Authorization":"Bearer " + conff['token']
+    //   },
+    //   response: async function (error, data) {
+
+    //   }});
+
+        //
     /*
     /f/ welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
     */
@@ -1388,7 +1405,7 @@ br_aer  img.favicon {
           );
           var jsjonF = responseData || [];
           for (var i = 0; i < jsjonF.length; i++) {
-            var jsjon = jsjonF[i];
+            var jsjon = jsjonF[i][0];
             var baer = document.createElement("baer"),
               ber_f = document.createElement("ber_f"),
               span = document.createElement("span"),
@@ -1462,6 +1479,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
     var json_f = fh.shared_links;
 
     jsonData.append("urlf", JSON.stringify(fh.shared_links));
+    jsonData.append("type","s");
     var shared_links_loader = "";
     if (fh.shared_links.length > 0) {
       fh.shared_links.forEach(function () {
@@ -5370,7 +5388,7 @@ width="16"><span></span></bar_t><span>  </span>
     ele.addEventListener("mousedown", mouseDownHandler);
   },
   _get_data: function (
-    v = { headers: {}, type:"GET" , url: "", error: function () {}, response: function (error, data) {} }
+    v = { headers: {}, type:"GET" , data: {}, url: "", error: function () {}, response: function (error, data) {} }
   ) {
 
   
@@ -5386,6 +5404,18 @@ width="16"><span></span></bar_t><span>  </span>
 
       }
   }
+
+  const formData = new FormData();
+  for (let key in v.data) {
+    if (v.data.hasOwnProperty(key)) {
+        // console.log(key + ": " + myObject[key]);
+
+      formData.append(`${key}`,`${v.data[key]}`);
+
+    }
+}
+ 
+ 
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300) {
         var data = xhr.response;
@@ -5398,7 +5428,8 @@ width="16"><span></span></bar_t><span>  </span>
     xhr.onerror = function () {
       console.error("Request failed");
     };
-    xhr.send();
+ 
+    xhr.send(formData);
   },
   getLinkTagsAsJson: function(what = "link") {
     // Get all <link> elements
@@ -5425,9 +5456,11 @@ width="16"><span></span></bar_t><span>  </span>
     var conff = this.conf;
     this._get_data({
       url:  conff['api'],
-      type:"POST",
+      type: "POST",
+      data: {
+        "type": "f"
+      },
       headers:{
-        "Content-Type" :"application/json",
         "Authorization":"Bearer " + conff['token']
       },
       response: async function (error, data) {

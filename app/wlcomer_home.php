@@ -2612,7 +2612,7 @@ a.fiv_d i {
             'Authorization: Bearer 32M052k350QaeofkaeopfF',
         ]
     ]); 
-    echo "<script type='application/json' id='json_feed'>$r</script>";
+    echo "<script type='application/json'  charset='UTF-8' id='json_feed'>$r</script>";
     ?>
 </head>
 

@@ -1,5 +1,9 @@
 "use strict";
 
+const jsonData = document.getElementById("json_feed").textContent,
+parsedData = JSON.parse(jsonData);
+window.portfolio = parsedData;
+
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
 window.portfolio = {
@@ -2199,6 +2203,8 @@ width="16"><span></span></bar_t><span>  </span>
         /* t = `<i class="bi bi-telegram"></i> `; */
         t = `    <i class="fab fa-deviantart"></i> `;
       } else if (re == "video" || re == "Video") {
+        t = `<i class="bi bi-film"></i> `;
+      } else if (re == "astronomy" || re == "Astronomy") {
         t = `<i class="bi bi-film"></i> `;
       } else {
       }

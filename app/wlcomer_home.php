@@ -2585,6 +2585,12 @@ a.fiv_d {
 a.fiv_d i {
     margin-right:6px;
 }
+
+ta_f[data-category="astronomy"]:hover i,
+ta_f[data-category="astronomy"].active i {
+    transform: rotate(-90deg);
+}
+ 
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

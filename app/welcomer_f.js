@@ -1,11 +1,12 @@
 "use strict";
 
-const jsonData = document.getElementById("json_feed").textContent,
+/*
+const jsonData = document.getElementById("json_feedf").innerHTML,
 parsedData = JSON.parse(jsonData);
-window.portfolio = parsedData;
+window.portfolio = parsedData;*/
 
 window.draggable = { style_left: "", style_top: "", enabled: false };
-
+/*
 window.portfolio = {
   data: {
     host:"",
@@ -28,7 +29,7 @@ window.portfolio = {
       },
     },
   },
-};
+};*/
 
 function base64Encode(str) {
   const encoder = new TextEncoder();
@@ -5470,10 +5471,10 @@ width="16"><span></span></bar_t><span>  </span>
       headers:{
         "Authorization":"Bearer " + conff['token']
       },
-      response: async function (error, data) {*/
+      response: async function (error, data) {*f/
         const jsonData = document.getElementById("json_feed").textContent;
 const parsedData = JSON.parse(jsonData);
-        window.portfolio = parsedData;
+        window.portfolio = parsedData;*/
         welcomer.projects = window.portfolio.data.projects;
         welcomer.cards_links = window.portfolio.data.menu;      
         welcomer.start_v2();

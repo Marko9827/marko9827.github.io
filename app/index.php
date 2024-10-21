@@ -1019,7 +1019,7 @@ echo $v .",";
                                                 return false;
                                             });
                                             document.querySelectorAll("script").forEach(function (res) {
-                                                res.remove();
+                                           //     res.remove();
                                                 console.clear();
                                             });
                                             document.addEventListener('keydown', function (event) {
@@ -1179,6 +1179,15 @@ echo $v .",";
                 header("Pragma: no-cache");
                 $f = time() . rand();
                 echo " /* $f */ ";
+                $r = $this->get_data([
+                    "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                    "headers" => [
+                        'Content-Type: application/json',
+                        'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                    ]
+                ]);
+                // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
+                echo "window.portfolio = $r; \n";
                 include ROOT . "welcomer_f.js";
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");

@@ -697,6 +697,16 @@ if (!empty($_GET['drc'])) {
     } else if ($_GET['svc'] == "jsc") {
         header("content-type: text/javascript");
 
+        
+        $r = $this->get_data([
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]);
+        // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
+        echo "window.portfolio = $r; \n";
 
 
         /*  ?>

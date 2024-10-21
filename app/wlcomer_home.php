@@ -95,7 +95,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
-    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link rel="stylesheet" href="<?php echo SITE_HOST; ?>/?svc=aet"
+        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
 
 
     <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
@@ -109,16 +110,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preload" as="font"
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
         type="font/woff2">
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <script nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>" src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"
+        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"
+        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <script nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>"
+        src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css"
+        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
 
-    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>" async src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
+    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
 
     <?php
 
@@ -175,7 +183,7 @@ media-src 'self';" />
 
     <?php if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
-    ?>
+            ?>
             <style type="text/css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
                 * {
                     pointer-events: none !important;
@@ -186,12 +194,13 @@ media-src 'self';" />
                     display: none;
                 }
             </style>
-    <?php }
+        <?php }
     } ?>
     <style type="text/css" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
-        ?>.zoomContainer:not(:hover, :focus) * {
+        ?>
+        .zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
             width: 100% !important;
@@ -854,7 +863,8 @@ media-src 'self';" />
         }
 
         /*  */
-        <?php include ROOT . "css/document_root.css"; ?>div#clavs br_ta {
+        <?php include ROOT . "css/document_root.css"; ?>
+        div#clavs br_ta {
             position: sticky;
             background: var(--black-trasparent-color);
             top: 51.1px;
@@ -1676,22 +1686,24 @@ div#clavs br_ta ta_f.active span {
         }
 
         <?php if ($_GET['vp'] == "livestream") {
-        ?>.box_shadow_txtf.box_shadow {
-            margin: auto !important;
-        }
+            ?>
+            .box_shadow_txtf.box_shadow {
+                margin: auto !important;
+            }
 
-        div#buttons,
-        arr_bundle {
+            div#buttons,
+            arr_bundle {
 
-            display: none !important;
-        }
+                display: none !important;
+            }
 
-        span.box_shadow_h {
-            display: none !important;
-        }
+            span.box_shadow_h {
+                display: none !important;
+            }
 
-        <?php
-        } ?>@import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+            <?php
+        } ?>
+        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
         @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
@@ -2415,182 +2427,189 @@ div#clavs br_ta ta_f.active span {
 
         }
 
-        
+
 
         backdrop-filter:blur(3px) !important;
-}
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] div_header{
-    display: block !important;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] div_header {
+            display: block !important;
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] div_header #logo_backscr_img {
-    opacity:1;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] div_header #logo_backscr_img {
+            opacity: 1;
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer { 
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    width: 100%;
-    height: calc(100% - 50px );
-    display: block;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer {
+            position: fixed;
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: calc(100% - 50px);
+            display: block;
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo {
-    opacity: 0.5;
-    pointer-events: none;
-}
-div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo.active{
-    opacity: 1 !important;
-    pointer-events: unset !important;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer  sp_clv {
-    position: absolute;
-    background: transparent;
-    width: 100%;
-    height: 100%;
-    bottom: 0px;
-    top: 0px;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-        -ms-flex-pack: center;
+        div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo.active {
+            opacity: 1 !important;
+            pointer-events: unset !important;
+        }
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer sp_clv {
+            position: absolute;
+            background: transparent;
+            width: 100%;
+            height: 100%;
+            bottom: 0px;
+            top: 0px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
-    -ms-flex-wrap: nowrap;
-        flex-wrap: nowrap;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
             flex-direction: column;
-    z-index: 33333;
-    color: white;
-    font-size: 13px;
-    text-align: center;
-}
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project:not([box-ui="uit-gallery"]) fiv {
-    display:none !important;
-}
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer{
-    padding: 5px !important;
-}
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer  sp_clv i  {
-    font-size: 40px;
-    width: 60px;
-    height: 60px;
-    display: block;
-}
+            z-index: 33333;
+            color: white;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project:not([box-ui="uit-gallery"]) fiv {
+            display: none !important;
+        }
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer {
+            padding: 5px !important;
+        }
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer sp_clv i {
+            font-size: 40px;
+            width: 60px;
+            height: 60px;
+            display: block;
+        }
 
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer p-title
-{    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    -webkit-transition: .3s;
-    -o-transition: .3s;
-    transition: .3s;
-    text-transform:capitalize;
-}
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project img {
-    opacity:0.7;
-} 
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer p-title {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+            text-transform: capitalize;
+        }
 
-div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer img_drps {
-    position: absolute;
-    width: 100%;
-    height: calc(100% - 15px);
-    background: rgb( 0 0 0 / 0.5);
-    z-index: -1;
-    border-radius: 10px !important;
-}
-#clavs grider_viewer project:hover p_open {
-  top: 45px !important;
-  opacity: 1;
-    z-index:333333333;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer project img {
+            opacity: 0.7;
+        }
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer img_drps {
+            position: absolute;
+            width: 100%;
+            height: calc(100% - 15px);
+            background: rgb(0 0 0 / 0.5);
+            z-index: -1;
+            border-radius: 10px !important;
+        }
+
+        #clavs grider_viewer project:hover p_open {
+            top: 45px !important;
+            opacity: 1;
+            z-index: 333333333;
+        }
 
 
-span_live {
-    position: absolute;
-    bottom: 30px;
-    z-index: 33333;
-    left: 0px;
-    right: 0px;
-    display: flex;
-    text-align: center;
-    justify-content: center;
-    align-items: flex-end;
-    align-content: center;
-    pointer-events: none;
-}
+        span_live {
+            position: absolute;
+            bottom: 30px;
+            z-index: 33333;
+            left: 0px;
+            right: 0px;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: flex-end;
+            align-content: center;
+            pointer-events: none;
+        }
 
-span_live btn_l {
-    background: hwb(0deg 0% 0% / 58%);
-    color: white;
-    border-radius: 6px !important;
-    margin: 4px;
-    padding: 4px 10px;
-    font-size: 13px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-}
+        span_live btn_l {
+            background: hwb(0deg 0% 0% / 58%);
+            color: white;
+            border-radius: 6px !important;
+            margin: 4px;
+            padding: 4px 10px;
+            font-size: 13px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+        }
 
-@keyframes span_live_i {
-    0% {
-        opacity: 0;
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
+        @keyframes span_live_i {
+            0% {
+                opacity: 0;
+            }
 
-span_live btn_l i {
-    margin-right:4px;
-    animation: span_live_i 2s infinite
-}
+            50% {
+                opacity: 1;
+            }
 
- 
- 
-a.fiv_d {
-    position: absolute;
-    font-size: 11px;
-    bottom: 32px !important;
-    top: unset !important; 
-    display: flex;
-    align-content: center;
-    align-items: center;
-    left: 5px;
-    flex-wrap: nowrap;
-    width: fit-content !important;
-    background: rgb(0 0 0 / 52%);
-    opacity: 1;
-    z-index: 333;
-    color: white;
-    padding: 5px;
-    border-radius: 4px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-}
+            100% {
+                opacity: 0;
+            }
+        }
 
-a.fiv_d i {
-    margin-right:6px;
-}
+        span_live btn_l i {
+            margin-right: 4px;
+            animation: span_live_i 2s infinite
+        }
 
-ta_f[data-category="astronomy"]:hover i,
-ta_f[data-category="astronomy"].active i {
-    transform: rotate(-90deg);
-}
- 
+
+
+        a.fiv_d {
+            position: absolute;
+            font-size: 11px;
+            bottom: 32px !important;
+            top: unset !important;
+            display: flex;
+            align-content: center;
+            align-items: center;
+            left: 5px;
+            flex-wrap: nowrap;
+            width: fit-content !important;
+            background: rgb(0 0 0 / 52%);
+            opacity: 1;
+            z-index: 333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+        }
+
+        a.fiv_d i {
+            margin-right: 6px;
+        }
+
+        ta_f[data-category="astronomy"]:hover i,
+        ta_f[data-category="astronomy"].active i {
+            transform: rotate(-90deg);
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -2609,16 +2628,16 @@ ta_f[data-category="astronomy"].active i {
             gtag('config', 'G-NZPKRC33WQ');
         </script>
     <?php }
-    ?> 
-    <?php 
+    ?>
+    <?php
     $r = $this->get_data([
         "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
         "headers" => [
             'Content-Type: application/json',
             'Authorization: Bearer 32M052k350QaeofkaeopfF',
         ]
-    ]); 
-    echo "<script type='application/json'  charset='UTF-8' id='json_feed'>$r</script>";
+    ]);
+    echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
     ?>
 </head>
 
@@ -2628,8 +2647,8 @@ ta_f[data-category="astronomy"].active i {
 
     </video>
     <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
-                        echo "Live stream... Please wait...";
-                    } else { ?>
+        echo "Live stream... Please wait...";
+    } else { ?>
             Do you love random videos?<br>
             - Tip: Reload page...
         <?php } ?>
@@ -2958,7 +2977,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 */ ?>
         <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
         <section data-ui-type="gallery" class="hidden_omega">
-        <div_header data-url="editor">
+            <div_header data-url="editor">
                 <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
                     <defs>
                         <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
@@ -3019,7 +3038,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                     </rect>
                 </svg>
                 <span>Marko Nikolić > Gallery</span>
-                 
+
 
                 <btns_i>
                     <input type="text" placeholder="Search project" data-hmm="search"
@@ -3029,8 +3048,9 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
                 </btns_i>
                 <btns_r class="btns_r_editor_right">
-                    <i class="bi bi-arrow-left-short editor_btns undo gallery_home" data-title="Back to Gallery" onclick="welcomer.pages.gallery.call_back();"></i>
-                   
+                    <i class="bi bi-arrow-left-short editor_btns undo gallery_home" data-title="Back to Gallery"
+                        onclick="welcomer.pages.gallery.call_back();"></i>
+
 
                     <i class="bi bi-share" onclick="welcomer.share();" title="Share"></i>
                     <i class="bi bi-x-lg close_btnf" onclick="window.location.href = '/';" title="Close"></i>

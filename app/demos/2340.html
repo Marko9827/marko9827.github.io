@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ukrštenica</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .grid-container {
+            display: grid;
+            gap: 5px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .correct {
+            background-color: lightgreen;
+        }
+        .fixed-letter {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        input {
+            width: 30px;
+            font-size: 24px;
+            text-align: center;
+            border: none;
+            box-shadow: none;
+        }
+        input:focus {
+            outline: none;
+        }
+        #word-list {
+            margin-top: 20px;
+            text-align: left;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ukrštenica</h1>
+    <div class="grid-container" id="grid-container"></div>
+    <button id="generate-button" class="waves-effect waves-light btn">Generiši ukrštenicu</button>
+    <button id="clear-button" class="waves-effect waves-light btn red">Obriši reči</button>
+    <div id="word-list"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        const wordsJson={"words":["zvezda","planeta","galaksija","voda","svetlo","energija","mesec","sunce","zemlja","vreme","plamen","dim","duh","misao","vetar"]};
+        const gridSize=Math.ceil(Math.sqrt(wordsJson.words.reduce((max,word)=>Math.max(max,word.length),0)*wordsJson.words.length));
+        let grid=[],placedWords=[];
+        function generateCrossword(){grid=Array.from({length:gridSize},()=>Array(gridSize).fill(''));placedWords=[];for(let word of wordsJson.words){placeWord(word);}renderGrid();renderWordList();}
+        function renderGrid(){const gridContainer=document.getElementById('grid-container');gridContainer.innerHTML='';gridContainer.style.gridTemplateColumns=`repeat(${gridSize},40px)`;gridContainer.style.gridTemplateRows=`repeat(${gridSize},40px)`;for(let rowIndex=0;rowIndex<grid.length;rowIndex++){for(let colIndex=0;colIndex<grid[rowIndex].length;colIndex++){const letter=grid[rowIndex][colIndex];const gridItem=document.createElement('div');gridItem.classList.add('grid-item');if(letter){const fixedLetter=document.createElement('div');fixedLetter.classList.add('fixed-letter');fixedLetter.textContent=letter;gridItem.appendChild(fixedLetter);}else{const input=document.createElement('input');input.setAttribute('type','text');input.setAttribute('maxlength','1');input.dataset.row=rowIndex;input.dataset.col=colIndex;input.addEventListener('input',handleInput);gridItem.appendChild(input);}gridContainer.appendChild(gridItem);}}}
+        function handleInput(event){const input=event.target;const row=parseInt(input.dataset.row);const col=parseInt(input.dataset.col);const letter=input.value.toLowerCase();checkWordCompletion(row,col);}
+        function checkWordCompletion(row,col){for(const word of placedWords){let isHorizontal=word.isHorizontal;let startRow=word.row;let startCol=word.col;let wordText=word.text;let isCorrect=true;for(let i=0;i<wordText.length;i++){const currentRow=isHorizontal?startRow:startRow+i;const currentCol=isHorizontal?startCol+i:startCol;const inputElement=document.querySelector(`input[data-row="${currentRow}"][data-col="${currentCol}"]`);if(!inputElement||inputElement.value.toLowerCase()!==wordText[i]){isCorrect=false;break;}}if(isCorrect){for(let i=0;i<wordText.length;i++){const currentRow=isHorizontal?startRow:startRow+i;const currentCol=isHorizontal?startCol+i:startCol;const inputElement=document.querySelector(`input[data-row="${currentRow}"][data-col="${currentCol}"]`);if(inputElement){inputElement.classList.add('correct');}}}}}
+        function renderWordList(){const wordList=document.getElementById('word-list');wordList.innerHTML='<h5>Reči:</h5>';wordsJson.words.forEach(word=>{wordList.innerHTML+=`<div>${word}</div>`;});}
+        function placeWord(word){const isHorizontal=Math.random()<0.5;const startRow=Math.floor(Math.random()*gridSize);const startCol=Math.floor(Math.random()*gridSize);const wordLength=word.length;if(isHorizontal){if(startCol+wordLength<=gridSize&&canPlaceWord(word,startRow,startCol,isHorizontal)){for(let i=0;i<wordLength;i++){grid[startRow][startCol+i]=word[i];}placedWords.push({text:word,row:startRow,col:startCol,isHorizontal:true});}}else{if(startRow+wordLength<=gridSize&&canPlaceWord(word,startRow,startCol,isHorizontal)){for(let i=0;i<wordLength;i++){grid[startRow+i][startCol]=word[i];}placedWords.push({text:word,row:startRow,col:startCol,isHorizontal:false});}}}
+        function canPlaceWord(word,startRow,startCol,isHorizontal){const wordLength=word.length;for(let i=0;i<wordLength;i++){const row=isHorizontal?startRow:startRow+i;const col=isHorizontal?startCol+i:startCol;if(grid[row][col]!==''){return false;}}
+        return true;}
+        document.getElementById('generate-button').addEventListener('click',generateCrossword);
+        document.getElementById('clear-button').addEventListener('click',()=>{grid=Array.from({length:gridSize},()=>Array(gridSize).fill(''));placedWords=[];renderGrid();renderWordList();});
+    </script>
+</body>
+</html>

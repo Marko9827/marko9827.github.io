@@ -233,14 +233,14 @@ class portfolio_marko
             "headers" => []
         ]
     ) {
- 
+
 
         $ch = curl_init($r['url']);
-      
+
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
         curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
-        curl_setopt($ch, CURLOPT_POST, true); 
+        curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
         $response = curl_exec($ch);
@@ -282,10 +282,23 @@ class portfolio_marko
     function Pages($h = "home")
     {
         session_start();
+        if ($h == "demo") {
+            if (!empty($_GET['id'])) {
+                $f = "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
+                if (file_exists($f)) {
+                    header("Content-Type: text/html; charset=utf-8");
+                    include "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
+                    exit();
+                } else {
+                    $this->error_page(404);
+                    exit();
+                }
+            }
+        }
         if ($h == "feed") {
             if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
                 $r = [];
-           
+
                 if (isset($_POST['type'])) {
                     if ($_POST['type'] == "f") {
                         $r = $this->get_data([
@@ -303,7 +316,7 @@ class portfolio_marko
                         $r = $this->get_data([
                             "url" => "https://api.eronelit.com/graph",
                             "headers" => [
-                             
+
 
                                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
                             ],
@@ -315,9 +328,9 @@ class portfolio_marko
                         echo $r;
                         exit();
                     }
-                } else{
+                } else {
                     $this->error_page(404);
-                    exit(); 
+                    exit();
                 }
 
             } else {
@@ -1019,7 +1032,7 @@ echo $v .",";
                                                 return false;
                                             });
                                             document.querySelectorAll("script").forEach(function (res) {
-                                           //     res.remove();
+                                                //     res.remove();
                                                 console.clear();
                                             });
                                             document.addEventListener('keydown', function (event) {

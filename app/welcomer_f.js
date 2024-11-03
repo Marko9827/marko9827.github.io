@@ -1531,6 +1531,7 @@ width="16"><span></span></bar_t><span>  </span>
       });
 
       welcomer.gallery_temp = f.gallery;
+      $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
 
       welcomer.blg_history_replace(`/?p=blog&id=${id}`);
       $("div_header").attr(
@@ -2275,6 +2276,7 @@ width="16"><span></span></bar_t><span>  </span>
             `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
           );
           if(active_scrf.getAttribute("data-category") == "astronomy" || active_scrf.getAttribute("data-category") == "Astronomy"){
+
             $("body").addClass("active");
           } else{
             $("body").removeAttr("active");
@@ -4971,6 +4973,8 @@ width="16"><span></span></bar_t><span>  </span>
   },
   Hclose: function () {
     $("body").removeAttr("data-category-name");
+    $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");

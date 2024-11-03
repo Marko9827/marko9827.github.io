@@ -1532,7 +1532,7 @@ width="16"><span></span></bar_t><span>  </span>
 
       welcomer.gallery_temp = f.gallery;
       $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
-
+      $('body').removeAttr("data-category-name");
       welcomer.blg_history_replace(`/?p=blog&id=${id}`);
       $("div_header").attr(
         "data-url",
@@ -1694,7 +1694,8 @@ width="16"><span></span></bar_t><span>  </span>
           "data-url",
           `${window.location.origin}/?p=blog&id=${id}`
         );
-
+        $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+        $('body').removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
         $(ifrm).hide();
 

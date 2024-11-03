@@ -2657,7 +2657,9 @@ div#clavs br_ta ta_f.active span {
             transform: translateY(100dvh);
         }
 
-        body:not([data-category-name="astronomy"]) div.solarsystem {
+       
+        body:not([data-category-name="astronomy"]) div.solarsystem,
+        body:not([data-category-name="astronomy"]) solar_arrow {
             opacity: 0 !important;
             pointer-events: none !important;
         }
@@ -2669,6 +2671,59 @@ div#clavs br_ta ta_f.active span {
             top: 0px;
             width: 100%;
             height: 100%;
+        }
+
+        solar_arrow {
+            color: white;
+            position: fixed;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            display: flex;
+            z-index: 33333353;
+            align-content: center;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 10px;
+            border-top: 1px solid #ffffff36;
+            background: var(--black-trasparent-color);
+        }
+
+        solar_arrow labelv span {
+            margin: 0px 10px;
+        }
+
+        body[data-category-name="astronomy"] grider_viewer.gridsH.grids {
+            -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, color-stop(60%, black), to(transparent));
+            -webkit-mask-image: linear-gradient(black 60%, transparent);
+            mask-image: -webkit-gradient(linear, left top, left bottom, color-stop(60%, black), to(transparent));
+            mask-image: linear-gradient(black 60%, transparent);
+        }
+
+        solar_arrow back_f {
+            width: 300px;
+            height: 200px;
+            background: rgb(255 255 255 / 8%);
+            border-radius: 0px;
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 0px;
+            padding: 0;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        solar_arrow * {
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+        }
+
+        solar_arrow:hover back_f {
+            background: rgb(255 255 255 / 10%) !important;
         }
     </style>
     <?php
@@ -2699,7 +2754,8 @@ div#clavs br_ta ta_f.active span {
     ]);
     echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
     ?>
-</head> 
+</head>
+
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
     <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
@@ -2903,6 +2959,14 @@ div#clavs br_ta ta_f.active span {
 
         </div_header>
         <div id="root" class="solarsystem"></div>
+        <solar_arrow onclick="welcomer.colar_system();">
+            <back_f></back_f>
+            <labelv>
+                <i class="bi bi-chevron-double-up"></i>
+                <span>Show posts</span>
+                <i class="bi bi-chevron-double-up"></i>
+            </labelv>
+        </solar_arrow>
         <?php /*<iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" 
 <video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 

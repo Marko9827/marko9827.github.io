@@ -2274,6 +2274,12 @@ width="16"><span></span></bar_t><span>  </span>
             "",
             `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
           );
+          if(active_scrf.getAttribute("data-category") == "astronomy" || active_scrf.getAttribute("data-category") == "Astronomy"){
+            $("body").addClass("active");
+          } else{
+            $("body").removeAttr("active");
+
+          }
           document.querySelector("body").setAttribute("data-category-name", active_scrf.getAttribute("data-category"));
           welcomer.titleC(
             `Blog > ${active_scrf.getAttribute(
@@ -4951,6 +4957,17 @@ width="16"><span></span></bar_t><span>  </span>
       welcomer.blogloader("all");
     });
     return false;
+  },
+  colar_system: function(){
+    if($('body[data-category-name="astronomy"]').hasClass("active")){
+
+    $('body[data-category-name="astronomy"]').removeClass("active");
+    $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-down"></i><span>Hide posts</span><i class="bi bi-chevron-double-down"></i>`);
+  } else{
+       $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+
+      $('body[data-category-name="astronomy"]').addClass("active");
+    }
   },
   Hclose: function () {
     $("body").removeAttr("data-category-name");

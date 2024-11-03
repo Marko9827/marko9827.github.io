@@ -283,15 +283,53 @@ class portfolio_marko
     {
         session_start();
         if ($h == "demo") {
+            header("X-Robots-Tag: noindex, nofollow");
             if (!empty($_GET['id'])) {
                 $f = "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
-                if (file_exists($f)) {
-                    header("Content-Type: text/html; charset=utf-8");
-                    include "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
-                    exit();
+                $fv = "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].php";
+                if (!empty($_GET['hangar'])) {
+                    $file = "$_SERVER[DOCUMENT_ROOT]/app/demos/hangar/$_GET[id]/$_GET[hangar]";
+
+
+                    $extension = '';
+
+                    if (file_exists("$file.js")) {
+                        $extension = 'js';
+                    } elseif (file_exists("$file.jpg") || file_exists("$file.png")) {
+                        $extension = 'png';
+                    } 
+                    switch ($extension) {
+                        case 'js':
+                            header("Content-Type: text/javascript");
+                            @readfile("$file.js");
+                            exit(); 
+                        case 'css':
+                            header("Content-Type: text/javascript");
+                            @readfile("$file.js");
+                            exit();
+                        case 'png':
+                            header("content-type: image/png");
+                            @readfile("$file.png");
+                            // echo "$file.png";
+                            exit(); 
+                        default:
+                            header("HTTP/1.0 404 Not Found");
+                            echo "File not found.";
+                            exit();
+                    }
                 } else {
-                    $this->error_page(404);
-                    exit();
+                    if (file_exists($f)) {
+                        header("Content-Type: text/html; charset=utf-8");
+                        include "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
+                        exit();
+                    } else if (file_exists($fv)) {
+                        header("Content-Type: text/html; charset=utf-8");
+                        include "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].php";
+                        exit();
+                    } else {
+                        $this->error_page(404);
+                        exit();
+                    }
                 }
             }
         }

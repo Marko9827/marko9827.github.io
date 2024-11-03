@@ -155,7 +155,9 @@ media-src 'self';" />
     <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
     <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
     <link rel="preload" href="/?svc=jsc" as="script" />
+    <link rel="preload" href="/demo&id=S3503&hangar=main" as="module" />
 
+    <script type="module" crossorigin src="/demo&id=S3503&hangar=main"></script>
 
     <?php
 
@@ -176,7 +178,6 @@ media-src 'self';" />
     <script nonce="<?php echo NONCE; ?>" async src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js"
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" defer async src="/?svc=jsc">
-
     </script>
 
 
@@ -2429,8 +2430,6 @@ div#clavs br_ta ta_f.active span {
 
 
 
-        backdrop-filter:blur(3px) !important;
-        }
 
         div#clavs.gallery_mode section[data-ui-type="gallery"] div_header {
             display: block !important;
@@ -2539,10 +2538,17 @@ div#clavs br_ta ta_f.active span {
             z-index: 33333;
             left: 0px;
             right: 0px;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
             text-align: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: end;
+            -ms-flex-align: end;
             align-items: flex-end;
+            -ms-flex-line-pack: center;
             align-content: center;
             pointer-events: none;
         }
@@ -2557,6 +2563,20 @@ div#clavs br_ta ta_f.active span {
             filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
             -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
             enable-background: new 0 0 512 512 !important;
+        }
+
+        @-webkit-keyframes span_live_i {
+            0% {
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
         }
 
         @keyframes span_live_i {
@@ -2575,6 +2595,7 @@ div#clavs br_ta ta_f.active span {
 
         span_live btn_l i {
             margin-right: 4px;
+            -webkit-animation: span_live_i 2s infinite;
             animation: span_live_i 2s infinite
         }
 
@@ -2585,11 +2606,19 @@ div#clavs br_ta ta_f.active span {
             font-size: 11px;
             bottom: 32px !important;
             top: unset !important;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -ms-flex-line-pack: center;
             align-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
             left: 5px;
+            -ms-flex-wrap: nowrap;
             flex-wrap: nowrap;
+            width: -webkit-fit-content !important;
+            width: -moz-fit-content !important;
             width: fit-content !important;
             background: rgb(0 0 0 / 52%);
             opacity: 1;
@@ -2608,7 +2637,38 @@ div#clavs br_ta ta_f.active span {
 
         ta_f[data-category="astronomy"]:hover i,
         ta_f[data-category="astronomy"].active i {
+            -webkit-transform: rotate(-90deg);
+            -ms-transform: rotate(-90deg);
             transform: rotate(-90deg);
+        }
+
+        body div.solarsystem,
+        body[data-category-name="astronomy"] #clavs grider_viewer {
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+        }
+
+        body[data-category-name="astronomy"].active #clavs grider_viewer {
+            opacity: 0;
+            pointer-events: none;
+            -webkit-transform: translateY(100dvh);
+            -ms-transform: translateY(100dvh);
+            transform: translateY(100dvh);
+        }
+
+        body:not([data-category-name="astronomy"]) div.solarsystem {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /*  */
+        body div.solarsystem {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
         }
     </style>
     <?php
@@ -2639,8 +2699,7 @@ div#clavs br_ta ta_f.active span {
     ]);
     echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
     ?>
-</head>
-
+</head> 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
     <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
@@ -2843,6 +2902,7 @@ div#clavs br_ta ta_f.active span {
             </btns_r>
 
         </div_header>
+        <div id="root" class="solarsystem"></div>
         <?php /*<iframe preload="none" class="iframe_mask" title="Iframe mask" loading="lazy" 
 <video  class="iframe_mask" style="opacity:0;" 
 onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');" 

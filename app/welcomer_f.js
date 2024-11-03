@@ -1579,7 +1579,43 @@ width="16"><span></span></bar_t><span>  </span>
       $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
     }
   },
+  solarsustem_load: function(){
+    const shadowContainer = document.getElementById("solarsystem"); 
+    const shadowRoot = shadowContainer.attachShadow({ mode: "open" }); 
+    const rootDiv = document.createElement("div");
+    rootDiv.id = "root";
+    rootDiv.style.height = "100%";
+    rootDiv.style.width = "100%"; 
+    shadowRoot.appendChild(rootDiv); 
+    const style = document.createElement("style");
+    style.textContent = `
+        * {
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            margin: 0;
+        }
 
+        #root {
+            height: 100%;
+            width: 100%;
+            font-size: 16px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Ubuntu, Helvetica Neue, sans-serif;
+            line-height: normal;
+            color: #333;
+        }
+    `; 
+    const script = document.createElement("script");
+    script.setAttribute("type","module");
+    script.setAttribute("crossorigin","");
+    script.setAttribute("src", "/demo&id=S3503&hangar=main");
+    shadowRoot.appendChild(style);
+    shadowRoot.appendChild(script);
+  },
+  url_control: function(){
+    
+  },
   custom_evjents: function () {},
   blog_loader_natjive: function (id = "all") {
     var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
@@ -1619,9 +1655,12 @@ width="16"><span></span></bar_t><span>  </span>
 
       if (urlParamsf.has("c")) {
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
+        document.querySelector("body").setAttribute("data-category-name", urlParamsf_f);
+        
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
       } else {
         welcomer.blg_history_replace("/?p=blog");
+ 
       }
       welcomer.blogljoad_posts(f);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
@@ -1756,6 +1795,8 @@ width="16"><span></span></bar_t><span>  </span>
 
       if (urlParamsf.has("c")) {
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
+        document.querySelector("body").setAttribute("data-category-name", urlParamsf_f);
+
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
       } else {
         welcomer.blg_history_replace("/?p=blog");
@@ -2233,6 +2274,7 @@ width="16"><span></span></bar_t><span>  </span>
             "",
             `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
           );
+          document.querySelector("body").setAttribute("data-category-name", active_scrf.getAttribute("data-category"));
           welcomer.titleC(
             `Blog > ${active_scrf.getAttribute(
               "data-category"
@@ -4911,6 +4953,7 @@ width="16"><span></span></bar_t><span>  </span>
     return false;
   },
   Hclose: function () {
+    $("body").removeAttr("data-category-name");
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");
@@ -6228,6 +6271,16 @@ const parsedData = JSON.parse(jsonData);
     }, 100);
   })(),
 };
+
+
+window.addEventListener("popstate", () => {
+  const urlParamsf = new URLSearchParams(window.location.search),
+        urlParamsf_f = urlParamsf.get("c");
+
+      if (!urlParamsf.has("c")) {
+  $("body").removeAttr("data-category-name");
+      }
+});
 
 window.welcomer = welcomer;
 

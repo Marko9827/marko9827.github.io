@@ -409,10 +409,21 @@ ${is_live}
     style="pointer-events:none;"
     onloadedmetadata="welcomer.loaded_img(this, ${i});"
 
-              src="${arr[i]['gallery'][0]['img']}" 
+              src="${arr[i]['gallery'][0]['thumb']}" 
              
            
-              ></video></grider_box>`;
+              ></video>
+              
+                <img 
+
+                 loading="lazy"  
+                 ondragstart="return false;" 
+                 onload="welcomer.loaded_img(this, ${i});" 
+                 src="${arr[i]['gallery'][0]['thumb']}" 
+                 data-zoom-image="${arr[i]['gallery'][0]['thumb']}" 
+                 alt="${name}"
+              </grider_box>`;
+              
         } else {
             
             // bi bi-film

@@ -105,7 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
     <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
     <!--  -->
+    <link rel="preload" href="https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css" as="style">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js" as="script">
+    <link rel="preload" href="https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js" as="script">
+
     <!--  -->
     <link rel="preload" as="font"
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
@@ -127,6 +130,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
 
     <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>" async
         src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
+    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>"
+        src="https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js"></script>
 
     <?php
 
@@ -179,6 +184,7 @@ media-src 'self';" />
         type="text/javascript"></script>
     <script nonce="<?php echo NONCE; ?>" defer async src="/?svc=jsc">
     </script>
+    <link rel="stylesheet" href="<?php echo CDN; ?>/node_modules/video.js/dist/video-js.min.css" />
 
 
 
@@ -2657,7 +2663,7 @@ div#clavs br_ta ta_f.active span {
             transform: translateY(100dvh);
         }
 
-       
+
         body:not([data-category-name="astronomy"]) div.solarsystem,
         body:not([data-category-name="astronomy"]) solar_arrow {
             opacity: 0 !important;
@@ -2725,6 +2731,60 @@ div#clavs br_ta ta_f.active span {
         solar_arrow:hover back_f {
             background: rgb(255 255 255 / 10%) !important;
         }
+
+        #clavs grider_viewer video {
+            -webkit-mask-image: radial-gradient(#00000026, #000000);
+            mask-image: radial-gradient(#00000026, #000000);
+        }
+
+        #clavs grider_viewer#gallery-container:not(.g_gallery) video,
+        #clavs grider_viewer#gallery-container:not(.g_gallery) img,
+        #clavs grider_viewer#gallery-container:not(.g_gallery) div_hr {
+            top: 0px;
+            margin-top: 34px;
+        }
+
+        div#zoomWindowContainer iframe {
+            position: absolute;
+            top: 60px !important;
+            left: 10px !important;
+            right: 10px !important;
+            bottom: 10px !important;
+            height: calc(100% - 75px) !important;
+            width: calc(100% - 20px) !important;
+        }
+
+
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer sp_clv {
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.1)) !important;
+            enable-background: new 0 0 512 512 !important;
+            -webkit-transition: .3s !important;
+        }
+
+        video-player#video_preview {
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+        }
+
+        video-player#video_preview {
+            position: fixed;
+            left: 0px;
+            z-index: 333333;
+            width: 100%;
+            height: calc(100dvh - 51px);
+            bottom: 0px !important;
+            border-top: 1px solid #ffffff2e;
+            border-radius: 0px;
+            -webkit-transform: translateY(100dvh);
+            -ms-transform: translateY(100dvh);
+            transform: translateY(100dvh);
+      
+            opacity: 0;
+        }
+
+        
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3101,6 +3161,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 */ ?>
         <p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
         <section data-ui-type="gallery" class="hidden_omega">
+            <video-player id="video_preview"  ></video-player>
             <div_header data-url="editor">
                 <svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
                     <defs>

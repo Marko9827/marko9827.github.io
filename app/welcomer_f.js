@@ -37,13 +37,151 @@ function base64Encode(str) {
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
+class VideoPlayer extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+
+    const template = document.createElement('template');
+    template.innerHTML = `
+      <style>
+    @import url('https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css');
+        
+        .video-js {
+          width: 100%;
+          height: 100%;
+          background-color: rgb(0 0 0 / 48%);
+        }
+
+        #canvas_img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: red;
+    object-fit: cover;
+    z-index: -1;
+    filter: blur(7px);
+  }
+      </style>
+      <video
+        id="video-player"
+        class="video-js vjs-default-skin"
+        controls
+        preload="auto" 
+        data-setup='{}'>
+        <source src="${this.getAttribute('video-src')}" type="video/mp4">
+        <p> </p>
+      </video>
+      <img id="canvas_img" loading="lazy" src="${this.getAttribute('video-src')}"  />
+    `;
+    shadow.appendChild(template.content.cloneNode(true));
+
+    if (typeof videojs !== 'undefined') {
+      const videoElement = this.shadowRoot.querySelector('#video-player');
+        this.player = videojs(videoElement, {
+          autoplay: true,
+    preload: 'auto'
+        }, function onPlayerReady() { 
+      }); 
+      this.postImage = this.shadowRoot.querySelector('canvas_img');
+      function draw() {
+        const video = this.shadowRoot.querySelector('#video-player');
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d'); 
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const videoAspectRatio = video.videoWidth / video.videoHeight;
+        const canvasAspectRatio = canvas.width / canvas.height;
+
+        let drawWidth, drawHeight, offsetX, offsetY;
+
+        if (canvasAspectRatio > videoAspectRatio) {
+            drawWidth = canvas.width;
+            drawHeight = canvas.width / videoAspectRatio;
+            offsetX = 0;
+            offsetY = (canvas.height - drawHeight) / 2;
+        } else {
+            drawHeight = canvas.height;
+            drawWidth = canvas.height * videoAspectRatio;
+            offsetX = (canvas.width - drawWidth) / 2;
+            offsetY = 0;
+        }
+ 
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
+        ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight); 
+        ctx.filter = 'blur(10px)';
+      }
+      this.player.on('timeupdate', () => { 
+        
+      }); 
+    } else { 
+    }
+  } 
+
+  getPlayer() {
+    
+    console.clear();
+    return this.player;
+  } 
+  clearV(){
+      this.player.dispose();
+  }
+  updateVideoSrc(newSrc = "", newPoster = "") {
+
+
+    
+    console.clear();
+    if (this.player) {
+      this.player.src({ src: newSrc, type: 'video/mp4' });
+      this.player.poster(newPoster);
+      this.player.load();  
+      this.shadowRoot.querySelector("#canvas_img").src = newPoster;
+      
+    }
+  }
+}
+ 
+customElements.define('video-player', VideoPlayer); 
+const videoPlayerElement = document.querySelector('video-player');
+
+
+
+
 const welcomer = {
   lang: [],
   conf: {
     token:`${window.stmp}`,
-    graph: "https://api.eronelit.com/graph",
+    graph: "https://api.eronelit.com/graph", 
     api: "/feed",
     black: true,
+  },
+  videoDrawCnavs: function(videoElement, canvas){ 
+    const ctx = canvas.getContext('2d'); 
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+   
+      const videoAspectRatio = video.videoWidth / video.videoHeight;
+      const canvasAspectRatio = canvas.width / canvas.height;
+
+      let drawWidth, drawHeight, offsetX, offsetY;
+
+      if (canvasAspectRatio > videoAspectRatio) {
+          drawWidth = canvas.width;
+          drawHeight = canvas.width / videoAspectRatio;
+          offsetX = 0;
+          offsetY = (canvas.height - drawHeight) / 2;
+      } else {
+          drawHeight = canvas.height;
+          drawWidth = canvas.height * videoAspectRatio;
+          offsetX = (canvas.width - drawWidth) / 2;
+          offsetY = 0;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight); 
+      ctx.filter = 'blur(10px)';
   },
   langs: [
     {
@@ -159,7 +297,7 @@ const welcomer = {
           <p><span>${v[i].title}</span></p>
   
               ${p_open}
-              <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+              <fiv><i onclick="welcomer.infoVa(${div_not_i});"   class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
                <img loading="lazy"  ${thi} 
               ondragstart="return false;" 
               onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
@@ -175,10 +313,43 @@ const welcomer = {
    
      
       },
-      call_back: function(){
-        document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.remove("active");
+      transalte_top: function(element){
+        let y = 0;
+          const interval = setInterval(() => {
+              y += 5; 
+              $(element).css('transform', `translateY(${y}px)`);
+              if (y > 100) clearInterval(interval);  
+          }, 50);
+      },
+      call_video_gallery_Preview: function(url = 'aer',poster = ""){
+        const data_ai_type = document.querySelector("video-player");
+        const gallery_section = document.querySelector("section[data-ui-type='gallery']");
+        data_ai_type.setAttribute("id", "video_preview"); 
+        document.querySelector('video-player').setAttribute("data-active","true");
+        // this.transalte_top(data_ai_type);
+      //  $("section[data-ui-type='gallery']").prepend(data_ai_type);
+       // data_ai_type.updateVideoSrc(url);
+          
+          //.setAttribute("src",`${url}`);
+       // document.querySelector('video-player#video_preview').remove(); 
+       document.querySelector('video-player').updateVideoSrc(url, poster);
+//          customElements.define('video-player', VideoPlayer );
 
+        
+        setTimeout(() => {
+            $(data_ai_type).attr("style","opacity: 1; transform:unset !important;");
+        }, 1000);
+        
+      },
+      call_back: function(){
+        if(document.querySelector('video-player').hasAttribute("data-active")){
+          document.querySelectorAll('video-player#video_preview');
+          document.querySelector('video-player').removeAttribute("style"); 
+          document.querySelector('video-player').removeAttribute("data-active","true");
+        }else{
+        document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.remove("active");
         this.call();
+        }
       },
       call_albums: function(varr = { where:"", arr: [], callback:function(){} }, type = "albums"){
          var arr = varr.arr,
@@ -198,7 +369,7 @@ const welcomer = {
           var p_open = "";
 
 
- 
+          
           if(varr.type == "albums"){
            var project = document.createElement("project");
            p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]['name']}')">
@@ -213,6 +384,38 @@ const welcomer = {
         if(arr[i]['name'] == "deviantart"){
           is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
         }
+     
+        if(arr[i]['name'] == "video"){
+          
+          // is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+
+
+          project.innerHTML = `<grider_box>
+          <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
+              ${p_open} ${is_live}
+              <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
+
+              <sp_clv><i class="bi bi-film"></i><p-title>${name}
+</p-title></sp_clv>
+${is_live}
+
+ 
+              <video 
+
+            autoplay 
+    muted 
+    playsinline 
+    loop 
+    style="pointer-events:none;"
+    onloadedmetadata="welcomer.loaded_img(this, ${i});"
+
+              src="${arr[i]['gallery'][0]['img']}" 
+             
+           
+              ></video></grider_box>`;
+        } else {
+            
+            // bi bi-film
             project.innerHTML = `<grider_box>
              <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
                  ${p_open} ${is_live}
@@ -231,6 +434,7 @@ ${is_live}
                  alt="${name}"
 
                  ></grider_box>`;
+        }
          document.querySelector(varr.where).appendChild(project);
           }
         }
@@ -269,13 +473,14 @@ ${is_live}
 
   
               ${p_open} ${a_project}
-              <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+              <fiv><i onclick="welcomer.infoVa(${div_not_i});"  data-i-type="${v[i].type}"  class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
                <img loading="lazy"  ${thi} 
               ondragstart="return false;" 
               onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
               onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" 
               src="${v[i].thumb}"  
               data-zoom-image="${v[i].img}"
+              data-real-zoom-if_video="${v[i].thumb}"
               data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                      </grider_box>`;
               
@@ -2566,7 +2771,7 @@ width="16"><span></span></bar_t><span>  </span>
         <p><span>${v[i].title}</span></p>
 
             ${p_open}
-            <fiv><i onclick="welcomer.infoVa(${div_not_i});" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+            <fiv><i onclick="welcomer.infoVa(${div_not_i});"  class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
              <img loading="lazy"  ${thi} 
             ondragstart="return false;" 
             onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
@@ -2878,10 +3083,15 @@ width="16"><span></span></bar_t><span>  </span>
         "><img alt="loading" src="${welcomer.loader_svg}"></preview_imagem>
             <div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>`);
   },
-  infoVa: function (h = 0) {
+  infoVa: function (h = 0, type = "image") {
     var imgH = new Image();
-
-    welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
+    if($(`project[id-int='${h}']`).find('i[data-i-type="video"]').length){
+      welcomer.pages.gallery.call_video_gallery_Preview(
+        `${$(`project[id-int="${h}"] img`).attr("data-zoom-image")}`,
+        `${$(`project[id-int="${h}"] img`).attr("data-real-zoom-if_video")}`);
+    } else{
+      welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
+    }
     /*
     if (document.body.offsetWidth < 750) {
       var title_f = $(`project[id-int="${h}"] p span`).html(),

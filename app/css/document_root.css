@@ -326,7 +326,7 @@ iframe.iframe_mask {
 #clavs grider_viewer project p {
   background: var(--primary_light);
 }
-
+#clavs grider_viewer video,
 #clavs grider_viewer img,
 #clavs grider_viewer div_hr {
   border-color: var(--primary_light);

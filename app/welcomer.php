@@ -696,7 +696,10 @@ if (!empty($_GET['drc'])) {
                                 exit();
     } else if ($_GET['svc'] == "jsc") {
         header("content-type: text/javascript");
-
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        echo "/* " . time() . " */\n";
         
         $r = $this->get_data([
             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
@@ -705,8 +708,17 @@ if (!empty($_GET['drc'])) {
                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
             ]
         ]);
+        /* $this->get_data([
+            "url" =>  "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]);
+        */
         // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
-        echo "window.portfolio = $r; \n";
+        echo "window.portfolio = $r \n";
+
 
 
         /*  ?>

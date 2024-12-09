@@ -231,26 +231,30 @@ class portfolio_marko
             "data" => [],
             "url" => "",
             "headers" => []
-        ]
+        ],
+        $testMode = true
     ) {
-
-
-        $ch = curl_init($r['url']);
-
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
-        curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
-        $response = curl_exec($ch);
-        if (curl_errno($ch)) {
-            echo json_encode([]);
+        
+        if (!$testMode) {
+            return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         } else {
-            return $response;
-        }
+            $ch = curl_init($r['url']);
 
-        curl_close($ch);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
+            curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
+            $response = curl_exec($ch);
+            if (curl_errno($ch)) {
+                echo json_encode([]);
+            } else {
+                return $response;
+            }
+
+            curl_close($ch);
+        }
     }
     function minifyCSS($css)
     {
@@ -297,12 +301,12 @@ class portfolio_marko
                         $extension = 'js';
                     } elseif (file_exists("$file.jpg") || file_exists("$file.png")) {
                         $extension = 'png';
-                    } 
+                    }
                     switch ($extension) {
                         case 'js':
                             header("Content-Type: text/javascript");
                             @readfile("$file.js");
-                            exit(); 
+                            exit();
                         case 'css':
                             header("Content-Type: text/javascript");
                             @readfile("$file.js");
@@ -311,7 +315,7 @@ class portfolio_marko
                             header("content-type: image/png");
                             @readfile("$file.png");
                             // echo "$file.png";
-                            exit(); 
+                            exit();
                         default:
                             header("HTTP/1.0 404 Not Found");
                             echo "File not found.";
@@ -334,20 +338,25 @@ class portfolio_marko
             }
         }
         if ($h == "feed") {
+            $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+            header("Content-Type: text/json");
+            echo $r;
+            exit();
             if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
                 $r = [];
 
                 if (isset($_POST['type'])) {
                     if ($_POST['type'] == "f") {
-                        $r = $this->get_data([
-                            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-                            "headers" => [
-                                'Content-Type: application/json',
-                                'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                            ]
-                        ]);
+                        /* $r = $this->get_data([
+                             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                             "headers" => [
+                                 'Content-Type: application/json',
+                                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                             ]
+                         ]);*/
+                        $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/../api/apprs/apps/fother/big_json/temp.json");
                         header("Content-Type: text/json");
-                        echo $r;
+                        echo json_encode($r);
                         exit();
                     }
                     if ($_POST['type'] == "s") {
@@ -965,6 +974,11 @@ echo $v .",";
         return null; // Item with the specified ID not found
     }
 
+    function wlcomer_headers_arr()
+    {
+
+    }
+
     function RUN()
     {
         if (!empty($_GET['data'])) {
@@ -997,8 +1011,9 @@ echo $v .",";
                         <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
                         <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
                         <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font" href="<?php echo CDN; ?>
-/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3" type="font/woff2">
+                        <link rel="preload" as="font"
+                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                            type="font/woff2">
                         <link
                             href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                             rel="stylesheet">

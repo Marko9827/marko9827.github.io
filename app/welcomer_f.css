@@ -300,6 +300,7 @@ hh_anim_start .Vjideo_sjpinner {
     opacity: 1 !important
 }
 
+#clavs grider_viewer video,
 #clavs grider_viewer img,
 #clavs grider_viewer div_hr {
     border-radius: 0px 0px 6px 6px !important;

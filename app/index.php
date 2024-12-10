@@ -235,7 +235,7 @@ class portfolio_marko
         $testMode = true
     ) {
         
-        if (!$testMode) {
+        if ($_SERVER['HTTP_HOST'] == "portfolio.localhost") {
             return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         } else {
             $ch = curl_init($r['url']);

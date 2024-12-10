@@ -37,6 +37,52 @@ function base64Encode(str) {
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
+class PostContent extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: 'open' });
+ 
+    const template = document.createElement('template');
+    template.innerHTML = `${this.styleTemplate()}
+    <div_content></div_content>`;
+    shadow.appendChild(template.content.cloneNode(true));
+ 
+  }
+  set(data = "") {
+    const div_content = this.shadowRoot.querySelector('div_content');
+    div_content.innerHTML = `${data}`;   
+    document.querySelector('p-container').classList.add("active");
+    this.shadowRoot.querySelectorAll("img").forEach(function (v) {
+      $(v)
+        .attr("onclick", "welcomer.infoVa_img(event)")
+        .attr(
+          "data-title",
+          "Click (hovered image) for view image in full size"
+        );
+      var a = $(v);
+      a.hover(
+        function () {
+          welcomer.showAnchorTitle(a, a.data("title"));
+        },
+        function () {
+          welcomer.hideAnchorTitle();
+        }
+      )
+        .data("title", a.attr("title"))
+        .removeAttr("title");
+
+      a.mouseleave(function () {
+        welcomer.hideAnchorTitle();
+      });
+    });
+  }
+  styleTemplate(){
+    return `<style type="text/css">${window.atob(
+            window.portfolio.data.blog_style_bundle
+          )}</style>`
+  }
+}
+
 class VideoPlayer extends HTMLElement {
   constructor() {
     super();
@@ -144,7 +190,9 @@ class VideoPlayer extends HTMLElement {
 }
  
 customElements.define('video-player', VideoPlayer); 
-const videoPlayerElement = document.querySelector('video-player');
+customElements.define('p-container', PostContent); 
+const videoPlayerElement = document.querySelector('video-player'),
+pContainerElement = document.querySelector('p-container');
 
 
 
@@ -1757,11 +1805,13 @@ width="16"><span></span></bar_t><span>  </span>
       $("div#clavs br_ta").addClass("active_scr");
       $(ifrm).hide();
       ifrm.document.open();
+ 
       /*
       window.portfolio.data.blog[0]['shared_links']
       */
 
       ifrm.document.write(`${res}`);
+      
       setTimeout(function () {
         $("#clavs grider_viewer").hide();
       }, 1000);
@@ -1913,6 +1963,54 @@ width="16"><span></span></bar_t><span>  </span>
         $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
         $('body').removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
+        document.querySelector('p-container').set(`${res}`); 
+        welcomer.cards_generate(f);
+        document
+        .getElementById("clavs")
+        .setAttribute("style", " opacity:1; transform:unset; ");
+      $("#clavs iframe:not(.iframe_mask").hide();
+      $("div_header span").html(`Blog > ${f.title}`);
+
+      $("#clavs grider_viewer").hide();
+      $("div#clavs").prepend(
+        `<div class="bra"><img class="img_background_rljs" src="${
+          f.thumbail
+        }" alt="${$("title").html()}" loading="lazy" /></div>`
+      );
+      $("#clavs grider_viewer").html("");
+      $("div_header span").html(`Blog > ${f.title}`);
+      welcomer.titleC(` ${f.title} > Blog > Marko Nikolić`);
+      $(ifrm).hide();
+      welcomer.cards_generate(f);
+    
+
+      $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
+      $("body").removeAttr("data-hmm");
+      document
+        .getElementById("clavs")
+        .setAttribute("style", " opacity:1; transform:unset; ");
+ 
+
+      $("#clavs grider_viewer").hide(); 
+      $("div_header").addClass("ld_completeld_complete2");
+      $(".F_bi_search").hide();
+      $("gridder_loader").attr("style", "opacity:1");
+      $(".pdf_page_home_btn").hide();
+      $(".close_btnf").show();    
+      document
+      .querySelector(".pdf_download")
+      .setAttribute("style", "display: none;");
+
+      document.querySelector("#logo_backscr_img").classList.remove("activeBell");
+    $("#canvas, .wallpaperVideo ").removeAttr("style");
+    var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
+
+    $(".Vjideo_sjpinner, gridder_loader").hide();
+
+    //  welcomer.blog_loader_natjive(id);
+//      this.blogloader(id);
+
+        /*/ --------
         $(ifrm).hide();
 
         ifrm.document.open();
@@ -1921,13 +2019,14 @@ width="16"><span></span></bar_t><span>  </span>
             window.portfolio.data.blog_style_bundle
           )}</style> <script>document.body.setAttribute("oncontextmenu","return false;");</script>`
         );
+     
         $("#clavs iframe:not(.iframe_mask)").on("load", function () {
           welcomer.cards_generate(f);
         });
 
         ifrm.document.querySelectorAll("img").forEach(function (v) {
           $(v)
-            .attr("onclick", "parent.welcomer.infoVa_img(event)")
+            .attr("onclick", "welcomer.infoVa_img(event)")
             .attr(
               "data-title",
               "Click (hovered image) for view image in full size"
@@ -1974,6 +2073,7 @@ width="16"><span></span></bar_t><span>  </span>
 
         $("#clavs grider_viewer").hide();
         $("iframe.iframe_mask").show();
+        */
       } else {
         welcomer.blg_history_replace("");
 
@@ -1983,6 +2083,10 @@ width="16"><span></span></bar_t><span>  </span>
         $("iframe:not(.iframe_mask)").removeAttr("style");
       }
     }
+  },
+  blogLoader_native: function(id = "all"){
+    $("#clavs grider_viewer, div#clavs br_ta").removeAttr("style");
+    $(" div.bra").remove();
   },
   blogloader: function (id = "all") {
     $("#clavs grider_viewer, div#clavs br_ta").removeAttr("style");
@@ -5196,6 +5300,9 @@ width="16"><span></span></bar_t><span>  </span>
   Hclose: function () {
     $("body").removeAttr("data-category-name");
     $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+    
+   // pContainerElement.set(""); 
+   document.querySelector('p-container').setAttribute("class","shadow_iframe");
 
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");

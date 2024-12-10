@@ -113,12 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preload" as="font"
         href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
         type="font/woff2">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
     <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"
         nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
     <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"
@@ -2780,11 +2776,20 @@ div#clavs br_ta ta_f.active span {
             -webkit-transform: translateY(100dvh);
             -ms-transform: translateY(100dvh);
             transform: translateY(100dvh);
-      
+ 
             opacity: 0;
         }
 
-        
+        p-container.shadow_iframe{
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: var(--black-trasparent-color) !important;
+        }
+        p-container.shadow_iframe.active{
+            opacity: 1;
+            pointer-events: unset !important;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3100,7 +3105,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
         <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe>
-        <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></iframe>
+        <p-container class="shadow_iframe"></p-container>
+        <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src="">
 
 
 

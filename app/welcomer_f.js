@@ -46,15 +46,19 @@ class PostContent extends HTMLElement {
     template.innerHTML = `${this.styleTemplate()}
     <div_content></div_content>`;
     shadow.appendChild(template.content.cloneNode(true));
- 
+   
   }
   set(data = "") {
     const div_content = this.shadowRoot.querySelector('div_content');
     div_content.innerHTML = `${data}`;   
     document.querySelector('p-container').classList.add("active");
+ 
+    
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
       $(v)
         .attr("onclick", "welcomer.infoVa_img(event)")
+        .attr("onload","welcomer.img_load(this);")
+        .attr("style","opacity: 0")
         .attr(
           "data-title",
           "Click (hovered image) for view image in full size"
@@ -79,7 +83,7 @@ class PostContent extends HTMLElement {
   styleTemplate(){
     return `<style type="text/css">${window.atob(
             window.portfolio.data.blog_style_bundle
-          )}</style>`
+          )} </style>`
   }
 }
 
@@ -194,8 +198,7 @@ customElements.define('p-container', PostContent);
 const videoPlayerElement = document.querySelector('video-player'),
 pContainerElement = document.querySelector('p-container');
 
-
-
+ 
 
 const welcomer = {
   lang: [],
@@ -204,6 +207,11 @@ const welcomer = {
     graph: "https://api.eronelit.com/graph", 
     api: "/feed",
     black: true,
+  },
+  img_load: function(t){
+  $(t).addClass("active");
+  $(t).removeAttr("style");
+  $(t).removeAttr("onload");
   },
   videoDrawCnavs: function(videoElement, canvas){ 
     const ctx = canvas.getContext('2d'); 
@@ -1707,7 +1715,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
               .append(`
 <br_box>
 <div class="bra">
-<img class="img_background_rljs" src="${
+<img class="img_background_rljs" onload="welcomer.img_load(this);" src="${
               fh?.thumbail
             }" alt="Blog > Marko Nikolić" loading="lazy"></div>
 <pe><i class="bi bi-link-45deg"></i> ${
@@ -1767,7 +1775,7 @@ width="16"><span></span></bar_t><span>  </span>
       $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
 <br_box>
 <div class="bra">
-<img class="img_background_rljs" src="${
+<img class="img_background_rljs"  onload="welcomer.img_load(this);" src="${
         fh?.thumbail
       }" alt="Blog > Marko Nikolić" loading="lazy"></div>
 <pe><i class="bi bi-link-45deg"></i> ${
@@ -1973,7 +1981,7 @@ width="16"><span></span></bar_t><span>  </span>
 
       $("#clavs grider_viewer").hide();
       $("div#clavs").prepend(
-        `<div class="bra"><img class="img_background_rljs" src="${
+        `<div class="bra"><img class="img_background_rljs"  onload="welcomer.img_load(this);"  src="${
           f.thumbail
         }" alt="${$("title").html()}" loading="lazy" /></div>`
       );

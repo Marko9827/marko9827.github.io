@@ -392,9 +392,9 @@ const welcomer = {
 //          customElements.define('video-player', VideoPlayer );
 
         
-        setTimeout(() => {
+ 
             $(data_ai_type).attr("style","opacity: 1; transform:unset !important;");
-        }, 1000);
+        
         
       },
       call_back: function(){

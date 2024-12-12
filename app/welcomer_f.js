@@ -1,64 +1,136 @@
-"use strict";
-
-/*
-const jsonData = document.getElementById("json_feedf").innerHTML,
-parsedData = JSON.parse(jsonData);
-window.portfolio = parsedData;*/
-
+"use strict";  
 window.draggable = { style_left: "", style_top: "", enabled: false };
-/*
-window.portfolio = {
-  data: {
-    host:"",
-    gallery:[],
-    pages: {
-      tg_channel: {
-        title: "Telegram Channel",
-        u: "tg-channel",
-        c: "",
-      },
-      cv_pdf: {
-        title: "CV",
-        u: "cv-pdf",
-        c: "",
-      },
-      visitcard: {
-        title: "Visitcard",
-        u: "visitcard",
-        c: "",
-      },
-    },
-  },
-};*/
 
 function base64Encode(str) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(str);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
+class VideoBackground extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: "open" });
+    const style = document.createElement("style");
+    style.textContent = `
+        video {
+            width: 100%;
+            height: auto;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            background: #000;
+        }
+    `;
+
+    const container = document.createElement("div");
+    container.innerHTML = `
+        <video id="video" controls></video>
+    `;
+
+    shadow.appendChild(style);
+    shadow.appendChild(container);
+
+    this.videoElement = shadow.querySelector("#video");
+    this.mediaSource = new MediaSource();
+    this.sourceBuffer = null;  
+  }
+
+  connectedCallback() {
+    const videoSrc = this.getAttribute("src");
+    if (!videoSrc) {
+      console.error("Video source (src) is required");
+      return;
+    }
+    this.videoElement.src = URL.createObjectURL(this.mediaSource);
+
+    this.mediaSource.addEventListener("sourceopen", () => {
+      this.initializeSourceBuffer(videoSrc);
+    });
+
+    this.mediaSource.addEventListener("sourceended", () => {
+      console.log("MediaSource has ended.");
+    });
+
+    this.mediaSource.addEventListener("error", (error) => {
+      console.error("MediaSource error:", error);
+    });
+  }
+
+  initializeSourceBuffer(videoSrc) {
+    if (this.mediaSource.readyState !== "open") {
+      console.error("MediaSource is not open.");
+      return;
+    }
+
+    try {
+      this.sourceBuffer = this.mediaSource.addSourceBuffer(
+        'video/mp4'
+      );
+      this.loadVideoChunks(videoSrc);
+    } catch (error) {
+      console.error("Error initializing SourceBuffer:", error);
+    }
+  }
+
+  async loadVideoChunks(videoSrc) {
+    const response = await fetch(videoSrc);
+    const reader = response.body.getReader();
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        console.log("Video chunks loaded completely.");
+        if (this.mediaSource.readyState === "open") {
+          this.mediaSource.endOfStream();
+        }
+        break;
+      }
+
+    
+    
+      await this.waitForSourceBuffer();
+
+      try {
+        if (this.mediaSource.readyState === "open" && !this.sourceBuffer.updating) {
+          this.sourceBuffer.appendBuffer(value);
+        }
+      } catch (error) {
+        console.error("Error appending buffer:", error);
+        break;
+      }
+    }
+  }
+
+  waitForSourceBuffer() {
+    return new Promise((resolve) => {
+      if (!this.sourceBuffer || !this.sourceBuffer.updating) {
+        resolve();
+      } else {
+        this.sourceBuffer.addEventListener("updateend", resolve, { once: true });
+      }
+    });
+  }
+}
 
 class PostContent extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
- 
-    const template = document.createElement('template');
+    const shadow = this.attachShadow({ mode: "open" });
+
+    const template = document.createElement("template");
     template.innerHTML = `${this.styleTemplate()}
     <div_content></div_content>`;
     shadow.appendChild(template.content.cloneNode(true));
-   
   }
   set(data = "") {
-    const div_content = this.shadowRoot.querySelector('div_content');
-    div_content.innerHTML = `${data}`;   
-    document.querySelector('p-container').classList.add("active");
- 
-    
+    const div_content = this.shadowRoot.querySelector("div_content");
+    div_content.innerHTML = `${data}`;
+    document.querySelector("p-container").classList.add("active");
+
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
       $(v)
         .attr("onclick", "welcomer.infoVa_img(event)")
-        .attr("onload","welcomer.img_load(this);")
-        .attr("style","opacity: 0")
+        .attr("onload", "welcomer.img_load(this);")
+        .attr("style", "opacity: 0")
         .attr(
           "data-title",
           "Click (hovered image) for view image in full size"
@@ -80,26 +152,28 @@ class PostContent extends HTMLElement {
       });
     });
   }
-  styleTemplate(){
-    return `<style type="text/css">${window.atob(
-            window.portfolio.data.blog_style_bundle
-          )} </style>`
+  styleTemplate() {
+    return `<style nonce="${window.stmp}" type="text/css">${window.atob(
+      window.portfolio.data.blog_style_bundle
+    )} </style>`;
   }
 }
 
 class VideoPlayer extends HTMLElement {
   constructor() {
     super();
-    const shadow = this.attachShadow({ mode: 'open' });
+    const shadow = this.attachShadow({ mode: "open" });
 
-    const template = document.createElement('template');
+    const template = document.createElement("template");
     template.innerHTML = `
-      <style>
-    @import url('https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css');
+      <style  nonce="${window.stmp}" >
+    @import url('https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css');
         
         .video-js {
           width: 100%;
           height: 100%;
+          opacity:0;
+          transition: .3s;
           background-color: rgb(0 0 0 / 48%);
         }
 
@@ -121,25 +195,30 @@ class VideoPlayer extends HTMLElement {
         controls
         preload="auto" 
         data-setup='{}'>
-        <source src="${this.getAttribute('video-src')}" type="video/mp4">
+        <source src="${this.getAttribute("video-src")}" type="video/mp4">
         <p> </p>
       </video>
-      <img id="canvas_img" loading="lazy" src="${this.getAttribute('video-src')}"  />
+      <img id="canvas_img" loading="lazy" alt="canvas_img" src="${this.getAttribute(
+        "video-src"
+      )}"  />
     `;
     shadow.appendChild(template.content.cloneNode(true));
 
-    if (typeof videojs !== 'undefined') {
-      const videoElement = this.shadowRoot.querySelector('#video-player');
-        this.player = videojs(videoElement, {
+    if (typeof videojs !== "undefined") {
+      const videoElement = this.shadowRoot.querySelector("#video-player");
+      this.player = videojs(
+        videoElement,
+        {
           autoplay: true,
-    preload: 'auto'
-        }, function onPlayerReady() { 
-      }); 
-      this.postImage = this.shadowRoot.querySelector('canvas_img');
+          preload: "auto",
+        },
+        function onPlayerReady() {}
+      );
+      this.postImage = this.shadowRoot.querySelector("canvas_img");
       function draw() {
-        const video = this.shadowRoot.querySelector('#video-player');
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d'); 
+        const video = this.shadowRoot.querySelector("#video-player");
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         const videoAspectRatio = video.videoWidth / video.videoHeight;
@@ -148,96 +227,89 @@ class VideoPlayer extends HTMLElement {
         let drawWidth, drawHeight, offsetX, offsetY;
 
         if (canvasAspectRatio > videoAspectRatio) {
-            drawWidth = canvas.width;
-            drawHeight = canvas.width / videoAspectRatio;
-            offsetX = 0;
-            offsetY = (canvas.height - drawHeight) / 2;
-        } else {
-            drawHeight = canvas.height;
-            drawWidth = canvas.height * videoAspectRatio;
-            offsetX = (canvas.width - drawWidth) / 2;
-            offsetY = 0;
-        }
- 
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight); 
-        ctx.filter = 'blur(10px)';
-      }
-      this.player.on('timeupdate', () => { 
-        
-      }); 
-    } else { 
-    }
-  } 
-
-  getPlayer() {
-    
-    console.clear();
-    return this.player;
-  } 
-  clearV(){
-      this.player.dispose();
-  }
-  updateVideoSrc(newSrc = "", newPoster = "") {
-
-
-    
-    console.clear();
-    if (this.player) {
-      this.player.src({ src: newSrc, type: 'video/mp4' });
-      this.player.poster(newPoster);
-      this.player.load();  
-      this.shadowRoot.querySelector("#canvas_img").src = newPoster;
-      
-    }
-  }
-}
- 
-customElements.define('video-player', VideoPlayer); 
-customElements.define('p-container', PostContent); 
-const videoPlayerElement = document.querySelector('video-player'),
-pContainerElement = document.querySelector('p-container');
-
- 
-
-const welcomer = {
-  lang: [],
-  conf: {
-    token:`${window.stmp}`,
-    graph: "https://api.eronelit.com/graph", 
-    api: "/feed",
-    black: true,
-  },
-  img_load: function(t){
-  $(t).addClass("active");
-  $(t).removeAttr("style");
-  $(t).removeAttr("onload");
-  },
-  videoDrawCnavs: function(videoElement, canvas){ 
-    const ctx = canvas.getContext('2d'); 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-   
-      const videoAspectRatio = video.videoWidth / video.videoHeight;
-      const canvasAspectRatio = canvas.width / canvas.height;
-
-      let drawWidth, drawHeight, offsetX, offsetY;
-
-      if (canvasAspectRatio > videoAspectRatio) {
           drawWidth = canvas.width;
           drawHeight = canvas.width / videoAspectRatio;
           offsetX = 0;
           offsetY = (canvas.height - drawHeight) / 2;
-      } else {
+        } else {
           drawHeight = canvas.height;
           drawWidth = canvas.height * videoAspectRatio;
           offsetX = (canvas.width - drawWidth) / 2;
           offsetY = 0;
-      }
+        }
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height); 
-      ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight); 
-      ctx.filter = 'blur(10px)';
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+        ctx.filter = "blur(10px)";
+      }
+      this.player.on("timeupdate", () => {});
+    } else {
+    }
+  }
+
+  getPlayer() {
+    console.clear();
+    return this.player;
+  }
+  clearV() {
+    this.player.dispose();
+  }
+  updateVideoSrc(newSrc = "", newPoster = "") {
+    console.clear();
+    console.log(newSrc);
+    if (this.player) {
+      this.player.src({ src: newSrc, type: "video/mp4" });
+      this.player.poster(newPoster);
+      this.player.load();
+      this.shadowRoot.querySelector("#canvas_img").src = newPoster;
+    }
+  }
+}
+
+customElements.define("video-player", VideoPlayer);
+  customElements.define("p-container", PostContent);
+  customElements.define("vide-ob",VideoBackground);
+   
+const videoPlayerElement = document.querySelector("video-player"),
+  pContainerElement = document.querySelector("p-container");
+ const welcomer = {
+  lang: [],
+  conf: {
+    token: `${window.stmp}`,
+    graph: "https://api.eronelit.com/graph",
+    api: "/feed",
+    black: true,
+  },
+  img_load: function (t) {
+    $(t).addClass("active");
+    $(t).removeAttr("style");
+    $(t).removeAttr("onload");
+  },
+  videoDrawCnavs: function (videoElement, canvas) {
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const videoAspectRatio = video.videoWidth / video.videoHeight;
+    const canvasAspectRatio = canvas.width / canvas.height;
+
+    let drawWidth, drawHeight, offsetX, offsetY;
+
+    if (canvasAspectRatio > videoAspectRatio) {
+      drawWidth = canvas.width;
+      drawHeight = canvas.width / videoAspectRatio;
+      offsetX = 0;
+      offsetY = (canvas.height - drawHeight) / 2;
+    } else {
+      drawHeight = canvas.height;
+      drawWidth = canvas.height * videoAspectRatio;
+      offsetX = (canvas.width - drawWidth) / 2;
+      offsetY = 0;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
+    ctx.filter = "blur(10px)";
   },
   langs: [
     {
@@ -266,89 +338,80 @@ const welcomer = {
     },
   ],
   pages: {
-    gallery:{
-      ldp: function(id){
-        var url = window.portfolio.data.gallery.gallery[0].gallery[0]['href'],
-        a = document.createElement("a");
+    gallery: {
+      ldp: function (id) {
+        var url = window.portfolio.data.gallery.gallery[0].gallery[0]["href"],
+          a = document.createElement("a");
         a.target = "_blank";
         a.href = url;
         a.setAttribute("rel", "nofollow noreferrer");
-        a.setAttribute("role", "link"); 
+        a.setAttribute("role", "link");
         window.open(url);
-        // a.click();
-        if(!url == "-"){ 
-        // document.body.appendChild(a);
+        
+        if (!url == "-") {
+          
         }
-        if(!url == "-"){
-        // a.remove();
-      }
-       
+        if (!url == "-") {
+          
+        }
       },
-      ldaff:function(){
-
+      ldaff: function () {},
+      t: function () {
+        this.call_albums({
+          where: "grider_viewer#gallery-container",
+          arr: window.portfolio.data.gallery.gallery,
+          callback: function (e) {},
+          type: "albums",
+        });
       },
-      t: function(){
+      lda: function (what = "") {
+        welcomer.blg_history_replace(
+          `${window.location.origin}/?p=gallery&album=${what}`
+        );
        
-          this.call_albums({
-            where:"grider_viewer#gallery-container",
-            arr: window.portfolio.data.gallery.gallery,
-            callback:function(e){
-            },
-            type:"albums"
-          });
-       
-           
-      },
-      lda: function(what = ""){
-        welcomer.blg_history_replace(`${window.location.origin}/?p=gallery&album=${what}`);
-        // if(what)
+        
         var aerls = window.portfolio.data.gallery.gallery;
-        for(var i = 0; i < aerls.length; i++){
-          if(`${what}` == `${aerls[i]['name']}`){
-          // welcomer.eronelit_gallery.call_ui(`${aerls[i]['gallery']}`);
-          welcomer.load_gallery_j = aerls[i]['gallery'];
-          // welcomer.pages.gallery.galleryloadajaxv2(`${aerls[i]['name']}`);
-          this.call_albums({
-            where:"grider_viewer#gallery-container",
-            arr: aerls[i]['gallery'],
-            callback:function(e){
-           
-              
-            },
-            type:"gallery"
-          });
+        for (var i = 0; i < aerls.length; i++) {
+          if (`${what}` == `${aerls[i]["name"]}`) {
+
+            welcomer.load_gallery_j = aerls[i]["gallery"];
+
+            this.call_albums({
+              where: "grider_viewer#gallery-container",
+              arr: aerls[i]["gallery"],
+              callback: function (e) {},
+              type: "gallery",
+            });
           }
         }
-     
       },
-      galleryloadajaxv2: function(name = ""){
-    
-     var div_not_i= 0,
-     gallery = [];
-      $("gridder_loader").attr("style", "opacity:1");
-  
-      // welcomer.blg_history_replace(`/?p=gallery&`);
-  
-      var v = welcomer.load_gallery_j;
-      for (var i = 0; i < v.length; i++) {
-    
-        var thi = "class='is_touch'",
-          p_open = "";
-        if (v[i].href !== "") {
-          if (v[i].type) {
-            p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
+      galleryloadajaxv2: function (name = "") {
+        var div_not_i = 0,
+          gallery = [];
+        $("gridder_loader").attr("style", "opacity:1");
+
+
+        
+        var v = welcomer.load_gallery_j;
+        for (var i = 0; i < v.length; i++) {
+          var thi = "class='is_touch'",
+            p_open = "";
+          if (v[i].href !== "") {
+            if (v[i].type) {
+              p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
              <i class="bi bi-link"></i> Open link
              </p_open>`;
-          } else {
-            p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
+            } else {
+              p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
             <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
              </p_open>`;
+            }
           }
-        }
-        if (welcomer.isMobile()) {
-          thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
-        }
-        $("grider_viewer#gallery-container").append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
+          if (welcomer.isMobile()) {
+            thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
+          }
+          $("grider_viewer#gallery-container")
+            .append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
           <grider_box>
           <p><span>${v[i].title}</span></p>
   
@@ -364,90 +427,101 @@ const welcomer = {
                      </grider_box>
   
               </project>`);
-        div_not_i++;
-      }
-   
-     
+          div_not_i++;
+        }
       },
-      transalte_top: function(element){
+      transalte_top: function (element) {
         let y = 0;
-          const interval = setInterval(() => {
-              y += 5; 
-              $(element).css('transform', `translateY(${y}px)`);
-              if (y > 100) clearInterval(interval);  
-          }, 50);
+        const interval = setInterval(() => {
+          y += 5;
+          $(element).css("transform", `translateY(${y}px)`);
+          if (y > 100) clearInterval(interval);
+        }, 50);
       },
-      call_video_gallery_Preview: function(url = 'aer',poster = ""){
+      call_video_gallery_Preview: function (url = "aer", poster = "") {
         const data_ai_type = document.querySelector("video-player");
-        const gallery_section = document.querySelector("section[data-ui-type='gallery']");
-        data_ai_type.setAttribute("id", "video_preview"); 
-        document.querySelector('video-player').setAttribute("data-active","true");
-        // this.transalte_top(data_ai_type);
-      //  $("section[data-ui-type='gallery']").prepend(data_ai_type);
-       // data_ai_type.updateVideoSrc(url);
-          
-          //.setAttribute("src",`${url}`);
-       // document.querySelector('video-player#video_preview').remove(); 
-       document.querySelector('video-player').updateVideoSrc(url, poster);
-//          customElements.define('video-player', VideoPlayer );
+        const gallery_section = document.querySelector(
+          "section[data-ui-type='gallery']"
+        );
+        data_ai_type.setAttribute("id", "video_preview");
+        document
+          .querySelector("video-player")
+          .setAttribute("data-active", "true");
+       
+          document.querySelector("video-player").updateVideoSrc(url, poster);
 
-        
- 
-            $(data_ai_type).attr("style","opacity: 1; transform:unset !important;");
-        
-        
+          
+        $(data_ai_type).attr(
+          "style",
+          "opacity: 1; transform:unset !important;"
+        );
       },
-      call_back: function(){
-        if(document.querySelector('video-player').hasAttribute("data-active")){
-          document.querySelectorAll('video-player#video_preview');
-          document.querySelector('video-player').removeAttribute("style"); 
-          document.querySelector('video-player').removeAttribute("data-active","true");
-        }else{
-        document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.remove("active");
-        this.call();
+      call_back: function () {
+        if (
+          document.querySelector("video-player").hasAttribute("data-active")
+        ) {
+          document.querySelectorAll("video-player#video_preview");
+          document.querySelector("video-player").removeAttribute("style");
+          document
+            .querySelector("video-player")
+            .removeAttribute("data-active", "true");
+        } else {
+          document
+            .querySelector(
+              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
+            )
+            .classList.remove("active");
+          this.call();
         }
       },
-      call_albums: function(varr = { where:"", arr: [], callback:function(){} }, type = "albums"){
-         var arr = varr.arr,
-         div_not_i = 0,
-         live = ["deviantart"];
-     
-         
-         document.querySelector(varr.where).innerHTML = "";
-         if(varr.type == "albums"){
-         document.querySelector(varr.where).setAttribute("class","gridsH grids ");
-         } else{
-          document.querySelector(varr.where).setAttribute("class","gridsH grids g_gallery ");
-          document.querySelector('div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo').classList.add("active");
+      call_albums: function (
+        varr = { where: "", arr: [], callback: function () {} },
+        type = "albums"
+      ) {
+        var arr = varr.arr,
+          div_not_i = 0,
+          live = ["deviantart"];
+
+        document.querySelector(varr.where).innerHTML = "";
+        if (varr.type == "albums") {
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids ");
+        } else {
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids g_gallery ");
+          document
+            .querySelector(
+              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
+            )
+            .classList.add("active");
         }
-         
-         for(var i = 0; i < arr.length; i++){
+
+        for (var i = 0; i < arr.length; i++) {
           var p_open = "";
 
-
-          
-          if(varr.type == "albums"){
-           var project = document.createElement("project");
-           p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]['name']}')">
+          if (varr.type == "albums") {
+            var project = document.createElement("project");
+            (p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]["name"]}')">
            <i class="bi bi-link"></i> Open Album
-           </p_open>`,
-           name = arr[i]['name'];
-           image = `${arr[i]['gallery'][0]['img']}&album=${arr[i]['name']}&v=${i}`;
-           project.setAttribute("id-int",i);
-           var is_live = "";
-           if(arr[i]['name'])
-          //  project.setAttribute("title",arr[i]['name']);
-        if(arr[i]['name'] == "deviantart"){
-          is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
-        }
-     
-        if(arr[i]['name'] == "video"){
-          
-          // is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+           </p_open>`),
+              (name = arr[i]["name"]);
+            image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+            project.setAttribute("id-int", i);
+            var is_live = "";
+            if (arr[i]["name"])
+              if (arr[i]["name"] == "deviantart") {
 
+                is_live =
+                  "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+              }
 
-          project.innerHTML = `<grider_box>
-          <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
+            if (arr[i]["name"] == "video") {
+
+              
+              project.innerHTML = `<grider_box>
+          <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
               ${p_open} ${is_live}
               <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
 
@@ -465,7 +539,7 @@ ${is_live}
     style="pointer-events:none;"
     onloadedmetadata="welcomer.loaded_img(this, ${i});"
 
-              src="${arr[i]['gallery'][0]['thumb']}" 
+              src="${arr[i]["gallery"][0]["thumb"]}" 
              
            
               ></video>
@@ -475,16 +549,14 @@ ${is_live}
                  loading="lazy"  
                  ondragstart="return false;" 
                  onload="welcomer.loaded_img(this, ${i});" 
-                 src="${arr[i]['gallery'][0]['thumb']}" 
-                 data-zoom-image="${arr[i]['gallery'][0]['thumb']}" 
+                 src="${arr[i]["gallery"][0]["thumb"]}" 
+                 data-zoom-image="${arr[i]["gallery"][0]["thumb"]}" 
                  alt="${name}"
               </grider_box>`;
+            } else {
               
-        } else {
-            
-            // bi bi-film
-            project.innerHTML = `<grider_box>
-             <p><span>Album - ${arr[i]['gallery'].length}</span></p> 
+              project.innerHTML = `<grider_box>
+             <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
                  ${p_open} ${is_live}
                  <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
 
@@ -501,41 +573,34 @@ ${is_live}
                  alt="${name}"
 
                  ></grider_box>`;
-        }
-         document.querySelector(varr.where).appendChild(project);
+            }
+            document.querySelector(varr.where).appendChild(project);
           }
         }
         var v = arr,
-        div_not_i = 0;
-        for(var i = 0; i < v.length; i++){
-         
-        if(varr.type == "gallery"){
-          var thi = "class='is_touch'",
-          p_open = "",
-          project = document.createElement("project");
-          
-          
-        if (welcomer.isMobile()) {
-          thi = `onclick="welcomer.openLink(${div_not_i})"`;
-        }
-        
- 
-              // $("grider_viewer#gallery-container").append(`<project 
-              
-              //style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
-        project.setAttribute("style","transform: scale(0) !important;");
-        project.setAttribute("id-int", `${div_not_i}`);
-        project.setAttribute("box-ui", `uit-${varr.type}`);
-        var a_project = "";
-        if(v[i].href == "-"){} else{
-          a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]['href']}" target="_blank" data-int="${div_not_i}">
-          <i onclick="welcomer.infoVa(1);" class="${v[i]['fid']['icon']}"></i> ${v[i]['fid']['text']}</a>`;
-        } 
- 
-       
+          div_not_i = 0;
+        for (var i = 0; i < v.length; i++) {
+          if (varr.type == "gallery") {
+            var thi = "class='is_touch'",
+              p_open = "",
+              project = document.createElement("project");
 
-        
-              project.innerHTML = `
+            if (welcomer.isMobile()) {
+              thi = `onclick="welcomer.openLink(${div_not_i})"`;
+            }
+
+         
+            project.setAttribute("style", "transform: scale(0) !important;");
+            project.setAttribute("id-int", `${div_not_i}`);
+            project.setAttribute("box-ui", `uit-${varr.type}`);
+            var a_project = "";
+            if (v[i].href == "-") {
+            } else {
+              a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]["href"]}" target="_blank" data-int="${div_not_i}">
+          <i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}</a>`;
+            }
+
+            project.innerHTML = `
           <grider_box>
 
   
@@ -550,75 +615,92 @@ ${is_live}
               data-real-zoom-if_video="${v[i].thumb}"
               data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                      </grider_box>`;
-              
-              document.querySelector("grider_viewer#gallery-container").appendChild(project);
-              div_not_i++;
+
+            document
+              .querySelector("grider_viewer#gallery-container")
+              .appendChild(project);
+            div_not_i++;
+          }
         }
-      }
-         varr?.callback({l:arr.length,r:arr});
+        varr?.callback({ l: arr.length, r: arr });
       },
-      callv2: function(){
+      callv2: function () {
         window.location.href = "/?p=gallery";
       },
-      call:function(){
-        if(document.querySelectorAll("div#clavs.gallery_mode section[data-ui-type='gallery']:not(.hidden_omega)").length < 1){
-        const data_ui_type = document.querySelector(
-        'section[data-ui-type="gallery"]'
-      ),
-      hmdata_ = document.querySelector(
-        'section[data-ui-type="gallery"]'
-      ),
-      editor_container = document.createElement("grider_viewer"),
-      resizer = document.createElement("div"),
-      size_r = document.createElement("size_r"),
-      div_resizer = document.createElement("div-sh"),
-      divf_ = document.createElement("divf_"),
-      logContainer = document.createElement("div"),
-      iframe = document.createElement("iframe"),
-      grider_viewer = document.createElement("grider_viewer"),
-      buttons = {
-        history: "",
-        undo: document.querySelector(
-          "section[data-ui-type='gallery'] i.editor_btns.undo"
-        ),
-        redo: document.querySelector(
-          "section[data-ui-type='gallery'] i.editor_btns.redo"
-        ),
-      };
-      editor_container.setAttribute("class","gridsH grids g_gallery ");
-    logContainer.id = "logContainer";
-    editor_container.innerHTML = "";
-    $(data_ui_type).find("#gallery-container").remove();
-    $(data_ui_type).find("iframe").remove();
-    editor_container.id = "gallery-container";
-    iframe.id = "preview-container";
-    resizer.id = "resizer-container";
-    iframe.sandbox = "allow-same-origin allow-scripts";
-    size_r.setAttribute("style", "display: none;"); 
-    data_ui_type.appendChild(editor_container); 
-    logContainer.classList.remove("hidden_omega");
-    var jsonfs31 = [];
-    document.querySelectorAll("iframe").forEach(element => {
-        element.setAttribute("style","display:none;");
-    });
-    hmdata_.removeAttribute("class");
-      // $(data_ui_type).removeClass("hidden_omega");
-      document.querySelector("div#clavs").setAttribute("style","transform: none !important; opacity: 1; rgb( 0 0 0 / 0.6) !important");
-      document.querySelector("div#clavs").setAttribute("class","gallery_mode");
-      document.querySelector("hh_anim_start").setAttribute("style","display: none;");
-      document.querySelector("p.p-c").setAttribute("style","display: none;");
-      document.querySelector("div#clavs div_header:not([data-url])").setAttribute("style","display: none !important;");
-  
-      const urlParamsG = new URLSearchParams(window.location.search);
-      if(urlParamsG.has("album")){
-        welcomer.pages.gallery.lda(urlParamsG.get("album"));
-      } else{
-        // welcomer.blg_history_replace(`${window.location.origin}/?p=gallery`);
-      }
-    }
-    this.t();
-  }
-    }
+      call: function () {
+        if (
+          document.querySelectorAll(
+            "div#clavs.gallery_mode section[data-ui-type='gallery']:not(.hidden_omega)"
+          ).length < 1
+        ) {
+          const data_ui_type = document.querySelector(
+              'section[data-ui-type="gallery"]'
+            ),
+            hmdata_ = document.querySelector('section[data-ui-type="gallery"]'),
+            editor_container = document.createElement("grider_viewer"),
+            resizer = document.createElement("div"),
+            size_r = document.createElement("size_r"),
+            div_resizer = document.createElement("div-sh"),
+            divf_ = document.createElement("divf_"),
+            logContainer = document.createElement("div"),
+            iframe = document.createElement("iframe"),
+            grider_viewer = document.createElement("grider_viewer"),
+            buttons = {
+              history: "",
+              undo: document.querySelector(
+                "section[data-ui-type='gallery'] i.editor_btns.undo"
+              ),
+              redo: document.querySelector(
+                "section[data-ui-type='gallery'] i.editor_btns.redo"
+              ),
+            };
+          editor_container.setAttribute("class", "gridsH grids g_gallery ");
+          logContainer.id = "logContainer";
+          editor_container.innerHTML = "";
+          $(data_ui_type).find("#gallery-container").remove();
+          $(data_ui_type).find("iframe").remove();
+          editor_container.id = "gallery-container";
+          iframe.id = "preview-container";
+          resizer.id = "resizer-container";
+          iframe.sandbox = "allow-same-origin allow-scripts";
+          size_r.setAttribute("style", "display: none;");
+          data_ui_type.appendChild(editor_container);
+          logContainer.classList.remove("hidden_omega");
+          var jsonfs31 = [];
+          document.querySelectorAll("iframe").forEach((element) => {
+            element.setAttribute("style", "display:none;");
+          });
+          hmdata_.removeAttribute("class");
+          
+          document
+            .querySelector("div#clavs")
+            .setAttribute(
+              "style",
+              "transform: none !important; opacity: 1; rgb( 0 0 0 / 0.6) !important"
+            );
+          document
+            .querySelector("div#clavs")
+            .setAttribute("class", "gallery_mode");
+          document
+            .querySelector("hh_anim_start")
+            .setAttribute("style", "display: none;");
+          document
+            .querySelector("p.p-c")
+            .setAttribute("style", "display: none;");
+          document
+            .querySelector("div#clavs div_header:not([data-url])")
+            .setAttribute("style", "display: none !important;");
+
+          const urlParamsG = new URLSearchParams(window.location.search);
+          if (urlParamsG.has("album")) {
+            welcomer.pages.gallery.lda(urlParamsG.get("album"));
+          } else {
+
+          }
+        }
+        this.t();
+      },
+    },
   },
   trcars: {
     dragstart: function (e) {
@@ -779,8 +861,7 @@ ${is_live}
     document.querySelector(".Ignoring_me_iframe").onmouseout = function () {
       welcomer.cursor_hide(this);
     };
-    // document.querySelector(".wallpaperVideo").play();
-    // this.vdjae();
+    
     this.custom_evjents();
     document
       .querySelector(".wallpaperVideo")
@@ -811,8 +892,7 @@ ${is_live}
   projectsc: function () {
     window.top.location.href = "/?p=projects";
   },
-  cards_links: [ 
-  ],
+  cards_links: [],
   gallery_delegator: function (dlg = "a") {
     $("#image-popups").magnificPopup({
       delegate: dlg,
@@ -1016,64 +1096,8 @@ ${is_live}
       return response.json();
     },
     card: function (parent, url) {
-      /*
-      br_aer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: nowrap;
-}
-
-br_aer baer img {
-    width: 50px;
-    object-fit:cover;
-    border-radius:10px;
-    height:50px;
-}
-
-baer {
-    display: flex;
-    flex-wrap: nowrap;
-    flex-direction: row;
-    align-content: center;
-    align-items: center;
-}
-
-br_aer  img.favicon {
-    width:16px;
-    height:16px;
-}
-
-<br_box><div class="bra"><img class="img_background_rljs" src="/?blog=02_jun_2024_22_10/3423413441" alt="Blog > Marko Nikolić" loading="lazy"></div><pe>Detected links in post:</pe><br_aer class="snaped"><baer>
-<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
-<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
-</span>
-</ber_f>
-</baer><baer>
-<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
-<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
-</span>
-</ber_f>
-</baer><baer>
-<img src="/?blog=02_jun_2024_22_10/3423413441"><ber_f>
-<bar_t><img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span></bar_t><span>domain.com
-</span>
-</ber_f>
-</baer>
-
-<baer>
-<img src="/?blog=02_jun_2024_22_10/3423413441">
-<ber_f>
-  <bar_t>
-    <img src="/?blog=02_jun_2024_22_10/3423413441" class="favicon" height="16" width="16"><span>What is it ..aeraera e.r .ae.</span>
-  </bar_t>
-  <span>domain.com</span>
-</ber_f>
-</baer>
-</br_aer></br_box>
+    
       
-      *g/
-      / /  var bar_box = document.createElement("br_box"); */
       var br_aer = document.createElement("br_aer"),
         baer = document.createElement("baer"),
         span = document.createElement("span"),
@@ -1084,36 +1108,12 @@ br_aer  img.favicon {
   },
   generateGrid_backrs: function (what = "", fsrc) {
     var srcf = "",
-
       getRandomNumber = function (min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
       };
     if (what == "gallery_bundle") {
-      /*
-      srcf =
-        window.portfolio.data.gallery[
-          getRandomNumber(5, window.portfolio.data.gallery.length - 1)
-        ]["img"];
-      setInterval(() => {
-        var img_bundle = document.querySelector(
-          "#buttons .adiv[adiv_gat='gallery_bundle'] img"
-        );
-        img_bundle.classList.add("loading");
-        setTimeout(() => {
-          img_bundle.src =
-            window.portfolio.data.gallery[
-              getRandomNumber(5, window.portfolio.data.gallery.length - 1)
-            ]["img"];
-
-          img_bundle.onload = function () {
-            setTimeout(() => {
-              try {
-                img_bundle.classList.remove("loading");
-              } catch (aer) {}
-            }, 500);
-          };
-        }, 500);
-      }, 10500);*/
+    
+      
     }
     if (what == "blog_bundle") {
       srcf = window.portfolio.data.blog[0]["thumbail"];
@@ -1181,6 +1181,8 @@ br_aer  img.favicon {
         img = document.createElement("img"),
         nnum = document.createElement("div");
       img.setAttribute("class", "aepraaa3");
+      img.setAttribute("alt","Card Link");
+      img.setAttribute("style","opacity:0;");
       img.setAttribute("data-title", v.title);
       img.setAttribute("onerror", "$(this).attr('style','display: none;');");
       img.setAttribute("onload", "$(this).attr('style','');");
@@ -1319,9 +1321,11 @@ br_aer  img.favicon {
         buttons_box_shadow.appendChild(div);
       }
     });
+
     document.querySelector(".wallpaperVideo").play();
     document.querySelector(".wallpaperVideo").removeAttribute("style");
-    // this.vdjae();
+
+    
   },
   vdjae: async function () {
     $("img#svg_loader_img").css({ opacity: "0" });
@@ -1557,21 +1561,8 @@ br_aer  img.favicon {
     div_preview.appendChild(div_h2);
     div_preview.appendChild(dtitle);
     div_preview.appendChild(div_t);
-    /*
-    <div_preview>
-    <div_bck></div_bck>
-    <div_h2>
-    <divh2></divh2>
-    </div_h2>
-    <div_h>
-    is possible!</div_h><div_t>Is possible no only in theory?!
-    <br><br>Pegasus project is project, Cooon! 
-    <img loading="lazy" class="is_touch in_hover" ondragstart="return false;"
-     src="/?blog=13_jul_2024_23_40/43515315" 
-     data-zoom-image="https://portfolio.localhost/?p=projects" 
-     alt="Pegasus project - Connection PC and Brain with no chips is possible!">
-     </div_t></div_preview>
-    */
+   
+    
 
     if (typeof t.complete === "function") {
       t.complete(div_preview);
@@ -1641,10 +1632,10 @@ br_aer  img.favicon {
 
     img.setAttribute("class", "img_background_rljs");
     img.setAttribute("src", fh?.thumbail);
-    /*
-    /f/ img.setAttribute("alt", "Blog > Marko Nikolić"); */
+    
     img.setAttribute("loading", "lazy");
-    /* / */
+
+    
 
     div_bra.appendChild(img);
     div_bra.appendChild(br_aer);
@@ -1655,25 +1646,9 @@ br_aer  img.favicon {
     var conff = this.conf;
 
     welcomer.cards_generate_xhr = new XMLHttpRequest();
-    welcomer.cards_generate_xhr.open("POST", conff['graph'], true);
-    //  welcomer.cards_generate_xhr.setRequestHeader(`Authorization`,`Bearer ${conff['token']}`);
-    //
-    // this._get_data({
-    //   url:  conff['api'],
-    //   type:"POST",
-      
-    //   headers:{
-    //     "Content-Type" :"application/json",
-    //     "Authorization":"Bearer " + conff['token']
-    //   },
-    //   response: async function (error, data) {
-
-    //   }});
-
-        //
-    /*
-    /f/ welcomer.cards_generate_xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded; charset=UTF-8');
-    */
+    welcomer.cards_generate_xhr.open("POST", conff["graph"], true);
+  
+    
     welcomer.cards_generate_xhr.onreadystatechange = function () {
       if (welcomer.cards_generate_xhr.readyState === 4) {
         if (welcomer.cards_generate_xhr.status === 200) {
@@ -1756,7 +1731,7 @@ width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}
     var json_f = fh.shared_links;
 
     jsonData.append("urlf", JSON.stringify(fh.shared_links));
-    jsonData.append("type","s");
+    jsonData.append("type", "s");
     var shared_links_loader = "";
     if (fh.shared_links.length > 0) {
       fh.shared_links.forEach(function () {
@@ -1803,8 +1778,10 @@ width="16"><span></span></bar_t><span>  </span>
       });
 
       welcomer.gallery_temp = f.gallery;
-      $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
-      $('body').removeAttr("data-category-name");
+      $("solar_arrow labelv").html(
+        `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
+      );
+      $("body").removeAttr("data-category-name");
       welcomer.blg_history_replace(`/?p=blog&id=${id}`);
       $("div_header").attr(
         "data-url",
@@ -1813,13 +1790,11 @@ width="16"><span></span></bar_t><span>  </span>
       $("div#clavs br_ta").addClass("active_scr");
       $(ifrm).hide();
       ifrm.document.open();
- 
-      /*
-      window.portfolio.data.blog[0]['shared_links']
-      */
 
-      ifrm.document.write(`${res}`);
+   
       
+      ifrm.document.write(`${res}`);
+
       setTimeout(function () {
         $("#clavs grider_viewer").hide();
       }, 1000);
@@ -1854,14 +1829,14 @@ width="16"><span></span></bar_t><span>  </span>
       $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr("style");
     }
   },
-  solarsustem_load: function(){
-    const shadowContainer = document.getElementById("solarsystem"); 
-    const shadowRoot = shadowContainer.attachShadow({ mode: "open" }); 
+  solarsustem_load: function () {
+    const shadowContainer = document.getElementById("solarsystem");
+    const shadowRoot = shadowContainer.attachShadow({ mode: "open" });
     const rootDiv = document.createElement("div");
     rootDiv.id = "root";
     rootDiv.style.height = "100%";
-    rootDiv.style.width = "100%"; 
-    shadowRoot.appendChild(rootDiv); 
+    rootDiv.style.width = "100%";
+    shadowRoot.appendChild(rootDiv);
     const style = document.createElement("style");
     style.textContent = `
         * {
@@ -1880,17 +1855,15 @@ width="16"><span></span></bar_t><span>  </span>
             line-height: normal;
             color: #333;
         }
-    `; 
+    `;
     const script = document.createElement("script");
-    script.setAttribute("type","module");
-    script.setAttribute("crossorigin","");
+    script.setAttribute("type", "module");
+    script.setAttribute("crossorigin", "");
     script.setAttribute("src", "/demo&id=S3503&hangar=main");
     shadowRoot.appendChild(style);
     shadowRoot.appendChild(script);
   },
-  url_control: function(){
-    
-  },
+  url_control: function () {},
   custom_evjents: function () {},
   blog_loader_natjive: function (id = "all") {
     var ifrm = document.querySelector("#clavs iframe:not(.iframe_mask)");
@@ -1930,12 +1903,13 @@ width="16"><span></span></bar_t><span>  </span>
 
       if (urlParamsf.has("c")) {
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
-        document.querySelector("body").setAttribute("data-category-name", urlParamsf_f);
-        
+        document
+          .querySelector("body")
+          .setAttribute("data-category-name", urlParamsf_f);
+
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
       } else {
         welcomer.blg_history_replace("/?p=blog");
- 
       }
       welcomer.blogljoad_posts(f);
       $("#clavs iframe:not(.iframe_mask)").removeAttr("src");
@@ -1968,108 +1942,30 @@ width="16"><span></span></bar_t><span>  </span>
           "data-url",
           `${window.location.origin}/?p=blog&id=${id}`
         );
-        $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
-        $('body').removeAttr("data-category-name");
+        $("solar_arrow labelv").html(
+          `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
+        );
+        $("body").removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
-        document.querySelector('p-container').set(`${res}`); 
+        document.querySelector("p-container").set(`${res}`);
         welcomer.cards_generate(f);
         document
-        .getElementById("clavs")
-        .setAttribute("style", " opacity:1; transform:unset; ");
-      $("#clavs iframe:not(.iframe_mask").hide();
-      $("div_header span").html(`Blog > ${f.title}`);
+          .getElementById("clavs")
+          .setAttribute("style", " opacity:1; transform:unset; ");
+        $("#clavs iframe:not(.iframe_mask").hide();
+        $("div_header span").html(`Blog > ${f.title}`);
 
-      $("#clavs grider_viewer").hide();
-      $("div#clavs").prepend(
-        `<div class="bra"><img class="img_background_rljs"  onload="welcomer.img_load(this);"  src="${
-          f.thumbail
-        }" alt="${$("title").html()}" loading="lazy" /></div>`
-      );
-      $("#clavs grider_viewer").html("");
-      $("div_header span").html(`Blog > ${f.title}`);
-      welcomer.titleC(` ${f.title} > Blog > Marko Nikolić`);
-      $(ifrm).hide();
-      welcomer.cards_generate(f);
-    
-
-      $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
-      $("body").removeAttr("data-hmm");
-      document
-        .getElementById("clavs")
-        .setAttribute("style", " opacity:1; transform:unset; ");
- 
-
-      $("#clavs grider_viewer").hide(); 
-      $("div_header").addClass("ld_completeld_complete2");
-      $(".F_bi_search").hide();
-      $("gridder_loader").attr("style", "opacity:1");
-      $(".pdf_page_home_btn").hide();
-      $(".close_btnf").show();    
-      document
-      .querySelector(".pdf_download")
-      .setAttribute("style", "display: none;");
-
-      document.querySelector("#logo_backscr_img").classList.remove("activeBell");
-    $("#canvas, .wallpaperVideo ").removeAttr("style");
-    var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
-
-    $(".Vjideo_sjpinner, gridder_loader").hide();
-
-    //  welcomer.blog_loader_natjive(id);
-//      this.blogloader(id);
-
-        /*/ --------
-        $(ifrm).hide();
-
-        ifrm.document.open();
-        ifrm.document.write(
-          `${res} <style type="text/css">${window.atob(
-            window.portfolio.data.blog_style_bundle
-          )}</style> <script>document.body.setAttribute("oncontextmenu","return false;");</script>`
-        );
-     
-        $("#clavs iframe:not(.iframe_mask)").on("load", function () {
-          welcomer.cards_generate(f);
-        });
-
-        ifrm.document.querySelectorAll("img").forEach(function (v) {
-          $(v)
-            .attr("onclick", "welcomer.infoVa_img(event)")
-            .attr(
-              "data-title",
-              "Click (hovered image) for view image in full size"
-            );
-          var a = $(v);
-          a.hover(
-            function () {
-              parent.welcomer.showAnchorTitle(a, a.data("title"));
-            },
-            function () {
-              parent.welcomer.hideAnchorTitle();
-            }
-          )
-            .data("title", a.attr("title"))
-            .removeAttr("title");
-
-          a.mouseleave(function () {
-            parent.welcomer.hideAnchorTitle();
-          });
-        });
-
-        ifrm.document.close();
-        ifrm.onload = function () {};
+        $("#clavs grider_viewer").hide();
         $("div#clavs").prepend(
-          `<div class="bra"><img class="img_background_rljs" src="${
+          `<div class="bra"><img class="img_background_rljs"  onload="welcomer.img_load(this);"  src="${
             f.thumbail
           }" alt="${$("title").html()}" loading="lazy" /></div>`
         );
         $("#clavs grider_viewer").html("");
         $("div_header span").html(`Blog > ${f.title}`);
         welcomer.titleC(` ${f.title} > Blog > Marko Nikolić`);
-
-        $("gridder_loader, #clavs iframe:not(.iframe_mask)").removeAttr(
-          "style"
-        );
+        $(ifrm).hide();
+        welcomer.cards_generate(f);
 
         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
         $("body").removeAttr("data-hmm");
@@ -2077,11 +1973,26 @@ width="16"><span></span></bar_t><span>  </span>
           .getElementById("clavs")
           .setAttribute("style", " opacity:1; transform:unset; ");
 
-        $("div_header span").html(`Blog > ${f.title}`);
-
         $("#clavs grider_viewer").hide();
-        $("iframe.iframe_mask").show();
-        */
+        $("div_header").addClass("ld_completeld_complete2");
+        $(".F_bi_search").hide();
+        $("gridder_loader").attr("style", "opacity:1");
+        $(".pdf_page_home_btn").hide();
+        $(".close_btnf").show();
+        document
+          .querySelector(".pdf_download")
+          .setAttribute("style", "display: none;");
+
+        document
+          .querySelector("#logo_backscr_img")
+          .classList.remove("activeBell");
+        $("#canvas, .wallpaperVideo ").removeAttr("style");
+        var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
+
+        $(".Vjideo_sjpinner, gridder_loader").hide();
+
+       
+        
       } else {
         welcomer.blg_history_replace("");
 
@@ -2092,7 +2003,7 @@ width="16"><span></span></bar_t><span>  </span>
       }
     }
   },
-  blogLoader_native: function(id = "all"){
+  blogLoader_native: function (id = "all") {
     $("#clavs grider_viewer, div#clavs br_ta").removeAttr("style");
     $(" div.bra").remove();
   },
@@ -2125,7 +2036,9 @@ width="16"><span></span></bar_t><span>  </span>
 
       if (urlParamsf.has("c")) {
         history.replaceState({}, "", `/?p=blog&c=${urlParamsf_f}`);
-        document.querySelector("body").setAttribute("data-category-name", urlParamsf_f);
+        document
+          .querySelector("body")
+          .setAttribute("data-category-name", urlParamsf_f);
 
         welcomer.titleC(`Blog > ${urlParamsf_f} - Marko Nikolić`);
       } else {
@@ -2198,8 +2111,7 @@ width="16"><span></span></bar_t><span>  </span>
   spoiler: function (v = { c, u: "" }) {
     var f = welcomer.spolr,
       no_spoler = false;
-    // console.log(v);
-    // for(var i = 0; i < f.length; i++){
+      
     if (v.u.includes("cv-pdf") || v.u.includes("visitcard")) {
       no_spoler = true;
     }
@@ -2291,32 +2203,30 @@ width="16"><span></span></bar_t><span>  </span>
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   },
-  blogloader_img: function(id = ""){
-// parent.welcomer.infoVa_img
+  blogloader_img: function (id = "") {
+    
     var arr = window.portfolio.data.blog;
-    // arr.forEach(function(v){
-    for (var i = 0; i < arr.length; i++){
-        if(arr[i].id == id){
-            var imgg = document.createElement("img");
-          imgg.src = arr[i].thumbail;
-          
-          imgg.onload = function(){
-           
-            $(imgg).ezPlus({
-              zoomType: "inner",
-              containLensZoom: true,
-              speed: 10,
-            });
-            $("body").append(
-              '<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>'
-            );
-            imgg.remove();
-          }
-          document.appendChild(imgg); 
-       
-        }
-    } 
-    // });
+    
+    for (var i = 0; i < arr.length; i++) {
+      if (arr[i].id == id) {
+        var imgg = document.createElement("img");
+        imgg.src = arr[i].thumbail;
+
+        imgg.onload = function () {
+          $(imgg).ezPlus({
+            zoomType: "inner",
+            containLensZoom: true,
+            speed: 10,
+          });
+          $("body").append(
+            '<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>'
+          );
+          imgg.remove();
+        };
+        document.appendChild(imgg);
+      }
+    }
+    
   },
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
@@ -2347,12 +2257,12 @@ width="16"><span></span></bar_t><span>  </span>
       var thi = "class='is_touch'",
         p_open = "";
 
-         var p_image = ``;
-      if (welcomer.isimagec(v?.category,"image")) {
-         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(${v.id});">
+      var p_image = ``;
+      if (welcomer.isimagec(v?.category, "image")) {
+        p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(${v.id});">
             <i class="bi bi-image-fill"></i> Open image
             
-            </p_open>`;  
+            </p_open>`;
       }
 
       if (v.id !== "") {
@@ -2501,11 +2411,11 @@ width="16"><span></span></bar_t><span>  </span>
         img_src_d = `${v.thumbail}&thumb=true`;
       }
       var p_image = ``;
-      if (welcomer.isimagec(v?.category,"image")) {
-         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);">
+      if (welcomer.isimagec(v?.category, "image")) {
+        p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);">
             <i class="bi bi-image-fill"></i> Open image
              
-            </p_open>`;  
+            </p_open>`;
       }
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
@@ -2532,9 +2442,8 @@ width="16"><span></span></bar_t><span>  </span>
       active_scrf_2 = document.createElement("ta_f");
     active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
     active_scrf_2.setAttribute("data-c", arrayrH.length);
-    /* active_scrf_2.innerHTML = `All <span>${
-      document.querySelectorAll("grider_viewer project").length
-    }</span>`;*/
+   
+    
 
     active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc(
       "All"
@@ -2548,13 +2457,12 @@ width="16"><span></span></bar_t><span>  </span>
       );
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
-
-        /* $(r).find("span").html(""); */
+        
       });
       active_scrf_2.classList.add("active");
       history.replaceState({}, "", `/?p=blog`);
 
-      /* active_scrf_2.innerHTML = `All <span>${ document.querySelectorAll("grider_viewer project").length}</span>`; */
+
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
@@ -2604,14 +2512,20 @@ width="16"><span></span></bar_t><span>  </span>
             "",
             `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
           );
-          if(active_scrf.getAttribute("data-category") == "astronomy" || active_scrf.getAttribute("data-category") == "Astronomy"){
-
+          if (
+            active_scrf.getAttribute("data-category") == "astronomy" ||
+            active_scrf.getAttribute("data-category") == "Astronomy"
+          ) {
             $("body").addClass("active");
-          } else{
+          } else {
             $("body").removeAttr("active");
-
           }
-          document.querySelector("body").setAttribute("data-category-name", active_scrf.getAttribute("data-category"));
+          document
+            .querySelector("body")
+            .setAttribute(
+              "data-category-name",
+              active_scrf.getAttribute("data-category")
+            );
           welcomer.titleC(
             `Blog > ${active_scrf.getAttribute(
               "data-category"
@@ -2664,8 +2578,11 @@ width="16"><span></span></bar_t><span>  </span>
           afterSlash = json[i].split("/")[2];
         image.src = json[i];
 
-        if(json[i].includes("&t=v")){
-            json[i] = json[i].replace(`${window.portfolio.host}app&id=${window.portfolio.id}&blog=`,"/?blog=");
+        if (json[i].includes("&t=v")) {
+          json[i] = json[i].replace(
+            `${window.portfolio.host}app&id=${window.portfolio.id}&blog=`,
+            "/?blog="
+          );
         }
         iframe.src = json[i];
 
@@ -2819,13 +2736,12 @@ width="16"><span></span></bar_t><span>  </span>
     });
   },
   load_gallery_j: [],
-  galleryloadT: function(){
+  galleryloadT: function () {
     window.top.location.href = "/?p=gallery";
   },
   galleryload: function () {
     $("gridder_loader").attr("style", "opacity:1");
 
- 
     welcomer.load_gallery_j = window.portfolio.data.gallery;
     welcomer.galleryloadajax();
     $("html").addClass("anim_djenerated");
@@ -2844,52 +2760,49 @@ width="16"><span></span></bar_t><span>  </span>
     welcomer.titleC("Gallery > Marko Nikolić");
   },
   galleryloadajax: function () {
-    if(welcomer.load_gallery_j.length > 0){
-    var ljoader = document.querySelector("#reaload_page"),
-      Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
-      div_header = document.querySelector("div_header"),
-      iframe = document.createElement("iframe"),
-      clavs = document.getElementById("clavs"),
-      div_not_i = 0,
-      div_not = document.querySelector("div_not");
+    if (welcomer.load_gallery_j.length > 0) {
+      var ljoader = document.querySelector("#reaload_page"),
+        Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
+        div_header = document.querySelector("div_header"),
+        iframe = document.createElement("iframe"),
+        clavs = document.getElementById("clavs"),
+        div_not_i = 0,
+        div_not = document.querySelector("div_not");
 
-    $(ljoader).hide();
-    $(Vjideo_sjpinner).show();
-    document
-      .getElementById("clavs")
-      .setAttribute("style", " opacity:1; transform:unset; ");
-    $("iframe:not(.iframe_mask)").hide();
+      $(ljoader).hide();
+      $(Vjideo_sjpinner).show();
+      document
+        .getElementById("clavs")
+        .setAttribute("style", " opacity:1; transform:unset; ");
+      $("iframe:not(.iframe_mask)").hide();
 
-    $("grider_viewer").show().removeAttr("style");
-    $("div_header").removeClass("ld_completeld_complete");
-    $("grider_viewer").addClass("g_gallery");
-    $("grider_viewer").html("");
-    var gallery = [];
-    $("gridder_loader").attr("style", "opacity:1");
+      $("grider_viewer").show().removeAttr("style");
+      $("div_header").removeClass("ld_completeld_complete");
+      $("grider_viewer").addClass("g_gallery");
+      $("grider_viewer").html("");
+      var gallery = [];
+      $("gridder_loader").attr("style", "opacity:1");
 
-  
-
-    var v = welcomer.load_gallery_j;
-    for (var i = 0; i < v.length; i++) {
-      
-      var thi = "class='is_touch'",
-        p_open = "";
-      if (v[i].href !== "") {
-        if (v[i].type) {
-          p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
+      var v = welcomer.load_gallery_j;
+      for (var i = 0; i < v.length; i++) {
+        var thi = "class='is_touch'",
+          p_open = "";
+        if (v[i].href !== "") {
+          if (v[i].type) {
+            p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
            <i class="bi bi-link"></i> Open link
            </p_open>`;
-        } else {
-          p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
+          } else {
+            p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
           <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
            </p_open>`;
+          }
         }
-      }
-      if (welcomer.isMobile()) {
-        thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
-      }
-      $("grider_viewer")
-        .append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
+        if (welcomer.isMobile()) {
+          thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
+        }
+        $("grider_viewer")
+          .append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
         <grider_box>
         <p><span>${v[i].title}</span></p>
 
@@ -2905,25 +2818,23 @@ width="16"><span></span></bar_t><span>  </span>
                    </grider_box>
 
             </project>`);
-      div_not_i++;
+        div_not_i++;
+      }
+
+      $("gridder_loader").removeAttr("style");
+      $("div_header").addClass("ld_completeld_complete2");
+      $(ljoader).show();
+      $("div_header span").html("Marko Nikolić > Gallery");
+      $(".F_bi_search").hide();
+      $(Vjideo_sjpinner).hide();
     }
 
-    $("gridder_loader").removeAttr("style");
-    $("div_header").addClass("ld_completeld_complete2");
-    $(ljoader).show();
-    $("div_header span").html("Marko Nikolić > Gallery");
-    $(".F_bi_search").hide();
-    $(Vjideo_sjpinner).hide();
-     
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  if(params.has("album")){
-   
-    welcomer.blg_history_replace(`/?p=gallery&album=${params.get("album")}`);
-    this.lda(params.get("album"));
-  }else{ 
-     welcomer.blg_history_replace(`/?p=gallery`);
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("album")) {
+      welcomer.blg_history_replace(`/?p=gallery&album=${params.get("album")}`);
+      this.lda(params.get("album"));
+    } else {
+      welcomer.blg_history_replace(`/?p=gallery`);
     }
   },
   loaded_imgPrld_error: function (aer, id = 0) {
@@ -2946,7 +2857,7 @@ width="16"><span></span></bar_t><span>  </span>
       console.error(":(", error);
     }
   },
-  loaded_imgPrldV2: async function(aer, id = 0){
+  loaded_imgPrldV2: async function (aer, id = 0) {
     const d = aer;
 
     try {
@@ -2957,7 +2868,10 @@ width="16"><span></span></bar_t><span>  </span>
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
       d.src = URL.createObjectURL(blob);
-      $(aer).parent().parent().attr("style"," transform: none; pointer-events: unset; opacity: 1;");
+      $(aer)
+        .parent()
+        .parent()
+        .attr("style", " transform: none; pointer-events: unset; opacity: 1;");
       $(aer).removeAttr("onload");
     } catch (error) {
       console.error(":(", error);
@@ -2991,18 +2905,9 @@ width="16"><span></span></bar_t><span>  </span>
   },
   isimagec: function (arr = [], what = "image") {
     var is_image = false;
-/*
-    for/ (var i = 0; i < arr.length; i++) {
-      // console.log(arr.length, arr[i]);
-      var arr_i = arr[i];
-      if (arr_i.includes("image") == true) {
-        is_image = true;
-        console.log(arr.length,arr_i.includes("image"));
-        return true;
-      }
-    }*/
+  
+    
     is_image = arr.indexOf(what) !== -1;
- 
 
     return is_image;
   },
@@ -3064,7 +2969,7 @@ width="16"><span></span></bar_t><span>  </span>
 
             </project>`);
       div_not_i--;
-    });  
+    });
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
     $("div_header span").html("Marko Nikolić > Projects");
@@ -3072,16 +2977,16 @@ width="16"><span></span></bar_t><span>  </span>
 
     $(Vjideo_sjpinner).hide();
   },
-  Gallery_projectsloadV_2: function(r){
+  Gallery_projectsloadV_2: function (r) {
     var lts = window.portfolio.data.gallery.gallery,
-    ts = [];
-    for (var i = 0; i < lts.length; i++){
-        if(lts[i]['name'] == r){
-            ts = lts[i];
-        }
-        if(r == "/"){
-          ts = lts;
-        }
+      ts = [];
+    for (var i = 0; i < lts.length; i++) {
+      if (lts[i]["name"] == r) {
+        ts = lts[i];
+      }
+      if (r == "/") {
+        ts = lts;
+      }
     }
     return ts;
   },
@@ -3143,7 +3048,7 @@ width="16"><span></span></bar_t><span>  </span>
 
             </project>`);
       div_not_i--;
-    });  
+    });
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
     $("div_header span").html("Marko Nikolić > Projects");
@@ -3179,7 +3084,8 @@ width="16"><span></span></bar_t><span>  </span>
       .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
       .then((blob) => {
         const imgElement = document.createElement("img");
-        imgH.src = blob; // URL.createObjectURL(blob);
+        imgH.src = blob;
+        
       });
     imgH.onload = function () {
       $(imgH).ezPlus({
@@ -3208,11 +3114,12 @@ width="16"><span></span></bar_t><span>  </span>
   },
   infoVa: function (h = 0, type = "image") {
     var imgH = new Image();
-    if($(`project[id-int='${h}']`).find('i[data-i-type="video"]').length){
+    if ($(`project[id-int='${h}']`).find('i[data-i-type="video"]').length) {
       welcomer.pages.gallery.call_video_gallery_Preview(
         `${$(`project[id-int="${h}"] img`).attr("data-zoom-image")}`,
-        `${$(`project[id-int="${h}"] img`).attr("data-real-zoom-if_video")}`);
-    } else{
+        `${$(`project[id-int="${h}"] img`).attr("data-real-zoom-if_video")}`
+      );
+    } else {
       welcomer.infoVa_img_gallery($(`project[id-int="${h}"] img`));
     }
     /*
@@ -3243,7 +3150,6 @@ width="16"><span></span></bar_t><span>  </span>
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
           a.href = url;
-
 
           a.download =
             url.replace("blob:" + window.location.origin, "") + ".rar";
@@ -3389,8 +3295,7 @@ width="16"><span></span></bar_t><span>  </span>
         "window.location.href = '/';"
       );
 
-      // $("btns_r").hide();
-      // id_mask.innerHTML = `<spanf>  <img src="/?svc=logo_plain" id="logo_edi"> <br><span>Editor is not supported for<br>mobile Browsers!<br><baer_><i class="bi bi-house"></i> Go home page</baer_></span></spanf>`;
+    
       $(aet).append(id_mask);
     },
     close: function () {
@@ -3689,7 +3594,7 @@ width="16"><span></span></bar_t><span>  </span>
       $('section[data-ui-type="editor"]').removeClass("hidden_omega");
       $("div#clavs").attr("style", "opacity: 1;");
     },
-    startfV: function(){
+    startfV: function () {
       window.top.location.href = "/?p=editor";
     },
     startf: function () {
@@ -3957,7 +3862,7 @@ width="16"><span></span></bar_t><span>  </span>
                 <head>
                     <title>Hello World!</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1">
-                <style> ${this.tems.css}</style>
+                <style  nonce="${window.stmp}" > ${this.tems.css}</style>
                     </head>
 
                 <body>
@@ -4277,7 +4182,7 @@ width="16"><span></span></bar_t><span>  </span>
     appendLog: (c = { message: "", type: "log" }) => {
       const logElement = document.createElement("div");
       logElement.className = `log ${c.type}`;
-      // logElement.textContent = message;
+      
       logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
@@ -4306,7 +4211,7 @@ width="16"><span></span></bar_t><span>  </span>
           d = new Date();
 
         logElement.className = `log ${c.type}`;
-        // logElement.textContent = message;
+        
         logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
@@ -4316,41 +4221,43 @@ width="16"><span></span></bar_t><span>  </span>
         logContainer.appendChild(logElement);
       }
     },
-    callGallery:  function(){
+    callGallery: function () {
       const data_ui_type = document.querySelector(
-        'section[data-ui-type="gallery"] gallery_box'
-      ),
-      editor_container = document.createElement("div"),
-      resizer = document.createElement("div"),
-      size_r = document.createElement("size_r"),
-      div_resizer = document.createElement("div-sh"),
-      divf_ = document.createElement("divf_"),
-      logContainer = document.createElement("div"),
-      iframe = document.createElement("iframe"),
-      buttons = {
-        history: "",
-        undo: document.querySelector(
-          "section[data-ui-type='gallery'] i.editor_btns.undo"
+          'section[data-ui-type="gallery"] gallery_box'
         ),
-        redo: document.querySelector(
-          "section[data-ui-type='gallery'] i.editor_btns.redo"
-        ),
-      };
-    logContainer.id = "logContainer";
+        editor_container = document.createElement("div"),
+        resizer = document.createElement("div"),
+        size_r = document.createElement("size_r"),
+        div_resizer = document.createElement("div-sh"),
+        divf_ = document.createElement("divf_"),
+        logContainer = document.createElement("div"),
+        iframe = document.createElement("iframe"),
+        buttons = {
+          history: "",
+          undo: document.querySelector(
+            "section[data-ui-type='gallery'] i.editor_btns.undo"
+          ),
+          redo: document.querySelector(
+            "section[data-ui-type='gallery'] i.editor_btns.redo"
+          ),
+        };
+      logContainer.id = "logContainer";
 
-    $(data_ui_type).find("#gallery-container").remove();
-    $(data_ui_type).find("iframe").remove();
-    editor_container.id = "gallery-container";
-    iframe.id = "preview-container";
-    resizer.id = "resizer-container";
-    iframe.sandbox = "allow-same-origin allow-scripts";
-    size_r.setAttribute("style", "display: none;"); 
-    data_ui_type.appendChild(editor_container); 
-    logContainer.classList.remove("hidden_omega");
-    var jsonfs31 = [];
-    data_ui_type.classList.remove("hidden_omega");
-      // $(data_ui_type).removeClass("hidden_omega");
-      document.querySelector("div#clavs").setAttribute("style","transform: none !important; opacity: 1;");
+      $(data_ui_type).find("#gallery-container").remove();
+      $(data_ui_type).find("iframe").remove();
+      editor_container.id = "gallery-container";
+      iframe.id = "preview-container";
+      resizer.id = "resizer-container";
+      iframe.sandbox = "allow-same-origin allow-scripts";
+      size_r.setAttribute("style", "display: none;");
+      data_ui_type.appendChild(editor_container);
+      logContainer.classList.remove("hidden_omega");
+      var jsonfs31 = [];
+      data_ui_type.classList.remove("hidden_omega");
+
+      document
+        .querySelector("div#clavs")
+        .setAttribute("style", "transform: none !important; opacity: 1;");
     },
     callEditor: function (id = 0) {
       const data_ui_type = document.querySelector(
@@ -4679,9 +4586,11 @@ width="16"><span></span></bar_t><span>  </span>
           cursorStyle: "hidden",
         });
 
-        let typingTimer; // Timer identifier
-        const doneTypingInterval = 2000; // Time in ms (2 seconds)
-        // ---
+        let typingTimer; 
+        
+        const doneTypingInterval = 2000;
+        
+        
         function validateHTML(content) {
           let errors = [];
           const lines = content.split("\n");
@@ -4795,18 +4704,17 @@ width="16"><span></span></bar_t><span>  </span>
           monaco.editor.setModelMarkers(model, "htmlOwner", errors);
           logErrors(errors);
         }
-        // ---
+        
         function logErrors(errors) {
-          // const logContainer = document.getElementById('log');
-          // logContainer.innerHTML = '';
+          
           $("div#logContainer .log").remove();
           if (errors.length === 0) {
-            // logContainer.innerHTML = '<p>No errors found.</p>';
+          
+            
           } else {
             errors.forEach((error) => {
-              // const errorElement = document.createElement('p');
-              // errorElement.textContent = `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`;
-              // logContainer.appendChild(errorElement);
+             
+              
 
               welcomer.editor.appendLogF({
                 message: `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`,
@@ -5028,10 +4936,9 @@ width="16"><span></span></bar_t><span>  </span>
     this.spoiler({
       u: url,
       c: function () {
-
-        if (url.includes('gallery')){
+        if (url.includes("gallery")) {
           welcomer.pages.gallery.call();
-          
+
           return;
         }
 
@@ -5194,7 +5101,7 @@ width="16"><span></span></bar_t><span>  </span>
             try {
             } catch (v) {}
         }
-       
+
         if (url.includes("projects")) {
           $("#clavs grider_viewer").hide();
         }
@@ -5294,33 +5201,39 @@ width="16"><span></span></bar_t><span>  </span>
     });
     return false;
   },
-  colar_system: function(){
-    if($('body[data-category-name="astronomy"]').hasClass("active")){
-
-    $('body[data-category-name="astronomy"]').removeClass("active");
-    $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-down"></i><span>Hide posts</span><i class="bi bi-chevron-double-down"></i>`);
-  } else{
-       $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+  colar_system: function () {
+    if ($('body[data-category-name="astronomy"]').hasClass("active")) {
+      $('body[data-category-name="astronomy"]').removeClass("active");
+      $("solar_arrow labelv").html(
+        `<i class="bi bi-chevron-double-down"></i><span>Hide posts</span><i class="bi bi-chevron-double-down"></i>`
+      );
+    } else {
+      $("solar_arrow labelv").html(
+        `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
+      );
 
       $('body[data-category-name="astronomy"]').addClass("active");
     }
   },
   Hclose: function () {
     $("body").removeAttr("data-category-name");
-    $("solar_arrow labelv").html(`<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`);
+    $("solar_arrow labelv").html(
+      `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
+    );
     
-   // pContainerElement.set(""); 
-   document.querySelector('p-container').setAttribute("class","shadow_iframe");
+    document
+      .querySelector("p-container")
+      .setAttribute("class", "shadow_iframe");
 
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");
-   
+
     var msg_title =
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
     if (containeds.includes("?p=blog&id=")) {
-      // window.top.location.href = "/?p=blog";
+      
       welcomer.blogloader("all");
 
       return false;
@@ -5796,34 +5709,36 @@ width="16"><span></span></bar_t><span>  </span>
     ele.addEventListener("mousedown", mouseDownHandler);
   },
   _get_data: function (
-    v = { headers: {}, type:"GET" , data: {}, url: "", error: function () {}, response: function (error, data) {} }
+    v = {
+      headers: {},
+      type: "GET",
+      data: {},
+      url: "",
+      error: function () {},
+      response: function (error, data) {},
+    }
   ) {
-
-  
     var xhr = new XMLHttpRequest();
 
-    xhr.open(v.type ,v.url, true);
+    xhr.open(v.type, v.url, true);
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
-          // console.log(key + ": " + myObject[key]);
 
-        xhr.setRequestHeader(`${key}`,`${v.headers[key]}`);
-
+        
+        xhr.setRequestHeader(`${key}`, `${v.headers[key]}`);
       }
-  }
-
-  const formData = new FormData();
-  for (let key in v.data) {
-    if (v.data.hasOwnProperty(key)) {
-        // console.log(key + ": " + myObject[key]);
-
-      formData.append(`${key}`,`${v.data[key]}`);
-
     }
-}
- 
- 
+
+    const formData = new FormData();
+    for (let key in v.data) {
+      if (v.data.hasOwnProperty(key)) {
+
+        
+        formData.append(`${key}`, `${v.data[key]}`);
+      }
+    }
+
     xhr.onload = function () {
       if (xhr.status >= 200 && xhr.status < 300) {
         var data = xhr.response;
@@ -5836,30 +5751,31 @@ width="16"><span></span></bar_t><span>  </span>
     xhr.onerror = function () {
       console.error("Request failed");
     };
- 
+
     xhr.send(formData);
   },
-  getLinkTagsAsJson: function(what = "link") {
-    // Get all <link> elements
+  getLinkTagsAsJson: function (what = "link") {
+
     const linkElements = document.querySelectorAll(what);
     let linksArray = [];
 
-    // Iterate over each <link> element
-    linkElements.forEach(link => {
-        let attributes = {};
 
-        // Iterate over each attribute of the link element
-        for (let attr of link.attributes) {
-            attributes[attr.name] = attr.value;
-        }
+    linkElements.forEach((link) => {
+      let attributes = {};
 
-        // Push the attribute object to the array
-        linksArray.push(attributes);
+
+      for (let attr of link.attributes) {
+        attributes[attr.name] = attr.value;
+      }
+
+
+      linksArray.push(attributes);
     });
 
-    // Return the array of link elements as JSON
-    return JSON.stringify(linksArray, null, 2); // Pretty print JSON
-},
+
+    return JSON.stringify(linksArray, null, 2); 
+    
+  },
   start: function () {
     var conff = this.conf;
     /*
@@ -5876,9 +5792,9 @@ width="16"><span></span></bar_t><span>  </span>
         const jsonData = document.getElementById("json_feed").textContent;
 const parsedData = JSON.parse(jsonData);
         window.portfolio = parsedData;*/
-        welcomer.projects = window.portfolio.data.projects;
-        welcomer.cards_links = window.portfolio.data.menu;      
-        welcomer.start_v2();
+    welcomer.projects = window.portfolio.data.projects;
+    welcomer.cards_links = window.portfolio.data.menu;
+    welcomer.start_v2();
 
     $.ajaxSetup({
       cache: true,
@@ -6252,7 +6168,9 @@ const parsedData = JSON.parse(jsonData);
 
 ">`
     );
-    $("#buttons .adiv[adiv_gat='gallery_bundle']").prepend(`<div class="nnum">${window.portfolio.data.gallery.Gallery_count}</div>`);
+    $("#buttons .adiv[adiv_gat='gallery_bundle']").prepend(
+      `<div class="nnum">${window.portfolio.data.gallery.Gallery_count}</div>`
+    );
 
     document.body.appendChild(img);
     setTimeout(async () => {
@@ -6260,7 +6178,7 @@ const parsedData = JSON.parse(jsonData);
       const data = {
         v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}`,
       };
-       const xhr = new XMLHttpRequest();
+      const xhr = new XMLHttpRequest();
       xhr.open("POST", "/?src=vdwallpper", true);
       xhr.responseType = "blob";
 
@@ -6290,8 +6208,7 @@ const parsedData = JSON.parse(jsonData);
           console.error("Error:", xhr.statusText);
         }
       };
-
-      // Send the POST request with form data
+ 
       xhr.send(`v=${data.v}`);
     }, 1000);
     const blob = new Blob([`console.clear();`], { type: "text/javascript" }),
@@ -6302,8 +6219,7 @@ const parsedData = JSON.parse(jsonData);
         URL.revokeObjectURL(blob);
       }, 1000);
     };
-    // document.body.appendChild(S);
-  // },});*/
+    
   },
   style_rebuild: function () {
     const style = document.createElement("style");
@@ -6478,14 +6394,11 @@ const parsedData = JSON.parse(jsonData);
                 res.setAttribute("src", res.getAttribute("data-src"));
                 res.removeAttribute("data-src");
                 res.onload = function () {
-                  res.setAttribute("style", ``);
-                  /*res.setAttribute("style",`
-                            height:     85vh !important; 
-                            min-height: 85vh !important;
-                            max-height:  85vh !important;
-                            max-width: 500px !important; 
-                         
-                            `);*/
+                  res.removeAttribute("style");
+                  
+                  /*, ``);
+              */
+
                 };
               }
             }
@@ -6502,35 +6415,10 @@ const parsedData = JSON.parse(jsonData);
           div.addEventListener("scroll", function () {
             welcomer.Social.tg.start_scr();
           });
-          /*
-                div.setAttribute("style", `
-            
-                position: absolute;
-                left: 0px;
-                top: 0px;
-                width: 100%;
-                height: 100%;
-                opacity: 1;
-                display: block;
-                overflow: auto;
-                z-index: 33333333333;
-                display: flex;
-                flex-wrap: nowrap;
-                flex-direction: column;
-                align-content: center;
-                align-items: center;
-            
-            `); */
+        
 
           for (var i = welcomer.Social.tg.conf.count; i > 0; i--) {
-            /*var script = document.createElement("script");
-                    script.src = "https://telegram.org/js/telegram-widget.js?22";
-                    script.async = true;
-                    script.setAttribute("data-telegram-post", `${welcomer.Social.tg.conf.id}/${i}`);
-                    script.setAttribute("data-width", "100%");
-                    script.setAttribute("onload", '$(this).remove()');
-                    div.appendChild(script);
-                    */
+          
 
             var script = document.createElement("iframe");
             script.onerror = function () {
@@ -6630,14 +6518,13 @@ const parsedData = JSON.parse(jsonData);
   })(),
 };
 
-
 window.addEventListener("popstate", () => {
   const urlParamsf = new URLSearchParams(window.location.search),
-        urlParamsf_f = urlParamsf.get("c");
+    urlParamsf_f = urlParamsf.get("c");
 
-      if (!urlParamsf.has("c")) {
-  $("body").removeAttr("data-category-name");
-      }
+  if (!urlParamsf.has("c")) {
+    $("body").removeAttr("data-category-name");
+  }
 });
 
 window.welcomer = welcomer;
@@ -6649,20 +6536,45 @@ document.addEventListener("mousemove", function (event) {
 
   window.draggable.style_left = newX;
   window.draggable.style_top = newY;
-  // console.log(window.draggable);
+  
 });
 
 (function () {
   const originalLog = console.log;
   const originalError = console.error;
 
+   
+  document.addEventListener("keydown", (event) => {
+    if (
+      (event.ctrlKey && event.key === "s") ||
+      (event.metaKey && event.key === "s")
+    ) {
+      event.preventDefault();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (
+      (event.ctrlKey && event.key === "s") ||
+      (event.metaKey && event.key === "s")
+    ) {
+      event.preventDefault();
+    }
+  });
   console.log = function (...args) {
-    originalLog.apply(console, args);
-    //    window.parent.postMessage({ type: 'log', message: args.join(' ') }, '*');
+   // originalLog.apply(console, args);
+
   };
 
+  console.warning = function (...args) {
+    // originalLog.apply(console, args);
+ 
+   };
+   console.warning = function (...args) {
+    // originalLog.apply(console, args);
+ 
+   };
   console.error = function (...args) {
-    originalError.apply(console, args);
-    //  window.parent.postMessage({ type: 'error', message: args.join(' ') }, '*');
+//    originalError.apply(console, args);
+
   };
 })();

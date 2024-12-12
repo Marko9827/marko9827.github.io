@@ -36,15 +36,16 @@ ob_start(function ($b) {
 });
 $urlCdn = "";
 
-$cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
-$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+$cdn_urls = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://*.eronelit.com https://*.localhost";
+$font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdnjs.cloudflare.com https://*.eronelit.com https://*.localhost";
 
-
+$_SESSION['Bearer_token_temp'] = base64_encode(random_bytes(16));
+$nonce_f = "'nonce-$_SESSION[Bearer_token_temp]'";
 $csp = "  
-  default-src 'self' $cdn_urls  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
-script-src 'self' 'nonce-$_SESSION[Bearer_token_temp]'  $cdn_urls;  
-style-src  'self'  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
-style-src-elem   'self'  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls; 
+  default-src 'self' $cdn_urls  $nonce_f  'unsafe-inline' $cdn_urls; 
+script-src 'self' $nonce_f   $cdn_urls;  
+style-src  'self'  $nonce_f   'unsafe-inline' $cdn_urls; 
+style-src-elem   'self'  $nonce_f  $cdn_urls; 
   object-src 'none';
   frame-src 'self';
   child-src 'self';
@@ -57,9 +58,13 @@ style-src-elem   'self'  'nonce-$_SESSION[Bearer_token_temp]' $cdn_urls;
   media-src 'self' data: blob: $cdn_urls; 
   worker-src 'self'; frame-ancestors 'self';
   block-all-mixed-content;";
-header(
+
+  #$csp = "default-src * data: blob:  $cdn_urls; script-src 'self'";
+
+  header(
     "Content-Security-Policy:  $csp"
 );
+
 header("X-Frame-Options: DENY");
 
 $rand = time();
@@ -158,7 +163,7 @@ media-src 'self';" />
     <link rel="preload" href="/?svc=jsc" as="script" />
     <link rel="preload" href="/demo&id=S3503&hangar=main" as="module" />
 
-    <script type="module" crossorigin src="/demo&id=S3503&hangar=main"></script>
+    <script type="module" crossorigin nonce="<?php echo NONCE; ?>" src="/demo&id=S3503&hangar=main" ></script>
 
     <?php
 
@@ -2652,6 +2657,7 @@ div#clavs br_ta ta_f.active span {
         }
 
         body div.solarsystem,
+        body div-solarsystem,
         body[data-category-name="astronomy"] #clavs grider_viewer {
             -webkit-transition: .3s;
             -o-transition: .3s;
@@ -2674,6 +2680,7 @@ div#clavs br_ta ta_f.active span {
         }
 
         /*  */
+        body div-solarsystem,
         body div.solarsystem {
             position: absolute;
             left: 0px;
@@ -2802,10 +2809,10 @@ div#clavs br_ta ta_f.active span {
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
+        <script async nonce="<?php echo NONCE; ?>" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
         </script>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
-        <script>
+        <script async nonce="<?php echo NONCE; ?>" src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
+        <script nonce="<?php echo NONCE; ?>">
             window.dataLayer = window.dataLayer || [];
 
             function gtag() {
@@ -2825,16 +2832,22 @@ div#clavs br_ta ta_f.active span {
             'Authorization: Bearer 32M052k350QaeofkaeopfF',
         ]
     ]);
-    echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
+    echo "<script type='text/javascript' nonce='".NONCE."' charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
     ?>
+<?php /*
+<meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">*/ ?>
+
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
+  <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
 
-    </video>
-    <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
+    </video> 
+ <?php /*
+    <!-- <video-player class="wallpaperVideo video_is_hidden" video-src="/?src=vdwallpper&v=<?php echo time(); ?>"></video-player> -->
+*/ ?>
+<p class="p-c"><?php if ($_GET['vp'] == "livestream") {
         echo "Live stream... Please wait...";
     } else { ?>
             Do you love random videos?<br>
@@ -3031,6 +3044,7 @@ div#clavs br_ta ta_f.active span {
             </btns_r>
 
         </div_header>
+        
         <div id="root" class="solarsystem"></div>
         <solar_arrow onclick="welcomer.colar_system();">
             <back_f></back_f>

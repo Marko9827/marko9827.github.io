@@ -1,6 +1,7 @@
 <?php
 session_start();
 $HOST_URL = ROOT;
+ 
 /**
  * Minifies CSS code by removing unnecessary whitespace and comments.
  *
@@ -472,10 +473,33 @@ function image_error($url, $image)
         include '/app/aer.svg';
     }
 }
-
-function data_print_r()
+function minifyJS($js)
 {
+    preg_match_all('/https?:\/\/[^\s"\']+/', $js, $matches);
+    $links = $matches[0];
+    $placeholders = array_map(function ($index) {
+        return "___LINK_PLACEHOLDER_" . $index . "___";
+    }, array_keys($links));
+    $js = str_replace($links, $placeholders, $js);
+    $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
+    $js = preg_replace('~//.*~', '', $js);
+    $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
+    $js = preg_replace('/\s\s+/', ' ', $js);
+    $js = trim($js);
+    $js = str_replace($placeholders, $links, $js);
+    return $js;
 }
+function minifyJSFile($inputFile)
+{
+    if (file_exists($inputFile)) {
+        $js = file_get_contents($inputFile);
+        $minifiedJs = minifyJS($js);
+        return $minifiedJs;
+    } else {
+        echo "";
+    }
+}
+function data_print_r() {}
 function validateJson($jsonString)
 {
     $data = json_decode($jsonString);
@@ -668,47 +692,48 @@ if (!empty($_GET['drc'])) {
     } else if ($_GET['svc'] == "embed") {
 
         header("content-type: text/html");
-        ?>
-                                <html>
+?>
+        <html>
 
-                                <head>
-                                    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+        <head>
+            <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
 
-                                    <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
-                                    <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
-                                </head>
+            <!-- If you'd like to support IE8 (for Video.js versions prior to v7) -->
+            <!-- <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script> -->
+        </head>
 
-                                <body>
-                                    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
-                                        data-setup="{}">
-                                        <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" />
-                                        <p class="vjs-no-js">
-                                            To view this video please enable JavaScript, and consider upgrading to a
-                                            web browser that
-                                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                                        </p>
-                                    </video>
+        <body>
+            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264" poster="MY_VIDEO_POSTER.jpg"
+                data-setup="{}">
+                <source src="/?svc=streamVideo&v=v03432042034023" type="video/mp4" />
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
 
-                                    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
-                                </body>
+            <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+        </body>
 
-                                </html><?php
-                                exit();
-    } else if ($_GET['svc'] == "jsc") {
-        header("content-type: text/javascript");
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
-        echo "/* " . time() . " */\n";
-        
-        $r = $this->get_data([
-            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-            "headers" => [
-                'Content-Type: application/json',
-                'Authorization: Bearer 32M052k350QaeofkaeopfF',
-            ]
-        ]);
-        /* $this->get_data([
+        </html><?php
+                exit();
+            } else if ($_GET['svc'] == "jsc") {
+                header("content-type: text/javascript");
+                header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                header("Cache-Control: post-check=0, pre-check=0", false);
+                header("Pragma: no-cache");
+                ob_start();
+                echo "/* " . time() . " */\n";
+
+                $r = $this->get_data([
+                    "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                    "headers" => [
+                        'Content-Type: application/json',
+                        'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                    ]
+                ]);
+                /* $this->get_data([
             "url" =>  "https://api.eronelit.com/app&id=A03429468246&json=all",
             "headers" => [
                 'Content-Type: application/json',
@@ -716,12 +741,15 @@ if (!empty($_GET['drc'])) {
             ]
         ]);
         */
-        // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
-        echo "window.portfolio = $r \n";
+                // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
 
 
 
-        /*  ?>
+                echo "window.portfolio = $r; \n";
+
+
+
+                /*  ?>
 
 
                                      /* BETA CODE *f/
@@ -883,652 +911,658 @@ if (!empty($_GET['drc'])) {
 
              <?php */
 
-        #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
-        ob_start();
-        echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
-        include ROOT . "welcomer_f.js";
-        echo ob_get_clean();
-        exit();
-    } else if ($_GET['svc'] == "logo") {
-        header('Content-Type: image/svg+xml');
+                #    $num_projects = json_encode(json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true));
+                #  ob_start();
+                echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
+                include ROOT . "welcomer_f.js";
 
-        ?>
+                $b = ob_get_clean();
+                echo minifyJS($b);
+                exit();
+            } else if ($_GET['svc'] == "logo") {
+                header('Content-Type: image/svg+xml');
 
-                                        <svg xmlns="http://www.w3.org/2000/svg" height="45" width="45" fill="none" class="bi bi-square" viewBox="0 0 150 150"
-                                            style="background:rgb(255 255 255 / 56%);
+                ?>
+
+        <svg xmlns="http://www.w3.org/2000/svg" height="45" width="45" fill="none" class="bi bi-square" viewBox="0 0 150 150"
+            style="background:rgb(255 255 255 / 56%);
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
  ">
-                                            <mask id="myMask">
-                                                <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
+            <mask id="myMask">
+                <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
 
-                                            </mask>
-                                            <path
-                                                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+            </mask>
+            <path
+                d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
 
-                                            <svg xmlns='http://www.w3.org/2000/svg' opacity="0.4" width='150' height='150' viewBox='0 0 800 800'>
-                                                <g fill='none' stroke='#455f647d' stroke-width='2.4'>
-                                                    <path
-                                                        d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63' />
-                                                    <path d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764' />
-                                                    <path
-                                                        d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880' />
-                                                    <path d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382' />
-                                                    <path
-                                                        d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269' />
-                                                </g>
-                                                <g fill='#455f64'>
-                                                    <circle cx='769' cy='229' r='10' />
-                                                    <circle cx='539' cy='269' r='10' />
-                                                    <circle cx='603' cy='493' r='10' />
-                                                    <circle cx='731' cy='737' r='10' />
-                                                    <circle cx='520' cy='660' r='10' />
-                                                    <circle cx='309' cy='538' r='10' />
-                                                    <circle cx='295' cy='764' r='10' />
-                                                    <circle cx='40' cy='599' r='10' />
-                                                    <circle cx='102' cy='382' r='10' />
-                                                    <circle cx='127' cy='80' r='10' />
-                                                    <circle cx='370' cy='105' r='10' />
-                                                    <circle cx='578' cy='42' r='10' />
-                                                    <circle cx='237' cy='261' r='10' />
-                                                    <circle cx='390' cy='382' r='10' />
-                                                </g>
-                                            </svg>
-                                            <mask id="myMask">
-                                                <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
+            <svg xmlns='http://www.w3.org/2000/svg' opacity="0.4" width='150' height='150' viewBox='0 0 800 800'>
+                <g fill='none' stroke='#455f647d' stroke-width='2.4'>
+                    <path
+                        d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63' />
+                    <path d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764' />
+                    <path
+                        d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880' />
+                    <path d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382' />
+                    <path
+                        d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269' />
+                </g>
+                <g fill='#455f64'>
+                    <circle cx='769' cy='229' r='10' />
+                    <circle cx='539' cy='269' r='10' />
+                    <circle cx='603' cy='493' r='10' />
+                    <circle cx='731' cy='737' r='10' />
+                    <circle cx='520' cy='660' r='10' />
+                    <circle cx='309' cy='538' r='10' />
+                    <circle cx='295' cy='764' r='10' />
+                    <circle cx='40' cy='599' r='10' />
+                    <circle cx='102' cy='382' r='10' />
+                    <circle cx='127' cy='80' r='10' />
+                    <circle cx='370' cy='105' r='10' />
+                    <circle cx='578' cy='42' r='10' />
+                    <circle cx='237' cy='261' r='10' />
+                    <circle cx='390' cy='382' r='10' />
+                </g>
+            </svg>
+            <mask id="myMask">
+                <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
 
-                                            </mask>
-                                            <svg id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                                                style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
+            </mask>
+            <svg id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
 
-                                                <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-                                                    <!-- Circle with a border -->
-                                                    <circle cx="50" cy="50" r="35" fill="rgba(0, 0, 0, 0.639)" stroke="#fff" stroke-width="2" />
-                                                    <foreignObject x="0" y="0" width="90" height="90">
-                                                        <svg mask="url(#myMask)" id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
-                                                            style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
+                <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Circle with a border -->
+                    <circle cx="50" cy="50" r="35" fill="rgba(0, 0, 0, 0.639)" stroke="#fff" stroke-width="2" />
+                    <foreignObject x="0" y="0" width="90" height="90">
+                        <svg mask="url(#myMask)" id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                            style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
 
 
-                                                            <style type="text/css">
-                                                                * {
-                                                                    margin: 0px;
-                                                                    padding: 0px;
+                            <style type="text/css">
+                                * {
+                                    margin: 0px;
+                                    padding: 0px;
 
-                                                                }
+                                }
 
-                                                                body {
-                                                                    background: rgb(169 169 169) !important;
+                                body {
+                                    background: rgb(169 169 169) !important;
 
-                                                                }
+                                }
 
-                                                                svg {
-                                                                    position: fixed;
-                                                                    left: 0px;
-                                                                    top: 0px;
-                                                                    width: 100%;
-                                                                    height: 100%;
-                                                                }
-                                                            </style>
-                                                            <defs>
-                                                                <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                                                                    <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
-                                                                </radialGradient>
-                                                                <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
-                                                                    </animate>
-                                                                    <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
-                                                                </radialGradient>
-                                                                <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
-                                                                    </animate>
-                                                                    <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
-                                                                </radialGradient>
-                                                                <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                                                                    <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
-                                                                </radialGradient>
-                                                                <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
-                                                                    </animate>
-                                                                    <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
-                                                                </radialGradient>
-                                                                <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
-                                                                    <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
-                                                                    </animate>
-                                                                    <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
-                                                                    <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
-                                                                </radialGradient>
-                                                            </defs>
-                                                            <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                                                                transform="rotate(334.41 50 50)">
-                                                                <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
-                                                                <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                                                                    repeatCount="indefinite"></animateTransform>
-                                                            </rect>
-                                                            <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                                                                transform="rotate(255.072 50 50)">
-                                                                <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
-                                                                <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                                                                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
-                                                                    dur="12s" repeatCount="indefinite"></animateTransform>
-                                                            </rect>
-                                                            <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                                                                transform="rotate(139.903 50 50)">
-                                                                <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                                <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                                <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                                                                    repeatCount="indefinite"></animateTransform>
-                                                            </rect>
-                                                        </svg>
-                                                    </foreignObject>
-                                                </svg>
-                                            </svg>
-                                        </svg>
-        <?php
-    } else if ($_GET['svc'] == "logo_plain") {
-        header('Content-Type: image/svg+xml');
-        ?>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
-                                                <defs>
-                                                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
-                                                    </radialGradient>
-                                                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
-                                                    </radialGradient>
-                                                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
-                                                    </radialGradient>
-                                                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
-                                                    </radialGradient>
-                                                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
-                                                    </radialGradient>
-                                                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
-                                                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
-                                                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
-                                                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
-                                                    </radialGradient>
-                                                </defs>
-                                                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
-                                                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
-                                                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
-                                                        repeatCount="indefinite"></animateTransform>
-                                                </rect>
-                                                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
-                                                    transform="rotate(255.072 50 50)">
-                                                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
-                                                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
-                                                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
-                                                        repeatCount="indefinite"></animateTransform>
-                                                </rect>
-                                                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
-                                                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
-                                                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
-                                                        repeatCount="indefinite"></animateTransform>
-                                                </rect>
-                                            </svg> <?php
-                                            exit();
-    } else if ($_GET['svc'] == "p2") {
-        header("content-type: text/html");
+                                svg {
+                                    position: fixed;
+                                    left: 0px;
+                                    top: 0px;
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            </style>
+                            <defs>
+                                <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                                    <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                                </radialGradient>
+                                <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
+                                    </animate>
+                                    <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                                </radialGradient>
+                                <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
+                                    </animate>
+                                    <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                                </radialGradient>
+                                <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                                    <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                                </radialGradient>
+                                <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
+                                    </animate>
+                                    <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                                </radialGradient>
+                                <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                                    <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
+                                    </animate>
+                                    <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                                    <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                                </radialGradient>
+                            </defs>
+                            <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                                transform="rotate(334.41 50 50)">
+                                <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                                <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                                    repeatCount="indefinite"></animateTransform>
+                            </rect>
+                            <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                                transform="rotate(255.072 50 50)">
+                                <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                                <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
+                                    dur="12s" repeatCount="indefinite"></animateTransform>
+                            </rect>
+                            <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                                transform="rotate(139.903 50 50)">
+                                <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                                    repeatCount="indefinite"></animateTransform>
+                            </rect>
+                        </svg>
+                    </foreignObject>
+                </svg>
+            </svg>
+        </svg>
+    <?php
+            } else if ($_GET['svc'] == "logo_plain") {
+                header('Content-Type: image/svg+xml');
+    ?>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class="">
+            <defs>
+                <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                </radialGradient>
+                <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                </radialGradient>
+                <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                </radialGradient>
+                <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                </radialGradient>
+                <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                </radialGradient>
+                <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                    <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                    <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                    <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                </radialGradient>
+            </defs>
+            <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
+                <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                    repeatCount="indefinite"></animateTransform>
+            </rect>
+            <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                transform="rotate(255.072 50 50)">
+                <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
+                    repeatCount="indefinite"></animateTransform>
+            </rect>
+            <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
+                <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                    repeatCount="indefinite"></animateTransform>
+            </rect>
+        </svg> <?php
+                exit();
+            } else if ($_GET['svc'] == "p2") {
+                header("content-type: text/html");
 
-        $contentType = array();
-        $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
-        foreach ($r as $val) {
-            if ("$val[id]" == "$_GET[id]") {
-                $contentType = $val;
-            }
-        }
-        ?> <!-- <img id="sourceImg"
+                $contentType = array();
+                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
+                foreach ($r as $val) {
+                    if ("$val[id]" == "$_GET[id]") {
+                        $contentType = $val;
+                    }
+                }
+                ?> <!-- <img id="sourceImg"
     src="/?svc=p&id=<?php echo $_GET['id']; ?>" alt="Image to Convert"> -->
 
-                                                <html lang="en">
+        <html lang="en">
 
-                                                <head>
-                                                    <meta charset="UTF-8">
-                                                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                                    <title>SVG to HTML</title>
-                                                    <style>
-                                                        .svg-container {
-                                                            width: 700px;
-                                                            height: 400px;
-                                                            position: relative;
-                                                            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            background-color: black;
-                                                        }
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>SVG to HTML</title>
+            <style>
+                .svg-container {
+                    width: 700px;
+                    height: 400px;
+                    position: relative;
+                    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    background-color: black;
+                }
 
-                                                        .background-image {
-                                                            width: 100%;
-                                                            height: 100%;
-                                                            opacity: 0.7;
-                                                            object-fit: cover;
-                                                            position: absolute;
-                                                            top: 0;
-                                                            left: 0;
-                                                        }
+                .background-image {
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0.7;
+                    object-fit: cover;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
 
-                                                        .rounded-image {
-                                                            width: 45px;
-                                                            height: 45px;
-                                                            border-radius: 6.2px;
-                                                            position: absolute;
-                                                            left: 50%;
-                                                            top: 50%;
-                                                            transform: translate(-50%, -100px);
-                                                        }
+                .rounded-image {
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 6.2px;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -100px);
+                }
 
-                                                        .text-container {
-                                                            position: absolute;
-                                                            left: 50%;
-                                                            top: 50%;
-                                                            transform: translate(-50%, -50%);
-                                                            text-align: center;
-                                                            color: white;
-                                                            font-family: Arial, sans-serif;
-                                                        }
+                .text-container {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    text-align: center;
+                    color: white;
+                    font-family: Arial, sans-serif;
+                }
 
-                                                        .text-container .title {
-                                                            font-size: 20px;
-                                                        }
+                .text-container .title {
+                    font-size: 20px;
+                }
 
-                                                        .text-container .separator {
-                                                            font-size: 20px;
-                                                        }
+                .text-container .separator {
+                    font-size: 20px;
+                }
 
-                                                        .text-container .subtitle {
-                                                            font-size: 15px;
-                                                        }
-                                                    </style>
+                .text-container .subtitle {
+                    font-size: 15px;
+                }
+            </style>
 
-                                                    <style>
-                                                        * {
-                                                            margin: 0px;
-                                                            padding: 0xp;
-                                                            overflow: hidden;
-                                                            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            enable-background: new 0 0 512 512 !important;
-                                                            -webkit-transition: .3s !important;
-                                                        }
+            <style>
+                * {
+                    margin: 0px;
+                    padding: 0xp;
+                    overflow: hidden;
+                    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    enable-background: new 0 0 512 512 !important;
+                    -webkit-transition: .3s !important;
+                }
 
-                                                        .svg-container .share {
-                                                            display: inline-flex;
-                                                            align-content: center;
-                                                            align-items: center;
-                                                            position: fixed;
-                                                            bottom: 0px;
-                                                            z-index: 3333333;
-                                                            color: black;
-                                                            font-family: arial;
-                                                            left: 0px;
-                                                            background: #ffffff75;
-                                                            padding: 10px;
-                                                            font-size: 13px;
-                                                            border-top-right-radius: 15px;
-                                                        }
+                .svg-container .share {
+                    display: inline-flex;
+                    align-content: center;
+                    align-items: center;
+                    position: fixed;
+                    bottom: 0px;
+                    z-index: 3333333;
+                    color: black;
+                    font-family: arial;
+                    left: 0px;
+                    background: #ffffff75;
+                    padding: 10px;
+                    font-size: 13px;
+                    border-top-right-radius: 15px;
+                }
 
-                                                        .svg-container .share svg {
-                                                            margin-right: 5px;
-                                                        }
+                .svg-container .share svg {
+                    margin-right: 5px;
+                }
 
-                                                        .svg-container {
-                                                            width: 700px;
-                                                            height: 400px;
-                                                            position: relative;
-                                                            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                            background-color: black;
-                                                        }
+                .svg-container {
+                    width: 700px;
+                    height: 400px;
+                    position: relative;
+                    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    background-color: black;
+                }
 
-                                                        .background-image {
-                                                            width: 100%;
-                                                            height: 100%;
-                                                            opacity: 0.7;
-                                                            object-fit: cover;
-                                                            position: absolute;
-                                                            top: 0;
-                                                            left: 0;
-                                                        }
+                .background-image {
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0.7;
+                    object-fit: cover;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
 
-                                                        .rounded-image {
-                                                            width: 45px;
-                                                            height: 45px;
-                                                            border-radius: 46.2px;
-                                                            position: absolute;
-                                                            left: 50%;
-                                                            top: 50%;
-                                                            transform: translate(-50%, -100px);
-                                                        }
+                .rounded-image {
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 46.2px;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -100px);
+                }
 
-                                                        .text-container {
-                                                            position: absolute;
-                                                            left: 50%;
-                                                            top: 50%;
-                                                            transform: translate(-50%, -50%);
-                                                            text-align: center;
-                                                            color: white;
-                                                            font-family: Arial, sans-serif;
-                                                        }
+                .text-container {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    text-align: center;
+                    color: white;
+                    font-family: Arial, sans-serif;
+                }
 
-                                                        .text-container .title {
-                                                            font-size: 20px;
-                                                        }
+                .text-container .title {
+                    font-size: 20px;
+                }
 
-                                                        .text-container .separator {
-                                                            font-size: 20px;
-                                                        }
+                .text-container .separator {
+                    font-size: 20px;
+                }
 
-                                                        .text-container .subtitle {
-                                                            font-size: 15px;
-                                                        }
-                                                    </style>
-                                                </head>
+                .text-container .subtitle {
+                    font-size: 15px;
+                }
+            </style>
+        </head>
 
-                                                <body>
-                                                    <div class="svg-container">
-                                                        <div class="share"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor"
-                                                                class="bi bi-share" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3">
-                                                                </path>
-                                                            </svg> https://<?= $_SERVER['HTTP_HOST']; ?>
-                                                        </div><img class="background-image" src="<?php echo "$contentType[thumbail]"; ?>" alt="Background Image">
-                                                        <img class="rounded-image" src="/?svc=logo" alt="Logo">
-                                                        <div class="text-container">
-                                                            <div class="title">Blog | Marko Nikolić</div>
-                                                            <div class="separator">-</div>
-                                                            <div class="subtitle"><?php echo "$contentType[title]"; ?></div>
-                                                        </div>
-                                                    </div>
-
-
-                                                </body>
-
-                                                </html>
+        <body>
+            <div class="svg-container">
+                <div class="share"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor"
+                        class="bi bi-share" viewBox="0 0 16 16">
+                        <path
+                            d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3">
+                        </path>
+                    </svg> https://<?= $_SERVER['HTTP_HOST']; ?>
+                </div><img class="background-image" src="<?php echo "$contentType[thumbail]"; ?>" alt="Background Image">
+                <img class="rounded-image" src="/?svc=logo" alt="Logo">
+                <div class="text-container">
+                    <div class="title">Blog | Marko Nikolić</div>
+                    <div class="separator">-</div>
+                    <div class="subtitle"><?php echo "$contentType[title]"; ?></div>
+                </div>
+            </div>
 
 
-        <?php exit();
-    } else if ($_GET['svc'] == "p") {
+        </body>
 
-        header('Content-Type: image/svg+xml');
-
-
-        $contentType = array();
-        $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
-        foreach ($r as $val) {
-            if ("$val[id]" == "$_GET[id]") {
-                $contentType = $val;
-            }
-        }
-        ?>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 700 400' width="700" height="400">
-                                                        <style type="text/css">
-                                                            * {
-                                                                filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                                -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-                                                                enable-background: new 0 0 512 512 !important;
-
-                                                            }
-                                                        </style>
-                                                        <rect width="100%" height="100%" fill="black" />
-                                                        <image href="<?php echo "$contentType[thumbail]"; ?>" opacity="0.7" preserveAspectRatio="xMidYMid slice"
-                                                            width="100%" height="100%" />
-                                                        <defs>
-                                                            <mask id="roundedMask" maskContentUnits="objectBoundingBox">
-                                                                <rect x="0" y="0" width="1" height="1" rx="6.2" fill="white" />
-                                                            </mask>
-                                                        </defs>
-                                                        <image width="45" height="45" transform="translate(-23.5, -100)" x="50%" y="50%" text-anchor="middle"
-                                                            dominant-baseline="middle" href="<?php echo "/?svc=logo"; ?>" mask="url(#roundedMask)" />
+        </html>
 
 
-                                                        <text pointer-events="none" fill="white" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
-                                                            font-family="Arial" font-size="20">
-                                                            <tspan x="50%" dy="-1em">Blog | Marko Nikolić</tspan>
-                                                            <tspan x="50%" dy="1.2em">-</tspan>
-                                                            <tspan x="50%" font-size="15" dy="1.4em"><?= truncateString("$contentType[title]", 40) ?></tspan>
-                                                        </text>
-                                                    </svg> <?php
+    <?php exit();
+            } else if ($_GET['svc'] == "p") {
 
-    } else if ($_GET['svc'] == "icon_deviantart") {
-        header("content-type: image/svg+xml");
-        ?>
-
-                                                        <svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg" style="background:black">
-                                                            <path
-                                                                d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33"
-                                                                fill="#00e59b" />
-                                                        </svg>
-        <?php
-    } else if ($_GET['svc'] == "favicon") {
-        # header("Access-Control-Allow-Methods: POST"); 
-        if (!empty($_POST['urlf'])) {
-            $arrf = json_decode("$_POST[urlf]", true);
-            $arr = array();
-            $ii = 0;
+                header('Content-Type: image/svg+xml');
 
 
-            foreach ($arrf as $val2) {
-                $val = base64_decode($val2);
+                $contentType = array();
+                $r = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json"), true);
+                foreach ($r as $val) {
+                    if ("$val[id]" == "$_GET[id]") {
+                        $contentType = $val;
+                    }
+                }
+    ?>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox='0 0 700 400' width="700" height="400">
+            <style type="text/css">
+                * {
+                    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+                    enable-background: new 0 0 512 512 !important;
+
+                }
+            </style>
+            <rect width="100%" height="100%" fill="black" />
+            <image href="<?php echo "$contentType[thumbail]"; ?>" opacity="0.7" preserveAspectRatio="xMidYMid slice"
+                width="100%" height="100%" />
+            <defs>
+                <mask id="roundedMask" maskContentUnits="objectBoundingBox">
+                    <rect x="0" y="0" width="1" height="1" rx="6.2" fill="white" />
+                </mask>
+            </defs>
+            <image width="45" height="45" transform="translate(-23.5, -100)" x="50%" y="50%" text-anchor="middle"
+                dominant-baseline="middle" href="<?php echo "/?svc=logo"; ?>" mask="url(#roundedMask)" />
 
 
-                if (!empty($_GET['icon'])) {
-                    if (is_youtube_url($val)) {
-                        header("content-type: image/png");
-                        echo file_get_contents(get_youtube_thumbnail($val));
+            <text pointer-events="none" fill="white" x="50%" y="50%" text-anchor="middle" dominant-baseline="middle"
+                font-family="Arial" font-size="20">
+                <tspan x="50%" dy="-1em">Blog | Marko Nikolić</tspan>
+                <tspan x="50%" dy="1.2em">-</tspan>
+                <tspan x="50%" font-size="15" dy="1.4em"><?= truncateString("$contentType[title]", 40) ?></tspan>
+            </text>
+        </svg> <?php
+
+            } else if ($_GET['svc'] == "icon_deviantart") {
+                header("content-type: image/svg+xml");
+                ?>
+
+        <svg viewBox="0 0 100 166.61" xmlns="http://www.w3.org/2000/svg" style="background:black">
+            <path
+                d="M100 0H71.32l-3.06 3.04-14.59 27.85-4.26 2.46H0v41.62h26.4l2.75 2.75L0 133.36v33.25l28.7-.01 3.07-3.05 14.62-27.86 4.17-2.41H100v-41.6H73.52L70.84 89 100 33.33"
+                fill="#00e59b" />
+        </svg>
+<?php
+            } else if ($_GET['svc'] == "favicon") {
+                # header("Access-Control-Allow-Methods: POST"); 
+                if (!empty($_POST['urlf'])) {
+                    $arrf = json_decode("$_POST[urlf]", true);
+                    $arr = array();
+                    $ii = 0;
+
+
+                    foreach ($arrf as $val2) {
+                        $val = base64_decode($val2);
+
+
+                        if (!empty($_GET['icon'])) {
+                            if (is_youtube_url($val)) {
+                                header("content-type: image/png");
+                                echo file_get_contents(get_youtube_thumbnail($val));
+                                exit();
+                            } else {
+                                echo file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
+                            }
+                            exit();
+                        } else {
+                            $url_shared2_f = "";
+                            if (is_youtube_url($val)) {
+                                $url_shared2_f = file_get_contents(get_youtube_thumbnail($val));
+                            } else {
+                                $url_shared2_f = file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
+                            }
+                            $arr[$ii] = get_meta_tags_from_url($val);
+                            $arr[$ii]['thumbail'] = get_thumbail_from_url($val);
+                            $arr[$ii]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
+                            $arr[$ii]['url'] = $val;
+                            $ii++;
+                        }
+                    }
+                    header("content-type: text/json");
+                    echo json_encode($arr);
+                    exit();
+                }
+            } else if ($_GET['svc'] == "share_api") {
+
+
+
+                ini_set('display_errors', 1);
+                ini_set('display_startup_errors', 1);
+                error_reporting(E_ALL);
+
+
+                if (!empty($_POST['shared'])) {
+                    $url_shared2 = $_POST['shared'];
+                    // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
+                    header('Content-type:application/json');
+                    $array = array();
+                    $i = 0;
+                    $var = 0;
+                    $url_shared = $url_shared2;
+                    if (!empty($url_shared)) {
+                        if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
+                            echo 0;
+                        } else {
+                            $array[$var]->link_id = 0;
+                            //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
+
+                            $tags = get_meta_tags($url_shared);
+                            if ($tags['description'] !== null) {
+                                $description = $tags['description'];
+                            }
+                            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
+                            $r = 0;
+
+                            if ($match[1] == null) {
+                                $r = 0;
+                            } else {
+                                $r = $match[1];
+                            }
+
+                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                                $array[$var]->title = getTitle($url_trjim);
+                                $array[$var]->description = "Shared Image";
+                                $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
+                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+                                $array[$var]->match = $r;
+                                $array[$var]->link = $url_trjim;
+                            } else {
+                                $array[$var]->title = getTitle($url_trjim);
+                                $array[$var]->description = $description;
+                                $array[$var]->thumbnail = get_icon_image(get_img($url_trjim));
+                                $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
+
+                                // 
+                                $array[$var]->match = $r;
+                                $array[$var]->link = $url_trjim;
+                            }
+
+                            if (getimagesize(get_icon_image(get_img($url_trjim)))) {
+                                $array[$var]->type = "image";
+                            } else {
+                                $array[$var]->type = "video";
+                            }
+                        }
+                    } else {
+                        error_page(404);
+                    }
+                    if (json_encode($array) !== null) {
+                        echo json_encode($array);
                         exit();
                     } else {
-                        echo file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
-                    }
-                    exit();
-                } else {
-                    $url_shared2_f = "";
-                    if (is_youtube_url($val)) {
-                        $url_shared2_f = file_get_contents(get_youtube_thumbnail($val));
-                    } else {
-                        $url_shared2_f = file_get_contents("https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=$val");
-                    }
-                    $arr[$ii] = get_meta_tags_from_url($val);
-                    $arr[$ii]['thumbail'] = get_thumbail_from_url($val);
-                    $arr[$ii]['icon'] = "data:image/png;base64," . base64_encode($url_shared2_f);
-                    $arr[$ii]['url'] = $val;
-                    $ii++;
-                }
-            }
-            header("content-type: text/json");
-            echo json_encode($arr);
-            exit();
-        }
-    } else if ($_GET['svc'] == "share_api") {
 
-
-
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
-
-
-        if (!empty($_POST['shared'])) {
-            $url_shared2 = $_POST['shared'];
-            // filter_var(htmlspecialchars($_POST['shared']), FILTER_SANITIZE_STRING);
-            header('Content-type:application/json');
-            $array = array();
-            $i = 0;
-            $var = 0;
-            $url_shared = $url_shared2;
-            if (!empty($url_shared)) {
-                if (filter_var($url_shared, FILTER_VALIDATE_URL) === FALSE) {
-                    echo 0;
-                } else {
-                    $array[$var]->link_id = 0;
-                    //$url_trjim = str_replace("&lt;br", "", $url_shared); // trim(preg_replace('/ +/', ' ', preg_replace('/[^A-Za-z0-9 ]/', ' ', urldecode(html_entity_decode(strip_tags($url_shared))))));
-
-                    $tags = get_meta_tags($url_shared);
-                    if ($tags['description'] !== null) {
-                        $description = $tags['description'];
-                    }
-                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url_shared, $match);
-                    $r = 0;
-
-                    if ($match[1] == null) {
-                        $r = 0;
-                    } else {
-                        $r = $match[1];
-                    }
-
-                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                        $array[$var]->title = getTitle($url_trjim);
-                        $array[$var]->description = "Shared Image";
-                        $array[$var]->thumbnail = $url_trjim; // get_icon_image($url_trjim);
-                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-                        $array[$var]->match = $r;
-                        $array[$var]->link = $url_trjim;
-                    } else {
-                        $array[$var]->title = getTitle($url_trjim);
-                        $array[$var]->description = $description;
-                        $array[$var]->thumbnail = get_icon_image(get_img($url_trjim));
-                        $array[$var]->ico = get_icon_image("http://www.google.com/s2/favicons?domain=$url_trjim");
-
-                        // 
-                        $array[$var]->match = $r;
-                        $array[$var]->link = $url_trjim;
-                    }
-
-                    if (getimagesize(get_icon_image(get_img($url_trjim)))) {
-                        $array[$var]->type = "image";
-                    } else {
-                        $array[$var]->type = "video";
+                        error_page(404);
                     }
                 }
-            } else {
-                error_page(404);
-            }
-            if (json_encode($array) !== null) {
-                echo json_encode($array);
+
+
+                // header("Access-Control-Allow-Origin: https://www.example.com");
+                // header("Access-Control-Allow-Headers: Authorization, Content-Type");
+
+                // } else {
+
+                // error_page(404);
+                // }
+
+                exit();
+
+
+                $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
+                $url = "https://api.eronelit.com/graph";
+                $postData = [
+                    'token' => '32M052k350QaeofkaeopfF',
+                    'key' => '3402340234239J939592369',
+                    'type' => 'share_validator',
+                    'shared' => $aerea
+                ];
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                    'Content-Type: application/x-www-form-urlencoded',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF'
+                ]);
+                $response = curl_exec($ch);
+                header("content-type: text/json");
+                if (curl_errno($ch)) {
+                    echo "[]";
+                } else {
+                    if (validateJson($response)) {
+                        echo $response;
+                    } else {
+                        echo "[]";
+                    }
+                }
+                curl_close($ch);
                 exit();
             } else {
+                $filetry = ROOT . "svc/$_GET[svc]";
+                $rr = ["css", "js", "jpg", "png", "txt", "md", "mp4"];
 
-                error_page(404);
+                # header("content-type: image/png");
+
+                foreach ($rr as $val) {
+
+                    if (file_exists("$filetry.$val")) {
+
+                        $fileT = "$filetry.$val";
+                        $fff3 = "text/txt";
+                        if ($val == "css") {
+                            $fff3 = "text/css";
+                        }
+                        if ($val == "js") {
+                            $fff3 = "text/javascript";
+                        }
+                        if ($val == "jpg") {
+                            $fff3 = "image/jpeg";
+                        }
+                        if ($val == "png") {
+                            $fff3 = "image/png";
+                        }
+                        if ($val == "md") {
+                            header("content-type: text/html");
+                            echo MarkDownTOstring("$fileT");
+                            exit();
+                        }
+                        if ($val == "mp4") {
+
+                            streamVideo($fff3);
+                        } else {
+
+
+                            header("Content-Type: " . $fff3);
+                            header('Content-Length' . filesize($fileT));
+
+                            // header("Content-type: " . image_type_to_mime_type($mime_type));
+                            if ($val == "css") {
+                                echo minifyCSS(file_get_contents($fileT));
+                            } else {
+                                @readfile($fileT);
+                            }
+                            exit();
+                        }
+                    }
+                }
+                if ($exist) {
+                    include ROOT . "ERROR_PG.php";
+                }
             }
-        }
-
-
-        // header("Access-Control-Allow-Origin: https://www.example.com");
-        // header("Access-Control-Allow-Headers: Authorization, Content-Type");
-
-        // } else {
-
-        // error_page(404);
-        // }
-
-        exit();
-
-
-        $aerea = "https://www.deviantart.com/marko9827/art/Pleiadian-Girl-From-the-constellation-Pleiades-1059483610";
-        $url = "https://api.eronelit.com/graph";
-        $postData = [
-            'token' => '32M052k350QaeofkaeopfF',
-            'key' => '3402340234239J939592369',
-            'type' => 'share_validator',
-            'shared' => $aerea
-        ];
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($postData));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_ENCODING, 'UTF-8');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            'Content-Type: application/x-www-form-urlencoded',
-            'Authorization: Bearer 32M052k350QaeofkaeopfF'
-        ]);
-        $response = curl_exec($ch);
-        header("content-type: text/json");
-        if (curl_errno($ch)) {
-            echo "[]";
         } else {
-            if (validateJson($response)) {
-                echo $response;
-            } else {
-                echo "[]";
-            }
+
+
+            include ROOT . "wlcomer_home.php";
+
+
+            #  echo $this->minifyHtml($t);
         }
-        curl_close($ch);
-        exit();
-    } else {
-        $filetry = ROOT . "svc/$_GET[svc]";
-        $rr = ["css", "js", "jpg", "png", "txt", "md", "mp4"];
-
-        # header("content-type: image/png");
-
-        foreach ($rr as $val) {
-
-            if (file_exists("$filetry.$val")) {
-
-                $fileT = "$filetry.$val";
-                $fff3 = "text/txt";
-                if ($val == "css") {
-                    $fff3 = "text/css";
-                }
-                if ($val == "js") {
-                    $fff3 = "text/javascript";
-                }
-                if ($val == "jpg") {
-                    $fff3 = "image/jpeg";
-                }
-                if ($val == "png") {
-                    $fff3 = "image/png";
-                }
-                if ($val == "md") {
-                    header("content-type: text/html");
-                    echo MarkDownTOstring("$fileT");
-                    exit();
-                }
-                if ($val == "mp4") {
-
-                    streamVideo($fff3);
-                } else {
-
-                    header("Content-Type: " . $fff3);
-                    header('Content-Length' . filesize($fileT));
-
-                    // header("Content-type: " . image_type_to_mime_type($mime_type));
-
-                    @readfile($fileT);
-                    exit();
-                }
-            }
-        }
-        if ($exist) {
-            include ROOT . "ERROR_PG.php";
-        }
-    }
-} else {
-
-
-    include ROOT . "wlcomer_home.php";
-
-
-    #  echo $this->minifyHtml($t);
-}

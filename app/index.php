@@ -107,23 +107,14 @@ class portfolio_marko
         fclose($f);
     }
 
-    function minifyJS($inputFile)
-    {
-        // Read the JavaScript file
-        $jsContent = $inputFile;
-
-        // Remove single-line comments
-        $jsContent = preg_replace('/\/\/.*?\n/', '', $jsContent);
-
-        // Remove multi-line comments
-        $jsContent = preg_replace('/\/\*.*?\*\//s', '', $jsContent);
-
-        // Remove leading and trailing white spaces
-        $jsContent = trim($jsContent);
-
-        // Write minified JS to output file
-        // file_put_contents($outputFile, $jsContent);
-        return $jsContent;
+    function minifyJS($js)
+    { 
+    $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
+     $js = preg_replace('~//.*~', '', $js);
+     $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
+     $js = preg_replace('/\s\s+/', ' ', $js);
+     $js = trim($js);
+        return gzcompress($js);
     }
 
     public function __construct($root = "")

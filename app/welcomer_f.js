@@ -6,6 +6,66 @@ function base64Encode(str) {
   const buffer = encoder.encode(str);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
+class PDFViewerElement extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+        #viewer-container {
+          width: 100%;
+          height: 100%;
+          overflow: auto;
+          position: relative;
+        }
+      </style>
+      <div id="viewer-container">
+        <div id="pdf-viewer" class="pdfViewer"></div>
+      </div>
+    `;
+
+    this.viewerContainer = this.shadowRoot.querySelector('#viewer-container');
+    this.pdfViewerElement = this.shadowRoot.querySelector('#pdf-viewer');
+
+    if (typeof pdfjsViewer !== 'undefined') {
+      this.pdfViewer = new pdfjsViewer.PDFViewer({
+        container: this.viewerContainer,
+      });
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js';
+    } else {
+      console.error('pdfjsViewer nije dostupan. Uverite se da je pdf_viewer.js učitan.');
+    }
+
+    
+  }
+
+  static get observedAttributes() {
+    return ['src'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'src' && newValue) {
+      this.loadPDF(newValue);
+    }
+  }
+
+  async loadPDF(url) {
+    try {
+      const loadingTask = pdfjsLib.getDocument(url);
+      const pdfDocument = await loadingTask.promise;
+      this.pdfViewer.setDocument(pdfDocument);
+    } catch (error) {
+      console.error('Greška pri učitavanju PDF-a:', error);
+    }
+  }
+}
+
 class VideoBackground extends HTMLElement {
   constructor() {
     super();
@@ -175,6 +235,7 @@ class VideoPlayer extends HTMLElement {
           opacity:0;
           transition: .3s;
           background-color: rgb(0 0 0 / 48%);
+          opacity:1;
         }
 
         #canvas_img {
@@ -193,6 +254,7 @@ class VideoPlayer extends HTMLElement {
         id="video-player"
         class="video-js vjs-default-skin"
         controls
+        autoplay
         preload="auto" 
         data-setup='{}'>
         <source src="${this.getAttribute("video-src")}" type="video/mp4">
@@ -266,9 +328,11 @@ class VideoPlayer extends HTMLElement {
   }
 }
 
-customElements.define("video-player", VideoPlayer);
+  customElements.define("video-player", VideoPlayer);
   customElements.define("p-container", PostContent);
-  customElements.define("vide-ob",VideoBackground);
+  customElements.define("pdf-viewer", PDFViewerElement);
+  // <pdf-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516"></pdf-viewer>
+  // customElements.define("vide-ob",VideoBackground);
    
 const videoPlayerElement = document.querySelector("video-player"),
   pContainerElement = document.querySelector("p-container");
@@ -6569,12 +6633,12 @@ document.addEventListener("mousemove", function (event) {
     // originalLog.apply(console, args);
  
    };
-   console.warning = function (...args) {
+   console.info = function (...args) {
     // originalLog.apply(console, args);
  
    };
   console.error = function (...args) {
-//    originalError.apply(console, args);
+  originalError.apply(console, args);
 
   };
 })();

@@ -59,9 +59,9 @@ style-src-elem   'self'  $nonce_f  $cdn_urls;
   worker-src 'self'; frame-ancestors 'self';
   block-all-mixed-content;";
 
-  #$csp = "default-src * data: blob:  $cdn_urls; script-src 'self'";
+#$csp = "default-src * data: blob:  $cdn_urls; script-src 'self'";
 
-  header(
+header(
     "Content-Security-Policy:  $csp"
 );
 
@@ -115,26 +115,20 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <link rel="preload" href="https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js" as="script">
 
     <!--  -->
-    <link rel="preload" as="font"
-        href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-        type="font/woff2">
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="<?php echo CDN; ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet"
-        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <link href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"
-        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
-    <script nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>"
-        src="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css"
-        nonce="<?php echo "$_SESSION[Bearer_token_temp]"; ?>">
+    <?php 
+    echo '<link rel="preload" as="font" href="'.CDN.'/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+        type="font/woff2"> 
 
-    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
-    <script nonce="<?= "$_SESSION[Bearer_token_temp]" ?>"
-        src="https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="'.$_SESSION["Bearer_token_temp"].'">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" nonce="'.$_SESSION["Bearer_token_temp"].'">
+    <link href="'.CDN.'/node_modules/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet" nonce="'.$_SESSION["Bearer_token_temp"].'">
+    <link href="'.CDN.'/node_modules/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" nonce="'.$_SESSION["Bearer_token_temp"].'" >
+    <script nonce="'.$_SESSION["Bearer_token_temp"].'"  src="'.CDN.'/node_modules/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="'.CDN.'/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css" nonce="'.$_SESSION["Bearer_token_temp"].'">
+    <script nonce="'.$_SESSION["Bearer_token_temp"].'" async  src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js"></script>
+    <script nonce="'.$_SESSION["Bearer_token_temp"].'" src="https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js"></script>';
 
-    <?php
+ 
 
     $token = bin2hex(random_bytes(64));
     echo '<meta content="' . $token . '" name="csrf-param" />
@@ -163,7 +157,7 @@ media-src 'self';" />
     <link rel="preload" href="/?svc=jsc" as="script" />
     <link rel="preload" href="/demo&id=S3503&hangar=main" as="module" />
 
-    <script type="module" crossorigin nonce="<?php echo NONCE; ?>" src="/demo&id=S3503&hangar=main" ></script>
+    <script type="module" crossorigin nonce="<?php echo NONCE; ?>" src="/demo&id=S3503&hangar=main"></script>
 
     <?php
 
@@ -2809,8 +2803,9 @@ div#clavs br_ta ta_f.active span {
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
-        <script async nonce="<?php echo NONCE; ?>" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
-        </script>
+        <script async nonce="<?php echo NONCE; ?>"
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
+            </script>
         <script async nonce="<?php echo NONCE; ?>" src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
         <script nonce="<?php echo NONCE; ?>">
             window.dataLayer = window.dataLayer || [];
@@ -2832,22 +2827,29 @@ div#clavs br_ta ta_f.active span {
             'Authorization: Bearer 32M052k350QaeofkaeopfF',
         ]
     ]);
-    echo "<script type='text/javascript' nonce='".NONCE."' charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
+    echo "<script type='text/javascript' nonce='" . NONCE . "' charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
     ?>
-<?php /*
-<meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">*/ ?>
+    <?php /*
+<meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> 
 
+<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.min.js"></script>
+<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js"></script>
+<link   async defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/viewer.css">
+<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/pdf_viewer.js"></script>
+*/ ?>
 </head>
 
 <body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
-  <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
+    <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
 
-    </video> 
- <?php /*
-    <!-- <video-player class="wallpaperVideo video_is_hidden" video-src="/?src=vdwallpper&v=<?php echo time(); ?>"></video-player> -->
+    </video>
+   <?php /* <pdf-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516">
+    </pdf-viewer>
+    
+<!-- <video-player class="wallpaperVideo video_is_hidden" video-src="/?src=vdwallpper&v=<?php echo time(); ?>"></video-player> -->
 */ ?>
-<p class="p-c"><?php if ($_GET['vp'] == "livestream") {
+    <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
         echo "Live stream... Please wait...";
     } else { ?>
             Do you love random videos?<br>
@@ -3044,7 +3046,7 @@ div#clavs br_ta ta_f.active span {
             </btns_r>
 
         </div_header>
-        
+
         <div id="root" class="solarsystem"></div>
         <solar_arrow onclick="welcomer.colar_system();">
             <back_f></back_f>

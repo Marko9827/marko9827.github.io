@@ -1,4 +1,6 @@
-"use strict";  
+"use strict";
+  
+
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
 function base64Encode(str) {
@@ -6,12 +8,271 @@ function base64Encode(str) {
   const buffer = encoder.encode(str);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
+
+class ImagePreview extends HTMLElement {
+  constructor(){
+    super();
+    this.shadowMode = this.attachShadow({ mode: "open" });
+    const source = this.getAttribute("src");
+ 
+     const template = document.createElement("template");
+    template.innerHTML = `
+      <style nonce="${window.stmp}">
+       
+:root {
+    --cdn_primary: #ffff;
+    --btn-disable: #fff;
+    --seo-color: #fff;
+    --primary_light: #ffffff4f;
+    --textshadow_media: 0px 0px 0px var(--cdn_white), 3px 3px 5px #00000047;
+    --cdn_white: #333;
+    --hard_white: #fff;
+    --red: #b90808;
+    --section-bg: #333;
+    --green: #2e7d32;
+    --header-a: #e6e6e6;
+    --product-background: linear-gradient(45deg, #1b5e20, #10bf19);
+    --ads-background: linear-gradient(45deg, rgb(148 31 148), #c55e05);
+    --event-background: linear-gradient(45deg, rgb(148 31 148), #2196f3);
+    --job-background: linear-gradient(45deg, rgb(148 31 148), #3f51b5);
+    --black-trasparent-color: rgba(0, 0, 0, 0.639);
+    --grid-image: url(/?url=source&sourcelogin=grid.svg);
+    --shield-image: url(/?url=source&sourcelogin=shield.svg);
+    --stars-25: #b32020;
+    --stars-40: #FFD700;
+    --stars-60: #d56617;
+    --stars-75: var(--green);
+}
+
+img.zoomImg {
+    position: fixed !important;
+    z-index: 3333333;
+    top: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 1 !important;
+    background: var(--black-trasparent-color);
+}
+
+.zoomContainer {
+    position: fixed;
+    z-index: 333333;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 1 !important;
+}
+
+.zoomContainer .zoomWindowContainer div {
+    left: 10px !important;
+    top: 10px !important;
+    width: 100%;
+    width: 100% !important;
+    display: block !important;
+    z-index: 3333 !important;
+    height: 100% !important;
+    position: fixed;
+    float: unset !important;
+    bottom: 0px !important;
+    border: none;
+    position: fixed !important;
+    right: 10px !important;
+    width: unset !important;
+    bottom: 10px !important;
+    height: unset !important;
+    margin: 0px !important;
+    padding: 2px !important;
+    border-radius: 10px !important;
+    border: 2px solid var(--primary_light) !important;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+    enable-background: new 0 0 512 512 !important;
+}
+
+.zoomWindowContainer {
+    position: fixed !important;
+    left: 0px;
+    top: 0px !important;
+    background: var(--black-trasparent-color);
+    width: 100%;
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.zoomer_exit {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 333333;
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    background: var(--black-trasparent-color);
+    width: 25px !important;
+    height: 25px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+}
+
+#helper_id_helper {
+  pointer-events: none !important;
+  position: fixed;
+  left: 20px;
+  top: 20px;
+  background: var(--black-trasparent-color);
+  z-index: 333333;
+  color: var(--white);
+  padding: 5px 10px;
+  border-radius: 6px;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+  -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+  enable-background: new 0 0 512 512 !important;
+}
+
+div#helper_id_helper3 {
+  position: absolute;
+  left: 20px;
+  z-index: 33333;
+  bottom: 30px;
+  right: 20px;
+  bottom: 20px;
+  border-radius: 0px 0px 9px 9px !important;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+  -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
+  enable-background: new 0 0 512 512 !important;
+  pointer-events: none !important;
+}
+
+div#helper_id_helper3 p {
+  border-radius: 6px !important;
+  background: var(--black-trasparent-color);
+  color: var(--white);
+  padding: 10px;
+  display: block;
+  margin: auto;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  text-align: center;
+}
+    .zoomWindow {
+     z-index: 999;
+     display: none; 
+     position: absolute; 
+     float: left; 
+     height: 0px;
+     width: 0px; 
+     border: 4px solid rgb(136, 136, 136); 
+    background-position: 0px 0px; 
+    background-repeat: no-repeat; 
+    cursor: inherit; 
+    overflow: hidden;
+    }
+
+    img_loader {
+    
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    }
+    img_loader img#loader {
+    
+    display: block;
+    z-index: 1;
+    left: 0px;
+    top: 0px;
+    margin: auto;
+    width: 45px;
+    height: 45px;
+
+    }
+
+    .zoomWindow {
+    object-fit: scale-down;
+    width: 100%;
+    background-size: contain;
+    background-position: center;
+    pointer-events:none;
+  }
+    </style>
+    <div class="zoomContainer" 
+    style="position: absolute;top: 0px;left: 0px;height: 0px;width: 0px;z-index: 999">
+    <div class="zoomWindowContainer" >
+
+    <img_loader>
+    <img id="Loader" src="${window.welcomer.loader_svg}">
+    </img_loader>
+
+    <div 
+    style="z-index: 999; display: none; position: absolute; float: left; height: 0px; width: 0px; border: 4px solid rgb(136, 136, 136); 
+    background-position: 0px 0px; 
+    background-repeat: no-repeat; 
+    cursor: inherit; 
+    overflow: hidden;
+    background-image: url(${source});" 
+    class="zoomWindow">&nbsp;</div></div></div>
+    <div-loader><div id="helper_id_helper3">
+     <p>To view a zoomed image. Hold left click or finger and move slowly.</p> 
+     </div><span id="helper_id_helper"><i style="padding-right:2px;" 
+     class="bi bi-info-square"></i> For close click ( X ) button.</span>
+
+     
+     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg  zoomer_exit" viewBox="0 0 16 16" style="
+    width: 25px !important;
+">
+  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
+</svg>
+     </div-loader>`;
+    this.image = this.shadowRoot.querySelector(".zoomWindow");
+    const  closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
+    this.div_loader = this.shadowRoot.querySelector("div-loader");
+    this.shadowMode.appendChild(template.content.cloneNode(true)); 
+    this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${this.getAttribute("src")});`);
+  
+   
+   
+  }
+  getHostAttribute(attrName) {
+    return this.getAttribute(attrName);
+  }
+  src(src = "") { 
+    if (src) {
+      this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${src});`);
+    } else {
+ 
+    }
+  }
+  connectedCallback() {
+    const src = this.getAttribute("src");
+    this.src = src;
+    this.shadowRoot.querySelector(".zoomer_exit").addEventListener("click",function(){
+      document.querySelector("image-preview").remove();
+    });
+     if (src) {
+      this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${src});`);
+    } else {
+ 
+    }
+  }
+}
+
+
+
 class PDFViewerElement extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-      <style>
+      <style nonce="${window.stmp}">
         :host {
           display: block;
           width: 100%;
@@ -29,28 +290,28 @@ class PDFViewerElement extends HTMLElement {
       </div>
     `;
 
-    this.viewerContainer = this.shadowRoot.querySelector('#viewer-container');
-    this.pdfViewerElement = this.shadowRoot.querySelector('#pdf-viewer');
+    this.viewerContainer = this.shadowRoot.querySelector("#viewer-container");
+    this.pdfViewerElement = this.shadowRoot.querySelector("#pdf-viewer");
 
-    if (typeof pdfjsViewer !== 'undefined') {
+    if (typeof pdfjsViewer !== "undefined") {
       this.pdfViewer = new pdfjsViewer.PDFViewer({
         container: this.viewerContainer,
       });
       pdfjsLib.GlobalWorkerOptions.workerSrc =
-        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js';
+        "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js";
     } else {
-      console.error('pdfjsViewer nije dostupan. Uverite se da je pdf_viewer.js učitan.');
+      console.error(
+        "pdfjsViewer nije dostupan. Uverite se da je pdf_viewer.js učitan."
+      );
     }
-
-    
   }
 
   static get observedAttributes() {
-    return ['src'];
+    return ["src"];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'src' && newValue) {
+    if (name === "src" && newValue) {
       this.loadPDF(newValue);
     }
   }
@@ -61,7 +322,7 @@ class PDFViewerElement extends HTMLElement {
       const pdfDocument = await loadingTask.promise;
       this.pdfViewer.setDocument(pdfDocument);
     } catch (error) {
-      console.error('Greška pri učitavanju PDF-a:', error);
+      console.error("Greška pri učitavanju PDF-a:", error);
     }
   }
 }
@@ -91,7 +352,7 @@ class VideoBackground extends HTMLElement {
 
     this.videoElement = shadow.querySelector("#video");
     this.mediaSource = new MediaSource();
-    this.sourceBuffer = null;  
+    this.sourceBuffer = null;
   }
 
   connectedCallback() {
@@ -107,24 +368,23 @@ class VideoBackground extends HTMLElement {
     });
 
     this.mediaSource.addEventListener("sourceended", () => {
-      console.log("MediaSource has ended.");
+
+      
     });
 
     this.mediaSource.addEventListener("error", (error) => {
-      console.error("MediaSource error:", error);
+      
     });
   }
 
   initializeSourceBuffer(videoSrc) {
     if (this.mediaSource.readyState !== "open") {
-      console.error("MediaSource is not open.");
+      
       return;
     }
 
     try {
-      this.sourceBuffer = this.mediaSource.addSourceBuffer(
-        'video/mp4'
-      );
+      this.sourceBuffer = this.mediaSource.addSourceBuffer("video/mp4");
       this.loadVideoChunks(videoSrc);
     } catch (error) {
       console.error("Error initializing SourceBuffer:", error);
@@ -138,19 +398,21 @@ class VideoBackground extends HTMLElement {
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
-        console.log("Video chunks loaded completely.");
+
+        
         if (this.mediaSource.readyState === "open") {
           this.mediaSource.endOfStream();
         }
         break;
       }
 
-    
-    
       await this.waitForSourceBuffer();
 
       try {
-        if (this.mediaSource.readyState === "open" && !this.sourceBuffer.updating) {
+        if (
+          this.mediaSource.readyState === "open" &&
+          !this.sourceBuffer.updating
+        ) {
           this.sourceBuffer.appendBuffer(value);
         }
       } catch (error) {
@@ -165,7 +427,9 @@ class VideoBackground extends HTMLElement {
       if (!this.sourceBuffer || !this.sourceBuffer.updating) {
         resolve();
       } else {
-        this.sourceBuffer.addEventListener("updateend", resolve, { once: true });
+        this.sourceBuffer.addEventListener("updateend", resolve, {
+          once: true,
+        });
       }
     });
   }
@@ -187,10 +451,16 @@ class PostContent extends HTMLElement {
     document.querySelector("p-container").classList.add("active");
 
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
-      $(v)
-        .attr("onclick", "welcomer.infoVa_img(event)")
-        .attr("onload", "welcomer.img_load(this);")
-        .attr("style", "opacity: 0")
+      v.addEventListener("click", function(e){ 
+        window.top.welcomer.infoVa_img(this);
+      });
+      v.addEventListener("load", function(){
+        welcomer.img_load(v);
+      });
+    /*).on("onload", function(){
+        welcomer.img_load(this);
+      });*/
+      $(v).attr("style", "opacity: 0")
         .attr(
           "data-title",
           "Click (hovered image) for view image in full size"
@@ -244,23 +514,29 @@ class VideoPlayer extends HTMLElement {
     top: 0px;
     width: 100%;
     height: 100%;
-    background: red;
+    background: black;
     object-fit: cover;
     z-index: -1;
     filter: blur(7px);
+    opacity:0;
+  }
+
+  #canvas_img {
+  opacity:1;
   }
       </style>
       <video
         id="video-player"
         class="video-js vjs-default-skin"
         controls
+        nonce="${window.stmp}"
         autoplay
         preload="auto" 
         data-setup='{}'>
         <source src="${this.getAttribute("video-src")}" type="video/mp4">
         <p> </p>
       </video>
-      <img id="canvas_img" loading="lazy" alt="canvas_img" src="${this.getAttribute(
+      <img id="canvas_img" loading="lazy"  alt="canvas_img" src="${this.getAttribute(
         "video-src"
       )}"  />
     `;
@@ -277,38 +553,22 @@ class VideoPlayer extends HTMLElement {
         function onPlayerReady() {}
       );
       this.postImage = this.shadowRoot.querySelector("canvas_img");
-      function draw() {
-        const video = this.shadowRoot.querySelector("#video-player");
-        const canvas = document.getElementById("canvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const videoAspectRatio = video.videoWidth / video.videoHeight;
-        const canvasAspectRatio = canvas.width / canvas.height;
 
-        let drawWidth, drawHeight, offsetX, offsetY;
-
-        if (canvasAspectRatio > videoAspectRatio) {
-          drawWidth = canvas.width;
-          drawHeight = canvas.width / videoAspectRatio;
-          offsetX = 0;
-          offsetY = (canvas.height - drawHeight) / 2;
-        } else {
-          drawHeight = canvas.height;
-          drawWidth = canvas.height * videoAspectRatio;
-          offsetX = (canvas.width - drawWidth) / 2;
-          offsetY = 0;
-        }
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(video, offsetX, offsetY, drawWidth, drawHeight);
-        ctx.filter = "blur(10px)";
-      }
       this.player.on("timeupdate", () => {});
     } else {
     }
   }
-
+  getHostAttribute(attrName) {
+    return this.getAttribute(attrName);
+  }
+  updateVideoSrc(src = "") {
+    this.image.src = src;
+  }
+  connectedCallback() {
+    const src = this.getAttribute("video-src");
+    this.updateVideoSrc(src,"");
+    this.removeAttribute("video-src");
+  }
   getPlayer() {
     console.clear();
     return this.player;
@@ -318,25 +578,31 @@ class VideoPlayer extends HTMLElement {
   }
   updateVideoSrc(newSrc = "", newPoster = "") {
     console.clear();
-    console.log(newSrc);
+    
     if (this.player) {
       this.player.src({ src: newSrc, type: "video/mp4" });
-      this.player.poster(newPoster);
+      if (newPoster !== "") {
+        this.player.poster(newPoster);
+      }
       this.player.load();
-      this.shadowRoot.querySelector("#canvas_img").src = newPoster;
+      if (newPoster !== "") {
+        this.shadowRoot.querySelector("#canvas_img").src = newPoster;
+      }
     }
   }
 }
 
-  customElements.define("video-player", VideoPlayer);
-  customElements.define("p-container", PostContent);
-  customElements.define("pdf-viewer", PDFViewerElement);
-  // <pdf-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516"></pdf-viewer>
-  // customElements.define("vide-ob",VideoBackground);
-   
+customElements.define("video-player", VideoPlayer);
+customElements.define("p-container", PostContent);
+customElements.define("pdf-viewer", PDFViewerElement);
+customElements.define("image-preview", ImagePreview);
+
+// <pdf-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516"></pdf-viewer>
+// customElements.define("vide-ob",VideoBackground);
+
 const videoPlayerElement = document.querySelector("video-player"),
   pContainerElement = document.querySelector("p-container");
- const welcomer = {
+const welcomer = {
   lang: [],
   conf: {
     token: `${window.stmp}`,
@@ -411,12 +677,10 @@ const videoPlayerElement = document.querySelector("video-player"),
         a.setAttribute("rel", "nofollow noreferrer");
         a.setAttribute("role", "link");
         window.open(url);
-        
+
         if (!url == "-") {
-          
         }
         if (!url == "-") {
-          
         }
       },
       ldaff: function () {},
@@ -432,12 +696,10 @@ const videoPlayerElement = document.querySelector("video-player"),
         welcomer.blg_history_replace(
           `${window.location.origin}/?p=gallery&album=${what}`
         );
-       
-        
+
         var aerls = window.portfolio.data.gallery.gallery;
         for (var i = 0; i < aerls.length; i++) {
           if (`${what}` == `${aerls[i]["name"]}`) {
-
             welcomer.load_gallery_j = aerls[i]["gallery"];
 
             this.call_albums({
@@ -454,8 +716,6 @@ const videoPlayerElement = document.querySelector("video-player"),
           gallery = [];
         $("gridder_loader").attr("style", "opacity:1");
 
-
-        
         var v = welcomer.load_gallery_j;
         for (var i = 0; i < v.length; i++) {
           var thi = "class='is_touch'",
@@ -511,10 +771,9 @@ const videoPlayerElement = document.querySelector("video-player"),
         document
           .querySelector("video-player")
           .setAttribute("data-active", "true");
-       
-          document.querySelector("video-player").updateVideoSrc(url, poster);
 
-          
+        document.querySelector("video-player").updateVideoSrc(url, poster);
+
         $(data_ai_type).attr(
           "style",
           "opacity: 1; transform:unset !important;"
@@ -576,14 +835,11 @@ const videoPlayerElement = document.querySelector("video-player"),
             var is_live = "";
             if (arr[i]["name"])
               if (arr[i]["name"] == "deviantart") {
-
                 is_live =
                   "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
               }
 
             if (arr[i]["name"] == "video") {
-
-              
               project.innerHTML = `<grider_box>
           <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
               ${p_open} ${is_live}
@@ -618,7 +874,6 @@ ${is_live}
                  alt="${name}"
               </grider_box>`;
             } else {
-              
               project.innerHTML = `<grider_box>
              <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
                  ${p_open} ${is_live}
@@ -653,7 +908,6 @@ ${is_live}
               thi = `onclick="welcomer.openLink(${div_not_i})"`;
             }
 
-         
             project.setAttribute("style", "transform: scale(0) !important;");
             project.setAttribute("id-int", `${div_not_i}`);
             project.setAttribute("box-ui", `uit-${varr.type}`);
@@ -735,7 +989,7 @@ ${is_live}
             element.setAttribute("style", "display:none;");
           });
           hmdata_.removeAttribute("class");
-          
+
           document
             .querySelector("div#clavs")
             .setAttribute(
@@ -759,7 +1013,6 @@ ${is_live}
           if (urlParamsG.has("album")) {
             welcomer.pages.gallery.lda(urlParamsG.get("album"));
           } else {
-
           }
         }
         this.t();
@@ -896,12 +1149,23 @@ ${is_live}
     if (welcomer.gallery_temp.length > 0) {
       welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
     } else {
-      var clickedElement = event.target;
+      var clickedElement = event.target || event;
+      
+      const ImagePreview_src = document.createElement("image-preview");
+      ImagePreview_src.src( clickedElement.getAttribute("src"));
+      document.body.appendChild(ImagePreview_src);
+    }
+    return false;
+    if (welcomer.gallery_temp.length > 0) {
+      welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
+    } else {
+      var clickedElement = event.target || event;
       var imgH = new Image();
       imgH.src = clickedElement.getAttribute("src");
 
       imgH.onload = function () {
-        $(imgH).ezPlus({
+        
+        $(imgH,  document.body).ezPlus({
           zoomType: "inner",
           containLensZoom: true,
           speed: 10,
@@ -925,7 +1189,7 @@ ${is_live}
     document.querySelector(".Ignoring_me_iframe").onmouseout = function () {
       welcomer.cursor_hide(this);
     };
-    
+
     this.custom_evjents();
     document
       .querySelector(".wallpaperVideo")
@@ -937,6 +1201,7 @@ ${is_live}
     var styleClass = document.createElement("style");
     styleClass.setAttribute("type", "text/css");
     styleClass.setAttribute("data-what", "generated");
+    styleClass.setAttribute("nonce", window.stmp);
     styleClass.innerHTML = "";
     document.querySelectorAll("style").forEach(function (v) {
       styleClass.innerHTML += v.innerHTML;
@@ -1160,8 +1425,6 @@ ${is_live}
       return response.json();
     },
     card: function (parent, url) {
-    
-      
       var br_aer = document.createElement("br_aer"),
         baer = document.createElement("baer"),
         span = document.createElement("span"),
@@ -1176,8 +1439,6 @@ ${is_live}
         return Math.floor(Math.random() * (max - min + 1)) + min;
       };
     if (what == "gallery_bundle") {
-    
-      
     }
     if (what == "blog_bundle") {
       srcf = window.portfolio.data.blog[0]["thumbail"];
@@ -1245,8 +1506,8 @@ ${is_live}
         img = document.createElement("img"),
         nnum = document.createElement("div");
       img.setAttribute("class", "aepraaa3");
-      img.setAttribute("alt","Card Link");
-      img.setAttribute("style","opacity:0;");
+      img.setAttribute("alt", "Card Link");
+      img.setAttribute("style", "opacity:0;");
       img.setAttribute("data-title", v.title);
       img.setAttribute("onerror", "$(this).attr('style','display: none;');");
       img.setAttribute("onload", "$(this).attr('style','');");
@@ -1386,10 +1647,8 @@ ${is_live}
       }
     });
 
-    document.querySelector(".wallpaperVideo").play();
+    // document.querySelector(".wallpaperVideo").play();
     document.querySelector(".wallpaperVideo").removeAttribute("style");
-
-    
   },
   vdjae: async function () {
     $("img#svg_loader_img").css({ opacity: "0" });
@@ -1625,8 +1884,6 @@ ${is_live}
     div_preview.appendChild(div_h2);
     div_preview.appendChild(dtitle);
     div_preview.appendChild(div_t);
-   
-    
 
     if (typeof t.complete === "function") {
       t.complete(div_preview);
@@ -1696,10 +1953,8 @@ ${is_live}
 
     img.setAttribute("class", "img_background_rljs");
     img.setAttribute("src", fh?.thumbail);
-    
-    img.setAttribute("loading", "lazy");
 
-    
+    img.setAttribute("loading", "lazy");
 
     div_bra.appendChild(img);
     div_bra.appendChild(br_aer);
@@ -1711,8 +1966,7 @@ ${is_live}
 
     welcomer.cards_generate_xhr = new XMLHttpRequest();
     welcomer.cards_generate_xhr.open("POST", conff["graph"], true);
-  
-    
+
     welcomer.cards_generate_xhr.onreadystatechange = function () {
       if (welcomer.cards_generate_xhr.readyState === 4) {
         if (welcomer.cards_generate_xhr.status === 200) {
@@ -1855,8 +2109,6 @@ width="16"><span></span></bar_t><span>  </span>
       $(ifrm).hide();
       ifrm.document.open();
 
-   
-      
       ifrm.document.write(`${res}`);
 
       setTimeout(function () {
@@ -1902,6 +2154,8 @@ width="16"><span></span></bar_t><span>  </span>
     rootDiv.style.width = "100%";
     shadowRoot.appendChild(rootDiv);
     const style = document.createElement("style");
+
+    style.setAttribute("nonce", window.stmp);
     style.textContent = `
         * {
             box-sizing: border-box;
@@ -1923,6 +2177,7 @@ width="16"><span></span></bar_t><span>  </span>
     const script = document.createElement("script");
     script.setAttribute("type", "module");
     script.setAttribute("crossorigin", "");
+    script.setAttribute("nonce", window.stmp);
     script.setAttribute("src", "/demo&id=S3503&hangar=main");
     shadowRoot.appendChild(style);
     shadowRoot.appendChild(script);
@@ -2054,9 +2309,6 @@ width="16"><span></span></bar_t><span>  </span>
         var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
 
         $(".Vjideo_sjpinner, gridder_loader").hide();
-
-       
-        
       } else {
         welcomer.blg_history_replace("");
 
@@ -2175,7 +2427,7 @@ width="16"><span></span></bar_t><span>  </span>
   spoiler: function (v = { c, u: "" }) {
     var f = welcomer.spolr,
       no_spoler = false;
-      
+
     if (v.u.includes("cv-pdf") || v.u.includes("visitcard")) {
       no_spoler = true;
     }
@@ -2268,11 +2520,21 @@ width="16"><span></span></bar_t><span>  </span>
       .join(" ");
   },
   blogloader_img: function (id = "") {
-    
     var arr = window.portfolio.data.blog;
-    
+
     for (var i = 0; i < arr.length; i++) {
       if (arr[i].id == id) {
+        
+        if (welcomer.gallery_temp.length > 0) {
+          welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
+        } else {
+          var clickedElement = event.target || event;
+          
+          const ImagePreview_src = document.createElement("image-preview");
+          ImagePreview_src.src(clickedElement.getAttribute("src"));
+          document.body.appendChild(ImagePreview_src);
+        }
+        /*
         var imgg = document.createElement("img");
         imgg.src = arr[i].thumbail;
 
@@ -2287,10 +2549,9 @@ width="16"><span></span></bar_t><span>  </span>
           );
           imgg.remove();
         };
-        document.appendChild(imgg);
+        document.appendChild(imgg);*/
       }
     }
-    
   },
   blogljoad_posts_category: function (tt_category_name) {
     var arrayr = [],
@@ -2506,8 +2767,6 @@ width="16"><span></span></bar_t><span>  </span>
       active_scrf_2 = document.createElement("ta_f");
     active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
     active_scrf_2.setAttribute("data-c", arrayrH.length);
-   
-    
 
     active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc(
       "All"
@@ -2521,12 +2780,9 @@ width="16"><span></span></bar_t><span>  </span>
       );
       document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
         r.classList.remove("active");
-        
       });
       active_scrf_2.classList.add("active");
       history.replaceState({}, "", `/?p=blog`);
-
-
     };
     $("div#clavs br_ta").append(active_scrf_2);
     arrayrH.forEach(function (re) {
@@ -2969,8 +3225,7 @@ width="16"><span></span></bar_t><span>  </span>
   },
   isimagec: function (arr = [], what = "image") {
     var is_image = false;
-  
-    
+
     is_image = arr.indexOf(what) !== -1;
 
     return is_image;
@@ -3142,6 +3397,16 @@ width="16"><span></span></bar_t><span>  </span>
   },
   infoVa_img_gallery: function (url) {
     var clickedElement = url;
+  
+  
+    welcomer
+    .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
+    .then((blob) => {
+      const ImagePreview_src = document.createElement("image-preview");
+      ImagePreview_src.src(blob);
+      document.body.appendChild(ImagePreview_src);
+    });
+  return;
     var imgH = new Image();
 
     welcomer
@@ -3149,7 +3414,6 @@ width="16"><span></span></bar_t><span>  </span>
       .then((blob) => {
         const imgElement = document.createElement("img");
         imgH.src = blob;
-        
       });
     imgH.onload = function () {
       $(imgH).ezPlus({
@@ -3246,7 +3510,7 @@ width="16"><span></span></bar_t><span>  </span>
 
     document.querySelectorAll("script").forEach(function (v) {
       try {
-        v.remove();
+     //   v.remove();
       } catch (v) {}
     });
     document
@@ -3329,7 +3593,7 @@ width="16"><span></span></bar_t><span>  </span>
   },
   editor: {
     editor_fail_message: function (aet) {
-      console.clear();
+      // console.clear();
       var id_mask = document.createElement("id_mask"),
         spanf = document.createElement("spanf"),
         br = document.createElement("br"),
@@ -3359,7 +3623,6 @@ width="16"><span></span></bar_t><span>  </span>
         "window.location.href = '/';"
       );
 
-    
       $(aet).append(id_mask);
     },
     close: function () {
@@ -3794,6 +4057,8 @@ width="16"><span></span></bar_t><span>  </span>
         });
 
         const loaderScript = document.createElement("script");
+
+        loaderScript.setAttribute("nonce", window.stmp);
         loaderScript.src = `${welcomer.editor.cdn}/vs/loader.js`;
         loaderScript.onload = this.initEditor.bind();
         this.shadowRoot.appendChild(loaderScript);
@@ -4233,6 +4498,7 @@ width="16"><span></span></bar_t><span>  </span>
         const script = iframeDoc.createElement("script");
         script.type = "text/javascript";
         script.text = scriptc;
+        script.setAttribute("nonce", window.stmp);
         iframeDoc.body.appendChild(script);
       }
     },
@@ -4246,7 +4512,7 @@ width="16"><span></span></bar_t><span>  </span>
     appendLog: (c = { message: "", type: "log" }) => {
       const logElement = document.createElement("div");
       logElement.className = `log ${c.type}`;
-      
+
       logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
@@ -4275,7 +4541,7 @@ width="16"><span></span></bar_t><span>  </span>
           d = new Date();
 
         logElement.className = `log ${c.type}`;
-        
+
         logElement.innerHTML = `<i class="bi bi-info-circle-fill"></i>
     <log_msg
       ><span>${c.message}</span>
@@ -4324,6 +4590,8 @@ width="16"><span></span></bar_t><span>  </span>
         .setAttribute("style", "transform: none !important; opacity: 1;");
     },
     callEditor: function (id = 0) {
+      window.top.location.href = "/";
+      return;
       const data_ui_type = document.querySelector(
           'section[data-ui-type="editor"] editor-wrapper'
         ),
@@ -4473,7 +4741,7 @@ width="16"><span></span></bar_t><span>  </span>
           divf_.appendChild(span);
         });
         setTimeout(() => {
-          console.clear();
+       //   console.clear();
         }, 1000);
         logContainer.appendChild(divf_);
       }
@@ -4650,11 +4918,10 @@ width="16"><span></span></bar_t><span>  </span>
           cursorStyle: "hidden",
         });
 
-        let typingTimer; 
-        
+        let typingTimer;
+
         const doneTypingInterval = 2000;
-        
-        
+
         function validateHTML(content) {
           let errors = [];
           const lines = content.split("\n");
@@ -4768,18 +5035,12 @@ width="16"><span></span></bar_t><span>  </span>
           monaco.editor.setModelMarkers(model, "htmlOwner", errors);
           logErrors(errors);
         }
-        
+
         function logErrors(errors) {
-          
           $("div#logContainer .log").remove();
           if (errors.length === 0) {
-          
-            
           } else {
             errors.forEach((error) => {
-             
-              
-
               welcomer.editor.appendLogF({
                 message: `Line ${error.startLineNumber}, Column ${error.startColumn}: ${error.message}`,
                 type: "error",
@@ -5284,7 +5545,7 @@ width="16"><span></span></bar_t><span>  </span>
     $("solar_arrow labelv").html(
       `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
     );
-    
+
     document
       .querySelector("p-container")
       .setAttribute("class", "shadow_iframe");
@@ -5297,7 +5558,6 @@ width="16"><span></span></bar_t><span>  </span>
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
     if (containeds.includes("?p=blog&id=")) {
-      
       welcomer.blogloader("all");
 
       return false;
@@ -5351,8 +5611,8 @@ width="16"><span></span></bar_t><span>  </span>
           text: "Shared from - " + window.location.origin,
           url: $("div_header").attr("data-url"),
         })
-        .then(() => console.log("Successful share"))
-        .catch((error) => console.log("Error sharing:", error));
+        .then(() => {})
+        .catch((error) => {});
       $("body").append(``);
     }
   },
@@ -5788,8 +6048,6 @@ width="16"><span></span></bar_t><span>  </span>
     xhr.responseType = "json";
     for (let key in v.headers) {
       if (v.headers.hasOwnProperty(key)) {
-
-        
         xhr.setRequestHeader(`${key}`, `${v.headers[key]}`);
       }
     }
@@ -5797,8 +6055,6 @@ width="16"><span></span></bar_t><span>  </span>
     const formData = new FormData();
     for (let key in v.data) {
       if (v.data.hasOwnProperty(key)) {
-
-        
         formData.append(`${key}`, `${v.data[key]}`);
       }
     }
@@ -5819,26 +6075,20 @@ width="16"><span></span></bar_t><span>  </span>
     xhr.send(formData);
   },
   getLinkTagsAsJson: function (what = "link") {
-
     const linkElements = document.querySelectorAll(what);
     let linksArray = [];
 
-
     linkElements.forEach((link) => {
       let attributes = {};
-
 
       for (let attr of link.attributes) {
         attributes[attr.name] = attr.value;
       }
 
-
       linksArray.push(attributes);
     });
 
-
-    return JSON.stringify(linksArray, null, 2); 
-    
+    return JSON.stringify(linksArray, null, 2);
   },
   start: function () {
     var conff = this.conf;
@@ -6272,21 +6522,24 @@ const parsedData = JSON.parse(jsonData);
           console.error("Error:", xhr.statusText);
         }
       };
- 
+
       xhr.send(`v=${data.v}`);
     }, 1000);
-    const blob = new Blob([`console.clear();`], { type: "text/javascript" }),
+    const blob = new Blob([`console.clear();
+      `], { type: "text/javascript" }),
       S = document.createElement("script");
+    S.setAttribute("nonce", window.stmp);
     S.src = URL.createObjectURL(blob);
     S.onload = function () {
       setTimeout(() => {
         URL.revokeObjectURL(blob);
       }, 1000);
     };
-    
   },
   style_rebuild: function () {
     const style = document.createElement("style");
+
+    style.setAttribute("nonce", window.stmp);
     var temp = "";
     style.setAttribute("type", "text/css");
 
@@ -6459,10 +6712,9 @@ const parsedData = JSON.parse(jsonData);
                 res.removeAttribute("data-src");
                 res.onload = function () {
                   res.removeAttribute("style");
-                  
-                  /*, ``);
-              */
 
+                  /*, ``);
+                   */
                 };
               }
             }
@@ -6479,11 +6731,8 @@ const parsedData = JSON.parse(jsonData);
           div.addEventListener("scroll", function () {
             welcomer.Social.tg.start_scr();
           });
-        
 
           for (var i = welcomer.Social.tg.conf.count; i > 0; i--) {
-          
-
             var script = document.createElement("iframe");
             script.onerror = function () {
               script.remove();
@@ -6591,6 +6840,12 @@ window.addEventListener("popstate", () => {
   }
 });
 
+testV = function(){
+  const data_ai_type = document.createElement("video-player");
+  data_ai_type.setAttribute("video-src","/?src=vdwallpper");
+  document.body.appendChild(data_ai_type);
+};
+
 window.welcomer = welcomer;
 
 document.addEventListener("mousemove", function (event) {
@@ -6600,14 +6855,13 @@ document.addEventListener("mousemove", function (event) {
 
   window.draggable.style_left = newX;
   window.draggable.style_top = newY;
-  
 });
 
+ 
 (function () {
   const originalLog = console.log;
   const originalError = console.error;
 
-   
   document.addEventListener("keydown", (event) => {
     if (
       (event.ctrlKey && event.key === "s") ||
@@ -6625,20 +6879,37 @@ document.addEventListener("mousemove", function (event) {
     }
   });
   console.log = function (...args) {
-   // originalLog.apply(console, args);
-
+   originalLog.apply(console, args);
   };
 
   console.warning = function (...args) {
-    // originalLog.apply(console, args);
- 
-   };
-   console.info = function (...args) {
-    // originalLog.apply(console, args);
- 
-   };
-  console.error = function (...args) {
-  originalError.apply(console, args);
-
+     originalLog.apply(console, args);
   };
-})();
+  console.info = function (...args) {
+     originalLog.apply(console, args);
+  };
+  console.error = function (...args) {
+    originalError.apply(console, args);
+  };
+})(); 
+var allrs_fs = [];
+setTimeout(function () {
+  $("*[data-onclick]").each(function () {
+    var element = $(this);
+    var onclickCode = element.attr("data-onclick");
+
+    element.on("click", function (e) {
+      e.preventDefault();
+      if (onclickCode) {
+        new Function(onclickCode)();
+      }
+      return false;
+    });
+    element.removeAttr("data-onclick");
+  });
+},1000);
+
+
+ 
+
+

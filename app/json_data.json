@@ -1,0 +1,411 @@
+{
+    "preloadLinks": [
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": "" 
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/ez-plus/src/jquery.ez-plus.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
+            "as": "font",
+            "type": "font/woff2",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://portfolio.localhost/?svc=jsc",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "as": "module",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/loader.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        }
+    ],
+    "allLinks": [
+        {
+            "tag": "link",
+            "rel": "icon",
+            "href": "https://portfolio.localhost/?mnps=image-favicon?1734467418",
+            "as": "",
+            "type": "image/ico",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "manifest",
+            "href": "https://portfolio.localhost/manifest.webmanifest",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+    
+     
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://portfolio.localhost/?svc=aet",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/ez-plus/src/jquery.ez-plus.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
+            "as": "font",
+            "type": "font/woff2",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com//node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "as": "style",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://portfolio.localhost/?svc=jsc",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "as": "module",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/loader.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        }
+    ],
+    "scripts": [
+       
+        {
+            "tag": "script",
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "type": "",
+            "async": true,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "type": "module",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "",
+            "type": "",
+            "async": true,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "",
+            "type": "text/javascript",
+            "async": true,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://portfolio.localhost/?svc=jsc",
+            "type": "",
+            "async": true,
+            "defer": true,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "",
+            "type": "text/javascript",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        }
+    ]
+}

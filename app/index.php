@@ -328,6 +328,11 @@ class portfolio_marko
                 }
             }
         }
+        if ($h == "null") {
+            $this->error_page(404);
+            exit();
+        }
+         
         if ($h == "feed") {
             $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
             header("Content-Type: text/json");
@@ -1243,6 +1248,7 @@ echo $v .",";
                         'Authorization: Bearer 32M052k350QaeofkaeopfF',
                     ]
                 ]);
+                
                 // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
                 echo "window.portfolio = $r; \n";
                 include ROOT . "welcomer_f.js";

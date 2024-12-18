@@ -608,7 +608,7 @@ if (!empty($_GET['drc'])) {
     if ($_GET['src'] == "vdwallpper") {
 
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+       # if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             #  $r = $_POST['v'];
 
@@ -644,12 +644,12 @@ if (!empty($_GET['drc'])) {
             header("Content-type: video/mp4");
             @readfile($videoFile);
             exit();
-        } else {
+        /*} else {
             header("HTTP/1.0 405 Method Not Allowed");
 
             $this->error_page(405);
             exit();
-        }
+        }*/
     } else {
         $filetry = ROOT . "rdlv/$_GET[src]";
 

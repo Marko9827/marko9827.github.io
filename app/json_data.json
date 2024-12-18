@@ -99,7 +99,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://portfolio.localhost/?svc=jsc",
+            "href": "/?svc=jsc",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -107,7 +107,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "href": "/demo&id=S3503&hangar=main",
             "as": "module",
             "type": "",
             "crossorigin": ""
@@ -125,7 +125,7 @@
         {
             "tag": "link",
             "rel": "icon",
-            "href": "https://portfolio.localhost/?mnps=image-favicon?1734467418",
+            "href": "/?mnps=image-favicon?1734467418",
             "as": "",
             "type": "image/ico",
             "crossorigin": ""
@@ -133,7 +133,7 @@
         {
             "tag": "link",
             "rel": "manifest",
-            "href": "https://portfolio.localhost/manifest.webmanifest",
+            "href": "/manifest.webmanifest",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -143,7 +143,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://portfolio.localhost/?svc=aet",
+            "href": "/?svc=aet",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -287,7 +287,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://portfolio.localhost/?svc=jsc",
+            "href": "/?svc=jsc",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -295,7 +295,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "href": "/demo&id=S3503&hangar=main",
             "as": "module",
             "type": "",
             "crossorigin": ""
@@ -346,7 +346,7 @@
         },
         {
             "tag": "script",
-            "src": "https://portfolio.localhost/demo&id=S3503&hangar=main",
+            "src": "/demo&id=S3503&hangar=main",
             "type": "module",
             "async": false,
             "defer": false,
@@ -386,7 +386,7 @@
         },
         {
             "tag": "script",
-            "src": "https://portfolio.localhost/?svc=jsc",
+            "src": "/?svc=jsc",
             "type": "",
             "async": true,
             "defer": true,

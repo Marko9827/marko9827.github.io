@@ -327,7 +327,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com/echat/pdfjs/web/viewer.css",
+ 
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -342,6 +342,24 @@
             "defer": false,
             "crossorigin": ""
         },
+        {
+            "tag": "script",
+            "src": "https://code.jquery.com/jquery-3.6.0.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+         
+        {
+            "tag": "script",
+            "src": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+         
         {
             "tag": "script",
             "src": "https://cdn.eronelit.com/echat/pdfjs/build/pdf.worker.js",

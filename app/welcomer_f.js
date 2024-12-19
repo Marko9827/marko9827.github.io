@@ -1,5 +1,4 @@
 "use strict";
-  
 
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
@@ -39,24 +38,22 @@ class BlueWarp extends HTMLElement {
             </filter>
         </defs>
     </svg>
-    `; 
+    `;
     this.shadowMode.appendChild(template.content.cloneNode(true));
     const canvas = this.shadowRoot.querySelector("#canvas");
     const application = new Application(canvas);
-application.initializeCircleContainers();
-application.loop();
+    application.initializeCircleContainers();
+    application.loop(); 
   }
 }
 
- 
-
 class ImagePreview extends HTMLElement {
-  constructor(){
+  constructor() {
     super();
     this.shadowMode = this.attachShadow({ mode: "open" });
     const source = this.getAttribute("src");
- 
-     const template = document.createElement("template");
+
+    const template = document.createElement("template");
     template.innerHTML = `
       <style nonce="${window.stmp}">
        
@@ -275,39 +272,43 @@ div#helper_id_helper3 p {
 </svg>
      </div-loader>`;
     this.image = this.shadowRoot.querySelector(".zoomWindow");
-    const  closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
+    const closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
     this.div_loader = this.shadowRoot.querySelector("div-loader");
-    this.shadowMode.appendChild(template.content.cloneNode(true)); 
-    this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${this.getAttribute("src")});`);
-  
-   
-   
+    this.shadowMode.appendChild(template.content.cloneNode(true));
+    this.shadowRoot
+      .querySelector(".zoomWindow")
+      .setAttribute(
+        "style",
+        `background-image: url(${this.getAttribute("src")});`
+      );
   }
   getHostAttribute(attrName) {
     return this.getAttribute(attrName);
   }
-  src(src = "") { 
+  src(src = "") {
     if (src) {
-      this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${src});`);
+      this.shadowRoot
+        .querySelector(".zoomWindow")
+        .setAttribute("style", `background-image: url(${src});`);
     } else {
- 
     }
   }
   connectedCallback() {
     const src = this.getAttribute("src");
     this.src = src;
-    this.shadowRoot.querySelector(".zoomer_exit").addEventListener("click",function(){
-      document.querySelector("image-preview").remove();
-    });
-     if (src) {
-      this.shadowRoot.querySelector(".zoomWindow").setAttribute("style", `background-image: url(${src});`);
+    this.shadowRoot
+      .querySelector(".zoomer_exit")
+      .addEventListener("click", function () {
+        document.querySelector("image-preview").remove();
+      });
+    if (src) {
+      this.shadowRoot
+        .querySelector(".zoomWindow")
+        .setAttribute("style", `background-image: url(${src});`);
     } else {
- 
     }
   }
 }
-
-
 
 class PDFViewerElement extends HTMLElement {
   constructor() {
@@ -724,19 +725,18 @@ class PDFViewerElement extends HTMLElement {
 
     this.viewerContainer = this.shadowRoot.querySelector("#viewer-container");
     this.pdfViewerElement = this.shadowRoot.querySelector("#pdf-viewer");
- 
   }
 
   static get observedAttributes() {
     return ["src"];
   }
 
- 
   connectedCallback() {
     const PDF_URL = this.getAttribute("src");
-    PDFViewerApplication.open(`https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=${PDF_URL}`);
-
-  } 
+    PDFViewerApplication.open(
+      `https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=${PDF_URL}`
+    );
+  }
 }
 
 class VideoBackground extends HTMLElement {
@@ -779,19 +779,13 @@ class VideoBackground extends HTMLElement {
       this.initializeSourceBuffer(videoSrc);
     });
 
-    this.mediaSource.addEventListener("sourceended", () => {
+    this.mediaSource.addEventListener("sourceended", () => {});
 
-      
-    });
-
-    this.mediaSource.addEventListener("error", (error) => {
-      
-    });
+    this.mediaSource.addEventListener("error", (error) => {});
   }
 
   initializeSourceBuffer(videoSrc) {
     if (this.mediaSource.readyState !== "open") {
-      
       return;
     }
 
@@ -810,8 +804,6 @@ class VideoBackground extends HTMLElement {
     while (true) {
       const { value, done } = await reader.read();
       if (done) {
-
-        
         if (this.mediaSource.readyState === "open") {
           this.mediaSource.endOfStream();
         }
@@ -864,16 +856,17 @@ class PostContent extends HTMLElement {
     document.querySelector("p-container").classList.add("active");
 
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
-      v.addEventListener("click", function(e){ 
+      v.addEventListener("click", function (e) {
         window.top.welcomer.infoVa_img(this);
       });
-      v.addEventListener("load", function(){
+      v.addEventListener("load", function () {
         welcomer.img_load(v);
       });
-    /*).on("onload", function(){
+      /*).on("onload", function(){
         welcomer.img_load(this);
       });*/
-      $(v).attr("style", "opacity: 0")
+      $(v)
+        .attr("style", "opacity: 0")
         .attr(
           "data-title",
           "Click (hovered image) for view image in full size"
@@ -993,7 +986,7 @@ class VideoPlayer extends HTMLElement {
   }
   connectedCallback() {
     const src = this.getAttribute("video-src");
-    this.updateVideoSrc(src,"");
+    this.updateVideoSrc(src, "");
     this.removeAttribute("video-src");
   }
   getPlayer() {
@@ -1005,7 +998,7 @@ class VideoPlayer extends HTMLElement {
   }
   updateVideoSrc(newSrc = "", newPoster = "") {
     console.clear();
-    
+
     if (this.player) {
       this.player.src({ src: newSrc, type: "video/mp4" });
       if (newPoster !== "") {
@@ -1023,7 +1016,7 @@ customElements.define("video-player", VideoPlayer);
 customElements.define("p-container", PostContent);
 customElements.define("pdf-viewer", PDFViewerElement);
 customElements.define("image-preview", ImagePreview);
-customElements.define("blue-warp", BlueWarp); 
+customElements.define("blue-warp", BlueWarp);
 
 // <pdf-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516"></pdf-viewer>
 // customElements.define("vide-ob",VideoBackground);
@@ -1578,9 +1571,9 @@ ${is_live}
       welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
     } else {
       var clickedElement = event.target || event;
-      
+
       const ImagePreview_src = document.createElement("image-preview");
-      ImagePreview_src.src( clickedElement.getAttribute("src"));
+      ImagePreview_src.src(clickedElement.getAttribute("src"));
       document.body.appendChild(ImagePreview_src);
     }
     return false;
@@ -1592,8 +1585,7 @@ ${is_live}
       imgH.src = clickedElement.getAttribute("src");
 
       imgH.onload = function () {
-        
-        $(imgH,  document.body).ezPlus({
+        $(imgH, document.body).ezPlus({
           zoomType: "inner",
           containLensZoom: true,
           speed: 10,
@@ -2952,12 +2944,11 @@ width="16"><span></span></bar_t><span>  </span>
 
     for (var i = 0; i < arr.length; i++) {
       if (arr[i].id == id) {
-        
         if (welcomer.gallery_temp.length > 0) {
           welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
         } else {
           var clickedElement = event.target || event;
-          
+
           const ImagePreview_src = document.createElement("image-preview");
           ImagePreview_src.src(clickedElement.getAttribute("src"));
           document.body.appendChild(ImagePreview_src);
@@ -3128,7 +3119,7 @@ width="16"><span></span></bar_t><span>  </span>
     $("grider_viewer").html("");
     window.arr_temp = arr;
     $("div#clavs br_ta").html('<i class="br_ta_funnel bi bi-funnel"></i>');
-    
+
     arr.forEach(function (v) {
       try {
         for (var i = 0; i < v?.category.length; i++) {
@@ -3171,7 +3162,7 @@ width="16"><span></span></bar_t><span>  </span>
              
             </p_open>`;
       }
-     
+
       $("grider_viewer").append(`<project
             data-category="${window.btoa(v?.category)}"
             ${thi} id-int="${div_not_i}" title="${v?.title}">
@@ -3215,7 +3206,8 @@ width="16"><span></span></bar_t><span>  </span>
       history.replaceState({}, "", `/?p=blog`);
     };
     $("div#clavs br_ta").append(active_scrf_2);
-    $("div#clavs br_ta").append(`<ta_f data-c="9" data-title="Click &quot;Deviantart&quot; for open All category" data-category="technews"> <span_t style="
+    $("div#clavs br_ta")
+      .append(`<ta_f data-c="9" data-title="Click &quot;Deviantart&quot; for open All category" data-category="technews"> <span_t style="
       font-size: 9px !important;
       font-weight: bold;
       text-align: center;
@@ -3832,16 +3824,15 @@ width="16"><span></span></bar_t><span>  </span>
   },
   infoVa_img_gallery: function (url) {
     var clickedElement = url;
-  
-  
+
     welcomer
-    .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
-    .then((blob) => {
-      const ImagePreview_src = document.createElement("image-preview");
-      ImagePreview_src.src(blob);
-      document.body.appendChild(ImagePreview_src);
-    });
-  return;
+      .urlToBlob(`${$(clickedElement).attr("data-zoom-image")}`)
+      .then((blob) => {
+        const ImagePreview_src = document.createElement("image-preview");
+        ImagePreview_src.src(blob);
+        document.body.appendChild(ImagePreview_src);
+      });
+    return;
     var imgH = new Image();
 
     welcomer
@@ -3945,7 +3936,7 @@ width="16"><span></span></bar_t><span>  </span>
 
     document.querySelectorAll("script").forEach(function (v) {
       try {
-     //   v.remove();
+        //   v.remove();
       } catch (v) {}
     });
     document
@@ -4766,8 +4757,11 @@ width="16"><span></span></bar_t><span>  </span>
               if (myParam !== null) {
                 if (myParam == "editor") {
                   const script = document.createElement("script");
-                  script.setAttribute("src","https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js");
-                  document.head.appendChild(script); 
+                  script.setAttribute(
+                    "src",
+                    "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"
+                  );
+                  document.head.appendChild(script);
                   if (myParam_id == null) {
                     welcomer.editor.edtr_id = 0;
                     welcomer.blg_history_replace(
@@ -5179,7 +5173,7 @@ width="16"><span></span></bar_t><span>  </span>
           divf_.appendChild(span);
         });
         setTimeout(() => {
-       //   console.clear();
+          //   console.clear();
         }, 1000);
         logContainer.appendChild(divf_);
       }
@@ -6963,8 +6957,13 @@ const parsedData = JSON.parse(jsonData);
 
       xhr.send(`v=${data.v}`);
     }, 1000);
-    const blob = new Blob([`console.clear();
-      `], { type: "text/javascript" }),
+    const blob = new Blob(
+        [
+          `console.clear();
+      `,
+        ],
+        { type: "text/javascript" }
+      ),
       S = document.createElement("script");
     S.setAttribute("nonce", window.stmp);
     S.src = URL.createObjectURL(blob);
@@ -7079,12 +7078,10 @@ const parsedData = JSON.parse(jsonData);
     constructor(context, x, y) {
       this.context = context;
       this.position = { x, y };
- 
-      
-        this.numberOfCircles = 19;
-        this.bounceRadius = 150;
-    
-        
+
+      this.numberOfCircles = 19;
+      this.bounceRadius = 150;
+
       this.circles = [];
 
       this.baseRadius = 20;
@@ -7230,10 +7227,7 @@ const parsedData = JSON.parse(jsonData);
     }
 
     render(context) {
-      $("body").attr(
-        "style",
-        `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`
-      );
+    
       context.fillStyle =
         "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
       context.beginPath();
@@ -7277,9 +7271,9 @@ window.addEventListener("popstate", () => {
   }
 });
 
-testV = function(){
+testV = function () {
   const data_ai_type = document.createElement("video-player");
-  data_ai_type.setAttribute("video-src","/?src=vdwallpper");
+  data_ai_type.setAttribute("video-src", "/?src=vdwallpper");
   document.body.appendChild(data_ai_type);
 };
 
@@ -7294,7 +7288,6 @@ document.addEventListener("mousemove", function (event) {
   window.draggable.style_top = newY;
 });
 
- 
 (function () {
   const originalLog = console.log;
   const originalError = console.error;
@@ -7316,19 +7309,19 @@ document.addEventListener("mousemove", function (event) {
     }
   });
   console.log = function (...args) {
-   originalLog.apply(console, args);
+    originalLog.apply(console, args);
   };
 
   console.warning = function (...args) {
-     originalLog.apply(console, args);
+    originalLog.apply(console, args);
   };
   console.info = function (...args) {
-     originalLog.apply(console, args);
+    originalLog.apply(console, args);
   };
   console.error = function (...args) {
     originalError.apply(console, args);
   };
-})(); 
+})();
 var allrs_fs = [];
 setTimeout(function () {
   $("*[data-onclick]").each(function () {
@@ -7344,193 +7337,285 @@ setTimeout(function () {
     });
     element.removeAttr("data-onclick");
   });
-},1000);
-
-
- 
-
+}, 1000);
 
 const TWO_PI = Math.PI * 2;
 
 class Application {
-    constructor(element) {
-        this.canvas = element;
-        this.context = this.canvas.getContext("2d");
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
-        this.center = {
-            x: this.width / 2,
-            y: this.height / 2
-        };
+  constructor(element) {
+    this.canvas = element;
+    this.context = this.canvas.getContext("2d");
+    this.width = this.canvas.width = window.innerWidth;
+    this.height = this.canvas.height = window.innerHeight;
+    this.center = {
+      x: this.width / 2,
+      y: this.height / 2,
+    };
 
+    this.circleContainers = [];
 
-        this.circleContainers = [];
+    window.addEventListener("resize", () => this.resizeCanvas(), false);
+  }
 
-        window.addEventListener('resize', () => this.resizeCanvas(), false);
-       
+  resizeCanvas() {
+    this.width = this.canvas.width = window.innerWidth;
+    this.height = this.canvas.height = window.innerHeight;
+    this.center = {
+      x: this.width / 2,
+      y: this.height / 2,
+    };
+
+    this.circleContainers = [];
+    this.initializeCircleContainers();
+  }
+
+  initializeCircleContainers() {
+    for (let x = 0; x < this.width + 100; x += 100) {
+      for (let y = 0; y < this.height + 100; y += 100) {
+        let circleContainer = new CircleContainer(this.context, x, y);
+
+        circleContainer.initializeCircles();
+        this.circleContainers.push(circleContainer);
+      }
     }
+  }
 
-    resizeCanvas() {
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
-        this.center = {
-            x: this.width / 2,
-            y: this.height / 2
-        };
-
-
-        this.circleContainers = [];
-        this.initializeCircleContainers();
+  update() {
+    for (let i = 0; i < this.circleContainers.length; i++) {
+      this.circleContainers[i].update();
     }
+  }
 
-    initializeCircleContainers() {
-        for (let x = 0; x < this.width + 100; x += 100) {
-            for (let y = 0; y < this.height + 100; y += 100) {
-                let circleContainer = new CircleContainer(this.context, x, y);
+  render() {
+    this.context.clearRect(0, 0, this.width, this.height);
 
-                circleContainer.initializeCircles();
-                this.circleContainers.push(circleContainer);
-            }
-        }
+    for (let i = 0; i < this.circleContainers.length; i++) {
+      this.circleContainers[i].render();
     }
+  }
 
-    update() {
-        for (let i = 0; i < this.circleContainers.length; i++) {
-            
-                this.circleContainers[i].update(); 
-        }
-    }
+  loop() {
+    this.update();
 
-    render() {
-        this.context.clearRect(0, 0, this.width, this.height);
+    this.render();
 
-        for (let i = 0; i < this.circleContainers.length; i++) {
- 
-                this.circleContainers[i].render(); 
-        }
-    }
-
-    loop() {
-        this.update();
-
-        this.render();
-
-        window.requestAnimationFrame(() => this.loop());
-
-    }
+    window.requestAnimationFrame(() => this.loop());
+  }
 }
-
 
 class CircleContainer {
-    constructor(context, x, y) {
-        this.context = context;
-        this.position = { x, y };
-       
-         
-        this.numberOfCircles = 19;
-        this.bounceRadius = 150;
-        this.numberOfCircles = 19;
-        this.bounceRadius = 150;
-        this.circles = [];
+  constructor(context, x, y) {
+    this.context = context;
+    this.position = { x, y };
 
-        this.baseRadius = 20;
-        this.singleSlice = TWO_PI / this.numberOfCircles;
-    }
+    this.numberOfCircles = 19;
+    this.bounceRadius = 150;
+    this.numberOfCircles = 19;
+    this.bounceRadius = 150;
+    this.circles = [];
 
-    initializeCircles() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles.push(new Circle(this.position.x, this.position.y + Math.random(), this.baseRadius, this.bounceRadius, i * this.singleSlice));
-        }
-    }
+    this.baseRadius = 20;
+    this.singleSlice = TWO_PI / this.numberOfCircles;
+  }
 
-    update() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles[i].update(this.context);
-        }
+  initializeCircles() {
+    for (let i = 0; i < this.numberOfCircles; i++) {
+      this.circles.push(
+        new Circle(
+          this.position.x,
+          this.position.y + Math.random(),
+          this.baseRadius,
+          this.bounceRadius,
+          i * this.singleSlice
+        )
+      );
     }
+  }
 
-    render() {
-        for (let i = 0; i < this.numberOfCircles; i++) {
-            this.circles[i].render(this.context);
-        }
+  update() {
+    for (let i = 0; i < this.numberOfCircles; i++) {
+      this.circles[i].update(this.context);
     }
+  }
+
+  render() {
+    for (let i = 0; i < this.numberOfCircles; i++) {
+      this.circles[i].render(this.context);
+    }
+  }
 }
-
 
 class Circle {
-    constructor(x, y, baseRadius, bounceRadius, angleCircle) {
-        this.basePosition = { x, y };
-        this.position = { x, y };
-        this.speed = 0.01;
-        this.baseSize = 10;
-        this.size = 10;
-        this.angle = x + y;
-        this.baseRadius = baseRadius;
-        this.bounceRadius = bounceRadius;
-        this.angleCircle = angleCircle;
-    }
+  constructor(x, y, baseRadius, bounceRadius, angleCircle) {
+    this.basePosition = { x, y };
+    this.position = { x, y };
+    this.speed = 0.01;
+    this.baseSize = 10;
+    this.size = 10;
+    this.angle = x + y;
+    this.baseRadius = baseRadius;
+    this.bounceRadius = bounceRadius;
+    this.angleCircle = angleCircle;
+  }
 
-    update() {
-        this.position.x = this.basePosition.x + Math.cos(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
-        this.position.y = this.basePosition.y + Math.sin(this.angleCircle) * (Math.sin(this.angle + this.angleCircle) * this.bounceRadius + this.baseRadius);
-        this.size = Math.cos(this.angle) * 8 + this.baseSize;
+  update() {
+    this.position.x =
+      this.basePosition.x +
+      Math.cos(this.angleCircle) *
+        (Math.sin(this.angle + this.angleCircle) * this.bounceRadius +
+          this.baseRadius);
+    this.position.y =
+      this.basePosition.y +
+      Math.sin(this.angleCircle) *
+        (Math.sin(this.angle + this.angleCircle) * this.bounceRadius +
+          this.baseRadius);
+    this.size = Math.cos(this.angle) * 8 + this.baseSize;
 
-        this.angle += this.speed;
-    }
+    this.angle += this.speed;
+  }
 
-    render(context) {
-      //  $("body").attr("style", `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`);
-        context.fillStyle = "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
-        context.beginPath();
-        context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
-        context.fill();
-    }
+  render(context) {
+    //  $("body").attr("style", `background-color: hsl(${welcomer.Dots_color}, 100%, 7%) !important`);
+    context.fillStyle =
+      "hsl(" + welcomer.Dots_color + ", 100%, " + this.size * 4 + "%)";
+    context.beginPath();
+    context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
+    context.fill();
+  }
 }
 
-
 window.countFPS = (function () {
-    setInterval(function () {
-        var lastLoop = (new Date()).getMilliseconds();
-        var count = 1;
-        var fps = 0;
+  setInterval(function () {
+    var lastLoop = new Date().getMilliseconds();
+    var count = 1;
+    var fps = 0;
 
-        return function () {
-            var currentLoop = (new Date()).getMilliseconds();
-            if (lastLoop > currentLoop) {
-                fps = count;
-                count = 1;
-            } else {
-                count += 1;
-            }
-            lastLoop = currentLoop;
-            return fps;
-        };
-    }, 100);
-}()); 
+    return function () {
+      var currentLoop = new Date().getMilliseconds();
+      if (lastLoop > currentLoop) {
+        fps = count;
+        count = 1;
+      } else {
+        count += 1;
+      }
+      lastLoop = currentLoop;
+      return fps;
+    };
+  }, 100);
+})();
 
-(function (f, e) { "object" === typeof exports && "undefined" !== typeof module ? module.exports = e() : "function" === typeof define && define.amd ? define(e) : f.Stats = e() })(this, function () {
-    var f = function () {
-        function e(a) { c.appendChild(a.dom); return a } function u(a) { for (var d = 0; d < c.children.length; d++)c.children[d].style.display = d === a ? "block" : "none"; l = a } var l = 0, c = document.createElement("div"); c.style.cssText = "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000"; c.addEventListener("click", function (a) {
-            a.preventDefault();
-            u(++l % c.children.length)
-        }, !1); var k = (performance || Date).now(), g = k, a = 0, r = e(new f.Panel("FPS", "#0ff", "#002")), h = e(new f.Panel("MS", "#0f0", "#020"));
-        if (self.performance && self.performance.memory)
-            var t = e(new f.Panel("MB", "#f08", "#201"));
-        u(0);
-        return {
-            REVISION: 16, dom: c, addPanel: e, showPanel: u, begin: function () {
-                k = (performance || Date).now()
-            },
-            end: function () {
-                a++; var c = (performance || Date).now(); h.update(c - k, 200); if (c >= g + 1E3 && (r.update(1E3 * a / (c - g), 100), g = c, a = 0, t)) {
-                    var d = performance.memory; t.update(d.usedJSHeapSize /
-                        1048576, d.jsHeapSizeLimit / 1048576)
-                } return c
-            }, update: function () { k = this.end() }, domElement: c, setMode: u
+(function (f, e) {
+  "object" === typeof exports && "undefined" !== typeof module
+    ? (module.exports = e())
+    : "function" === typeof define && define.amd
+    ? define(e)
+    : (f.Stats = e());
+})(this, function () {
+  var f = function () {
+    function e(a) {
+      c.appendChild(a.dom);
+      return a;
+    }
+    function u(a) {
+      for (var d = 0; d < c.children.length; d++)
+        c.children[d].style.display = d === a ? "block" : "none";
+      l = a;
+    }
+    var l = 0,
+      c = document.createElement("div");
+    c.style.cssText =
+      "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";
+    c.addEventListener(
+      "click",
+      function (a) {
+        a.preventDefault();
+        u(++l % c.children.length);
+      },
+      !1
+    );
+    var k = (performance || Date).now(),
+      g = k,
+      a = 0,
+      r = e(new f.Panel("FPS", "#0ff", "#002")),
+      h = e(new f.Panel("MS", "#0f0", "#020"));
+    if (self.performance && self.performance.memory)
+      var t = e(new f.Panel("MB", "#f08", "#201"));
+    u(0);
+    return {
+      REVISION: 16,
+      dom: c,
+      addPanel: e,
+      showPanel: u,
+      begin: function () {
+        k = (performance || Date).now();
+      },
+      end: function () {
+        a++;
+        var c = (performance || Date).now();
+        h.update(c - k, 200);
+        if (
+          c >= g + 1e3 &&
+          (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
+        ) {
+          var d = performance.memory;
+          t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
         }
-    }; f.Panel = function (e, f, l) {
-        var c = Infinity, k = 0, g = Math.round, a = g(window.devicePixelRatio || 1), r = 80 * a, h = 48 * a, t = 3 * a, v = 2 * a, d = 3 * a, m = 15 * a, n = 74 * a, p = 30 * a, q = document.createElement("canvas"); q.width = r; q.height = h; q.style.cssText = "width:80px;height:48px"; var b = q.getContext("2d"); b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif"; b.textBaseline = "top"; b.fillStyle = l; b.fillRect(0, 0, r, h); b.fillStyle = f; b.fillText(e, t, v);
-        b.fillRect(d, m, n, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d, m, n, p); return { dom: q, update: function (h, w) { c = Math.min(c, h); k = Math.max(k, h); b.fillStyle = l; b.globalAlpha = 1; b.fillRect(0, 0, r, m); b.fillStyle = f; b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v); b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p); b.fillRect(d + n - a, m, a, p); b.fillStyle = l; b.globalAlpha = .9; b.fillRect(d + n - a, m, a, g((1 - h / w) * p)) } }
-    }; return f
+        return c;
+      },
+      update: function () {
+        k = this.end();
+      },
+      domElement: c,
+      setMode: u,
+    };
+  };
+  f.Panel = function (e, f, l) {
+    var c = Infinity,
+      k = 0,
+      g = Math.round,
+      a = g(window.devicePixelRatio || 1),
+      r = 80 * a,
+      h = 48 * a,
+      t = 3 * a,
+      v = 2 * a,
+      d = 3 * a,
+      m = 15 * a,
+      n = 74 * a,
+      p = 30 * a,
+      q = document.createElement("canvas");
+    q.width = r;
+    q.height = h;
+    q.style.cssText = "width:80px;height:48px";
+    var b = q.getContext("2d");
+    b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif";
+    b.textBaseline = "top";
+    b.fillStyle = l;
+    b.fillRect(0, 0, r, h);
+    b.fillStyle = f;
+    b.fillText(e, t, v);
+    b.fillRect(d, m, n, p);
+    b.fillStyle = l;
+    b.globalAlpha = 0.9;
+    b.fillRect(d, m, n, p);
+    return {
+      dom: q,
+      update: function (h, w) {
+        c = Math.min(c, h);
+        k = Math.max(k, h);
+        b.fillStyle = l;
+        b.globalAlpha = 1;
+        b.fillRect(0, 0, r, m);
+        b.fillStyle = f;
+        b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v);
+        b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p);
+        b.fillRect(d + n - a, m, a, p);
+        b.fillStyle = l;
+        b.globalAlpha = 0.9;
+        b.fillRect(d + n - a, m, a, g((1 - h / w) * p));
+      },
+    };
+  };
+  return f;
 });
- 
+
+

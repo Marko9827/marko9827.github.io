@@ -131,7 +131,7 @@ object-src 'none';
 worker-src 'none';";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
 $csp = "";
-header("Content-Security-Policy:  $csp");
+#header("Content-Security-Policy:  $csp");
 
 header("X-Frame-Options: DENY");
 
@@ -2910,7 +2910,7 @@ div#clavs br_ta ta_f.active span {
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--cdn_white);
+            background: white;
         }
 
         ::-webkit-scrollbar-thumb:hover {
@@ -2978,7 +2978,22 @@ div#clavs br_ta ta_f.active span {
         ta_f[data-category="technews"] * {
             pointer-events: none;
         }
+        .custom-scrollbar::-webkit-scrollbar {
+      width: 10px;
+    }
 
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #888;
+      border-radius: 5px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background-color: #555;
+    }
         /*  */
     </style>
     <?php
@@ -3668,6 +3683,8 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
             <button type="button" id="sendbtn">Send message</button>
         </fotter>
     </div>
+
+  
 </body>
 
 </html>

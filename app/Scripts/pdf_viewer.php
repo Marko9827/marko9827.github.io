@@ -1,8 +1,10 @@
 <?php 
+ 
 //if(!empty($_SERVER['HTTP_REFERER'])){
     $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
     $host = $parsed_url['host'];
-    if($host == "$_SERVER[HTTP_HOST]"){
+    if(1 == 1){
+        //$host == "$_SERVER[HTTP_HOST]"){
 ?>
 <!DOCTYPE html>
 <?php $t = time(); ?>
@@ -443,7 +445,7 @@ document.onload =function(){  document.addEventListener('keydown', function(even
 });}
 setTimeout(function() {
                     PDFViewerApplication.open("<?php
-                                                echo "https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=$_GET[id]"; ?>");
+                      echo "https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=$_GET[id]"; ?>");
                 }, 1500);
 
        

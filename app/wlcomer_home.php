@@ -48,35 +48,36 @@ $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.jso
 if (json_last_error() !== JSON_ERROR_NONE) {
     #die("Greška u JSON-u: " . json_last_error_msg());
 }
- 
+
 
 
 $cdn_urls = " fonts.gstatic.com cdnjs.cloudflare.com  *.eronelit.com *.localhost fonts.googleapis.com";
-$nonce_h =  base64_encode(random_bytes(16));
+$nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
 $script_nonce = $nonce_h;
 $_SESSION['Bearer_token_temp'] = $nonce_h;
 $nonce_f = "'nonce-$nonce_h'";
-function generateCSP($data) {
+function generateCSP($data)
+{
     $directives = [];
- 
+
     $addSource = function ($source, $type = 'script-src') use (&$directives) {
         if (!isset($directives[$type])) {
             $directives[$type] = [];
         }
         $directives[$type][] = $source;
-    }; 
+    };
     foreach ($data['preloadLinks'] as $link) {
         $addSource($link['href'], 'preload-src');
-    } 
+    }
     foreach ($data['allLinks'] as $link) {
         if ($link['rel'] === 'stylesheet') {
             $addSource($link['href'], 'style-src');
         }
-    } 
+    }
     foreach ($data['scripts'] as $script) {
         $addSource($script['src'], 'script-src');
-    } 
+    }
     $csp = [];
     foreach ($directives as $directive => $sources) {
         $csp[] = $directive . ' ' . implode(' ', $sources);
@@ -99,7 +100,7 @@ function createLinkElements($links)
 }
 function createScriptElements($scripts)
 {
-     global $nonce_h;
+    global $nonce_h;
     foreach ($scripts as $script) {
         $src = htmlspecialchars($script['src']);
         $type = !empty($script['type']) ? ' type="' . htmlspecialchars($script['type']) . '"' : '';
@@ -118,7 +119,7 @@ $csp = "
     "connect-src 'self' *.eronelit.com *.localhost;
     ";
 
-$csp = (string)"
+$csp = (string) "
  object-src 'none';  base-uri 'self'; 
  script-src 'nonce-$nonce' 'strict-dynamic' 'report-sample'   'unsafe-inline' ;
  report-uri https://api.localhost/csp-report";
@@ -127,23 +128,26 @@ $csp = "default-src 'self'  $cdn_urls;
 script-src 'self' 'nonce-$nonce';
 style-src  'self' 'nonce-$nonce';
 object-src 'none'; 
-worker-src 'none';";  
+worker-src 'none';";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
 $csp = "";
 header("Content-Security-Policy:  $csp");
 
 header("X-Frame-Options: DENY");
 
+header("X-Frame-Options: SAMEORIGIN");
+header("X-Content-Type-Options: nosniff");
+header("Referrer-Policy: no-referrer");
 $rand = time();
 #ob_start();
 header('Content-Type: text/html; charset=utf-8');
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
-    // If not GET, return a 405 Method Not Allowed response
+
     header('HTTP/1.1 405 Method Not Allowed');
     header('Allow: GET');
     echo 'Method Not Allowed';
     exit;
-}
+} 
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -262,7 +266,7 @@ media-src 'self';" />
 
     <?php if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
-    ?>
+            ?>
             <style type="text/css" nonce="<?php echo $script_nonce; ?>">
                 * {
                     pointer-events: none !important;
@@ -273,12 +277,13 @@ media-src 'self';" />
                     display: none;
                 }
             </style>
-    <?php }
+        <?php }
     } ?>
     <style type="text/css" nonce="<?php echo $script_nonce; ?>">
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
-        ?>.zoomContainer:not(:hover, :focus) * {
+        ?>
+        .zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;
             width: 100% !important;
@@ -941,7 +946,8 @@ media-src 'self';" />
         }
 
         /*  */
-        <?php include ROOT . "css/document_root.css"; ?>div#clavs br_ta {
+        <?php include ROOT . "css/document_root.css"; ?>
+        div#clavs br_ta {
             position: sticky;
             background: var(--black-trasparent-color);
             top: 51.1px;
@@ -1740,6 +1746,25 @@ media-src 'self';" />
             padding-right: 2px;
         }
 
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
         /* 
         div#clavs br_ta ta_f span {
     transform:translateX(30px);
@@ -1770,22 +1795,24 @@ div#clavs br_ta ta_f.active span {
         }
 
         <?php if ($_GET['vp'] == "livestream") {
-        ?>.box_shadow_txtf.box_shadow {
-            margin: auto !important;
-        }
+            ?>
+            .box_shadow_txtf.box_shadow {
+                margin: auto !important;
+            }
 
-        div#buttons,
-        arr_bundle {
+            div#buttons,
+            arr_bundle {
 
-            display: none !important;
-        }
+                display: none !important;
+            }
 
-        span.box_shadow_h {
-            display: none !important;
-        }
+            span.box_shadow_h {
+                display: none !important;
+            }
 
-        <?php
-        } ?>@import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+            <?php
+        } ?>
+        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
         @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
@@ -2872,13 +2899,94 @@ div#clavs br_ta ta_f.active span {
             opacity: 1;
             pointer-events: unset !important;
         }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--cdn_white);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: transparent;
+        }
+
+        /*  */
+        ta_f[data-category="technews"] {
+            border: 2px solid var(--red);
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+            display: grid !important;
+        }
+
+        ta_f[data-category="technews"] span {
+            -webkit-transform: none !important;
+            -ms-transform: none !important;
+            transform: none !important;
+            font-size: 10px !important;
+            color: white !important;
+            width: 40px !important;
+            padding: 6px !important;
+            min-width: -webkit-fill-available;
+            background: transparent !important;
+            border: 0px !important;
+            background: var(--red) !important;
+            border-radius: 0px !important;
+            margin: 0px !important;
+        }
+
+        ta_f[data-category="technews"] {
+            border: 2px solid var(--red);
+            padding: 0px !important;
+            display: grid !important;
+            min-width: 150px;
+
+            color: var(--red) !important; 
+        }
+
+        ta_f[data-category="technews"] span_t {
+            font-size: 4px !important;
+        }
+
+        blue-warp {
+            pointer-events: none;
+        }
+
+        ta_f[data-category="technews"] blue-warp {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100% !important;
+            height: 100% !important;
+            top: 0px !important;
+            pointer-events: none;
+            z-index: -1;
+            border-radius: 0px !important;
+            border: none !important;
+            opacity: 0.5;
+            -webkit-filter: invert(1) !important;
+            filter: invert(1) !important;
+        }
+
+        ta_f[data-category="technews"],
+        ta_f[data-category="technews"] * {
+            pointer-events: none;
+        }
+
+        /*  */
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
         <script async nonce="<?php echo $script_nonce; ?>"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4445409692157494">
-        </script>
+            </script>
         <script async nonce="<?php echo $script_nonce; ?>"
             src="https://www.googletagmanager.com/gtag/js?id=G-NZPKRC33WQ"></script>
         <script nonce="<?php echo $script_nonce; ?>">
@@ -2922,11 +3030,11 @@ div#clavs br_ta ta_f.active span {
 </pdf-viewer>
 
 <video-player id="wallpaperVideo" video-src="/?src=vdwallpper&v=<?= time(); ?>"
-   class="wallpaperVideo video_is_hidden"></video-player>
- */ ?>
+class="wallpaperVideo video_is_hidden"></video-player>
+*/ ?>
     <p class="p-c"><?php if ($_GET['vp'] == "livestream") {
-                        echo "Live stream... Please wait...";
-                    } else { ?>
+        echo "Live stream... Please wait...";
+    } else { ?>
             Do you love random videos?<br>
             - Tip: Reload page...
         <?php } ?>
@@ -3015,8 +3123,8 @@ div#clavs br_ta ta_f.active span {
                     <i data-onclick="welcomer.bundleSuggestedS(1);"
                         class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
                         style="transform:scale(1)"></i>
-                    <i data-onclick="welcomer.bundleSuggestedS('2');" class="bi bi-arrow-left-circle-fill catascrollEchatTv"
-                        style="transform:scale(0);"></i>
+                    <i data-onclick="welcomer.bundleSuggestedS('2');"
+                        class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i>
 
 
                 </arr_bundle>
@@ -3096,7 +3204,8 @@ div#clavs br_ta ta_f.active span {
                         repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg>
-            <i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);" class="bi bi-arrow-clockwise"></i>
+            <i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"
+                class="bi bi-arrow-clockwise"></i>
             <svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
             </svg><span>Loading ...</span>

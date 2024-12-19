@@ -315,11 +315,41 @@
             "as": "",
             "type": "",
             "crossorigin": ""
-        }
+        },
+        {
+            "tag": "link",
+            "rel": "resource",
+            "href": "https://cdn.eronelit.com//echat/pdfjs/build/locale/locale.properties",
+            "as": "",
+            "type": "application/l10n",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "stylesheet",
+            "href": "https://cdn.eronelit.com/echat/pdfjs/web/viewer.css",
+            "as": "",
+            "type": "",
+            "crossorigin": ""
+        } 
     ],
     "scripts": [
-       
-     
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com//echat/pdfjs/web/viewer.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },
+        {
+            "tag": "script",
+            "src": "https://cdn.eronelit.com/echat/pdfjs/build/pdf.worker.js",
+            "type": "",
+            "async": false,
+            "defer": false,
+            "crossorigin": ""
+        },        
         {
             "tag": "script",
             "src": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",

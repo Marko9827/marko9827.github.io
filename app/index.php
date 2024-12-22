@@ -219,7 +219,7 @@ class portfolio_marko
         $testMode = true
     ) {
         
-        if ($_SERVER['HTTP_HOST'] == "portfolio.localhost") {
+        if ($_SERVER['HTTP_HOST'] == "portfolio.localhost2") {
             return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         } else {
             $ch = curl_init($r['url']);
@@ -389,6 +389,95 @@ function minifyJSFile($inputFile)
             $b = ob_get_clean();
             echo $this->minifyJS($b);
             exit();
+        }
+        if ($h == "video"){
+            if(!empty($_GET['id'])){
+            header('Content-Type: text/html; charset=utf-8');
+ ob_start(function ($b) {
+                                        $comments_pattern = "#/\*[^(\*/)]*\*/#";
+                                        $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
+                                        # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
+
+                                        $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
+                                        $html = preg_replace('/>\s+</', '><', $html);
+                                        $html = preg_replace('/^\s+|\s+$/m', '', $html);
+                                        $html = preg_replace('/\s{2,}/', ' ', $html);
+                                        $html = preg_replace('/[\r\n]/', '', $html);
+                                        return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+                                    });
+
+                                    ?>
+
+                                                        <html>
+
+                                                        <head>
+                                                            <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                                                            <style>
+                                                                * {
+                                                                    margin: 0px;
+                                                                    padding: 0px;
+                                                                }
+
+                                                                div#my-video {
+                                                                    position: fixed;
+                                                                    left: 0px;
+                                                                    top: 0px;
+                                                                    width: 100%;
+                                                                    height: 100%;
+                                                                }
+                                                            </style>
+                                                        </head>
+
+                                                        <body onload="f();">
+                                                            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+                                                                poster="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>00" data-setup="{}">
+                                                                <source src="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>" type="video/mp4" />
+                                                                <p class="vjs-no-js">
+                                                                    To view this video please enable JavaScript, and consider upgrading to a
+                                                                    web browser that supports HTML5 video.
+                                                                </p>
+                                                            </video>
+                                                            <script async type="text/javascript">
+                                                                f = function () {
+                                                                    document.addEventListener("contextmenu", function (e) {
+                                                                        e.preventDefault();
+                                                                        return false;
+                                                                    });
+                                                                    document.addEventListener("selectstart", function (e) {
+                                                                        e.preventDefault();
+                                                                        return false;
+                                                                    });
+                                                                    document.addEventListener("dragstart", function (e) {
+                                                                        e.preventDefault();
+                                                                        return false;
+                                                                    });
+                                                                    document.querySelectorAll("script").forEach(function (res) {
+                                                                        res.remove();
+                                                                        console.clear();
+                                                                    });
+                                                                    document.addEventListener('keydown', function (event) {
+                                                                        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                                                                            event.preventDefault();
+
+                                                                        }
+                                                                        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                                                                            event.preventDefault();
+
+                                                                        }
+                                                                    });
+                                                                }
+                                                            </script>
+                                                            <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                                                        </body>
+
+                                                        </html>
+
+                                        <?php
+                                        exit();
+            }else{
+                $this->error_page(404);
+                exit();
+            }
         }
         if ($h == "feed") {
             $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");

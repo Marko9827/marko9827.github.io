@@ -167,10 +167,9 @@ script-src  $cdn_urls https://$_SERVER[HTTP_HOST]/main https://$_SERVER[HTTP_HOS
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
  $csp = "";
 #header("Content-Security-Policy:  $csp");
+ 
 
-header("X-Frame-Options: DENY");
-
-header("X-Frame-Options: SAMEORIGIN");
+header("X-Frame-Options: *.eronelit.com");
 header("Access-Control-Allow-Origin: *.eronelit.com");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: no-referrer");

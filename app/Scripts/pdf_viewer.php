@@ -21,7 +21,7 @@
 
 
     <!-- This snippet is used in production (included from viewer.html) -->
-    <link rel="resource" type="application/l10n" href="<?php echo CDN; ?>/echat/pdfjs/build/locale/locale.properties">
+    <link rel="resource" type="application/l10n" href="<?php echo CDN; ?>/echat/pdfjs/web/locale/locale.properties">
 
 
     <script src="<?php echo CDN; ?>/echat/pdfjs/build/pdf.js#<?php echo $t; ?>"></script>

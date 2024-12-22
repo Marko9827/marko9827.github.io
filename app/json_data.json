@@ -3,6 +3,23 @@
         {
             "tag": "link",
             "rel": "preload",
+            "href": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+       
+        {
+            "tag": "link",
+            "rel": "preload",
+            "href": "/main",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
+            "rel": "preload",
             "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
             "as": "style",
             "type": "",
@@ -11,18 +28,10 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
+            "href": "https://cdn.eronelit.com/node_modules/requirejs/require.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": "" 
         },
         {
             "tag": "link",
@@ -59,7 +68,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "href": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -99,14 +108,6 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "/?svc=jsc",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "preload",
             "href": "/demo&id=S3503&hangar=main",
             "as": "module",
             "type": "",
@@ -124,6 +125,14 @@
     "allLinks": [
         {
             "tag": "link",
+            "rel": "preload",
+            "href": "/main",
+            "as": "script",
+            "type": "",
+            "crossorigin": ""
+        },
+        {
+            "tag": "link",
             "rel": "icon",
             "href": "/?mnps=image-favicon?1734467418",
             "as": "",
@@ -138,12 +147,10 @@
             "type": "",
             "crossorigin": ""
         },
-    
-     
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "/?svc=aet",
+            "href": "/mains",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -153,22 +160,6 @@
             "rel": "preload",
             "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
             "as": "style",
-            "type": "",
-            "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/ez-plus/src/jquery.ez-plus.js",
-            "as": "script",
             "type": "",
             "crossorigin": ""
         },
@@ -199,7 +190,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "href": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -287,14 +278,6 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "/?svc=jsc",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "preload",
             "href": "/demo&id=S3503&hangar=main",
             "as": "module",
             "type": "",
@@ -311,74 +294,39 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css",
             "as": "",
             "type": "",
-            "crossorigin": ""
-        },
-        {
-            "tag": "link",
-            "rel": "resource",
-            "href": "https://cdn.eronelit.com//echat/pdfjs/build/locale/locale.properties",
-            "as": "",
-            "type": "application/l10n",
             "crossorigin": ""
         },
         {
             "tag": "link",
             "rel": "stylesheet",
- 
             "as": "",
             "type": "",
             "crossorigin": ""
-        } 
+        }
     ],
     "scripts": [
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com//echat/pdfjs/web/viewer.js",
-            "type": "",
-            "async": false,
-            "defer": false,
+            "src": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js",
+            "type": "text/javascript",
+            "async": true,
+            "defer": true,
             "crossorigin": ""
         },
         {
             "tag": "script",
-            "src": "https://code.jquery.com/jquery-3.6.0.min.js",
-            "type": "",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },
-         
-        {
-            "tag": "script",
-            "src": "https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js",
-            "type": "",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },
-         
-        {
-            "tag": "script",
-            "src": "https://cdn.eronelit.com/echat/pdfjs/build/pdf.worker.js",
-            "type": "",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },        
-        {
-            "tag": "script",
-            "src": "https://cdn.eronelit.com//node_modules/jquery/dist/jquery.min.js",
-            "type": "",
-            "async": false,
-            "defer": false,
+            "src": "/main",
+            "type": "text/javascript",
+            "async": true,
+            "defer": true,
             "crossorigin": ""
         },
         {
             "tag": "script",
-            "src": "https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.61.1/codemirror.min.js",
+            "src": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
             "type": "",
             "async": true,
             "defer": false,
@@ -430,14 +378,6 @@
             "type": "text/javascript",
             "async": true,
             "defer": false,
-            "crossorigin": ""
-        },
-        {
-            "tag": "script",
-            "src": "/?svc=jsc",
-            "type": "",
-            "async": true,
-            "defer": true,
             "crossorigin": ""
         },
         {

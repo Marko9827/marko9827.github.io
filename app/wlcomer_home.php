@@ -51,7 +51,8 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 
 
-$cdn_urls = " fonts.gstatic.com cdnjs.cloudflare.com  *.eronelit.com *.localhost fonts.googleapis.com";
+$cdn_urls = "api.eronelit.com   cdn.eronelit.com api.localhost";
+$fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com";
 $nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
 $script_nonce = $nonce_h;
@@ -95,47 +96,82 @@ function createLinkElements($links)
         $as = !empty($link['as']) ? ' as="' . htmlspecialchars($link['as']) . '"' : '';
         $type = !empty($link['type']) ? ' type="' . htmlspecialchars($link['type']) . '"' : '';
         $crossorigin = !empty($link['crossorigin']) ? ' crossorigin="' . htmlspecialchars($link['crossorigin']) . '"' : '';
-        echo "<link rel=\"$rel\" nonce=\"$nonce_h\" href=\"$href\"$as$type$crossorigin>\n";
+        echo "<link rel=\"$rel\" nonce=\"$nonce_h\" href=\"$href\"  $type crossorigin=\"anonymous\" $as>\n";
     }
 }
+$createScripts = [];
 function createScriptElements($scripts)
 {
-    global $nonce_h;
+    global $nonce_h, $createScripts;
     foreach ($scripts as $script) {
         $src = htmlspecialchars($script['src']);
         $type = !empty($script['type']) ? ' type="' . htmlspecialchars($script['type']) . '"' : '';
         $async = $script['async'] ? ' async' : '';
         $defer = $script['defer'] ? ' defer' : '';
+        $text = file_get_contents($src);
+        $sha384Hash = "sha256-".hash('sha256', $text);
         $crossorigin = !empty($script['crossorigin']) ? ' crossorigin="' . htmlspecialchars($script['crossorigin']) . '"' : '';
-        echo "<script  nonce=\"$nonce_h\"  src=\"$src\"$type$async$defer$crossorigin></script>\n";
+        echo "<script  nonce=\"$nonce_h\"  crossorigin=\"anonymous\"  src=\"$src\" $type $async $defer></script>\n";
+        array_Push($createScripts, $sha384Hash);
     }
 }
-$csp = "
- default-src 'self'; " .
-    "script-src 'self' 'nonce-$nonce' 'unsafe-inline' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost; " .
-    "style-src 'self' 'nonce-$nonce' fonts.googleapis.com; " .
-    "font-src 'self' fonts.gstatic.com; " .
-    "media-src 'self'; " .
-    "connect-src 'self' *.eronelit.com *.localhost;
-    ";
+function createScriptElementsCSP(): string
+{
+    $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
+    $scripts = $data['scripts']; 
+    $sah = "";
+    foreach ($scripts as $script) {
+        $src = htmlspecialchars($script['src']); 
+        $text = file_get_contents($src);
+        $sha384Hash = "sha256-".hash('sha256', $text);
+       $sah .= "$sha384Hash ";
+    }
+    return $sah;
+}
+function ScriptCalcHash(){
+    $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
+    foreach($data['scripts'] as $val){
 
+    }
+}
+
+/* 
+ script-src 'self' 'nonce-$nonce' $cdn_urls;
+    script-src-elem 'self'    $cdn_urls ;
+ */
+#     script-src $cdn_urls  'nonce-$nonce' ; 
+ 
+ /*
 $csp = (string) "
- object-src 'none';  base-uri 'self'; 
- script-src 'nonce-$nonce' 'strict-dynamic' 'report-sample'   'unsafe-inline' ;
- report-uri https://api.localhost/csp-report";
-
-$csp = "default-src 'self'  $cdn_urls;
-script-src 'self' 'nonce-$nonce';
-style-src  'self' 'nonce-$nonce';
-object-src 'none'; 
-worker-src 'none';";
+    script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval';
+    */
+$csp = (string)"
+    // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
+    // script-src-elem 'nonce-$nonce' https://$_SERVER[HTTP_HOST] $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval' ;
+"; 
+ $csp =  "
+ 
+script-src  $cdn_urls https://$_SERVER[HTTP_HOST]/main https://$_SERVER[HTTP_HOST]/demo&id=S3503&hangar=main 'strict-dynamic'  'wasm-unsafe-eval';
+    style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
+    img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
+    font-src 'self' data: $fonts;
+    connect-src 'self' *.eronelit.com *.localhost *.wixmp.com data:; 
+    frame-src 'self';
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self' *.eronelit.com;
+    worker-src 'self'  *.eronelit.com; 
+      
+    upgrade-insecure-requests; 
+    block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-$csp = "";
+ $csp = "";
 #header("Content-Security-Policy:  $csp");
 
 header("X-Frame-Options: DENY");
 
 header("X-Frame-Options: SAMEORIGIN");
+header("Access-Control-Allow-Origin: *.eronelit.com");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: no-referrer");
 $rand = time();
@@ -147,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     header('Allow: GET');
     echo 'Method Not Allowed';
     exit;
-} 
+}
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -162,16 +198,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     if (!empty($csp)) { ?>
         <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
     <?php } ?>
-    <link rel='dns-prefetch' href='https://fonts.googleapis.com' />
+    <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]/"; ?>">
+    <meta name="google" content="notranslate">
+    <meta name="referrer" content="origin">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-tap-highlight" content="no">
+    <script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
     <?php
 
-    createLinkElements($data['preloadLinks']);
+#    createLinkElements($data['preloadLinks']);
     createLinkElements($data['allLinks']);
     createScriptElements($data['scripts']);
 
@@ -1813,7 +1854,7 @@ div#clavs br_ta ta_f.active span {
             <?php
         } ?>
         @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
-        @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css);
+        @import url(https://cdn.eronelit.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
             margin-right: 5px;
@@ -2947,7 +2988,7 @@ div#clavs br_ta ta_f.active span {
             display: grid !important;
             min-width: 150px;
 
-            color: var(--red) !important; 
+            color: var(--red) !important;
         }
 
         ta_f[data-category="technews"] span_t {
@@ -2978,22 +3019,31 @@ div#clavs br_ta ta_f.active span {
         ta_f[data-category="technews"] * {
             pointer-events: none;
         }
+
         .custom-scrollbar::-webkit-scrollbar {
-      width: 10px;
-    }
+            width: 10px;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background-color: #888;
-      border-radius: 5px;
-    }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 5px;
+        }
 
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background-color: #555;
-    }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+        pdf-viewer {
+            display: block;
+            width: 250px;
+            height: 250px;
+            background: rgb(0 0 0 / 32%);
+        }
+
         /*  */
     </style>
     <?php
@@ -3036,7 +3086,28 @@ div#clavs br_ta ta_f.active span {
 */ ?>
 </head>
 
-<body oncontextmenu="return false;" onload="welcomer.start(this);" ondragstart="return false;">
+<body  >
+    <?php /*<custom-viewer style="
+position: fixed;
+left: 0px;
+top: 0px;
+z-index: 33333333;
+background: black;
+width: 100%;
+height: 100%;
+border: 2px dashed white;
+!i;!;
+" src='https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=25_avg_2024_13_15/3141516'></custom-viewer> 
+
+<pdf-viewer src="12_sept_2024_12_08/325136" style="
+position: fixed;
+z-index: 3333;
+left: 0px;
+top: 0px;
+width: 100%;
+height: 100%;
+border: 10px solid red;
+"></pdf-viewer>*/ ?>
     <video style="opacity:0;" onloadedmetadata="$(this).removeAttr('style'); $(this).removeAttr('onloadedmetadata');"
         loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden">
 
@@ -3684,7 +3755,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         </fotter>
     </div>
 
-  
+
 </body>
 
 </html>

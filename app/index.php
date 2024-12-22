@@ -107,15 +107,8 @@ class portfolio_marko
         fclose($f);
     }
 
-    function minifyJS($js)
-    { 
-    $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
-     $js = preg_replace('~//.*~', '', $js);
-     $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
-     $js = preg_replace('/\s\s+/', ' ', $js);
-     $js = trim($js);
-        return gzcompress($js);
-    }
+ 
+    
 
     public function __construct($root = "")
     {
@@ -256,6 +249,32 @@ class portfolio_marko
 
         return $css;
     }
+    function minifyJS($js)
+{
+    preg_match_all('/https?:\/\/[^\s"\']+/', $js, $matches);
+    $links = $matches[0];
+    $placeholders = array_map(function ($index) {
+        return "___LINK_PLACEHOLDER_" . $index . "___";
+    }, array_keys($links));
+    $js = str_replace($links, $placeholders, $js);
+    $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
+    $js = preg_replace('~//.*~', '', $js);
+    $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
+    $js = preg_replace('/\s\s+/', ' ', $js);
+    $js = trim($js);
+    $js = str_replace($placeholders, $links, $js);
+    return $js;
+}
+function minifyJSFile($inputFile)
+{
+    if (file_exists($inputFile)) {
+        $js = file_get_contents($inputFile);
+        $minifiedJs = $this->minifyJS($js);
+        return $minifiedJs;
+    } else {
+        echo "";
+    }
+}
     function Getbearer()
     {
         $headers = null;
@@ -332,7 +351,45 @@ class portfolio_marko
             $this->error_page(404);
             exit();
         }
-         
+        if ($h == "mains"){
+            $fileT = "$_SERVER[DOCUMENT_ROOT]/app/mainas.css";
+            header("Content-Type: text/css");
+            header('Content-Length' . filesize($fileT));
+
+            // header("Content-type: " . image_type_to_mime_type($mime_type));
+          
+                echo $this->minifyCSS(file_get_contents($fileT));
+           
+            exit();
+        }
+        if ($h == "demoidS3503hangarmain"){
+            
+        }
+        if ($h == "main") {
+            header("content-type: text/javascript");
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
+            ob_start();
+            echo "/* " . time() . " */\n";
+
+            $r = $this->get_data([
+                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "headers" => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                ]
+            ]); 
+            echo "window.portfolio = $r; \n";
+
+ 
+            echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
+            include ROOT . "welcomer_f.js";
+
+            $b = ob_get_clean();
+            echo $this->minifyJS($b);
+            exit();
+        }
         if ($h == "feed") {
             $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
             header("Content-Type: text/json");
@@ -1251,6 +1308,8 @@ echo $v .",";
                 
                 // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
                 echo "window.portfolio = $r; \n";
+                include "$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery3.6.0.min.js \n";
+                echo  file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
                 include ROOT . "welcomer_f.js";
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
@@ -1765,7 +1824,7 @@ echo $v .",";
             } else if (strpos($_GET['mnps'], "javascript-no-13") !== false) {
                 header("Content-type: application/javascript");
 
-                include ROOT . "Scripts/jquery.mousewheel.min.php";
+              #  include ROOT . "Scripts/jquery.mousewheel.min.php";
             } else if (strpos($_GET['mnps'], "javascript-nfo-13") !== false) {
                 header("Content-type: application/javascript");
                 include ROOT . "visitcard/html2canvas.php";

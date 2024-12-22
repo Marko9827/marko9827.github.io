@@ -2101,7 +2101,7 @@ Header set Referrer-Policy "origin"
 #Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
 
- Header set X-Frame-Options *.eronelit.com
+ #Header set X-Frame-Options *.eronelit.com
 
 
  

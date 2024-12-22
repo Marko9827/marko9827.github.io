@@ -3044,6 +3044,17 @@ div#clavs br_ta ta_f.active span {
         }
 
         /*  */
+        
+        video-player-v2 {
+ display:block;
+margin: 20px 0px !important;
+ width: -webkit-fill-available;
+    border-radius: 10px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+    enable-background: new 0 0 512 512 !important;
+    pointer-events: none;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

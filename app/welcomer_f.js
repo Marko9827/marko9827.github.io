@@ -750,14 +750,160 @@ class VideoPlayer extends HTMLElement {
   }
 }
 
+class VideoPlayerV2 extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: "open" });
+
+    const template = document.createElement("template");
+    template.innerHTML = `
+      <style  nonce="${window.stmp}" >
+    @import url('https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css');
+        
+video-player-v2 {
+ display:block;
+}
+
+@media screen and (min-width: 450px) {
+    .content-wrapper iframe,
+    .content-wrapper video-player-v2{
+        height: 80vh !important;
+        max-height: 80vh !important;
+        min-height: 80vh !important;
+    }
+}
+ 
+iframe, video-player-v2 {
+    margin: 20px 0px !important;
+} 
+iframe, video-player-v2{
+    height: 70vh !important;
+    min-height: 70vh !important;
+    pointer-events: unset !important;
+    object-fit: contain;
+} 
+img, iframe {
+    max-height: 70vh !important;
+    object-fit: contain;
+}
+
+        .video-js {
+          width: 100%;
+          height: 100%;
+          opacity:0;
+          transition: .3s;
+          background-color: rgb(0 0 0 / 48%);
+          opacity:1;
+        }
+
+        #canvas_img {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: black;
+    object-fit: cover;
+    z-index: -1;
+    filter: blur(7px);
+    opacity:0;
+  }
+
+  #canvas_img {
+  opacity:1;
+  }
+      </style>
+      <video
+        id="video-player"
+        class="video-js vjs-default-skin"
+        controls
+        nonce="${window.stmp}"
+        autoplay
+        preload="auto" 
+        data-setup='{}'>
+        <source src="${this.getAttribute("src")}" type="video/mp4">
+        <p> </p>
+      </video>
+      <img id="canvas_img" loading="lazy"  alt="canvas_img" src="${this.getAttribute(
+        "video-src"
+      )}"  />
+    `;
+    shadow.appendChild(template.content.cloneNode(true));
+
+    if (typeof videojs !== "undefined") {
+      const videoElement = this.shadowRoot.querySelector("#video-player");
+      this.player = videojs(
+        videoElement,
+        {
+          autoplay: true,
+          preload: "auto",
+        },
+        function onPlayerReady() {}
+      );
+      this.postImage = this.shadowRoot.querySelector("canvas_img");
+
+      this.player.on("timeupdate", () => {});
+    } else {
+    }
+  }
+  getHostAttribute(attrName) {
+    return this.getAttribute(attrName);
+  }
+  updateVideoSrc(src = "") {
+      
+    const videoElement = this.shadowRoot.querySelector("#video-player");
+    this.player = videojs(
+      videoElement,
+      { 
+        autoplay: true,
+        preload: "auto",
+      },
+      function onPlayerReady() {}
+    );
+     this.player.src({
+      src: src, 
+      type: 'video/mp4'                    
+    });
+    this.postImage = this.shadowRoot.querySelector("canvas_img");
+
+    this.player.on("timeupdate", () => {});
+  }
+  connectedCallback() {
+    const src = this.getAttribute("data-src") || "",
+    image = this.getAttribute("data-poster") || "";
+    this.updateVideoSrc(src,image);
+    this.removeAttribute("data-src");
+    this.removeAttribute("data-poster");
+  }
+  getPlayer() {
+    return this.player;
+  }
+  clearV() {
+    this.player.dispose();
+  }
+  updateVideoSrc(newSrc = "", newPoster = "") {
+    if (this.player) {
+      this.player.src({ src: newSrc, type: "video/mp4" });
+      if (newPoster !== "") {
+        this.player.poster(newPoster);
+      }
+      this.player.load();
+      if (newPoster !== "") {
+        this.shadowRoot.querySelector("#canvas_img").src = newPoster;
+      }
+    }
+  }
+}
+
 customElements.define("video-player", VideoPlayer);
+customElements.define("video-player-v2", VideoPlayerV2);
 customElements.define("p-container", PostContent);
 customElements.define("pdf-viewer", PDFViewerElement);
 customElements.define("image-preview", ImagePreview);
 customElements.define("blue-warp", BlueWarp);
 // customElements.define('custom-viewer', CustomViewer);
 
-// <pdf-viewer src="25_avg_2024_13_15/3141516"></pdf-viewer>
+// <video-player-v2 video-src="https://api.eronelit.com/app&id=A03429468246&blog=22_dec_2024_13_32/3030492"></video-player-v2>
 // customElements.define("vide-ob",VideoBackground);
 const defaultPolicy = trustedTypes.createPolicy("default", {
   createHTML: (input) => {

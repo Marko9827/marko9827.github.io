@@ -156,7 +156,7 @@ $csp = (string)"
      style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;
-    connect-src 'self' *.eronelit.com *.localhost *.wixmp.com data:; 
+    connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.wixmp.com data:; 
     frame-src 'self';
     object-src 'none';
     base-uri 'self';

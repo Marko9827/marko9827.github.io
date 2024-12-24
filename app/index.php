@@ -2,6 +2,8 @@
 
 namespace portfolio;
 
+
+
 use \Exception;
 use \League\CommonMark\CommonMarkConverter;
 
@@ -218,8 +220,8 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-        
-        if ($_SERVER['HTTP_HOST'] == "portfolio.localhost") {
+            return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+        if ($_SERVER['HTTP_HOST'] == "portfolio.localhostf") {
             return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         } else {
             $ch = curl_init($r['url']);

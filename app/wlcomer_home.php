@@ -166,7 +166,7 @@ $csp = (string)"
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-  $csp = "style-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost fonts.gstatic.com fonts.googleapis.com; img-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost *.wixmp.com; font-src 'self' data: fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com; connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.wixmp.com data:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' *.eronelit.com; worker-src 'self' *.eronelit.com; upgrade-insecure-requests; block-all-mixed-content;";
+  $csp = "";
 #header("Content-Security-Policy:  $csp");
  
 

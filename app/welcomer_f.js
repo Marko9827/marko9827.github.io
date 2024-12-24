@@ -1799,7 +1799,7 @@ galleryContainer.appendChild(project);
   home_list: function(elm, Elem = ""){
     switch(Elem){
       case "CTHP":
-        window.top.location.href = '/';
+        window.location.href = '/';
       break;
       case "welcomer.bundleSuggestedS(1);":
         welcomer.bundleSuggestedS(1);
@@ -6191,6 +6191,7 @@ width="16"><span></span></bar_t><span>  </span>
     };
   },
   toblob: function (d) {
+    
     const img = new Image();
 
     var img_d = d.getAttribute("src");

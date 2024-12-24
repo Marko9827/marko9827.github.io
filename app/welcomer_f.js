@@ -699,7 +699,7 @@ class VideoPlayer extends HTMLElement {
         class="video-js vjs-default-skin"
         controls
         nonce="${window.stmp}"
-        autoplay
+        
         preload="auto" 
         data-setup='{}'>
         <source src="${this.getAttribute("video-src")}" type="video/mp4">

@@ -111,7 +111,8 @@ function createScriptElements($scripts)
         $text = file_get_contents($src);
         $sha384Hash = "sha256-".hash('sha256', $text);
         $crossorigin = !empty($script['crossorigin']) ? ' crossorigin="' . htmlspecialchars($script['crossorigin']) . '"' : '';
-        echo "<script  nonce=\"$nonce_h\"  crossorigin=\"anonymous\"  src=\"$src\" $type $async $defer></script>\n";
+        echo "<script  nonce=\"$nonce_h\"  
+         src=\"$src\" $type $async $defer></script>\n";
         array_Push($createScripts, $sha384Hash);
     }
 }
@@ -148,11 +149,11 @@ $csp = (string) "
 $csp = (string)"
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
     // script-src-elem 'nonce-$nonce' https://$_SERVER[HTTP_HOST] $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval' ;
-"; 
- $csp =  "
+   script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
  
-script-src  $cdn_urls https://$_SERVER[HTTP_HOST]/main https://$_SERVER[HTTP_HOST]/demo&id=S3503&hangar=main 'strict-dynamic'  'wasm-unsafe-eval';
-    style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
+    "; 
+ $csp =  "
+     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;
     connect-src 'self' *.eronelit.com *.localhost *.wixmp.com data:; 
@@ -160,12 +161,11 @@ script-src  $cdn_urls https://$_SERVER[HTTP_HOST]/main https://$_SERVER[HTTP_HOS
     object-src 'none';
     base-uri 'self';
     form-action 'self' *.eronelit.com;
-    worker-src 'self'  *.eronelit.com; 
-      
+    worker-src 'self'  *.eronelit.com;  
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
- $csp = "";
+   # $csp = "";
 #header("Content-Security-Policy:  $csp");
  
 
@@ -183,6 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     echo 'Method Not Allowed';
     exit;
 }
+ 
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -194,9 +195,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <?php
     self::MetaTags();
 
-    if (!empty($csp)) { ?>
+    if (!empty($csp)) { 
+    
+        ?>
+        <meta name="trusted-types" content="script-src-attr 'none'; require-trusted-types-for 'script'; trusted-types 'allow-duplicates' default jSecure highcharts dompurify" data-disposition="enforce" data-sanitizer="jSecure"  >
+
         <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
-    <?php } ?>
+    <?php   }  ?>
     <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
 
@@ -3548,7 +3553,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
                     <i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i>
-                    <i class="bi bi-x-lg close_btnf" data-onclick="window.location.href = '/';" title="Close"></i>
+                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP" title="Close"></i>
 
                 </btns_r>
 
@@ -3653,7 +3658,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                     <i class="bi bi-question-lg" data-onclick="welcomer.editor.load_menu_bar(this);"></i>
 
                     <i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i>
-                    <i class="bi bi-x-lg close_btnf" data-onclick="window.location.href = '/';" title="Close"></i>
+                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP" title="Close"></i>
 
                 </btns_r>
 

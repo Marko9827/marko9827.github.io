@@ -371,7 +371,7 @@ function minifyJSFile($inputFile)
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             ob_start();
-            echo "/* " . time() . " */\n";
+            echo "\"use strict\"; \n\n/* " . time() . " */\n";
 
             $r = $this->get_data([
                 "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",

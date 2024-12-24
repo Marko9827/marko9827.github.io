@@ -2092,6 +2092,9 @@ AddType application/javascript .js
 # Header always set Content-Security-Policy "object-src 'none';  base-uri 'self'; script-src 'nonce-y9tjrrJPHOnp+1b4o9Nw5Q==' 'strict-dynamic' 'report-sample'   'unsafe-inline' https: http:;report-uri https://api.localhost/csp-report"; 
 # Header always set Content-Security-Policy " default-src 'self';font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;script-src 'self' ;script-src-elem 'self' 'nonce-1/52bQ+ietzJ/on2C38yuQ==' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;media-src 'self' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;style-src 'self' ;style-src-elem 'self' 'nonce-1/52bQ+ietzJ/on2C38yuQ==' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;img-src 'self' data: fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;form-action 'self';base-uri 'self';object-src 'none';report-uri https://api.localhost/csp-report;"
 #"upgrade-insecure-requests;"
+
+
+
 Header set Access-Control-Allow-Origin "*"
 Header set Referrer-Policy "origin"
 

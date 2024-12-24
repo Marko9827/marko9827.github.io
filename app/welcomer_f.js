@@ -32,7 +32,35 @@ document.querySelectorAll("*[data-onclick]").forEach((elem)=> {
     const action = elem.getAttribute("data-onclick");
     welcomer.home_list(elem,action);
     return;
-    
+    switch (action) {
+      case "welcomer.bundleSuggestedS(1);":
+        welcomer.bundleSuggestedS(1);
+        break;
+      case "welcomer.bundleSuggestedS('2');":
+        welcomer.bundleSuggestedS('2');
+        break;
+      case "welcomer.reload_me(this);":
+        welcomer.reload_me(elem);       
+         break;
+      case "welcomer.search_Kompjiler(this);":
+        welcomer.search_Kompjiler(elem);       
+        break;
+      case "welcomer.blogloader('all');":
+        welcomer.blogloader('all');
+        break;
+      case "welcomer.Social.tg.open();":
+        welcomer.Social.tg.open();
+        break;
+      case "welcomer.share();":
+        welcomer.share();
+        break;
+      case "welcomer.Hclose(this)":
+        welcomer.Hclose(elem) ;
+      case "$(this).removeClass('info_box_active');":
+        $(elem).removeClass('info_box_active');  
+      break;
+        default: 
+    }
     //elem.removeAttribute("data-onclick");
   });
 });
@@ -70,18 +98,6 @@ function base64Encode(str) {
   const buffer = encoder.encode(str);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
-
-class SolarMap extends HTMLElement {
-  constructor() {
-    super();
-    this.shadowMode = this.attachShadow({ mode: "open" });
-
-    const template = document.createElement("template");
-    template.innerHTML = ``;
-
-  }
-}
-
 class BlueWarp extends HTMLElement {
   constructor() {
     super();
@@ -592,28 +608,6 @@ class PostContent extends HTMLElement {
       /*).on("onload", function(){
         welcomer.img_load(this);
       });*/
-      var v = document.querySelector('.your-selector'); // Replace with your actual selector
-v.style.opacity = 0; // Set opacity to 0
-v.setAttribute('data-title', 'Click (hovered image) for view image in full size'); // Set the data-title attribute
-
-// Add event listeners for hover (mouseover and mouseout)
-v.addEventListener('mouseover', function () {
-  welcomer.showAnchorTitle(v, v.getAttribute('data-title'));
-});
-
-v.addEventListener('mouseout', function () {
-  welcomer.hideAnchorTitle();
-});
-
-// Remove the title attribute and store it in the data attribute
-var title = v.getAttribute('title');
-v.removeAttribute('title');
-
-// Optionally, use mouseleave for additional behavior if needed
-v.addEventListener('mouseleave', function () {
-  welcomer.hideAnchorTitle();
-});
-/*
       $(v)
         .attr("style", "opacity: 0")
         .attr(
@@ -634,8 +628,8 @@ v.addEventListener('mouseleave', function () {
 
       a.mouseleave(function () {
         welcomer.hideAnchorTitle();
-      });*/
-    }); 
+      });
+    });
   }
   styleTemplate() {
     return `<style nonce="${window.stmp}" type="text/css">${window.atob(
@@ -826,7 +820,7 @@ img, iframe {
         class="video-js vjs-default-skin"
         controls
         nonce="${window.stmp}"
-         
+        autoplay
         preload="auto" 
         data-setup='{}'>
         <source src="${this.getAttribute("src")}" type="video/mp4">
@@ -1059,7 +1053,6 @@ const welcomer = {
           if (welcomer.isMobile()) {
             thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
           }
-         /*
           $("grider_viewer#gallery-container")
             .append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
           <grider_box>
@@ -1076,48 +1069,7 @@ const welcomer = {
               data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
                      </grider_box>
   
-              </project>`)*/
-              const galleryContainer = document.querySelector("grider_viewer#gallery-container");
- 
-const project = document.createElement("project");
-project.style.transform = "scale(0)";
-project.style.important = "true";
-project.setAttribute("id-int", div_not_i); 
-const griderBox = document.createElement("grider_box"); 
-const p = document.createElement("p");
-const span = document.createElement("span");
-span.textContent = v[i].title;  
-p.appendChild(span);
-griderBox.appendChild(p); 
-griderBox.innerHTML += p_open; 
-const fiv = document.createElement("fiv");
-const icon = document.createElement("i");
-icon.className = "bi bi-fullscreen";
-icon.title = "Preview image in full size";
-icon.addEventListener("click",function(e){
-  e.preventDefault(); 
-  welcomer.infoVa(div_not_i);
-});
-fiv.appendChild(icon);
-griderBox.appendChild(fiv); 
-const img = document.createElement("img");
-img.setAttribute("loading", "lazy");
-img.setAttribute("src", v[i].img);
-img.setAttribute("data-zoom-image", v[i].img);
-img.setAttribute("data-real-zoom-image", v[i].img);
-img.setAttribute("alt", v[i].title);img.addEventListener("dragstart", (event) => {
-  event.preventDefault();  
-}); 
-img.addEventListener("error", () => {
-  welcomer.loaded_imgPrld_error(img, div_not_i); 
-});
-img.addEventListener("load", () => {
-  welcomer.loaded_imgPrld(img, div_not_i); 
-});
-griderBox.appendChild(img); 
-project.appendChild(griderBox); 
-galleryContainer.appendChild(project);
-
+              </project>`);
           div_not_i++;
         }
       },
@@ -1168,107 +1120,147 @@ galleryContainer.appendChild(project);
         varr = { where: "", arr: [], callback: function () {} },
         type = "albums"
       ) {
-        var arr = varr.arr;
-        var div_not_i = 0;
-        var live = ["deviantart"];
-      
-        document.querySelector(varr.where).innerHTML = ""; // Clear the container
-      
+        var arr = varr.arr,
+          div_not_i = 0,
+          live = ["deviantart"];
+
+        document.querySelector(varr.where).innerHTML = "";
         if (varr.type == "albums") {
-          document.querySelector(varr.where).setAttribute("class", "gridsH grids ");
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids ");
         } else {
-          document.querySelector(varr.where).setAttribute("class", "gridsH grids g_gallery ");
-          document.querySelector(
-            'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
-          ).classList.add("active");
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids g_gallery ");
+          document
+            .querySelector(
+              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
+            )
+            .classList.add("active");
         }
-      
-        // Handle the albums case
-        if (varr.type == "albums") {
-          for (var i = 0; i < arr.length; i++) {
-            var p_open = "";
-      
+
+        for (var i = 0; i < arr.length; i++) {
+          var p_open = "";
+
+          if (varr.type == "albums") {
             var project = document.createElement("project");
-      
-            p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]["name"]}')">
-              <i class="bi bi-link"></i> Open Album
-            </p_open>`;
-            var name = arr[i]["name"];
-            var image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+            (p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]["name"]}')">
+           <i class="bi bi-link"></i> Open Album
+           </p_open>`),
+              (name = arr[i]["name"]);
+            image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
             project.setAttribute("id-int", i);
-      
             var is_live = "";
-            if (arr[i]["name"] == "deviantart") {
-              is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
-            }
-      
+            if (arr[i]["name"])
+              if (arr[i]["name"] == "deviantart") {
+                is_live =
+                  "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+              }
+
             if (arr[i]["name"] == "video") {
-              project.innerHTML = `
-                <grider_box>
-                  <p><span>Album - ${arr[i]["gallery"].length}</span></p>
-                  ${p_open} ${is_live}
-                  <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
-                  <sp_clv><i class="bi bi-film"></i><p-title>${name}</p-title></sp_clv>
-                  ${is_live}
-                  <video autoplay muted playsinline loop style="pointer-events:none;" onloadedmetadata="welcomer.loaded_img(this, ${i});" src="${arr[i]["gallery"][0]["thumb"]}"></video>
-                  <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${arr[i]["gallery"][0]["thumb"]}" data-zoom-image="${arr[i]["gallery"][0]["thumb"]}" alt="${name}" />
-                </grider_box>
-              `;
+              project.innerHTML = `<grider_box>
+          <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
+              ${p_open} ${is_live}
+              <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
+
+              <sp_clv><i class="bi bi-film"></i><p-title>${name}
+</p-title></sp_clv>
+${is_live}
+
+ 
+              <video 
+
+            autoplay 
+    muted 
+    playsinline 
+    loop 
+    style="pointer-events:none;"
+    onloadedmetadata="welcomer.loaded_img(this, ${i});"
+
+              src="${arr[i]["gallery"][0]["thumb"]}" 
+             
+           
+              ></video>
+              
+                <img 
+
+                 loading="lazy"  
+                 ondragstart="return false;" 
+                 onload="welcomer.loaded_img(this, ${i});" 
+                 src="${arr[i]["gallery"][0]["thumb"]}" 
+                 data-zoom-image="${arr[i]["gallery"][0]["thumb"]}" 
+                 alt="${name}"
+              </grider_box>`;
             } else {
-              project.innerHTML = `
-                <grider_box>
-                  <p><span>Album - ${arr[i]["gallery"].length}</span></p>
-                  ${p_open} ${is_live}
-                  <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
-                  <sp_clv><i class="bi bi-images"></i><p-title>${name}</p-title></sp_clv>
-                  ${is_live}
-                  <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" alt="${name}" />
-                </grider_box>
-              `;
+              project.innerHTML = `<grider_box>
+             <p><span>Album - ${arr[i]["gallery"].length}</span></p> 
+                 ${p_open} ${is_live}
+                 <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
+
+                 <sp_clv><i class="bi bi-images"></i><p-title>${name}
+</p-title></sp_clv>
+${is_live}
+                 <img 
+
+                 loading="lazy"  
+                 ondragstart="return false;" 
+                 onload="welcomer.loaded_img(this, ${i});" 
+                 src="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" 
+                 data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" 
+                 alt="${name}"
+
+                 ></grider_box>`;
             }
-      
             document.querySelector(varr.where).appendChild(project);
           }
         }
-      
-        // Handle the gallery case
-        if (varr.type == "gallery") {
-          var v = arr;
-          for (var i = 0; i < v.length; i++) {
-            var thi = "class='is_touch'";
-            var p_open = "";
-            var project = document.createElement("project");
-      
+        var v = arr,
+          div_not_i = 0;
+        for (var i = 0; i < v.length; i++) {
+          if (varr.type == "gallery") {
+            var thi = "class='is_touch'",
+              p_open = "",
+              project = document.createElement("project");
+
             if (welcomer.isMobile()) {
               thi = `onclick="welcomer.openLink(${div_not_i})"`;
             }
-      
+
             project.setAttribute("style", "transform: scale(0) !important;");
             project.setAttribute("id-int", `${div_not_i}`);
             project.setAttribute("box-ui", `uit-${varr.type}`);
-      
             var a_project = "";
-            if (v[i].href != "-") {
+            if (v[i].href == "-") {
+            } else {
               a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]["href"]}" target="_blank" data-int="${div_not_i}">
-                <i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}</a>`;
+          <i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}</a>`;
             }
-      
+
             project.innerHTML = `
-              <grider_box>
-                ${p_open} ${a_project}
-                <fiv><i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
-                <img loading="lazy" ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" src="${v[i].thumb}" data-zoom-image="${v[i].img}" data-real-zoom-if_video="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}" />
-              </grider_box>
-            `;
-      
-            document.querySelector("grider_viewer#gallery-container").appendChild(project);
+          <grider_box>
+
+  
+              ${p_open} ${a_project}
+              <fiv><i onclick="welcomer.infoVa(${div_not_i});"  data-i-type="${v[i].type}"  class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
+               <img loading="lazy"  ${thi} 
+              ondragstart="return false;" 
+              onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
+              onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" 
+              src="${v[i].thumb}"  
+              data-zoom-image="${v[i].img}"
+              data-real-zoom-if_video="${v[i].thumb}"
+              data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
+                     </grider_box>`;
+
+            document
+              .querySelector("grider_viewer#gallery-container")
+              .appendChild(project);
             div_not_i++;
           }
         }
-      
-        // Callback after the process
         varr?.callback({ l: arr.length, r: arr });
-      },      
+      },
       callv2: function () {
         window.location.href = "/?p=gallery";
       },
@@ -1798,17 +1790,11 @@ galleryContainer.appendChild(project);
   },
   home_list: function(elm, Elem = ""){
     switch(Elem){
-      case "CTHP":
-        window.top.location.href = '/';
-      break;
       case "welcomer.bundleSuggestedS(1);":
         welcomer.bundleSuggestedS(1);
         break;
       case "welcomer.bundleSuggestedS('2');":
         welcomer.bundleSuggestedS('2');
-        break;
-      case "welcomer.pages.gallery.call_back();":
-        welcomer.pages.gallery.call_back();
         break;
       case "welcomer.reload_me(this);":
         welcomer.reload_me(elem);       
@@ -1825,9 +1811,8 @@ galleryContainer.appendChild(project);
       case "welcomer.share();":
         welcomer.share();
         break;
-      case "welcomer.Hclose(this);":
-        welcomer.Hclose(elm) ;
-        break;
+      case "welcomer.Hclose(this)":
+        welcomer.Hclose(elem) ;
       case "$(this).removeClass('info_box_active');":
         $(elem).removeClass('info_box_active'); 
         break;
@@ -1836,10 +1821,8 @@ galleryContainer.appendChild(project);
       break;
       case "welcomer.Hclose(this);":
          welcomer.Hclose(elm);
-         break;
       case "welcomer.projectsc();":
          welcomer.projectsc();
-         
       break;
       case "welcomer.pages.gallery.callv2();":
       welcomer.pages.gallery.callv2();
@@ -5966,9 +5949,7 @@ width="16"><span></span></bar_t><span>  </span>
       $('body[data-category-name="astronomy"]').addClass("active");
     }
   },
-  Hclose: function (aer) {
-    
-   
+  Hclose: function () {
     $("body").removeAttr("data-category-name");
     $("solar_arrow labelv").html(
       `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
@@ -5986,7 +5967,7 @@ width="16"><span></span></bar_t><span>  </span>
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
     if (containeds.includes("?p=blog&id=")) {
-       welcomer.blogloader("all");
+      welcomer.blogloader("all");
 
       return false;
     }
@@ -6110,8 +6091,6 @@ width="16"><span></span></bar_t><span>  </span>
   url_blob: function (url = "") {
     var blob = null;
     var objectURL = null;
-    $("iframe:not(.iframe_mask)").attr("src", url);
-    return false;
     $.ajax({
       url: url,
       contentType: "text/html ; charset=utf-8",

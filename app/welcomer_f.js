@@ -52,8 +52,7 @@ document.querySelectorAll("*[data-onclick]").forEach((elem)=> {
     ) {
       event.preventDefault();
     }
-  });
-      welcomer.start(document.body);
+  }); 
  
 
   document.body.addEventListener('contextmenu', function(event) {

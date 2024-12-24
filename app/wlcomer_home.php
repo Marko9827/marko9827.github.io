@@ -3102,7 +3102,7 @@ margin: 20px 0px !important;
 */ ?>
 </head>
 
-<body  >
+<body onload="welcomer.start(this);"  >
     <?php /*<custom-viewer style="
 position: fixed;
 left: 0px;

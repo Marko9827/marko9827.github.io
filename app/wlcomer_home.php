@@ -165,7 +165,7 @@ $csp = (string)"
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-    $csp = "";
+ #   $csp = "";
 #header("Content-Security-Policy:  $csp");
  
 

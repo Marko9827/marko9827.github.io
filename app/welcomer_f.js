@@ -4,7 +4,7 @@ window.draggable = { style_left: "", style_top: "", enabled: false };
 
 
 window.eventListeners_clck = function(){
-  return;
+    
   $("*[data-onclick]").each(function () {
     var element = $(this);
     var onclickCode = element.attr("data-onclick");
@@ -16,7 +16,7 @@ window.eventListeners_clck = function(){
       }
       return false;
     });
-    element.removeAttr("data-onclick");
+   // element.removeAttr("data-onclick");
   });
 };
  
@@ -1825,6 +1825,7 @@ galleryContainer.appendChild(project);
       case "welcomer.share();":
         welcomer.share();
         break;
+      case "welcomer.Hclose(this)":
       case "welcomer.Hclose(this);":
         welcomer.Hclose(elm) ;
         break;

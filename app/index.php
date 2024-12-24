@@ -375,6 +375,10 @@ function minifyJSFile($inputFile)
             ob_start();
             echo "\"use strict\"; \n\n/* " . time() . " */\n";
 
+            echo "const version = function(){
+                return '".time()."';
+            };";
+
             $r = $this->get_data([
                 "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
                 "headers" => [

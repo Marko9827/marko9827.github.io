@@ -51,7 +51,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
 
 
 
-$cdn_urls = "api.eronelit.com   cdn.eronelit.com api.localhost";
+$cdn_urls = "api.eronelit.com   cdn.eronelit.com api.localhost https:";
 $fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com";
 $nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
@@ -153,20 +153,20 @@ $csp = (string)"
  
     "; 
  $csp =  "
- script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
-     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
+    
+    style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;
     connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.wixmp.com data:; 
     frame-src 'self';
     object-src 'none';
-    base-uri 'self';
+    base-uri 'none';
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-$csp = "";
+ 
 #header("Content-Security-Policy:  $csp");
  
 
@@ -199,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     if (!empty($csp)) { 
     
         ?>
-        <meta name="trusted-types" content="script-src-attr 'none'; require-trusted-types-for 'script'; trusted-types 'allow-duplicates' default jSecure highcharts dompurify" data-disposition="enforce" data-sanitizer="jSecure"  >
+        <!-- <meta name="trusted-types" content="script-src-attr 'none'; require-trusted-types-for 'script'; trusted-types 'allow-duplicates' default jSecure highcharts dompurify" data-disposition="enforce" data-sanitizer="jSecure"  > -->
 
         <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
     <?php   }  ?>
@@ -3554,7 +3554,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
                     <i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i>
-                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP" title="Close"></i>
+                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i>
 
                 </btns_r>
 
@@ -3659,7 +3659,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
                     <i class="bi bi-question-lg" data-onclick="welcomer.editor.load_menu_bar(this);"></i>
 
                     <i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i>
-                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP" title="Close"></i>
+                    <i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i>
 
                 </btns_r>
 

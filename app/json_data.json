@@ -3,7 +3,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js",
+            "href": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js.old",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -310,7 +310,7 @@
     "scripts": [
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js",
+            "src": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js.old",
             "type": "text/javascript",
             "async": true,
             "defer": true,

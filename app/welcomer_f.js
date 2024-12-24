@@ -1,41 +1,30 @@
-
-
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
+window.eventListeners_clck = function () {
+  document.querySelectorAll("*[data-onclick]").forEach((element) => {
+    const onclickCode = element.getAttribute("data-onclick");
 
-window.eventListeners_clck = function(){
-    
-  $("*[data-onclick]").each(function () {
-    var element = $(this);
-    var onclickCode = element.attr("data-onclick");
-
-    element.on("click", function (e) {
+    element.addEventListener("click", (e) => {
       e.preventDefault();
       if (onclickCode) {
         new Function(onclickCode)();
       }
-      return false;
     });
-   // element.removeAttr("data-onclick");
   });
 };
- 
 
+document.addEventListener("DOMContentLoaded", function () {
+  // window.eventListeners_clck();
+  document.querySelectorAll("*[data-onclick]").forEach((elem) => {
+    elem.addEventListener("click", function (e) {
+      e.preventDefault();
+      const action = elem.getAttribute("data-onclick");
+      welcomer.home_list(elem, action);
+      return;
 
-document.addEventListener('DOMContentLoaded', function() {
-
- // window.eventListeners_clck();
-document.querySelectorAll("*[data-onclick]").forEach((elem)=> {
- 
-  elem.addEventListener("click", function (e) {
-    e.preventDefault();
-    const action = elem.getAttribute("data-onclick");
-    welcomer.home_list(elem,action);
-    return;
-    
-    //elem.removeAttribute("data-onclick");
+      //elem.removeAttribute("data-onclick");
+    });
   });
-});
 
   document.addEventListener("keydown", (event) => {
     if (
@@ -52,15 +41,14 @@ document.querySelectorAll("*[data-onclick]").forEach((elem)=> {
     ) {
       event.preventDefault();
     }
-  }); 
- 
-
-  document.body.addEventListener('contextmenu', function(event) {
-    event.preventDefault();  
   });
 
-  document.body.addEventListener('dragstart', function(event) {
-    event.preventDefault();  
+  document.body.addEventListener("contextmenu", function (event) {
+    event.preventDefault();
+  });
+
+  document.body.addEventListener("dragstart", function (event) {
+    event.preventDefault();
   });
 });
 
@@ -77,7 +65,6 @@ class SolarMap extends HTMLElement {
 
     const template = document.createElement("template");
     template.innerHTML = ``;
-
   }
 }
 
@@ -428,9 +415,8 @@ class CustomViewer extends HTMLElement {
       }
       const content = await response.text();
       this.contentDiv.innerHTML = content;
-    } catch (error) {  
-       this.contentDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
-   
+    } catch (error) {
+      this.contentDiv.innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
     }
   }
 }
@@ -593,46 +579,27 @@ class PostContent extends HTMLElement {
         welcomer.img_load(this);
       });*/
 
-      v.style.opacity = 0;  
-v.setAttribute('data-title', 'Click (hovered image) for view image in full size'); 
- 
-v.addEventListener('mouseover', function () {
-  welcomer.showAnchorTitle(v, v.getAttribute('data-title'));
-});
+      v.style.opacity = 0;
+      v.setAttribute(
+        "data-title",
+        "Click (hovered image) for view image in full size"
+      );
 
-v.addEventListener('mouseout', function () {
-  welcomer.hideAnchorTitle();
-});
- 
-var title = v.getAttribute('title');
-v.removeAttribute('title');
- 
-v.addEventListener('mouseleave', function () {
-  welcomer.hideAnchorTitle();
-});
-/*
-      $(v)
-        .attr("style", "opacity: 0")
-        .attr(
-          "data-title",
-          "Click (hovered image) for view image in full size"
-        );
-      var a = $(v);
-      a.hover(
-        function () {
-          welcomer.showAnchorTitle(a, a.data("title"));
-        },
-        function () {
-          welcomer.hideAnchorTitle();
-        }
-      )
-        .data("title", a.attr("title"))
-        .removeAttr("title");
+      v.addEventListener("mouseover", function () {
+        welcomer.showAnchorTitle(v, v.getAttribute("data-title"));
+      });
 
-      a.mouseleave(function () {
+      v.addEventListener("mouseout", function () {
         welcomer.hideAnchorTitle();
-      });*/
-    }); 
+      });
+
+      var title = v.getAttribute("title");
+      v.removeAttribute("title");
+
+      v.addEventListener("mouseleave", function () {
+        welcomer.hideAnchorTitle();
+      });
+    });
   }
   styleTemplate() {
     return `<style nonce="${window.stmp}" type="text/css">${window.atob(
@@ -855,19 +822,18 @@ img, iframe {
     return this.getAttribute(attrName);
   }
   updateVideoSrc(src = "") {
-      
     const videoElement = this.shadowRoot.querySelector("#video-player");
     this.player = videojs(
       videoElement,
-      { 
+      {
         autoplay: true,
         preload: "auto",
       },
       function onPlayerReady() {}
     );
-     this.player.src({
-      src: src, 
-      type: 'video/mp4'                    
+    this.player.src({
+      src: src,
+      type: "video/mp4",
     });
     this.postImage = this.shadowRoot.querySelector("canvas_img");
 
@@ -875,8 +841,8 @@ img, iframe {
   }
   connectedCallback() {
     const src = this.getAttribute("data-src") || "",
-    image = this.getAttribute("data-poster") || "";
-    this.updateVideoSrc(src,image);
+      image = this.getAttribute("data-poster") || "";
+    this.updateVideoSrc(src, image);
     this.removeAttribute("data-src");
     this.removeAttribute("data-poster");
   }
@@ -933,9 +899,9 @@ const welcomer = {
   },
   trst: function () {},
   img_load: function (t) {
-    $(t).addClass("active");
-    $(t).removeAttr("style");
-    $(t).removeAttr("onload");
+    t.classList.add("active");
+    t.removeAttribute("style");
+    t.removeAttribute("onload");
   },
   videoDrawCnavs: function (videoElement, canvas) {
     const ctx = canvas.getContext("2d");
@@ -1034,97 +1000,106 @@ const welcomer = {
         }
       },
       galleryloadajaxv2: function (name = "") {
-        var div_not_i = 0,
-          gallery = [];
-        $("gridder_loader").attr("style", "opacity:1");
+        let div_not_i = 0;
+        const gallery = [];
+        const gridderLoader = document.querySelector("#gridder_loader");
+        if (gridderLoader) gridderLoader.style.opacity = 1;
 
-        var v = welcomer.load_gallery_j;
-        for (var i = 0; i < v.length; i++) {
-          var thi = "class='is_touch'",
-            p_open = "";
+        const v = welcomer.load_gallery_j;
+        const galleryContainer = document.querySelector("#gallery-container");
+        if (!galleryContainer) return;
+
+        for (let i = 0; i < v.length; i++) {
+          const project = document.createElement("project");
+          project.style.transform = "scale(0)";
+
+          const griderBox = document.createElement("grider_box");
+
+          const p = document.createElement("p");
+          const span = document.createElement("span");
+          span.textContent = v[i].title;
+          p.appendChild(span);
+          griderBox.appendChild(p);
+
+          let p_open;
           if (v[i].href !== "") {
+            p_open = document.createElement("p_open");
             if (v[i].type) {
-              p_open = ` <p_open title="Open: ${v[i].href}" onclick="welcomer.openWindow(${div_not_i});" >
-             <i class="bi bi-link"></i> Open link
-             </p_open>`;
+              p_open.title = `Open: ${v[i].href}`;
+              p_open.addEventListener("click", () =>
+                welcomer.openWindow(div_not_i)
+              );
+
+              const linkIcon = document.createElement("i");
+              linkIcon.className = "bi bi-link";
+              const linkText = document.createTextNode(" Open link");
+
+              p_open.appendChild(linkIcon);
+              p_open.appendChild(linkText);
             } else {
-              p_open = ` <p_open title="Download: ${v[i].title}" onclick="welcomer.openWindow(${div_not_i});" >
-            <i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)
-             </p_open>`;
+              p_open.title = `Download: ${v[i].title}`;
+              p_open.addEventListener("click", () =>
+                welcomer.openWindow(div_not_i)
+              );
+
+              const downloadIcon = document.createElement("i");
+              downloadIcon.className = "bi bi-cloud-arrow-down";
+              const downloadText = document.createTextNode(" Download");
+              const br = document.createElement("br");
+              const shieldIcon = document.createElement("i");
+              shieldIcon.className = "bi bi-shield-check";
+              const shieldText = document.createTextNode(" (Secure download)");
+
+              p_open.appendChild(downloadIcon);
+              p_open.appendChild(downloadText);
+              p_open.appendChild(br);
+              p_open.appendChild(shieldIcon);
+              p_open.appendChild(shieldText);
             }
+            griderBox.appendChild(p_open);
           }
-          if (welcomer.isMobile()) {
-            thi = "onclick='welcomer.openLink(" + div_not_i + ")'";
-          }
-         /*
-          $("grider_viewer#gallery-container")
-            .append(`<project style="transform: scale(0) !important;"  ${thi} id-int="${div_not_i}" >
-          <grider_box>
-          <p><span>${v[i].title}</span></p>
-  
-              ${p_open}
-              <fiv><i onclick="welcomer.infoVa(${div_not_i});"   class="bi bi-fullscreen" title="Preview image in full size"></i></fiv>
-               <img loading="lazy"  ${thi} 
-              ondragstart="return false;" 
-              onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" 
-              onload="welcomer.loaded_imgPrld(this, ${div_not_i});" 
-              src="${v[i].img}"  
-              data-zoom-image="${v[i].img}"
-              data-real-zoom-image="${v[i].img}" alt="${v[i].title}">
-                     </grider_box>
-  
-              </project>`)*/
-              const galleryContainer = document.querySelector("grider_viewer#gallery-container");
- 
-const project = document.createElement("project");
-project.style.transform = "scale(0)";
-project.style.important = "true";
-project.setAttribute("id-int", div_not_i); 
-const griderBox = document.createElement("grider_box"); 
-const p = document.createElement("p");
-const span = document.createElement("span");
-span.textContent = v[i].title;  
-p.appendChild(span);
-griderBox.appendChild(p); 
-griderBox.innerHTML += p_open; 
-const fiv = document.createElement("fiv");
-const icon = document.createElement("i");
-icon.className = "bi bi-fullscreen";
-icon.title = "Preview image in full size";
-icon.addEventListener("click",function(e){
-  e.preventDefault(); 
-  welcomer.infoVa(div_not_i);
-});
-fiv.appendChild(icon);
-griderBox.appendChild(fiv); 
-const img = document.createElement("img");
-img.setAttribute("loading", "lazy");
-img.setAttribute("src", v[i].img);
-img.setAttribute("data-zoom-image", v[i].img);
-img.setAttribute("data-real-zoom-image", v[i].img);
-img.setAttribute("alt", v[i].title);img.addEventListener("dragstart", (event) => {
-  event.preventDefault();  
-}); 
-img.addEventListener("error", () => {
-  welcomer.loaded_imgPrld_error(img, div_not_i); 
-});
-img.addEventListener("load", () => {
-  welcomer.loaded_imgPrld(img, div_not_i); 
-});
-griderBox.appendChild(img); 
-project.appendChild(griderBox); 
-galleryContainer.appendChild(project);
+
+          const fiv = document.createElement("fiv");
+          const icon = document.createElement("i");
+          icon.className = "bi bi-fullscreen";
+          icon.title = "Preview image in full size";
+          icon.addEventListener("click", (e) => {
+            e.preventDefault();
+            welcomer.infoVa(div_not_i);
+          });
+          fiv.appendChild(icon);
+          griderBox.appendChild(fiv);
+
+          const img = document.createElement("img");
+          img.setAttribute("loading", "lazy");
+          img.setAttribute("src", v[i].img);
+          img.setAttribute("data-zoom-image", v[i].img);
+          img.setAttribute("data-real-zoom-image", v[i].img);
+          img.setAttribute("alt", v[i].title);
+          img.addEventListener("dragstart", (event) => event.preventDefault());
+          img.addEventListener("error", () =>
+            welcomer.loaded_imgPrld_error(img, div_not_i)
+          );
+          img.addEventListener("load", () =>
+            welcomer.loaded_imgPrld(img, div_not_i)
+          );
+          griderBox.appendChild(img);
+
+          project.appendChild(griderBox);
+          galleryContainer.appendChild(project);
 
           div_not_i++;
         }
       },
       transalte_top: function (element) {
         let y = 0;
+        if(element){
         const interval = setInterval(() => {
           y += 5;
-          $(element).css("transform", `translateY(${y}px)`);
+          element.style.transform = `translateY(${y}px)`;
           if (y > 100) clearInterval(interval);
         }, 50);
+      }
       },
       call_video_gallery_Preview: function (url = "aer", poster = "") {
         const data_ai_type = document.querySelector("video-player");
@@ -1138,10 +1113,11 @@ galleryContainer.appendChild(project);
 
         document.querySelector("video-player").updateVideoSrc(url, poster);
 
-        $(data_ai_type).attr(
-          "style",
-          "opacity: 1; transform:unset !important;"
-        );
+        if (data_ai_type) {  
+          data_ai_type.style.opacity = "1";
+          data_ai_type.style.transform = "unset"; 
+          data_ai_type.style.setProperty("transform", "unset", "important"); 
+      }
       },
       call_back: function () {
         if (
@@ -1168,37 +1144,44 @@ galleryContainer.appendChild(project);
         var arr = varr.arr;
         var div_not_i = 0;
         var live = ["deviantart"];
-      
+
         document.querySelector(varr.where).innerHTML = ""; // Clear the container
-      
+
         if (varr.type == "albums") {
-          document.querySelector(varr.where).setAttribute("class", "gridsH grids ");
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids ");
         } else {
-          document.querySelector(varr.where).setAttribute("class", "gridsH grids g_gallery ");
-          document.querySelector(
-            'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
-          ).classList.add("active");
+          document
+            .querySelector(varr.where)
+            .setAttribute("class", "gridsH grids g_gallery ");
+          document
+            .querySelector(
+              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
+            )
+            .classList.add("active");
         }
-      
+
         // Handle the albums case
         if (varr.type == "albums") {
           for (var i = 0; i < arr.length; i++) {
             var p_open = "";
-      
+
             var project = document.createElement("project");
-      
+
             p_open = `<p_open data-title="Open Album" onclick="welcomer.pages.gallery.lda('${arr[i]["name"]}')">
               <i class="bi bi-link"></i> Open Album
             </p_open>`;
             var name = arr[i]["name"];
             var image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
             project.setAttribute("id-int", i);
-      
+
             var is_live = "";
             if (arr[i]["name"] == "deviantart") {
-              is_live = "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
+              is_live =
+                "<span_live><btn_l><i class='bi bi-broadcast-pin'></i> Live Feed</btn_l></span_live>";
             }
-      
+
             if (arr[i]["name"] == "video") {
               project.innerHTML = `
                 <grider_box>
@@ -1223,11 +1206,11 @@ galleryContainer.appendChild(project);
                 </grider_box>
               `;
             }
-      
+
             document.querySelector(varr.where).appendChild(project);
           }
         }
-      
+
         // Handle the gallery case
         if (varr.type == "gallery") {
           var v = arr;
@@ -1235,21 +1218,21 @@ galleryContainer.appendChild(project);
             var thi = "class='is_touch'";
             var p_open = "";
             var project = document.createElement("project");
-      
+
             if (welcomer.isMobile()) {
               thi = `onclick="welcomer.openLink(${div_not_i})"`;
             }
-      
+
             project.setAttribute("style", "transform: scale(0) !important;");
             project.setAttribute("id-int", `${div_not_i}`);
             project.setAttribute("box-ui", `uit-${varr.type}`);
-      
+
             var a_project = "";
             if (v[i].href != "-") {
               a_project = `<a class="fiv_d" title="Open on Deviantart: ${v[i].title}" href="${v[i]["href"]}" target="_blank" data-int="${div_not_i}">
                 <i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}</a>`;
             }
-      
+
             project.innerHTML = `
               <grider_box>
                 ${p_open} ${a_project}
@@ -1257,15 +1240,17 @@ galleryContainer.appendChild(project);
                 <img loading="lazy" ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" src="${v[i].thumb}" data-zoom-image="${v[i].img}" data-real-zoom-if_video="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}" />
               </grider_box>
             `;
-      
-            document.querySelector("grider_viewer#gallery-container").appendChild(project);
+
+            document
+              .querySelector("grider_viewer#gallery-container")
+              .appendChild(project);
             div_not_i++;
           }
         }
-      
+
         // Callback after the process
         varr?.callback({ l: arr.length, r: arr });
-      },      
+      },
       callv2: function () {
         window.location.href = "/?p=gallery";
       },
@@ -1299,8 +1284,17 @@ galleryContainer.appendChild(project);
           editor_container.setAttribute("class", "gridsH grids g_gallery ");
           logContainer.id = "logContainer";
           editor_container.innerHTML = "";
-          $(data_ui_type).find("#gallery-container").remove();
-          $(data_ui_type).find("iframe").remove();
+          if (data_ui_type) {
+            const galleryContainer = data_ui_type.querySelector("#gallery-container");
+            if (galleryContainer) {
+                galleryContainer.remove();
+            }
+        
+            const iframes = data_ui_type.querySelectorAll("iframe");
+            if (iframes) {
+                iframes.forEach(iframe => iframe.remove());
+            }
+        }
           editor_container.id = "gallery-container";
           iframe.id = "preview-container";
           resizer.id = "resizer-container";
@@ -1397,8 +1391,9 @@ galleryContainer.appendChild(project);
   trcp_s: function (t = 0) {
     if (t == 0) {
       window.draggable.enabled = false;
-      $("editor-wrapper").removeClass("active_f");
-    }
+      if (editorWrapper) {
+        editorWrapper.classList.remove("active_f");
+    }    }
     if (t == 1) {
       if (window.draggable.enabled) {
         welcomer.trcp(parseInt(window.draggable.style_left));
@@ -1409,51 +1404,37 @@ galleryContainer.appendChild(project);
     }
   },
   trcp: function (left_fH = 0) {
-    if (
-      left_fH < $("editor-wrapper").width() - 50 ||
-      $("div#editor-container").width() < 100
-    ) {
-      var left_f = left_fH - 4;
-      var full_size = $('section[data-ui-type="editor"]').width();
+    const editorWrapper2 = document.querySelector("editor-wrapper");
+const editorContainer = document.querySelector("div#editor-container");
+const editorSection = document.querySelector('section[data-ui-type="editor"]');
+const previewContainer = editorSection ? editorSection.querySelector("iframe#preview-container") : null;
+const resizerContainer = editorSection ? editorSection.querySelector("div#resizer-container") : null;
+const sizeR = document.querySelector("size_r");
+const logContainer = document.querySelector("div#logContainer");
 
-      function convertPxToPercentage(pxValue, parentValue) {
-        return (pxValue / parentValue) * 100;
-      }
+if (editorWrapper2 && editorContainer && editorSection && previewContainer && resizerContainer && sizeR && logContainer) {
+    let left_fH = editorContainer.offsetWidth;
+    if (left_fH < editorWrapper2.offsetWidth - 50 || editorContainer.offsetWidth < 100) {
+        let left_f = left_fH - 4;
 
-      $("editor-wrapper").addClass("active_f");
+        editorWrapper2.classList.add("active_f");
 
-      $('section[data-ui-type="editor"]')
-        .find("#editor-container")
-        .attr("style", `width: ${left_f}px !important;`);
-      $('section[data-ui-type="editor"] iframe#preview-container').attr(
-        "style",
-        `width: ${
-          $('section[data-ui-type="editor"]').width() - left_f - 10
-        }px !important;`
-      );
+        editorSection.querySelector("#editor-container").style.setProperty("width", `${left_f}px`, "important");
+        previewContainer.style.setProperty("width", `${editorSection.offsetWidth - left_f - 10}px`, "important");
+        resizerContainer.style.setProperty("left", `${left_f}px`, "important");
+        resizerContainer.classList.add("active");
+        sizeR.style.display = "block"; 
+        sizeR.innerHTML = ""; 
+        const rulerIcon = document.createElement("i");
+        rulerIcon.className = "bi bi-rulers";
+        const textNode = document.createTextNode(` ${previewContainer.offsetWidth}px x ${previewContainer.offsetHeight}px`);
 
-      $('section[data-ui-type="editor"] div#resizer-container').attr(
-        "style",
-        `left: ${left_f}px !important;`
-      );
-      $('section[data-ui-type="editor"] div#resizer-container').addClass(
-        "active"
-      );
-      $("size_r").show();
-      $("size_r").html(
-        `<i class="bi bi-rulers"></i> ${$(
-          'section[data-ui-type="editor"] iframe#preview-container'
-        ).width()}px x ${$(
-          'section[data-ui-type="editor"] iframe#preview-container'
-        ).height()}px`
-      );
-      $("div#logContainer").attr(
-        "style",
-        `width: ${$(
-          'section[data-ui-type="editor"] iframe#preview-container'
-        ).width()}px;`
-      );
+        sizeR.appendChild(rulerIcon);
+        sizeR.appendChild(textNode);
+
+        logContainer.style.width = `${previewContainer.offsetWidth}px`;
     }
+}
     welcomer.editor.edtr.layout();
   },
   lang: function () {
@@ -1467,9 +1448,7 @@ galleryContainer.appendChild(project);
     });
     return arr;
   },
-  $: {
-    
-  },
+  $: {},
   f: $,
   gallery_temp: [],
   infoVa_img: function (event) {
@@ -1482,25 +1461,7 @@ galleryContainer.appendChild(project);
       ImagePreview_src.src(clickedElement.getAttribute("src"));
       document.body.appendChild(ImagePreview_src);
     }
-    return false;
-    if (welcomer.gallery_temp.length > 0) {
-      welcomer.eronelit_gallery.call_ui(welcomer.gallery_temp);
-    } else {
-      var clickedElement = event.target || event;
-      var imgH = new Image();
-      imgH.src = clickedElement.getAttribute("src");
-
-      imgH.onload = function () {
-        $(imgH, document.body).ezPlus({
-          zoomType: "inner",
-          containLensZoom: true,
-          speed: 10,
-        });
-        $("body").append(
-          '<div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>'
-        );
-      };
-    }
+     
   },
   constructor: function () {
     this.isMobile();
@@ -1549,22 +1510,7 @@ galleryContainer.appendChild(project);
   },
   cards_links: [],
   gallery_delegator: function (dlg = "a") {
-    $("#image-popups").magnificPopup({
-      delegate: dlg,
-      type: "image",
-      removalDelay: 500,
-      callbacks: {
-        beforeOpen: function () {
-          this.st.image.markup = this.st.image.markup.replace(
-            "mfp-figure",
-            "mfp-figure mfp-with-anim"
-          );
-          this.st.mainClass = "mfp-zoom-in";
-        },
-      },
-      closeOnContentClick: true,
-      midClick: true,
-    });
+    
   },
   cp: function () {
     $("iframe.iframe_mask").removeAttr("style");
@@ -1716,17 +1662,16 @@ galleryContainer.appendChild(project);
     };
     xhr.send(data);
   },
-  clock: { 
-    S_etInterval: async function(callback, interval) {
-       
+  clock: {
+    S_etInterval: async function (callback, interval) {
       while (true) {
         callback();
         await delay(interval);
       }
     },
-    S_etTimeout: async function(callback, delay) {
+    S_etTimeout: async function (callback, delay) {
       const start = performance.now();
-      
+
       function checkTime() {
         if (performance.now() - start >= delay) {
           callback();
@@ -1734,9 +1679,9 @@ galleryContainer.appendChild(project);
           requestAnimationFrame(checkTime);
         }
       }
-      
+
       requestAnimationFrame(checkTime);
-    }
+    },
   },
   rnd: 0,
   pdf: async function () {
@@ -1793,28 +1738,29 @@ galleryContainer.appendChild(project);
     }
     fsrc(srcf);
   },
-  home_list: function(elm, Elem = ""){
-    switch(Elem){
-      case "CTHP":
-        window.location.href = '/';
-      break;
+  home_list: function (elm, Elem = "") {
+    switch (Elem) {
+      case "CTHP();":
+      case "CTHP()":
+        window.location.href = "/";
+        break;
       case "welcomer.bundleSuggestedS(1);":
         welcomer.bundleSuggestedS(1);
         break;
       case "welcomer.bundleSuggestedS('2');":
-        welcomer.bundleSuggestedS('2');
+        welcomer.bundleSuggestedS("2");
         break;
       case "welcomer.pages.gallery.call_back();":
         welcomer.pages.gallery.call_back();
         break;
       case "welcomer.reload_me(this);":
-        welcomer.reload_me(elem);       
-         break;
+        welcomer.reload_me(elem);
+        break;
       case "welcomer.search_Kompjiler(this);":
-        welcomer.search_Kompjiler(elem);       
+        welcomer.search_Kompjiler(elem);
         break;
       case "welcomer.blogloader('all');":
-        welcomer.blogloader('all');
+        welcomer.blogloader("all");
         break;
       case "welcomer.Social.tg.open();":
         welcomer.Social.tg.open();
@@ -1824,34 +1770,34 @@ galleryContainer.appendChild(project);
         break;
       case "welcomer.Hclose(this)":
       case "welcomer.Hclose(this);":
-        welcomer.Hclose(elm) ;
+        welcomer.Hclose(elm);
         break;
       case "$(this).removeClass('info_box_active');":
-        $(elem).removeClass('info_box_active'); 
+        $(elem).removeClass("info_box_active");
         break;
       case "welcomer.pgloader('/?pages=cv-pdf');":
-         welcomer.pgloader('/?pages=cv-pdf');
-      break;
+        welcomer.pgloader("/?pages=cv-pdf");
+        break;
       case "welcomer.Hclose(this);":
-         welcomer.Hclose(elm);
-         break;
+        welcomer.Hclose(elm);
+        break;
       case "welcomer.projectsc();":
-         welcomer.projectsc();
-         
-      break;
+        welcomer.projectsc();
+
+        break;
       case "welcomer.pages.gallery.callv2();":
-      welcomer.pages.gallery.callv2();
-      break;
+        welcomer.pages.gallery.callv2();
+        break;
       case "welcomer.blogloader('all');":
-      welcomer.blogloader('all');
-      break;
+        welcomer.blogloader("all");
+        break;
       case "welcomer.editor.startfV();":
-      welcomer.editor.startfV();
-      break;
+        welcomer.editor.startfV();
+        break;
       case "welcomer.cp();":
-      welcomer.cp();
-      break;
-    }  
+        welcomer.cp();
+        break;
+    }
   },
   generateGrid: function () {
     document
@@ -1986,14 +1932,13 @@ galleryContainer.appendChild(project);
 
         buttons_box_shadow.appendChild(a);
       } else {
-        div.addEventListener("click",function(){
-        // div.onclick = function () {
+        div.addEventListener("click", function () {
+          // div.onclick = function () {
           if (!v.beta || !v.soon) {
             if (v.href.f == true) {
               // eval(`${v.href.f_u}`);
               // new Function(v.href.f_u);
-              welcomer.home_list(div,`${v.href.f_u}`);
-               
+              welcomer.home_list(div, `${v.href.f_u}`);
             } else if (v.href.f == "soon") {
             } else {
               if ((v.href.target = "self")) {
@@ -5965,8 +5910,6 @@ width="16"><span></span></bar_t><span>  </span>
     }
   },
   Hclose: function (aer) {
-    
-   
     $("body").removeAttr("data-category-name");
     $("solar_arrow labelv").html(
       `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
@@ -5984,7 +5927,7 @@ width="16"><span></span></bar_t><span>  </span>
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
     if (containeds.includes("?p=blog&id=")) {
-       welcomer.blogloader("all");
+      welcomer.blogloader("all");
 
       return false;
     }
@@ -6189,7 +6132,6 @@ width="16"><span></span></bar_t><span>  </span>
     };
   },
   toblob: function (d) {
-    
     const img = new Image();
 
     var img_d = d.getAttribute("src");
@@ -7584,4 +7526,4 @@ window.countFPS = (function () {
     };
   };
   return f;
-}); 
+});

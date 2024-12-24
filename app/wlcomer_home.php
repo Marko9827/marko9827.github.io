@@ -153,7 +153,7 @@ $csp = (string)"
  
     "; 
  $csp =  "
- 
+ script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
      style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;
@@ -166,7 +166,7 @@ $csp = (string)"
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-  $csp = "";
+$csp = "";
 #header("Content-Security-Policy:  $csp");
  
 

@@ -592,11 +592,10 @@ class PostContent extends HTMLElement {
       /*).on("onload", function(){
         welcomer.img_load(this);
       });*/
-      var v = document.querySelector('.your-selector'); // Replace with your actual selector
-v.style.opacity = 0; // Set opacity to 0
-v.setAttribute('data-title', 'Click (hovered image) for view image in full size'); // Set the data-title attribute
 
-// Add event listeners for hover (mouseover and mouseout)
+      v.style.opacity = 0;  
+v.setAttribute('data-title', 'Click (hovered image) for view image in full size'); 
+ 
 v.addEventListener('mouseover', function () {
   welcomer.showAnchorTitle(v, v.getAttribute('data-title'));
 });
@@ -604,12 +603,10 @@ v.addEventListener('mouseover', function () {
 v.addEventListener('mouseout', function () {
   welcomer.hideAnchorTitle();
 });
-
-// Remove the title attribute and store it in the data attribute
+ 
 var title = v.getAttribute('title');
 v.removeAttribute('title');
-
-// Optionally, use mouseleave for additional behavior if needed
+ 
 v.addEventListener('mouseleave', function () {
   welcomer.hideAnchorTitle();
 });

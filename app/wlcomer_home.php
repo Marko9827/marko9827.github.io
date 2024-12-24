@@ -153,6 +153,7 @@ $csp = (string)"
  
     "; 
  $csp =  "
+ 
      style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;

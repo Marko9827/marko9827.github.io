@@ -143,8 +143,10 @@ function ScriptCalcHash(){
 #     script-src $cdn_urls  'nonce-$nonce' ; 
  
  /*
+'strict-dynamic' 'nonce-rAnd0m123' 'unsafe-inline' http: https:;
+
 $csp = (string) "
-    script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval';
+    script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
     */
 $csp = (string)"
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
@@ -153,8 +155,7 @@ $csp = (string)"
  
     "; 
  $csp =  "
-    
-    style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
+     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
     font-src 'self' data: $fonts;
     connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.wixmp.com data:; 
@@ -214,9 +215,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <meta name="referrer" content="origin">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
-    <script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
-    <?php
+  
+  
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+  <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
+    <?php
+*/
 #    createLinkElements($data['preloadLinks']);
     createLinkElements($data['allLinks']);
     createScriptElements($data['scripts']);
@@ -3061,6 +3066,29 @@ margin: 20px 0px !important;
     enable-background: new 0 0 512 512 !important;
     pointer-events: none;
 }
+
+
+div#clavs div_header,
+div#clavs br_ta,
+#clavs grider_viewer {
+    transition: .3s !important;
+}
+
+div#clavs.scrollactive div_header,
+div#clavs.scrollactive br_ta {
+     
+}
+
+div#clavs.scrollactive div_header {
+    opacity:0 !important;
+}
+div#clavs.scrollactive grider_viewer{
+    transform:translateY(0px);
+    padding-top:10px !important;
+}
+div#clavs.scrollactive br_ta{
+    top:0px; 
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3102,7 +3130,7 @@ margin: 20px 0px !important;
 */ ?>
 </head>
 
-<body onload="welcomer.start(this);"  >
+<body   >
     <?php /*<custom-viewer style="
 position: fixed;
 left: 0px;
@@ -3352,7 +3380,7 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
         <br_ta class="active_scr">
 
         </br_ta>
-        <grider_viewer class="gridsH grids">
+        <grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();">
 
         </grider_viewer>
         <?php /*

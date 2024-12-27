@@ -1,8 +1,6 @@
 <?php
 
-namespace portfolio;
-
-
+namespace portfolio; 
 
 use \Exception;
 use \League\CommonMark\CommonMarkConverter;

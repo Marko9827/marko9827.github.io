@@ -1466,16 +1466,20 @@ if (editorWrapper2 && editorContainer && editorSection && previewContainer && re
   constructor: function () {
     this.isMobile();
 
-    document.querySelector(".Ignoring_me_iframe").onload = function () {
+    if(document.querySelector(".Ignoring_me_iframe")){
+      document.querySelector(".Ignoring_me_iframe").onload = function () {
       welcomer.pgloader("yes");
     };
-
+  }
+  if(document.querySelector(".Ignoring_me_iframe")){
     document.querySelector(".Ignoring_me_iframe").onmousemove = function () {
       welcomer.cursor_hide(this);
     };
+  }
+  if(document.querySelector(".Ignoring_me_iframe")){
     document.querySelector(".Ignoring_me_iframe").onmouseout = function () {
       welcomer.cursor_hide(this);
-    };
+    };}
 
     this.custom_evjents();
     document

@@ -3081,6 +3081,7 @@ div#clavs.scrollactive br_ta {
 
 div#clavs.scrollactive div_header {
     opacity:0 !important;
+    pointer-events: none !important;
 }
 div#clavs.scrollactive grider_viewer{
     transform:translateY(0px);

@@ -1146,6 +1146,7 @@ const welcomer = {
             )
             .classList.remove("active");
           this.call();
+          welcomer.uBoss({}, "", `${window.location.origin}/?p=gallery`);
         }
       },
       call_albums: function (
@@ -1266,6 +1267,7 @@ const welcomer = {
         window.location.href = "/?p=gallery";
       },
       call: function () {
+        
         if (
           document.querySelectorAll(
             "div#clavs.gallery_mode section[data-ui-type='gallery']:not(.hidden_omega)"
@@ -1311,38 +1313,30 @@ const welcomer = {
           resizer.id = "resizer-container";
           iframe.sandbox = "allow-same-origin allow-scripts";
           size_r.setAttribute("style", "display: none;");
+          if (data_ui_type) {
+
           data_ui_type.appendChild(editor_container);
+          }
           logContainer.classList.remove("hidden_omega");
           var jsonfs31 = [];
           document.querySelectorAll("iframe").forEach((element) => {
             element.setAttribute("style", "display:none;");
           });
-          hmdata_.removeAttribute("class");
+          hmdata_?.removeAttribute("class");
 
-          document
-            .querySelector("div#clavs")
-            .setAttribute(
+          document?.querySelector("div#clavs")?.setAttribute(
               "style",
               "transform: none !important; opacity: 1; rgb( 0 0 0 / 0.6) !important"
             );
-          document
-            .querySelector("div#clavs")
-            .setAttribute("class", "gallery_mode");
-          document
-            .querySelector("hh_anim_start")
-            .setAttribute("style", "display: none;");
-          document
-            .querySelector("p.p-c")
-            .setAttribute("style", "display: none;");
-          document
-            .querySelector("div#clavs div_header:not([data-url])")
-            .setAttribute("style", "display: none !important;");
+          document?.querySelector("div#clavs")?.setAttribute("class", "gallery_mode");
+          document?.querySelector("hh_anim_start")?.setAttribute("style", "display: none;");
+          document?.querySelector("p.p-c")?.setAttribute("style", "display: none;");
+          document?.querySelector("div#clavs div_header:not([data-url])")?.setAttribute("style", "display: none !important;");
 
           const urlParamsG = new URLSearchParams(window.location.search);
           if (urlParamsG.has("album")) {
             welcomer.pages.gallery.lda(urlParamsG.get("album"));
-          } else {
-          }
+          }  
         }
         this.t();
       },
@@ -1493,13 +1487,13 @@ if (editorWrapper2 && editorContainer && editorSection && previewContainer && re
     };}
 
     this.custom_evjents();
-    document
-      .querySelector(".wallpaperVideo")
-      .addEventListener("ended", function (v) {
+    if(document.querySelector(".wallpaperVideo")){
+    document.querySelector(".wallpaperVideo").addEventListener("ended", function (v) {
         try {
           v.play();
         } catch (v) {}
       });
+    }
     var styleClass = document.createElement("style");
     styleClass.setAttribute("type", "text/css");
     styleClass.setAttribute("data-what", "generated");
@@ -2020,7 +2014,9 @@ if (editorWrapper2 && editorContainer && editorSection && previewContainer && re
     });
 
     // document.querySelector(".wallpaperVideo").play();
+    if(document.querySelector(".wallpaperVideo")){
     document.querySelector(".wallpaperVideo").removeAttribute("style");
+    }
   },
   vdjae: async function () {
     $("img#svg_loader_img").css({ opacity: "0" });
@@ -3883,7 +3879,9 @@ width="16"><span></span></bar_t><span>  </span>
     $("gridder_loader img").attr("onload", "welcomer.loading_t(this)");
     if (!this.isChrome) {
     }
+    if(document.querySelector("iframe")){
     document.querySelector("iframe").addEventListener("load", function () {});
+    }
     this.load_gallery();
 
     document.querySelectorAll("script").forEach(function (v) {
@@ -3891,9 +3889,9 @@ width="16"><span></span></bar_t><span>  </span>
         //   v.remove();
       } catch (v) {}
     });
-    document
-      .getElementById("clavs")
-      .setAttribute("style", "transform: translateY(-100%);");
+    if(document.getElementById("clavs")){
+    document.getElementById("clavs").setAttribute("style", "transform: translateY(-100%);");
+    }
     this.url_params();
 
     this.generateGrid();
@@ -3968,6 +3966,16 @@ width="16"><span></span></bar_t><span>  </span>
         $("iframe:not(.iframe_mask)").removeAttr("style");
       }
     }
+  },
+  url_aprams: function(key = ""){
+    const params = new URLSearchParams(window.location.search);
+    let rv;
+      if (params.has(key)) {  
+        rv = params.get(key);  
+      } else { 
+        rv = null; 
+      } 
+    return rv;
   },
   editor: {
     editor_fail_message: function (aet) {
@@ -4936,9 +4944,8 @@ width="16"><span></span></bar_t><span>  </span>
       }
     },
     callGallery: function () {
-      const data_ui_type = document.querySelector(
-          'section[data-ui-type="gallery"] gallery_box'
-        ),
+      
+      const data_ui_type = document.querySelector('section[data-ui-type="gallery"] gallery_box'),
         editor_container = document.createElement("div"),
         resizer = document.createElement("div"),
         size_r = document.createElement("size_r"),
@@ -5646,8 +5653,12 @@ width="16"><span></span></bar_t><span>  </span>
       u: url,
       c: function () {
         if (url.includes("gallery")) {
-          welcomer.pages.gallery.call();
-
+          
+          welcomer.pages.gallery.call(); 
+          if(welcomer.url_aprams("album")){ 
+            welcomer.pages.gallery.lda(welcomer.url_aprams("album")); 
+            return "[>-|-<]";
+          } 
           return;
         }
 
@@ -5738,6 +5749,10 @@ width="16"><span></span></bar_t><span>  </span>
             );
           }, 100);
         } else if (url.includes("gallery")) {
+          if(welcomer.url_aprams("album")){ 
+            welcomer.pages.gallery.lda(welcomer.url_aprams("album")); 
+            return "[>-|-<]";
+          } 
           $("body").removeAttr("data-hmm");
           welcomer.galleryload();
 

@@ -148,26 +148,33 @@ function ScriptCalcHash(){
 $csp = (string) "
     script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
     */
+
+    $POLIFY = "https://cdn.jsdelivr.net/npm/trusted-types-polyfill@2.1.0/dist/trusted-types-polyfill.min.js";
+
 $csp = (string)"
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
     // script-src-elem 'nonce-$nonce' https://$_SERVER[HTTP_HOST] $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval' ;
    script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
  
     "; 
- $csp =  "
-     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
-    img-src  'self' blob: data: $cdn_urls  *.wixmp.com ;
+ $csp =  " 
+    script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
+    style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
+    img-src  'self' blob: data: $cdn_urls  ;
+    media-src 'self' blob: data: $cdn_urls;
     font-src 'self' data: $fonts;
-    connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.wixmp.com data:; 
+    connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost  data:; 
     frame-src 'self';
     object-src 'none';
+    manifest-src 'self';
     base-uri 'none';
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
+    require-trusted-types-for 'script';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
- 
+ $csp = "";
 #header("Content-Security-Policy:  $csp");
  
 
@@ -218,7 +225,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
   
   
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-  <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
+    <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
+
+ <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
     <?php
 */
@@ -3131,7 +3140,7 @@ div#clavs.scrollactive br_ta{
 */ ?>
 </head>
 
-<body   >
+<body >
     <?php /*<custom-viewer style="
 position: fixed;
 left: 0px;

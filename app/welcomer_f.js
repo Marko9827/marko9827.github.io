@@ -1,5 +1,13 @@
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
+if (window.TrustedTypes) {
+  const policy = TrustedTypes.createPolicy('default', {
+      createHTML: (input) => input,  
+      createScript: (input) => input,  
+  });
+}
+
+
 function CTHP(){
   window.location.href = "/";
 }
@@ -38,14 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
     }
   });
-  document.addEventListener("keydown", (event) => {
-    if (
-      (event.ctrlKey && event.key === "s") ||
-      (event.metaKey && event.key === "s")
-    ) {
-      event.preventDefault();
-    }
-  });
+  
 
   document.body.addEventListener("contextmenu", function (event) {
     event.preventDefault();
@@ -1149,7 +1150,175 @@ const welcomer = {
           welcomer.uBoss({}, "", `${window.location.origin}/?p=gallery`);
         }
       },
-      call_albums: function (
+      call_albums(varr = { where: "", arr: [], callback: function () {} }, type = "albums") {
+        const arr = varr.arr;
+        let div_not_i = 0;
+        const live = ["deviantart"];
+    
+        const element = document.querySelector(varr.where);
+        if (element) {
+          element.textContent = "";
+        }
+    
+        if (varr.type == "albums") {
+          element.setAttribute("class", "gridsH grids ");
+        } else {
+          element.setAttribute("class", "gridsH grids g_gallery ");
+          document
+            .querySelector(
+              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
+            )
+            .classList.add("active");
+        }
+    
+        // Handle the albums case
+        if (varr.type == "albums") {
+          for (let i = 0; i < arr.length; i++) {
+            const project = document.createElement("project");
+            project.setAttribute("id-int", i);
+            
+            const p_open = document.createElement("p_open");
+            p_open.setAttribute("data-title", "Open Album");
+            p_open.setAttribute("onclick", `welcomer.pages.gallery.lda('${arr[i]["name"]}')`);
+            const p_open_icon = document.createElement("i");
+            p_open_icon.classList.add("bi", "bi-link");
+            p_open.appendChild(p_open_icon);
+            p_open.appendChild(document.createTextNode(" Open Album"));
+            
+            const name = arr[i]["name"];
+            const image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+            
+            let is_live = null;
+            if (arr[i]["name"] == "deviantart") {
+              is_live = document.createElement("span_live");
+              const btn_l = document.createElement("btn_l");
+              const btn_l_icon = document.createElement("i");
+              btn_l_icon.classList.add("bi", "bi-broadcast-pin");
+              btn_l.appendChild(btn_l_icon);
+              btn_l.appendChild(document.createTextNode(" Live Feed"));
+              is_live.appendChild(btn_l);
+            }
+            
+            const grider_box = document.createElement("grider_box");
+            
+            const p = document.createElement("p");
+            const p_span = document.createElement("span");
+            p_span.textContent = `Album - ${arr[i]["gallery"].length}`;
+            p.appendChild(p_span);
+            grider_box.appendChild(p);
+            
+            grider_box.appendChild(p_open);
+            if (is_live) grider_box.appendChild(is_live);
+            
+            const fiv = document.createElement("fiv");
+            const fiv_icon = document.createElement("i");
+            fiv_icon.classList.add("bi", "bi-info-circle");
+            fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
+            fiv_icon.setAttribute("title", "Go to Album");
+            fiv.appendChild(fiv_icon);
+            grider_box.appendChild(fiv);
+            
+            const sp_clv = document.createElement("sp_clv");
+            const sp_clv_icon = document.createElement("i");
+            sp_clv_icon.classList.add("bi", arr[i]["name"] == "video" ? "bi-film" : "bi-images");
+            sp_clv.appendChild(sp_clv_icon);
+            const p_title = document.createElement("p-title");
+            p_title.textContent = name;
+            sp_clv.appendChild(p_title);
+            grider_box.appendChild(sp_clv);
+            
+            project.appendChild(grider_box);
+            document.querySelector(varr.where).appendChild(project);
+
+
+
+    
+            if (is_live) grider_box.appendChild(is_live);
+    
+            if (arr[i]["name"] == "video") {
+              const video = document.createElement("video");
+              video.setAttribute("autoplay", "");
+              video.setAttribute("muted", "");
+              video.setAttribute("playsinline", "");
+              video.setAttribute("loop", "");
+              video.setAttribute("style", "pointer-events:none;");
+              video.setAttribute("onloadedmetadata", `welcomer.loaded_img(this, ${i});`);
+              video.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+              grider_box.appendChild(video);
+            }
+    
+            const img = document.createElement("img");
+            img.setAttribute("loading", "lazy");
+            img.setAttribute("ondragstart", "return false;");
+            img.setAttribute("onload", `welcomer.loaded_img(this, ${i});`);
+            if (arr[i]["name"] == "home"){
+            img.setAttribute("src", `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`);
+            img.setAttribute("data-zoom-image", `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`);
+          } else { 
+            img.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+            img.setAttribute("data-zoom-image", arr[i]["gallery"][0]["thumb"]);
+          }
+            img.setAttribute("alt", name);
+            grider_box.appendChild(img);
+    
+            project.appendChild(grider_box);
+            document.querySelector(varr.where).appendChild(project);
+          }
+        }
+    
+        // Handle the gallery case
+        if (varr.type == "gallery") {
+          const v = arr;
+          for (let i = 0; i < v.length; i++) {
+            const project = document.createElement("project");
+            project.setAttribute("style", "transform: scale(0) !important;");
+            project.setAttribute("id-int", `${div_not_i}`);
+            project.setAttribute("box-ui", `uit-${varr.type}`);
+    
+            const grider_box = document.createElement("grider_box");
+    
+            let thi = "class='is_touch'";
+            if (welcomer.isMobile()) {
+              thi = `onclick="welcomer.openLink(${div_not_i})"`;
+            }
+    
+            const fiv = document.createElement("fiv");
+            fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
+            grider_box.appendChild(fiv);
+    
+            const img = document.createElement("img");
+            img.setAttribute("loading", "lazy");
+            img.setAttribute("ondragstart", "return false;");
+            img.setAttribute("onerror", `welcomer.loaded_imgPrld_error(this, ${div_not_i});`);
+            img.setAttribute("onload", `welcomer.loaded_imgPrldV2(this, ${div_not_i});`);
+            img.setAttribute("src", v[i].thumb);
+            img.setAttribute("data-zoom-image", v[i].img);
+            img.setAttribute("data-real-zoom-if_video", v[i].thumb);
+            img.setAttribute("data-real-zoom-image", v[i].img);
+            img.setAttribute("alt", v[i].title);
+            grider_box.appendChild(img);
+    
+            if (v[i].href != "-") {
+              const a_project = document.createElement("a");
+              a_project.setAttribute("class", "fiv_d");
+              a_project.setAttribute("title", `Open on Deviantart: ${v[i].title}`);
+              a_project.setAttribute("href", v[i]["href"]);
+              a_project.setAttribute("target", "_blank");
+              a_project.setAttribute("data-int", `${div_not_i}`);
+              a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}`;
+              grider_box.appendChild(a_project);
+            }
+    
+            project.appendChild(grider_box);
+            document.querySelector("grider_viewer#gallery-container").appendChild(project);
+            div_not_i++;
+          }
+        }
+    
+        // Callback after the process
+        varr?.callback({ l: arr.length, r: arr });
+      },
+      call_albumsV2: function (
         varr = { where: "", arr: [], callback: function () {} },
         type = "albums"
       ) {
@@ -1157,7 +1326,10 @@ const welcomer = {
         var div_not_i = 0;
         var live = ["deviantart"];
 
-        document.querySelector(varr.where).innerHTML = ""; // Clear the container
+        const element = document.querySelector(varr.where);
+        if (element) {
+            element.textContent = "";   
+        }  
 
         if (varr.type == "albums") {
           document
@@ -1206,7 +1378,19 @@ const welcomer = {
                   <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${arr[i]["gallery"][0]["thumb"]}" data-zoom-image="${arr[i]["gallery"][0]["thumb"]}" alt="${name}" />
                 </grider_box>
               `;
+            } else if(arr[i]['name'] == "home"){
+              project.innerHTML = `
+              <grider_box>
+                <p><span>Album - ${arr[i]["gallery"].length}</span></p>
+                ${p_open} ${is_live}
+                <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
+                <sp_clv><i class="bi bi-images"></i><p-title>${name}</p-title></sp_clv>
+                ${is_live}
+                <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" alt="${name}" />
+              </grider_box>
+            `;
             } else {
+              
               project.innerHTML = `
                 <grider_box>
                   <p><span>Album - ${arr[i]["gallery"].length}</span></p>
@@ -1214,7 +1398,7 @@ const welcomer = {
                   <fiv><i onclick="welcomer.blogloader(${i});" class="bi bi-info-circle" title="Go to Album"></i></fiv>
                   <sp_clv><i class="bi bi-images"></i><p-title>${name}</p-title></sp_clv>
                   ${is_live}
-                  <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" alt="${name}" />
+                  <img loading="lazy" ondragstart="return false;" onload="welcomer.loaded_img(this, ${i});" src="${arr[i]["gallery"][0]['thumb']}" data-zoom-image="${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2" alt="${name}" />
                 </grider_box>
               `;
             }
@@ -1296,7 +1480,7 @@ const welcomer = {
             };
           editor_container.setAttribute("class", "gridsH grids g_gallery ");
           logContainer.id = "logContainer";
-          editor_container.innerHTML = "";
+          editor_container.textContent = "";
           if (data_ui_type) {
             const galleryContainer = data_ui_type.querySelector("#gallery-container");
             if (galleryContainer) {
@@ -1429,7 +1613,7 @@ if (editorWrapper2 && editorContainer && editorSection && previewContainer && re
         resizerContainer.style.setProperty("left", `${left_f}px`, "important");
         resizerContainer.classList.add("active");
         sizeR.style.display = "block"; 
-        sizeR.innerHTML = ""; 
+        sizeR.textContent  = ""; 
         const rulerIcon = document.createElement("i");
         rulerIcon.className = "bi bi-rulers";
         const textNode = document.createTextNode(` ${previewContainer.offsetWidth}px x ${previewContainer.offsetHeight}px`);
@@ -1498,7 +1682,7 @@ if (editorWrapper2 && editorContainer && editorSection && previewContainer && re
     styleClass.setAttribute("type", "text/css");
     styleClass.setAttribute("data-what", "generated");
     styleClass.setAttribute("nonce", window.stmp);
-    styleClass.innerHTML = "";
+    styleClass.textContent  = "";
     document.querySelectorAll("style").forEach(function (v) {
       styleClass.innerHTML += v.innerHTML;
       v.remove();
@@ -3263,7 +3447,7 @@ width="16"><span></span></bar_t><span>  </span>
     call_ui: function (json = []) {
       var this2 = welcomer.eronelit_gallery;
 
-      document.querySelector(this2.scrolle.root_scroll).innerHTML = "";
+      document.querySelector(this2.scrolle.root_scroll).textContent  = "";
       var a = json.length,
         v = 1;
       for (var i = 0; i < json.length; i++) {
@@ -4404,7 +4588,7 @@ width="16"><span></span></bar_t><span>  </span>
     ],
     call_nav: function () {
       const m_down = document.querySelector("btns_r.btns_r_editor_right");
-      m_down.innerHTML = "";
+      m_down.textContent  = "";
       this.call_nav_conf.forEach(function (res) {
         var i = document.createElement("i");
         i.setAttribute("class", res.icon);

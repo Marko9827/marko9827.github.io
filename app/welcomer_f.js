@@ -1,5 +1,9 @@
 window.draggable = { style_left: "", style_top: "", enabled: false };
 
+function CTHP(){
+  window.location.href = "/";
+}
+
 window.eventListeners_clck = function () {
   document.querySelectorAll("*[data-onclick]").forEach((element) => {
     const onclickCode = element.getAttribute("data-onclick");
@@ -699,8 +703,10 @@ class VideoPlayer extends HTMLElement {
   }
   connectedCallback() {
     const src = this.getAttribute("video-src");
+    if(src){
     this.updateVideoSrc(src, "");
     this.removeAttribute("video-src");
+    }
   }
   getPlayer() {
     return this.player;
@@ -710,6 +716,7 @@ class VideoPlayer extends HTMLElement {
   }
   updateVideoSrc(newSrc = "", newPoster = "") {
     if (this.player) {
+      try{
       this.player.src({ src: newSrc, type: "video/mp4" });
       if (newPoster !== "") {
         this.player.poster(newPoster);
@@ -718,6 +725,7 @@ class VideoPlayer extends HTMLElement {
       if (newPoster !== "") {
         this.shadowRoot.querySelector("#canvas_img").src = newPoster;
       }
+    }catch(aer) { }
     }
   }
 }
@@ -842,10 +850,12 @@ img, iframe {
   connectedCallback() {
     const src = this.getAttribute("data-src") || "",
       image = this.getAttribute("data-poster") || "";
+      if(src == ""){}else{
     this.updateVideoSrc(src, image);
     this.removeAttribute("data-src");
     this.removeAttribute("data-poster");
-  }
+  } 
+}
   getPlayer() {
     return this.player;
   }
@@ -854,6 +864,7 @@ img, iframe {
   }
   updateVideoSrc(newSrc = "", newPoster = "") {
     if (this.player) {
+      try{
       this.player.src({ src: newSrc, type: "video/mp4" });
       if (newPoster !== "") {
         this.player.poster(newPoster);
@@ -861,7 +872,7 @@ img, iframe {
       this.player.load();
       if (newPoster !== "") {
         this.shadowRoot.querySelector("#canvas_img").src = newPoster;
-      }
+      } }catch(aer){ }
     }
   }
 }
@@ -1240,7 +1251,7 @@ const welcomer = {
                 <img loading="lazy" ${thi} ondragstart="return false;" onerror="welcomer.loaded_imgPrld_error(this, ${div_not_i});" onload="welcomer.loaded_imgPrldV2(this, ${div_not_i});" src="${v[i].thumb}" data-zoom-image="${v[i].img}" data-real-zoom-if_video="${v[i].thumb}" data-real-zoom-image="${v[i].img}" alt="${v[i].title}" />
               </grider_box>
             `;
-
+            
             document
               .querySelector("grider_viewer#gallery-container")
               .appendChild(project);
@@ -6487,6 +6498,75 @@ width="16"><span></span></bar_t><span>  </span>
     return JSON.stringify(linksArray, null, 2);
   },
   events: {
+    scrollByM: {
+      f: function(){
+        this.a.forEach(function (v) {
+          const scrollableElement = document.querySelector(v.elm);
+          if(scrollableElement){
+          scrollableElement.addEventListener("mousedown", (e) => {
+            v.isDragging = true;
+            scrollableElement.classList.add("dragging");
+            v.startX = e.pageX - scrollableElement.offsetLeft;
+            v.startY = e.pageY - scrollableElement.offsetTop;
+            v.scrollLeft = scrollableElement.scrollLeft;
+            v.scrollTop = scrollableElement.scrollTop;
+          });
+          scrollableElement.addEventListener("touchstart", (e) => {
+            v.isDragging = true;
+            scrollableElement.classList.add("dragging");
+            const touch = e.touches[0];
+            v.startX = touch.pageX - scrollableElement.offsetLeft;
+            v.startY = touch.pageY - scrollableElement.offsetTop;
+            v.scrollLeft = scrollableElement.scrollLeft;
+            v.scrollTop = scrollableElement.scrollTop;
+          });
+          scrollableElement.addEventListener("mousemove", (e) => {
+            if (!v.isDragging) return;
+            e.preventDefault();
+            const x = e.pageX - scrollableElement.offsetLeft;
+            const y = e.pageY - scrollableElement.offsetTop;
+            const walkX = x - v.startX;
+            const walkY = y - v.startY;
+            scrollableElement.scrollLeft = v.scrollLeft - walkX;
+            scrollableElement.scrollTop = v.scrollTop - walkY;
+          });
+          scrollableElement.addEventListener("touchmove", (e) => {
+            if (!v.isDragging) return;
+            const touch = e.touches[0];
+            const x = touch.pageX - scrollableElement.offsetLeft;
+            const y = touch.pageY - scrollableElement.offsetTop;
+            const walkX = x - v.startX;
+            const walkY = y - v.startY;
+            scrollableElement.scrollLeft = v.scrollLeft - walkX;
+            scrollableElement.scrollTop = v.scrollTop - walkY;
+          });
+          scrollableElement.addEventListener("mouseup", () => {
+            v.isDragging = false;
+            scrollableElement.classList.remove("dragging");
+          });
+          scrollableElement.addEventListener("touchend", () => {
+            v.isDragging = false;
+            scrollableElement.classList.remove("dragging");
+          });
+          scrollableElement.addEventListener("mouseleave", () => {
+            v.isDragging = false;
+            scrollableElement.classList.remove("dragging");
+          });
+        }
+        });
+         
+      },
+      a: [
+        {
+          elm: "div#clavs br_tga",
+          isDragging: false,
+          startX: 0, 
+          startY: 0, 
+          scrollLeft: 0, 
+          scrollTop: 0
+        }
+      ]
+    },
     scroll: {
       lastScrollTop: 0,
       menu: function(){
@@ -6512,7 +6592,7 @@ width="16"><span></span></bar_t><span>  </span>
   }},
   start: function () {
     var conff = this.conf;
-   
+    this.events.scrollByM.f();
    
     /*
     this._get_data({

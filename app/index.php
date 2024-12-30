@@ -109,7 +109,21 @@ class portfolio_marko
 
  
     
-
+    function get_BUILD($url){    
+$ch = curl_init(); 
+curl_setopt($ch, CURLOPT_URL, $url);  
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+curl_setopt($ch, CURLOPT_HTTPGET, true);  
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+$response = curl_exec($ch);
+if (curl_errno($ch)) {
+ echo $response;
+}else{
+    echo "EMPTY.";
+}
+ curl_close($ch);  
+    }
     public function __construct($root = "")
     {
         $fullUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
@@ -482,6 +496,16 @@ function minifyJSFile($inputFile)
                 $this->error_page(404);
                 exit();
             }
+        }
+        if ($h == "build2"){
+            exit();  if(!is_dir("$_SERVER[DOCUMENT_ROOT]/build")){
+                mkdir("$_SERVER[DOCUMENT_ROOT]/build");
+            }
+            header("Content-Type: text/plain;");
+echo shell_exec("curl -X GET https://$_SERVER[DOCUMENT_ROOT]");
+            exit();
+            file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html",$this->get_BUILD("https://$_SERVER[HTTP_HOST]/"));
+            exit();
         }
         if ($h == "feed") {
             $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");

@@ -3099,6 +3099,42 @@ div#clavs.scrollactive grider_viewer{
 div#clavs.scrollactive br_ta{
     top:0px; 
 }
+
+fiv_title {
+    background: rgb(0 0 0 / 52%);
+    opacity: 1;
+    z-index: 333;
+    color: white;
+    padding: 5px;
+    border-radius: 4px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    position: absolute;
+    font-size: 11px;
+    margin: 10px;
+    height:26px;
+    margin-top: 10px;
+    padding: 5px;
+    display: block;
+    border-radius: 6px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    min-width: 50px;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: calc(100% - 55px);
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+       text-overflow: ellipsis;
+    padding-top: 12px;
+ }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

@@ -1073,6 +1073,7 @@ const welcomer = {
 
           const fiv = document.createElement("fiv");
           const icon = document.createElement("i");
+          const title = document.createElement("fiv_title");
           icon.className = "bi bi-fullscreen";
           icon.title = "Preview image in full size";
           icon.addEventListener("click", (e) => {
@@ -1081,6 +1082,8 @@ const welcomer = {
           });
           fiv.appendChild(icon);
           griderBox.appendChild(fiv);
+          title.textContent = v[i].title;
+          griderBox.appendChild(title);
 
           const img = document.createElement("img");
           img.setAttribute("loading", "lazy");
@@ -1283,8 +1286,11 @@ const welcomer = {
             }
     
             const fiv = document.createElement("fiv");
+            const title = document.createElement("fiv_title");
+            title.textContent = v[i].title;
             fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
             grider_box.appendChild(fiv);
+            grider_box.appendChild(title);
     
             const img = document.createElement("img");
             img.setAttribute("loading", "lazy");

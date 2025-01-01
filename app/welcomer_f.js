@@ -119,224 +119,106 @@ class ImagePreview extends HTMLElement {
     this.shadowMode = this.attachShadow({ mode: "open" });
     const source = this.getAttribute("src");
 
-    const template = document.createElement("template");
-    template.innerHTML = `
-      <style nonce="${window.stmp}">
-       
-:root {
-    --cdn_primary: #ffff;
-    --btn-disable: #fff;
-    --seo-color: #fff;
-    --primary_light: #ffffff4f;
-    --textshadow_media: 0px 0px 0px var(--cdn_white), 3px 3px 5px #00000047;
-    --cdn_white: #333;
-    --hard_white: #fff;
-    --red: #b90808;
-    --section-bg: #333;
-    --green: #2e7d32;
-    --header-a: #e6e6e6;
-    --product-background: linear-gradient(45deg, #1b5e20, #10bf19);
-    --ads-background: linear-gradient(45deg, rgb(148 31 148), #c55e05);
-    --event-background: linear-gradient(45deg, rgb(148 31 148), #2196f3);
-    --job-background: linear-gradient(45deg, rgb(148 31 148), #3f51b5);
-    --black-trasparent-color: rgba(0, 0, 0, 0.639);
-    --grid-image: url(/?url=source&sourcelogin=grid.svg);
-    --shield-image: url(/?url=source&sourcelogin=shield.svg);
-    --stars-25: #b32020;
-    --stars-40: #FFD700;
-    --stars-60: #d56617;
-    --stars-75: var(--green);
-}
+   const template = document.createElement("template");
+const style = document.createElement("style");
+style.setAttribute("nonce", window.stmp);
+style.textContent = `
+  :root {--cdn_primary:#ffff;--btn-disable:#fff;--seo-color:#fff;--primary_light:#ffffff4f;--textshadow_media:0px 0px 0px var(--cdn_white),3px 3px 5px #00000047;--cdn_white:#333;--hard_white:#fff;--red:#b90808;--section-bg:#333;--green:#2e7d32;--header-a:#e6e6e6;--product-background:linear-gradient(45deg,#1b5e20,#10bf19);--ads-background:linear-gradient(45deg,rgb(148 31 148),#c55e05);--event-background:linear-gradient(45deg,rgb(148 31 148),#2196f3);--job-background:linear-gradient(45deg,rgb(148 31 148),#3f51b5);--black-trasparent-color:rgba(0,0,0,0.639);--grid-image:url(/?url=source&sourcelogin=grid.svg);--shield-image:url(/?url=source&sourcelogin=shield.svg);--stars-25:#b32020;--stars-40:#FFD700;--stars-60:#d56617;--stars-75:var(--green);}img.zoomImg{position:fixed !important;z-index:3333333;top:0px !important;left:0px !important;width:100% !important;height:100% !important;opacity:1 !important;background:var(--black-trasparent-color);}.zoomContainer{position:fixed;z-index:333333;left:0px;top:0px;width:100%;height:100%;opacity:1 !important;}.zoomContainer .zoomWindowContainer div{left:10px !important;top:10px !important;width:100%;width:100% !important;display:block !important;z-index:3333 !important;height:100% !important;position:fixed;float:unset !important;bottom:0px !important;border:none;position:fixed !important;right:10px !important;width:unset !important;bottom:10px !important;height:unset !important;margin:0px !important;padding:2px !important;border-radius:10px !important;border:2px solid var(--primary_light) !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;}.zoomWindowContainer{position:fixed !important;left:0px;top:0px !important;background:var(--black-trasparent-color);width:100%;height:100% !important;width:100% !important;}.zoomer_exit{position:fixed;top:20px;right:20px;z-index:333333;color:white;font-size:25px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;background:var(--black-trasparent-color);width:25px !important;height:25px !important;padding:0px 5.6px;border-radius:6px;}#helper_id_helper{pointer-events:none !important;position:fixed;left:20px;top:20px;background:var(--black-trasparent-color);z-index:333333;color:var(--white);padding:5px 10px;border-radius:6px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;}div#helper_id_helper3{position:absolute;left:20px;z-index:33333;bottom:30px;right:20px;bottom:20px;border-radius:0px 0px 9px 9px !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;pointer-events:none !important;}div#helper_id_helper3 p{border-radius:6px !important;background:var(--black-trasparent-color);color:var(--white);padding:10px;display:block;margin:auto;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;text-align:center;}.zoomWindow{z-index:999;display:none;position:absolute;float:left;height:0px;width:0px;border:4px solid rgb(136,136,136);background-position:0px 0px;background-repeat:no-repeat;cursor:inherit;overflow:hidden;}img_loader{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%;height:100%;position:absolute;pointer-events:none;}img_loader img#loader{display:block;z-index:1;left:0px;top:0px;margin:auto;width:45px;height:45px;}.zoomWindow{-o-object-fit:scale-down;object-fit:scale-down;width:100%;background-size:contain;background-position:center;pointer-events:none;} 
+`;
+ 
+template.content.appendChild(style); 
+const zoomContainer = document.createElement("div");
+zoomContainer.classList.add("zoomContainer");
+zoomContainer.style.cssText = "position: absolute; top: 0px; left: 0px; height: 0px; width: 0px; z-index: 999";
 
-img.zoomImg {
-    position: fixed !important;
-    z-index: 3333333;
-    top: 0px !important;
-    left: 0px !important;
-    width: 100% !important;
-    height: 100% !important;
-    opacity: 1 !important;
-    background: var(--black-trasparent-color);
-}
+const zoomWindowContainer = document.createElement("div");
+zoomWindowContainer.classList.add("zoomWindowContainer");
+zoomContainer.appendChild(zoomWindowContainer);
 
-.zoomContainer {
-    position: fixed;
-    z-index: 333333;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 1 !important;
-}
+const imgLoader = document.createElement("img_loader");
+const loaderImg = document.createElement("img");
+loaderImg.id = "Loader";
+loaderImg.src = window.welcomer.loader_svg;
+imgLoader.appendChild(loaderImg);
+zoomWindowContainer.appendChild(imgLoader);
 
-.zoomContainer .zoomWindowContainer div {
-    left: 10px !important;
-    top: 10px !important;
-    width: 100%;
-    width: 100% !important;
-    display: block !important;
-    z-index: 3333 !important;
-    height: 100% !important;
-    position: fixed;
-    float: unset !important;
-    bottom: 0px !important;
-    border: none;
-    position: fixed !important;
-    right: 10px !important;
-    width: unset !important;
-    bottom: 10px !important;
-    height: unset !important;
-    margin: 0px !important;
-    padding: 2px !important;
-    border-radius: 10px !important;
-    border: 2px solid var(--primary_light) !important;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    enable-background: new 0 0 512 512 !important;
-}
-
-.zoomWindowContainer {
-    position: fixed !important;
-    left: 0px;
-    top: 0px !important;
-    background: var(--black-trasparent-color);
-    width: 100%;
-    height: 100% !important;
-    width: 100% !important;
-}
-
-.zoomer_exit {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 333333;
-    color: white;
-    font-size: 25px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-    enable-background: new 0 0 512 512 !important;
-    background: var(--black-trasparent-color);
-    width: 25px !important;
-    height: 25px !important;
-    padding: 0px 5.6px;
-    border-radius: 6px;
-}
-
-#helper_id_helper {
-  pointer-events: none !important;
-  position: fixed;
-  left: 20px;
-  top: 20px;
-  background: var(--black-trasparent-color);
-  z-index: 333333;
-  color: var(--white);
-  padding: 5px 10px;
-  border-radius: 6px;
-  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-  -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-  enable-background: new 0 0 512 512 !important;
-}
-
-div#helper_id_helper3 {
+const zoomWindow = document.createElement("div");
+zoomWindow.style.cssText = `
+  z-index: 999;
+  display: none;
   position: absolute;
-  left: 20px;
-  z-index: 33333;
-  bottom: 30px;
-  right: 20px;
-  bottom: 20px;
-  border-radius: 0px 0px 9px 9px !important;
-  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-  -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-  enable-background: new 0 0 512 512 !important;
-  pointer-events: none !important;
-}
+  float: left;
+  height: 0px;
+  width: 0px;
+  border: 4px solid rgb(136, 136, 136);
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  cursor: inherit;
+  overflow: hidden;
+`;
+zoomWindow.classList.add("zoomWindow");
+zoomWindow.style.backgroundImage = `url(${source})`;
+zoomWindowContainer.appendChild(zoomWindow);
 
-div#helper_id_helper3 p {
-  border-radius: 6px !important;
-  background: var(--black-trasparent-color);
-  color: var(--white);
-  padding: 10px;
-  display: block;
-  margin: auto;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  text-align: center;
-}
-    .zoomWindow {
-     z-index: 999;
-     display: none; 
-     position: absolute; 
-     float: left; 
-     height: 0px;
-     width: 0px; 
-     border: 4px solid rgb(136, 136, 136); 
-    background-position: 0px 0px; 
-    background-repeat: no-repeat; 
-    cursor: inherit; 
-    overflow: hidden;
-    }
+const helper3 = document.createElement("div");
+helper3.id = "helper_id_helper3";
+const helperText = document.createElement("p");
+helperText.textContent = "To view a zoomed image. Hold left click or finger and move slowly.";
+helper3.appendChild(helperText);
+zoomContainer.appendChild(helper3);
 
-    img_loader {
-    
-    display: flex;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    position: absolute;
+const helper = document.createElement("span");
+helper.id = "helper_id_helper";
+ 
 
-    pointer-events:none;
-    }
-    img_loader img#loader {
-    
-    display: block;
-    z-index: 1;
-    left: 0px;
-    top: 0px;
-    margin: auto;
-    width: 45px;
-    height: 45px;
+const icon = document.createElement("i");
+icon.classList.add("bi", "bi-info-square");
+icon.style.paddingRight = "2px";
 
-    }
+const text = document.createTextNode(" For close click ( X ) button.");
 
-    .zoomWindow {
-    object-fit: scale-down;
-    width: 100%;
-    background-size: contain;
-    background-position: center;
-    pointer-events:none;
-  }
-    </style>
-    <div class="zoomContainer" 
-    style="position: absolute;top: 0px;left: 0px;height: 0px;width: 0px;z-index: 999">
-    <div class="zoomWindowContainer" >
+helper.appendChild(icon);
+helper.appendChild(text);
 
-    <img_loader>
-    <img id="Loader" src="${window.welcomer.loader_svg}">
-    </img_loader>
+zoomContainer.appendChild(helper);
 
-    <div 
-    style="z-index: 999; display: none; position: absolute; float: left; height: 0px; width: 0px; border: 4px solid rgb(136, 136, 136); 
-    background-position: 0px 0px; 
-    background-repeat: no-repeat; 
-    cursor: inherit; 
-    overflow: hidden;
-    background-image: url(${source});" 
-    class="zoomWindow">&nbsp;</div></div></div>
-    <div-loader><div id="helper_id_helper3">
-     <p>To view a zoomed image. Hold left click or finger and move slowly.</p> 
-     </div><span id="helper_id_helper"><i style="padding-right:2px;" 
-     class="bi bi-info-square"></i> For close click ( X ) button.</span>
 
-     
-     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x-lg  zoomer_exit" viewBox="0 0 16 16" style="
-    width: 25px !important;
-">
-  <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"></path>
-</svg>
-     </div-loader>`;
+const divLoader = document.createElement("div");
+const helperIdHelper3 = document.createElement("div");
+const paragraph = document.createElement("p");
+paragraph.textContent = "To view a zoomed image. Hold left click or finger and move slowly.";
+helperIdHelper3.appendChild(paragraph);
+helperIdHelper3.id = "helper_id_helper3";
+
+const helperIdHelper = document.createElement("span");
+helperIdHelper.id = "helper_id_helper";
+const infoIcon = document.createElement("i");
+infoIcon.className = "bi bi-info-square";
+infoIcon.style.paddingRight = "2px";
+helperIdHelper.appendChild(infoIcon);
+helperIdHelper.appendChild(document.createTextNode(" For close click ( X ) button."));
+
+const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+svg.setAttribute("width", "25");
+svg.setAttribute("height", "25");
+svg.setAttribute("fill", "currentColor");
+svg.classList.add("bi", "bi-x-lg", "zoomer_exit");
+svg.setAttribute("viewBox", "0 0 16 16");
+svg.setAttribute("style", "width: 25px !important;");
+
+const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+path.setAttribute("d", "M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z");
+svg.appendChild(path);
+
+divLoader.appendChild(helperIdHelper3);
+divLoader.appendChild(helperIdHelper);
+divLoader.appendChild(svg);
+divLoader.classList.add("div-loader");
+
+template.content.appendChild(zoomContainer);
+template.content.appendChild(divLoader);
+
     this.image = this.shadowRoot.querySelector(".zoomWindow");
     const closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
     this.div_loader = this.shadowRoot.querySelector("div-loader");

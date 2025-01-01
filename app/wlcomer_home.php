@@ -3135,6 +3135,10 @@ fiv_title {
        text-overflow: ellipsis;
     padding-top: 12px;
  }
+
+ div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer:hover project:not(:hover) {
+    opacity:0.5 !important;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

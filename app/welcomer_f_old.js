@@ -37,7 +37,12 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault();
     }
   });
-  
+  document.body.addEventListener("contextmenu", function (event) {
+    event.preventDefault();
+  });
+  document.body.addEventListener("dragstart", function (event) {
+    event.preventDefault();
+  });
 });
 function base64Encode(str) {
   const encoder = new TextEncoder();
@@ -297,22 +302,12 @@ class PostContent extends HTMLElement {
     super();
     const shadow = this.attachShadow({ mode: "open" });
     const template = document.createElement("template");
-
-    const style = document.createElement("style"),
-    div_content = document.createElement("div_content");
-
-    style.textContent = `${window.atob(window.portfolio.data.blog_style_bundle)} 
-    :::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}`;
-    shadow.appendChild(style);
-    /* template.innerHTML = ` <div_content> </div_content>`;*/
-    shadow.appendChild(div_content);
+    template.innerHTML = `${this.styleTemplate()}<div_content></div_content>`;
+    shadow.appendChild(template.content.cloneNode(true));
   }
-  set(data = "", url = {
-    shared_links: [],
-  }) {
+  set(data = "") {
     const div_content = this.shadowRoot.querySelector("div_content");
     div_content.innerHTML = `${data}`;
-    welcomer.cards_generateV2(div_content, url);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
       v.addEventListener("click", function (e) {
@@ -559,54 +554,6 @@ const welcomer = {
     },
   ],
   pages: {
-    blog: {
-      loader: function(c = { src: "", callback: () => {}, error: () => {} }) {
-      
-        if(document.querySelector("blog_post_loader")){
-          document.querySelector("blog_post_loader").remove();
-        }
-        const blogPostLoader = document.createElement("blog_post_loader");
-        const loader = document.createElement("loader");
-        const rotater = document.createElement("rotater");
-        const img = document.createElement("img");
-        img.setAttribute("style", "opacity:0;");
-
-        if (typeof c.callback === 'function') {
-           
-          try {
-            c.callback();
-          } catch (error) {
-           
-          }  
-        }
-        img.src = c.src;
-        
-          welcomer.blob(`${c.src}`, async function  (blob) {
-          
-          const imgElement = document.createElement("img");
-          img.removeAttribute("style");
-          img.src = blob; 
-          setTimeout(() => {
-            
-         
-            blogPostLoader.classList.add("active");
-          setTimeout(() => {
-            blogPostLoader.style.setProperty("opacity", "0");
-            blogPostLoader.style.setProperty("pointer-events", "none");
-              blogPostLoader.remove();
-            }, 1000);
-          }, 1000);
-         });
-         
-       
-
-        loader.appendChild(rotater);
-        loader.appendChild(img);
-        blogPostLoader.appendChild(loader);
-
-        document.body.appendChild(blogPostLoader);  
-      }
-    },
     gallery: {
       ldp: function (id) {
         var url = window.portfolio.data.gallery.gallery[0].gallery[0]["href"],
@@ -2029,127 +1976,7 @@ const welcomer = {
     }
   },
   cards_generate_xhr: null,
-  cards_generateV2: function(parentNODE, fh={}) {
-    var shared_links = ""
-      , br_box = document.createElement("br_box")
-      , div_bra = document.createElement("div")
-      , img = document.createElement("img")
-      , br_aer = document.createElement("br_aer");
-    br_aer.setAttribute("class", "snaped");
-    div_bra.setAttribute("class", "bra");
-    img.setAttribute("class", "img_background_rljs");
-    img.setAttribute("src", fh?.thumbail);
-    img.setAttribute("loading", "lazy");
-    div_bra.appendChild(img);
-    div_bra.appendChild(br_aer);
-    br_box.appendChild(div_bra);
-    try {
-        welcomer.cards_generate_xhr.abort();
-    } catch (aerear) {}
-    var conff = this.conf;
-    welcomer.cards_generate_xhr = new XMLHttpRequest();
-    welcomer.cards_generate_xhr.open("POST", conff["graph"], true);
-    welcomer.cards_generate_xhr.onreadystatechange = function() {
-        if (welcomer.cards_generate_xhr.readyState === 4) {
-            if (welcomer.cards_generate_xhr.status === 200) {
-                var responseData = JSON.parse(welcomer.cards_generate_xhr.responseText);
-                var jsjonF = responseData || [];
-                for (var i = 0; i < jsjonF.length; i++) {
-                    var jsjon = jsjonF[i][0];
-                    var baer = document.createElement("baer")
-                      , ber_f = document.createElement("ber_f")
-                      , span = document.createElement("span")
-                      , bar_t = document.createElement("bar_t")
-                      , span_2 = document.createElement("span")
-                      , img = document.createElement("img");
-                    img.setAttribute("src", `${jsjon["icon"]}`);
-                    bar_t.appendChild(span);
-                    span.innerHTML = `${jsjon["title"]}`;
-                    ber_f.appendChild(span_2);
-                    span_2.innerHTML = `${jsjon["url"]}`;
-                    baer.appendChild(img);
-                    baer.appendChild(ber_f);
-                    br_aer.appendChild(baer);
-                    shared_links += `<a title="Click (hovered link) for open... " class="baer" target="_blank" rel="nofollow noreferrer" href="${jsjon["url"]}">
-<img src="${jsjon["thumbail"]}"><ber_f>
-<bar_t><img src="${jsjon["icon"]}" class="favicon" height="16" width="16"><span>${jsjon["title"]}</span></bar_t><span>${jsjon["url"]}</span>
-</ber_f>
-</a>`;
-                }
-                if (jsjonF.length > 0) {
-                    // $("#clavs iframe:not(.iframe_mask)").contents().find("body br_box").remove();
-                 
-                    parentNODE.appendChild(br_box);
-                  
-                    const iframeBody = document.querySelector("#clavs iframe:not(.iframe_mask)").contentDocument.body;
-                    const brBox = document.createElement("br_box");
-                    const divBra = document.createElement("div");
-                    divBra.className = "bra";
-
-                    const img = document.createElement("img");
-                    img.className = "img_background_rljs";
-                    img.onload = function() { welcomer.img_load(this); };
-                    img.src = fh?.thumbail;
-                    img.alt = "Blog > Marko Nikolić";
-                    img.loading = "lazy";
-
-                    divBra.appendChild(img);
-                    brBox.appendChild(divBra);
-
-                    const pe = document.createElement("pe");
-                    pe.innerHTML = `<i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}`;
-                    brBox.appendChild(pe);
-
-                    const brAer = document.createElement("br_aer");
-                    brAer.className = "snaped";
-                    brAer.innerHTML = shared_links;
-                    brBox.appendChild(brAer);
-
-                    iframeBody.appendChild(brBox);
-                    iframeBody.appendChild(document.createElement("br"));
-                    iframeBody.appendChild(document.createElement("br"));
-                    iframeBody.appendChild(document.createElement("br"));
-
-                    iframeBody.querySelectorAll("a.baer").forEach(function(a) {
-                      a.setAttribute("data-title", "Click (hovered image) for view image in full size");
-                      a.addEventListener("mouseenter", function() {
-                        parent.welcomer.showAnchorTitle(a, a.getAttribute("data-title"));
-                      });
-                      a.addEventListener("mouseleave", function() {
-                        parent.welcomer.hideAnchorTitle();
-                      });
-                      a.removeAttribute("title");
-                    });  }
-            } else {}
-        }
-    }
-    ;
-    const jsonData = new FormData();
-    var json_f = fh.shared_links;
-    jsonData.append("urlf", JSON.stringify(fh.shared_links));
-    jsonData.append("type", "s");
-    var shared_links_loader = "";
-    if (fh.shared_links.length > 0) {
-        fh.shared_links.forEach(function() {
-            shared_links_loader += `<a title="Loading" class="baer loading_data" target="_blank" rel="nofollow noreferrer" role="button" href="#">
-<img src="${welcomer.loader_svg}"><ber_f>
-<bar_t><img src="${welcomer.loader_svg}" class="favicon" height="16" width="16"><span></span></bar_t><span> </span>
-</ber_f>
-</a>`;
-        });
-        $("#clavs iframe:not(.iframe_mask)").contents().find("body br_box").remove();
-        $("#clavs iframe:not(.iframe_mask)").contents().find("body").append(`
-<br_box>
-<div class="bra">
-<img class="img_background_rljs" onload="welcomer.img_load(this);" src="${fh?.thumbail}" alt="Blog > Marko Nikolić" loading="lazy"></div>
-<pe><i class="bi bi-link-45deg"></i> ${welcomer.lang()["detectedsLinksIn_postmaxn"]}</pe>
-<br_aer class="snaped">${shared_links_loader}</br_aer></br_box><br><br><br>`);
-    }
-    welcomer.cards_generate_xhr.send(jsonData);
-},
   cards_generate: function (fh = {}) {
-   return false;
-
     var shared_links = "",
       br_box = document.createElement("br_box"),
       div_bra = document.createElement("div"),
@@ -2279,7 +2106,6 @@ const welcomer = {
       const urlParams = new URLSearchParams(
         `${window.location.origin}/${f.source}`
       );
-      
       var res = "";
       window.portfolio.data.blog.forEach(function (rr) {
         if (id == rr.id) {
@@ -2413,15 +2239,7 @@ const welcomer = {
         return hexString;
       }
       if (f.title) {
-        welcomer.pages.blog.loader({
-          src:f.thumbail, 
-          error:function(){
-            console.error("Error");
-          },
-          callback: function(){}
-        });
         $(".pdf_page_home_btn").show();
-        
         const parser = new DOMParser();
         var res = decodeEntities(f.page);
         welcomer.gallery_temp = f.gallery;
@@ -2451,17 +2269,6 @@ const welcomer = {
         $("#clavs grider_viewer").html("");
         $("div_header span").html(`Blog > ${f.title}`);
         welcomer.titleC(` ${f.title}> Blog > Marko Nikolić`);
-       
-        /*
-        document.querySelector("blog_post_loader loader img").setAttribute("src", `${f.thumbail}`);
-        
-        document.querySelector("blog_post_loader img").addEventListener("load", function(){
-          document.querySelector("blog_post_loader").classList.add("active");
-          setTimeout(() => {
-            document.querySelector("blog_post_loader").setAttribute("style", "opacity:0 !important; pointer-events:none !important;"); 
-          }, 1000); 
-        });*/
-        
         $(ifrm).hide();
         welcomer.cards_generate(f);
         $("#clavs iframe:not(.iframe_mask)").addClass("blog_style");
@@ -2484,7 +2291,6 @@ const welcomer = {
         $("#canvas,.wallpaperVideo ").removeAttr("style");
         var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
         $(".Vjideo_sjpinner,gridder_loader").hide();
-      // }});
       } else {
         welcomer.blg_history_replace("");
         $("#clavs").attr("style", "transform:translateY(-100%);");
@@ -3383,15 +3189,6 @@ const welcomer = {
     document.querySelectorAll("div_preview").forEach(function (r) {
       r.remove();
     });
-  },
-  blob: async function (url,$callback) {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      $callback(URL.createObjectURL(blob));
-    } catch (error) {
-      console.error('Error fetching blob:', error);
-    }
   },
   urlToBlob: async function (url) {
     return url;
@@ -5766,14 +5563,6 @@ const welcomer = {
     },
   },
   start: function () {
-    document.body.addEventListener("contextmenu", function (event) {
-      event.preventDefault();
-      return false;
-    });
-    document.body.addEventListener("dragstart", function (event) {
-      event.preventDefault();
-      return false;
-    });
     var conff = this.conf;
     this.events.scrollByM.f();
     welcomer.projects = window.portfolio.data.projects;

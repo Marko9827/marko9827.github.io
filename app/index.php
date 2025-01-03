@@ -402,7 +402,9 @@ function minifyJSFile($inputFile)
 
  
             echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
+           # include ROOT . "welcomer_f_old.js";
             include ROOT . "welcomer_f.js";
+
 
             $b = ob_get_clean();
             echo $this->minifyJS($b);

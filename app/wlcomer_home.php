@@ -3139,6 +3139,93 @@ fiv_title {
  div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer:hover project:not(:hover) {
     opacity:0.5 !important;
 }
+
+blog_post_loader {
+    position: fixed;
+    z-index: 23423423423432423423;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    background: var(--black-trasparent-color);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+blog_post_loader,
+blog_post_loader * {
+    -webkit-transition:.3s;
+    -o-transition:.3s;
+    transition:.3s;
+}
+
+blog_post_loader loader {
+       display: block;
+    margin: auto; 
+}
+blog_post_loader loader img {
+    display: block;
+    margin: auto;
+    width: 150px;
+    height: 150px;
+    -o-object-fit: cover;
+       object-fit: cover;
+    border-radius: 150px;
+    margin: auto;
+    opacity: 0.9;
+    padding: 5px;
+    background: var(--black-trasparent-color);
+    border: 3px solid rgb(255 255 255 / 21%);
+    -webkit-filter: blur(0.5px);
+            filter: blur(0.5px);
+}
+
+blog_post_loader loader rotater {
+    display: block;
+    width: 150px;
+    height: 150px;
+    -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;  
+    border-radius:150px;
+    position:absolute;
+    border: 3px solid;
+    z-index: 3;
+    border-top:3px solid white;
+ }
+ 
+        @-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+                        transform: rotate(0deg);
+   
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+                        transform: rotate(360deg);
+            }
+        }
+ 
+        @keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+                        transform: rotate(0deg);
+   
+            }
+            to {
+                -webkit-transform: rotate(360deg);
+                        transform: rotate(360deg);
+            }
+        }
+
+blog_post_loader.active {
+    opacity:0 !important;
+}
+blog_post_loader.active loader {
+    -webkit-transform:scale(0);
+        -ms-transform:scale(0);
+            transform:scale(0);
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3493,6 +3580,12 @@ loop autoplay muted autobuffer playsinline  class="wallpaperVideo">
 
 
         <iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe>
+        <?php /*<blog_post_loader>
+            <loader>
+        <rotater></rotater>
+            <img src="https://api.eronelit.com/app&id=A03429468246&blog=03_jan_2024_00_09/1141736809" loading="lazy" />
+     </loader>
+        </blog_post_loader>*/ ?>
         <p-container class="shadow_iframe"></p-container>
         <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src="">
 

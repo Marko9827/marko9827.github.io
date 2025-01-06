@@ -1,4 +1,5 @@
  
+ 
 window.draggable = { style_left: "", style_top: "", enabled: false };
 if (window.TrustedTypes) {
   const policy = TrustedTypes.createPolicy("default", {
@@ -6,39 +7,11 @@ if (window.TrustedTypes) {
     createScript: (input) => input,
   });
 }
+
 function CTHP() {
-  window.location.href = "/";
-}
-window.eventListeners_clck = function () {
-  document.querySelectorAll("*[data-onclick]").forEach((element) => {
-    const onclickCode = element.getAttribute("data-onclick");
-    element.addEventListener("click", (e) => {
-      e.preventDefault();
-      if (onclickCode) {
-        new Function(onclickCode)();
-      }
-    });
-  });
-};
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("*[data-onclick]").forEach((elem) => {
-    elem.addEventListener("click", function (e) {
-      e.preventDefault();
-      const action = elem.getAttribute("data-onclick");
-      welcomer.home_list(elem, action);
-      return;
-    });
-  });
-  document.addEventListener("keydown", (event) => {
-    if (
-      (event.ctrlKey && event.key === "s") ||
-      (event.metaKey && event.key === "s")
-    ) {
-      event.preventDefault();
-    }
-  });
-  
-});
+  welcomer.blg_history_replace("/");
+  welcomer.start();
+} 
 function base64Encode(str) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(str);
@@ -49,7 +22,30 @@ class SolarMap extends HTMLElement {
     super();
     this.shadowMode = this.attachShadow({ mode: "open" });
     const template = document.createElement("template");
-    template.innerHTML = ``;
+ 
+
+    const shadowContainer = document.createElement("div");
+    const shadowRoot = shadowContainer.attachShadow({ mode: "open" });
+    const rootDiv = document.createElement("iframe");
+    rootDiv.id = "root";
+    rootDiv.style.height = "100%";
+    rootDiv.style.width = "100%";
+    rootDiv.style.border = "none";
+    rootDiv.src = "/solarmap";
+    rootDiv.setAttribute("sandbox","allow-scripts allow-same-origin");
+    this.shadowRoot.appendChild(rootDiv);
+    /*
+    const style = document.createElement("style");
+    style.setAttribute("nonce", window.stmp);
+    style.textContent = ` *{box-sizing:border-box;}html,body{margin:0;}#root{height:100%;width:100%;font-size:16px;font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Ubuntu,Helvetica Neue,sans-serif;line-height:normal;color:#333;}`;
+    const script = document.createElement("script");
+    script.setAttribute("type", "module");
+    script.setAttribute("crossorigin", "");
+    script.setAttribute("nonce", window.stmp);
+    script.setAttribute("src", "/demo&id=S3503&hangar=main");
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(script);*/
+    
   }
 }
 class BlueWarp extends HTMLElement {
@@ -307,11 +303,20 @@ class PostContent extends HTMLElement {
     /* template.innerHTML = ` <div_content> </div_content>`;*/
     shadow.appendChild(div_content);
   }
+  HTML_PARSE(html) { 
+    const parser = new DOMParser();
+    const html2 =  parser.parseFromString(html, "text/html");
+    return html2.body.cloneNode(true);  
+  };
   set(data = "", url = {
     shared_links: [],
   }) {
     const div_content = this.shadowRoot.querySelector("div_content");
-    div_content.innerHTML = `${data}`;
+    // div_content.innerHTML = `${data}`;
+    div_content.textContent = "";
+    div_content.appendChild(this.HTML_PARSE(data)); 
+   
+
     welcomer.cards_generateV2(div_content, url);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
@@ -338,6 +343,7 @@ class PostContent extends HTMLElement {
         welcomer.hideAnchorTitle();
       });
     });
+    document.querySelector("p-container").scrollTop = 0;
   }
   styleTemplate() {
     return `<style nonce="${window.stmp}" type="text/css">${window.atob(
@@ -349,22 +355,70 @@ class VideoPlayer extends HTMLElement {
   constructor() {
     super();
     const shadow = this.attachShadow({ mode: "open" });
+    
+    
     const template = document.createElement("template");
-    template.innerHTML = ` <style nonce="${
-      window.stmp
-    }" > @import url('https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css');.video-js{width:100%;height:100%;opacity:0;transition:.3s;background-color:rgb(0 0 0 / 48%);opacity:1;}#canvas_img{position:absolute;left:0px;top:0px;width:100%;height:100%;background:black;object-fit:cover;z-index:-1;filter:blur(7px);opacity:0;}#canvas_img{opacity:1;}</style> <video id="video-player" class="video-js vjs-default-skin" controls nonce="${
-      window.stmp
-    }" preload="auto" data-setup='{}'> <source src="${this.getAttribute(
-      "video-src"
-    )}" type="video/mp4"> <p> </p> </video> <img id="canvas_img" loading="lazy" alt="canvas_img" src="${this.getAttribute(
-      "video-src"
-    )}" /> `;
+    const style = document.createElement("style");
+    style.setAttribute("nonce", window.stmp);
+    style.textContent = `
+      @import url('https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css');
+      .video-js {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: .3s;
+        background-color: rgb(0 0 0 / 48%);
+        opacity: 1;
+      }
+      #canvas_img {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        background: black;
+        object-fit: cover;
+        z-index: -1;
+        filter: blur(7px);
+        opacity: 0;
+      }
+      #canvas_img {
+        opacity: 1;
+      }
+    `;
+    template.content.appendChild(style);
+
+    const video = document.createElement("video");
+    video.id = "video-player";
+    video.className = "video-js vjs-default-skin";
+    video.setAttribute("controls", "");
+    video.setAttribute("nonce", window.stmp);
+    video.setAttribute("preload", "auto");
+    video.setAttribute("data-setup", "{}");
+
+    const source = document.createElement("source");
+    source.src = this.getAttribute("video-src");
+    source.type = "video/mp4";
+    video.appendChild(source);
+
+    const videoText = document.createElement("p");
+    video.appendChild(videoText);
+
+    const img = document.createElement("img");
+    img.id = "canvas_img";
+    img.setAttribute("loading", "lazy");
+    img.alt = "canvas_img";
+    img.src = this.getAttribute("video-src");
+
+    template.content.appendChild(video);
+    template.content.appendChild(img);
+
     shadow.appendChild(template.content.cloneNode(true));
     if (typeof videojs !== "undefined") {
       const videoElement = this.shadowRoot.querySelector("#video-player");
       this.player = videojs(
         videoElement,
-        { autoplay: true, preload: "auto" },
+        { autoplay: false, preload: "auto" },
         function onPlayerReady() {}
       );
       this.postImage = this.shadowRoot.querySelector("canvas_img");
@@ -392,6 +446,17 @@ class VideoPlayer extends HTMLElement {
     this.player.dispose();
   }
   updateVideoSrc(newSrc = "", newPoster = "") {
+    if (typeof videojs !== "undefined") {
+      const videoElement = this.shadowRoot.querySelector("#video-player");
+      this.player = videojs(
+        videoElement,
+        { autoplay: false, preload: "auto" },
+        function onPlayerReady() {}
+      );
+      this.postImage = this.shadowRoot.querySelector("canvas_img");
+      this.player.on("timeupdate", () => {});
+    } else {
+    }
     if (this.player) {
       try {
         this.player.src({ src: newSrc, type: "video/mp4" });
@@ -478,12 +543,7 @@ class VideoPlayerV2 extends HTMLElement {
     }
   }
 }
-customElements.define("video-player", VideoPlayer);
-customElements.define("video-player-v2", VideoPlayerV2);
-customElements.define("p-container", PostContent);
-customElements.define("pdf-viewer", PDFViewerElement);
-customElements.define("image-preview", ImagePreview);
-customElements.define("blue-warp", BlueWarp);
+ 
 const defaultPolicy = trustedTypes.createPolicy("default", {
   createHTML: (input) => {
     if (input.includes("<script") || input.includes("onerror")) {
@@ -494,8 +554,11 @@ const defaultPolicy = trustedTypes.createPolicy("default", {
   createScript: (input) => input,
   createScriptURL: (input) => input,
 });
-const videoPlayerElement = document.querySelector("video-player"),
-  pContainerElement = document.querySelector("p-container");
+ 
+let videoPlayerElement,// document.querySelector("video-player"),
+pContainerElement;// = document.querySelector("p-container");
+ 
+
 const welcomer = {
   lang: [],
   conf: {
@@ -559,6 +622,312 @@ const welcomer = {
     },
   ],
   pages: {
+    page_history: [
+      {
+        "page": "start_page",
+        "url": "/",
+      }
+    ],
+    the_call: function(){
+      
+window.eventListeners_clck = function () {
+  document.querySelectorAll("*[data-onclick]").forEach((element) => {
+    const onclickCode = element.getAttribute("data-onclick");
+    element.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (onclickCode) {
+        new Function(onclickCode)();
+      }
+    });
+  });
+};
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("*[data-onclick]").forEach((elem) => {
+    elem.addEventListener("click", function (e) {
+      e.preventDefault();
+      const action = elem.getAttribute("data-onclick");
+      welcomer.home_list(elem, action);
+      return;
+    });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (
+      (event.ctrlKey && event.key === "s") ||
+      (event.metaKey && event.key === "s")
+    ) {
+      event.preventDefault();
+    }
+  });
+   
+});
+
+window.addEventListener("popstate", () => {
+  const urlParamsf = new URLSearchParams(window.location.search),
+    urlParamsf_f = urlParamsf.get("c");
+  if (!urlParamsf.has("c")) {
+    $("body").removeAttr("data-category-name");
+  }
+});
+var testV = function () {
+  const data_ai_type = document.createElement("video-player");
+  data_ai_type.setAttribute("video-src", "/?src=vdwallpper");
+  document.body.appendChild(data_ai_type);
+};
+window.welcomer = welcomer;
+document.addEventListener("mousemove", function (event) {
+  var draggable = document.querySelector('section[data-ui-type="editor"]');
+  const newX = event.clientX;
+  const newY = event.clientY;
+  window.draggable.style_left = newX;
+  window.draggable.style_top = newY;
+});
+var allrs_fs = [];
+setTimeout(function () {
+  window.eventListeners_clck();
+}, 1000);
+      window.countFPS = (function () {
+        setInterval(function () {
+          var lastLoop = new Date().getMilliseconds();
+          var count = 1;
+          var fps = 0;
+          return function () {
+            var currentLoop = new Date().getMilliseconds();
+            if (lastLoop > currentLoop) {
+              fps = count;
+              count = 1;
+            } else {
+              count += 1;
+            }
+            lastLoop = currentLoop;
+            return fps;
+          };
+        }, 100);
+      })();
+      (function (f, e) {
+        "object" === typeof exports && "undefined" !== typeof module
+          ? (module.exports = e())
+          : "function" === typeof define && define.amd
+          ? define(e)
+          : (f.Stats = e());
+      })(this, function () {
+        var f = function () {
+          function e(a) {
+            c.appendChild(a.dom);
+            return a;
+          }
+          function u(a) {
+            for (var d = 0; d < c.children.length; d++)
+              c.children[d].style.display = d === a ? "block" : "none";
+            l = a;
+          }
+          var l = 0,
+            c = document.createElement("div");
+          c.style.cssText =
+            "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";
+          c.addEventListener(
+            "click",
+            function (a) {
+              a.preventDefault();
+              u(++l % c.children.length);
+            },
+            !1
+          );
+          var k = (performance || Date).now(),
+            g = k,
+            a = 0,
+            r = e(new f.Panel("FPS", "#0ff", "#002")),
+            h = e(new f.Panel("MS", "#0f0", "#020"));
+          if (self.performance && self.performance.memory)
+            var t = e(new f.Panel("MB", "#f08", "#201"));
+          u(0);
+          return {
+            REVISION: 16,
+            dom: c,
+            addPanel: e,
+            showPanel: u,
+            begin: function () {
+              k = (performance || Date).now();
+            },
+            end: function () {
+              a++;
+              var c = (performance || Date).now();
+              h.update(c - k, 200);
+              if (
+                c >= g + 1e3 &&
+                (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
+              ) {
+                var d = performance.memory;
+                t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
+              }
+              return c;
+            },
+            update: function () {
+              k = this.end();
+            },
+            domElement: c,
+            setMode: u,
+          };
+        };
+        f.Panel = function (e, f, l) {
+          var c = Infinity,
+            k = 0,
+            g = Math.round,
+            a = g(window.devicePixelRatio || 1),
+            r = 80 * a,
+            h = 48 * a,
+            t = 3 * a,
+            v = 2 * a,
+            d = 3 * a,
+            m = 15 * a,
+            n = 74 * a,
+            p = 30 * a,
+            q = document.createElement("canvas");
+          q.width = r;
+          q.height = h;
+          q.style.cssText = "width:80px;height:48px";
+          var b = q.getContext("2d");
+          b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif";
+          b.textBaseline = "top";
+          b.fillStyle = l;
+          b.fillRect(0, 0, r, h);
+          b.fillStyle = f;
+          b.fillText(e, t, v);
+          b.fillRect(d, m, n, p);
+          b.fillStyle = l;
+          b.globalAlpha = 0.9;
+          b.fillRect(d, m, n, p);
+          return {
+            dom: q,
+            update: function (h, w) {
+              c = Math.min(c, h);
+              k = Math.max(k, h);
+              b.fillStyle = l;
+              b.globalAlpha = 1;
+              b.fillRect(0, 0, r, m);
+              b.fillStyle = f;
+              b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v);
+              b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p);
+              b.fillRect(d + n - a, m, a, p);
+              b.fillStyle = l;
+              b.globalAlpha = 0.9;
+              b.fillRect(d + n - a, m, a, g((1 - h / w) * p));
+            },
+          };
+        };
+        return f;
+      });
+
+      if (!customElements.get('video-player')) { customElements.define("video-player", VideoPlayer); };
+if (!customElements.get('video-player-v2')) { customElements.define("video-player-v2", VideoPlayerV2); };
+if (!customElements.get('p-container')) { customElements.define("p-container", PostContent); };
+if (!customElements.get('pdf-viewer')) { customElements.define("pdf-viewer", PDFViewerElement); };
+if (!customElements.get('image-preview')) { customElements.define("image-preview", ImagePreview); };
+if (!customElements.get('blue-warp')) { customElements.define("blue-warp", BlueWarp); };
+if (!customElements.get('div-solarsystem')) { customElements.define("div-solarsystem", SolarMap); }; 
+
+  videoPlayerElement = document.querySelector("video-player"),
+  pContainerElement = document.querySelector("p-container");
+    },
+    reset: function() {
+    try{
+    // welcomer.template_home();
+      
+if(document.querySelector("body")){
+  document.querySelector("body").remove();
+};
+
+const parser = new DOMParser().parseFromString(welcomer.body_reset_form, "text/html");
+document.querySelector("html").appendChild(parser.body);
+
+ 
+
+if (window.videojs && videojs.log) {
+    videojs.log.error = function() {};
+    videojs.log.warn = function() {};
+    videojs.log.debug = function() {};
+    videojs.log.log = function() {};
+    videojs.log.info = function() {};
+
+}
+ 
+    // welcomer.template_home();
+    /*
+    const parser = new DOMParser().parseFromString(welcomer.body_reset_form, "text/html");
+    document.body.appendChild(parser.body);
+     */
+
+
+
+ this.the_call();
+
+ welcomer.get_events();
+
+      document.querySelector("#clavs grider_viewer").removeAttribute("style");
+      try {
+        document.querySelector(".Ignoring_me_iframe.shadow_root").classList.remove("open");
+      } catch (aer) {}
+      document.body.removeAttribute("data-url-id");
+      document.body.removeAttribute("data-d");
+      document.querySelector("div_header").removeAttribute("data-url");
+      document.querySelector("div_header").classList.remove("ld_completeld_complete2");
+      document.querySelector("div_header").classList.remove("ld_completeld_complete");
+      document.documentElement.classList.remove("anim_djenerated");
+      document.getElementById("clavs").setAttribute("style","opacity:0;pointer-events:none;");
+     
+      document.getElementById("clavs").setAttribute("style","opacity:0;pointer-events:none; display:none;");
+   
+      document.querySelectorAll("grider_viewer").forEach(function (v) {
+        v.textContent = "";
+      });
+      const urlParams = new URLSearchParams(window.location.search);
+      document.querySelector(".pdf_page_home_btn").style.display = "none";
+      document.querySelector(".close_btnf").style.display = "none";
+      document.querySelector("grider_viewer").classList.remove("g_gallery");
+      document.querySelector("hh_anim_start").removeAttribute("style");
+       }catch(aer){
+       window.top.location.reload();
+       }
+    },
+    start_page: function (what = "") {
+      var fjls = false;
+      welcomer.yesurls.forEach(function(v){
+        if(v === what){
+           fjls = true;
+        }
+      }); 
+      if(fjls) {
+  
+        welcomer.blg_history_replace(`/?p=${what}`);
+        welcomer.start();
+      } else {
+      
+        welcomer.blg_history_replace("/");
+        welcomer.start();
+      }
+      return;
+      switch (what) {
+        case "home":
+          welcomer.blg_history_replace("/");
+          welcomer.start();
+          break;
+        case "gallery":
+          welcomer.blg_history_replace("/?p=gallery");
+          welcomer.start();
+          break;
+        case "blog":
+          welcomer.blg_history_replace("/?p=blog");
+          welcomer.start();
+          break;
+        case "projects":
+          welcomer.blg_history_replace("/?p=gallery");
+          welcomer.start();
+          break;
+        default:
+          welcomer.blg_history_replace("/");
+          welcomer.start();
+          break;
+      }    // welcomer.load_page("start_page");
+    },
     blog: {
       loader: function(c = { src: "", callback: () => {}, error: () => {} }) {
       
@@ -586,7 +955,7 @@ const welcomer = {
           const imgElement = document.createElement("img");
           img.removeAttribute("style");
           img.src = blob; 
-          setTimeout(() => {
+        
             
          
             blogPostLoader.classList.add("active");
@@ -594,8 +963,7 @@ const welcomer = {
             blogPostLoader.style.setProperty("opacity", "0");
             blogPostLoader.style.setProperty("pointer-events", "none");
               blogPostLoader.remove();
-            }, 1000);
-          }, 1000);
+            }, 1000); 
          });
          
        
@@ -1021,7 +1389,8 @@ const welcomer = {
         varr?.callback({ l: arr.length, r: arr });
       },
       callv2: function () {
-        window.location.href = "/?p=gallery";
+        window.top.location.href = "/?p=gallery";
+        return false;
       },
       call: function () {
         if (
@@ -1237,7 +1606,7 @@ const welcomer = {
     return arr;
   },
   $: {},
-  f: $,
+  f: "$",
   gallery_temp: [],
   infoVa_img: function (event) {
     if (welcomer.gallery_temp.length > 0) {
@@ -1518,11 +1887,36 @@ const welcomer = {
     fsrc(srcf);
   },
   home_list: function (elm, Elem = "") {
-    switch (Elem) {
+     switch (Elem) {
+      case "welcomer.pages.start_page('blog');":
+        welcomer.blg_history_replace("/?p=blog");
+        welcomer.start(); 
+        break;
+        case "welcomer.pages.start_page('cv-pdf');":
+          welcomer.blg_history_replace("/?p=cv-pdf");
+          welcomer.start(); 
+          break;
+          case "welcomer.pages.start_page('tg_channel');":
+            welcomer.blg_history_replace("/?p=tg_channel");
+            welcomer.start(); 
+            break;
+            case "welcomer.pages.start_page('gallery');":
+              welcomer.blg_history_replace("/?p=gallery");
+              welcomer.start(); 
+              break;
+              case "welcomer.pages.start_page('projects');":
+                welcomer.blg_history_replace("/?p=projects");
+                welcomer.start(); 
+                break;
+                 
       case "CTHP();":
       case "CTHP()":
-        window.location.href = "/";
+        welcomer.blg_history_replace("/");
+        welcomer.start();
         break;
+      case "welcomer.cp();":
+        welcomer.cp();  
+      break;
       case "welcomer.bundleSuggestedS(1);":
         welcomer.bundleSuggestedS(1);
         break;
@@ -1677,7 +2071,7 @@ const welcomer = {
         a.title = v.descr;
         i.setAttribute("class", v.icon);
         span.classList.add("href_a_span");
-        span.innerHTML = v.title;
+        span.textContent = v.title;
         a.appendChild(i);
         if (v.num > 0) {
           nnum.innerHTML = v.num;
@@ -1705,8 +2099,10 @@ const welcomer = {
         div.addEventListener("click", function () {
           if (!v.beta || !v.soon) {
             if (v.href.f == true) {
-              welcomer.home_list(div, `${v.href.f_u}`);
-            } else if (v.href.f == "soon") {
+              // welcomer.home_list(div, `${v.href.f_u}`);
+               
+             welcomer.home_list(div, `${v.href.f_u}`);
+             } else if (v.href.f == "soon") {
             } else {
               if ((v.href.target = "self")) {
                 window.location.href = `${v.href.f_u}`;
@@ -1790,152 +2186,27 @@ const welcomer = {
       responseJson = await response.json();
     return responseJson;
   },
-  projects: [
-    {
-      title: "E-student",
-      description: "E-student,platforma za studente",
-      img: "/?mnps=dbe&q=students.svg",
-      href: "https://demo.eronelit.com/demo_34023591386511932414/",
-      type: true,
-      page: {
-        title: "",
-        description: "",
-        avalabile: [{ title: "", icon: "", url: "" }],
-        album: [{ image: "", title: "" }],
-      },
+    projects: [
+    ],
+    history: [],
+    cursor: document.querySelector(".cursor"),
+    TopLeft: { y: 0, x: 0 },
+    scroll_event: function () {
+      document.querySelector("#buttons").addEventListener("scroll", function (e) {
+        e.preventDefault();
+        welcomer.scrolj();
+      });
+      document.querySelector(".catascrollEchatTv_right").addEventListener("click", function () {
+        welcomer.bundleSuggestedS(1);
+      });
+      document.querySelector(".catascrollEchatTv:not(.catascrollEchatTv_right)").addEventListener(
+        "click",
+        function () {
+          welcomer.bundleSuggestedS("1");
+        }
+      );
     },
-    {
-      title: "Search engine",
-      description: "My search engine ",
-      img: "/?mnps=dbe&q=erq.png",
-      href: "https://search.eronelit.com/",
-      type: true,
-    },
-    {
-      title: "Eronelit Dashboard",
-      description: "Eronelit Dashboard for server like a WHM/Cpanel",
-      img: "/?mnps=dbe&q=eronelit_dashboard.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "DB Manager",
-      description: "Eronelit Dashboard - Plugin DB Manager",
-      img: "/?mnps=dbe&q=rlj.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "Invoice Manager",
-      description: "Eronelit Dashboard - Plugin Invoice manager",
-      img: "/?mnps=dbe&q=eronelit_plugin_invoice.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "IP Calculator",
-      description: "Eronelit Dashboard - Plugin IP Calculator",
-      img: "/?mnps=dbe&q=eronelit_plugin_ip_calculator.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "Echat",
-      description: "My bussines,cloud gaming,Streaming social network",
-      img: "/?mnps=dbe&q=rlj2.png",
-      href: "https://echat.eronelit.com/",
-      type: true,
-    },
-    {
-      title: "Full PC Info",
-      description: "Get full pc info / New version coming soon!",
-      img: "/?mnps=dbe&q=flj3.png",
-      href: window.location.origin + "/Eronel_Full_PC_information_.rar",
-      type: false,
-    },
-    {
-      title: "Do not be angry man",
-      description: "Do not be angry man - GAME",
-      img: "/?mnps=dbe&q=tema_bela.png",
-      href: "https://github.com/Marko9827/projekatZaFaks",
-      type: true,
-    },
-    {
-      title: "Java http server",
-      description: "Simple java http static web server",
-      img: "/?mnps=dbe&q=java-http-server.png",
-      href: "https://github.com/Marko9827/java-http-server",
-      type: true,
-    },
-    {
-      title: "Operating system",
-      description: "My operating system for all devices.",
-      img: "/?mnps=dbe&q=os.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "EchaTv[Echat] - Streaming Platform",
-      description: "My video Streaming platform [Tiktok,Instagram,Youtube].",
-      img: "/?mnps=dbe&q=echatv.png",
-      href: "",
-      type: true,
-    },
-    {
-      title: "Echat 3D Model SDK/viewer",
-      description:
-        "Echat my Social network - 3D model animation viewer - Shared Post \n Supported:Blender,PTC Creo,Solidwork,Autocad,Alias Wavefront,Autodesk Filmbox,FBX,.3dc,.asc,.3ds,.abc,.dae,.zae,.igs,.iges,.las,.ply,glb. \n\n 3D model viewer TEST \n\n - BETA VERSION! \n\n - PEGI 3",
-      img: "/?mnps=dbe&q=echat_3d.png",
-      href: "https://echat.eronelit.com/?s=p&id=943703156",
-      type: true,
-    },
-    {
-      title: "AI in cyber security",
-      description:
-        "AI is also used,which simulates and learns from every second and up to the results of a cyber attack. Simulations last from 3 to 5 minutes...",
-      img: "/?blog=10_dec_2023_11_45/1702118968197",
-      href: "/?p=blog&id=1702118968197",
-      type: true,
-    },
-    {
-      title: "Lead developer in Mediaexperts.ch...",
-      description:
-        "We help property developers,real estate agents,and property owner...",
-      img: "/?blog=07_jun_2024_16_11/1717770544145",
-      href: "/?p=blog&id=1717770544145",
-      type: true,
-    },
-    {
-      title:
-        "Pegasus project - Connection PC and Brain with no chips is possible!",
-      description:
-        "Is possible no only in theory?!<br><br>Pegasus project is project,Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
-      img: "/?blog=13_jul_2024_23_40/43515315",
-      href: "",
-      soon: true,
-      type: true,
-    },
-  ],
-  history: [],
-  cursor: $(".cursor"),
-  TopLeft: { y: 0, x: 0 },
-  scroll_event: function () {
-    $("#buttons").on("scroll", function (e) {
-      e.preventDefault();
-      welcomer.scrolj();
-    });
-    $(".catascrollEchatTv_right").on("click", function () {
-      welcomer.bundleSuggestedS(1);
-    });
-    $(".catascrollEchatTv:not(.catascrollEchatTv_right)").on(
-      "click",
-      function () {
-        welcomer.bundleSuggestedS("1");
-      }
-    );
-  },
-  mobile_hover_tooltip_t: function () {
-    this.mobile_hover_tooltip({
+    mobile_hover_tooltip_t: function () {  this.mobile_hover_tooltip({
       title:
         "Pegasus project - Connection PC and Brain with no chips is possible!",
       description:
@@ -2545,6 +2816,8 @@ const welcomer = {
         }
       }, 100);
     } else {
+      welcomer.blg_history_replace("/?p=blog&id=" + id);
+ 
       welcomer.blog_loader_natjive(id);
     }
     $("html").addClass("anim_djenerated");
@@ -2581,7 +2854,7 @@ const welcomer = {
     ) {
       isMobile = true;
     }
-    $("p-c").attr("data-title", "Your GPU:" + this.GPPU_ms());
+    // $("p-c").attr("data-title", "Your GPU:" + this.GPPU_ms());
     return isMobile;
   },
   decodeEntities: function (str) {
@@ -3116,17 +3389,125 @@ const welcomer = {
     "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",
   load_gallery: function () {
     var res = window.portfolio.data.gallery;
-    $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+    // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+    welcomer.html.set("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum", res.length);
+
     welcomer.load_gallery_j = res;
     return;
     $.getJSON("/?mnps=gallery", function (res) {
-      $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+      // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+      welcomer.html.set("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum", res.length);
+
       welcomer.load_gallery_j = res;
     });
   },
   load_gallery_j: [],
   galleryloadT: function () {
     window.top.location.href = "/?p=gallery";
+  },
+  html: {
+    attr: function(id, attr = []) {
+      const elm = document.querySelectorAll(id).forEach(function (res) {
+        attr.forEach(function (res2) {
+          res.setAttribute(res2.attr, res2.value);
+        }); 
+      });
+    },
+    addClass: function(id, className) {
+      document.querySelector(id).classList.add(className);
+    },
+    prepend: function(id, html = "" ) {
+      const HTML_PARSE = function(html) { 
+        const parser = new DOMParser();
+        return parser.parseFromString(`${html}`, "text/html");
+      };
+      
+      if (id === "document" || id === "window") {
+        document.querySelectorAll("*").forEach(function (res) {
+          if(html instanceof HTMLElement){
+          res.prepend(html);
+          } else{
+            res.prepend(HTML_PARSE(html));
+        }
+        });
+      }  else if (id === "body" ) {
+        const res = document.body;
+          if(html instanceof HTMLElement){
+            res.prepend(html);
+            } else{
+              res.prepend(HTML_PARSE(html));
+          }        
+      } else {
+        const elm = document.querySelectorAll(id).forEach(function (res) {
+          if(html instanceof HTMLElement){
+            res.prepend(html);
+            } else{
+              res.prepend(HTML_PARSE(html));
+          }        });
+      }
+    },
+    append: function(id, html = "" ) {
+      const HTML_PARSE = function(html) { 
+        const parser = new DOMParser();
+        return parser.parseFromString(`${html}`, "text/html");
+      };
+      
+      if (id === "document" || id === "window") {
+        document.querySelectorAll("*").forEach(function (res) {
+          if(html instanceof HTMLElement){
+          res.appendChild(html);
+          } else{
+            res.appendChild(HTML_PARSE(html));
+        }
+        });
+      }  else if (id === "body" ) {
+        const res = document.body;
+          if(html instanceof HTMLElement){
+            res.appendChild(html);
+            } else{
+              res.appendChild(HTML_PARSE(html));
+          }        
+      } else {
+        const elm = document.querySelectorAll(id).forEach(function (res) {
+          if(html instanceof HTMLElement){
+            res.appendChild(html);
+            } else{
+              res.appendChild(HTML_PARSE(html));
+          }        });
+      }
+    },
+    set:function(id, html = "" ) {
+    try{
+    const HTML_PARSE = function(html) { 
+      const parser = new DOMParser();
+      return parser.parseFromString(`${html}`, "text/html");
+    };
+    
+    if (id === "document" || id === "window") {
+      document.querySelectorAll("*").forEach(function (res) {
+        // res.innerHTML = html;
+        res.textContent = "";
+        if(html instanceof HTMLElement){
+          res.appendChild(html);
+          } else{
+            res.appendChild(HTML_PARSE(html));
+        }      });
+    } else {
+      const elm = document.querySelectorAll(id).forEach(function (res) {
+        res.textContent = "";
+        if(html instanceof HTMLElement){
+          res.appendChild(html);
+          } else{
+            res.appendChild(HTML_PARSE(html));
+        }      
+      });
+    }
+    }catch(aer){ }
+  },
+    get: function(id) {
+      return document.querySelector(id).textContent;
+    }
+  
   },
   galleryload: function () {
     $("gridder_loader").attr("style", "opacity:1");
@@ -3138,7 +3519,8 @@ const welcomer = {
       this.galleryloadajax();
     } else {
       $.getJSON("/?mnps=gallery", function (res) {
-        $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+        // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+        welcomer.html.set("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum", res.length);
         welcomer.load_gallery_j = res;
         welcomer.galleryloadajax();
         $("html").addClass("anim_djenerated");
@@ -3460,16 +3842,21 @@ const welcomer = {
       .attr("style", "top:45px !important;opacity:1 !important;");
   },
   loaded_img: function (aer, id = 0) {
-    $(`#clavs grider_viewer project[id-int="${id}"]`).addClass(
-      "section_loadet_img"
-    );
+    const projects_afe = document.querySelector(`#clavs grider_viewer project[id-int="${id}"]`);
+    if(projects_afe){
+    // document.querySelector(`#clavs grider_viewer project[id-int="${id}"]`).classList.add("section_loadet_img");
+      projects_afe.classList.add("section_loadet_img");
+  }
     this.toblob(aer);
-    $(aer).removeAttr("onload");
+    // $(aer).removeAttr("onload");
+    //if(document.querySelector(aer)){
+    // document.querySelector(aer).removeAttribute("onload");
+    aer.removeAttribute("onload");
+   // }
   },
   start_v2: function (j) {
     this.constructor();
-    $("gridder_loader img").attr("onload", "welcomer.loading_t(this)");
-    if (!this.isChrome) {
+    document.querySelector("gridder_loader img").setAttribute("onload", "welcomer.loading_t(this)");  if (!this.isChrome) {
     }
     if (document.querySelector("iframe")) {
       document.querySelector("iframe").addEventListener("load", function () {});
@@ -3489,35 +3876,32 @@ const welcomer = {
   },
   bell_over: function (h) {
     document.querySelector("#logo_backscr_img").classList.add("activeBell");
+    const canvas = document.querySelector("#canvas");
+    const wallpaperVideo = document.querySelector(".wallpaperVideo");
     if (this.conf.black) {
       if (this.isChrome) {
-        $("#canvas,.wallpaperVideo").attr(
-          "style",
-          "opacity:1;transform:rotate(45deg) scale(2);"
-        );
+        canvas.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
+        wallpaperVideo.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
       } else {
-        $("#canvas,.wallpaperVideo").attr(
-          "style",
-          "opacity:1;transform:rotate(45deg) scale(2);"
-        );
+        canvas.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
+        wallpaperVideo.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
       }
     } else {
       if (this.isChrome) {
-        $("#canvas,.wallpaperVideo").attr(
-          "style",
-          "opacity:1;-webkit-filter:url('#shadowed-goo') !important;filter:url('#shadowed-goo') !important;transform:rotate(45deg) scale(2);"
-        );
+        canvas.style.cssText = "opacity:1;-webkit-filter:url('#shadowed-goo') !important;filter:url('#shadowed-goo') !important;transform:rotate(45deg) scale(2);";
+        wallpaperVideo.style.cssText = "opacity:1;-webkit-filter:url('#shadowed-goo') !important;filter:url('#shadowed-goo') !important;transform:rotate(45deg) scale(2);";
       } else {
-        $("#canvas,.wallpaperVideo").attr(
-          "style",
-          "opacity:1;-webkit-filter:unset !important;filter:unset !important;transform:rotate(45deg) scale(2);"
-        );
+        canvas.style.cssText = "opacity:1;-webkit-filter:unset !important;filter:unset !important;transform:rotate(45deg) scale(2);";
+        wallpaperVideo.style.cssText = "opacity:1;-webkit-filter:unset !important;filter:unset !important;transform:rotate(45deg) scale(2);";
       }
     }
   },
   bell_out: function (o) {
     document.querySelector("#logo_backscr_img").classList.remove("activeBell");
-    $("#canvas,.wallpaperVideo ").removeAttr("style");
+    const canvas = document.querySelector("#canvas");
+    const wallpaperVideo = document.querySelector(".wallpaperVideo");
+    canvas.removeAttribute("style");
+    wallpaperVideo.removeAttribute("style");
   },
   hide: function (elem) {
     document.querySelectorAll(elem).forEach(function (v) {
@@ -5190,6 +5574,7 @@ const welcomer = {
     }
   },
   Hclose: function (aer) {
+
     $("body").removeAttr("data-category-name");
     $("solar_arrow labelv").html(
       `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
@@ -5207,6 +5592,8 @@ const welcomer = {
       welcomer.blogloader("all");
       return false;
     }
+    welcomer.pages.start_page("home");
+    return;
     this.hmm(msg_title, function () {
       $("#clavs").attr("style", "transform:translateY(-100%);");
       welcomer.titleC(`Marko Nikolić`);
@@ -5381,6 +5768,8 @@ const welcomer = {
     };
   },
   toblob: function (d) {
+    d.setAttribute("data-zoom-image", d.getAttribute("src"));
+    return;
     const img = new Image();
     var img_d = d.getAttribute("src");
     if (img_d.includes("data:")) {
@@ -5495,27 +5884,31 @@ const welcomer = {
   },
   parentTitler: function (element, text) {
     var offset = welcomer.offset();
-    $("#anchorTitle")
-      .html(
-        "<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text
-      )
-      .attr("style", "opacity:1;");
+    const anchorTitle = document.getElementById("anchorTitle"),
+    i = document.createElement("i"),
+    tt = document.createTextNode(text);
+    i.setAttribute("class", "bi bi-info-square");
+    i.setAttribute("style", "padding-right:2px;");
+    anchorTitle.appendChild(i);
+    anchorTitle.appendChild(tt); 
+     anchorTitle.style.opacity = "1";
   },
   showAnchorTitle: function (element, text) {
     var offset = welcomer.offset();
-    if ($("#anchorTitle").length > 0) {
-      $("#anchorTitle")
-        .html(
-          "<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text
-        )
-        .attr("style", "opacity:1;");
+    const anchorTitle = document.getElementById("anchorTitle"),
+    i = document.createElement("i"),
+    tt = document.createTextNode(text);
+    if (anchorTitle) {
+      anchorTitle.innerHTML = "<i style='padding-right:2px;' class='bi bi-info-square'></i> " + text;
+      anchorTitle.style.opacity = "1";
     } else {
       parent.welcomer.parentTitler(element, text);
     }
   },
   hideAnchorTitle: function () {
-    if ($("#anchorTitle").length > 0) {
-      $("#anchorTitle").removeAttr("style");
+    const anchorTitle = document.getElementById("anchorTitle");
+    if (anchorTitle) {
+      anchorTitle.style.opacity = "0";
     } else {
       parent.welcomer.hideAnchorTitle();
     }
@@ -5560,34 +5953,31 @@ const welcomer = {
       : { error: "no WEBGL_debug_renderer_info" };
   },
   get_events: function () {
-    $("*[title]:not(iframe),*[data-title]:not(iframe)").each(function () {
-      var a = $(this);
+    document.querySelectorAll("*[title]:not(iframe),*[data-title]:not(iframe)").forEach(function (element) {
       if (welcomer.isMobile()) {
-        a.click(
-          function () {
-            welcomer.showAnchorTitle(a, a.data("title"));
-          },
-          function () {
-            welcomer.hideAnchorTitle();
-          }
-        )
-          .data("title", a.attr("title"))
-          .removeAttr("title");
-        $("*:not(a)").click(function () {
+        element.addEventListener("click", function () {
+          welcomer.showAnchorTitle(element, element.getAttribute("data-title"));
+        });
+        element.addEventListener("click", function () {
           welcomer.hideAnchorTitle();
         });
-      } else {
-        a.hover(
-          function () {
-            welcomer.showAnchorTitle(a, a.data("title"));
-          },
-          function () {
+        element.setAttribute("data-title", element.getAttribute("title"));
+        element.removeAttribute("title");
+        document.querySelectorAll("*:not(a)").forEach(function (elem) {
+          elem.addEventListener("click", function () {
             welcomer.hideAnchorTitle();
-          }
-        )
-          .data("title", a.attr("title"))
-          .removeAttr("title");
-        a.mouseleave(function () {
+          });
+        });
+      } else {
+        element.addEventListener("mouseenter", function () {
+          welcomer.showAnchorTitle(element, element.getAttribute("data-title"));
+        });
+        element.addEventListener("mouseleave", function () {
+          welcomer.hideAnchorTitle();
+        });
+        element.setAttribute("data-title", element.getAttribute("title"));
+        element.removeAttribute("title");
+        element.addEventListener("mouseleave", function () {
           welcomer.hideAnchorTitle();
         });
       }
@@ -5765,7 +6155,149 @@ const welcomer = {
       },
     },
   },
+  resetCall: function(){
+    let bodyHTML = "";
+    Array.from(document.body.childNodes).forEach(node => {
+      const serializer = new XMLSerializer();
+      bodyHTML += serializer.serializeToString(node);
+  });
+this.body_reset_form = bodyHTML;
+  },
+  body_reset_form: `<video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video><p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p><div id="content_Space"></div><hh_anim_start><spjin><p><span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025 </span></p><spj><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><br class="hide_noy"><br class="hide_noy"><h3>Marko Nikolić</h3><div class="box_shadow_txtf box_shadow"><span>Full stack Developer</span><sp>-</sp><span>Scientist theories/news</span><sp>-</sp><span>Writing books</span><sp>-</sp><span>Photographer</span></div><br class="hide_noy"><br><arr_bundle><i data-onclick="welcomer.bundleSuggestedS(1);"class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"style="transform:scale(1)"></i><i data-onclick="welcomer.bundleSuggestedS('2');"class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i></arr_bundle><div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"></div></spj></spjin></hh_anim_start><div id="clavs"><div_header><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"class="bi bi-arrow-clockwise"></i><svg class="Vjideo_sjpinner" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle></svg><span>Loading ...</span><btns_i><input type="text" placeholder="Search ..." data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r><i class="bi bi-search F_bi_search" data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"title="Search project..."></i><i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i><i class="bi bi-house pdf_page_home_btn" data-onclick="welcomer.blogloader('all');"title="Return to Blog home page"></i><i class="bi bi-telegram tg_button" data-onclick="welcomer.Social.tg.open();"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="welcomer.Hclose(this);" title="Close"></i></btns_r></div_header><div-solarsystem id="root" class="solarsystem"></div-solarsystem><solar_arrow data-onclick="welcomer.colar_system();"><back_f></back_f><labelv><i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i></labelv></solar_arrow><box_h></box_h><br_ta class="active_scr"></br_ta><grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();"></grider_viewer><iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe><p-container class="shadow_iframe"></p-container><div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></div><gridder_loader><img alt="loading" loading="lazy"src="${this.loader_svg}"height="55" width="55"></gridder_loader><canvas id="canvas">Your browser doesn't support canvas</canvas><svg xmlns="http://www.w3.org/2000/svg" version="1.1"style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;"><defs><filter id="shadowed-goo"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7"result="goo" /><feGaussianBlur in="goo" stdDeviation="3" result="shadow" /><feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -0.2"result="shadow" /><feOffset in="shadow" dx="1" dy="1" result="shadow" /><feBlend in2="shadow" in="goo" result="goo" /><feBlend in2="goo" in="SourceGraphic" result="mix" /></filter><filter id="goo"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7"result="goo" /><feBlend in2="goo" in="SourceGraphic" result="mix" /></filter></defs></svg><div class="cursor" style="opacity: 0;"></div><info_box><info_msg data-onclick="$(this).removeClass('info_box_active');"><dv_h></dv_h><info_div><img src="/favicon.svg" alt="for Testing" title="aefaef" /><h4></h4></info_div><p></p></info_msg></info_box><p-c><i class="bi bi-pci-card"></i> 0FPS</p-c><section data-ui-type="gallery" class="hidden_omega"><video-player id="video_preview"></video-player><div_header data-url="editor"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><span>Marko Nikolić > Gallery</span><btns_i><input type="text" placeholder="Search project" data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo gallery_home" data-title="Back to Gallery"data-onclick="welcomer.pages.gallery.call_back();"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i></btns_r></div_header><grider_viewer></grider_viewer></section><section data-ui-type="slider" class="hidden_omega"><arr_bundle><i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"style="transform:scale(1)" data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i><i class="bi bi-arrow-left-circle-fill catascrollEchatTv"data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i></arr_bundle><span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span><i data-onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i><div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();"></div-echatv></section><section data-ui-type="social_feed" class="hidden_omega"></section><section data-ui-type="editor" class="hidden_omega"><div_header data-url="editor"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span><btns_i><input type="text" placeholder="Search project" data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo"></i><i class="bi bi-arrow-right-short editor_btns redo " title="redo" data-title="redo"></i><iclass="bi bi-file-earmark-arrow-down celvon" data-onclick="welcomer.editor.d();"data-title="Download as html file"></i><i class="bi bi-question-lg" data-onclick="welcomer.editor.load_menu_bar(this);"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i></btns_r></div_header><editor-history-rp></editor-history-rp><editor-wrapper></editor-wrapper></section><div_not><div_panel><span></span><btns><btn1>Yes</btn1><btn2>Cancel</btn2></btns></div_panel></div_not><style nonce="${window.stmp}">a[data-iam-hidden="yes"] {display: none !important;}</style></div><div class="contanct_frm"><div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100"preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div><form autocomplete="off"><p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text" id="fname" name="firstname" placeholder="Your name.."><label for="lname">Your Email</label><i class="input_icon bi bi-envelope"></i><input type="email" id="lname" name="email" placeholder="Your Email.."><label for="subject" class="message_lenght">Message </label><textarea id="subject" name="subject" placeholder="Your message..." style="height:200px"></textarea><label for="norobot">Solve math problem. I'm not a robot</label><input type="number" id="norobot" name="norobot" placeholder=""></form><fotter><button type="button" id="sendbtn">Send message</button></fotter></div>`,
+  template_home: function(){
+    const Template_div = document.querySelector("body");
+    
+    const video = document.createElement('video');
+    video.style.opacity = '0';
+    video.loop = true;
+    video.autoplay = true;
+    video.muted = true;
+    video.autobuffer = true;
+    video.playsInline = true;
+    video.classList.add('wallpaperVideo', 'video_is_hidden');
+    // Template_div.appendChild(video);
+    Template_div.appendChild(video);
+    
+    const p_c = document.createElement('p');
+    p_c.classList.add("p-c");
+    p_c.appendChild(document.createTextNode("Do you want to see the video?"));
+    p_c.appendChild(document.createElement('br'));
+    p_c.appendChild(document.createTextNode("- Tip: Reload page ..."));
+    Template_div.appendChild(p_c);
+    const div_content_space = document.createElement('div');
+    div_content_space.id = 'content_space';
+    Template_div.appendChild(div_content_space);
+    
+    
+    const hhAnimStart = document.createElement('div');
+    hhAnimStart.classList.add('hh_anim_start');
+    
+    const spjin = document.createElement('div');
+    spjin.classList.add('spjin');
+    
+    const p = document.createElement('p');
+    const span = document.createElement('span');
+    span.classList.add('box_shadow_h');
+    span.innerHTML = 'Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025';
+    p.appendChild(span);
+    spjin.appendChild(p);
+    
+    const spj = document.createElement('div');
+    spj.classList.add('spj');
+    
+    const svg = document.createElement("img");
+    svg.src = "/svg_logo_backscr_img";
+    svg.id = "logo_backscr_img";
+    
+    spj.appendChild(svg);
+    
+    const br1 = document.createElement('br');
+    br1.classList.add('hide_noy');
+    spj.appendChild(br1);
+    
+    const br2 = document.createElement('br');
+    br2.classList.add('hide_noy');
+    spj.appendChild(br2);
+    
+    const h3 = document.createElement('h3');
+    h3.textContent = 'Marko Nikolić';
+    spj.appendChild(h3);
+    
+    const divBoxShadow = document.createElement('div');
+    divBoxShadow.classList.add('box_shadow_txtf', 'box_shadow');
+    
+    const spanFullStack = document.createElement('span');
+    spanFullStack.textContent = 'Full stack Developer';
+    divBoxShadow.appendChild(spanFullStack);
+    
+    const sp1 = document.createElement('sp');
+    sp1.textContent = '-';
+    divBoxShadow.appendChild(sp1);
+    
+    const spanScientist = document.createElement('span');
+    spanScientist.textContent = 'Scientist theories/news';
+    divBoxShadow.appendChild(spanScientist);
+    
+    const sp2 = document.createElement('sp');
+    sp2.textContent = '-';
+    divBoxShadow.appendChild(sp2);
+    
+    const spanWriting = document.createElement('span');
+    spanWriting.textContent = 'Writing books';
+    divBoxShadow.appendChild(spanWriting);
+    
+    const sp3 = document.createElement('sp');
+    sp3.textContent = '-';
+    divBoxShadow.appendChild(sp3);
+    
+    const spanPhotographer = document.createElement('span');
+    spanPhotographer.textContent = 'Photographer';
+    divBoxShadow.appendChild(spanPhotographer);
+    
+    spj.appendChild(divBoxShadow);
+    
+    const br3 = document.createElement('br');
+    br3.classList.add('hide_noy');
+    spj.appendChild(br3);
+    
+    const br4 = document.createElement('br');
+    spj.appendChild(br4);
+    
+    const arrBundle = document.createElement('div');
+    arrBundle.classList.add('arr_bundle');
+    
+    const iRight = document.createElement('i');
+    iRight.classList.add('bi', 'bi-arrow-right-circle-fill', 'catascrollEchatTv_right', 'catascrollEchatTv');
+    iRight.setAttribute('data-onclick', 'welcomer.bundleSuggestedS(1);');
+    iRight.style.transform = 'scale(1)';
+    arrBundle.appendChild(iRight);
+    
+    const iLeft = document.createElement('i');
+    iLeft.classList.add('bi', 'bi-arrow-left-circle-fill', 'catascrollEchatTv');
+    iLeft.setAttribute('data-onclick', "welcomer.bundleSuggestedS('2');");
+    iLeft.style.transform = 'scale(0)';
+    arrBundle.appendChild(iLeft);
+    
+    spj.appendChild(arrBundle);
+    
+    const divButtons = document.createElement('div');
+    divButtons.id = 'buttons';
+    divButtons.classList.add('box_shadow');
+    divButtons.setAttribute('onscroll', 'welcomer.scrolj();');
+    spj.appendChild(divButtons);
+    
+    spjin.appendChild(spj);
+    hhAnimStart.appendChild(spjin);
+    Template_div.appendChild(hhAnimStart);
+    
+    Template_div.appendChild(document.createElement('br').classList.add('hide_noy'));
+    Template_div.appendChild(document.createElement('br').classList.add('hide_noy'));
+
+
+  },
   start: function () {
+    this.pages.reset();
+   
     document.body.addEventListener("contextmenu", function (event) {
       event.preventDefault();
       return false;
@@ -5779,12 +6311,14 @@ const welcomer = {
     welcomer.projects = window.portfolio.data.projects;
     welcomer.cards_links = window.portfolio.data.menu;
     welcomer.start_v2();
+    /*
     $.ajaxSetup({
       cache: true,
       async: true,
       global: true,
       headers: { "AuthV2-token": $('meta[name="csrf-token"]').attr("content") },
     });
+    */
     const isMobile = welcomer.isMobile();
     if (isMobile == true) {
       $(".cursor").remove();
@@ -5792,292 +6326,27 @@ const welcomer = {
     }
     if (isMobile == false) {
       welcomer.touchpcSimulator("buttons");
-      $("body").append('<div id="anchorTitle" class="anchorTitle"></div>');
+      // $("body").append('<div id="anchorTitle" class="anchorTitle"></div>');
+      const anchorTitle = document.createElement("div");
+      anchorTitle.setAttribute("id", "anchorTitle");
+      anchorTitle.setAttribute("class", "anchorTitle");
+      document.body.appendChild(anchorTitle);
+      // welcomer.html.append("body", '<div id="anchorTitle" class="anchorTitle"></div>');
       welcomer.get_events();
-      var cursor = $(".cursor");
-      cursor.addClass("cursor_pc_show");
-      $(window).mousemove(function (e) {
-        cursor.css({
-          top: e.clientY - cursor.height() / 2,
-          left: e.clientX - cursor.width() / 2,
-        });
+      var cursor = document.querySelector(".cursor");
+      //$(".cursor");
+      cursor.classList.add("cursor_pc_show");
+      window.addEventListener('mousemove', function (e) {
+        cursor.style.top = `${e.clientY - cursor.offsetHeight / 2}px`;
+        cursor.style.left = `${e.clientX - cursor.offsetWidth / 2}px`;
         welcomer.TopLeft = {
-          y: e.clientY - $("*[title]").height() / 2,
-          x: e.clientX - $("*[title]").width() / 2,
+          y: e.clientY - document.querySelector('*[title]').offsetHeight / 2,
+          x: e.clientX - document.querySelector('*[title]').offsetWidth / 2,
         };
-      });
-      $(document)
-        .mouseleave(function () {
-          cursor.css({ opacity: "0" });
-        })
-        .mouseenter(function () {
-          cursor.css({ opacity: "1" });
-        });
-      $("iframe")
-        .mouseleave(function () {
-          cursor.css({ opacity: "1" });
-        })
-        .mouseenter(function () {
-          cursor.css({ opacity: "0" });
-        });
-      setInterval(function () {
-        welcomer.get_events();
-        $(
-          "p-message,*[onclick],*[href],button,.btn,#open_image_for_title,.trumbowyg-button-pane button"
-        )
-          .contextmenu(function () {
-            cursor.css({ transform: "scale(1.5)" });
-          })
-          .mouseenter(function () {
-            cursor.css({ transform: "scale(1.5)" });
-          })
-          .mouseleave(function () {
-            cursor.css({ transform: "scale(1)" });
-          });
-        $("iframe")
-          .hover(function () {
-            $(".cursor").hide();
-          })
-          .mouseleave(function () {
-            $(".cursor").show();
-          });
-      }, 1500);
-      $("#side-menu li:last-child")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        })
-        .mousemove(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-sign-out-alt'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $(".pdf-btn-info")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='far fa-file-pdf'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='far fa-file-pdf'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $("#side-menu li:first-child")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-home'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-home'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $(".select-selected-all,select")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        })
-        .click(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-arrows-alt-v'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $(".save-btn-info")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-save'></i>");
-        })
-        .click(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-save'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-save'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      setInterval(function () {
-        $(".container-galerry img")
-          .mousemove(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-file-image'></i>");
-          })
-          .contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-file-image'></i>");
-          })
-          .mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-file-image'></i>");
-          })
-          .mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-          });
-      }, 1000);
-      $("input[type='password']")
-        .click(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-lock'></i>");
-        })
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-lock'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-lock'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      setInterval(function () {
-        $(
-          ".btn-danger,*[data-dismiss='modal'],*[onclick*='post_form_edit_cancel']"
-        )
-          .contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-times'></i>");
-          })
-          .mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-times'></i>");
-          })
-          .mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-          });
-      }, 1000);
-      $("input[type='file'],.invoice-box table tr.top table td.title")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-upload'></i>");
-        })
-        .click(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-upload'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-upload'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $(".btn-success")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-pencil-alt'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-pencil-alt'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      $(".col-xa-resizer")
-        .contextmenu(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-arrows-alt-h'></i>");
-        })
-        .mouseenter(function () {
-          welcomer.Img_cursor();
-          cursor.html("<i class='fas fa-arrows-alt-h'></i>");
-        })
-        .mouseleave(function () {
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        });
-      setInterval(function () {
-        $("iframe")
-          .mouseenter(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-          })
-          .mousemove(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-          });
-      }, 1000);
-      setInterval(function () {
-        $(".plugin_status[href]")
-          .contextmenu(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-link'></i>");
-          })
-          .mouseenter(function () {
-            welcomer.Img_cursor();
-            cursor.html("<i class='fas fa-link'></i>");
-          })
-          .mouseleave(function () {
-            welcomer.Img_no_cursor();
-            cursor.html("");
-          });
-      }, 1000);
-      welcomer.txt_cursor();
-      setInterval(function () {
-        welcomer.txt_cursor();
-      }, 1000);
-      $(window)
-        .mousedown(function () {
-          cursor.css({ transform: "scale(.2)", "border-radius": "50%" });
-        })
-        .mouseup(function () {
-          cursor.css({ transform: "scale(1)", "mix-blend-mode": "difference" });
-        });
-    }
-    $("*[data-title]")
-      .mousemove(function () {
-        $(".cursor").addClass("cursor-title");
-        welcomer.Img_cursor();
-        cursor.html(
-          "<i class='fas fa-quote-right'></i> " + $(this).attr("data-title")
-        );
-      })
-      .contextmenu(function () {
-        $(".cursor").removeClass("cursor-title");
-        welcomer.Img_no_cursor();
-        cursor.html("");
-      })
-      .mouseenter(function () {
-        setTimeout(function () {
-          $(".cursor").removeClass("cursor-title");
-          welcomer.Img_no_cursor();
-          cursor.html("");
-        }, 3000);
-      })
-      .mouseleave(function () {
-        $(".cursor").removeClass("cursor-title");
-        welcomer.Img_no_cursor();
-        cursor.html("");
-      });
+      }); 
+      
+    };
+ 
     if (window.location.host == "portfolio.eronelit.com") {
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
@@ -6093,9 +6362,16 @@ const welcomer = {
       "style",
       ` position:fixed;right:10px;top:10px;width:30px;height:30px;pointer-events:none;opacity:0;object-fit:scale-down;transition:.3s;">`
     );
+    const gallery_bundle_num = document.createElement("div");
+    gallery_bundle_num.setAttribute("class", "nnum");
+    gallery_bundle_num.textContent = window.portfolio.data.gallery.Gallery_count;
+    document.querySelector("#buttons .adiv[adiv_gat='gallery_bundle']").prepend(gallery_bundle_num);
+    // welcomer.html.prepend("#buttons .adiv[adiv_gat='gallery_bundle']",`<div class="nnum">${window.portfolio.data.gallery.Gallery_count}</div>`);
+    /*
     $("#buttons .adiv[adiv_gat='gallery_bundle']").prepend(
       `<div class="nnum">${window.portfolio.data.gallery.Gallery_count}</div>`
-    );
+    ); */
+
     document.body.appendChild(img);
     setTimeout(async () => {
       const video_wall = document.querySelector("video");
@@ -6117,7 +6393,7 @@ const welcomer = {
               .setAttribute("style", "opacity:0;");
           } catch (ae0) {}
           setTimeout(() => {
-            document.querySelector("img#svg_loader_img").remove();
+            document.querySelector("img#svg_loader_img")?.remove();
           }, 1000);
           video_wall.play();
           video_wall.classList.remove("video_is_hidden");
@@ -6381,31 +6657,7 @@ const welcomer = {
       };
     }, 100);
   })(),
-};
-window.addEventListener("popstate", () => {
-  const urlParamsf = new URLSearchParams(window.location.search),
-    urlParamsf_f = urlParamsf.get("c");
-  if (!urlParamsf.has("c")) {
-    $("body").removeAttr("data-category-name");
-  }
-});
-var testV = function () {
-  const data_ai_type = document.createElement("video-player");
-  data_ai_type.setAttribute("video-src", "/?src=vdwallpper");
-  document.body.appendChild(data_ai_type);
-};
-window.welcomer = welcomer;
-document.addEventListener("mousemove", function (event) {
-  var draggable = document.querySelector('section[data-ui-type="editor"]');
-  const newX = event.clientX;
-  const newY = event.clientY;
-  window.draggable.style_left = newX;
-  window.draggable.style_top = newY;
-});
-var allrs_fs = [];
-setTimeout(function () {
-  window.eventListeners_clck();
-}, 1000);
+}; 
 const TWO_PI = Math.PI * 2;
 class Application {
   constructor(element) {
@@ -6520,135 +6772,7 @@ class Circle {
     context.fill();
   }
 }
-window.countFPS = (function () {
-  setInterval(function () {
-    var lastLoop = new Date().getMilliseconds();
-    var count = 1;
-    var fps = 0;
-    return function () {
-      var currentLoop = new Date().getMilliseconds();
-      if (lastLoop > currentLoop) {
-        fps = count;
-        count = 1;
-      } else {
-        count += 1;
-      }
-      lastLoop = currentLoop;
-      return fps;
-    };
-  }, 100);
-})();
-(function (f, e) {
-  "object" === typeof exports && "undefined" !== typeof module
-    ? (module.exports = e())
-    : "function" === typeof define && define.amd
-    ? define(e)
-    : (f.Stats = e());
-})(this, function () {
-  var f = function () {
-    function e(a) {
-      c.appendChild(a.dom);
-      return a;
-    }
-    function u(a) {
-      for (var d = 0; d < c.children.length; d++)
-        c.children[d].style.display = d === a ? "block" : "none";
-      l = a;
-    }
-    var l = 0,
-      c = document.createElement("div");
-    c.style.cssText =
-      "position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";
-    c.addEventListener(
-      "click",
-      function (a) {
-        a.preventDefault();
-        u(++l % c.children.length);
-      },
-      !1
-    );
-    var k = (performance || Date).now(),
-      g = k,
-      a = 0,
-      r = e(new f.Panel("FPS", "#0ff", "#002")),
-      h = e(new f.Panel("MS", "#0f0", "#020"));
-    if (self.performance && self.performance.memory)
-      var t = e(new f.Panel("MB", "#f08", "#201"));
-    u(0);
-    return {
-      REVISION: 16,
-      dom: c,
-      addPanel: e,
-      showPanel: u,
-      begin: function () {
-        k = (performance || Date).now();
-      },
-      end: function () {
-        a++;
-        var c = (performance || Date).now();
-        h.update(c - k, 200);
-        if (
-          c >= g + 1e3 &&
-          (r.update((1e3 * a) / (c - g), 100), (g = c), (a = 0), t)
-        ) {
-          var d = performance.memory;
-          t.update(d.usedJSHeapSize / 1048576, d.jsHeapSizeLimit / 1048576);
-        }
-        return c;
-      },
-      update: function () {
-        k = this.end();
-      },
-      domElement: c,
-      setMode: u,
-    };
-  };
-  f.Panel = function (e, f, l) {
-    var c = Infinity,
-      k = 0,
-      g = Math.round,
-      a = g(window.devicePixelRatio || 1),
-      r = 80 * a,
-      h = 48 * a,
-      t = 3 * a,
-      v = 2 * a,
-      d = 3 * a,
-      m = 15 * a,
-      n = 74 * a,
-      p = 30 * a,
-      q = document.createElement("canvas");
-    q.width = r;
-    q.height = h;
-    q.style.cssText = "width:80px;height:48px";
-    var b = q.getContext("2d");
-    b.font = "bold " + 9 * a + "px Helvetica,Arial,sans-serif";
-    b.textBaseline = "top";
-    b.fillStyle = l;
-    b.fillRect(0, 0, r, h);
-    b.fillStyle = f;
-    b.fillText(e, t, v);
-    b.fillRect(d, m, n, p);
-    b.fillStyle = l;
-    b.globalAlpha = 0.9;
-    b.fillRect(d, m, n, p);
-    return {
-      dom: q,
-      update: function (h, w) {
-        c = Math.min(c, h);
-        k = Math.max(k, h);
-        b.fillStyle = l;
-        b.globalAlpha = 1;
-        b.fillRect(0, 0, r, m);
-        b.fillStyle = f;
-        b.fillText(g(h) + " " + e + " (" + g(c) + "-" + g(k) + ")", t, v);
-        b.drawImage(q, d + a, m, n - a, p, d, m, n - a, p);
-        b.fillRect(d + n - a, m, a, p);
-        b.fillStyle = l;
-        b.globalAlpha = 0.9;
-        b.fillRect(d + n - a, m, a, g((1 - h / w) * p));
-      },
-    };
-  };
-  return f;
-});
+ 
+
 welcomer.start(document.querySelector("body"));
+ 

@@ -1,6 +1,6 @@
 <?php
 
-namespace portfolio; 
+namespace portfolio;
 
 use \Exception;
 use \League\CommonMark\CommonMarkConverter;
@@ -107,22 +107,23 @@ class portfolio_marko
         fclose($f);
     }
 
- 
-    
-    function get_BUILD($url){    
-$ch = curl_init(); 
-curl_setopt($ch, CURLOPT_URL, $url);  
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-curl_setopt($ch, CURLOPT_HTTPGET, true);  
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);  
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-$response = curl_exec($ch);
-if (curl_errno($ch)) {
- echo $response;
-}else{
-    echo "EMPTY.";
-}
- curl_close($ch);  
+
+
+    function get_BUILD($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPGET, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo $response;
+        } else {
+            echo "EMPTY.";
+        }
+        curl_close($ch);
     }
     public function __construct($root = "")
     {
@@ -232,8 +233,8 @@ if (curl_errno($ch)) {
         ],
         $testMode = true
     ) {
-        
-        if ($_SERVER['HTTP_HOST'] == "portfolio.localhostf") {
+
+        if ($_SERVER['HTTP_HOST'] == "portfolio.localhost") {
             return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         } else {
             $ch = curl_init($r['url']);
@@ -252,7 +253,7 @@ if (curl_errno($ch)) {
             }
 
             curl_close($ch);
-        } 
+        }
     }
     function minifyCSS($css)
     {
@@ -264,31 +265,31 @@ if (curl_errno($ch)) {
         return $css;
     }
     function minifyJS($js)
-{
-    preg_match_all('/https?:\/\/[^\s"\']+/', $js, $matches);
-    $links = $matches[0];
-    $placeholders = array_map(function ($index) {
-        return "___LINK_PLACEHOLDER_" . $index . "___";
-    }, array_keys($links));
-    $js = str_replace($links, $placeholders, $js);
-    $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
-    $js = preg_replace('~//.*~', '', $js);
-    $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
-    $js = preg_replace('/\s\s+/', ' ', $js);
-    $js = trim($js);
-    $js = str_replace($placeholders, $links, $js);
-    return $js;
-}
-function minifyJSFile($inputFile)
-{
-    if (file_exists($inputFile)) {
-        $js = file_get_contents($inputFile);
-        $minifiedJs = $this->minifyJS($js);
-        return $minifiedJs;
-    } else {
-        echo "";
+    {
+        preg_match_all('/https?:\/\/[^\s"\']+/', $js, $matches);
+        $links = $matches[0];
+        $placeholders = array_map(function ($index) {
+            return "___LINK_PLACEHOLDER_" . $index . "___";
+        }, array_keys($links));
+        $js = str_replace($links, $placeholders, $js);
+        $js = preg_replace('~/\*[^*]*\*+([^/][^*]*\*+)*/~', '', $js);
+        $js = preg_replace('~//.*~', '', $js);
+        $js = preg_replace('/\s*([{}|:;,])\s*/', '$1', $js);
+        $js = preg_replace('/\s\s+/', ' ', $js);
+        $js = trim($js);
+        $js = str_replace($placeholders, $links, $js);
+        return $js;
     }
-}
+    function minifyJSFile($inputFile)
+    {
+        if (file_exists($inputFile)) {
+            $js = file_get_contents($inputFile);
+            $minifiedJs = $this->minifyJS($js);
+            return $minifiedJs;
+        } else {
+            echo "";
+        }
+    }
     function Getbearer()
     {
         $headers = null;
@@ -365,19 +366,19 @@ function minifyJSFile($inputFile)
             $this->error_page(404);
             exit();
         }
-        if ($h == "mains"){
+        if ($h == "mains") {
             $fileT = "$_SERVER[DOCUMENT_ROOT]/app/mainas.css";
             header("Content-Type: text/css");
             header('Content-Length' . filesize($fileT));
 
             // header("Content-type: " . image_type_to_mime_type($mime_type));
-          
-                echo $this->minifyCSS(file_get_contents($fileT));
-           
+
+            echo $this->minifyCSS(file_get_contents($fileT));
+
             exit();
         }
-        if ($h == "demoidS3503hangarmain"){
-            
+        if ($h == "demoidS3503hangarmain") {
+
         }
         if ($h == "main") {
             header("content-type: text/javascript");
@@ -388,7 +389,7 @@ function minifyJSFile($inputFile)
             echo "\"use strict\"; \n\n/* " . time() . " */\n";
 
             echo "const version = function(){
-                return '".time()."';
+                return '" . time() . "';
             };";
 
             $r = $this->get_data([
@@ -397,12 +398,12 @@ function minifyJSFile($inputFile)
                     'Content-Type: application/json',
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
-            ]); 
+            ]);
             echo "window.portfolio = $r; \n";
 
- 
+
             echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
-           # include ROOT . "welcomer_f_old.js";
+            # include ROOT . "welcomer_f_old.js";
             include ROOT . "welcomer_f.js";
 
 
@@ -410,103 +411,178 @@ function minifyJSFile($inputFile)
             echo $this->minifyJS($b);
             exit();
         }
-        if ($h == "video"){
-            if(!empty($_GET['id'])){
-            header('Content-Type: text/html; charset=utf-8');
- ob_start(function ($b) {
-                                        $comments_pattern = "#/\*[^(\*/)]*\*/#";
-                                        $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
-                                        # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
+        if ($h == "video") {
+            if (!empty($_GET['id'])) {
+                header('Content-Type: text/html; charset=utf-8');
+                ob_start(function ($b) {
+                    $comments_pattern = "#/\*[^(\*/)]*\*/#";
+                    $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
+                    # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
 
-                                        $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
-                                        $html = preg_replace('/>\s+</', '><', $html);
-                                        $html = preg_replace('/^\s+|\s+$/m', '', $html);
-                                        $html = preg_replace('/\s{2,}/', ' ', $html);
-                                        $html = preg_replace('/[\r\n]/', '', $html);
-                                        return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
-                                    });
+                    $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
+                    $html = preg_replace('/>\s+</', '><', $html);
+                    $html = preg_replace('/^\s+|\s+$/m', '', $html);
+                    $html = preg_replace('/\s{2,}/', ' ', $html);
+                    $html = preg_replace('/[\r\n]/', '', $html);
+                    return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+                });
 
-                                    ?>
+                ?>
 
-                                                        <html>
+                <html>
 
-                                                        <head>
-                                                            <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
-                                                            <style>
-                                                                * {
-                                                                    margin: 0px;
-                                                                    padding: 0px;
-                                                                }
+                <head>
+                    <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                    <style>
+                        * {
+                            margin: 0px;
+                            padding: 0px;
+                        }
 
-                                                                div#my-video {
-                                                                    position: fixed;
-                                                                    left: 0px;
-                                                                    top: 0px;
-                                                                    width: 100%;
-                                                                    height: 100%;
-                                                                }
-                                                            </style>
-                                                        </head>
+                        div#my-video {
+                            position: fixed;
+                            left: 0px;
+                            top: 0px;
+                            width: 100%;
+                            height: 100%;
+                        }
+                    </style>
+                </head>
 
-                                                        <body onload="f();">
-                                                            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
-                                                                poster="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>00" data-setup="{}">
-                                                                <source src="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>" type="video/mp4" />
-                                                                <p class="vjs-no-js">
-                                                                    To view this video please enable JavaScript, and consider upgrading to a
-                                                                    web browser that supports HTML5 video.
-                                                                </p>
-                                                            </video>
-                                                            <script async type="text/javascript">
-                                                                f = function () {
-                                                                    document.addEventListener("contextmenu", function (e) {
-                                                                        e.preventDefault();
-                                                                        return false;
-                                                                    });
-                                                                    document.addEventListener("selectstart", function (e) {
-                                                                        e.preventDefault();
-                                                                        return false;
-                                                                    });
-                                                                    document.addEventListener("dragstart", function (e) {
-                                                                        e.preventDefault();
-                                                                        return false;
-                                                                    });
-                                                                    document.querySelectorAll("script").forEach(function (res) {
-                                                                        res.remove();
-                                                                        console.clear();
-                                                                    });
-                                                                    document.addEventListener('keydown', function (event) {
-                                                                        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-                                                                            event.preventDefault();
+                <body onload="f();">
+                    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+                        poster="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>00" data-setup="{}">
+                        <source src="<?php echo "https://api.eronelit.com/app&id=$_GET[id]&blog=$_GET[b]"; ?>" type="video/mp4" />
+                        <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that supports HTML5 video.
+                        </p>
+                    </video>
+                    <script async type="text/javascript">
+                        f = function () {
+                            document.addEventListener("contextmenu", function (e) {
+                                e.preventDefault();
+                                return false;
+                            });
+                            document.addEventListener("selectstart", function (e) {
+                                e.preventDefault();
+                                return false;
+                            });
+                            document.addEventListener("dragstart", function (e) {
+                                e.preventDefault();
+                                return false;
+                            });
+                            document.querySelectorAll("script").forEach(function (res) {
+                                res.remove();
+                                console.clear();
+                            });
+                            document.addEventListener('keydown', function (event) {
+                                if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                                    event.preventDefault();
 
-                                                                        }
-                                                                        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-                                                                            event.preventDefault();
+                                }
+                                if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                                    event.preventDefault();
 
-                                                                        }
-                                                                    });
-                                                                }
-                                                            </script>
-                                                            <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
-                                                        </body>
+                                }
+                            });
+                        }
+                    </script>
+                    <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                </body>
 
-                                                        </html>
+                </html>
 
-                                        <?php
-                                        exit();
-            }else{
+                <?php
+                exit();
+            } else {
                 $this->error_page(404);
                 exit();
             }
         }
-        if ($h == "build2"){
-            exit();  if(!is_dir("$_SERVER[DOCUMENT_ROOT]/build")){
+        if ($h == "build2") {
+            exit();
+            if (!is_dir("$_SERVER[DOCUMENT_ROOT]/build")) {
                 mkdir("$_SERVER[DOCUMENT_ROOT]/build");
             }
             header("Content-Type: text/plain;");
-echo shell_exec("curl -X GET https://$_SERVER[DOCUMENT_ROOT]");
+            echo shell_exec("curl -X GET https://$_SERVER[DOCUMENT_ROOT]");
             exit();
-            file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html",$this->get_BUILD("https://$_SERVER[HTTP_HOST]/"));
+            file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html", $this->get_BUILD("https://$_SERVER[HTTP_HOST]/"));
+            exit();
+        }
+        if ($h == "solarmap"){
+            header("Content-Type: text/html;");
+            ?>
+            <style type="text/css" nonce="<?php echo $nonce; ?>">
+* {
+    margin:0px;
+    padding:0px;
+}
+                </style>
+<div id="root" class="solarsystem"></div>
+<script type="module" src="/demo&id=S3503&hangar=main" nonce="<?php echo $nonce; ?>"></script>
+<?php             exit(); 
+        }
+        if ($h == "svg_logo_backscr_img") {
+            header('Content-Type: image/svg+xml');
+            ?>
+<svg id="logo_backscr_img"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                    </radialGradient>
+                </defs>
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                    transform="rotate(334.41 50 50)">
+                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                    transform="rotate(255.072 50 50)">
+                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                    transform="rotate(139.903 50 50)">
+                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+            </svg>
+            <?php 
             exit();
         }
         if ($h == "feed") {
@@ -1186,9 +1262,9 @@ echo $v .",";
                         <link rel="preload" as="font"
                             href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
                             type="font/woff2">
-                        <link 
+                        <link
                             href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                             rel="stylesheet">
+                            rel="stylesheet">
                         <link
                             href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
                             rel="stylesheet">
@@ -1424,11 +1500,11 @@ echo $v .",";
                         'Authorization: Bearer 32M052k350QaeofkaeopfF',
                     ]
                 ]);
-                
+
                 // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
                 echo "window.portfolio = $r; \n";
                 include "$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery3.6.0.min.js \n";
-                echo  file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
+                echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
                 include ROOT . "welcomer_f.js";
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
@@ -1943,7 +2019,7 @@ echo $v .",";
             } else if (strpos($_GET['mnps'], "javascript-no-13") !== false) {
                 header("Content-type: application/javascript");
 
-              #  include ROOT . "Scripts/jquery.mousewheel.min.php";
+                #  include ROOT . "Scripts/jquery.mousewheel.min.php";
             } else if (strpos($_GET['mnps'], "javascript-nfo-13") !== false) {
                 header("Content-type: application/javascript");
                 include ROOT . "visitcard/html2canvas.php";

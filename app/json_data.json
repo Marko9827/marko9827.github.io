@@ -105,14 +105,8 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "/demo&id=S3503&hangar=main",
-            "as": "module",
-            "type": "",
-            "crossorigin": ""
-        },
+     
+        
         {
             "tag": "link",
             "rel": "preload",
@@ -275,14 +269,8 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "/demo&id=S3503&hangar=main",
-            "as": "module",
-            "type": "",
-            "crossorigin": ""
-        },
+    
+        
         {
             "tag": "link",
             "rel": "preload",
@@ -340,14 +328,8 @@
             "defer": false,
             "crossorigin": ""
         },
-        {
-            "tag": "script",
-            "src": "/demo&id=S3503&hangar=main",
-            "type": "module",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },
+     
+        
         {
             "tag": "script",
             "src": "",

@@ -611,7 +611,8 @@ body:not(.open_f) .contanct_frm {
   z-index: -1;
 }
 
-.contanct_frm h5 svg#logo_backscr_img {
+.contanct_frm h5,
+img#logo_backscr_img svg#logo_backscr_img {
   position: absolute;
   width: 30px;
   height: 30px;

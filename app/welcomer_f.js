@@ -2700,6 +2700,13 @@ if (window.videojs && videojs.log) {
           .querySelector("body")
           .setAttribute("data-category-name", urlParamsf_f);
         welcomer.titleC(`Blog > ${urlParamsf_f}- Marko Nikolić`);
+        // <div-solarsystem id="root" class="solarsystem"></div-solarsystem>
+        if(urlParamsf_f == "astronomy"){
+        const div_solarsystem = document.createElement("div-solarsystem");
+        div_solarsystem.classList.add('solarsystem');
+        div_solarsystem.id = "root";
+        document.querySelector('div#clavs').appendChild(div_solarsystem);
+        }
       } else {
         welcomer.blg_history_replace("/?p=blog");
       }
@@ -2838,6 +2845,13 @@ if (window.videojs && videojs.log) {
           .querySelector("body")
           .setAttribute("data-category-name", urlParamsf_f);
         welcomer.titleC(`Blog > ${urlParamsf_f}- Marko Nikolić`);
+
+        if(urlParamsf_f == "astronomy"){
+          const div_solarsystem = document.createElement("div-solarsystem");
+          div_solarsystem.classList.add('solarsystem');
+          div_solarsystem.id = "root";
+          document.querySelector('div#clavs').appendChild(div_solarsystem);
+          }
       } else {
         welcomer.blg_history_replace("/?p=blog");
         welcomer.titleC("Blog > Marko Nikolić");
@@ -6243,7 +6257,7 @@ if (window.videojs && videojs.log) {
         data-onclick="welcomer.Social.tg.open();"></i><i class="bi bi-share" data-onclick="welcomer.share();"
         title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="welcomer.Hclose(this);" title="Close"></i>
     </btns_r>
-  </div_header><div-solarsystem id="root" class="solarsystem"></div-solarsystem>
+  </div_header> 
   <solar_arrow data-onclick="welcomer.colar_system();">
     <back_f></back_f>
     <labelv><i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>

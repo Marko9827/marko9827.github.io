@@ -6639,6 +6639,7 @@ if (window.videojs && videojs.log) {
     const img = document.createElement("img");
     img.id = "svg_loader_img";
     img.src = `${welcomer.loader_svg}`;
+    img.alt = "Loader";
     img.setAttribute(
       "style",
       ` position:fixed;right:10px;top:10px;width:30px;height:30px;pointer-events:none;opacity:0;object-fit:scale-down;transition:.3s;">`

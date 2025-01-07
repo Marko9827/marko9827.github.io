@@ -155,10 +155,11 @@ $csp = (string)"
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
     // script-src-elem 'nonce-$nonce' https://$_SERVER[HTTP_HOST] $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval' ;
    script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
- 
+  script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
+
     "; 
  $csp =  " 
-    script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
+    script-src    'self'  code.jquery.com  'unsafe-eval'     https: $cdn_urls https://$_SERVER[HTTP_HOST]/main     'unsafe-inline'; 
     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  ;
     media-src 'self' blob: data: $cdn_urls;
@@ -168,14 +169,14 @@ $csp = (string)"
     object-src 'none';
     manifest-src 'self';
     base-uri 'none';
+    frame-ancestors 'self' ;
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
-    require-trusted-types-for 'script';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
- $csp = "";
-#header("Content-Security-Policy:  $csp");
+    $csp = "";
+ #header("Content-Security-Policy:  $csp");
  
 
 header("X-Frame-Options: *.eronelit.com");
@@ -1162,7 +1163,14 @@ media-src 'self';" />
             display: flex;
             align-content: center;
         }
-
+        .h5_div img{
+            height: 25px;
+    width: 25px;
+    margin-right: 10px;
+    border-radius: 30px;
+    border: 2px solid white;
+    padding: 3px;
+        }
         * {
             cursor: unset !important;
         }
@@ -3237,6 +3245,24 @@ solar-map {
     height: 150px;
     background: black;
 }
+
+video-player#homevideo{
+    
+    position: fixed;
+    left: 0px;
+    right: 0px;
+    width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    -o-object-fit: scale-fit;
+    object-fit: scale-fit;
+    background: black;
+    -webkit-transition: .3s !important;
+    -o-transition: .3s !important;
+    transition: .3s !important;
+    opacity: 0.5; 
+    
+}
+
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

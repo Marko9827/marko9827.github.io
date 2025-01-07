@@ -512,9 +512,20 @@ class portfolio_marko
             exit();
         }
         if ($h == "solarmap"){
-            header("Content-Type: text/html;");
+            header("X-Frame-Options: SAMEORIGIN");
+            if (isset($_SERVER['HTTP_REFERER'])) {
+               if(!$_SERVER['HTTP_REFERER'] == "https://$_SERVER[HTTP_HOST]/?p=blog&c=astronomy" ){
+                $this->error_page(404);
+                exit();
+               }
+            }  else{
+                $this->error_page(404);
+                exit();
+            }
+            header('Content-Type: text/html; charset=utf-8');
+
             ?>
-            <style type="text/css" nonce="<?php echo $nonce; ?>">
+            <style type="text/css" >
 * {
     margin:0px;
     padding:0px;

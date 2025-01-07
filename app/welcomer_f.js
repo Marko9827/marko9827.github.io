@@ -31,6 +31,7 @@ class SolarMap extends HTMLElement {
     rootDiv.style.height = "100%";
     rootDiv.style.width = "100%";
     rootDiv.style.border = "none";
+    rootDiv.title = "Solar map";
     rootDiv.src = "/solarmap";
     rootDiv.setAttribute("sandbox","allow-scripts allow-same-origin");
     this.shadowRoot.appendChild(rootDiv);
@@ -445,13 +446,17 @@ class VideoPlayer extends HTMLElement {
   clearV() {
     this.player.dispose();
   }
-  updateVideoSrc(newSrc = "", newPoster = "") {
+  updateVideoSrc(newSrc = "", newPoster = "", optionsVL_FS = { autoplay: false, preload: "auto" }) {
     if (typeof videojs !== "undefined") {
       const videoElement = this.shadowRoot.querySelector("#video-player");
       this.player = videojs(
         videoElement,
-        { autoplay: false, preload: "auto" },
-        function onPlayerReady() {}
+        optionsVL_FS,
+        function onPlayerReady() {
+          if(optionsVL_FS?.autoplay == true){
+            // this.player.play();
+          }
+        }
       );
       this.postImage = this.shadowRoot.querySelector("canvas_img");
       this.player.on("timeupdate", () => {});
@@ -641,25 +646,8 @@ window.eventListeners_clck = function () {
     });
   });
 };
-document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll("*[data-onclick]").forEach((elem) => {
-    elem.addEventListener("click", function (e) {
-      e.preventDefault();
-      const action = elem.getAttribute("data-onclick");
-      welcomer.home_list(elem, action);
-      return;
-    });
-  });
-  document.addEventListener("keydown", (event) => {
-    if (
-      (event.ctrlKey && event.key === "s") ||
-      (event.metaKey && event.key === "s")
-    ) {
-      event.preventDefault();
-    }
-  });
-   
-});
+ 
+  
 
 window.addEventListener("popstate", () => {
   const urlParamsf = new URLSearchParams(window.location.search),
@@ -828,18 +816,48 @@ if (!customElements.get('div-solarsystem')) { customElements.define("div-solarsy
   videoPlayerElement = document.querySelector("video-player"),
   pContainerElement = document.querySelector("p-container");
     },
+    reset_call: function(){
+      const video = document.createElement("video");
+      video.setAttribute("loop","");
+      video.setAttribute("autoplay","");
+      video.setAttribute("muted","");
+      video.setAttribute("autobuffer","");
+      video.setAttribute("playsinline","");
+      video.classList.add("wallpaperVideo");
+      video.classList.add("video_is_hidden");
+      // 
+      const p_c = document.createElement("p");
+      p_c.classList.add("p-c");
+      p_c.appendChild(document.createTextNode('Do you love random videos?'));
+      p_c.appendChild(document.createElement("br"));
+      p_c.appendChild(document.createTextNode('- Tip: Reload page...'));
+      // 
+      const content_space = document.createElement("div");
+      content_space.id = 'content_Space';
+    },
     reset: function() {
     try{
-    // welcomer.template_home();
-      
-if(document.querySelector("body")){
-  document.querySelector("body").remove();
-};
+    /*
+    / welcomer.template_home();
+  
+    //welcomer.template_call();
+     document.body.innerHTML = `${welcomer.body_reset_form}`;
 
+     
 const parser = new DOMParser().parseFromString(welcomer.body_reset_form, "text/html");
-document.querySelector("html").appendChild(parser.body);
-
- 
+document.querySelector("body").appendChild(parser.body);
+*/
+ document.body.innerHTML = `${welcomer.body_reset_form}`;
+ setTimeout(function(){
+  if(document.querySelector("video-player#homevideo")){
+  document.querySelector("video-player#homevideo").player.autoplay = true;
+ document.querySelector("video-player#homevideo").updateVideoSrc(
+  '/?src=vdwallpper', 
+  '',
+  { autoplay: true, preload: "auto" }
+ );
+}
+},1000);
 
 if (window.videojs && videojs.log) {
     videojs.log.error = function() {};
@@ -884,8 +902,25 @@ if (window.videojs && videojs.log) {
       document.querySelector(".close_btnf").style.display = "none";
       document.querySelector("grider_viewer").classList.remove("g_gallery");
       document.querySelector("hh_anim_start").removeAttribute("style");
+
+      document.querySelectorAll("*[data-onclick]").forEach((elem) => {
+        elem.addEventListener("click", function (e) {
+          e.preventDefault();
+          const action = elem.getAttribute("data-onclick");
+          welcomer.home_list(elem, action);
+          return;
+        });
+      });
+      document.addEventListener("keydown", (event) => {
+        if (
+          (event.ctrlKey && event.key === "s") ||
+          (event.metaKey && event.key === "s")
+        ) {
+          event.preventDefault();
+        }
+      }); 
        }catch(aer){
-       window.top.location.reload();
+      // window.top.location.reload();
        }
     },
     start_page: function (what = "") {
@@ -2179,7 +2214,9 @@ if (window.videojs && videojs.log) {
         })
         .catch(function (v) {});
     const blob = URL.createObjectURL(url);
+    if(blob === 'null' || blob == null){}else{
     document.querySelector(".wallpaperVideo source").setAttribute("src", blob);
+    }
   },
   getDataGallery: async function () {
     const response = await fetch("/?mnps=gallery"),
@@ -2707,6 +2744,7 @@ if (window.videojs && videojs.log) {
         $("body").removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
         document.querySelector("p-container").set(`${res}`);
+        // document.querySelector('div#clavs div_header').setAttribute("style", " opacity:1;transform:unset;");
         welcomer.cards_generate(f);
         document
           .getElementById("clavs")
@@ -6161,9 +6199,238 @@ if (window.videojs && videojs.log) {
       const serializer = new XMLSerializer();
       bodyHTML += serializer.serializeToString(node);
   });
-this.body_reset_form = bodyHTML;
+// this.body_reset_form = bodyHTML;
   },
-  body_reset_form: `<video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video><p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p><div id="content_Space"></div><hh_anim_start><spjin><p><span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025 </span></p><spj><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><br class="hide_noy"><br class="hide_noy"><h3>Marko Nikolić</h3><div class="box_shadow_txtf box_shadow"><span>Full stack Developer</span><sp>-</sp><span>Scientist theories/news</span><sp>-</sp><span>Writing books</span><sp>-</sp><span>Photographer</span></div><br class="hide_noy"><br><arr_bundle><i data-onclick="welcomer.bundleSuggestedS(1);"class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"style="transform:scale(1)"></i><i data-onclick="welcomer.bundleSuggestedS('2');"class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i></arr_bundle><div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"></div></spj></spjin></hh_anim_start><div id="clavs"><div_header><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"class="bi bi-arrow-clockwise"></i><svg class="Vjideo_sjpinner" viewBox="0 0 50 50"><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle></svg><span>Loading ...</span><btns_i><input type="text" placeholder="Search ..." data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r><i class="bi bi-search F_bi_search" data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"title="Search project..."></i><i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i><i class="bi bi-house pdf_page_home_btn" data-onclick="welcomer.blogloader('all');"title="Return to Blog home page"></i><i class="bi bi-telegram tg_button" data-onclick="welcomer.Social.tg.open();"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="welcomer.Hclose(this);" title="Close"></i></btns_r></div_header><div-solarsystem id="root" class="solarsystem"></div-solarsystem><solar_arrow data-onclick="welcomer.colar_system();"><back_f></back_f><labelv><i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i></labelv></solar_arrow><box_h></box_h><br_ta class="active_scr"></br_ta><grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();"></grider_viewer><iframe title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe><p-container class="shadow_iframe"></p-container><div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></div><gridder_loader><img alt="loading" loading="lazy"src="${this.loader_svg}"height="55" width="55"></gridder_loader><canvas id="canvas">Your browser doesn't support canvas</canvas><svg xmlns="http://www.w3.org/2000/svg" version="1.1"style=" filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)); enable-background: new 0 0 512 512 !important;"><defs><filter id="shadowed-goo"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7"result="goo" /><feGaussianBlur in="goo" stdDeviation="3" result="shadow" /><feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -0.2"result="shadow" /><feOffset in="shadow" dx="1" dy="1" result="shadow" /><feBlend in2="shadow" in="goo" result="goo" /><feBlend in2="goo" in="SourceGraphic" result="mix" /></filter><filter id="goo"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7"result="goo" /><feBlend in2="goo" in="SourceGraphic" result="mix" /></filter></defs></svg><div class="cursor" style="opacity: 0;"></div><info_box><info_msg data-onclick="$(this).removeClass('info_box_active');"><dv_h></dv_h><info_div><img src="/favicon.svg" alt="for Testing" title="aefaef" /><h4></h4></info_div><p></p></info_msg></info_box><p-c><i class="bi bi-pci-card"></i> 0FPS</p-c><section data-ui-type="gallery" class="hidden_omega"><video-player id="video_preview"></video-player><div_header data-url="editor"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><span>Marko Nikolić > Gallery</span><btns_i><input type="text" placeholder="Search project" data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo gallery_home" data-title="Back to Gallery"data-onclick="welcomer.pages.gallery.call_back();"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i></btns_r></div_header><grider_viewer></grider_viewer></section><section data-ui-type="slider" class="hidden_omega"><arr_bundle><i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"style="transform:scale(1)" data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i><i class="bi bi-arrow-left-circle-fill catascrollEchatTv"data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i></arr_bundle><span id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span><i data-onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i><div-echatv onscroll="welcomer.eronelit_gallery.scroll_event();"></div-echatv></section><section data-ui-type="social_feed" class="hidden_omega"></section><section data-ui-type="editor" class="hidden_omega"><div_header data-url="editor"><svg id="logo_backscr_img" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" class=""><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"dur="12s" repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span><btns_i><input type="text" placeholder="Search project" data-hmm="search"onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe" data-onclick="welcomer.search_Kompjiler(this);"title="Close Search"></i></btns_i><btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo"></i><i class="bi bi-arrow-right-short editor_btns redo " title="redo" data-title="redo"></i><iclass="bi bi-file-earmark-arrow-down celvon" data-onclick="welcomer.editor.d();"data-title="Download as html file"></i><i class="bi bi-question-lg" data-onclick="welcomer.editor.load_menu_bar(this);"></i><i class="bi bi-share" data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();" title="Close"></i></btns_r></div_header><editor-history-rp></editor-history-rp><editor-wrapper></editor-wrapper></section><div_not><div_panel><span></span><btns><btn1>Yes</btn1><btn2>Cancel</btn2></btns></div_panel></div_not><style nonce="${window.stmp}">a[data-iam-hidden="yes"] {display: none !important;}</style></div><div class="contanct_frm"><div class="h5_div"><svg id="logo_backscr_img" class="logo_backscr_img_cnt" viewBox="0 0 100 100"preserveAspectRatio="xMidYMid slice"><defs><radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5"><animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop><stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop></radialGradient><radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5"><animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5"><animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop></radialGradient><radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5"><animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop><stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop></radialGradient><radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5"><animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop><stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop></radialGradient><radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5"><animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate><stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop><stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop></radialGradient></defs><rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"transform="rotate(334.41 50 50)"><animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"repeatCount="indefinite"></animateTransform></rect><rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"transform="rotate(255.072 50 50)"><animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate><animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"repeatCount="indefinite"></animateTransform></rect><rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"transform="rotate(139.903 50 50)"><animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate><animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate><animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"repeatCount="indefinite"></animateTransform></rect></svg><i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div><form autocomplete="off"><p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text" id="fname" name="firstname" placeholder="Your name.."><label for="lname">Your Email</label><i class="input_icon bi bi-envelope"></i><input type="email" id="lname" name="email" placeholder="Your Email.."><label for="subject" class="message_lenght">Message </label><textarea id="subject" name="subject" placeholder="Your message..." style="height:200px"></textarea><label for="norobot">Solve math problem. I'm not a robot</label><input type="number" id="norobot" name="norobot" placeholder=""></form><fotter><button type="button" id="sendbtn">Send message</button></fotter></div>`,
+  body_reset_form: ` 
+
+<video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video>
+
+<p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
+<div id="content_Space"></div>
+<hh_anim_start>
+  <spjin>
+    <p><span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025 </span></p>
+    <spj>
+    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="logo" loading="lazy" /><br class="hide_noy"><br class="hide_noy">
+      <h3>Marko Nikolić</h3>
+      <div class="box_shadow_txtf box_shadow"><span>Full stack Developer</span>
+        <sp>-</sp><span>Scientist theories/news</span>
+        <sp>-</sp><span>Writing books</span>
+        <sp>-</sp><span>Photographer</span>
+      </div><br class="hide_noy"><br>
+      <arr_bundle><i data-onclick="welcomer.bundleSuggestedS(1);"
+          class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+          style="transform:scale(1)"></i><i data-onclick="welcomer.bundleSuggestedS('2');"
+          class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i></arr_bundle>
+      <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"></div>
+    </spj>
+  </spjin>
+</hh_anim_start>
+<div id="clavs">
+  <div_header>
+    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="Logo" />
+    <i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"
+      class="bi bi-arrow-clockwise"></i><svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
+      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+    </svg><span>Loading ...</span>
+    <btns_i><input type="text" placeholder="Search ..." data-hmm="search"
+        onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+        data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+    <btns_r><i class="bi bi-search F_bi_search" data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"
+        title="Search project..."></i><i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i><i
+        class="bi bi-house pdf_page_home_btn" data-onclick="welcomer.blogloader('all');"
+        title="Return to Blog home page"></i><i class="bi bi-telegram tg_button"
+        data-onclick="welcomer.Social.tg.open();"></i><i class="bi bi-share" data-onclick="welcomer.share();"
+        title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="welcomer.Hclose(this);" title="Close"></i>
+    </btns_r>
+  </div_header><div-solarsystem id="root" class="solarsystem"></div-solarsystem>
+  <solar_arrow data-onclick="welcomer.colar_system();">
+    <back_f></back_f>
+    <labelv><i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>
+    </labelv>
+  </solar_arrow>
+  <box_h></box_h>
+  <br_ta class="active_scr"></br_ta>
+  <grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();"></grider_viewer><iframe
+    title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe><p-container class="shadow_iframe"></p-container>
+  <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></div>
+  <gridder_loader><img alt="loading" loading="lazy" src="${this.loader_svg}" height="55" width="55"></gridder_loader>
+  <canvas id="canvas">Your browser doesn't support canvas</canvas>
+  
+  <div class="cursor" style="opacity: 0;"></div>
+  <info_box>
+    <info_msg data-onclick="$(this).removeClass('info_box_active');">
+      <dv_h></dv_h>
+      <info_div><img src="/favicon.svg" alt="for Testing" title="aefaef" />
+        <h4></h4>
+      </info_div>
+      <p></p>
+    </info_msg>
+  </info_box><p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
+  <section data-ui-type="gallery" class="hidden_omega"><video-player id="video_preview"></video-player>
+    <div_header data-url="editor">
+      <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić > Gallery</span>
+      <btns_i><input type="text" placeholder="Search project" data-hmm="search"
+          onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+          data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+      <btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo gallery_home"
+          data-title="Back to Gallery" data-onclick="welcomer.pages.gallery.call_back();"></i><i class="bi bi-share"
+          data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();"
+          title="Close"></i></btns_r>
+    </div_header>
+    <grider_viewer></grider_viewer>
+  </section>
+  <section data-ui-type="slider" class="hidden_omega">
+    <arr_bundle><i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+        style="transform:scale(1)" data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i><i
+        class="bi bi-arrow-left-circle-fill catascrollEchatTv"
+        data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i></arr_bundle><span
+      id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
+        class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span><i
+      data-onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i><div-echatv
+      onscroll="welcomer.eronelit_gallery.scroll_event();"></div-echatv>
+  </section>
+  <section data-ui-type="social_feed" class="hidden_omega"></section>
+  <section data-ui-type="editor" class="hidden_omega">
+    <div_header data-url="editor">  <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span>
+      <btns_i><input type="text" placeholder="Search project" data-hmm="search"
+          onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+          data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+      <btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo"></i><i
+          class="bi bi-arrow-right-short editor_btns redo " title="redo" data-title="redo"></i>
+        <iclass="bi bi-file-earmark-arrow-down celvon" data-onclick="welcomer.editor.d();"
+          data-title="Download as html file"></i><i class="bi bi-question-lg"
+            data-onclick="welcomer.editor.load_menu_bar(this);"></i><i class="bi bi-share"
+            data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();"
+            title="Close"></i>
+      </btns_r>
+    </div_header><editor-history-rp></editor-history-rp><editor-wrapper></editor-wrapper>
+  </section>
+  <div_not>
+    <div_panel><span></span>
+      <btns>
+        <btn1>Yes</btn1>
+        <btn2>Cancel</btn2>
+      </btns>
+    </div_panel>
+  </div_not>
+  <style nonce="${window.stmp}">
+    a[data-iam-hidden="yes"] {
+      display: none !important;
+    }
+  </style>
+</div>
+<div class="contanct_frm">
+  <div class="h5_div">
+    <img src="/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
+     <i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
+  <form autocomplete="off">
+    <p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text"
+      id="fname" name="firstname" placeholder="Your name.."><label for="lname">Your Email</label><i
+      class="input_icon bi bi-envelope"></i><input type="email" id="lname" name="email"
+      placeholder="Your Email.."><label for="subject" class="message_lenght">Message </label><textarea id="subject"
+      name="subject" placeholder="Your message..." style="height:200px"></textarea><label for="norobot">Solve math
+      problem. I'm not a robot</label><input type="number" id="norobot" name="norobot" placeholder="">
+  </form>
+  <fotter><button type="button" id="sendbtn">Send message</button></fotter>
+</div>`,
+  template_call: function(){
+    while (document.body.firstChild) {
+     /// document.body.removeChild(document.body.firstChild);
+    }
+      let contentDiv = document.getElementById('content');
+      if (!contentDiv) {
+          contentDiv = document.createElement('div');
+          contentDiv.id = 'content';
+          document.body.appendChild(contentDiv); 
+      } 
+      function createElementWithAttributes(tag, attributes = {}, children = []) {
+          const element = document.createElement(tag);
+          for (const [attr, value] of Object.entries(attributes)) {
+              if (attr === 'style') {  
+                  for (const [styleProp, styleValue] of Object.entries(value)) {
+                      element.style[styleProp] = styleValue;
+                  }
+              } else if (attr === 'dataset'){
+                  for (const [dataAttr, dataValue] of Object.entries(value)){
+                      element.dataset[dataAttr] = dataValue;
+                  }
+              }
+              else {
+                  element.setAttribute(attr, value);
+              }
+          }
+          children.forEach(child => {
+              if (typeof child === 'string') {
+                  element.appendChild(document.createTextNode(child));
+              } else {
+                  element.appendChild(child);
+              }
+          });
+          return element;
+      } 
+      const video = createElementWithAttributes('video', {
+          style: { opacity: 0 },
+          loop: true,
+          autoplay: true,
+          muted: true,
+          autobuffer: true,
+          playsinline: true,
+          class: 'wallpaperVideo video_is_hidden'
+      });
+      contentDiv.appendChild(video); 
+      const p = createElementWithAttributes('p', { class: 'p-c' }, [
+          "Do you love random videos?",
+          document.createElement('br'),
+          "- Tip: Reload page..."
+      ]);
+      contentDiv.appendChild(p); 
+      const contentSpace = createElementWithAttributes('div', { id: 'content_Space' });
+      contentDiv.appendChild(contentSpace); 
+      const hhAnimStart = createElementWithAttributes('hh_anim_start', {}, [
+          createElementWithAttributes('spjin', {}, [
+              createElementWithAttributes('p', {}, [
+                  createElementWithAttributes('span', { class: 'box_shadow_h' }, [
+                      "Marko Nikolić - Portfolio ",
+                      createElementWithAttributes('i', { class: 'far fa-copyright' }),
+                      "2012 - 2025"
+                  ])
+              ]),
+              createElementWithAttributes('spj', {}, [
+                  createElementWithAttributes('img', { src: '/svg_logo_backscr_img', id: 'logo_backscr_img', alt: 'logo', loading: 'lazy' }),
+                  createElementWithAttributes('br', { class: 'hide_noy' }),
+                  createElementWithAttributes('br', { class: 'hide_noy' }),
+                  createElementWithAttributes('h3', {}, ["Marko Nikolić"]),
+                  createElementWithAttributes('div', { class: 'box_shadow_txtf box_shadow' }, [
+                      createElementWithAttributes('span', {}, ["Full stack Developer"]),
+                      createElementWithAttributes('sp', {}, ["-"]),
+                      createElementWithAttributes('span', {}, ["Scientist theories/news"]),
+                      createElementWithAttributes('sp', {}, ["-"]),
+                      createElementWithAttributes('span', {}, ["Writing books"]),
+                      createElementWithAttributes('sp', {}, ["-"]),
+                      createElementWithAttributes('span', {}, ["Photographer"])
+                  ]),
+                  createElementWithAttributes('br', { class: 'hide_noy' }),
+                  createElementWithAttributes('br'),
+                   createElementWithAttributes('arr_bundle', {}, [
+                      createElementWithAttributes('i', {
+                          'data-onclick': "welcomer.bundleSuggestedS(1);",
+                          class: 'bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv',
+                          style: { transform: 'scale(1)' }
+                      }),
+                      createElementWithAttributes('i', {
+                          'data-onclick': "welcomer.bundleSuggestedS('2');",
+                          class: 'bi bi-arrow-left-circle-fill catascrollEchatTv',
+                          style: { transform: 'scale(0)' }
+                      })
+                  ]),
+                  createElementWithAttributes('div', { id: 'buttons', class: 'box_shadow', onscroll: 'welcomer.scrolj();' })
+              ])
+          ])
+      ]);
+      const styleElement = createElementWithAttributes('style', {nonce: window.stmp}, [`a[data-iam-hidden="yes"] { display: none !important; }`]);
+      contentDiv.appendChild(styleElement);
+  },
   template_home: function(){
     const Template_div = document.querySelector("body");
     
@@ -6373,9 +6640,10 @@ this.body_reset_form = bodyHTML;
     ); */
 
     document.body.appendChild(img);
+    
     setTimeout(async () => {
       const video_wall = document.querySelector("video");
-      const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 5}` };
+      const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
       const xhr = new XMLHttpRequest();
       xhr.open("POST", "/?src=vdwallpper", true);
       xhr.responseType = "blob";
@@ -6386,7 +6654,9 @@ this.body_reset_form = bodyHTML;
       xhr.onload = function () {
         if (xhr.status === 200) {
           const blob = xhr.response;
-          video_wall.src = URL.createObjectURL(blob);
+          const URL2 = URL.createObjectURL(blob);
+          if(URL2){
+          video_wall.src = URL2;
           try {
             document
               .querySelector("img#svg_loader_img")
@@ -6397,6 +6667,7 @@ this.body_reset_form = bodyHTML;
           }, 1000);
           video_wall.play();
           video_wall.classList.remove("video_is_hidden");
+        }
         } else {
           console.error("Error:", xhr.statusText);
         }
@@ -6772,7 +7043,9 @@ class Circle {
     context.fill();
   }
 }
- 
-
+   
+  if(!document.querySelector("body")){
+    document.querySelector("html").appendChild(document.createElement("body"));
+  }
 welcomer.start(document.querySelector("body"));
  

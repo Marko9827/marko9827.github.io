@@ -1,529 +1,130 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../../../favicon.ico">
-
-  <title>143</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <!-- Bootstrap core CSS -->
-  <link href="Scripts/tmp/1query/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="fonts/D3/D3.css" />
-
-  <!-- Custom styles for this template -->
-  <link href="Scripts/tmp/1query/album.css" rel="stylesheet">
-  <link href="css/style_album.css" rel="stylesheet">
-</head>
-
-<body onkeydown="return false;" onkeypress="return false;" onkeyup="return false;">
-
-
-  <main role="main">
-    <style> img{
-            background-size: cover;
-                  image-rendering: crisp-edges;}</style>
-
-
-
-    <canvas id="dotty" width="100%" height="100%" style="position:fixed;"></canvas>
-
-
-
-    <div class="album py-5 bg-light">
-
-
-      <!--
-      <div id="myBtnContainer">
-        <button class="btn active" onclick="Csharp()">C#</button>
-        <button class="btn" onclick="web()">Web</button>
-        <button class="btn" onclick="filterSelection('cars')"> Cars</button>
-        <button class="btn" onclick="filterSelection('people')"> People</button>
-      </div> -->
-
-      <script>
-        /*
-          Csharp
-          asp.net
-          web
-          android
-          */
-function Csharp(){
-  $(".Csharp").show('slow', {animation:'slide'});
-  $(".web").hide();
-  $(".android").hide();
-}
-
-
-function web(){
-  $(".Csharp").hide();
-  $(".web").show('slow', {animation:'slide'});
-  $(".android").hide();
-}
-
-$(".Csharp").hover()
-{
-
-}
+<video style="opacity:0;" loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video>
+<p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
+<div id="content_Space"></div>
+<hh_anim_start>
+  <spjin>
+    <p><span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025 </span></p>
+    <spj>
+    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="logo" loading="lazy" /><br class="hide_noy"><br class="hide_noy">
+      <h3>Marko Nikolić</h3>
+      <div class="box_shadow_txtf box_shadow"><span>Full stack Developer</span>
+        <sp>-</sp><span>Scientist theories/news</span>
+        <sp>-</sp><span>Writing books</span>
+        <sp>-</sp><span>Photographer</span>
+      </div><br class="hide_noy"><br>
+      <arr_bundle><i data-onclick="welcomer.bundleSuggestedS(1);"
+          class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+          style="transform:scale(1)"></i><i data-onclick="welcomer.bundleSuggestedS('2');"
+          class="bi bi-arrow-left-circle-fill catascrollEchatTv" style="transform:scale(0);"></i></arr_bundle>
+      <div id="buttons" class="box_shadow" onscroll="welcomer.scrolj();"></div>
+    </spj>
+  </spjin>
+</hh_anim_start>
+<div id="clavs">
+  <div_header>
+    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="Logo" />
+    <i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"
+      class="bi bi-arrow-clockwise"></i><svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
+      <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+    </svg><span>Loading ...</span>
+    <btns_i><input type="text" placeholder="Search ..." data-hmm="search"
+        onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+        data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+    <btns_r><i class="bi bi-search F_bi_search" data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"
+        title="Search project..."></i><i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i><i
+        class="bi bi-house pdf_page_home_btn" data-onclick="welcomer.blogloader('all');"
+        title="Return to Blog home page"></i><i class="bi bi-telegram tg_button"
+        data-onclick="welcomer.Social.tg.open();"></i><i class="bi bi-share" data-onclick="welcomer.share();"
+        title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="welcomer.Hclose(this);" title="Close"></i>
+    </btns_r>
+  </div_header><div-solarsystem id="root" class="solarsystem"></div-solarsystem>
+  <solar_arrow data-onclick="welcomer.colar_system();">
+    <back_f></back_f>
+    <labelv><i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>
+    </labelv>
+  </solar_arrow>
+  <box_h></box_h>
+  <br_ta class="active_scr"></br_ta>
+  <grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();"></grider_viewer><iframe
+    title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe><p-container class="shadow_iframe"></p-container>
+  <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></div>
+  <gridder_loader><img alt="loading" loading="lazy" src="${this.loader_svg}" height="55" width="55"></gridder_loader>
+  <canvas id="canvas">Your browser doesn't support canvas</canvas>
   
- $("div").addClass(function(index, currentClass) {
-    
-    if ( currentClass === "show" ) 
-    {
-        $("body").css("overflow","hidden");
+  <div class="cursor" style="opacity: 0;"></div>
+  <info_box>
+    <info_msg data-onclick="$(this).removeClass('info_box_active');">
+      <dv_h></dv_h>
+      <info_div><img src="/favicon.svg" alt="for Testing" title="aefaef" />
+        <h4></h4>
+      </info_div>
+      <p></p>
+    </info_msg>
+  </info_box><p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
+  <section data-ui-type="gallery" class="hidden_omega"><video-player id="video_preview"></video-player>
+    <div_header data-url="editor">
+      <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić > Gallery</span>
+      <btns_i><input type="text" placeholder="Search project" data-hmm="search"
+          onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+          data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+      <btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo gallery_home"
+          data-title="Back to Gallery" data-onclick="welcomer.pages.gallery.call_back();"></i><i class="bi bi-share"
+          data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();"
+          title="Close"></i></btns_r>
+    </div_header>
+    <grider_viewer></grider_viewer>
+  </section>
+  <section data-ui-type="slider" class="hidden_omega">
+    <arr_bundle><i class="bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv"
+        style="transform:scale(1)" data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(1);"></i><i
+        class="bi bi-arrow-left-circle-fill catascrollEchatTv"
+        data-onclick="welcomer.eronelit_gallery.bundleSuggestedS(-1);" style="transform:scale(1)"></i></arr_bundle><span
+      id="helper_id_helper" class="dont_removme"><i style="padding-right:2px;"
+        class="dont_removme bi bi-info-square"></i> For close click ( X ) button.</span><i
+      data-onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit dont_removme"></i><div-echatv
+      onscroll="welcomer.eronelit_gallery.scroll_event();"></div-echatv>
+  </section>
+  <section data-ui-type="social_feed" class="hidden_omega"></section>
+  <section data-ui-type="editor" class="hidden_omega">
+    <div_header data-url="editor">  <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span>
+      <btns_i><input type="text" placeholder="Search project" data-hmm="search"
+          onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
+          data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
+      <btns_r class="btns_r_editor_right"><i class="bi bi-arrow-left-short editor_btns undo"></i><i
+          class="bi bi-arrow-right-short editor_btns redo " title="redo" data-title="redo"></i>
+        <iclass="bi bi-file-earmark-arrow-down celvon" data-onclick="welcomer.editor.d();"
+          data-title="Download as html file"></i><i class="bi bi-question-lg"
+            data-onclick="welcomer.editor.load_menu_bar(this);"></i><i class="bi bi-share"
+            data-onclick="welcomer.share();" title="Share"></i><i class="bi bi-x-lg close_btnf" data-onclick="CTHP();"
+            title="Close"></i>
+      </btns_r>
+    </div_header><editor-history-rp></editor-history-rp><editor-wrapper></editor-wrapper>
+  </section>
+  <div_not>
+    <div_panel><span></span>
+      <btns>
+        <btn1>Yes</btn1>
+        <btn2>Cancel</btn2>
+      </btns>
+    </div_panel>
+  </div_not>
+  <style nonce="${window.stmp}">
+    a[data-iam-hidden="yes"] {
+      display: none !important;
     }
-
-
-  });
-      </script>
-
-
-      <div class="container">
-
-        <div class="row">
-
-          <div class="col-md-4 Csharp">
-            <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/img_fae.jpg" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text">When Eronel SDK connects to the brain ... All information about the status of an
-                  organism is stored for analysis in Eronel JGA where the...
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <style>
-                        .info-btn:hover{
-                                          border-top-right-radius: 30px;
-                                        }
-                                        </style>
-                      <button type="button" class="btn btn-sm btn-outline-secondary info-btn" data-toggle="modal"
-                        data-target="#exampleModal">More Information + Photo</button>
-                      <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                      -->
-                      <script>
-                        function play392() {
-                                                window.location.href = '392/index.html';
-
-                                            }
-                                        </script>
-
-
-                      <div class="modal fade hidescr hidescr" id="exampleModal" tabindex="-1" role="dialog"
-                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel">Eronelit SDK</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/index.html"></iframe>
-                              When Eronel SDK connects to the brain ...
-                              All information about the status of the organism is stored for analysis in Eronel JGA
-                              where the Task Manager of all processes is done in Windows. Only processes for the
-                              operation of organs, blood images and pressure are shown ...
-                              The whole process takes half a second ...🌟☄☮
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--<small class="text-muted">9 mins</small>-->
-                  </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-          <div class="col-md-4 Csharp">
-            <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/galaxy_slider2.jpg" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text">Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
-                  countless animations that provide space experience!
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <style>
-                        .info-btn:hover{
-                                            border-top-right-radius: 30px;
-                                          }
-                                          </style>
-                      <button type="button" class="btn btn-sm btn-outline-secondary info-btn" data-toggle="modal"
-                        data-target="#exampleModal1">More Information + Photo</button>
-                      <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                        -->
-                      <script>
-                        function play392() {
-                                                  window.location.href = '392/index.html';
-  
-                                              }
-                                          </script>
-
-
-                      <div class="modal fade hidescr" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel1">Eronelit SPACEP ROGRAM</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/indexgalaxy.html"></iframe>
-                              Eronelit SPACEPROGRAM is my 3D Virtualization Program for the whole universe, the
-                              countless animations that provide space experience!
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--<small class="text-muted">9 mins</small>-->
-                  </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-          <div class="col-md-4 Csharp">
-            <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/dd1.png" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text">
-                  Eronelit OS is a commercial software that enables web site management through a presentation.
-                  <br>
-
-                  <br>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <style>
-                        .info-btn:hover{
-                                              border-top-right-radius: 30px;
-                                            }
-                                            </style>
-                      <button type="button" class="btn btn-sm btn-outline-secondary info-btn" data-toggle="modal"
-                        data-target="#exampleModal2">More Information + Photo</button>
-                      <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                          -->
-                      <script>
-                        function play392() {
-                                                    window.location.href = '392/index.html';
-    
-                                                }
-                                            </script>
-
-
-                      <div class="modal fade hidescr" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel2">Eronelit OS</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/osinde.html"></iframe>
-                              Eronelit OS is a commercial software that enables web site management through a
-                              presentation.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--<small class="text-muted">9 mins</small>-->
-                  </div>
-              </div>
-            </div>
-          </div>
-
-
-
-          <div class="col-md-4 Csharp">
-            <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/AI1.png" alt="Card image cap">
-              <div class="card-body">
-                <p class="card-text">Artificial intelligence (AI), sometimes called machine intelligence, is
-                  intelligence demonstrated by machines, in contrast to the natural intelligence displayed by humans
-                  and...
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <style>
-                        .info-btn:hover{
-                                            border-top-right-radius: 30px;
-                                          }
-                                          </style>
-                      <button type="button" class="btn btn-sm btn-outline-secondary info-btn" data-toggle="modal"
-                        data-target="#exampleModal3">More Information + Photo</button>
-                      <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                        -->
-                      <script>
-                        function play392() {
-                                                  window.location.href = '392/index.html';
-  
-                                              }
-                                          </script>
-
-
-                      <div class="modal fade hidescr" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel3">Eronelit SPACEPROGRAM</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/AI.html"></iframe>
-                              Artificial intelligence (AI), sometimes called machine intelligence, is intelligence
-                              demonstrated by machines, in contrast to the natural intelligence displayed by humans and
-                              other animals. In computer science AI research is defined as the study of "intelligent
-                              agents": any device that perceives its environment and takes actions that maximize its
-                              chance of successfully achieving its goals. Colloquially, the term "artificial
-                              intelligence" is applied when a machine mimics "cognitive" functions that humans
-                              associate with other human minds, such as "learning" and "problem solving".
-
-                              The scope of AI is disputed: as machines become increasingly capable, tasks considered as
-                              requiring "intelligence" are often removed from the definition, a phenomenon known as the
-                              AI effect, leading to the quip, "AI is whatever hasn't been done yet."[citation not
-                              found] For instance, optical character recognition is frequently excluded from
-                              "artificial intelligence", having become a routine technology. Modern machine
-                              capabilities generally classified as AI include successfully understanding human speech,
-                              competing at the highest level in strategic game systems (such as chess and Go),
-                              autonomously operating cars, and intelligent routing in content delivery networks and
-                              military simulations.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--<small class="text-muted">9 mins</small>-->
-                  </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-          <div class="col-md-4 Csharp">
-            <div class="card mb-4 box-shadow it_cardf">
-              <img class="card-img-top" src="img/ftpimage.png" alt="Card image cap">
-              <div class="card-body">
-                Eronelit FTP | FTP O/nline
-                <br>
-                The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of computer files
-                between a client and...<br><br>
-
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <style>
-                      .info-btn:hover{
-                                            border-top-right-radius: 30px;
-                                          }
-                                          </style>
-                    <button type="button" class="btn btn-sm btn-outline-secondary info-btn" onclick="window.open('https://ftpo.eronelit.com/', '_blank'); 
-                      ">Go
-                      FTP O/NLINE</button>
-                    <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                        -->
-                    <script>
-                      function play392() {
-                                                  window.location.href = '392/index.html';
-  
-                                              }
-                                          </script>
-
-
-                    <div class="modal fade hidescr" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4"
-                      aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel4"> Eronelit FTP | FTP O/nline</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                            <iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
-
-                            The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of
-                            computer files between a client and server on a computer network.
-
-                            FTP is built on a client-server model architecture using separate control and data
-                            connections between the client and the server.
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <!--<small class="text-muted">9 mins</small>-->
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-          <div class="col-md-4 Csharp">
-              <div class="card mb-4 box-shadow it_cardf">
-                <img class="card-img-top" src="img/home_experiments.png" alt="Card image cap">
-                <div class="card-body">
-                  Eronelit Experiments
-                  <br>
-                  https://experiments.eronelit.com<br><br>
-  
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <style>
-                        .info-btn:hover{
-                                              border-top-right-radius: 30px;
-                                            }
-                                            </style>
-                      <button type="button" class="btn btn-sm btn-outline-secondary info-btn" onclick="window.open('https://experiments.eronelit.com', '_blank'); 
-                        ">Go
-                        Eronelit Experiments</button>
-                      <!--<button type="button" onclick="play392()" class="btn btn-sm btn-outline-secondary demo-btn">Play</button>
-                                          -->
-                      <script>
-                        function play392() {
-                                                    window.location.href = '392/index.html';
-    
-                                                }
-                                            </script>
-  
-  
-                      <div class="modal fade hidescr" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5"
-                        aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalLabel5"> Eronelit FTP | FTP O/nline</h5>
-                            
-                              
-
-                              
-
-
-                            </div>
-                            <div class="modal-body">
-                              <iframe class="iframe_modal_body_slider" src="Scripts/sliders/onlineftp.html"></iframe>
-  <p>
-                              The File Transfer Protocol (FTP) is a standard network protocol used for the transfer of
-                              computer files between a client and server on a computer network.
-  
-                              FTP is built on a client-server model architecture using separate control and data
-                              connections between the client and the server.
-     </p>                       </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <!--<small class="text-muted">9 mins</small>-->
-                  </div>
-                </div>
-              </div>
-            </div>
-
-        </div>
-
-      
-      </div>
-  </main>
-
-
-
-
-  <script>
-    document.addEventListener("contextmenu", function (e) {
-      e.preventDefault();
-    }, false);
-    document.addEventListener("dragstart", function (e) {
-      e.preventDefault();
-    }, false);
-    document.addEventListener("selectstart", function (e) {
-      e.preventDefault();
-    }, false);
-
-
-    document.onkeydown = function (e) {
-      e = e || window.event; //Get event
-      if (e.ctrlKey) {
-        var c = e.which || e.keyCode; //Get key code
-        switch (c) {
-          case 83: //Block Ctrl+S
-          case 87: //Block Ctrl+W --Not work in Chrome
-          case 65: //selecta ll
-          case 68:
-          case 122:
-          case 123:
-          case 123:
-            e.preventDefault();
-            e.stopPropagation();
-            break;
-        }
-      }
-    };
-  </script>
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="Scripts/tmp/1query/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-  <script>
-    window.jQuery || document.write('<script src="Scripts/tmp/1query/jquery-slim.min.js"><\/script>')
-  </script>
-  <script src="Scripts/Scripts/tmp/1query/popper.min.js"></script>
-  <script src="Scripts/tmp/1query/bootstrap.min.js"></script>
-  <script src="Scripts/tmp/1query/holder.min.js"></script>
-  <script src="Scripts/tmp/1query/m.js"></script>
-  <script src="js/rb/rb.js"></script>
-
-
-
-</body>
-
-</html>
+  </style>
+</div>
+<div class="contanct_frm">
+  <div class="h5_div">
+    <img src="/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
+     <i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
+  <form autocomplete="off">
+    <p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text"
+      id="fname" name="firstname" placeholder="Your name.."><label for="lname">Your Email</label><i
+      class="input_icon bi bi-envelope"></i><input type="email" id="lname" name="email"
+      placeholder="Your Email.."><label for="subject" class="message_lenght">Message </label><textarea id="subject"
+      name="subject" placeholder="Your message..." style="height:200px"></textarea><label for="norobot">Solve math
+      problem. I'm not a robot</label><input type="number" id="norobot" name="norobot" placeholder="">
+  </form>
+  <fotter><button type="button" id="sendbtn">Send message</button></fotter>
+</div>

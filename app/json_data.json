@@ -1,13 +1,6 @@
 {
     "preloadLinks": [
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js.old",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+        
        
         {
             "tag": "link",
@@ -296,14 +289,7 @@
         }
     ],
     "scripts": [
-        {
-            "tag": "script",
-            "src": "https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js.old",
-            "type": "text/javascript",
-            "async": true,
-            "defer": true,
-            "crossorigin": ""
-        },
+       
         {
             "tag": "script",
             "src": "/main",

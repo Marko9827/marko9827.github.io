@@ -49,9 +49,33 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     #die("Greška u JSON-u: " . json_last_error_msg());
 }
 
+function createScriptElements_array(){
+    $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
 
+    $scripts = $data['scripts']; 
+    $new = [
+        "https://$_SERVER[HTTP_HOST]/jsjquery",
+        "https://$_SERVER[HTTP_HOST]/feedjson",
+        "https://$_SERVER[HTTP_HOST]/main"
+    ];
+    $createScripts = "";
+    foreach ($scripts as $script) {
+       if(empty($script['src'])){
+        continue;
+       }
+      
+       $createScripts .= " $script[src] ";
+      // }
+    }
+    foreach ($new as $script2){
+        $createScripts .= " $script2 ";
+    }
+    return $createScripts;
+}
 
-$cdn_urls = "api.eronelit.com   cdn.eronelit.com api.localhost https:";
+$cdn_urls = createScriptElements_array(); 
+
+//"api.eronelit.com   cdn.eronelit.com api.localhost https:";
 $fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com";
 $nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
@@ -149,7 +173,7 @@ $csp = (string) "
     script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
     */
 
-    $POLIFY = "https://cdn.jsdelivr.net/npm/trusted-types-polyfill@2.1.0/dist/trusted-types-polyfill.min.js";
+    $POLIFY = "";
 
 $csp = (string)"
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
@@ -158,8 +182,9 @@ $csp = (string)"
   script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
 
     "; 
- $csp =  " 
-    script-src    'self'  code.jquery.com  'unsafe-eval'     https: $cdn_urls https://$_SERVER[HTTP_HOST]/main     'unsafe-inline'; 
+ $csp =  "
+default-src 'self';
+    script-src   $cdn_urls 'nonce-$nonce'   'unsafe-inline' http: https:; 
     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
     img-src  'self' blob: data: $cdn_urls  ;
     media-src 'self' blob: data: $cdn_urls;
@@ -169,14 +194,15 @@ $csp = (string)"
     object-src 'none';
     manifest-src 'self';
     base-uri 'none';
-    frame-ancestors 'self' ;
+   # frame-ancestors 'self' ;
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
     $csp = "";
- #header("Content-Security-Policy:  $csp");
+  # header("Content-Security-Policy:  $csp");
+ 
  
 
 header("X-Frame-Options: *.eronelit.com");
@@ -185,7 +211,7 @@ header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: no-referrer");
 $rand = time();
 #ob_start();
-header('Content-Type: text/html; charset=utf-8');
+header('Content-Type: text/html; ');
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
 
     header('HTTP/1.1 405 Method Not Allowed');
@@ -196,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
  
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en-us" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -227,7 +253,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
   
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
-
+    <script   src="<?php echo "https://$_SERVER[HTTP_HOST]/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script async src="<?php echo "https://$_SERVER[HTTP_HOST]/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
  <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
     <?php
@@ -3262,7 +3289,10 @@ video-player#homevideo{
     opacity: 0.5; 
     
 }
-
+body{
+    transition: .3s;
+     
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3284,7 +3314,7 @@ video-player#homevideo{
         </script>
     <?php }
     ?>
-    <?php
+     <?php /*   <?php
     $r = $this->get_data([
         "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
         "headers" => [
@@ -3292,9 +3322,8 @@ video-player#homevideo{
             'Authorization: Bearer 32M052k350QaeofkaeopfF',
         ]
     ]);
-    echo "<script type='text/javascript' nonce='" . $script_nonce . "' charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
-    ?>
-    <?php /*
+     ?>
+
 <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> 
 
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.min.js"></script>
@@ -3304,7 +3333,8 @@ video-player#homevideo{
 */ ?>
 </head>
 
-<body >
+<body style="opacity: 0;">   
+  
   <!-- (: SUDO :) -->
 </body>
 

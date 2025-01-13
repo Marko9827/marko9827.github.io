@@ -308,6 +308,14 @@ class portfolio_marko
         }
         return null;
     }
+    private function minifySVG($svg) {
+        $svg = preg_replace('/<!--.*?-->/s', '', $svg);
+        $svg = preg_replace('/>\s+</', '><', $svg); 
+        $svg = preg_replace('/\s+/', ' ', $svg); 
+        $svg = preg_replace('/\s*(=|>|<)\s*/', '$1', $svg);
+ 
+        return trim($svg);
+    }
     function Pages($h = "home")
     {
         session_start();
@@ -380,6 +388,29 @@ class portfolio_marko
         if ($h == "demoidS3503hangarmain") {
 
         }
+        if ($h == "jsjquery") {
+            header("content-type: text/javascript");
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
+            @readfile("$_SERVER[DOCUMENT_ROOT]/app/jquery.min.js");
+            exit();
+        }
+        if ($h == "feedjson") {
+            header("content-type: text/javascript");
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
+            $r = $this->get_data([
+                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "headers" => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                ]
+            ]);
+            echo "window.portfolio = $r;";
+            exit();
+        }
         if ($h == "main") {
             header("content-type: text/javascript");
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -399,12 +430,12 @@ class portfolio_marko
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
             ]);
-            echo "window.portfolio = $r; \n";
+           # echo "window.portfolio = $r; \n"; 
 
 
             echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
             # include ROOT . "welcomer_f_old.js";
-            include ROOT . "welcomer_f.js";
+            include ROOT . "welcomer_f.js ";
 
 
             $b = ob_get_clean();
@@ -535,6 +566,99 @@ class portfolio_marko
 <script type="module" src="/demo&id=S3503&hangar=main" nonce="<?php echo $nonce; ?>"></script>
 <?php             exit(); 
         }
+        if ($h == "loader"){
+            header('Content-Type: image/svg+xml');
+            ob_start();
+?>
+
+<svg class="Vjideo_sjpinner Vjideo_sjpinner_center" 
+  xmlns="http://www.w3.org/2000/svg"
+  height="50"
+  width="50"
+
+viewBox="0 0 50 50" style="
+    width: 60px;
+    height: 60px;
+     
+"> 
+<style xmlns="http://www.w3.org/2000/svg" type="text/css">
+.Vjideo_sjpinner {
+    -webkit-animation: rotate 2s linear infinite;
+    transition: .3s;
+    animation: rotate 2s linear infinite;
+    z-index: 23333333;
+    position: fixed;
+    top: 35px;
+    left: 35px;
+    margin: -35px 0 0 -35px;
+    width: 50px;
+    height: 50px;
+    pointer-events: none !important
+}
+
+.Vjideo_sjpinner .path {
+    stroke: white;
+    stroke-linecap: round;
+    -webkit-animation: dash 1.5s ease-in-out infinite;
+    animation: dash 1.5s ease-in-out infinite;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
+    enable-background: new 0 0 512 512 !important
+}
+
+ 
+
+@-webkit-keyframes rotate {
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg)
+    }
+}
+
+@-webkit-keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0
+    }
+
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35
+    }
+
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 150;
+        stroke-dashoffset: 0
+    }
+
+    50% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -35
+    }
+
+    100% {
+        stroke-dasharray: 90, 150;
+        stroke-dashoffset: -124
+    }
+}
+</style>
+<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle> </svg>
+            <?php 
+            $b = ob_get_clean();
+            echo self::minifySVG($b);
+            exit();
+        }
         if ($h == "svg_logo_backscr_img") {
             header('Content-Type: image/svg+xml');
             ?>
@@ -597,28 +721,28 @@ class portfolio_marko
             exit();
         }
         if ($h == "feed") {
-            $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
-            header("Content-Type: text/json");
-            echo $r;
-            exit();
+         #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+          
             if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
                 $r = [];
+                $data = json_decode(file_get_contents("php://input"), true);
+              
 
-                if (isset($_POST['type'])) {
-                    if ($_POST['type'] == "f") {
-                        /* $r = $this->get_data([
+                if (isset($data['type'])) {
+                    if ($data['type'] == "f") {
+                         $r = $this->get_data([
                              "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
                              "headers" => [
                                  'Content-Type: application/json',
                                  'Authorization: Bearer 32M052k350QaeofkaeopfF',
                              ]
-                         ]);*/
-                        $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/../api/apprs/apps/fother/big_json/temp.json");
-                        header("Content-Type: text/json");
-                        echo json_encode($r);
-                        exit();
+                         ]);
+                         header("Content-Type: text/json");
+                         echo $r;
+                         exit();
+                       
                     }
-                    if ($_POST['type'] == "s") {
+                    if ($data['type'] == "s") {
                         $r = $this->get_data([
                             "url" => "https://api.eronelit.com/graph",
                             "headers" => [
@@ -640,6 +764,8 @@ class portfolio_marko
                 }
 
             } else {
+                http_response_code(403);
+
                 $this->error_page(403);
                 exit();
             }

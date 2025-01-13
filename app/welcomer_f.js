@@ -7,6 +7,28 @@ if (window.TrustedTypes) {
     createScript: (input) => input,
   });
 }
+window.getJSON = function(call = () => {}){
+ 
+  return;
+  fetch(`${window.location.origin}/feed`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${window.stmp}`,
+    },
+    body: JSON.stringify({
+      type: "f",
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      window.portfolio = data;
+      call();
+    })
+    .catch((error) => {
+      console.error("ERROR:", error);
+    });
+  };
 
 function CTHP() {
   welcomer.blg_history_replace("/");
@@ -20,6 +42,7 @@ function base64Encode(str) {
 class SolarMap extends HTMLElement {
   constructor() {
     super();
+    
     this.shadowMode = this.attachShadow({ mode: "open" });
     const template = document.createElement("template");
  
@@ -49,9 +72,16 @@ class SolarMap extends HTMLElement {
     
   }
 }
+class box extends HTMLElement {
+  constructor(){
+    super();
+  }
+}
+
 class BlueWarp extends HTMLElement {
   constructor() {
     super();
+    
     this.shadowMode = this.attachShadow({ mode: "open" });
     const template = document.createElement("template");
     template.innerHTML = ` <canvas id="canvas"></canvas> <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style=" filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.4));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.4));enable-background:new 0 0 512 512 !important;"> <defs> <filter id="shadowed-goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7" result="goo" /> <feGaussianBlur in="goo" stdDeviation="3" result="shadow" /> <feColorMatrix in="shadow" mode="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 -0.2" result="shadow" /> <feOffset in="shadow" dx="1" dy="1" result="shadow" /> <feBlend in2="shadow" in="goo" result="goo" /> <feBlend in2="goo" in="SourceGraphic" result="mix" /> </filter> <filter id="goo"> <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="10" /> <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 18 -7" result="goo" /> <feBlend in2="goo" in="SourceGraphic" result="mix" /> </filter> </defs> </svg> `;
@@ -65,6 +95,7 @@ class BlueWarp extends HTMLElement {
 class ImagePreview extends HTMLElement {
   constructor() {
     super();
+    
     this.shadowMode = this.attachShadow({ mode: "open" });
     const source = this.getAttribute("src");
     const template = document.createElement("template");
@@ -183,6 +214,7 @@ class ImagePreview extends HTMLElement {
 class CustomViewer extends HTMLElement {
   constructor() {
     super();
+    
     const shadowRoot = this.attachShadow({ mode: "open" });
     const style = document.createElement("style");
     style.textContent = `:host{display:block;width:100%;height:100%;border:1px solid #ccc;border-radius:10px;overflow:auto;}.content{padding:10px;font-family:Arial,sans-serif;font-size:14px;color:#333;}`;
@@ -292,6 +324,7 @@ class PDFViewerElement extends HTMLElement {
 class PostContent extends HTMLElement {
   constructor() {
     super();
+    
     const shadow = this.attachShadow({ mode: "open" });
     const template = document.createElement("template");
 
@@ -566,9 +599,9 @@ pContainerElement;// = document.querySelector("p-container");
 
 const welcomer = {
   lang: [],
-  conf: {
+  conf: { 
     token: `${window.stmp}`,
-    graph: `${portfolio.host}/graph`,
+    graph: `${window.portfolio.host}/graph`,
     api: "/feed",
     black: true,
   },
@@ -847,6 +880,7 @@ if (!customElements.get('div-solarsystem')) { customElements.define("div-solarsy
 const parser = new DOMParser().parseFromString(welcomer.body_reset_form, "text/html");
 document.querySelector("body").appendChild(parser.body);
 */
+
  document.body.innerHTML = `${welcomer.body_reset_form}`;
  setTimeout(function(){
   if(document.querySelector("video-player#homevideo")){
@@ -873,13 +907,13 @@ if (window.videojs && videojs.log) {
     const parser = new DOMParser().parseFromString(welcomer.body_reset_form, "text/html");
     document.body.appendChild(parser.body);
      */
+  
 
-
-
+    
  this.the_call();
 
  welcomer.get_events();
-
+ 
       document.querySelector("#clavs grider_viewer").removeAttribute("style");
       try {
         document.querySelector(".Ignoring_me_iframe.shadow_root").classList.remove("open");
@@ -1032,6 +1066,7 @@ if (window.videojs && videojs.log) {
           callback: function (e) {},
           type: "albums",
         });
+        welcomer.get_events();
       },
       lda: function (what = "") {
         welcomer.blg_history_replace(
@@ -1047,6 +1082,7 @@ if (window.videojs && videojs.log) {
               callback: function (e) {},
               type: "gallery",
             });
+            welcomer.get_events();
           }
         }
       },
@@ -1159,15 +1195,14 @@ if (window.videojs && videojs.log) {
         }
       },
       call_back: function () {
-        if (
-          document.querySelector("video-player").hasAttribute("data-active")
-        ) {
-          document.querySelectorAll("video-player#video_preview");
+       
+        if (document.querySelector("video-player").hasAttribute("data-active")) {
+        
           document.querySelector("video-player").removeAttribute("style");
-          document
-            .querySelector("video-player")
-            .removeAttribute("data-active", "true");
-        } else {
+          document.querySelector("video-player").removeAttribute("data-active");
+      
+            return false;
+        }  else {
           document
             .querySelector(
               'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
@@ -1176,6 +1211,7 @@ if (window.videojs && videojs.log) {
           this.call();
           welcomer.uBoss({}, "", `${window.location.origin}/?p=gallery`);
         }
+     
       },
       call_albums(
         varr = { where: "", arr: [], callback: function () {} },
@@ -1215,7 +1251,7 @@ if (window.videojs && videojs.log) {
             const name = arr[i]["name"];
             const image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
             let is_live = null;
-            if (arr[i]["name"] == "deviantart") {
+            if (arr[i]["live"] == "T") {
               is_live = document.createElement("span_live");
               const btn_l = document.createElement("btn_l");
               const btn_l_icon = document.createElement("i");
@@ -1231,11 +1267,15 @@ if (window.videojs && videojs.log) {
             p.appendChild(p_span);
             grider_box.appendChild(p);
             grider_box.appendChild(p_open);
-            if (is_live) grider_box.appendChild(is_live);
+            if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
             const fiv = document.createElement("fiv");
             const fiv_icon = document.createElement("i");
             fiv_icon.classList.add("bi", "bi-info-circle");
-            fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
+            // fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
+            fiv_icon.addEventListener("click", function  (e) {
+              e.preventDefault();
+             welcomer.blogloader(`${i}`);
+          });
             fiv_icon.setAttribute("title", "Go to Album");
             fiv.appendChild(fiv_icon);
             grider_box.appendChild(fiv);
@@ -1252,8 +1292,8 @@ if (window.videojs && videojs.log) {
             grider_box.appendChild(sp_clv);
             project.appendChild(grider_box);
             document.querySelector(varr.where).appendChild(project);
-            if (is_live) grider_box.appendChild(is_live);
-            if (arr[i]["name"] == "video") {
+            if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+            if (arr[i]["gallery"][0]['type'] == "video" || arr[i]["gallery"][0]['type'] == "video_post") {
               const video = document.createElement("video");
               video.setAttribute("autoplay", "");
               video.setAttribute("muted", "");
@@ -1308,7 +1348,16 @@ if (window.videojs && videojs.log) {
             const fiv = document.createElement("fiv");
             const title = document.createElement("fiv_title");
             title.textContent = v[i].title;
-            fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
+            
+            const i_click = document.createElement("i");
+            i_click.setAttribute("data-i-type",`${v[i].type}`);
+            i_click.setAttribute("class","bi bi-fullscreen");
+            i_click.setAttribute("title","Preview image in full size");
+            i_click.addEventListener("click", function(){
+              welcomer.infoVa(i); 
+            });
+            fiv.appendChild(i_click);
+          //  fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
             grider_box.appendChild(fiv);
             grider_box.appendChild(title);
             const img = document.createElement("img");
@@ -1331,14 +1380,13 @@ if (window.videojs && videojs.log) {
             if (v[i].href != "-") {
               const a_project = document.createElement("a");
               a_project.setAttribute("class", "fiv_d");
-              a_project.setAttribute(
-                "title",
-                `Open on Deviantart:${v[i].title}`
-              );
+         
+              a_project.setAttribute("title",`${v[i]?.fid?.text}:${v[i]?.title}`);
+ 
               a_project.setAttribute("href", v[i]["href"]);
               a_project.setAttribute("target", "_blank");
               a_project.setAttribute("data-int", `${div_not_i}`);
-              a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]["fid"]["icon"]}"></i> ${v[i]["fid"]["text"]}`;
+              a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]?.fid?.icon}"></i> ${v[i]?.fid?.text}`;
               grider_box.appendChild(a_project);
             }
             project.appendChild(grider_box);
@@ -1348,7 +1396,9 @@ if (window.videojs && videojs.log) {
             div_not_i++;
           }
         }
+        
         varr?.callback({ l: arr.length, r: arr });
+        
       },
       call_albumsV2: function (
         varr = { where: "", arr: [], callback: function () {} },
@@ -1960,6 +2010,7 @@ if (window.videojs && videojs.log) {
         break;
       case "welcomer.pages.gallery.call_back();":
         welcomer.pages.gallery.call_back();
+        return false;
         break;
       case "welcomer.reload_me(this);":
         welcomer.reload_me(elem);
@@ -2195,6 +2246,10 @@ if (window.videojs && videojs.log) {
         div.appendChild(img);
         buttons_box_shadow.appendChild(div);
       }
+      setTimeout(() => {
+         
+      $("body").removeAttr("style");
+    }, 1000);
     });
     if (document.querySelector(".wallpaperVideo")) {
       document.querySelector(".wallpaperVideo").removeAttribute("style");
@@ -3437,8 +3492,9 @@ if (window.videojs && videojs.log) {
       this2.scrolj();
     },
   },
-  loader_svg:
-    "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",
+  loader_svg: "/loader",
+  /*
+    "data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iVmppZGVvX3NqcGlubmVyIFZqaWRlb19zanBpbm5lcl9jZW50ZXIiIA0KICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciDQogIGhlaWdodD0iNTAiDQogIHdpZHRoPSI1MCINCg0Kdmlld0JveD0iMCAwIDUwIDUwIiBzdHlsZT0iDQogICAgd2lkdGg6IDYwcHg7DQogICAgaGVpZ2h0OiA2MHB4Ow0KICAgICANCiI+IA0KPHN0eWxlIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdHlwZT0idGV4dC9jc3MiPg0KLlZqaWRlb19zanBpbm5lciB7DQogICAgLXdlYmtpdC1hbmltYXRpb246IHJvdGF0ZSAycyBsaW5lYXIgaW5maW5pdGU7DQogICAgdHJhbnNpdGlvbjogLjNzOw0KICAgIGFuaW1hdGlvbjogcm90YXRlIDJzIGxpbmVhciBpbmZpbml0ZTsNCiAgICB6LWluZGV4OiAyMzMzMzMzMzsNCiAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgdG9wOiAzNXB4Ow0KICAgIGxlZnQ6IDM1cHg7DQogICAgbWFyZ2luOiAtMzVweCAwIDAgLTM1cHg7DQogICAgd2lkdGg6IDUwcHg7DQogICAgaGVpZ2h0OiA1MHB4Ow0KICAgIHBvaW50ZXItZXZlbnRzOiBub25lICFpbXBvcnRhbnQNCn0NCg0KLlZqaWRlb19zanBpbm5lciAucGF0aCB7DQogICAgc3Ryb2tlOiB3aGl0ZTsNCiAgICBzdHJva2UtbGluZWNhcDogcm91bmQ7DQogICAgLXdlYmtpdC1hbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICBhbmltYXRpb246IGRhc2ggMS41cyBlYXNlLWluLW91dCBpbmZpbml0ZTsNCiAgICAtd2Via2l0LWZpbHRlcjogZHJvcC1zaGFkb3coMnB4IDJweCAycHggcmdiYSgwLCAwLCAwLCAwLjIpKSAhaW1wb3J0YW50Ow0KICAgIGVuYWJsZS1iYWNrZ3JvdW5kOiBuZXcgMCAwIDUxMiA1MTIgIWltcG9ydGFudA0KfQ0KDQogDQoNCkAtd2Via2l0LWtleWZyYW1lcyByb3RhdGUgew0KICAgIDEwMCUgew0KICAgICAgICB0cmFuc2Zvcm06IHJvdGF0ZSgzNjBkZWcpDQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIHJvdGF0ZSB7DQogICAgMTAwJSB7DQogICAgICAgIHRyYW5zZm9ybTogcm90YXRlKDM2MGRlZykNCiAgICB9DQp9DQoNCkAtd2Via2l0LWtleWZyYW1lcyBkYXNoIHsNCiAgICAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDEsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IDANCiAgICB9DQoNCiAgICA1MCUgew0KICAgICAgICBzdHJva2UtZGFzaGFycmF5OiA5MCwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogLTM1DQogICAgfQ0KDQogICAgMTAwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMTI0DQogICAgfQ0KfQ0KDQpAa2V5ZnJhbWVzIGRhc2ggew0KICAgIDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogMSwgMTUwOw0KICAgICAgICBzdHJva2UtZGFzaG9mZnNldDogMA0KICAgIH0NCg0KICAgIDUwJSB7DQogICAgICAgIHN0cm9rZS1kYXNoYXJyYXk6IDkwLCAxNTA7DQogICAgICAgIHN0cm9rZS1kYXNob2Zmc2V0OiAtMzUNCiAgICB9DQoNCiAgICAxMDAlIHsNCiAgICAgICAgc3Ryb2tlLWRhc2hhcnJheTogOTAsIDE1MDsNCiAgICAgICAgc3Ryb2tlLWRhc2hvZmZzZXQ6IC0xMjQNCiAgICB9DQp9DQo8L3N0eWxlPg0KPGNpcmNsZSBjbGFzcz0icGF0aCIgY3g9IjI1IiBjeT0iMjUiIHI9IjIwIiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjUiPjwvY2lyY2xlPiA8L3N2Zz4=",*/
   load_gallery: function () {
     var res = window.portfolio.data.gallery;
     // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
@@ -3857,7 +3913,8 @@ if (window.videojs && videojs.log) {
   },
   infoVa: function (h = 0, type = "image") {
     var imgH = new Image();
-    if ($(`project[id-int='${h}']`).find('i[data-i-type="video"]').length) {
+    if ($(`project[id-int='${h}']`).find('i[data-i-type="video"]').length || 
+    $(`project[id-int='${h}']`).find('i[data-i-type="video_post"]').length) {
       welcomer.pages.gallery.call_video_gallery_Preview(
         `${$(`project[id-int="${h}"] img`).attr("data-zoom-image")}`,
         `${$(`project[id-int="${h}"] img`).attr("data-real-zoom-if_video")}`
@@ -6336,7 +6393,7 @@ if (window.videojs && videojs.log) {
 </div>
 <div class="contanct_frm">
   <div class="h5_div">
-    <img src="/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
+    <img src="${window.location.origin}/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
      <i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
   <form autocomplete="off">
     <p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text"
@@ -6576,7 +6633,11 @@ if (window.videojs && videojs.log) {
 
 
   },
+ 
   start: function () {
+    
+   
+
     this.pages.reset();
    
     document.body.addEventListener("contextmenu", function (event) {
@@ -6587,6 +6648,8 @@ if (window.videojs && videojs.log) {
       event.preventDefault();
       return false;
     });
+    window.getJSON();
+
     var conff = this.conf;
     this.events.scrollByM.f();
     welcomer.projects = window.portfolio.data.projects;
@@ -6600,7 +6663,7 @@ if (window.videojs && videojs.log) {
       headers: { "AuthV2-token": $('meta[name="csrf-token"]').attr("content") },
     });
     */
-    const isMobile = welcomer.isMobile();
+     const isMobile = welcomer.isMobile();
     if (isMobile == true) {
       $(".cursor").remove();
       $(".anchorTitle").remove();
@@ -7060,7 +7123,9 @@ class Circle {
 }
    
   if(!document.querySelector("body")){
-    document.querySelector("html").appendChild(document.createElement("body"));
+    const BODY_V = document.createElement("body");
+    BODY_V.setAttribute("style","opacity:0;");
+    document.querySelector("html").appendChild(BODY_V);
   }
-welcomer.start(document.querySelector("body"));
- 
+  welcomer.start(document.querySelector("body"));
+  

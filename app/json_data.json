@@ -2,14 +2,7 @@
     "preloadLinks": [
         
        
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "/main",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+       
         {
             "tag": "link",
             "rel": "preload",
@@ -110,14 +103,7 @@
         }
     ],
     "allLinks": [
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "/main",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+        
         {
             "tag": "link",
             "rel": "icon",
@@ -290,14 +276,7 @@
     ],
     "scripts": [
        
-        {
-            "tag": "script",
-            "src": "/main",
-            "type": "text/javascript",
-            "async": true,
-            "defer": true,
-            "crossorigin": ""
-        },
+        
         {
             "tag": "script",
             "src": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",

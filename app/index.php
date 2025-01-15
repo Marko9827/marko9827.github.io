@@ -435,8 +435,8 @@ class portfolio_marko
 
             echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
             # include ROOT . "welcomer_f_old.js";
-            include ROOT . "welcomer_f.js ";
-
+            include ROOT . "welcomer_f.js";
+           # @readfile(ROOT . "welcomer_f.js");
 
             $b = ob_get_clean();
             echo $this->minifyJS($b);
@@ -1642,7 +1642,7 @@ echo $v .",";
                 echo "window.portfolio = $r; \n";
                 include "$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery3.6.0.min.js \n";
                 echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
-                include ROOT . "welcomer_f.js";
+               @readfile(ROOT . "welcomer_f.js");
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
                 if (!empty($_POST['what'])) {

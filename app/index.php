@@ -723,7 +723,7 @@ viewBox="0 0 50 50" style="
         if ($h == "feed") {
          #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
           
-            if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
+          #  if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
                 $r = [];
                 $data = json_decode(file_get_contents("php://input"), true);
               
@@ -762,13 +762,13 @@ viewBox="0 0 50 50" style="
                     $this->error_page(404);
                     exit();
                 }
-
+/*
             } else {
                 http_response_code(403);
 
                 $this->error_page(403);
                 exit();
-            }
+            }*/
             exit();
 
         }

@@ -216,6 +216,9 @@ class ImageZoomPan {
     this.startTouches = [];
     this.isDragging = false;
 
+    this.lastScale = 1;
+    this.lastRotation = 0;
+
     this.init();
   }
 
@@ -251,20 +254,7 @@ class ImageZoomPan {
     this.translateY = e.clientY - this.startY;
     this.updateTransform();
   }
-  PlusControlf() {
-    this.scale += 0.1;
- 
-  this.scale = Math.min(Math.max(0.5, this.scale), 5);
-  this.updateTransform();
-  this.updateZoomPercentage();
-  }
-  MinusControlf() {
-    this.scale -= 0.1;
- 
-  this.scale = Math.min(Math.max(0.5, this.scale), 5);
-  this.updateTransform();
-  this.updateZoomPercentage();
-  }
+
   zoomImage(e) {
     e.preventDefault();
 
@@ -287,6 +277,11 @@ class ImageZoomPan {
       this.startX = this.startTouches[0].clientX - this.translateX;
       this.startY = this.startTouches[0].clientY - this.translateY;
     }
+
+    if (this.startTouches.length === 2) {
+      this.lastScale = this.scale;
+      this.lastRotation = this.rotation;
+    }
   }
 
   handleTouchMove(e) {
@@ -301,13 +296,11 @@ class ImageZoomPan {
       // Multi-touch - zoom and rotate
       const startDist = this.getDistance(this.startTouches[0], this.startTouches[1]);
       const currentDist = this.getDistance(touches[0], touches[1]);
-      this.scale *= currentDist / startDist;
+      this.scale = this.lastScale * (currentDist / startDist);
 
       const startAngle = this.getAngle(this.startTouches[0], this.startTouches[1]);
       const currentAngle = this.getAngle(touches[0], touches[1]);
-      this.rotation += currentAngle - startAngle;
-
-      this.startTouches = touches; // Update for the next move
+      this.rotation = this.lastRotation + (currentAngle - startAngle);
     }
 
     this.scale = Math.min(Math.max(0.5, this.scale), 5);
@@ -339,6 +332,20 @@ class ImageZoomPan {
   updateZoomPercentage() {
     const zoomPercentage = Math.round(this.scale * 100);
     this.percentDisplay.textContent = `${zoomPercentage}%`;
+  }
+  PlusControlf() {
+    this.scale += 0.1;
+ 
+  this.scale = Math.min(Math.max(0.5, this.scale), 5);
+  this.updateTransform();
+  this.updateZoomPercentage();
+  }
+  MinusControlf() {
+    this.scale -= 0.1;
+ 
+  this.scale = Math.min(Math.max(0.5, this.scale), 5);
+  this.updateTransform();
+  this.updateZoomPercentage();
   }
 }
 

@@ -409,7 +409,7 @@ color: white;
 text-align: center;
 margin: auto;
 display: block;
-font-size: 10px;
+font-size: 8px;
 padding: 0px 10px !important; 
 margin-top: 3px;
 }

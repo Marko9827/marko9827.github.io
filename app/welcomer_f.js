@@ -309,7 +309,7 @@ class ImagePreview extends HTMLElement {
 div#controls {
     position: fixed;
     right: 20px;
-    top: 55px;
+    top: 20px;
     background: var(--black-trasparent-color);
     display: grid;
     z-index: 333333;

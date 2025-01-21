@@ -536,15 +536,12 @@ div#controls img:hover {
     controls_top.src = "/controls_plus"; 
     controls_top.setAttribute("class","top_control");
     controls_bottom.src = "/controls_minus"; 
-    controls_bottom.setAttribute("class","bottom_control");
-    controls_top.setAttribute("loading" , 'lazy');
-    controls_bottom.setAttribute("loading" , 'lazy');
+    controls_bottom.setAttribute("class","bottom_control"); 
     controls_top.alt = "Zoom in";
     controls_bottom.alt = "Zoom out";
 
     controls_close.src = "/controls_close";  
-    controls_close.setAttribute("class","close_control");
-    controls_close.setAttribute("loading" , 'lazy');
+    controls_close.setAttribute("class","close_control"); 
 
     /*
     controls.appendChild(this.svgMaker([

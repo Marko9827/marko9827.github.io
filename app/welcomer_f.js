@@ -203,9 +203,10 @@ class BlueWarp extends HTMLElement {
   }
 }
 class ImageZoomPan {
-  constructor(containerId, imageId) {
+  constructor(containerId, imageId,precent) {
     this.container = containerId;
     this.image = imageId;
+    this.percentDisplay = precent;
     this.scale = 1;
     this.translateX = 0;
     this.translateY = 0;
@@ -269,6 +270,11 @@ class ImageZoomPan {
 
   updateTransform() {
     this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
+    this.updateZoomPercentage();
+  }
+  updateZoomPercentage() { 
+    const zoomPercentage = Math.round(this.scale * 100);  
+    this.percentDisplay.textContent = `${zoomPercentage}%`; 
   }
 }
 
@@ -397,7 +403,16 @@ div#controls img.bottom_control {
     padding: 0px;
     margin-top: 0px;
 }
+div#controls span.precent_control {
 
+color: white;
+text-align: center;
+margin: auto;
+display: block;
+font-size: 10px;
+padding: 0px 10px !important; 
+margin-top: 3px;
+}
 div#controls img {
     opacity: 0.8 !important;
 }
@@ -531,6 +546,7 @@ div#controls img:hover {
     const controls = document.createElement("div"),
     controls_top = document.createElement("img"),
     controls_bottom = document.createElement("img"),
+    controls_precent = document.createElement("span"),
     controls_close = document.createElement("img");
     controls.id = "controls";
     controls_top.src = "/controls_plus"; 
@@ -539,6 +555,10 @@ div#controls img:hover {
     controls_bottom.setAttribute("class","bottom_control"); 
     controls_top.alt = "Zoom in";
     controls_bottom.alt = "Zoom out";
+
+    controls_precent.setAttribute("class","precent_control");
+
+    controls_precent.textContent = '100%';
 
     controls_close.src = "/controls_close";  
     controls_close.setAttribute("class","close_control"); 
@@ -554,6 +574,7 @@ div#controls img:hover {
     ]));*/
     controls.appendChild(controls_close);
     controls.appendChild(controls_top);
+    controls.appendChild(controls_precent);
     controls.appendChild(controls_bottom);
     divLoader.appendChild(controls);
     // :
@@ -656,7 +677,8 @@ zoomImage(e) {
         .removeAttribute("style");
         const controller = new ImageZoomPan(
           this.shadowRoot.querySelector(".zoomWindow"), 
-          this.shadowRoot.querySelector("#zoomImage")
+          this.shadowRoot.querySelector("#zoomImage"),
+          this.shadowRoot.querySelector("span.precent_control")
         );
 
         this.shadowRoot.querySelector("img.top_control").addEventListener("click", function(e){

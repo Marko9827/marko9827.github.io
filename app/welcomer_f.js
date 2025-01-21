@@ -340,12 +340,36 @@ class ImageZoomPan {
   this.updateTransform();
   this.updateZoomPercentage();
   }
+  reset() {
+    let clickTimeout;
+    const box = this.image;
+    clearTimeout(clickTimeout);
+    if (!box.classList.contains('rotation_manual')) {
+      box.classList.add('rotation_manual');
+    } 
+    this.scale = 1;
+    this.translateX = 0;
+    this.translateY = 0;
+    this.rotation = 0;
+    this.updateTransform();
+    this.updateZoomPercentage();
+    clickTimeout = setTimeout(() => {
+      box.classList.remove('rotation_manual');
+  }, 500);
+  }
   MinusControlf() {
     this.scale -= 0.1;
  
   this.scale = Math.min(Math.max(0.5, this.scale), 5);
   this.updateTransform();
   this.updateZoomPercentage();
+  }
+  RotateControlf() {
+
+    this.rotation = this.rotation + 90;
+    this.updateTransform();
+    this.updateZoomPercentage();
+    
   }
 }
 
@@ -365,7 +389,30 @@ class ImagePreview extends HTMLElement {
     return svg;
   }
   svg(name = ""){
-    // this.svgMaker();
+    var svgContent = "";
+    if(name == "plus"){
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+</svg>`; 
+    }
+    if(name == "rotate"){
+      svgContent = `<svg xmlns="http://www.w3.org/2000/svg"  fill="white"   viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+</svg>`;
+    }
+    if(name == "minus"){
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" /></svg>`;
+    }
+    if(name == "close"){
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="#b14747" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" /></svg>`;
+    }
+const base64 = btoa(svgContent); 
+const base64Url = `data:image/svg+xml;base64,${base64}`;
+return base64Url;
   }
   constructor() {
     super(); 
@@ -417,7 +464,16 @@ div#controls img.top_control {
     margin-bottom: 0px;
     padding: 0px;
 }
-
+div#controls separator {
+    background: white;
+    height: 1px;
+    opacity: 0.3;
+    width:100%;
+  }
+    img#zoomImage.rotation_manual {
+      transition: transform .5s ease !important;
+      pointer-events:none;
+    }
 div#controls img.top_control {
     color: white;
     font-size: 25px;
@@ -454,6 +510,27 @@ div#controls img.close_control {
     margin-bottom: 0px;
     padding: 0px;
     margin-top: 5px;
+}
+
+div#controls img.bottom_rotate {
+ color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 0px;
 }
 div#controls img.bottom_control {
     color: white;
@@ -618,21 +695,29 @@ div#controls img:hover {
     const controls = document.createElement("div"),
     controls_top = document.createElement("img"),
     controls_bottom = document.createElement("img"),
+    controls_rotate = document.createElement("img"),
     controls_precent = document.createElement("span"),
+    separator = document.createElement("separator"),
+    separator1 = document.createElement("separator"),
+
     controls_close = document.createElement("img");
     controls.id = "controls";
-    controls_top.src = "/controls_plus"; 
+    controls_top.src = this.svg("plus"); 
     controls_top.setAttribute("class","top_control");
-    controls_bottom.src = "/controls_minus"; 
+    controls_bottom.src = this.svg("minus"); 
     controls_bottom.setAttribute("class","bottom_control"); 
     controls_top.alt = "Zoom in";
     controls_bottom.alt = "Zoom out";
+
+    controls_rotate.src = this.svg("rotate");
+    controls_rotate.setAttribute("class","bottom_rotate");
+    controls_rotate.alt = "Rotate";
 
     controls_precent.setAttribute("class","precent_control");
 
     controls_precent.textContent = '100%';
 
-    controls_close.src = "/controls_close";  
+    controls_close.src =  this.svg("close"); 
     controls_close.setAttribute("class","close_control"); 
 
     /*
@@ -645,9 +730,12 @@ div#controls img:hover {
 
     ]));*/
     controls.appendChild(controls_close);
+    controls.appendChild(separator1);
     controls.appendChild(controls_top);
     controls.appendChild(controls_precent);
     controls.appendChild(controls_bottom);
+    controls.appendChild(separator);
+    controls.appendChild(controls_rotate);
     divLoader.appendChild(controls);
     // :
      
@@ -685,10 +773,16 @@ div#controls img:hover {
 }
 
 startDrag(e) {
+    const box = this.image;            
+    if (box.classList.contains('rotation_manual')) {
+        box.classList.remove('rotation_manual');
+    } 
     this.isDragging = true;
     this.startX = e.clientX - this.image.offsetLeft;
     this.startY = e.clientY - this.image.offsetTop;
     this.container.style.cursor = 'grabbing';
+
+   
 }
 
 stopDrag() {
@@ -697,10 +791,16 @@ stopDrag() {
 }
 
 dragImage(e) {
+  const box = this.image;            
+    if (box.classList.contains('rotation_manual')) {
+        box.classList.remove('rotation_manual');
+    } 
     if (!this.isDragging) return;
     const x = e.clientX - this.startX;
     const y = e.clientY - this.startY;
     this.image.style.transform = `translate(${x}px, ${y}px) scale(${this.scale})`;
+
+     
 }
 zoom_plus(e){
   e.preventDefault();
@@ -739,6 +839,7 @@ zoomImage(e) {
   ld(){
     
   }
+  
   src(src = "") {
     if (src) {
       this.shadowRoot
@@ -761,6 +862,24 @@ zoomImage(e) {
           e.preventDefault(); 
           controller.MinusControlf();
         }); 
+        this.shadowRoot.querySelector("span.precent_control").addEventListener("click", function(e){
+          e.preventDefault();
+          controller.reset();
+        });
+        let clickTimeout;
+        this.shadowRoot.querySelector("img.bottom_rotate").addEventListener("click", (e) => {
+          e.preventDefault();
+          const box = this.shadowRoot.querySelector("img#zoomImage");  
+          clearTimeout(clickTimeout);
+           
+          if (!box.classList.contains('rotation_manual')) {
+              box.classList.add('rotation_manual');
+          } 
+          controller.RotateControlf(); 
+          clickTimeout = setTimeout(() => {
+              box.classList.remove('rotation_manual');
+          }, 500);
+      });
 
           this.shadowRoot.querySelector("#zoomImage").addEventListener("load", this.shadowRoot.querySelector("img_loader").setAttribute("style","opacity:0"));
 

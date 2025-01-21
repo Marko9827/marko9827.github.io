@@ -580,6 +580,9 @@ class portfolio_marko
             echo self::minifySVG($b);
             exit();
         }
+        if ($h == 'test'){
+            include "$_SERVER[DOCUMENT_ROOT]/app/index1.php";
+        }
         if ($h == 'controls_close') {
             header('Content-Type: image/svg+xml');
             ob_start();
@@ -1024,9 +1027,9 @@ class portfolio_marko
             ?>
             </title>
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="<?php echo "$data[title]"; ?> | Is my personal website. ">
+            <meta name="description" content="<?php echo "$data[title]"; ?> | Marko Nikolić IT. Is my personal website. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-            <meta name="author" content="Marko Nikolic">
+            <meta name="author" content="Marko Nikolic"> 
             <meta name="keywords" content="<?php
             /*$t = "";
 foreach($data->keywords as $index => $v){
@@ -1054,7 +1057,7 @@ echo $v .",";
             <meta name="twitter:creator" content="@markoni62595164" />
             <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
             <meta property="og:title" content="<?php echo $title; ?>" />
-            <meta property="og:description" content="Is my personal website." />
+            <meta property="og:description" content="<?php echo "$data[title]"; ?> | Marko Nikolić IT. Is my personal website. ">
             <meta property="og:image" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
             <meta property="og:image:secure_url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />

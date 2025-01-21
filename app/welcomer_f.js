@@ -202,16 +202,210 @@ class BlueWarp extends HTMLElement {
     application.loop();
   }
 }
-class ImagePreview extends HTMLElement {
-  constructor() {
-    super();
+class ImageZoomPan {
+  constructor(containerId, imageId) {
+    this.container = containerId;
+    this.image = imageId;
+    this.scale = 1;
+    this.translateX = 0;
+    this.translateY = 0;
+    this.startX = 0;
+    this.startY = 0;
+    this.isDragging = false;
 
+    this.init();
+  }
+
+  init() {
+    this.container.addEventListener('mousedown', this.startDrag.bind(this));
+    window.addEventListener('mouseup', this.stopDrag.bind(this));
+    this.container.addEventListener('mousemove', this.dragImage.bind(this));
+    this.container.addEventListener('wheel', this.zoomImage.bind(this));
+    
+
+  }
+
+  startDrag(e) {
+    this.isDragging = true;
+    this.startX = e.clientX - this.translateX; 
+    this.startY = e.clientY - this.translateY;
+    this.container.style.cursor = 'grabbing';
+  }
+
+  stopDrag() {
+    this.isDragging = false;
+    this.container.style.cursor = 'grab';
+  }
+
+  dragImage(e) {
+    if (!this.isDragging) return;
+    this.translateX = e.clientX - this.startX;
+    this.translateY = e.clientY - this.startY;
+    this.updateTransform();
+  }
+  PlusControlf(){ 
+    this.scale += 0.1; 
+    this.scale = Math.min(Math.max(1, this.scale), 3);
+
+    this.updateTransform();
+  }
+  MinusControlf(){
+    this.scale -= 0.1; 
+    this.scale = Math.min(Math.max(1, this.scale), 3);
+
+    this.updateTransform();
+  }
+  zoomImage(e) {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      this.scale += 0.1;
+    } else {
+      this.scale -= 0.1;
+    }
+    this.scale = Math.min(Math.max(1, this.scale), 3);
+
+    this.updateTransform();
+  }
+
+  updateTransform() {
+    this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
+  }
+}
+
+class ImagePreview extends HTMLElement {
+ 
+  svgMaker(svgg = [], pathv = []){
+    const svg = document.createElement("svg"),
+    path = document.createElement("path");
+    for(var i = 0; i < svgg.length; i++){
+      svg.setAttribute(svgg[i]['key'], svgg[i]['val']);
+    }
+    for(var i = 0; i < pathv.length; i++){
+      path.setAttribute(pathv[i]['key'], pathv[i]['val']);
+    }
+    svg.appendChild(path);
+    return svg;
+  }
+  svg(name = ""){
+    // this.svgMaker();
+  }
+  constructor() {
+    super(); 
     this.shadowMode = this.attachShadow({ mode: "open" });
     const source = this.getAttribute("src");
     const template = document.createElement("template");
     const style = document.createElement("style");
     style.setAttribute("nonce", window.stmp);
-    style.textContent = `:root{--cdn_primary:#ffff;--btn-disable:#fff;--seo-color:#fff;--primary_light:#ffffff4f;--textshadow_media:0px 0px 0px var(--cdn_white),3px 3px 5px #00000047;--cdn_white:#333;--hard_white:#fff;--red:#b90808;--section-bg:#333;--green:#2e7d32;--header-a:#e6e6e6;--product-background:linear-gradient(45deg,#1b5e20,#10bf19);--ads-background:linear-gradient(45deg,rgb(148 31 148),#c55e05);--event-background:linear-gradient(45deg,rgb(148 31 148),#2196f3);--job-background:linear-gradient(45deg,rgb(148 31 148),#3f51b5);--black-trasparent-color:rgba(0,0,0,0.639);--grid-image:url(/?url=source&sourcelogin=grid.svg);--shield-image:url(/?url=source&sourcelogin=shield.svg);--stars-25:#b32020;--stars-40:#FFD700;--stars-60:#d56617;--stars-75:var(--green);}img.zoomImg{position:fixed !important;z-index:3333333;top:0px !important;left:0px !important;width:100% !important;height:100% !important;opacity:1 !important;background:var(--black-trasparent-color);}.zoomContainer{position:fixed;z-index:333333;left:0px;top:0px;width:100%;height:100%;opacity:1 !important;}.zoomContainer .zoomWindowContainer div{left:10px !important;top:10px !important;width:100%;width:100% !important;display:block !important;z-index:3333 !important;height:100% !important;position:fixed;float:unset !important;bottom:0px !important;border:none;position:fixed !important;right:10px !important;width:unset !important;bottom:10px !important;height:unset !important;margin:0px !important;padding:2px !important;border-radius:10px !important;border:2px solid var(--primary_light) !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;}.zoomWindowContainer{position:fixed !important;left:0px;top:0px !important;background:var(--black-trasparent-color);width:100%;height:100% !important;width:100% !important;}.zoomer_exit{position:fixed;top:20px;right:20px;z-index:333333;color:white;font-size:25px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;background:var(--black-trasparent-color);width:25px !important;height:25px !important;padding:0px 5.6px;border-radius:6px;}#helper_id_helper{pointer-events:none !important;position:fixed;left:20px;top:20px;background:var(--black-trasparent-color);z-index:333333;color:var(--white);padding:5px 10px;border-radius:6px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;}div#helper_id_helper3{position:absolute;left:20px;z-index:33333;bottom:30px;right:20px;bottom:20px;border-radius:0px 0px 9px 9px !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;pointer-events:none !important;}div#helper_id_helper3 p{border-radius:6px !important;background:var(--black-trasparent-color);color:var(--white);padding:10px;display:block;margin:auto;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;text-align:center;}.zoomWindow{z-index:999;display:none;position:absolute;float:left;height:0px;width:0px;border:4px solid rgb(136,136,136);background-position:0px 0px;background-repeat:no-repeat;cursor:inherit;overflow:hidden;}img_loader{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%;height:100%;position:absolute;pointer-events:none;}img_loader img#loader{display:block;z-index:1;left:0px;top:0px;margin:auto;width:45px;height:45px;}.zoomWindow{-o-object-fit:scale-down;object-fit:scale-down;width:100%;background-size:contain;background-position:center;pointer-events:none;}`;
+    const controls_style = ` img#zoomImage {
+    position: absolute;
+    left: 0px;
+    top: 13px;
+    object-fit: scale-down;
+    width: 100%;
+    height: calc(100% - 3.3dvh) !important;
+    transform: scale(1);
+}
+
+div#controls {
+    position: fixed;
+    right: 20px;
+    top: 55px;
+    background: var(--black-trasparent-color);
+    display: grid;
+    z-index: 333333;
+    justify-content: center;
+    padding-bottom: 10px;
+    border-radius: 150px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    padding-bottom: 5px;
+}
+
+div#controls img.top_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+
+div#controls img.top_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    margin: 0px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+div#controls img.close_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 5px;
+}
+div#controls img.bottom_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 0px;
+}
+
+div#controls img {
+    opacity: 0.8 !important;
+}
+
+div#controls img:hover {
+    opacity: 1 !important;
+}`;
+    style.textContent = `${controls_style} @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css); :root{--cdn_primary:#ffff;--btn-disable:#fff;--seo-color:#fff;--primary_light:#ffffff4f;--textshadow_media:0px 0px 0px var(--cdn_white),3px 3px 5px #00000047;--cdn_white:#333;--hard_white:#fff;--red:#b90808;--section-bg:#333;--green:#2e7d32;--header-a:#e6e6e6;--product-background:linear-gradient(45deg,#1b5e20,#10bf19);--ads-background:linear-gradient(45deg,rgb(148 31 148),#c55e05);--event-background:linear-gradient(45deg,rgb(148 31 148),#2196f3);--job-background:linear-gradient(45deg,rgb(148 31 148),#3f51b5);--black-trasparent-color:rgba(0,0,0,0.639);--grid-image:url(/?url=source&sourcelogin=grid.svg);--shield-image:url(/?url=source&sourcelogin=shield.svg);--stars-25:#b32020;--stars-40:#FFD700;--stars-60:#d56617;--stars-75:var(--green);}img.zoomImg{position:fixed !important;z-index:3333333;top:0px !important;left:0px !important;width:100% !important;height:100% !important;opacity:1 !important;background:var(--black-trasparent-color);}.zoomContainer{position:fixed;z-index:333333;left:0px;top:0px;width:100%;height:100%;opacity:1 !important;}.zoomContainer .zoomWindowContainer div{left:10px !important;top:10px !important;width:100%;width:100% !important;display:block !important;z-index:3333 !important;height:100% !important;position:fixed;float:unset !important;bottom:0px !important;border:none;position:fixed !important;right:10px !important;width:unset !important;bottom:10px !important;height:unset !important;margin:0px !important;padding:2px !important;border-radius:10px !important;border:2px solid var(--primary_light) !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;}.zoomWindowContainer{position:fixed !important;left:0px;top:0px !important;background:var(--black-trasparent-color);width:100%;height:100% !important;width:100% !important;}.zoomer_exit{position:fixed;top:20px;right:20px;z-index:333333;color:white;font-size:25px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;background:var(--black-trasparent-color);width:25px !important;height:25px !important;padding:0px 5.6px;border-radius:6px;}#helper_id_helper{pointer-events:none !important;position:fixed;left:20px;top:20px;background:var(--black-trasparent-color);z-index:333333;color:var(--white);padding:5px 10px;border-radius:6px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;}div#helper_id_helper3{position:absolute;left:20px;z-index:33333;bottom:30px;right:20px;bottom:20px;border-radius:0px 0px 9px 9px !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;pointer-events:none !important;}div#helper_id_helper3 p{border-radius:6px !important;background:var(--black-trasparent-color);color:var(--white);padding:10px;display:block;margin:auto;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;text-align:center;}.zoomWindow{pointer-events:unset !important; z-index:999;display:none;position:absolute;float:left;height:0px;width:0px;border:4px solid rgb(136,136,136);background-position:0px 0px;background-repeat:no-repeat;cursor:inherit;overflow:hidden;}img_loader{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%;height:100%;position:absolute;pointer-events:none;}img_loader img#loader{display:block;z-index:1;left:0px;top:0px;margin:auto;width:45px;height:45px;}.zoomWindow{-o-object-fit:scale-down;object-fit:scale-down;width:100%;background-size:contain;background-position:center;pointer-events:none;}`;
     template.content.appendChild(style);
     const zoomContainer = document.createElement("div");
     zoomContainer.classList.add("zoomContainer");
@@ -222,6 +416,16 @@ class ImagePreview extends HTMLElement {
     zoomContainer.appendChild(zoomWindowContainer);
     const imgLoader = document.createElement("img_loader");
     const loaderImg = document.createElement("img");
+
+    this.scalermode = {
+      scale: 1,
+      startX:0,
+      startY:0,
+      isDragging: false
+    };
+    
+
+
     loaderImg.id = "Loader";
     loaderImg.src = window.welcomer.loader_svg;
     imgLoader.appendChild(loaderImg);
@@ -231,6 +435,49 @@ class ImagePreview extends HTMLElement {
     zoomWindow.classList.add("zoomWindow");
     zoomWindow.style.backgroundImage = `url(${source})`;
     zoomWindowContainer.appendChild(zoomWindow);
+
+    /*
+    <div id="controls" style="
+    position: fixed;
+    right: 20px;
+    top: 55px;
+    background: var(--black-trasparent-color);
+    display: grid;
+    z-index: 333333;
+    justify-content: center;
+    padding-bottom: 10px;
+    border-radius: 150px;
+"><i class="bi bi-plus-circle-fill" style="
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 25px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+"></i><i class="bi bi-dash-circle-fill" style="
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 25px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+"></i></div>
+    */
+    // -::K
+
+   
+
+    // -::K
     const helper3 = document.createElement("div");
     helper3.id = "helper_id_helper3";
     const helperText = document.createElement("p");
@@ -279,29 +526,153 @@ class ImagePreview extends HTMLElement {
     svg.appendChild(path);
     divLoader.appendChild(helperIdHelper3);
     divLoader.appendChild(helperIdHelper);
-    divLoader.appendChild(svg);
+    // divLoader.appendChild(svg);
+    // 
+    const controls = document.createElement("div"),
+    controls_top = document.createElement("img"),
+    controls_bottom = document.createElement("img"),
+    controls_close = document.createElement("img");
+    controls.id = "controls";
+    controls_top.src = "/controls_plus"; 
+    controls_top.setAttribute("class","top_control");
+    controls_bottom.src = "/controls_minus"; 
+    controls_bottom.setAttribute("class","bottom_control");
+    controls_top.setAttribute("loading" , 'lazy');
+    controls_bottom.setAttribute("loading" , 'lazy');
+    controls_top.alt = "Zoom in";
+    controls_bottom.alt = "Zoom out";
+
+    controls_close.src = "/controls_close";  
+    controls_close.setAttribute("class","close_control");
+    controls_close.setAttribute("loading" , 'lazy');
+
+    /*
+    controls.appendChild(this.svgMaker([
+      {
+        "key":"xmlns",
+        "val":"http://www.w3.org/2000/svg"
+      }
+    ],[
+
+    ]));*/
+    controls.appendChild(controls_close);
+    controls.appendChild(controls_top);
+    controls.appendChild(controls_bottom);
+    divLoader.appendChild(controls);
+    // :
+     
+
+    const ImageBox = document.createElement("img");
+    ImageBox.id = "zoomImage";
+    
+
+     // :
     divLoader.classList.add("div-loader");
     template.content.appendChild(zoomContainer);
     template.content.appendChild(divLoader);
+    zoomWindow.appendChild(ImageBox);
     this.image = this.shadowRoot.querySelector(".zoomWindow");
     const closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
     this.div_loader = this.shadowRoot.querySelector("div-loader");
     this.shadowMode.appendChild(template.content.cloneNode(true));
     this.shadowRoot
-      .querySelector(".zoomWindow")
+      .querySelector(".zoomWindow");
+    
+      /*
       .setAttribute(
         "style",
         `background-image:url(${this.getAttribute("src")});`
-      );
+      );*/
+
+       
+  }
+
+  init() { 
+    this.container.addEventListener('mousedown', this.startDrag.bind(this));
+    window.addEventListener('mouseup', this.stopDrag.bind(this));
+    this.container.addEventListener('mousemove', this.dragImage.bind(this));
+    this.container.addEventListener('wheel', this.zoomImage.bind(this));
+}
+
+startDrag(e) {
+    this.isDragging = true;
+    this.startX = e.clientX - this.image.offsetLeft;
+    this.startY = e.clientY - this.image.offsetTop;
+    this.container.style.cursor = 'grabbing';
+}
+
+stopDrag() {
+    this.isDragging = false;
+    this.container.style.cursor = 'grab';
+}
+
+dragImage(e) {
+    if (!this.isDragging) return;
+    const x = e.clientX - this.startX;
+    const y = e.clientY - this.startY;
+    this.image.style.transform = `translate(${x}px, ${y}px) scale(${this.scale})`;
+}
+zoom_plus(e){
+  e.preventDefault();
+  if (e.deltaY < 0) {
+      this.scale += 0.1; 
+  } else {
+      this.scale -= 0.1; 
+  }
+
+  this.scale = Math.min(Math.max(1, this.scale), 3);  
+  this.image.style.transform = `scale(${this.scale})`;
+}
+zoomImage(e) {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+        this.scale += 0.1; 
+    } else {
+        this.scale -= 0.1; 
+    }
+
+    this.scale = Math.min(Math.max(1, this.scale), 3);  
+    this.image.style.transform = `scale(${this.scale})`;
+}
+  increaseScale(e) {
+    e.preventDefault();
+    this.scale += 0.1;
+  }
+
+  decreaseScale(e) {
+    e.preventDefault();
+    this.scale -= 0.1;
   }
   getHostAttribute(attrName) {
     return this.getAttribute(attrName);
   }
+  ld(){
+    
+  }
   src(src = "") {
     if (src) {
       this.shadowRoot
+        .querySelector("#zoomImage")
+        .setAttribute("src", `${src}`);
+        this.shadowRoot
         .querySelector(".zoomWindow")
-        .setAttribute("style", `background-image:url(${src});`);
+        .removeAttribute("style");
+        const controller = new ImageZoomPan(
+          this.shadowRoot.querySelector(".zoomWindow"), 
+          this.shadowRoot.querySelector("#zoomImage")
+        );
+
+        this.shadowRoot.querySelector("img.top_control").addEventListener("click", function(e){
+          e.preventDefault(); 
+          controller.PlusControlf();
+        });
+        this.shadowRoot.querySelector("img.bottom_control").addEventListener("click", function(e){
+          e.preventDefault(); 
+          controller.MinusControlf();
+        }); 
+
+          this.shadowRoot.querySelector("#zoomImage").addEventListener("load", this.shadowRoot.querySelector("img_loader").setAttribute("style","opacity:0"));
+
     } else {
     }
   }
@@ -309,7 +680,7 @@ class ImagePreview extends HTMLElement {
     const src = this.getAttribute("src");
     this.src = src;
     this.shadowRoot
-      .querySelector(".zoomer_exit")
+      .querySelector("img.close_control")
       .addEventListener("click", function () {
         document.querySelector("image-preview").remove();
       });

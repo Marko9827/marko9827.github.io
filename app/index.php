@@ -308,12 +308,13 @@ class portfolio_marko
         }
         return null;
     }
-    private function minifySVG($svg) {
+    private function minifySVG($svg)
+    {
         $svg = preg_replace('/<!--.*?-->/s', '', $svg);
-        $svg = preg_replace('/>\s+</', '><', $svg); 
-        $svg = preg_replace('/\s+/', ' ', $svg); 
+        $svg = preg_replace('/>\s+</', '><', $svg);
+        $svg = preg_replace('/\s+/', ' ', $svg);
         $svg = preg_replace('/\s*(=|>|<)\s*/', '$1', $svg);
- 
+
         return trim($svg);
     }
     function Pages($h = "home")
@@ -430,13 +431,13 @@ class portfolio_marko
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
             ]);
-           # echo "window.portfolio = $r; \n"; 
+            # echo "window.portfolio = $r; \n"; 
 
 
             echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
             # include ROOT . "welcomer_f_old.js";
             include ROOT . "welcomer_f.js";
-           # @readfile(ROOT . "welcomer_f.js");
+            # @readfile(ROOT . "welcomer_f.js");
 
             $b = ob_get_clean();
             echo $this->minifyJS($b);
@@ -542,119 +543,154 @@ class portfolio_marko
             file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html", $this->get_BUILD("https://$_SERVER[HTTP_HOST]/"));
             exit();
         }
-        if ($h == "solarmap"){
+        if ($h == "solarmap") {
             header("X-Frame-Options: SAMEORIGIN");
             if (isset($_SERVER['HTTP_REFERER'])) {
-               if(!$_SERVER['HTTP_REFERER'] == "https://$_SERVER[HTTP_HOST]/?p=blog&c=astronomy" ){
-                $this->error_page(404);
-                exit();
-               }
-            }  else{
+                if (!$_SERVER['HTTP_REFERER'] == "https://$_SERVER[HTTP_HOST]/?p=blog&c=astronomy") {
+                    $this->error_page(404);
+                    exit();
+                }
+            } else {
                 $this->error_page(404);
                 exit();
             }
             header('Content-Type: text/html; charset=utf-8');
 
             ?>
-            <style type="text/css" >
-* {
-    margin:0px;
-    padding:0px;
-}
-                </style>
-<div id="root" class="solarsystem"></div>
-<script type="module" src="/demo&id=S3503&hangar=main" nonce="<?php echo $nonce; ?>"></script>
-<?php             exit(); 
+            <style type="text/css">
+                * {
+                    margin: 0px;
+                    padding: 0px;
+                }
+            </style>
+            <div id="root" class="solarsystem"></div>
+            <script type="module" src="/demo&id=S3503&hangar=main" nonce="<?php echo $nonce; ?>"></script>
+            <?php exit();
         }
-        if ($h == "loader"){
+        if ($h == "controls_plus") {
             header('Content-Type: image/svg+xml');
             ob_start();
-?>
+            ?>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+            </svg>
 
-<svg class="Vjideo_sjpinner Vjideo_sjpinner_center" 
-  xmlns="http://www.w3.org/2000/svg"
-  height="50"
-  width="50"
+            <?php $b = ob_get_clean();
+            echo self::minifySVG($b);
+            exit();
+        }
+        if ($h == 'controls_close') {
+            header('Content-Type: image/svg+xml');
+            ob_start();
+            ?>
+            <svg xmlns="http://www.w3.org/2000/svg"  fill="#b14747"  
+                viewBox="0 0 16 16">
+                <path
+                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
+            </svg>
+            <?php $b = ob_get_clean();
+            echo self::minifySVG($b);
+            exit();
+        }
+        if ($h == "controls_minus") {
+            header('Content-Type: image/svg+xml');
+            ob_start();
+            ?>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
+            </svg>
 
-viewBox="0 0 50 50" style="
+            <?php $b = ob_get_clean();
+            echo self::minifySVG($b);
+            exit();
+        }
+        if ($h == "loader") {
+            header('Content-Type: image/svg+xml');
+            ob_start();
+            ?>
+
+            <svg class="Vjideo_sjpinner Vjideo_sjpinner_center" xmlns="http://www.w3.org/2000/svg" height="50" width="50"
+                viewBox="0 0 50 50" style="
     width: 60px;
     height: 60px;
      
-"> 
-<style xmlns="http://www.w3.org/2000/svg" type="text/css">
-.Vjideo_sjpinner {
-    -webkit-animation: rotate 2s linear infinite;
-    transition: .3s;
-    animation: rotate 2s linear infinite;
-    z-index: 23333333;
-    position: fixed;
-    top: 35px;
-    left: 35px;
-    margin: -35px 0 0 -35px;
-    width: 50px;
-    height: 50px;
-    pointer-events: none !important
-}
+">
+                <style xmlns="http://www.w3.org/2000/svg" type="text/css">
+                    .Vjideo_sjpinner {
+                        -webkit-animation: rotate 2s linear infinite;
+                        transition: .3s;
+                        animation: rotate 2s linear infinite;
+                        z-index: 23333333;
+                        position: fixed;
+                        top: 35px;
+                        left: 35px;
+                        margin: -35px 0 0 -35px;
+                        width: 50px;
+                        height: 50px;
+                        pointer-events: none !important
+                    }
 
-.Vjideo_sjpinner .path {
-    stroke: white;
-    stroke-linecap: round;
-    -webkit-animation: dash 1.5s ease-in-out infinite;
-    animation: dash 1.5s ease-in-out infinite;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
-    enable-background: new 0 0 512 512 !important
-}
+                    .Vjideo_sjpinner .path {
+                        stroke: white;
+                        stroke-linecap: round;
+                        -webkit-animation: dash 1.5s ease-in-out infinite;
+                        animation: dash 1.5s ease-in-out infinite;
+                        -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important;
+                        enable-background: new 0 0 512 512 !important
+                    }
 
- 
 
-@-webkit-keyframes rotate {
-    100% {
-        transform: rotate(360deg)
-    }
-}
 
-@keyframes rotate {
-    100% {
-        transform: rotate(360deg)
-    }
-}
+                    @-webkit-keyframes rotate {
+                        100% {
+                            transform: rotate(360deg)
+                        }
+                    }
 
-@-webkit-keyframes dash {
-    0% {
-        stroke-dasharray: 1, 150;
-        stroke-dashoffset: 0
-    }
+                    @keyframes rotate {
+                        100% {
+                            transform: rotate(360deg)
+                        }
+                    }
 
-    50% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -35
-    }
+                    @-webkit-keyframes dash {
+                        0% {
+                            stroke-dasharray: 1, 150;
+                            stroke-dashoffset: 0
+                        }
 
-    100% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -124
-    }
-}
+                        50% {
+                            stroke-dasharray: 90, 150;
+                            stroke-dashoffset: -35
+                        }
 
-@keyframes dash {
-    0% {
-        stroke-dasharray: 1, 150;
-        stroke-dashoffset: 0
-    }
+                        100% {
+                            stroke-dasharray: 90, 150;
+                            stroke-dashoffset: -124
+                        }
+                    }
 
-    50% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -35
-    }
+                    @keyframes dash {
+                        0% {
+                            stroke-dasharray: 1, 150;
+                            stroke-dashoffset: 0
+                        }
 
-    100% {
-        stroke-dasharray: 90, 150;
-        stroke-dashoffset: -124
-    }
-}
-</style>
-<circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle> </svg>
-            <?php 
+                        50% {
+                            stroke-dasharray: 90, 150;
+                            stroke-dashoffset: -35
+                        }
+
+                        100% {
+                            stroke-dasharray: 90, 150;
+                            stroke-dashoffset: -124
+                        }
+                    }
+                </style>
+                <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
+            </svg>
+            <?php
             $b = ob_get_clean();
             echo self::minifySVG($b);
             exit();
@@ -662,7 +698,8 @@ viewBox="0 0 50 50" style="
         if ($h == "svg_logo_backscr_img") {
             header('Content-Type: image/svg+xml');
             ?>
-<svg id="logo_backscr_img"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+            <svg id="logo_backscr_img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                preserveAspectRatio="xMidYMid slice">
                 <defs>
                     <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
                         <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
@@ -695,8 +732,7 @@ viewBox="0 0 50 50" style="
                         <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
                     </radialGradient>
                 </defs>
-                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
-                    transform="rotate(334.41 50 50)">
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
                     <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                     <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
@@ -709,66 +745,65 @@ viewBox="0 0 50 50" style="
                     <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
                         repeatCount="indefinite"></animateTransform>
                 </rect>
-                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
-                    transform="rotate(139.903 50 50)">
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
                     <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                     <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
                     <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
                         repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg>
-            <?php 
+            <?php
             exit();
         }
         if ($h == "feed") {
-         #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
-          
-          #  if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
-                $r = [];
-                $data = json_decode(file_get_contents("php://input"), true);
-              
+            #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
 
-                if (isset($data['type'])) {
-                    if ($data['type'] == "f") {
-                         $r = $this->get_data([
-                             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-                             "headers" => [
-                                 'Content-Type: application/json',
-                                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                             ]
-                         ]);
-                         header("Content-Type: text/json");
-                         echo $r;
-                         exit();
-                       
-                    }
-                    if ($data['type'] == "s") {
-                        $r = $this->get_data([
-                            "url" => "https://api.eronelit.com/graph",
-                            "headers" => [
+            #  if ($this->Getbearer() == $_SESSION['Bearer_token_temp']) {
+            $r = [];
+            $data = json_decode(file_get_contents("php://input"), true);
 
 
-                                'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                            ],
-                            "data" => [
-                                "urlf" => $_POST['urlf']
-                            ]
-                        ]);
-                        header("Content-Type: text/json");
-                        echo $r;
-                        exit();
-                    }
-                } else {
-                    $this->error_page(404);
+            if (isset($data['type'])) {
+                if ($data['type'] == "f") {
+                    $r = $this->get_data([
+                        "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                        "headers" => [
+                            'Content-Type: application/json',
+                            'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                        ]
+                    ]);
+                    header("Content-Type: text/json");
+                    echo $r;
+                    exit();
+
+                }
+                if ($data['type'] == "s") {
+                    $r = $this->get_data([
+                        "url" => "https://api.eronelit.com/graph",
+                        "headers" => [
+
+
+                            'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                        ],
+                        "data" => [
+                            "urlf" => $_POST['urlf']
+                        ]
+                    ]);
+                    header("Content-Type: text/json");
+                    echo $r;
                     exit();
                 }
-/*
             } else {
-                http_response_code(403);
-
-                $this->error_page(403);
+                $this->error_page(404);
                 exit();
-            }*/
+            }
+            /*
+                        } else {
+                            http_response_code(403);
+
+                            $this->error_page(403);
+                            exit();
+                        }*/
             exit();
 
         }
@@ -1642,7 +1677,7 @@ echo $v .",";
                 echo "window.portfolio = $r; \n";
                 include "$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery3.6.0.min.js \n";
                 echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
-               @readfile(ROOT . "welcomer_f.js");
+                @readfile(ROOT . "welcomer_f.js");
             } else if (strpos($_GET['mnps'], 'blog-rss') !== false) {
                 header("Content-type: text/plain");
                 if (!empty($_POST['what'])) {

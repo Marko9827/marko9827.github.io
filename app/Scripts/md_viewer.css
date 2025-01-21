@@ -2146,6 +2146,7 @@ iframe {
 
 @media screen and (min-width: 450px) {
   .content-wrapper iframe,
+  .content-wrapper svg_viewer,
   .content-wrapper video-player-v2 {
     height: 80vh !important;
     max-height: 80vh !important;

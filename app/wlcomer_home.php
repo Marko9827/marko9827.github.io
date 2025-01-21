@@ -49,10 +49,11 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     #die("Greška u JSON-u: " . json_last_error_msg());
 }
 
-function createScriptElements_array(){
+function createScriptElements_array()
+{
     $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
 
-    $scripts = $data['scripts']; 
+    $scripts = $data['scripts'];
     $new = [
         "https://$_SERVER[HTTP_HOST]/jsjquery",
         "https://$_SERVER[HTTP_HOST]/feedjson",
@@ -60,20 +61,20 @@ function createScriptElements_array(){
     ];
     $createScripts = "";
     foreach ($scripts as $script) {
-       if(empty($script['src'])){
-        continue;
-       }
-      
-       $createScripts .= " $script[src] ";
-      // }
+        if (empty($script['src'])) {
+            continue;
+        }
+
+        $createScripts .= " $script[src] ";
+        // }
     }
-    foreach ($new as $script2){
+    foreach ($new as $script2) {
         $createScripts .= " $script2 ";
     }
     return $createScripts;
 }
 
-$cdn_urls = createScriptElements_array(); 
+$cdn_urls = createScriptElements_array();
 
 //"api.eronelit.com   cdn.eronelit.com api.localhost https:";
 $fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com";
@@ -133,7 +134,7 @@ function createScriptElements($scripts)
         $async = $script['async'] ? ' async' : '';
         $defer = $script['defer'] ? ' defer' : '';
         $text = file_get_contents($src);
-        $sha384Hash = "sha256-".hash('sha256', $text);
+        $sha384Hash = "sha256-" . hash('sha256', $text);
         $crossorigin = !empty($script['crossorigin']) ? ' crossorigin="' . htmlspecialchars($script['crossorigin']) . '"' : '';
         echo "<script  nonce=\"$nonce_h\"  
          src=\"$src\" $type $async $defer></script>\n";
@@ -143,19 +144,20 @@ function createScriptElements($scripts)
 function createScriptElementsCSP(): string
 {
     $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
-    $scripts = $data['scripts']; 
+    $scripts = $data['scripts'];
     $sah = "";
     foreach ($scripts as $script) {
-        $src = htmlspecialchars($script['src']); 
+        $src = htmlspecialchars($script['src']);
         $text = file_get_contents($src);
-        $sha384Hash = "sha256-".hash('sha256', $text);
-       $sah .= "$sha384Hash ";
+        $sha384Hash = "sha256-" . hash('sha256', $text);
+        $sah .= "$sha384Hash ";
     }
     return $sah;
 }
-function ScriptCalcHash(){
+function ScriptCalcHash()
+{
     $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
-    foreach($data['scripts'] as $val){
+    foreach ($data['scripts'] as $val) {
 
     }
 }
@@ -165,24 +167,24 @@ function ScriptCalcHash(){
     script-src-elem 'self'    $cdn_urls ;
  */
 #     script-src $cdn_urls  'nonce-$nonce' ; 
- 
- /*
+
+/*
 'strict-dynamic' 'nonce-rAnd0m123' 'unsafe-inline' http: https:;
 
 $csp = (string) "
-    script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
-    */
+   script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
+   */
 
-    $POLIFY = "";
+$POLIFY = "";
 
-$csp = (string)"
+$csp = (string) "
     // script-src 'nonce-$nonce'   $cdn_urls 'strict-dynamic' 'unsafe-inline' 'unsafe-eval'  'report-sample' 'wasm-unsafe-eval';
     // script-src-elem 'nonce-$nonce' https://$_SERVER[HTTP_HOST] $cdn_urls 'strict-dynamic' 'report-sample' 'wasm-unsafe-eval' ;
    script-src 'report-sample'   'nonce-$nonce' $cdn_urls https://$_SERVER[HTTP_HOST]/main ;
   script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
 
-    "; 
- $csp =  "
+    ";
+$csp = "
 default-src 'self';
     script-src   $cdn_urls 'nonce-$nonce'   'unsafe-inline' http: https:; 
     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
@@ -200,10 +202,10 @@ default-src 'self';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-    $csp = "";
-  # header("Content-Security-Policy:  $csp");
- 
- 
+$csp = "";
+# header("Content-Security-Policy:  $csp");
+
+
 
 header("X-Frame-Options: *.eronelit.com");
 header("Access-Control-Allow-Origin: *.eronelit.com");
@@ -219,7 +221,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     echo 'Method Not Allowed';
     exit;
 }
- 
+
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -231,13 +233,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <?php
     self::MetaTags();
 
-    if (!empty($csp)) { 
-    
+    if (!empty($csp)) {
+
         ?>
         <!-- <meta name="trusted-types" content="script-src-attr 'none'; require-trusted-types-for 'script'; trusted-types 'allow-duplicates' default jSecure highcharts dompurify" data-disposition="enforce" data-sanitizer="jSecure"  > -->
 
         <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
-    <?php   }  ?>
+    <?php } ?>
     <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
 
@@ -249,17 +251,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <meta name="referrer" content="origin">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
-  
-  
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script   src="<?php echo "https://$_SERVER[HTTP_HOST]/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script async src="<?php echo "https://$_SERVER[HTTP_HOST]/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
- <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
-    <?php
+
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+        integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+    <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script src="<?php echo "https://$_SERVER[HTTP_HOST]/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script async src="<?php echo "https://$_SERVER[HTTP_HOST]/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
+
+<?php
 */
-#    createLinkElements($data['preloadLinks']);
+    #    createLinkElements($data['preloadLinks']);
     createLinkElements($data['allLinks']);
     createScriptElements($data['scripts']);
 
@@ -1190,14 +1193,16 @@ media-src 'self';" />
             display: flex;
             align-content: center;
         }
-        .h5_div img{
+
+        .h5_div img {
             height: 25px;
-    width: 25px;
-    margin-right: 10px;
-    border-radius: 30px;
-    border: 2px solid white;
-    padding: 3px;
+            width: 25px;
+            margin-right: 10px;
+            border-radius: 30px;
+            border: 2px solid white;
+            padding: 3px;
         }
+
         * {
             cursor: unset !important;
         }
@@ -2852,9 +2857,11 @@ div#clavs br_ta ta_f.active span {
             -o-transition: .3s;
             transition: .3s;
         }
-        body div.solarsystem{
+
+        body div.solarsystem {
             background: black;
         }
+
         body[data-category-name="astronomy"].active #clavs grider_viewer {
             opacity: 0;
             pointer-events: none;
@@ -3102,197 +3109,265 @@ div#clavs br_ta ta_f.active span {
         }
 
         /*  */
-        
+        svg_viewer,
         video-player-v2 {
- display:block;
-margin: 20px 0px !important;
- width: -webkit-fill-available;
-    border-radius: 10px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
-    enable-background: new 0 0 512 512 !important;
-    pointer-events: none;
-}
+            display: block;
+            margin: 20px 0px !important;
+            width: -webkit-fill-available;
+            border-radius: 10px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+            enable-background: new 0 0 512 512 !important;
+            pointer-events: none;
+        }
 
 
-div#clavs div_header,
-div#clavs br_ta,
-#clavs grider_viewer {
-    transition: .3s !important;
-}
+        div#clavs div_header,
+        div#clavs br_ta,
+        #clavs grider_viewer {
+            transition: .3s !important;
+        }
 
-div#clavs.scrollactive div_header,
-div#clavs.scrollactive br_ta {
-     
-}
+        div#clavs.scrollactive div_header,
+        div#clavs.scrollactive br_ta {}
 
-div#clavs.scrollactive div_header {
-    opacity:0 !important;
-    pointer-events: none !important;
-}
-div#clavs.scrollactive grider_viewer{
-    transform:translateY(0px);
-    padding-top:10px !important;
-}
-div#clavs.scrollactive br_ta{
-    top:0px; 
-}
+        div#clavs.scrollactive div_header {
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
 
-fiv_title {
-    background: rgb(0 0 0 / 52%);
-    opacity: 1;
-    z-index: 333;
-    color: white;
-    padding: 5px;
-    border-radius: 4px;
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    position: absolute;
-    font-size: 11px;
-    margin: 10px;
-    height:26px;
-    margin-top: 10px;
-    padding: 5px;
-    display: block;
-    border-radius: 6px;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
+        div#clavs.scrollactive grider_viewer {
+            transform: translateY(0px);
+            padding-top: 10px !important;
+        }
+
+        div#clavs.scrollactive br_ta {
+            top: 0px;
+        }
+
+        fiv_title {
+            background: rgb(0 0 0 / 52%);
+            opacity: 1;
+            z-index: 333;
+            color: white;
+            padding: 5px;
+            border-radius: 4px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+            enable-background: new 0 0 512 512 !important;
+            position: absolute;
+            font-size: 11px;
+            margin: 10px;
+            height: 26px;
+            margin-top: 10px;
+            padding: 5px;
+            display: block;
+            border-radius: 6px;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
-    -webkit-box-pack: start;
-        -ms-flex-pack: start;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
             justify-content: flex-start;
-    min-width: 50px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    max-width: calc(100% - 55px);
-    white-space: nowrap;
-    overflow: hidden;
-    -o-text-overflow: ellipsis;
-       text-overflow: ellipsis;
-    padding-top: 12px;
- }
+            min-width: 50px;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            max-width: calc(100% - 55px);
+            white-space: nowrap;
+            overflow: hidden;
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            padding-top: 12px;
+        }
 
- div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer:hover project:not(:hover) {
-    opacity:0.5 !important;
-}
+        div#clavs.gallery_mode section[data-ui-type="gallery"] grider_viewer:hover project:not(:hover) {
+            opacity: 0.5 !important;
+        }
 
-blog_post_loader {
-    position: fixed;
-    z-index: 23423423423432423423;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    top: 0px;
-    background: var(--black-trasparent-color);
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-}
+        blog_post_loader {
+            position: fixed;
+            z-index: 23423423423432423423;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            background: var(--black-trasparent-color);
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+        }
 
-blog_post_loader,
-blog_post_loader * {
-    -webkit-transition:.3s;
-    -o-transition:.3s;
-    transition:.3s;
-}
+        blog_post_loader,
+        blog_post_loader * {
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+        }
 
-blog_post_loader loader {
-       display: block;
-    margin: auto; 
-}
-blog_post_loader loader img {
-    display: block;
-    margin: auto;
-    width: 150px;
-    height: 150px;
-    -o-object-fit: cover;
-       object-fit: cover;
-    border-radius: 150px;
-    margin: auto;
-    opacity: 0.9;
-    padding: 5px;
-    background: var(--black-trasparent-color);
-    border: 3px solid rgb(255 255 255 / 21%);
-    -webkit-filter: blur(0.5px);
+        blog_post_loader loader {
+            display: block;
+            margin: auto;
+        }
+
+        blog_post_loader loader img {
+            display: block;
+            margin: auto;
+            width: 150px;
+            height: 150px;
+            -o-object-fit: cover;
+            object-fit: cover;
+            border-radius: 150px;
+            margin: auto;
+            opacity: 0.9;
+            padding: 5px;
+            background: var(--black-trasparent-color);
+            border: 3px solid rgb(255 255 255 / 21%);
+            -webkit-filter: blur(0.5px);
             filter: blur(0.5px);
-}
+        }
 
-blog_post_loader loader rotater {
-    display: block;
-    width: 150px;
-    height: 150px;
-    -webkit-animation: spin 1s linear infinite;
-            animation: spin 1s linear infinite;  
-    border-radius:150px;
-    position:absolute;
-    border: 3px solid;
-    z-index: 3;
-    border-top:3px solid white;
- }
- 
+        blog_post_loader loader rotater {
+            display: block;
+            width: 150px;
+            height: 150px;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+            border-radius: 150px;
+            position: absolute;
+            border: 3px solid;
+            z-index: 3;
+            border-top: 3px solid white;
+        }
+
         @-webkit-keyframes spin {
             from {
                 -webkit-transform: rotate(0deg);
-                        transform: rotate(0deg);
-   
+                transform: rotate(0deg);
+
             }
+
             to {
                 -webkit-transform: rotate(360deg);
-                        transform: rotate(360deg);
+                transform: rotate(360deg);
             }
         }
- 
+
         @keyframes spin {
             from {
                 -webkit-transform: rotate(0deg);
-                        transform: rotate(0deg);
-   
+                transform: rotate(0deg);
+
             }
+
             to {
                 -webkit-transform: rotate(360deg);
-                        transform: rotate(360deg);
+                transform: rotate(360deg);
             }
         }
 
-blog_post_loader.active {
-    opacity:0 !important;
-}
-blog_post_loader.active loader {
-    -webkit-transform:scale(0);
-        -ms-transform:scale(0);
-            transform:scale(0);
-}
+        blog_post_loader.active {
+            opacity: 0 !important;
+        }
 
-solar-map {
-    display: block;
-    position: absolute;
-    width: 150px;
-    height: 150px;
-    background: black;
-}
+        blog_post_loader.active loader {
+            -webkit-transform: scale(0);
+            -ms-transform: scale(0);
+            transform: scale(0);
+        }
 
-video-player#homevideo{
-    
-    position: fixed;
-    left: 0px;
-    right: 0px;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-    -o-object-fit: scale-fit;
-    object-fit: scale-fit;
-    background: black;
-    -webkit-transition: .3s !important;
-    -o-transition: .3s !important;
-    transition: .3s !important;
-    opacity: 0.5; 
-    
-}
-body{
-    transition: .3s;
-     
-}
+        solar-map {
+            display: block;
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: black;
+        }
+
+        video-player#homevideo {
+
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            width: -webkit-fill-available;
+            height: -webkit-fill-available;
+            -o-object-fit: scale-fit;
+            object-fit: scale-fit;
+            background: black;
+            -webkit-transition: .3s !important;
+            -o-transition: .3s !important;
+            transition: .3s !important;
+            opacity: 0.5;
+
+        }
+
+        body {
+            transition: .3s;
+
+        }
+
+        svg_viewer {
+            background: white;
+        }
+
+        svg_viewer {
+            display: block;
+            min-height: 70vh !important;
+            height: 70vh !important;
+            background: white;
+        }
+
+        div#controls {
+
+            position: fixed;
+            right: 20px;
+            top: 55px;
+            background: var(--black-trasparent-color);
+            display: grid;
+            z-index: 333333;
+            justify-content: center;
+            padding-bottom: 10px;
+            border-radius: 150px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            enable-background: new 0 0 512 512 !important;
+            padding-bottom: 5px;
+
+        }
+
+        div#controls i.top_control {
+
+            color: white;
+            font-size: 25px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            enable-background: new 0 0 512 512 !important;
+            width: 25px !important;
+            height: 35px !important;
+            padding: 0px 5.6px;
+            border-radius: 6px;
+            display: block;
+            margin: 5px;
+            margin-bottom: 0px;
+
+        }
+
+        div#controls i.bottom_control {
+
+            color: white;
+            font-size: 25px;
+            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+            enable-background: new 0 0 512 512 !important;
+            width: 25px !important;
+            height: 35px !important;
+            padding: 0px 5.6px;
+            border-radius: 6px;
+            display: block;
+            margin: 5px;
+            margin-bottom: 0px;
+            padding-bottom: 0px !important;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3314,15 +3389,15 @@ body{
         </script>
     <?php }
     ?>
-     <?php /*   <?php
-    $r = $this->get_data([
-        "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-        "headers" => [
-            'Content-Type: application/json',
-            'Authorization: Bearer 32M052k350QaeofkaeopfF',
-        ]
-    ]);
-     ?>
+    <?php /*   <?php
+$r = $this->get_data([
+"url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+"headers" => [
+'Content-Type: application/json',
+'Authorization: Bearer 32M052k350QaeofkaeopfF',
+]
+]);
+?>
 
 <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> 
 
@@ -3333,12 +3408,12 @@ body{
 */ ?>
 </head>
 
-<body style="opacity: 0;">   
-  
-  <!-- (: SUDO :) -->
+<body style="opacity: 0;">
+
+    <!-- (: SUDO :) -->
 </body>
 
 </html>
 <?php
-exit(); 
-  ?>
+exit();
+?>

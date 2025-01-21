@@ -203,32 +203,38 @@ class BlueWarp extends HTMLElement {
   }
 }
 class ImageZoomPan {
-  constructor(containerId, imageId,precent) {
+  constructor(containerId, imageId, percentDisplayId) {
     this.container = containerId;
     this.image = imageId;
-    this.percentDisplay = precent;
+    this.percentDisplay = percentDisplayId;
+
     this.scale = 1;
     this.translateX = 0;
     this.translateY = 0;
-    this.startX = 0;
-    this.startY = 0;
+    this.rotation = 0;
+
+    this.startTouches = [];
     this.isDragging = false;
 
     this.init();
   }
 
   init() {
+    // Mouse events
     this.container.addEventListener('mousedown', this.startDrag.bind(this));
     window.addEventListener('mouseup', this.stopDrag.bind(this));
     this.container.addEventListener('mousemove', this.dragImage.bind(this));
     this.container.addEventListener('wheel', this.zoomImage.bind(this));
-    
 
+    // Touch events
+    this.container.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
+    this.container.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
+    this.container.addEventListener('touchend', this.handleTouchEnd.bind(this));
   }
 
   startDrag(e) {
     this.isDragging = true;
-    this.startX = e.clientX - this.translateX; 
+    this.startX = e.clientX - this.translateX;
     this.startY = e.clientY - this.translateY;
     this.container.style.cursor = 'grabbing';
   }
@@ -240,43 +246,102 @@ class ImageZoomPan {
 
   dragImage(e) {
     if (!this.isDragging) return;
+
     this.translateX = e.clientX - this.startX;
     this.translateY = e.clientY - this.startY;
     this.updateTransform();
   }
-  PlusControlf(){ 
-    this.scale += 0.1; 
-    this.scale = Math.min(Math.max(1, this.scale), 3);
-
-    this.updateTransform();
+  PlusControlf() {
+    this.scale += 0.1;
+ 
+  this.scale = Math.min(Math.max(0.5, this.scale), 5);
+  this.updateTransform();
+  this.updateZoomPercentage();
   }
-  MinusControlf(){
-    this.scale -= 0.1; 
-    this.scale = Math.min(Math.max(1, this.scale), 3);
-
-    this.updateTransform();
+  MinusControlf() {
+    this.scale -= 0.1;
+ 
+  this.scale = Math.min(Math.max(0.5, this.scale), 5);
+  this.updateTransform();
+  this.updateZoomPercentage();
   }
   zoomImage(e) {
     e.preventDefault();
+
     if (e.deltaY < 0) {
       this.scale += 0.1;
     } else {
       this.scale -= 0.1;
     }
-    this.scale = Math.min(Math.max(1, this.scale), 3);
 
+    this.scale = Math.min(Math.max(0.5, this.scale), 5);
     this.updateTransform();
+    this.updateZoomPercentage();
+  }
+
+  handleTouchStart(e) {
+    e.preventDefault();
+    this.startTouches = Array.from(e.touches);
+
+    if (this.startTouches.length === 1) {
+      this.startX = this.startTouches[0].clientX - this.translateX;
+      this.startY = this.startTouches[0].clientY - this.translateY;
+    }
+  }
+
+  handleTouchMove(e) {
+    e.preventDefault();
+    const touches = Array.from(e.touches);
+
+    if (touches.length === 1) {
+      // Single touch - drag
+      this.translateX = touches[0].clientX - this.startX;
+      this.translateY = touches[0].clientY - this.startY;
+    } else if (touches.length === 2 && this.startTouches.length === 2) {
+      // Multi-touch - zoom and rotate
+      const startDist = this.getDistance(this.startTouches[0], this.startTouches[1]);
+      const currentDist = this.getDistance(touches[0], touches[1]);
+      this.scale *= currentDist / startDist;
+
+      const startAngle = this.getAngle(this.startTouches[0], this.startTouches[1]);
+      const currentAngle = this.getAngle(touches[0], touches[1]);
+      this.rotation += currentAngle - startAngle;
+
+      this.startTouches = touches; // Update for the next move
+    }
+
+    this.scale = Math.min(Math.max(0.5, this.scale), 5);
+    this.updateTransform();
+    this.updateZoomPercentage();
+  }
+
+  handleTouchEnd(e) {
+    e.preventDefault();
+    this.startTouches = [];
+  }
+
+  getDistance(touch1, touch2) {
+    const dx = touch2.clientX - touch1.clientX;
+    const dy = touch2.clientY - touch1.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+  }
+
+  getAngle(touch1, touch2) {
+    const dx = touch2.clientX - touch1.clientX;
+    const dy = touch2.clientY - touch1.clientY;
+    return Math.atan2(dy, dx) * (180 / Math.PI);
   }
 
   updateTransform() {
-    this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale})`;
-    this.updateZoomPercentage();
+    this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale}) rotate(${this.rotation}deg)`;
   }
-  updateZoomPercentage() { 
-    const zoomPercentage = Math.round(this.scale * 100);  
-    this.percentDisplay.textContent = `${zoomPercentage}%`; 
+
+  updateZoomPercentage() {
+    const zoomPercentage = Math.round(this.scale * 100);
+    this.percentDisplay.textContent = `${zoomPercentage}%`;
   }
 }
+
 
 class ImagePreview extends HTMLElement {
  

@@ -245,14 +245,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-    <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]/"; ?>">
+    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin> 
     <meta name="google" content="notranslate">
     <meta name="referrer" content="origin">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
 
-
+<link rel="canonical" href="<?php echo "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
@@ -3317,57 +3316,8 @@ div#clavs br_ta ta_f.active span {
             background: white;
         }
 
-        div#controls {
-
-            position: fixed;
-            right: 20px;
-            top: 55px;
-            background: var(--black-trasparent-color);
-            display: grid;
-            z-index: 333333;
-            justify-content: center;
-            padding-bottom: 10px;
-            border-radius: 150px;
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            enable-background: new 0 0 512 512 !important;
-            padding-bottom: 5px;
-
-        }
-
-        div#controls i.top_control {
-
-            color: white;
-            font-size: 25px;
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            enable-background: new 0 0 512 512 !important;
-            width: 25px !important;
-            height: 35px !important;
-            padding: 0px 5.6px;
-            border-radius: 6px;
-            display: block;
-            margin: 5px;
-            margin-bottom: 0px;
-
-        }
-
-        div#controls i.bottom_control {
-
-            color: white;
-            font-size: 25px;
-            filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
-            enable-background: new 0 0 512 512 !important;
-            width: 25px !important;
-            height: 35px !important;
-            padding: 0px 5.6px;
-            border-radius: 6px;
-            display: block;
-            margin: 5px;
-            margin-bottom: 0px;
-            padding-bottom: 0px !important;
-        }
+       
+ 
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

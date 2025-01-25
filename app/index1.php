@@ -1,107 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monaco Editor with HTML Preview</title>
-  <style>
-    body {
-      display: flex;
-      height: 100vh;
-      margin: 0;
-    }
-    #editor-container {
-      width: 50%;
-      height: 100%;
-      border-right: 1px solid #ccc;
-    }
-    #preview-container {
-      width: 50%;
-      height: 100%;
-      background-color: #222;
-      color: white;
-      padding: 10px;
-      overflow-y: auto;
-      border-left: 1px solid #ccc;
-      box-sizing: border-box;
-    }
-    #editor {
-      height: 100%;
-    }
-    #splitter {
-      cursor: ew-resize;
-      background-color: #333;
-      width: 5px;
-      height: 100%;
-    }
-  </style>
+<title>Višestruki talasi</title>
+<style>
+body {
+  background-color: #111;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  overflow: hidden;
+}
+
+#container {
+  position: relative;
+  width: 500px;
+  height: 300px;
+  background-color: #222;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.wave {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(0, 150, 255, 0.4);
+  transform: scale(0);
+  pointer-events: none;
+}
+
+.wave.ripple1 {
+    animation: ripple 1.5s linear forwards;
+}
+.wave.ripple2 {
+    animation: ripple 1.5s linear 0.3s forwards; /* Delay od 0.3s */
+}
+.wave.ripple3 {
+    animation: ripple 1.5s linear 0.6s forwards; /* Delay od 0.6s */
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+.text {
+    color: #eee;
+    font-size: 2em;
+    text-align: center;
+    padding: 20px;
+    user-select: none;
+    position: relative;
+}
+
+.highlighted {
+  color: #00ffff;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+  transition: text-shadow 0.3s ease-in-out;
+}
+</style>
 </head>
 <body>
-  <div id="editor-container">
-    <div id="editor"></div>
-  </div>
-  <div id="splitter"></div>
-  <div id="preview-container">
-    <div id="shadowdoom-preview"></div>
-  </div>
 
-  <!-- Monaco Editor and Split View JS -->
-  <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.38.0/min/vs/loader.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/dompurify@2.3.6/dist/purify.min.js" defer></script>
+<div id="container">
+    <div class="text" id="myText">Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti. Ovo je neki tekst koji će se osvetliti.</div>
+</div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      // Initialize Monaco editor once DOM is loaded
-      require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.38.0/min/vs' } });
-      require(['vs/editor/editor.main'], function () {
-        // Initialize Monaco editor
-        const editor = monaco.editor.create(document.getElementById('editor'), {
-          value: '<h1>Welcome to Shadowdoom Preview!</h1><p>Edit HTML here...</p>',
-          language: 'html',
-        });
+<script>
+const container = document.getElementById('container');
+const textElement = document.getElementById('myText');
 
-        // Shadowdoom preview function (renders HTML)
-        const previewContainer = document.getElementById('shadowdoom-preview');
-        function updatePreview() {
-          // Get the editor content as HTML
-          const content = editor.getValue();
-          
-          // Sanitize the HTML to prevent any malicious code from being executed
-          const sanitizedContent = DOMPurify.sanitize(content);
-          
-          // Set the sanitized content to the preview area
-          previewContainer.innerHTML = sanitizedContent;
+container.addEventListener('click', (e) => {
+  const x = e.clientX - container.offsetLeft;
+  const y = e.clientY - container.offsetTop;
+
+  for (let i = 1; i <= 3; i++) {  
+    const wave = document.createElement('div');
+    wave.classList.add('wave', `ripple${i}`);  
+    wave.style.left = `${x}px`;
+    wave.style.top = `${y}px`;
+    container.appendChild(wave);
+
+    wave.addEventListener('animationend', () => {
+      wave.remove();
+    });
+  }
+
+  highlightText(x, y);
+});
+
+function highlightText(x, y) {
+    const textRect = textElement.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const relativeTextLeft = textRect.left - containerRect.left;
+    const relativeTextTop = textRect.top - containerRect.top;
+
+    if (x >= relativeTextLeft && x <= relativeTextLeft + textRect.width &&
+        y >= relativeTextTop && y <= relativeTextTop + textRect.height) {
+
+        if (!textElement.querySelectorAll('anim-span').length) {
+            const letters = textElement.textContent.split('').map(letter => `<anim-span>${letter}</anim-span>`).join('');
+            textElement.innerHTML = letters;
         }
 
-        // Watch for editor content changes and update preview
-        editor.onDidChangeModelContent(updatePreview);
-
-        // Set initial preview
-        updatePreview();
-
-        // Split view handling
-        const splitter = document.getElementById('splitter');
-        let isMouseDown = false;
-        let startX, startWidth;
-
-        splitter.addEventListener('mousedown', function (e) {
-          isMouseDown = true;
-          startX = e.clientX;
-          startWidth = document.getElementById('editor-container').offsetWidth;
+        const spans = textElement.querySelectorAll('anim-span');
+        spans.forEach(span => {
+            const spanRect = span.getBoundingClientRect();
+            const relativeSpanLeft = spanRect.left - containerRect.left;
+            const relativeSpanTop = spanRect.top - containerRect.top;
+            const distance = Math.sqrt(Math.pow(x - (relativeSpanLeft + spanRect.width / 2), 2) + Math.pow(y - (relativeSpanTop + spanRect.height / 2), 2));
+            if (distance < 70) {
+                span.classList.add('highlighted');
+                setTimeout(() => {
+                    span.classList.remove('highlighted');
+                }, 500);
+            }
         });
+    }
+}
+</script>
 
-        document.addEventListener('mousemove', function (e) {
-          if (!isMouseDown) return;
-          const newWidth = startWidth + (e.clientX - startX);
-          document.getElementById('editor-container').style.width = `${newWidth}px`;
-          document.getElementById('preview-container').style.width = `${window.innerWidth - newWidth - 5}px`;
-        });
-
-        document.addEventListener('mouseup', function () {
-          isMouseDown = false;
-        });
-      });
-    });
-  </script>
 </body>
 </html>

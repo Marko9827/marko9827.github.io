@@ -203,11 +203,66 @@ class BlueWarp extends HTMLElement {
   }
 }
 class ImageZoomPan {
-  constructor(containerId, imageId, percentDisplayId) {
+  svgMaker(svgg = [], pathv = []) {
+    const svg = document.createElement("svg"),
+      path = document.createElement("path");
+    for (var i = 0; i < svgg.length; i++) {
+      svg.setAttribute(svgg[i]["key"], svgg[i]["val"]);
+    }
+    for (var i = 0; i < pathv.length; i++) {
+      path.setAttribute(pathv[i]["key"], pathv[i]["val"]);
+    }
+    svg.appendChild(path);
+    return svg;
+  }
+  svg(name = "") {
+    var svgContent = "";
+    if (name == "plus") {
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
+  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+</svg>`;
+    }
+    if (name == "rotate") {
+      svgContent = `<svg xmlns="http://www.w3.org/2000/svg"  fill="white"   viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
+  <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+</svg>`;
+    }
+    if (name == "minus") {
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" /></svg>`;
+    }
+    if (name == "close") {
+      svgContent = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="#b14747" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" /></svg>`;
+    }
+    const base64 = btoa(svgContent);
+    const base64Url = `data:image/svg+xml;base64,${base64}`;
+    return base64Url;
+  }
+  constructor(
+    containerId,
+    imageId,
+    percentDisplayId,
+    options_f = {
+      ui: false,
+      isImage: true,
+      controls: {
+        zoom: true,
+        zoomout: true,
+        close: true,
+        percentage: true,
+        rotate: true,
+      },
+      onlyZoom: false,
+    }
+  ) {
     this.container = containerId;
     this.image = imageId;
+    this.options_f = options_f;
     this.percentDisplay = percentDisplayId;
-
+    this.isCtrlPressed = false;
     this.scale = 1;
     this.translateX = 0;
     this.translateY = 0;
@@ -220,31 +275,127 @@ class ImageZoomPan {
     this.lastRotation = 0;
 
     this.init();
+
+    if (this.options_f.ui == true) {
+      //
+      (this.controls = document.createElement("div")),
+        (this.controls_top = document.createElement("img")),
+        (this.controls_bottom = document.createElement("img")),
+        (this.controls_rotate = document.createElement("img")),
+        (this.controls_precent = document.createElement("span")),
+        (this.separator = document.createElement("separator")),
+        (this.separator1 = document.createElement("separator")),
+        (this.controls_close = document.createElement("img"));
+      this.controls.id = "controls";
+      this.controls_top.src = this.svg("plus");
+      this.controls_top.setAttribute("class", "top_control");
+      this.controls_bottom.src = this.svg("minus");
+      this.controls_bottom.setAttribute("class", "bottom_control");
+      this.controls_top.alt = "Zoom in";
+      this.controls_bottom.alt = "Zoom out";
+      this.controls_rotate.src = this.svg("rotate");
+      this.controls_rotate.setAttribute("class", "bottom_rotate");
+      this.controls_rotate.alt = "Rotate";
+      this.controls_precent.setAttribute("class", "precent_control");
+      this.controls_precent.textContent = "100%";
+      this.controls_close.src = this.svg("close");
+      this.controls_close.setAttribute("class", "close_control");
+
+      /*
+     controls.appendChild(this.svgMaker([
+       {
+         "key":"xmlns",
+         "val":"http://www.w3.org/2000/svg"
+       }
+     ],[
+ 
+     ]));*/
+      this.controls.appendChild(this.controls_close);
+      this.controls.appendChild(this.separator1);
+      this.controls.appendChild(this.controls_top);
+      this.controls.appendChild(this.controls_precent);
+      this.controls.appendChild(this.controls_bottom);
+      this.controls.appendChild(this.separator);
+      this.controls.appendChild(this.controls_rotate);
+      this.container.appendChild(this.controls);
+
+      this.controls_top.addEventListener("click", function (e) {
+        e.preventDefault();
+        controller.PlusControlf();
+      });
+      this.controls_bottom.addEventListener("click", function (e) {
+        e.preventDefault();
+        controller.MinusControlf();
+      });
+      this.controls_precent.addEventListener("click", function (e) {
+        e.preventDefault();
+        controller.reset();
+      });
+      let clickTimeout;
+      const controller = this;
+      this.controls_rotate.addEventListener("click", (e) => {
+        e.preventDefault();
+        const box = this.image;
+        clearTimeout(clickTimeout);
+
+        if (!box.classList.contains("rotation_manual")) {
+          box.classList.add("rotation_manual");
+        }
+        controller.RotateControlf();
+        clickTimeout = setTimeout(() => {
+          box.classList.remove("rotation_manual");
+        }, 500);
+      });
+    }
   }
-
+  initf() {
+    var aerls = false;
+    if (!this.options_f.isImage) {
+      if (this.scale > 1) {
+        this.aerls = true;
+      }
+    }
+    return aerls;
+  }
+  ctrl_key(event) {
+    this.isCtrlPressed = false;
+    if (event.key === "Control" && event.location === 1) {
+      this.isCtrlPressed = true;
+    }
+  }
   init() {
+    document.addEventListener("keydown", this.ctrl_key.bind(this));
+    //
     // Mouse events
-    this.container.addEventListener('mousedown', this.startDrag.bind(this));
-    window.addEventListener('mouseup', this.stopDrag.bind(this));
-    this.container.addEventListener('mousemove', this.dragImage.bind(this));
-    this.container.addEventListener('wheel', this.zoomImage.bind(this));
+    this.container.addEventListener("mousedown", this.startDrag.bind(this));
+    window.addEventListener("mouseup", this.stopDrag.bind(this));
+    this.container.addEventListener("mousemove", this.dragImage.bind(this));
 
-    // Touch events
-    this.container.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: false });
-    this.container.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
-    this.container.addEventListener('touchend', this.handleTouchEnd.bind(this));
+    this.container.addEventListener("wheel", this.zoomImage.bind(this));
+
+    this.container.addEventListener(
+      "touchstart",
+      this.handleTouchStart.bind(this),
+      { passive: false }
+    );
+    this.container.addEventListener(
+      "touchmove",
+      this.handleTouchMove.bind(this),
+      { passive: false }
+    );
+    this.container.addEventListener("touchend", this.handleTouchEnd.bind(this));
   }
 
   startDrag(e) {
     this.isDragging = true;
     this.startX = e.clientX - this.translateX;
     this.startY = e.clientY - this.translateY;
-    this.container.style.cursor = 'grabbing';
+    this.container.style.cursor = "grabbing";
   }
 
   stopDrag() {
     this.isDragging = false;
-    this.container.style.cursor = 'grab';
+    this.container.style.cursor = "grab";
   }
 
   dragImage(e) {
@@ -252,12 +403,11 @@ class ImageZoomPan {
 
     this.translateX = e.clientX - this.startX;
     this.translateY = e.clientY - this.startY;
+
     this.updateTransform();
   }
 
   zoomImage(e) {
-    e.preventDefault();
-
     if (e.deltaY < 0) {
       this.scale += 0.1;
     } else {
@@ -265,8 +415,19 @@ class ImageZoomPan {
     }
 
     this.scale = Math.min(Math.max(0.5, this.scale), 5);
-    this.updateTransform();
-    this.updateZoomPercentage();
+    if (this.options_f.onlyZoom == true) {
+      if (this.scale < 1) {
+        this.scale = 1;
+      }
+      if (this.isCtrlPressed) {
+        e.preventDefault();
+        this.updateZoomPercentage();
+      }
+    } else {
+      e.preventDefault();
+      this.updateTransform();
+      this.updateZoomPercentage();
+    }
   }
 
   handleTouchStart(e) {
@@ -294,11 +455,17 @@ class ImageZoomPan {
       this.translateY = touches[0].clientY - this.startY;
     } else if (touches.length === 2 && this.startTouches.length === 2) {
       // Multi-touch - zoom and rotate
-      const startDist = this.getDistance(this.startTouches[0], this.startTouches[1]);
+      const startDist = this.getDistance(
+        this.startTouches[0],
+        this.startTouches[1]
+      );
       const currentDist = this.getDistance(touches[0], touches[1]);
       this.scale = this.lastScale * (currentDist / startDist);
 
-      const startAngle = this.getAngle(this.startTouches[0], this.startTouches[1]);
+      const startAngle = this.getAngle(
+        this.startTouches[0],
+        this.startTouches[1]
+      );
       const currentAngle = this.getAngle(touches[0], touches[1]);
       this.rotation = this.lastRotation + (currentAngle - startAngle);
     }
@@ -324,29 +491,42 @@ class ImageZoomPan {
     const dy = touch2.clientY - touch1.clientY;
     return Math.atan2(dy, dx) * (180 / Math.PI);
   }
-
+  isMobileDevice() {
+    return /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone|Opera Mini|IEMobile/i.test(
+      navigator.userAgent
+    );
+  }
   updateTransform() {
+    if(!this.options_f.controls){
+        if(this.scale < 1){
+          this.scale = 1;
+          this.translateX = 0;
+          this.translateY = 0;
+          this.rotation = 0;
+        }
+    }
+    this.updateZoomPercentage();
     this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale}) rotate(${this.rotation}deg)`;
   }
 
   updateZoomPercentage() {
     const zoomPercentage = Math.round(this.scale * 100);
-    this.percentDisplay.textContent = `${zoomPercentage}%`;
+    this.percentDisplay.innerHTML = `${zoomPercentage}%`;
   }
   PlusControlf() {
     this.scale += 0.1;
- 
-  this.scale = Math.min(Math.max(0.5, this.scale), 5);
-  this.updateTransform();
-  this.updateZoomPercentage();
+
+    this.scale = Math.min(Math.max(0.5, this.scale), 5);
+    this.updateTransform();
+    this.updateZoomPercentage();
   }
   reset() {
     let clickTimeout;
     const box = this.image;
     clearTimeout(clickTimeout);
-    if (!box.classList.contains('rotation_manual')) {
-      box.classList.add('rotation_manual');
-    } 
+    if (!box.classList.contains("rotation_manual")) {
+      box.classList.add("rotation_manual");
+    }
     this.scale = 1;
     this.translateX = 0;
     this.translateY = 0;
@@ -354,68 +534,64 @@ class ImageZoomPan {
     this.updateTransform();
     this.updateZoomPercentage();
     clickTimeout = setTimeout(() => {
-      box.classList.remove('rotation_manual');
-  }, 500);
+      box.classList.remove("rotation_manual");
+    }, 500);
   }
   MinusControlf() {
     this.scale -= 0.1;
- 
-  this.scale = Math.min(Math.max(0.5, this.scale), 5);
-  this.updateTransform();
-  this.updateZoomPercentage();
+
+    this.scale = Math.min(Math.max(0.5, this.scale), 5);
+    this.updateTransform();
+    this.updateZoomPercentage();
   }
   RotateControlf() {
-
     this.rotation = this.rotation + 90;
     this.updateTransform();
     this.updateZoomPercentage();
-    
   }
 }
 
-
 class ImagePreview extends HTMLElement {
- 
-  svgMaker(svgg = [], pathv = []){
+  svgMaker(svgg = [], pathv = []) {
     const svg = document.createElement("svg"),
-    path = document.createElement("path");
-    for(var i = 0; i < svgg.length; i++){
-      svg.setAttribute(svgg[i]['key'], svgg[i]['val']);
+      path = document.createElement("path");
+    for (var i = 0; i < svgg.length; i++) {
+      svg.setAttribute(svgg[i]["key"], svgg[i]["val"]);
     }
-    for(var i = 0; i < pathv.length; i++){
-      path.setAttribute(pathv[i]['key'], pathv[i]['val']);
+    for (var i = 0; i < pathv.length; i++) {
+      path.setAttribute(pathv[i]["key"], pathv[i]["val"]);
     }
     svg.appendChild(path);
     return svg;
   }
-  svg(name = ""){
+  svg(name = "") {
     var svgContent = "";
-    if(name == "plus"){
+    if (name == "plus") {
       svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-</svg>`; 
+</svg>`;
     }
-    if(name == "rotate"){
+    if (name == "rotate") {
       svgContent = `<svg xmlns="http://www.w3.org/2000/svg"  fill="white"   viewBox="0 0 16 16">
   <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"/>
   <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
 </svg>`;
     }
-    if(name == "minus"){
+    if (name == "minus") {
       svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" /></svg>`;
     }
-    if(name == "close"){
+    if (name == "close") {
       svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" fill="#b14747" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" /></svg>`;
     }
-const base64 = btoa(svgContent); 
-const base64Url = `data:image/svg+xml;base64,${base64}`;
-return base64Url;
+    const base64 = btoa(svgContent);
+    const base64Url = `data:image/svg+xml;base64,${base64}`;
+    return base64Url;
   }
   constructor() {
-    super(); 
+    super();
     this.shadowMode = this.attachShadow({ mode: "open" });
     const source = this.getAttribute("src");
     const template = document.createElement("template");
@@ -583,12 +759,10 @@ div#controls img:hover {
 
     this.scalermode = {
       scale: 1,
-      startX:0,
-      startY:0,
-      isDragging: false
+      startX: 0,
+      startY: 0,
+      isDragging: false,
     };
-    
-
 
     loaderImg.id = "Loader";
     loaderImg.src = window.welcomer.loader_svg;
@@ -638,8 +812,6 @@ div#controls img:hover {
 "></i></div>
     */
     // -::K
-
-   
 
     // -::K
     const helper3 = document.createElement("div");
@@ -691,34 +863,33 @@ div#controls img:hover {
     divLoader.appendChild(helperIdHelper3);
     divLoader.appendChild(helperIdHelper);
     // divLoader.appendChild(svg);
-    // 
+    //
     const controls = document.createElement("div"),
-    controls_top = document.createElement("img"),
-    controls_bottom = document.createElement("img"),
-    controls_rotate = document.createElement("img"),
-    controls_precent = document.createElement("span"),
-    separator = document.createElement("separator"),
-    separator1 = document.createElement("separator"),
-
-    controls_close = document.createElement("img");
+      controls_top = document.createElement("img"),
+      controls_bottom = document.createElement("img"),
+      controls_rotate = document.createElement("img"),
+      controls_precent = document.createElement("span"),
+      separator = document.createElement("separator"),
+      separator1 = document.createElement("separator"),
+      controls_close = document.createElement("img");
     controls.id = "controls";
-    controls_top.src = this.svg("plus"); 
-    controls_top.setAttribute("class","top_control");
-    controls_bottom.src = this.svg("minus"); 
-    controls_bottom.setAttribute("class","bottom_control"); 
+    controls_top.src = this.svg("plus");
+    controls_top.setAttribute("class", "top_control");
+    controls_bottom.src = this.svg("minus");
+    controls_bottom.setAttribute("class", "bottom_control");
     controls_top.alt = "Zoom in";
     controls_bottom.alt = "Zoom out";
 
     controls_rotate.src = this.svg("rotate");
-    controls_rotate.setAttribute("class","bottom_rotate");
+    controls_rotate.setAttribute("class", "bottom_rotate");
     controls_rotate.alt = "Rotate";
 
-    controls_precent.setAttribute("class","precent_control");
+    controls_precent.setAttribute("class", "precent_control");
 
-    controls_precent.textContent = '100%';
+    controls_precent.textContent = "100%";
 
-    controls_close.src =  this.svg("close"); 
-    controls_close.setAttribute("class","close_control"); 
+    controls_close.src = this.svg("close");
+    controls_close.setAttribute("class", "close_control");
 
     /*
     controls.appendChild(this.svgMaker([
@@ -738,13 +909,11 @@ div#controls img:hover {
     controls.appendChild(controls_rotate);
     divLoader.appendChild(controls);
     // :
-     
 
     const ImageBox = document.createElement("img");
     ImageBox.id = "zoomImage";
-    
 
-     // :
+    // :
     divLoader.classList.add("div-loader");
     template.content.appendChild(zoomContainer);
     template.content.appendChild(divLoader);
@@ -753,77 +922,70 @@ div#controls img:hover {
     const closeMeIamSad = this.shadowRoot.querySelector(".zoomer_exit");
     this.div_loader = this.shadowRoot.querySelector("div-loader");
     this.shadowMode.appendChild(template.content.cloneNode(true));
-    this.shadowRoot
-      .querySelector(".zoomWindow");
-    
-      /*
+    this.shadowRoot.querySelector(".zoomWindow");
+
+    /*
       .setAttribute(
         "style",
         `background-image:url(${this.getAttribute("src")});`
       );*/
-
-       
   }
 
-  init() { 
-    this.container.addEventListener('mousedown', this.startDrag.bind(this));
-    window.addEventListener('mouseup', this.stopDrag.bind(this));
-    this.container.addEventListener('mousemove', this.dragImage.bind(this));
-    this.container.addEventListener('wheel', this.zoomImage.bind(this));
-}
+  init() {
+    this.container.addEventListener("mousedown", this.startDrag.bind(this));
+    window.addEventListener("mouseup", this.stopDrag.bind(this));
+    this.container.addEventListener("mousemove", this.dragImage.bind(this));
+    this.container.addEventListener("wheel", this.zoomImage.bind(this));
+  }
 
-startDrag(e) {
-    const box = this.image;            
-    if (box.classList.contains('rotation_manual')) {
-        box.classList.remove('rotation_manual');
-    } 
+  startDrag(e) {
+    const box = this.image;
+    if (box.classList.contains("rotation_manual")) {
+      box.classList.remove("rotation_manual");
+    }
     this.isDragging = true;
     this.startX = e.clientX - this.image.offsetLeft;
     this.startY = e.clientY - this.image.offsetTop;
-    this.container.style.cursor = 'grabbing';
+    this.container.style.cursor = "grabbing";
+  }
 
-   
-}
-
-stopDrag() {
+  stopDrag() {
     this.isDragging = false;
-    this.container.style.cursor = 'grab';
-}
+    this.container.style.cursor = "grab";
+  }
 
-dragImage(e) {
-  const box = this.image;            
-    if (box.classList.contains('rotation_manual')) {
-        box.classList.remove('rotation_manual');
-    } 
+  dragImage(e) {
+    const box = this.image;
+    if (box.classList.contains("rotation_manual")) {
+      box.classList.remove("rotation_manual");
+    }
     if (!this.isDragging) return;
     const x = e.clientX - this.startX;
     const y = e.clientY - this.startY;
     this.image.style.transform = `translate(${x}px, ${y}px) scale(${this.scale})`;
-
-     
-}
-zoom_plus(e){
-  e.preventDefault();
-  if (e.deltaY < 0) {
-      this.scale += 0.1; 
-  } else {
-      this.scale -= 0.1; 
   }
-
-  this.scale = Math.min(Math.max(1, this.scale), 3);  
-  this.image.style.transform = `scale(${this.scale})`;
-}
-zoomImage(e) {
+  zoom_plus(e) {
     e.preventDefault();
     if (e.deltaY < 0) {
-        this.scale += 0.1; 
+      this.scale += 0.1;
     } else {
-        this.scale -= 0.1; 
+      this.scale -= 0.1;
     }
 
-    this.scale = Math.min(Math.max(1, this.scale), 3);  
+    this.scale = Math.min(Math.max(1, this.scale), 3);
     this.image.style.transform = `scale(${this.scale})`;
-}
+  }
+  zoomImage(e) {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      this.scale += 0.1;
+    } else {
+      this.scale -= 0.1;
+    }
+
+    this.scale = Math.min(Math.max(1, this.scale), 3);
+    this.image.style.transform = `scale(${this.scale})`;
+  }
   increaseScale(e) {
     e.preventDefault();
     this.scale += 0.1;
@@ -836,53 +998,61 @@ zoomImage(e) {
   getHostAttribute(attrName) {
     return this.getAttribute(attrName);
   }
-  ld(){
-    
-  }
-  
+  ld() {}
+
   src(src = "") {
     if (src) {
-      this.shadowRoot
-        .querySelector("#zoomImage")
-        .setAttribute("src", `${src}`);
-        this.shadowRoot
-        .querySelector(".zoomWindow")
-        .removeAttribute("style");
-        const controller = new ImageZoomPan(
-          this.shadowRoot.querySelector(".zoomWindow"), 
-          this.shadowRoot.querySelector("#zoomImage"),
-          this.shadowRoot.querySelector("span.precent_control")
-        );
+      this.shadowRoot.querySelector("#zoomImage").setAttribute("src", `${src}`);
+      this.shadowRoot.querySelector(".zoomWindow").removeAttribute("style");
+      const controller = new ImageZoomPan(
+        this.shadowRoot.querySelector(".zoomWindow"),
+        this.shadowRoot.querySelector("#zoomImage"),
+        this.shadowRoot.querySelector("span.precent_control")
+      );
 
-        this.shadowRoot.querySelector("img.top_control").addEventListener("click", function(e){
-          e.preventDefault(); 
+      this.shadowRoot
+        .querySelector("img.top_control")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
           controller.PlusControlf();
         });
-        this.shadowRoot.querySelector("img.bottom_control").addEventListener("click", function(e){
-          e.preventDefault(); 
+      this.shadowRoot
+        .querySelector("img.bottom_control")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
           controller.MinusControlf();
-        }); 
-        this.shadowRoot.querySelector("span.precent_control").addEventListener("click", function(e){
+        });
+      this.shadowRoot
+        .querySelector("span.precent_control")
+        .addEventListener("click", function (e) {
           e.preventDefault();
           controller.reset();
         });
-        let clickTimeout;
-        this.shadowRoot.querySelector("img.bottom_rotate").addEventListener("click", (e) => {
+      let clickTimeout;
+      this.shadowRoot
+        .querySelector("img.bottom_rotate")
+        .addEventListener("click", (e) => {
           e.preventDefault();
-          const box = this.shadowRoot.querySelector("img#zoomImage");  
+          const box = this.shadowRoot.querySelector("img#zoomImage");
           clearTimeout(clickTimeout);
-           
-          if (!box.classList.contains('rotation_manual')) {
-              box.classList.add('rotation_manual');
-          } 
-          controller.RotateControlf(); 
+
+          if (!box.classList.contains("rotation_manual")) {
+            box.classList.add("rotation_manual");
+          }
+          controller.RotateControlf();
           clickTimeout = setTimeout(() => {
-              box.classList.remove('rotation_manual');
+            box.classList.remove("rotation_manual");
           }, 500);
-      });
+        });
 
-          this.shadowRoot.querySelector("#zoomImage").addEventListener("load", this.shadowRoot.querySelector("img_loader").setAttribute("style","opacity:0"));
-
+      this.shadowRoot
+        .querySelector("#zoomImage")
+        .addEventListener(
+          "load",
+          this.shadowRoot
+            .querySelector("img_loader")
+            .setAttribute("style", "opacity:0")
+        );
     } else {
     }
   }
@@ -1013,6 +1183,68 @@ class PDFViewerElement extends HTMLElement {
   }
 }
 class PostContent extends HTMLElement {
+  anim(container, text) {
+    const t = this;
+    container.addEventListener("click", (e) => {
+      const x = e.clientX - container.offsetLeft;
+      const y = e.clientY - container.offsetTop;
+
+      for (let i = 1; i <= 3; i++) {
+        const wave = document.createElement("div");
+        wave.classList.add("wave", `ripple${i}`);
+        wave.style.left = `${x}px`;
+        wave.style.top = `${y}px`;
+        container.appendChild(wave);
+
+        wave.addEventListener("animationend", () => {
+          wave.remove();
+        });
+      }
+
+      t.hightxy(x, y, c, t);
+    });
+  }
+
+  hightxy(x, y, container, textElement) {
+    const textRect = textElement.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+
+    const relativeTextLeft = textRect.left - containerRect.left;
+    const relativeTextTop = textRect.top - containerRect.top;
+
+    if (
+      x >= relativeTextLeft &&
+      x <= relativeTextLeft + textRect.width &&
+      y >= relativeTextTop &&
+      y <= relativeTextTop + textRect.height
+    ) {
+      if (!textElement.querySelectorAll("anim-span").length) {
+        const letters = textElement.textContent
+          .split("")
+          .map((letter) => `<anim-span>${letter}</anim-span>`)
+          .join("");
+        textElement.innerHTML = letters;
+      }
+
+      const spans = textElement.querySelectorAll("anim-span");
+      spans.forEach((span) => {
+        const spanRect = span.getBoundingClientRect();
+        const relativeSpanLeft = spanRect.left - containerRect.left;
+        const relativeSpanTop = spanRect.top - containerRect.top;
+        const distance = Math.sqrt(
+          Math.pow(x - (relativeSpanLeft + spanRect.width / 2), 2) +
+            Math.pow(y - (relativeSpanTop + spanRect.height / 2), 2)
+        );
+        if (distance < 70) {
+          span.classList.add("highlighted");
+          setTimeout(() => {
+            span.classList.remove("highlighted");
+          }, 500);
+        }
+      });
+    }
+  }
+
   constructor() {
     super();
 
@@ -1025,10 +1257,159 @@ class PostContent extends HTMLElement {
     style.textContent = `${window.atob(
       window.portfolio.data.blog_style_bundle
     )} 
-    :::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}`;
+    :::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}
+    
+    div#controls {
+    position: fixed;
+    right: 20px;
+    top: 70px;
+    background: var(--black-trasparent-color);
+    display: grid;
+    z-index: 333333;
+    justify-content: center;
+    padding-bottom: 10px;
+    border-radius: 150px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    padding-bottom: 5px;
+}
+
+div#controls img.top_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+div#controls separator {
+    background: white;
+    height: 1px;
+    opacity: 0.3;
+    width:100%;
+  }
+    div.content-wrapper.rotation_manual ,
+    img#zoomImage.rotation_manual {
+      transition: transform .5s ease !important;
+      pointer-events:none;
+    }
+div#controls img.top_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    margin: 0px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+div#controls img.close_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 5px;
+}
+
+div#controls img.bottom_rotate {
+ color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 0px;
+}
+div#controls img.bottom_control {
+    color: white;
+    font-size: 25px;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    width: 25px !important;
+    height: 35px !important;
+    padding: 0px 5.6px;
+    border-radius: 6px;
+    display: block;
+    margin: 5px;
+    margin-bottom: 0px;
+    padding-bottom: 0px !important;
+    padding-bottom: 0px important;
+    margin: 5px 10px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-top: 0px;
+}
+div#controls span.precent_control {
+
+color: white;
+text-align: center;
+margin: auto;
+display: block;
+font-size: 8px;
+padding: 0px 10px !important; 
+margin-top: 3px;
+}
+div#controls img {
+    opacity: 0.8 !important;
+}
+
+div#controls img:hover {
+    opacity: 1 !important;
+}
+    `;
     shadow.appendChild(style);
     /* template.innerHTML = ` <div_content> </div_content>`;*/
     shadow.appendChild(div_content);
+    const child = shadow.querySelector(".content-wrapper");
+    // var aer =
+    // const rls = new ImageZoomPan();
+    const spsp = document.createElement("span");
+
+    /*
+    class ImageZoomPan {
+      constructor(containerId, imageId, percentDisplayId) {*/
   }
   HTML_PARSE(html) {
     const parser = new DOMParser();
@@ -1073,6 +1454,14 @@ class PostContent extends HTMLElement {
       });
     });
     document.querySelector("p-container").scrollTop = 0;
+
+    const spsp = document.createElement("span"),
+      divContent = this.shadowRoot.querySelector("div.div_content"),
+      content_wrapper = this.shadowRoot.querySelector("div.content-wrapper");
+    /*const controller = new ImageZoomPan(div_content, content_wrapper, spsp, {
+      onlyZoom: true,
+      ui: true,
+    });*/
   }
   styleTemplate() {
     return `<style nonce="${window.stmp}" type="text/css">${window.atob(
@@ -5082,99 +5471,97 @@ document.querySelector("body").appendChild(parser.body);
     this.offline_data.start();
     this.start(document.querySelector("body"));
   },
-  gf: function(call){ 
-      fetch(`${window.location.origin}/feed`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${window.stmp}`,
-        },
-        body: JSON.stringify({
-          type: "f",
-        }),
-      }).then((response) => response.json()).then((data) => {
-          window.portfolio = data;
-          window.portfolio.data.blog.forEach(function(blog){
+  gf: function (call) {
+    fetch(`${window.location.origin}/feed`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${window.stmp}`,
+      },
+      body: JSON.stringify({
+        type: "f",
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        window.portfolio = data;
+        window.portfolio.data.blog.forEach(function (blog) {
           welcomer.offline_data.update(
             welcomer.offline_data.noDB(),
             "blog",
-            blog['id'],
+            blog["id"],
             blog
-            );
-      });
-        })
-        .catch((error) => {
-          console.error("ERROR:", error);
+          );
         });
-   
+      })
+      .catch((error) => {
+        console.error("ERROR:", error);
+      });
   },
   offline_data: {
     noDB: function () {
       return {
-          dbName: "markonikolic98_data",
-          version: 3,
-          stores: [
-            {
-              name: "fulldata",
-              keyPath: "no",
-              autoIncrement: true,
-              indexes: [
-
-              ]
-            },
-            {
-              name: "blog",
-              keyPath: "id",
-              autoIncrement: true,
-              indexes: [
-                { name: "id", keyPath: "blog", unique: true },
-                { name: "category", keyPath: "category", unique: false },
-                { name: "gallery", keyPath: "gallery", unique: false },
-                { name: "keywords", keyPath: "blog", unique: false },
-                { name: "page", keyPath: "html", unique: false },
-                { name: "shared_links", keyPath: "links", unique: false},
-                { name: "source", keyPath: "url", unique: true },
-                { name: "thumbail", keyPath: "gallery", unique: false },
-                { name: "time", keyPath: "filter", unique: false },
-                { name: "title", keyPath: "blog", unique: false }
-              ],
-            },
-            {
-              name: "gallery",
-              keyPath: "name",
-              autoIncrement: true,
-              indexes: [
-                { name: "name", keyPath: "gallery", unique: true },
-                { name: "live", keyPath: "gallery", unique: false },
-                { name: "gallery", keyPath: "gallery", unique: false }
-                
-              ],
-            },
-          ],
-        };
+        dbName: "markonikolic98_data",
+        version: 3,
+        stores: [
+          {
+            name: "fulldata",
+            keyPath: "no",
+            autoIncrement: true,
+            indexes: [],
+          },
+          {
+            name: "blog",
+            keyPath: "id",
+            autoIncrement: true,
+            indexes: [
+              { name: "id", keyPath: "blog", unique: true },
+              { name: "category", keyPath: "category", unique: false },
+              { name: "gallery", keyPath: "gallery", unique: false },
+              { name: "keywords", keyPath: "blog", unique: false },
+              { name: "page", keyPath: "html", unique: false },
+              { name: "shared_links", keyPath: "links", unique: false },
+              { name: "source", keyPath: "url", unique: true },
+              { name: "thumbail", keyPath: "gallery", unique: false },
+              { name: "time", keyPath: "filter", unique: false },
+              { name: "title", keyPath: "blog", unique: false },
+            ],
+          },
+          {
+            name: "gallery",
+            keyPath: "name",
+            autoIncrement: true,
+            indexes: [
+              { name: "name", keyPath: "gallery", unique: true },
+              { name: "live", keyPath: "gallery", unique: false },
+              { name: "gallery", keyPath: "gallery", unique: false },
+            ],
+          },
+        ],
+      };
     },
     update: function (db, table, userId, updatedData) {
       return new Promise((resolve, reject) => {
         const transaction = db.transaction([table], "readwrite"),
-        objectStore = transaction.objectStore(table),
-        updatedUser = { ...updatedData, id: userId },
-        request = objectStore.put(updatedUser);
-        request.onsuccess = () => { 
-            resolve();
-        }; 
-        request.onerror = (event) => { 
-            reject(event.target.error);
+          objectStore = transaction.objectStore(table),
+          updatedUser = { ...updatedData, id: userId },
+          request = objectStore.put(updatedUser);
+        request.onsuccess = () => {
+          resolve();
         };
-    });
+        request.onerror = (event) => {
+          reject(event.target.error);
+        };
+      });
     },
     build: function () {
       const dbConfig = this.noDB();
-      return new Promise(function(resolve, reject) {
+      return new Promise(function (resolve, reject) {
         const request = indexedDB.open(dbConfig.dbName, dbConfig.version);
         request.onupgradeneeded = (event) => {
           const db = event.target.result;
-          
-          dbConfig.stores.forEach(function(store) {
+
+          dbConfig.stores.forEach(function (store) {
             if (!db.objectStoreNames.contains(store.name)) {
               const objectStore = db.createObjectStore(store.name, {
                 keyPath: store.keyPath,
@@ -5189,7 +5576,6 @@ document.querySelector("body").appendChild(parser.body);
               }
             }
           });
-         
         };
         request.onsuccess = (event) => {
           const db = event.target.result;

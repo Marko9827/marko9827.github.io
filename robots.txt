@@ -1,0 +1,7 @@
+Sitemap: https://markonikolic98.com/sitemap.xml
+
+User-agent: * 
+Disallow: /*.pdf$
+Disallow: /*.jpg$
+Disallow: /*.png$
+Disallow: /*.svg$

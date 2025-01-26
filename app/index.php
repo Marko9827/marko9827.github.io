@@ -3,6 +3,7 @@
 namespace portfolio;
 
 use \Exception;
+use \DateTime;
 use \League\CommonMark\CommonMarkConverter;
 
 header('X-Frame-Options: *');
@@ -580,15 +581,14 @@ class portfolio_marko
             echo self::minifySVG($b);
             exit();
         }
-        if ($h == 'test'){
+        if ($h == 'test') {
             include "$_SERVER[DOCUMENT_ROOT]/app/index1.php";
         }
         if ($h == 'controls_close') {
             header('Content-Type: image/svg+xml');
             ob_start();
             ?>
-            <svg xmlns="http://www.w3.org/2000/svg"  fill="#b14747"  
-                viewBox="0 0 16 16">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#b14747" viewBox="0 0 16 16">
                 <path
                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
             </svg>
@@ -1029,7 +1029,7 @@ class portfolio_marko
             <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
             <meta name="description" content="<?php echo "$data[title]"; ?> | Marko Nikolić IT. Is my personal website. ">
             <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-            <meta name="author" content="Marko Nikolic"> 
+            <meta name="author" content="Marko Nikolic">
             <meta name="keywords" content="<?php
             /*$t = "";
 foreach($data->keywords as $index => $v){
@@ -1167,7 +1167,7 @@ echo $v .",";
         #$message = substr($message, 0, +3);
         #header("HTTP/1.1 200 OK");
         #   header("robots: noindex, nofollow");
-
+        http_response_code((int)$status);
         die('
     <!DOCTYPE html>
     <html lang=en>
@@ -1206,11 +1206,40 @@ echo $v .",";
     ">' . $actual_link . '</code> ' . $message . ' </br> 
     ');
     }
+    private function reformat_fd($input){
+        $input = str_replace(["AM","PM"], ["",""],$input);
+        $output = preg_replace_callback(
+            '/(\d{2})\.(\w{3})\.(\d{4}) (\d{2}):(\d{2})/',
+            function ($matches) { 
+                $months = [
+                    'jan' => '01', 
+                    'feb' => '02', 
+                    'mar' => '03', 'march' => '03', 'mart' => '03',
+                    'apr' => '04', 'april' => '04',
+                    'may' => '05', 
+                    'jun' => '06', 
+                    'jul' => '07', 
+                    'avg' => '08',
+                    'sep' => '09', 'sept' => '09',
+                    'okt' => '10', 
+                    'nov' => '11', 
+                    'dec' => '12'
+                ]; 
+                $month = $months[strtolower($matches[2])]; 
+                return "$matches[3]-$month-$matches[1] $matches[4]:$matches[5]";
+            },
+            $input
+        );
+        return $output;
+    }
     public function sitemapGenerator()
     {
-        
+        if(empty($_GET['f']) && empty($_POST)){
+            
+            self::error_page(404);
+            exit();
+        }
         $host = "markonikolic98.com";
-        $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $r = $this->get_data([
             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
             "headers" => [
@@ -1220,40 +1249,74 @@ echo $v .",";
         ]);
         $r2 = json_decode($r, true);
         $array = $r2['data']['blog'];
-        
-        $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
+
+        # $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
+        $generatedv2 = "";
         $generated = "";
-        $rplc = file_get_contents("https://$host/sitemap.xml");
-        $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>", "", $rplc);
-        $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "", $rplc);
-        $rplc = str_replace("</urlset>", "", $rplc);
-        
-        foreach ($array as $index => $element) {
-            $d2 = strtotime($element["time"]);
-            $d = date('Y-m-d h:i:s ', $d2);
+        /* $rplc = file_get_contents("https://$host/sitemap.xml");
+         $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>", "", $rplc);
+         $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "", $rplc);
+         $rplc = str_replace("</urlset>", "", $rplc);
+         */
+        $top_ulrs = [
+            "https://$host",
+            "https://$host/?p=cv-pdf",
+            "https://$host/?p=projects",
+            "https://$host/?p=blog",
+            "https://$host/?p=gallery"
+        ];
+        foreach ($r2['data']['gallery']['gallery'] as $v) {
+            array_push($top_ulrs, (string) "https://$host/?p=gallery&album=$v[name]");
+        }
+        foreach ($top_ulrs as $index => $element) {
+
+          $d = date('Y-m-d h:i:s ', time());
             // date_format($d2,"Y/m/d  H:i:s");
             $generated .= " 
             <url>
-                <loc>https://$host/?p=blog&id=$element[id]</loc>
+                <loc>$element</loc>
                 <lastmod>$d</lastmod>
+                <changefreq>daily</changefreq>
+                <priority>1.0</priority>
+            </url>\n 
+            ";
+        }
+        foreach ($array as $index => $element) {
+            $d2 = strtotime($element["time"]);
+            # $d = date('Y-m-d h:i:s ', $d2);
+            #   $dt = date_format($d2,"Y/m/d  H:i:s");
+            $date =   $element["time"];
+ 
+          #  $dateObj = DateTime::createFromFormat('d.M.Y H:iA', $date);
+
+            // Format the DateTime object to the desired format
+        #    $date = $dateObj->format('Y-m-d H:i:s');
+            $date = self::reformat_fd($element['time']);
+            // $d = $element["time"];
+            $generated .= " 
+            <url>
+                <loc>https://$host/?p=blog&id=$element[id]</loc>
+                <lastmod>$date</lastmod>
+                <changefreq>daily</changefreq>
+                    <priority>1.1</priority>
+
             </url>\n
-            $rplc
+          
             ";
         }
         $generated = str_replace("&", "&amp;", $generated);
-       $generatedv2 = "
-       
-<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
-        $generated
-        </urlset>
-        ";
-        
+
+        $generatedv2 .= "<?xml version='1.0' encoding='UTF-8'?>";
+        $generatedv2 .= "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
+        $generatedv2 .= (string) $generated;
+        $generatedv2 .= "</urlset>";
+
         file_put_contents("$_SERVER[DOCUMENT_ROOT]/sitemap.xml", $generatedv2);
-        if(!empty($_GET['d'])){
+
         $file = "$_SERVER[DOCUMENT_ROOT]/sitemap.xml";
         @readfile("$_SERVER[DOCUMENT_ROOT]/sitemap.xml");
         if (file_exists($file)) {
-            header('Content-Type: text/plain');
+            header('Content-Type: application/xml');
             header('Content-Length: ' . filesize($file));
             readfile($file);
             exit;
@@ -1262,7 +1325,7 @@ echo $v .",";
             echo 'File not found.';
         }
         exit();
-        }
+
     }
     function readJsonFile($filename)
     {

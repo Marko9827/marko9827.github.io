@@ -1206,37 +1206,63 @@ echo $v .",";
     ">' . $actual_link . '</code> ' . $message . ' </br> 
     ');
     }
-    function sitemapGenerator()
+    public function sitemapGenerator()
     {
-        header("content-type: application/xml");
+        
+        $host = "markonikolic98.com";
         $array = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
+        $r = $this->get_data([
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]);
+        $r2 = json_decode($r, true);
+        $array = $r2['data']['blog'];
+        
         $array2 = file_get_contents(ROOT . "/data_s/blog/blgd.json");
         $generated = "";
-        $rplc = file_get_contents("https://blog.eronelit.com/sitemap.xml");
+        $rplc = file_get_contents("https://$host/sitemap.xml");
         $rplc = str_replace("<?xml version='1.0' encoding='UTF-8'?>", "", $rplc);
         $rplc = str_replace('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">', "", $rplc);
         $rplc = str_replace("</urlset>", "", $rplc);
-
+        
         foreach ($array as $index => $element) {
             $d2 = strtotime($element["time"]);
             $d = date('Y-m-d h:i:s ', $d2);
             // date_format($d2,"Y/m/d  H:i:s");
             $generated .= " 
             <url>
-                <loc>https://portfolio.eronelit.com/?p=blog&id=$element[id]</loc>
+                <loc>https://$host/?p=blog&id=$element[id]</loc>
                 <lastmod>$d</lastmod>
             </url>\n
             $rplc
             ";
         }
         $generated = str_replace("&", "&amp;", $generated);
-        echo "
+       $generatedv2 = "
        
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
         $generated
         </urlset>
         ";
+        
+        file_put_contents("$_SERVER[DOCUMENT_ROOT]/sitemap.xml", $generatedv2);
+        if(!empty($_GET['d'])){
+        $file = "$_SERVER[DOCUMENT_ROOT]/sitemap.xml";
+        @readfile("$_SERVER[DOCUMENT_ROOT]/sitemap.xml");
+        if (file_exists($file)) {
+            header('Content-Type: text/plain');
+            header('Content-Length: ' . filesize($file));
+            readfile($file);
+            exit;
+        } else {
+            http_response_code(404);
+            echo 'File not found.';
+        }
         exit();
+        }
     }
     function readJsonFile($filename)
     {

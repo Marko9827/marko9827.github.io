@@ -398,6 +398,10 @@ class portfolio_marko
             @readfile("$_SERVER[DOCUMENT_ROOT]/app/jquery.min.js");
             exit();
         }
+        if ($h == "sitemap.xml") {
+            self::sitemapGenerator();
+            exit();
+        }
         if ($h == "feedjson") {
             header("content-type: text/javascript");
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -1167,7 +1171,7 @@ echo $v .",";
         #$message = substr($message, 0, +3);
         #header("HTTP/1.1 200 OK");
         #   header("robots: noindex, nofollow");
-        http_response_code((int)$status);
+        http_response_code((int) $status);
         die('
     <!DOCTYPE html>
     <html lang=en>
@@ -1206,38 +1210,115 @@ echo $v .",";
     ">' . $actual_link . '</code> ' . $message . ' </br> 
     ');
     }
-    private function reformat_fd($input){
-        $input = str_replace(["AM","PM"], ["",""],$input);
+    private function reformat_fd($input)
+    {
+        $months = [
+            'jan' => '01',
+            'feb' => '02',
+            'february' => '02',
+            'ferb' => '02',
+            'febr' => '02',
+            'mar' => '03',
+            'march' => '03',
+            'mart' => '03',
+            'apr' => '04',
+            'april' => '04',
+            'may' => '05',
+            'jun' => '06',
+            'jul' => '07',
+            'avg' => '08',
+            'sep' => '09',
+            'sept' => '09',
+            'okt' => '10',
+            'nov' => '11',
+            'dec' => '12'
+        ];
+        $input = str_replace(["AM", "PM"], ["", ""], $input);
         $output = preg_replace_callback(
-            '/(\d{2})\.(\w{3})\.(\d{4}) (\d{2}):(\d{2})/',
-            function ($matches) { 
-                $months = [
-                    'jan' => '01', 
-                    'feb' => '02', 
-                    'mar' => '03', 'march' => '03', 'mart' => '03',
-                    'apr' => '04', 'april' => '04',
-                    'may' => '05', 
-                    'jun' => '06', 
-                    'jul' => '07', 
-                    'avg' => '08',
-                    'sep' => '09', 'sept' => '09',
-                    'okt' => '10', 
-                    'nov' => '11', 
-                    'dec' => '12'
-                ]; 
-                $month = $months[strtolower($matches[2])]; 
+            '/(\d{2})\.(\w{3,})\.(\d{4}) (\d{2}):(\d{2})/',
+            function ($matches) {
+
+                $month = $months[strtolower($matches[2])] ?? null;
+                if (!$month) {
+                    return $matches[0];
+                }
+
                 return "$matches[3]-$month-$matches[1] $matches[4]:$matches[5]";
             },
             $input
         );
+        $r = array_merge(range('a', 'z'), range('A', 'Z'));
+
+        foreach ($months as $key => $val) {
+            $output = str_replace($key, $val, $output);
+            $output = str_replace('.', '-', $output);
+            /*$r = array_merge(range('a', 'z'), range('A', 'Z'));
+            foreach ($r as $val) {
+                $output = str_replace($val, "", $output);
+            }*/
+
+            $output = str_replace('--', '-', $output);
+        }
+
+        $output = preg_replace('/[a-zA-Z]/', '', $output);
+
         return $output;
     }
+    private function validateSitemap($sitemapUrl)
+    {
+
+        if (!file_exists($sitemapUrl)) {
+            echo "Sitemap file not found!";
+            return false;
+        }
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_file($sitemapUrl);
+
+        if (!$xml) {
+            echo "Error: Invalid XML format!\n";
+            foreach (libxml_get_errors() as $error) {
+                echo "\t", $error->message;
+            }
+            return false;
+        }
+
+        if ($xml->getName() !== 'urlset') {
+            echo "Error: Sitemap must have a root <urlset> element!\n";
+            return false;
+        }
+
+        foreach ($xml->url as $url) {
+            if (!isset($url->loc) || !filter_var((string) $url->loc, FILTER_VALIDATE_URL)) {
+                echo "Invalid <loc> URL: " . (string) $url->loc . "\n";
+                return false;
+            }
+
+            if (isset($url->lastmod) && !strtotime((string) $url->lastmod)) {
+                echo "Invalid <lastmod> date: " . (string) $url->lastmod . "\n";
+                return false;
+            }
+
+            if (isset($url->changefreq) && !in_array((string) $url->changefreq, ['always', 'hourly', 'daily', 'weekly', 'monthly', 'yearly', 'never'])) {
+                echo "Invalid <changefreq> value: " . (string) $url->changefreq . "\n";
+                return false;
+            }
+
+            if (isset($url->priority) && !is_numeric((string) $url->priority)) {
+                echo "Invalid <priority> value: " . (string) $url->priority . "\n";
+                return false;
+            }
+        }
+
+        echo "Sitemap is valid!\n";
+        return true;
+    }
+
     public function sitemapGenerator()
     {
-        if(empty($_GET['f']) && empty($_POST)){
-            
-            self::error_page(404);
-            exit();
+        if (empty($_GET['f']) && empty($_POST)) {
+
+            #   self::error_page(404);
+            #   exit();
         }
         $host = "markonikolic98.com";
         $r = $this->get_data([
@@ -1268,63 +1349,62 @@ echo $v .",";
         foreach ($r2['data']['gallery']['gallery'] as $v) {
             array_push($top_ulrs, (string) "https://$host/?p=gallery&album=$v[name]");
         }
+         
         foreach ($top_ulrs as $index => $element) {
 
-          $d = date('Y-m-d h:i:s ', time());
+            $d = date('Y-m-d h:i:s ', time());
             // date_format($d2,"Y/m/d  H:i:s");
             $generated .= " 
             <url>
                 <loc>$element</loc>
-                <lastmod>$d</lastmod>
+                <lastmod>2013-01-26 07:19:22</lastmod>
                 <changefreq>daily</changefreq>
                 <priority>1.0</priority>
             </url>\n 
             ";
         }
+        header("Content-Type: text/plain");
         foreach ($array as $index => $element) {
             $d2 = strtotime($element["time"]);
             # $d = date('Y-m-d h:i:s ', $d2);
             #   $dt = date_format($d2,"Y/m/d  H:i:s");
-            $date =   $element["time"];
- 
-          #  $dateObj = DateTime::createFromFormat('d.M.Y H:iA', $date);
+            $date = $element["time"];
+
+            #  $dateObj = DateTime::createFromFormat('d.M.Y H:iA', $date);
 
             // Format the DateTime object to the desired format
-        #    $date = $dateObj->format('Y-m-d H:i:s');
+            #    $date = $dateObj->format('Y-m-d H:i:s');
             $date = self::reformat_fd($element['time']);
+
             // $d = $element["time"];
             $generated .= " 
             <url>
                 <loc>https://$host/?p=blog&id=$element[id]</loc>
                 <lastmod>$date</lastmod>
                 <changefreq>daily</changefreq>
-                    <priority>1.1</priority>
-
-            </url>\n
-          
-            ";
+                <priority>1.1</priority>
+            </url>\n";
         }
+
         $generated = str_replace("&", "&amp;", $generated);
 
-        $generatedv2 .= "<?xml version='1.0' encoding='UTF-8'?>";
+        $generatedv2 .= "<?xml version='1.0' encoding='UTF-8'?>\n";
         $generatedv2 .= "<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
         $generatedv2 .= (string) $generated;
         $generatedv2 .= "</urlset>";
 
-        file_put_contents("$_SERVER[DOCUMENT_ROOT]/sitemap.xml", $generatedv2);
+        #file_put_contents("$_SERVER[DOCUMENT_ROOT]/sitemap.xml", $generatedv2);
 
-        $file = "$_SERVER[DOCUMENT_ROOT]/sitemap.xml";
-        @readfile("$_SERVER[DOCUMENT_ROOT]/sitemap.xml");
-        if (file_exists($file)) {
+        #  $file = "$_SERVER[DOCUMENT_ROOT]/sitemap.xml";
+        if (!empty($_SERVER['HTTP_USER_AGENT'])) {
             header('Content-Type: application/xml');
-            header('Content-Length: ' . filesize($file));
-            readfile($file);
-            exit;
-        } else {
-            http_response_code(404);
-            echo 'File not found.';
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Pragma: no-cache");
+            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
+            echo $generatedv2;
         }
-        exit();
+        exit;
+
 
     }
     function readJsonFile($filename)

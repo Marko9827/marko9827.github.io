@@ -5,6 +5,7 @@ namespace portfolio;
 use \Exception;
 use \DateTime;
 use \League\CommonMark\CommonMarkConverter;
+use GuzzleHttp\Client;
 
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
@@ -547,6 +548,16 @@ class portfolio_marko
             exit();
             file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html", $this->get_BUILD("https://$_SERVER[HTTP_HOST]/"));
             exit();
+        }
+
+        if ($h == "build_static") {
+            if($_GET['f']){
+                $dir = "$_SERVER[DOCUMENT_ROOT]/build";
+ 
+                "$dir/$_GET[f]";
+            } else{
+            self::build();
+            }
         }
         if ($h == "solarmap") {
             header("X-Frame-Options: SAMEORIGIN");
@@ -1312,7 +1323,95 @@ echo $v .",";
         echo "Sitemap is valid!\n";
         return true;
     }
+    private function get_data_build(
+        $r = [
+            "data" => [],
+            "url" => "",
+            "type" => "GET",
+            "headers" => []
+        ],
+        $testMode = true
+    ) {
 
+
+        $ch = curl_init("$r[url]");
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+
+        if ($r['type'] == "POST") {
+            curl_setopt($ch, CURLOPT_POST, true);
+        }
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
+        $response = curl_exec($ch);
+        if (curl_errno($ch)) {
+            echo curl_error($ch);
+        } else {
+            return $response;
+        }
+        curl_close($ch);
+
+    }
+    private function emptyFolder($folderPath)
+    {
+        if (!is_dir($folderPath)) {
+            return false;
+        }
+        $files = array_diff(scandir($folderPath), ['.', '..']);
+
+        foreach ($files as $file) {
+            $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+
+            if (is_dir($filePath)) {
+                self::emptyFolder($filePath);
+                rmdir($filePath);
+            } else {
+                unlink($filePath);
+            }
+        }
+
+        return true;
+    }
+    private function C_GET($url)
+    {
+
+        $options = [
+            'http' => [
+                'method' => 'GET',
+                'header' => "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\r\n"
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+        return $response;
+    }
+    private function build()
+    {
+        header("Content-Type: text/plain");
+        $dir = "$_SERVER[DOCUMENT_ROOT]/build";
+        if (is_dir($dir)) {
+            self::emptyFolder($dir);
+        } else {
+            mkdir($dir);
+        }
+
+        $client = new Client();
+        $response = $client->get("https://$_SERVER[HTTP_HOST]/build_static");
+
+        echo $response->getBody();
+        # $response = shell_exec($command);
+        // .'.$dir.'/index.html');
+
+        file_put_contents("$dir/index.html", $response);
+
+
+
+
+    }
     public function sitemapGenerator()
     {
         if (empty($_GET['f']) && empty($_POST)) {
@@ -1349,7 +1448,7 @@ echo $v .",";
         foreach ($r2['data']['gallery']['gallery'] as $v) {
             array_push($top_ulrs, (string) "https://$host/?p=gallery&album=$v[name]");
         }
-         
+
         foreach ($top_ulrs as $index => $element) {
 
             $d = date('Y-m-d h:i:s ', time());
@@ -1400,7 +1499,7 @@ echo $v .",";
             header('Content-Type: application/xml');
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Pragma: no-cache");
-            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
+            header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
             echo $generatedv2;
         }
         exit;

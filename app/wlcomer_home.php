@@ -185,25 +185,25 @@ $csp = (string) "
 
     ";
 $csp = "
-default-src 'self';
+default-src 'none';
     script-src   $cdn_urls 'nonce-$nonce'   'unsafe-inline' http: https:; 
     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
-    img-src  'self' blob: data: $cdn_urls  ;
-    media-src 'self' blob: data: $cdn_urls;
+    img-src  'self' $cdn_urls blob: data:;
+    media-src 'self'  $cdn_urls blob: data:;
     font-src 'self' data: $fonts;
     connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost  data:; 
     frame-src 'self';
     object-src 'none';
     manifest-src 'self';
     base-uri 'none';
-   # frame-ancestors 'self' ;
+    frame-ancestors 'self' ;
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-$csp = "";
-# header("Content-Security-Policy:  $csp");
+  $csp = "";
+  header("Content-Security-Policy:  $csp");
 
 
 
@@ -3358,7 +3358,7 @@ $r = $this->get_data([
 */ ?>
 </head>
 
-<body style="opacity: 0;">
+<body onload="welcomer.run();">
 
     <!-- (: SUDO :) -->
 </body>

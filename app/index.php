@@ -951,6 +951,10 @@ class portfolio_marko
         // Process $response as needed
         return $response;
     }
+    /**
+     * Summary of getRSSFeed
+     * @return never
+     */
     function getRSSFeed()
     {
         header("Content-type: application/rss+xml; charset=utf-8");

@@ -1,7 +1,7 @@
 <?php
 session_start();
 $protocol = "https://";
-define("source_URL","markonikolic98.com");
+define("source_URL",(string)"$_SERVER[HTTP_HOST]");
 define("SITE_HOST_DOMAIN", source_URL);
 define("SITE_HOST", (string) $protocol.source_URL);
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");

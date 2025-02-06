@@ -221,8 +221,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     echo 'Method Not Allowed';
     exit;
 }
-if(!empty($_GET['build_i'])){
-ob_start();
+// if(empty($_GET['build_i'])){
+// ob_start();
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -3366,6 +3366,8 @@ $r = $this->get_data([
 
 </html>
 <?php
+exit();
+/*
 $b = ob_get_clean();
 file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html",$b);
         } else {

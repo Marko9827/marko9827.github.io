@@ -232,8 +232,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     echo 'Method Not Allowed';
     exit;
 }
-if(!empty($_GET['build_i'])){
-ob_start();
+// if(empty($_GET['build_i'])){
+// ob_start();
 
 ?>
 <!DOCTYPE html>
@@ -3378,7 +3378,8 @@ $r = $this->get_data([
 
 </html>
 <?php
-
+exit();
+/*
 $b = ob_get_clean();
 $build_index = "$_SERVER[DOCUMENT_ROOT]/build/index.html";
 if(file_exists($build_index)){
@@ -3391,4 +3392,4 @@ file_put_contents($build_index,ob_f($b));
             exit();
         }
 exit();
-?>
+*/?>

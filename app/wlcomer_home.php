@@ -1,15 +1,15 @@
 <?php
 session_start();
 $protocol = "https://";
-define("SITE_HOST_DOMAIN", $_SERVER['HTTP_HOST']);
-define("SITE_HOST", "$protocol$_SERVER[HTTP_HOST]");
+define("source_URL","markonikolic98.com");
+define("SITE_HOST_DOMAIN", source_URL);
+define("SITE_HOST", (string) $protocol.source_URL);
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
 define("API_URL", "https://api.eronelit.com/");
-define("SITEURL", API_URL);
-
+define("SITEURL", API_URL); 
 define("CDN", "https://cdn.eronelit.com/"); //SITE_HOST);//"https://cdn.eronelit.com");
 define("SOUND_API", "");
-define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost");
+define("SERVER_AJAXS", (string) $protocol.source_URL); //https://tree.localhost");
 function generate_nonce()
 {
     return bin2hex(random_bytes(16));
@@ -55,9 +55,9 @@ function createScriptElements_array()
 
     $scripts = $data['scripts'];
     $new = [
-        "https://$_SERVER[HTTP_HOST]/jsjquery",
-        "https://$_SERVER[HTTP_HOST]/feedjson",
-        "https://$_SERVER[HTTP_HOST]/main"
+        "https://".source_URL."/jsjquery",
+        "https://".source_URL."/feedjson",
+        "https://".source_URL."/main"
     ];
     $createScripts = "";
     foreach ($scripts as $script) {
@@ -161,7 +161,18 @@ function ScriptCalcHash()
 
     }
 }
+function ob_f($b) {
+    $comments_pattern = "#/\*[^(\*/)]*\*/#";
+    $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
+    # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
 
+    $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
+    $html = preg_replace('/>\s+</', '><', $html);
+    $html = preg_replace('/^\s+|\s+$/m', '', $html);
+    $html = preg_replace('/\s{2,}/', ' ', $html);
+    $html = preg_replace('/[\r\n]/', '', $html);
+    return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+}
 /* 
  script-src 'self' 'nonce-$nonce' $cdn_urls;
     script-src-elem 'self'    $cdn_urls ;
@@ -221,8 +232,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     echo 'Method Not Allowed';
     exit;
 }
-// if(empty($_GET['build_i'])){
-// ob_start();
+if(!empty($_GET['build_i'])){
+ob_start();
+
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
@@ -252,12 +264,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
 
-<link rel="canonical" href="<?php echo "$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>">
+<link rel="canonical" href="<?php echo source_URL."$_SERVER[REQUEST_URI]"; ?>">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script src="<?php echo "https://$_SERVER[HTTP_HOST]/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script async src="<?php echo "https://$_SERVER[HTTP_HOST]/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script src="<?php echo       "https://".source_URL."/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script async src="<?php echo "https://".source_URL."/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
 <?php
@@ -3366,12 +3378,15 @@ $r = $this->get_data([
 
 </html>
 <?php
-exit();
-/*
+
 $b = ob_get_clean();
-file_put_contents("$_SERVER[DOCUMENT_ROOT]/build/index.html",$b);
+$build_index = "$_SERVER[DOCUMENT_ROOT]/build/index.html";
+if(file_exists($build_index)){
+    unlink($build_index);
+}
+file_put_contents($build_index,ob_f($b));
         } else {
-            header("Content-Type: text/html");
+            header("Content-Type: text/html charset=utf-8");
             @readfile("$_SERVER[DOCUMENT_ROOT]/build/index.html");
             exit();
         }

@@ -223,8 +223,7 @@ header("Access-Control-Allow-Origin: *.eronelit.com");
 header("X-Content-Type-Options: nosniff");
 header("Referrer-Policy: no-referrer");
 $rand = time();
-#ob_start();
-header('Content-Type: text/html; ');
+#ob_start(); 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest') {
 
     header('HTTP/1.1 405 Method Not Allowed');
@@ -234,7 +233,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
 }
 // if(empty($_GET['build_i'])){
 // ob_start();
-
+header("Content-Type: text/html charset=utf-8");
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">

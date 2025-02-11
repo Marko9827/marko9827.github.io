@@ -403,6 +403,11 @@ class portfolio_marko
             self::sitemapGenerator();
             exit();
         }
+        if ($h == "test"){
+            header("content-type: text/html");
+            @readfile("$_SERVER[DOCUMENT_ROOT]/app/index.html");
+            exit();
+        }
         if ($h == "feedjson") {
             header("content-type: text/javascript");
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -445,8 +450,8 @@ class portfolio_marko
             include ROOT . "welcomer_f.js";
             # @readfile(ROOT . "welcomer_f.js");
 
-            $b = ob_get_clean();
-            echo $this->minifyJS($b);
+          //  $b = ob_get_clean();
+          //   echo $this->minifyJS($b);
             exit();
         }
         if ($h == "video") {
@@ -2810,3 +2815,18 @@ echo $v .",";
         }
     }
 }
+
+/*
+<editor-sdk style="
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 33333;
+    background: black;
+    border: 2px solid white;
+    right: 10px;
+"></editor-sdk>
+*/

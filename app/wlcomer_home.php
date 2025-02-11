@@ -1,15 +1,15 @@
 <?php
 session_start();
 $protocol = "https://";
-define("source_URL",(string)"$_SERVER[HTTP_HOST]");
+define("source_URL", (string) "$_SERVER[HTTP_HOST]");
 define("SITE_HOST_DOMAIN", source_URL);
-define("SITE_HOST", (string) $protocol.source_URL);
+define("SITE_HOST", (string) $protocol . source_URL);
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
 define("API_URL", "https://api.eronelit.com/");
-define("SITEURL", API_URL); 
+define("SITEURL", API_URL);
 define("CDN", "https://cdn.eronelit.com/"); //SITE_HOST);//"https://cdn.eronelit.com");
 define("SOUND_API", "");
-define("SERVER_AJAXS", (string) $protocol.source_URL); //https://tree.localhost");
+define("SERVER_AJAXS", (string) $protocol . source_URL); //https://tree.localhost");
 function generate_nonce()
 {
     return bin2hex(random_bytes(16));
@@ -30,18 +30,7 @@ if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
     ob_start();
 }
 
-ob_start(function ($b) {
-    $comments_pattern = "#/\*[^(\*/)]*\*/#";
-    $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
-    # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
 
-    $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
-    $html = preg_replace('/>\s+</', '><', $html);
-    $html = preg_replace('/^\s+|\s+$/m', '', $html);
-    $html = preg_replace('/\s{2,}/', ' ', $html);
-    $html = preg_replace('/[\r\n]/', '', $html);
-    return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
-});
 $urlCdn = "";
 
 $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
@@ -55,9 +44,9 @@ function createScriptElements_array()
 
     $scripts = $data['scripts'];
     $new = [
-        "https://".source_URL."/jsjquery",
-        "https://".source_URL."/feedjson",
-        "https://".source_URL."/main"
+        "https://" . source_URL . "/jsjquery",
+        "https://" . source_URL . "/feedjson",
+        "https://" . source_URL . "/main"
     ];
     $createScripts = "";
     foreach ($scripts as $script) {
@@ -161,7 +150,8 @@ function ScriptCalcHash()
 
     }
 }
-function ob_f($b) {
+function ob_f($b)
+{
     $comments_pattern = "#/\*[^(\*/)]*\*/#";
     $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
     # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
@@ -195,7 +185,7 @@ $csp = (string) "
   script-src  'strict-dynamic' 'nonce-$nonce' $POLIFY $cdn_urls https://$_SERVER[HTTP_HOST]/main 'unsafe-inline'  'wasm-unsafe-eval' https:;
 
     ";
-$csp = "
+$csp = (string) "
 default-src 'none';
     script-src   $cdn_urls 'nonce-$nonce'   'unsafe-inline' http: https:; 
     style-src 'self' 'unsafe-inline' blob: data: $cdn_urls  $fonts;
@@ -206,15 +196,14 @@ default-src 'none';
     frame-src 'self';
     object-src 'none';
     manifest-src 'self';
-    base-uri 'none';
-    frame-ancestors 'self' ;
+    base-uri 'none'; 
     form-action 'self' *.eronelit.com;
     worker-src 'self'  *.eronelit.com;  
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
   $csp = "";
-  header("Content-Security-Policy:  $csp");
+header("Content-Security-Policy:  $csp");
 
 
 
@@ -233,6 +222,18 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET' || isset($_SERVER['HTTP_X_REQUESTED_WIT
 }
 // if(empty($_GET['build_i'])){
 // ob_start();
+ob_start(function ($b) {
+    $comments_pattern = "#/\*[^(\*/)]*\*/#";
+    $comm_JS = "/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:)\/\/.*))/";
+    # return preg_replace(['/\>[^\S ]+/s', '/[^\S ]+\</s', '/(\s)+/s', '/[\r\n]*/', '/\//', $comm_JS], ['>', '<', '\\1', '','', ''], $b);
+
+    $html = preg_replace('/<!--(?!\[if|\<!\[endif).*?-->/', '', $b);
+    $html = preg_replace('/>\s+</', '><', $html);
+    $html = preg_replace('/^\s+|\s+$/m', '', $html);
+    $html = preg_replace('/\s{2,}/', ' ', $html);
+    $html = preg_replace('/[\r\n]/', '', $html);
+    return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
+});
 header("Content-Type: text/html charset=utf-8");
 ?>
 <!DOCTYPE html>
@@ -254,22 +255,31 @@ header("Content-Type: text/html charset=utf-8");
     <?php } ?>
     <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
-
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin> 
+    <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
+    <link rel='preconnect' href='https://cdn.eronelit.com' />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <meta name="google" content="notranslate">
     <meta name="referrer" content="origin">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
-
-<link rel="canonical" href="<?php echo source_URL."$_SERVER[REQUEST_URI]"; ?>">
+    <!-- #region -->
+    <link rel="canonical" href="<?php echo source_URL . "$_SERVER[REQUEST_URI]"; ?>">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script src="<?php echo       "https://".source_URL."/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script async src="<?php echo "https://".source_URL."/main"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <?php /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
+    <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>" type="text/javascript" charset="UTF-8" ></script>
+    <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
+    
+    <?php if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
+        <script defer src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js" nonce="<?php echo $nonce; ?>"></script>
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"
+            integrity="sha512-J5ha2LF4Le+PBQnI5+xAVJDR+sZG9uSgroy4n/A6TLjNkvYQbqZA8WHZdaOvJ0HiKkBC9Frmvs10rFDSHKmveQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <?php } /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
 
 <?php
 */
@@ -353,8 +363,7 @@ media-src 'self';" />
     <script nonce="<?php echo $script_nonce; ?>"
         src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <?php if ($_GET['p'] == "editor") { ?>
-        <script nonce="<?php echo $script_nonce; ?>"
-            src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+        <script nonce="<?php echo $script_nonce; ?>"  src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
     <?php } ?>
     <script nonce="<?php echo $script_nonce; ?>" async
         src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
@@ -3327,9 +3336,9 @@ div#clavs br_ta ta_f.active span {
             height: 70vh !important;
             background: white;
         }
-
-       
- 
+        div_header #logo_backscr_img {
+            opacity: 1;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3391,4 +3400,4 @@ file_put_contents($build_index,ob_f($b));
             exit();
         }
 exit();
-*/?>
+*/ ?>

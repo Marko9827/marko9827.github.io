@@ -9,4 +9,6 @@ js/301F942.js
 /m_dr_vendor
 /node_modules
 *.db
+/m_dr_vendor
+
 

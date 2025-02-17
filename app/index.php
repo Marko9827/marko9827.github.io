@@ -2,10 +2,15 @@
 
 namespace portfolio;
 
+include "$_SERVER[DOCUMENT_ROOT]/app/solarday/index.php";
+
 use \Exception;
 use \DateTime;
 use \League\CommonMark\CommonMarkConverter;
 use GuzzleHttp\Client;
+use \portfolio;
+
+
 
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
@@ -30,9 +35,65 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
 
 
 //  header("Access-Control-Allow-Origin: *"); 
+/**
+ * Summary of portfolio_marko
+ */
 class portfolio_marko
 {
-    function fetchUrlData($url)
+    /**
+     * Summary of serveVideo
+     * @param mixed $filePath
+     * @return never
+     */
+    public function serveVideo($filePath)
+    {
+        if (!file_exists($filePath)) {
+            header("HTTP/1.1 404 Not Found");
+            exit("File not found.");
+        }
+
+        $fileSize = filesize($filePath);
+        $mimeType = mime_content_type($filePath);
+        $range = $_SERVER['HTTP_RANGE'] ?? null;
+
+        header("Content-Type: $mimeType");
+        header("Accept-Ranges: bytes");
+
+        if ($range) {
+            // Parse the Range header
+            [$range] = explode('=', $range, 2);
+            [$start, $end] = explode('-', $range);
+
+            $start = intval($start);
+            $end = ($end === "") ? ($fileSize - 1) : intval($end);
+            $length = $end - $start + 1;
+
+            header("HTTP/1.1 206 Partial Content");
+            header("Content-Range: bytes $start-$end/$fileSize");
+            header("Content-Length: $length");
+
+            $file = fopen($filePath, "rb");
+            fseek($file, $start);
+            $bufferSize = 8192;
+
+            while (!feof($file) && ($start <= $end)) {
+                $chunkSize = min($bufferSize, $end - $start + 1);
+                $data = fread($file, $chunkSize);
+                echo $data;
+                flush();
+                $start += $chunkSize;
+            }
+
+            fclose($file);
+        } else {
+            header("Content-Length: $fileSize");
+            readfile($filePath);
+        }
+
+
+        exit;
+    }
+    public function fetchUrlData($url)
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -227,7 +288,7 @@ class portfolio_marko
         }
         return $pages_base64;
     }
-    private function get_data(
+    public function get_data(
         $r = [
             "data" => [],
             "url" => "",
@@ -403,7 +464,7 @@ class portfolio_marko
             self::sitemapGenerator();
             exit();
         }
-        if ($h == "test"){
+        if ($h == "test") {
             header("content-type: text/html");
             @readfile("$_SERVER[DOCUMENT_ROOT]/app/index.html");
             exit();
@@ -450,8 +511,8 @@ class portfolio_marko
             include ROOT . "welcomer_f.js";
             # @readfile(ROOT . "welcomer_f.js");
 
-          //  $b = ob_get_clean();
-          //   echo $this->minifyJS($b);
+            //  $b = ob_get_clean();
+            //   echo $this->minifyJS($b);
             exit();
         }
         if ($h == "video") {
@@ -556,13 +617,17 @@ class portfolio_marko
         }
 
         if ($h == "build_static") {
-            if($_GET['f']){
+            if ($_GET['f']) {
                 $dir = "$_SERVER[DOCUMENT_ROOT]/build";
- 
+
                 "$dir/$_GET[f]";
-            } else{
-            self::build();
+            } else {
+                self::build();
             }
+        }
+        if ($h == "solarday") {
+            $r = new solarday();
+            exit();
         }
         if ($h == "solarmap") {
             header("X-Frame-Options: SAMEORIGIN");
@@ -1913,7 +1978,8 @@ echo $v .",";
         } else if (!empty($_GET['pdf_file'])) {
             $file = ROOT . "data_s/blog/image/$_GET[id].pdf";
             if ($_GET['pdf_file'] == "view") {
-                include ROOT . "Scripts/pdf_viewer.php";
+                include ROOT . "views/pdf_viewer.php";
+                # include ROOT . "Scripts/pdf_viewer.php";
             } else if ($_GET['pdf_file'] == "file") {
                 if (!empty($_GET['id'])) {
                     if (file_exists($file)) {

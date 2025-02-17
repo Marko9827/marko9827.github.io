@@ -82,6 +82,277 @@ class Application {
     window.requestAnimationFrame(() => this.loop());
   }
 }
+
+class EditorSDK extends HTMLElement {
+  constructor() {
+    super();
+
+    const shadow = this.attachShadow({ mode: "open" });
+    this.template = document.createElement("section");
+    this.clavs = document.createElement("div");
+    this.clavs.id = "clavs";
+    this.template.setAttribute("data-ui-type", "editor");
+
+    const link = document.createElement("style");
+    this.get("./main.css", function (err, data) {
+      link.textContent = data;
+    });
+
+    const require = document.createElement("script");
+    require.src =
+      "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js";
+    // shadow.appendChild(require);
+    shadow.appendChild(link);
+
+    this.clavs.appendChild(this.template);
+    this.editor_box = this.clavs.querySelector("editor-wrapper");
+    shadow.appendChild(this.clavs);
+    // --
+    this.editorContainer = document.createElement("div");
+    // --
+    this.convertToShadowRootAppendChild();
+    this.clavs.appendChild(this.editorContainer);
+    this.editor(this.editorContainer);
+  }
+  async get(url = "", callback) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url);
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        callback(null, xhr.responseText);
+      } else {
+        callback(null, null);
+      }
+    };
+    xhr.onerror = function () {
+      callback(null, null);
+    };
+    xhr.send(false);
+  }
+  getPromise(url) {
+    return new Promise((resolve, reject) => {
+      get(url, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    });
+  }
+  convertToShadowRootAppendChild() {
+    const shadowRoot = this.template;
+
+    const divHeader = document.createElement("div_header");
+    divHeader.setAttribute("data-url", "editor");
+
+    const logoImg = document.createElement("img");
+    logoImg.setAttribute("src", "/svg_logo_backscr_img.svg");
+    logoImg.setAttribute("loading", "lazy");
+    logoImg.setAttribute("id", "logo_backscr_img");
+    logoImg.setAttribute("alt", "Loading");
+    divHeader.appendChild(logoImg);
+
+    // First span element
+    const span1 = document.createElement("span");
+    span1.textContent = "Marko Nikolić - Portfolio > Editor - BETA";
+    divHeader.appendChild(span1);
+
+    // Second span element
+    const span2 = document.createElement("span");
+    span2.classList.add("editor_t");
+    span2.textContent = "> Editor - BETA";
+
+    // btns_i element
+    const btnsI = document.createElement("btns_i");
+
+    // Input element
+    const searchInput = document.createElement("input");
+    searchInput.setAttribute("type", "text");
+    searchInput.setAttribute("placeholder", "Search project");
+    searchInput.setAttribute("data-hmm", "search");
+    searchInput.setAttribute("onkeyup", "welcomer.search_Kompjiler(this);");
+    btnsI.appendChild(searchInput);
+
+    // Search close icon
+    const searchCloseIcon = document.createElement("i");
+    searchCloseIcon.classList.add("bi", "bi-x-lg");
+    searchCloseIcon.setAttribute("data-hmm", "closeMe");
+    searchCloseIcon.setAttribute(
+      "data-onclick",
+      "welcomer.search_Kompjiler(this);"
+    );
+    searchCloseIcon.setAttribute("title", "Close Search");
+    btnsI.appendChild(searchCloseIcon);
+
+    divHeader.appendChild(btnsI);
+
+    // btns_r element
+    const btnsR = document.createElement("btns_r");
+    btnsR.classList.add("btns_r_editor_right");
+
+    // Undo button
+    const undoButton = document.createElement("i");
+    undoButton.classList.add(
+      "bi",
+      "bi-arrow-left-short",
+      "editor_btns",
+      "undo"
+    );
+    btnsR.appendChild(undoButton);
+
+    // Redo button
+    const redoButton = document.createElement("i");
+    redoButton.classList.add(
+      "bi",
+      "bi-arrow-right-short",
+      "editor_btns",
+      "redo"
+    );
+    redoButton.setAttribute("title", "redo");
+    redoButton.setAttribute("data-title", "redo");
+    btnsR.appendChild(redoButton);
+
+    // Download button
+    const downloadButton = document.createElement("i");
+    downloadButton.classList.add("bi", "bi-file-earmark-arrow-down", "celvon");
+    downloadButton.setAttribute("data-onclick", "welcomer.editor.d();");
+    downloadButton.setAttribute("data-title", "Download as html file");
+    btnsR.appendChild(downloadButton);
+
+    // Question button
+    const questionButton = document.createElement("i");
+    questionButton.classList.add("bi", "bi-question-lg");
+    questionButton.setAttribute(
+      "data-onclick",
+      "welcomer.editor.load_menu_bar(this);"
+    );
+    btnsR.appendChild(questionButton);
+
+    // Share button
+    const shareButton = document.createElement("i");
+    shareButton.classList.add("bi", "bi-share");
+    shareButton.setAttribute("data-onclick", "welcomer.share();");
+    shareButton.setAttribute("title", "Share");
+    btnsR.appendChild(shareButton);
+
+    // Close button
+    const closeButton = document.createElement("i");
+    closeButton.classList.add("bi", "bi-x-lg", "close_btnf");
+    closeButton.setAttribute("data-onclick", "CTHP();");
+    closeButton.setAttribute("title", "Close");
+    btnsR.appendChild(closeButton);
+
+    divHeader.appendChild(btnsR);
+
+    this.template.appendChild(divHeader);
+
+    const editorHistoryRp = document.createElement("editor-history-rp");
+    this.template.appendChild(editorHistoryRp);
+
+    this.editorWrapper = document.createElement("editor-wrapper");
+    this.template.appendChild(this.editorWrapper);
+  }
+  updatePreview() {
+    const code = this.editor.getValue();
+    const iframeDoc =
+      this.previewIframe.contentDocument ||
+      this.previewIframe.contentWindow.document;
+
+    // Clear previous content
+    iframeDoc.open();
+    iframeDoc.write(code); // Directly write the code into the iframe
+    iframeDoc.close();
+  }
+  define() {
+    return {
+      doSomething: function () {
+        console.log("Something!");
+      },
+    };
+  }
+  editor(editor_box) {
+    // Create elements
+    this.editorContainer = this.clavs.querySelector("editor-wrapper");
+    this.editorContainer.style.width = "50%"; // Initial width
+    this.editorContainer.style.height = "100%";
+    this.editorContainer.style.float = "left"; // For side-by-side layout
+
+    this.previewIframe = document.createElement("iframe");
+    this.previewIframe.style.width = "50%"; // Initial width
+    this.previewIframe.style.height = "100%";
+    this.previewIframe.style.float = "left";
+    editor_box.appendChild(this.previewIframe);
+    editor_box.appendChild(this.editorContainer);
+
+    // Load Monaco Editor (ensure you have the Monaco Editor library included)
+
+    this.editor = monaco.editor.create(this.editorContainer, {
+      value: "<!-- Your code here -->",
+      language: "html", // Set the language
+    });
+    this.updatePreview();
+
+    this.editor.onDidChangeModelContent(() => {
+      this.updatePreview();
+    });
+
+    // Resizing functionality (using a simple approach - you might want a more robust solution)
+    let isResizing = false;
+    let currentResizer = null; // Keep track of the current resizer
+
+    const createResizer = (element, isHorizontal) => {
+      const resizer = document.createElement("div");
+      resizer.style.position = "absolute";
+      resizer.style.backgroundColor = "lightgray"; // or any style you prefer
+      if (isHorizontal) {
+        resizer.style.width = "5px";
+        resizer.style.height = "100%";
+        resizer.style.cursor = "ew-resize";
+        resizer.style.top = "0";
+      } else {
+        resizer.style.height = "5px";
+        resizer.style.width = "100%";
+        resizer.style.cursor = "ns-resize";
+        resizer.style.left = "0";
+      }
+
+      element.parentNode.insertBefore(resizer, element.nextSibling); // Insert after
+
+      resizer.addEventListener("mousedown", (e) => {
+        isResizing = true;
+        currentResizer = resizer;
+        e.preventDefault(); // Prevent text selection during resize
+      });
+
+      return resizer;
+    };
+
+    this.editorContainerResizer = createResizer(this.editorContainer, true);
+
+    document.addEventListener("mousemove", (e) => {
+      if (isResizing && currentResizer) {
+        const parent = currentResizer.parentNode;
+        const editorWidth = this.editorContainer.offsetWidth;
+        const iframeWidth = this.previewIframe.offsetWidth;
+        const totalWidth = editorWidth + iframeWidth;
+
+        if (currentResizer === this.editorContainerResizer) {
+          const newEditorWidth = e.clientX - parent.offsetLeft;
+          this.editorContainer.style.width =
+            Math.max(0, Math.min(newEditorWidth, totalWidth)) + "px";
+          this.previewIframe.style.width = totalWidth - newEditorWidth + "px";
+        }
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isResizing = false;
+      currentResizer = null;
+    });
+  }
+}
+
 class Editor extends HTMLElement {
   constructor() {
     super();
@@ -208,14 +479,15 @@ class Editor extends HTMLElement {
     this.template.appendChild(editorWrapper);
 
     const link = document.createElement("style");
-    link.textContent = '@import url("http://localhost:3005/main.css");';
+    link.textContent = `${this.styles()}`;
     this.template.appendChild(link);
   }
+  
 }
 
-if (!customElements.get("editor-sdk")) {
-  customElements.define("editor-sdk", Editor);
-}
+/*if (!customElements.get("editor-sdk")) {
+  customElements.define("editor-sdk", EditorSDK);
+}*/
 
 
 class CircleContainer {
@@ -1931,6 +2203,7 @@ const welcomer = {
         }
       });
       var testV = function () {
+        return;
         const data_ai_type = document.createElement("video-player");
         data_ai_type.setAttribute("video-src", "/?src=vdwallpper");
         document.body.appendChild(data_ai_type);
@@ -4416,10 +4689,7 @@ document.querySelector("body").appendChild(parser.body);
         welcomer.titleC(`Blog > ${urlParamsf_f}- Marko Nikolić`);
 
         if (urlParamsf_f == "astronomy") {
-          const div_solarsystem = document.createElement("div-solarsystem");
-          div_solarsystem.classList.add("solarsystem");
-          div_solarsystem.id = "root";
-          document.querySelector("div#clavs").appendChild(div_solarsystem);
+         
         }
       } else {
         welcomer.blg_history_replace("/?p=blog");
@@ -5473,10 +5743,8 @@ document.querySelector("body").appendChild(parser.body);
      // window.location.href = urls;
      
       
-      if (urls.includes("download")) {
-        window.location.href = urls;
-      } else {
-        $.get(urls, function (v) {
+     if(urls.includes(".rar") || urls.includes(".zip") || urls.includes(".exe")){
+         $.get(urls, function (v) {
           var blob = new Blob([v], { type: "octet/stream" });
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
@@ -5486,7 +5754,11 @@ document.querySelector("body").appendChild(parser.body);
           a.click();
           window.URL.revokeObjectURL(url);
         });
-      }
+     } else {
+      
+      window.top.location.href = urls;
+    return; 
+    } 
     }
   },
   openLink: function (kk) {
@@ -6254,8 +6526,7 @@ document.querySelector("body").appendChild(parser.body);
           if (id < 1) {
             welcomer.editor.editor.tems[
               t.wht
-            ] = `<!DOCTYPE html>\n\n
-            <html> <head> <title>Hello World!</title> <meta name="viewport" content="width=device-width,initial-scale=1"> </head> <body> <!--- Hello world ---> <!--- Click ? for more info!:) ---> </body> </html>`;
+            ] = `<!DOCTYPE html>\n<html>\n<head>\n    <title>Hello World!</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n    <!-- Hello world -->\n    <!-- Click ? for more info! -->\n</body>\n</html>`;
           }
           let typingTimer;
           const typingTimeout = 1000;
@@ -6789,8 +7060,10 @@ document.querySelector("body").appendChild(parser.body);
           vs: "https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs",
         },
       });
+      
+      
       if (id < 1) {
-        this.editr_tijemp = `<!DOCTYPE html> <html> <head> <title>Hello World!</title> <meta name="viewport" content="width=device-width,initial-scale=1"> </head> <body> <!--- Hello world ---> <!--- Click ? for more info!:) ---> </body> </html>`;
+        this.editr_tijemp = `<!DOCTYPE html>\n<html>\n<head>\n    <title>Hello World!</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n    <!-- Hello world -->\n    <!-- Click ? for more info! -->\n</body>\n</html>`;
       }
       let typingTimer;
       const typingTimeout = 1000;
@@ -7972,7 +8245,7 @@ document.querySelector("body").appendChild(parser.body);
     // this.body_reset_form = bodyHTML;
   },
   body_reset_form: ` 
-
+<editor-sdk style='display:none; position:fixed; width: 100%; height:100%; z-index:4323423423; background:black;'></editor-sdk>
 <video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video>
 
 <p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
@@ -8387,6 +8660,10 @@ document.querySelector("body").appendChild(parser.body);
       headers: { "AuthV2-token": $('meta[name="csrf-token"]').attr("content") },
     });
     */
+    const div_solarsystem = document.createElement("div-solarsystem");
+    div_solarsystem.classList.add("solarsystem");
+    div_solarsystem.id = "root";
+    document.querySelector("div#clavs").appendChild(div_solarsystem);
     const isMobile = welcomer.isMobile();
     if (isMobile == true) {
       $(".cursor").remove();
@@ -8445,10 +8722,12 @@ document.querySelector("body").appendChild(parser.body);
     document.body.appendChild(img);
 
     setTimeout(async () => {
+       
       const video_wall = document.querySelector("video");
       const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
+      const v = window.portfolio.data.background_videos;
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", "/?src=vdwallpper", true);
+      xhr.open("POST", v[Math.floor(Math.random() * v.length)]['video'], true);
       xhr.responseType = "blob";
       xhr.setRequestHeader(
         "Content-Type",

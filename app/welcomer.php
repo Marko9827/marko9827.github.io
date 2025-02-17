@@ -509,6 +509,11 @@ function validateJson($jsonString)
         return ["valid" => false, "error" => $errorMessage];
     }
     return ["valid" => true, "data" => $data];
+} 
+function video_play(){ 
+ 
+ 
+
 }
 function headersExist()
 {
@@ -605,28 +610,15 @@ if (!empty($_GET['drc'])) {
     readfile($name);
     exit;
 } else if (!empty($_GET['src'])) {
-    if ($_GET['src'] == "vdwallpper") {
-
-
-       # if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            #  $r = $_POST['v'];
-
-            # set_time_limit(60);
-
-            #  ignore_user_abort(false);
-            # include ROOT . "Content/vstream.php";
-            // include(ROOT . "Upload/STREAM/" . basename($path, ".mp4") . "_$chunk.mp4");
-            header("Expires: Tue, 01 Jan 2000 00:00:00 GMT"); // Date in the past
-            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT"); // Always modified
-            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0"); // HTTP/1.1
-            header("Cache-Control: post-check=0, pre-check=0", false); // HTTP/1.1 (for IE)
-            header("Pragma: no-cache"); // HTTP/1.0
-
-            $filetry = ROOT . "Content/videos/";
+ 
+    switch ($_GET['src']) {
+        case "vdwallpper":
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+            $filetry = ROOT . "cinematic_3/";
             $files = glob("$filetry/*.mp4");
-
-
+ 
 
             foreach (array_keys($files, $_SESSION['vname']) as $key) {
                 unset($files[$key]);
@@ -635,46 +627,36 @@ if (!empty($_GET['drc'])) {
             $filetry2 = $files[$file];
             $_SESSION['vname'] = $filetry2;
             $videoFile = $filetry2;
+ 
+
+            $this->serveVideo($videoFile);
+            exit();
+        default:
+            $filetry = ROOT . "rdlv/$_GET[src]";
+
+            # header("content-type: image/png");
+            if (file_exists($filetry)) {
+                $mime_type = mime_content_type($filetry);
+                if (strpos($filetry, ".svg") !== false) {
+
+                    header("Content-Type: image/svg+xml");
+                    header('Content-Length' . filesize($filetry));
+                    @readfile($filetry);
+                }
+                if (strpos($filetry, ".png") !== false) {
+                    header("content-type: image/png");
+
+                    echo file_get_contents($filetry);
+                    exit();
+                    echo "data:image/png;base64," . base64_encode(file_get_contents($filetry));
+                }
 
 
-            if (!file_exists($videoFile)) {
-                header("HTTP/1.1 404 Not Found");
                 exit;
+            } else {
+                include ROOT . "ERROR_PG.php";
             }
-            header("Content-type: video/mp4");
-            @readfile($videoFile);
-            exit();
-        /*} else {
-            header("HTTP/1.0 405 Method Not Allowed");
-
-            $this->error_page(405);
-            exit();
-        }*/
-    } else {
-        $filetry = ROOT . "rdlv/$_GET[src]";
-
-        # header("content-type: image/png");
-        if (file_exists($filetry)) {
-            $mime_type = mime_content_type($filetry);
-            if (strpos($filetry, ".svg") !== false) {
-
-                header("Content-Type: image/svg+xml");
-                header('Content-Length' . filesize($filetry));
-                @readfile($filetry);
-            }
-            if (strpos($filetry, ".png") !== false) {
-                header("content-type: image/png");
-
-                echo file_get_contents($filetry);
-                exit();
-                echo "data:image/png;base64," . base64_encode(file_get_contents($filetry));
-            }
-
-
-            exit;
-        } else {
-            include ROOT . "ERROR_PG.php";
-        }
+            break;
     }
 } else if (!empty($_GET['svc'])) {
 

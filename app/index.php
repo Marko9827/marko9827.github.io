@@ -296,8 +296,25 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-        return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+       # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+       $ch = curl_init($r['url']);
 
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
+       curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
+       curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
+       curl_setopt($ch, CURLOPT_POST, true); 
+
+       curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
+       curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
+       $response = curl_exec($ch);
+       if (curl_errno($ch)) {
+        //    echo json_encode([]);
+            echo curl_error($ch);
+       } else {
+           return $response;
+       }
+
+       curl_close($ch);
         /*
         if ($_SERVER['HTTP_HOST'] == "portfolio.localhost") {
             return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");

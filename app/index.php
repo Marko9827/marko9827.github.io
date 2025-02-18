@@ -296,8 +296,8 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-       # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
-       $ch = curl_init($r['url']);
+         return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+       #$ch = curl_init($r['url']);
 
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
        curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response

@@ -3339,6 +3339,11 @@ div#clavs br_ta ta_f.active span {
         div_header #logo_backscr_img {
             opacity: 1;
         }
+
+        video.wallpaperVideo {
+            -o-object-fit: cover;
+        object-fit: cover;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

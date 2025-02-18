@@ -52,9 +52,8 @@
     </section>
 
   </main>
-
-  <footer>
-    <div class="grid">
+ 
+    <div class="grid_card_mode grid">
       <div class="card">
         <div class="card-inner">
           <div class="card-front">Front 1</div>
@@ -79,8 +78,7 @@
           <div class="card-back">Back 4</div>
         </div>
       </div>
-    </div>
-  </footer>
+    </div> 
 
   <script type="text/javascript" charset="utf-8" nonce="<?= self::nonce(); ?>" data-day="<?= self::clock(); ?>">
     <?php include __DIR__ . "./main.js"; ?> 

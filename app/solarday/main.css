@@ -774,9 +774,15 @@ body {
     align-items: center;
 }
 
+.grid_card_mode,
+.grid_card_mode * {
+    transition: transform 0.6s;
+
+}
+
 .grid {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(1, 1fr);
     /* Adjust '3' to your desired number of rows (a) */
     grid-template-columns: repeat(4, 1fr);
     /* Adjust '4' to your desired number of columns (b) */

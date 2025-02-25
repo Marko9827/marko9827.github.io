@@ -296,13 +296,16 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-         return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
-       #$ch = curl_init($r['url']);
+          return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+        $ch = curl_init($r['url']);
 
        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
        curl_setopt($ch, CURLOPT_TIMEOUT, 6); // Set a timeout for fast response
        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false); // Follow redirects if necessary
        curl_setopt($ch, CURLOPT_POST, true); 
+
+       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+       curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
 
        curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
        curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);

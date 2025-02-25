@@ -237,7 +237,7 @@ ob_start(function ($b) {
 header("Content-Type: text/html charset=utf-8");
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en" data-location="<?= "GM 213 - 3LOC4SE24"; ?>" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -3381,7 +3381,7 @@ $r = $this->get_data([
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js"></script>
 <link   async defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/viewer.css">
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/pdf_viewer.js"></script>
-*/ ?>
+*/ ?> 
 </head>
 
 <body onload="welcomer.run();">

@@ -3344,6 +3344,29 @@ div#clavs br_ta ta_f.active span {
             -o-object-fit: cover;
         object-fit: cover;
         }
+        
+        div#clavs br_ta ta_f[data-feed="nasa"] {
+    background-image: url(/logo_nasa), -o-linear-gradient(45deg, black, #0B3D91);
+    background-image: url(/logo_nasa), linear-gradient(45deg, black, #0B3D91);
+    background-size: contain;
+    background-position: center left;
+    background-repeat: no-repeat;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    border-color:#4266a3 !important;
+    color:white !important;
+}
+
+
+
+div#clavs br_ta ta_f[data-feed="nasa"] span_t {
+    text-align: right !important;  
+    padding-right:10px; 
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

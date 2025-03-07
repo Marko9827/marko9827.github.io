@@ -2120,9 +2120,10 @@ Header set X-Download-Options "noopen"
  RewriteCond %{REQUEST_FILENAME} !-d
  RewriteRule ^(.*)$ index.php?api=$1 [L,QSA]
 
+ 
+
 RewriteCond %{HTTP_HOST} ^portfolio\.eronelit\.com [NC]
 RewriteRule ^(.*)$ http://markonikolic98.com/$1 [L,R=301]
-
 AddDefaultCharset UTF-8
   
 # Handle preflight (OPTIONS) requests

@@ -5042,6 +5042,9 @@ document.querySelector("body").appendChild(parser.body);
     $("div#clavs br_ta").append(
       `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
     );
+    $("div#clavs br_ta").append(
+      `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;">News from NASA<br>Coming Soon</span_t></ta_f>`
+    );
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
@@ -5441,6 +5444,18 @@ document.querySelector("body").appendChild(parser.body);
       });
     }
     welcomer.titleC("Gallery > Marko Nikolić");
+  },
+  getGalleryByOption(id = 0){
+    // window.portfolio.data.gallery.gallery[0].gallery[0]['ID']
+    // window.portfolio.data.gallery.gallery.for
+    for (var i = 0; i < window.portfolio.data.gallery.gallery.length; i++){
+      for (var ii = 0; ii < window.portfolio.data.gallery.gallery[i].gallery.length; ii++){
+        const ID = window.portfolio.data.gallery.gallery[i].gallery[ii]['ID'];
+        if(ID == id){
+        welcomer.infoVa(ii);
+        }
+      }
+    }
   },
   galleryloadajax: function () {
     if (welcomer.load_gallery_j.length > 0) {

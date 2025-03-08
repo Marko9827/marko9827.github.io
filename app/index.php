@@ -36,26 +36,86 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
 
 /**
  * Summary of RSS
+ * RSS PARSER
  */
 class RSS
 {
+    /**
+     * Summary of getOgImage
+     * @param mixed $url
+     * @return string
+     */
     public function getOgImage($url)
     {
-        $html = file_get_contents($url);
-        if ($html === false) {
-            return [];
-        }
+        $html = @file_get_contents($url);
+        if (!$html) return "";
+
         $doc = new DOMDocument();
-        @$doc->loadHTML($html); 
+        @$doc->loadHTML($html);
+
         $tags = $doc->getElementsByTagName('meta');
         foreach ($tags as $tag) {
             if ($tag->getAttribute('property') === 'og:image') {
                 return $tag->getAttribute('content');
             }
         }
-
-        return [];
+        return "";
     }
+    /**
+     * Summary of RSS
+     * @param mixed $rss_feeds
+     * @return bool|string
+     */
+    public function RSS($rss_feeds = [])
+    {
+        $rss_feeds = [
+            "NASA" => "https://www.nasa.gov/rss/dyn/breaking_news.rss",
+            "BBC" => "http://feeds.bbci.co.uk/news/rss.xml",
+            "CNN" => "http://rss.cnn.com/rss/edition.rss"
+        ];
+        $forbidden_words = [
+            "porno", "seks", "adult", "xxx", "nasilje", "ubistvo", "krv", "rat",
+            "violence", "murder", "blood", "war", "terror", "kill", "death", "gun", "weapon", "abuse",
+            "violence", "meurtre", "sang", "guerre", "terreur", "tuer", "mort", "arme", "abus", "crime",
+            "gewalt", "mord", "blut", "krieg", "terror", "töten", "tod", "waffe", "missbrauch", "verbrechen",
+            "насилие", "убийство", "кровь", "война", "террор", "убить", "смерть", "оружие", "преступление", "жестокость"
+        ];
+        $news = [];
+
+        foreach ($rss_feeds as $source => $url) {
+            $rss = simplexml_load_file($url);
+            if ($rss) {
+                foreach ($rss->channel->item as $item) {
+                    $title = (string) $item->title;
+                    $description = (string) $item->description;
+                    $link = (string) $item->link;
+                    $pubDate = (string) $item->pubDate; 
+                    $formattedDate = date("Y-m-d H:i:s", strtotime($pubDate));
+         
+                    $is_forbidden = false;
+                    foreach ($forbidden_words as $word) {
+                        if (stripos($title, $word) !== false || stripos($description, $word) !== false) {
+                            $is_forbidden = true;
+                            break;
+                        }
+                    }
+                    if ($is_forbidden) continue;
+         
+                    $og_image = self::getOgImage($link);
+        
+                    $news[] = [
+                        "source" => $source,
+                        "title" => $title,
+                        "link" => $link,
+                        "image" => $og_image,
+                        "date" => $formattedDate
+                    ];
+                }
+            }
+        } 
+        usort($news, fn($a, $b) => strtotime($b["date"]) - strtotime($a["date"]));
+        return json_encode($news, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    } 
     /**
      * Summary of RSSFEED
      * @param mixed $rss_url
@@ -872,7 +932,8 @@ class portfolio_marko
             $SL = new RSS();
 
             header('Content-Type: application/json');
-            echo json_encode($SL->RSSFEED("https://www.nasa.gov/feed/"), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            #  echo json_encode($SL->RSSFEED("https://www.nasa.gov/feed/"), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            echo $SL->RSS();
             exit();
         }
         if ($h == "logo_nasa") {

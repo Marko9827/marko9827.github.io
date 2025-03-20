@@ -7670,8 +7670,10 @@ document.querySelector("body").appendChild(parser.body);
     var msg_title =
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
+    
     if (containeds.includes("?p=blog&id=")) {
-      welcomer.blogloader("all");
+      // welcomer.pages.start_page('blog');
+      window.top.location.href = "/?p=blog";
       return false;
     }
     welcomer.pages.start_page("home");

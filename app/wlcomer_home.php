@@ -267,7 +267,7 @@ header("Content-Type: text/html charset=utf-8");
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-tap-highlight" content="no">
     <!-- #region -->
-    <link rel="canonical" href="<?php echo source_URL . "$_SERVER[REQUEST_URI]"; ?>">
+    <link rel="canonical" href="<?php echo "https://$_SERVER[DOCUMENT_ROOT]/$_SERVER[REQUEST_URI]"; ?>">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>

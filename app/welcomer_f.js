@@ -1938,7 +1938,7 @@ class VideoPlayer extends HTMLElement {
     video.setAttribute("data-setup", "{}");
 
     const source = document.createElement("source");
-    source.src = this.getAttribute("video-src");
+    source.src = this.getAttribute("video-src") || "";
     source.type = "video/mp4";
     video.appendChild(source);
 
@@ -1949,7 +1949,7 @@ class VideoPlayer extends HTMLElement {
     img.id = "canvas_img";
     img.setAttribute("loading", "lazy");
     img.alt = "canvas_img";
-    img.src = this.getAttribute("video-src");
+    img.src = this.getAttribute("video-src") || "";
 
     template.content.appendChild(video);
     template.content.appendChild(img);
@@ -2511,17 +2511,29 @@ const welcomer = {
     category_template: function () {
       const test = ["NASA"];
     },
-    
-    category_tempator_t: function(me) {
+
+    category_tempator_t: function (me) {
       this.category_tempator({
-      me:me,
-       where: "html.anim_djenerated div#clavs",
-       data: ['ai', 'science', 'book', 'scifi', 'deviantart', 'video', 'princess', 'astronomy', 'image'],
-       name: me?.getAttribute('data-scn'),
-       nest: true
+        me: me,
+        where: "html.anim_djenerated div#clavs",
+        data: [
+          "ai",
+          "science",
+          "book",
+          "scifi",
+          "deviantart",
+          "video",
+          "princess",
+          "astronomy",
+          "image",
+        ],
+        name: me?.getAttribute("data-scn"),
+        nest: true,
       });
     },
-    category_tempator: function (d = {me: null, where: "", data: [], name: "", nest: false }) {
+    category_tempator: function (
+      d = { me: null, where: "", data: [], name: "", nest: false }
+    ) {
       /**
        * ta_f.active.sub_category {
     style="
@@ -2534,18 +2546,23 @@ const welcomer = {
     border-bottom-left-radius: 0px !important;!I;!;
 }
        */
-    const ttt_f = welcomer;
+      const ttt_f = welcomer;
 
-
-      if(d.me == null || d.where == "undefined" || d.where == null || d.where == undefined || d.where == ""){
+      if (
+        d.me == null ||
+        d.where == "undefined" ||
+        d.where == null ||
+        d.where == undefined ||
+        d.where == ""
+      ) {
         return;
       }
-      
-      d.me.classList.add('active');
-      d.me.classList.add('sub_category');
+
+      d.me.classList.add("active");
+      d.me.classList.add("sub_category");
       const br_ta = document.createElement("br_ta");
-      if(d.nest){
-        br_ta.classList.add('sub_cat');
+      if (d.nest) {
+        br_ta.classList.add("sub_cat");
       }
 
       var arrayrH = welcomer.remove_duplicates(d.data),
@@ -2569,14 +2586,14 @@ const welcomer = {
       };
       //$("div#clavs br_ta").append(active_scrf_2);
       br_ta.appendChild(active_scrf_2);
-      if(d.nest == false){
-      $("div#clavs br_ta").append(
-        `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
-      );
-      $("div#clavs br_ta").append(
-        `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa" data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;">News from NASA<br>Coming Soon</span_t></ta_f>`
-      );
-    }
+      if (d.nest == false) {
+        $("div#clavs br_ta").append(
+          `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
+        );
+        $("div#clavs br_ta").append(
+          `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa" data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;">News from NASA<br>Coming Soon</span_t></ta_f>`
+        );
+      }
       arrayrH.forEach(function (re) {
         const active_scrf = document.createElement("ta_f");
         active_scrf.setAttribute("data-c", arrayrH.length);
@@ -2643,62 +2660,132 @@ const welcomer = {
         };
         // $("div#clavs br_ta").append(active_scrf);
         br_ta.appendChild(active_scrf);
-
       });
-      document.querySelectorAll(d.where).forEach(function(me){
+      document.querySelectorAll(d.where).forEach(function (me) {
         me.prepend(br_ta);
       });
     },
     headers: {
       call: function () {},
-      test: function(){
-        this.top_headerv2("",[
-          { icon: "bi bi-arrow-clockwise", function: "welcomer.reload_me(this);", title: "Reload", type: "action" },
-          { icon: "bi bi-search F_bi_search", function: "welcomer.search_Kompjiler(this);", title: "Search project...", type: "action" },
-          { icon: "bi bi-filetype-pdf pdf_download", function: "", title: "Download my CV as PDF", type: "info" },
-          { icon: "bi bi-house pdf_page_home_btn", function: "welcomer.blogloader('all');", title: "Return to Blog home page", type: "action" },
-          { icon: "bi bi-telegram tg_button", function: "welcomer.Social.tg.open();", title: "Telegram", type: "social" },
-          { icon: "bi bi-share", function: "welcomer.share();", title: "Share", type: "action" },
-          { icon: "bi bi-x-lg close_btnf", function: "welcomer.Hclose(this);", title: "Close", type: "action" }
-      ]);
+      test: function () {
+        this.top_headerv2("", [
+          {
+            icon: "bi bi-arrow-clockwise",
+            function: "welcomer.reload_me(this);",
+            title: "Reload",
+            type: "action",
+          },
+          {
+            icon: "bi bi-search F_bi_search",
+            function: "welcomer.search_Kompjiler(this);",
+            title: "Search project...",
+            type: "action",
+          },
+          {
+            icon: "bi bi-filetype-pdf pdf_download",
+            function: "",
+            title: "Download my CV as PDF",
+            type: "info",
+          },
+          {
+            icon: "bi bi-house pdf_page_home_btn",
+            function: "welcomer.blogloader('all');",
+            title: "Return to Blog home page",
+            type: "action",
+          },
+          {
+            icon: "bi bi-telegram tg_button",
+            function: "welcomer.Social.tg.open();",
+            title: "Telegram",
+            type: "social",
+          },
+          {
+            icon: "bi bi-share",
+            function: "welcomer.share();",
+            title: "Share",
+            type: "action",
+          },
+          {
+            icon: "bi bi-x-lg close_btnf",
+            function: "welcomer.Hclose(this);",
+            title: "Close",
+            type: "action",
+          },
+        ]);
       },
-      top_headerv2: function(d = { where: "", conf: { icon:"", controls: []}}){
-          const divHeader = document.createElement("div_header"),
+      top_headerv2: function (
+        d = { where: "", conf: { icon: "", controls: [] } }
+      ) {
+        const divHeader = document.createElement("div_header"),
           dvheader = document.createElement("div");
-          dvheader.classList.add('dvheader');
-      
-          const img = document.createElement("img");
-          img.src = "/svg_logo_backscr_img";
-          img.id = "logo_backscr_img";
-          img.alt = "Logo";
-          /* - */ 
-          dvheader.appendChild(img);
-          divHeader.appendChild(dvheader);
-      
-          const controls = [
-              { icon: "bi bi-arrow-clockwise", function: "welcomer.reload_me(this);", title: "Reload", type: "action" },
-              { icon: "bi bi-search F_bi_search", function: "welcomer.search_Kompjiler(this);", title: "Search project...", type: "action" },
-              { icon: "bi bi-filetype-pdf pdf_download", function: "", title: "Download my CV as PDF", type: "info" },
-              { icon: "bi bi-house pdf_page_home_btn", function: "welcomer.blogloader('all');", title: "Return to Blog home page", type: "action" },
-              { icon: "bi bi-telegram tg_button", function: "welcomer.Social.tg.open();", title: "Telegram", type: "social" },
-              { icon: "bi bi-share", function: "welcomer.share();", title: "Share", type: "action" },
-              { icon: "bi bi-x-lg close_btnf", function: "welcomer.Hclose(this);", title: "Close", type: "action" }
-          ];
-      
-          const btnsR = document.createElement("btns_r");
-      
-          controls.forEach(control => {
-              const btn = document.createElement("i");
-              btn.className = control.icon;
-              btn.title = control.title;
-              if (control.function) btn.setAttribute("data-onclick", control.function);
-              btnsR.appendChild(btn);
-          });
-      
-          divHeader.appendChild(btnsR);
-          where.appendChild(divHeader);
-      
-      
+        dvheader.classList.add("dvheader");
+
+        const img = document.createElement("img");
+        img.src = "/svg_logo_backscr_img";
+        img.id = "logo_backscr_img";
+        img.alt = "Logo";
+        /* - */
+        dvheader.appendChild(img);
+        divHeader.appendChild(dvheader);
+
+        const controls = [
+          {
+            icon: "bi bi-arrow-clockwise",
+            function: "welcomer.reload_me(this);",
+            title: "Reload",
+            type: "action",
+          },
+          {
+            icon: "bi bi-search F_bi_search",
+            function: "welcomer.search_Kompjiler(this);",
+            title: "Search project...",
+            type: "action",
+          },
+          {
+            icon: "bi bi-filetype-pdf pdf_download",
+            function: "",
+            title: "Download my CV as PDF",
+            type: "info",
+          },
+          {
+            icon: "bi bi-house pdf_page_home_btn",
+            function: "welcomer.blogloader('all');",
+            title: "Return to Blog home page",
+            type: "action",
+          },
+          {
+            icon: "bi bi-telegram tg_button",
+            function: "welcomer.Social.tg.open();",
+            title: "Telegram",
+            type: "social",
+          },
+          {
+            icon: "bi bi-share",
+            function: "welcomer.share();",
+            title: "Share",
+            type: "action",
+          },
+          {
+            icon: "bi bi-x-lg close_btnf",
+            function: "welcomer.Hclose(this);",
+            title: "Close",
+            type: "action",
+          },
+        ];
+
+        const btnsR = document.createElement("btns_r");
+
+        controls.forEach((control) => {
+          const btn = document.createElement("i");
+          btn.className = control.icon;
+          btn.title = control.title;
+          if (control.function)
+            btn.setAttribute("data-onclick", control.function);
+          btnsR.appendChild(btn);
+        });
+
+        divHeader.appendChild(btnsR);
+        where.appendChild(divHeader);
       },
       top_header: function (where, options = []) {
         const divHeader = document.createElement("div");
@@ -2890,6 +2977,7 @@ document.querySelector("body").appendChild(parser.body);
       } catch (aer) {
         // window.top.location.reload();
       }
+      welcomer.bckrnd();
     },
     start_page: function (what = "") {
       var fjls = false;
@@ -3265,6 +3353,7 @@ document.querySelector("body").appendChild(parser.body);
             project.setAttribute("style", "transform:scale(0) !important;");
             project.setAttribute("id-int", `${div_not_i}`);
             project.setAttribute("box-ui", `uit-${varr.type}`);
+            project.setAttribute("id-img", `uit-${v[i]["ID"]}`);
             const grider_box = document.createElement("grider_box");
             let thi = "class='is_touch'";
             if (welcomer.isMobile()) {
@@ -3495,7 +3584,15 @@ document.querySelector("body").appendChild(parser.body);
             ?.setAttribute("style", "display:none !important;");
           const urlParamsG = new URLSearchParams(window.location.search);
           if (urlParamsG.has("album")) {
-            welcomer.pages.gallery.lda(urlParamsG.get("album"));
+            if (urlParamsG.has("id")) {
+              const fid_id = urlParamsG.get("id");
+              welcomer.pages.gallery.lda(urlParamsG.get("album"));
+              setTimeout(() => {
+                welcomer.callGalleryBID(fid_id);
+              }, 1000);
+            } else {
+              welcomer.pages.gallery.lda(urlParamsG.get("album"));
+            }
           }
         }
         this.t();
@@ -5228,7 +5325,7 @@ document.querySelector("body").appendChild(parser.body);
     $("div#clavs br_ta").append(
       `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa"  data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;" >News from NASA<br>Coming Soon</span_t></ta_f>`
     );
-    
+
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
@@ -5926,8 +6023,55 @@ document.querySelector("body").appendChild(parser.body);
       ` <preview_imagem style=" position:fixed;left:0px;width:100%;height:100%;z-index:339;display:flex;align-content:center;align-items:center;justify-content:center;top:0px;"><img alt="loading" src="${welcomer.loader_svg}"></preview_imagem> <div id="helper_id_helper3"> <p>To view a zoomed image. Hold left click or finger and move slowly.</p> </div><span id="helper_id_helper"><i style="padding-right:2px;" class="bi bi-info-square"></i> For close click ( X ) button.</span><i onclick="welcomer.closeMeIamSad()" class="bi bi-x-lg zoomer_exit"></i>`
     );
   },
+  callGalleryBID(ID) {
+    const checkImage = function (url, callback) {
+      const img = new Image();
+      img.setAttribute('data-zoom-image',url);
+      img.src = url;
+      img.onload = () => callback(true, img,url);
+      img.onerror = () => callback(false, img, url);
+    };
+    window.portfolio.data.gallery.gallery.forEach(function (v1) {
+      v1.gallery.forEach(async function (v2) {
+        if (v2["ID"] == ID) {
+          const gallery_name = v1["name"];
+          //welcomer.pages.gallery.lda(gallery_name);
+
+          welcomer.blg_history_replace(
+            `/?p=gallery&album=${gallery_name}&id=${ID}`
+          );
+          await welcomer.pages.start_page("gallery");
+          await welcomer.pages.gallery.lda(gallery_name);
+          await checkImage(v2["img"], 
+            (res, img , url )=>{
+              if(res){
+              welcomer.infoVa_img_gallery(img);
+              }else{
+                welcomer.pages.gallery.call_video_gallery_Preview(url);
+              }
+              welcomer.blg_history_replace(
+                `/?p=gallery&album=${gallery_name}&id=${ID}`
+              );
+            });
+       
+        }
+      });
+    });
+  },
   infoVa: function (h = 0, type = "image") {
-    var imgH = new Image();
+    const imgH = new Image(),
+      params = new URLSearchParams(window.location.search);
+    if (
+      document.querySelector(`project[id-int='${h}']`).hasAttribute("id-img")
+    ) {
+      var id = $(`project[id-int='${h}']`).attr("id-img");
+      id = id.replace("uit-", "");
+      if (params.has("album")) {
+        welcomer.blg_history_replace(
+          `/?p=gallery&album=${params.get("album")}&id=${id}`
+        );
+      }
+    }
     if (
       $(`project[id-int='${h}']`).find('i[data-i-type="video"]').length ||
       $(`project[id-int='${h}']`).find('i[data-i-type="video_post"]').length
@@ -8468,7 +8612,8 @@ document.querySelector("body").appendChild(parser.body);
   },
   body_reset_form: ` 
 <editor-sdk style='display:none; position:fixed; width: 100%; height:100%; z-index:4323423423; background:black;'></editor-sdk>
-<video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video>
+<!-- <video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video> -->
+
 
 <p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
 <div id="content_Space"></div>
@@ -8855,7 +9000,47 @@ document.querySelector("body").appendChild(parser.body);
       document.createElement("br").classList.add("hide_noy")
     );
   },
+  bckrnd: async function(){
+    const video_wall = document.createElement("video");
+    document.body.appendChild(video_wall);
+    video_wall.classList.add('wallpaperVideo');
+    video_wall.classList.add('video_is_hidden');
+    video_wall.loop = true;
+    video_wall.autoplay = true;
+    video_wall.muted = true;
+    video_wall.autobuffer = true;
+    video_wall.playsinline = true;
 
+    const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
+    const v = window.portfolio.data.background_videos;
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", v[Math.floor(Math.random() * v.length)]["video"], true);
+    xhr.responseType = "blob";
+    xhr.setRequestHeader(
+      "Content-Type",
+      "application/x-www-form-urlencoded;charset=UTF-8"
+    );
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        const blob = xhr.response;
+        const URL2 = URL.createObjectURL(blob);
+
+        video_wall.src = URL2;
+        try {
+          document
+            .querySelector("img#svg_loader_img")
+            .setAttribute("style", "opacity:0;");
+        } catch (ae0) {}
+        setTimeout(() => {
+          document.querySelector("img#svg_loader_img")?.remove();
+        }, 1000);
+        video_wall.play();
+        video_wall.classList.remove("video_is_hidden");
+      } else { 
+      }
+    };
+    await xhr.send(`v=${data.v}`);
+  },
   start: async function () {
     this.pages.reset();
 
@@ -8942,7 +9127,7 @@ document.querySelector("body").appendChild(parser.body);
     ); */
 
     document.body.appendChild(img);
-
+/*
     setTimeout(async () => {
       const video_wall = document.querySelector("video");
       const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
@@ -8975,7 +9160,7 @@ document.querySelector("body").appendChild(parser.body);
         }
       };
       xhr.send(`v=${data.v}`);
-    }, 1000);
+    }, 1000);*/
     const blob = new Blob([` `], { type: "text/javascript" }),
       S = document.createElement("script");
     S.setAttribute("nonce", window.stmp);

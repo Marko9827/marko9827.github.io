@@ -1,4 +1,3 @@
- 
 window.draggable = { style_left: "", style_top: "", enabled: false };
 if (window.TrustedTypes) {
   const policy = TrustedTypes.createPolicy("default", {
@@ -7,7 +6,6 @@ if (window.TrustedTypes) {
   });
 }
 window.getJSON = function (call = () => {}) {
- 
   fetch(`${window.location.origin}/feed`, {
     method: "POST",
     headers: {
@@ -31,7 +29,7 @@ window.getJSON = function (call = () => {}) {
 function CTHP() {
   welcomer.blg_history_replace("/");
   welcomer.start();
- }
+}
 function base64Encode(str) {
   const encoder = new TextEncoder();
   const buffer = encoder.encode(str);
@@ -359,7 +357,7 @@ class Editor extends HTMLElement {
 
     const shadow = this.attachShadow({ mode: "open" });
     this.template = document.createElement("section");
-    this.template.setAttribute("data-ui-type","editor");
+    this.template.setAttribute("data-ui-type", "editor");
     shadow.appendChild(this.template);
 
     this.convertToShadowRootAppendChild();
@@ -482,13 +480,11 @@ class Editor extends HTMLElement {
     link.textContent = `${this.styles()}`;
     this.template.appendChild(link);
   }
-  
 }
 
 /*if (!customElements.get("editor-sdk")) {
   customElements.define("editor-sdk", EditorSDK);
 }*/
-
 
 class CircleContainer {
   constructor(context, x, y) {
@@ -730,7 +726,7 @@ class ImageZoomPan {
 
       this.controls_top.addEventListener("click", function (e) {
         e.preventDefault();
-          const box = this.image;
+        const box = this.image;
         clearTimeout(clickTimeout);
 
         if (!box.classList.contains("rotation_manual")) {
@@ -740,8 +736,6 @@ class ImageZoomPan {
         clickTimeout = setTimeout(() => {
           box.classList.remove("rotation_manual");
         }, 500);
-
-      
       });
       this.controls_bottom.addEventListener("click", function (e) {
         e.preventDefault();
@@ -756,7 +750,7 @@ class ImageZoomPan {
         clickTimeout = setTimeout(() => {
           box.classList.remove("rotation_manual");
         }, 500);
-       });
+      });
       this.controls_precent.addEventListener("click", function (e) {
         e.preventDefault();
         controller.reset();
@@ -927,13 +921,13 @@ class ImageZoomPan {
     );
   }
   updateTransform() {
-    if(!this.options_f.controls){
-        if(this.scale < 1){
-          this.scale = 1;
-          this.translateX = 0;
-          this.translateY = 0;
-          this.rotation = 0;
-        }
+    if (!this.options_f.controls) {
+      if (this.scale < 1) {
+        this.scale = 1;
+        this.translateX = 0;
+        this.translateY = 0;
+        this.rotation = 0;
+      }
     }
     this.updateZoomPercentage();
     this.image.style.transform = `translate(${this.translateX}px, ${this.translateY}px) scale(${this.scale}) rotate(${this.rotation}deg)`;
@@ -2356,7 +2350,7 @@ const welcomer = {
         };
         return f;
       });
-       
+
       if (!customElements.get("video-player")) {
         customElements.define("video-player", VideoPlayer);
       }
@@ -2514,9 +2508,199 @@ const welcomer = {
       //
       document.body.appendChild(aerElement);
     },
+    category_template: function () {
+      const test = ["NASA"];
+    },
+    
+    category_tempator_t: function(me) {
+      this.category_tempator({
+      me:me,
+       where: "html.anim_djenerated div#clavs",
+       data: ['ai', 'science', 'book', 'scifi', 'deviantart', 'video', 'princess', 'astronomy', 'image'],
+       name: me?.getAttribute('data-scn'),
+       nest: true
+      });
+    },
+    category_tempator: function (d = {me: null, where: "", data: [], name: "", nest: false }) {
+      /**
+       * ta_f.active.sub_category {
+    style="
+    border-bottom-left-radius: 0px;
+    ;;;border-bottom-right-radius: 0px !important;;!i;;!;;
+    ;;;padding-bottom: 11px !important;;!i;;!;;
+    ;;;margin-bottom: -5px !important;;!i;;!;;
+";
+    border-bottom-left-radius: 0p;
+    border-bottom-left-radius: 0px !important;!I;!;
+}
+       */
+    const ttt_f = welcomer;
+
+
+      if(d.me == null || d.where == "undefined" || d.where == null || d.where == undefined || d.where == ""){
+        return;
+      }
+      
+      d.me.classList.add('active');
+      d.me.classList.add('sub_category');
+      const br_ta = document.createElement("br_ta");
+      if(d.nest){
+        br_ta.classList.add('sub_cat');
+      }
+
+      var arrayrH = welcomer.remove_duplicates(d.data),
+        active_scrf_2 = document.createElement("ta_f");
+      active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
+      active_scrf_2.setAttribute("data-c", arrayrH.length);
+      active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc(
+        "All"
+      )}</span>`;
+      active_scrf_2.setAttribute("class", "active");
+      active_scrf_2.setAttribute("data-category", "All");
+      active_scrf_2.onclick = function () {
+        welcomer.blogljoad_posts_category(
+          active_scrf_2.getAttribute("data-category")
+        );
+        document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
+          r.classList.remove("active");
+        });
+        active_scrf_2.classList.add("active");
+        welcomer.uBoss({}, "", `/?p=blog`);
+      };
+      //$("div#clavs br_ta").append(active_scrf_2);
+      br_ta.appendChild(active_scrf_2);
+      if(d.nest == false){
+      $("div#clavs br_ta").append(
+        `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
+      );
+      $("div#clavs br_ta").append(
+        `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa" data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;">News from NASA<br>Coming Soon</span_t></ta_f>`
+      );
+    }
+      arrayrH.forEach(function (re) {
+        const active_scrf = document.createElement("ta_f");
+        active_scrf.setAttribute("data-c", arrayrH.length);
+        active_scrf.setAttribute(
+          "data-title",
+          `Click "${ttt_f.capitalize_str(re)}" for open All category`
+        );
+        var t = "";
+        if (re == "telegram" || re == "Telegram") {
+          t = `<i class="bi bi-telegram"></i> `;
+        } else if (re == "science" || re == "Science") {
+        } else if (re == "Scifi" || re == "scifi") {
+        } else if (re == "deviantart" || re == "Deviantart") {
+          t = ` <i class="fab fa-deviantart"></i> `;
+        } else if (re == "video" || re == "Video") {
+          t = `<i class="bi bi-film"></i> `;
+        } else if (re == "astronomy" || re == "Astronomy") {
+          t = `<i class="fas fa-space-shuttle"></i> `;
+        } else {
+        }
+        active_scrf.innerHTML = `${t}${re}<span>${welcomer.blogljoad_posts_category_cbc(
+          re
+        )}</span>`;
+        active_scrf.setAttribute("data-category", re);
+        active_scrf.onclick = function () {
+          document
+            .querySelectorAll("div#clavs br_ta ta_f")
+            .forEach(function (r) {
+              r.classList.remove("active");
+            });
+          welcomer.blogljoad_posts_category(
+            active_scrf.getAttribute("data-category")
+          );
+          active_scrf.classList.add("active");
+          if (
+            active_scrf.getAttribute("data-category") !== "All" ||
+            active_scrf.getAttribute("data-category") !== "all"
+          ) {
+            welcomer.uBoss(
+              {},
+              "",
+              `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
+            );
+            if (
+              active_scrf.getAttribute("data-category") == "astronomy" ||
+              active_scrf.getAttribute("data-category") == "Astronomy"
+            ) {
+              $("body").addClass("active");
+            } else {
+              $("body").removeAttr("active");
+            }
+            document
+              .querySelector("body")
+              .setAttribute(
+                "data-category-name",
+                active_scrf.getAttribute("data-category")
+              );
+            welcomer.titleC(
+              `Blog > ${active_scrf.getAttribute(
+                "data-category"
+              )}- Marko Nikolić`
+            );
+          }
+        };
+        // $("div#clavs br_ta").append(active_scrf);
+        br_ta.appendChild(active_scrf);
+
+      });
+      document.querySelectorAll(d.where).forEach(function(me){
+        me.prepend(br_ta);
+      });
+    },
     headers: {
       call: function () {},
-      top_header: function () {
+      test: function(){
+        this.top_headerv2("",[
+          { icon: "bi bi-arrow-clockwise", function: "welcomer.reload_me(this);", title: "Reload", type: "action" },
+          { icon: "bi bi-search F_bi_search", function: "welcomer.search_Kompjiler(this);", title: "Search project...", type: "action" },
+          { icon: "bi bi-filetype-pdf pdf_download", function: "", title: "Download my CV as PDF", type: "info" },
+          { icon: "bi bi-house pdf_page_home_btn", function: "welcomer.blogloader('all');", title: "Return to Blog home page", type: "action" },
+          { icon: "bi bi-telegram tg_button", function: "welcomer.Social.tg.open();", title: "Telegram", type: "social" },
+          { icon: "bi bi-share", function: "welcomer.share();", title: "Share", type: "action" },
+          { icon: "bi bi-x-lg close_btnf", function: "welcomer.Hclose(this);", title: "Close", type: "action" }
+      ]);
+      },
+      top_headerv2: function(d = { where: "", conf: { icon:"", controls: []}}){
+          const divHeader = document.createElement("div_header"),
+          dvheader = document.createElement("div");
+          dvheader.classList.add('dvheader');
+      
+          const img = document.createElement("img");
+          img.src = "/svg_logo_backscr_img";
+          img.id = "logo_backscr_img";
+          img.alt = "Logo";
+          /* - */ 
+          dvheader.appendChild(img);
+          divHeader.appendChild(dvheader);
+      
+          const controls = [
+              { icon: "bi bi-arrow-clockwise", function: "welcomer.reload_me(this);", title: "Reload", type: "action" },
+              { icon: "bi bi-search F_bi_search", function: "welcomer.search_Kompjiler(this);", title: "Search project...", type: "action" },
+              { icon: "bi bi-filetype-pdf pdf_download", function: "", title: "Download my CV as PDF", type: "info" },
+              { icon: "bi bi-house pdf_page_home_btn", function: "welcomer.blogloader('all');", title: "Return to Blog home page", type: "action" },
+              { icon: "bi bi-telegram tg_button", function: "welcomer.Social.tg.open();", title: "Telegram", type: "social" },
+              { icon: "bi bi-share", function: "welcomer.share();", title: "Share", type: "action" },
+              { icon: "bi bi-x-lg close_btnf", function: "welcomer.Hclose(this);", title: "Close", type: "action" }
+          ];
+      
+          const btnsR = document.createElement("btns_r");
+      
+          controls.forEach(control => {
+              const btn = document.createElement("i");
+              btn.className = control.icon;
+              btn.title = control.title;
+              if (control.function) btn.setAttribute("data-onclick", control.function);
+              btnsR.appendChild(btn);
+          });
+      
+          divHeader.appendChild(btnsR);
+          where.appendChild(divHeader);
+      
+      
+      },
+      top_header: function (where, options = []) {
         const divHeader = document.createElement("div");
         divHeader.className = "div_header";
 
@@ -3415,7 +3599,7 @@ document.querySelector("body").appendChild(parser.body);
         left_fH < editorWrapper2.offsetWidth - 50 ||
         editorContainer.offsetWidth < 100
       ) {
-        let left_f = left_fH -4;
+        let left_f = left_fH - 4;
         editorWrapper2.classList.add("active_f");
         editorSection
           .querySelector("#editor-container")
@@ -4689,7 +4873,6 @@ document.querySelector("body").appendChild(parser.body);
         welcomer.titleC(`Blog > ${urlParamsf_f}- Marko Nikolić`);
 
         if (urlParamsf_f == "astronomy") {
-         
         }
       } else {
         welcomer.blg_history_replace("/?p=blog");
@@ -5043,8 +5226,9 @@ document.querySelector("body").appendChild(parser.body);
       `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
     );
     $("div#clavs br_ta").append(
-      `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;">News from NASA<br>Coming Soon</span_t></ta_f>`
+      `<ta_f data-c="9" data-title="null" data-category="technews" data-feed="nasa"  data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;" >News from NASA<br>Coming Soon</span_t></ta_f>`
     );
+    
     arrayrH.forEach(function (re) {
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
@@ -5445,14 +5629,18 @@ document.querySelector("body").appendChild(parser.body);
     }
     welcomer.titleC("Gallery > Marko Nikolić");
   },
-  getGalleryByOption(id = 0){
+  getGalleryByOption(id = 0) {
     // window.portfolio.data.gallery.gallery[0].gallery[0]['ID']
     // window.portfolio.data.gallery.gallery.for
-    for (var i = 0; i < window.portfolio.data.gallery.gallery.length; i++){
-      for (var ii = 0; ii < window.portfolio.data.gallery.gallery[i].gallery.length; ii++){
-        const ID = window.portfolio.data.gallery.gallery[i].gallery[ii]['ID'];
-        if(ID == id){
-        welcomer.infoVa(ii);
+    for (var i = 0; i < window.portfolio.data.gallery.gallery.length; i++) {
+      for (
+        var ii = 0;
+        ii < window.portfolio.data.gallery.gallery[i].gallery.length;
+        ii++
+      ) {
+        const ID = window.portfolio.data.gallery.gallery[i].gallery[ii]["ID"];
+        if (ID == id) {
+          welcomer.infoVa(ii);
         }
       }
     }
@@ -5533,10 +5721,10 @@ document.querySelector("body").appendChild(parser.body);
   },
   loaded_imgPrldV2: async function (aer, id = 0) {
     $(aer)
-        .parent()
-        .parent()
-        .attr("style", " transform:none;pointer-events:unset;opacity:1;");
-        $(aer).removeAttr("onload");
+      .parent()
+      .parent()
+      .attr("style", " transform:none;pointer-events:unset;opacity:1;");
+    $(aer).removeAttr("onload");
     return;
     const d = aer;
     try {
@@ -5755,11 +5943,14 @@ document.querySelector("body").appendChild(parser.body);
   openWindow: function (i = 0) {
     if (this.projects[i].href !== "") {
       const urls = this.projects[i].href;
-     // window.location.href = urls;
-     
-      
-     if(urls.includes(".rar") || urls.includes(".zip") || urls.includes(".exe")){
-         $.get(urls, function (v) {
+      // window.location.href = urls;
+
+      if (
+        urls.includes(".rar") ||
+        urls.includes(".zip") ||
+        urls.includes(".exe")
+      ) {
+        $.get(urls, function (v) {
           var blob = new Blob([v], { type: "octet/stream" });
           var url = window.URL.createObjectURL(blob);
           var a = document.createElement("a");
@@ -5769,11 +5960,10 @@ document.querySelector("body").appendChild(parser.body);
           a.click();
           window.URL.revokeObjectURL(url);
         });
-     } else {
-      
-      window.top.location.href = urls;
-    return; 
-    } 
+      } else {
+        window.top.location.href = urls;
+        return;
+      }
     }
   },
   openLink: function (kk) {
@@ -6309,7 +6499,7 @@ document.querySelector("body").appendChild(parser.body);
       $("div#clavs").attr("style", "opacity:1;");
     },
     startfV: function () {
-     // window.top.location.href = "/?p=editor";
+      // window.top.location.href = "/?p=editor";
     },
     startf: function () {
       this.call_nav();
@@ -6833,7 +7023,6 @@ document.querySelector("body").appendChild(parser.body);
         .setAttribute("style", "transform:none !important;opacity:1;");
     },
     callEditor: function (id = 0) {
-      
       const data_ui_type = document.querySelector(
           'section[data-ui-type="editor"] editor-wrapper'
         ),
@@ -7075,8 +7264,7 @@ document.querySelector("body").appendChild(parser.body);
           vs: "https://cdn.eronelit.com/node_modules/monaco-editor@0.45.0/min/vs",
         },
       });
-      
-      
+
       if (id < 1) {
         this.editr_tijemp = `<!DOCTYPE html>\n<html>\n<head>\n    <title>Hello World!</title>\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n</head>\n<body>\n    <!-- Hello world -->\n    <!-- Click ? for more info! -->\n</body>\n</html>`;
       }
@@ -7657,6 +7845,22 @@ document.querySelector("body").appendChild(parser.body);
     }
   },
   Hclose: function (aer) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get("p");
+    const myParam_id = urlParams.get("id");
+    var msg_title =
+      "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
+    const containeds = window.location.href;
+
+    if (containeds.includes("?p=blog&id=")) {
+      // welcomer.blg_history_replace("/?p=blog");
+      // welcomer.pages.start_page('blog');
+      window.top.location.href = "/?p=blog";
+    } else {
+      welcomer.pages.start_page("home");
+    }
+  },
+  Hclose_oldf: function (aer) {
     $("body").removeAttr("data-category-name");
     $("solar_arrow labelv").html(
       `<i class="bi bi-chevron-double-up"></i><span>Show posts</span><i class="bi bi-chevron-double-up"></i>`
@@ -7670,13 +7874,14 @@ document.querySelector("body").appendChild(parser.body);
     var msg_title =
       "Are you sure to close? You are only closing the built-in browser. You do not close the card.";
     var containeds = window.location.href;
-    
+
     if (containeds.includes("?p=blog&id=")) {
       // welcomer.pages.start_page('blog');
       window.top.location.href = "/?p=blog";
       return false;
+    } else {
+      welcomer.pages.start_page("home");
     }
-    welcomer.pages.start_page("home");
     return;
     this.hmm(msg_title, function () {
       $("#clavs").attr("style", "transform:translateY(-100%);");
@@ -8662,7 +8867,7 @@ document.querySelector("body").appendChild(parser.body);
       event.preventDefault();
       return false;
     });
-   await window.getJSON();
+    await window.getJSON();
 
     var conff = this.conf;
     this.events.scrollByM.f();
@@ -8739,12 +8944,11 @@ document.querySelector("body").appendChild(parser.body);
     document.body.appendChild(img);
 
     setTimeout(async () => {
-       
       const video_wall = document.querySelector("video");
       const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
       const v = window.portfolio.data.background_videos;
       const xhr = new XMLHttpRequest();
-      xhr.open("POST", v[Math.floor(Math.random() * v.length)]['video'], true);
+      xhr.open("POST", v[Math.floor(Math.random() * v.length)]["video"], true);
       xhr.responseType = "blob";
       xhr.setRequestHeader(
         "Content-Type",
@@ -8754,21 +8958,20 @@ document.querySelector("body").appendChild(parser.body);
         if (xhr.status === 200) {
           const blob = xhr.response;
           const URL2 = URL.createObjectURL(blob);
-          
-             video_wall.src = URL2;
-            try {
-              document
-                .querySelector("img#svg_loader_img")
-                .setAttribute("style", "opacity:0;");
-            } catch (ae0) {}
-            setTimeout(() => {
-              document.querySelector("img#svg_loader_img")?.remove();
-            }, 1000);
-            video_wall.play();
-            video_wall.classList.remove("video_is_hidden");
-           
+
+          video_wall.src = URL2;
+          try {
+            document
+              .querySelector("img#svg_loader_img")
+              .setAttribute("style", "opacity:0;");
+          } catch (ae0) {}
+          setTimeout(() => {
+            document.querySelector("img#svg_loader_img")?.remove();
+          }, 1000);
+          video_wall.play();
+          video_wall.classList.remove("video_is_hidden");
         } else {
-        //  console.error("Error:", xhr.statusText);
+          //  console.error("Error:", xhr.statusText);
         }
       };
       xhr.send(`v=${data.v}`);

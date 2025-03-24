@@ -202,7 +202,7 @@ default-src 'none';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-  $csp = "";
+$csp = "";
 header("Content-Security-Policy:  $csp");
 
 
@@ -237,7 +237,8 @@ ob_start(function ($b) {
 header("Content-Type: text/html charset=utf-8");
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en" data-location="<?= "GM 213 - 3LOC4SE24"; ?>" class="no-js" prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en" data-location="<?= "GM 213 - 3LOC4SE24"; ?>" class="no-js"
+    prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -271,9 +272,10 @@ header("Content-Type: text/html charset=utf-8");
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>" type="text/javascript" charset="UTF-8" ></script>
+    <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
+        type="text/javascript" charset="UTF-8"></script>
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
-    
+
     <?php if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
         <script defer src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js" nonce="<?php echo $nonce; ?>"></script>
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"
@@ -1074,7 +1076,7 @@ media-src 'self';" />
         }
 
 
-
+        div#clavs br_ta sub_ta ta_f,
         div#clavs br_ta ta_f {
             margin: 0px 4px;
             padding: 6px;
@@ -1083,6 +1085,8 @@ media-src 'self';" />
             background: var(--black-trasparent-color);
         }
 
+        div#clavs br_ta sub_ta ta_f.active,
+        div#clavs br_ta sub_ta ta_f:hover,
         div#clavs br_ta ta_f.active,
         div#clavs br_ta ta_f:hover {
             background: var(--hard_white);
@@ -1115,6 +1119,7 @@ media-src 'self';" />
             height: 0px !important;
         }
 
+        div#clavs br_ta sub_ta ta_f,
         div#clavs br_ta ta_f {
             scroll-snap-align: center;
             -ms-flex-negative: 0;
@@ -3336,37 +3341,74 @@ div#clavs br_ta ta_f.active span {
             height: 70vh !important;
             background: white;
         }
+
         div_header #logo_backscr_img {
             opacity: 1;
         }
 
         video.wallpaperVideo {
             -o-object-fit: cover;
-        object-fit: cover;
+            object-fit: cover;
         }
-        
+
         div#clavs br_ta ta_f[data-feed="nasa"] {
-    background-image: url(/logo_nasa), -o-linear-gradient(45deg, black, #0B3D91);
-    background-image: url(/logo_nasa), linear-gradient(45deg, black, #0B3D91);
-    background-size: contain;
-    background-position: center left;
-    background-repeat: no-repeat;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: end;
-        -ms-flex-pack: end;
+            background-image: url(/logo_nasa), -o-linear-gradient(45deg, black, #0B3D91);
+            background-image: url(/logo_nasa), linear-gradient(45deg, black, #0B3D91);
+            background-size: contain;
+            background-position: center left;
+            background-repeat: no-repeat;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
             justify-content: flex-end;
-    border-color:#4266a3 !important;
-    color:white !important;
-}
+            border-color: #4266a3 !important;
+            color: white !important;
+        }
 
 
 
-div#clavs br_ta ta_f[data-feed="nasa"] span_t {
-    text-align: right !important;  
-    padding-right:10px; 
-}
+        div#clavs br_ta ta_f[data-feed="nasa"] span_t {
+            text-align: right !important;
+            padding-right: 10px;
+        }
+
+
+        ta_f.active.sub_category {
+            padding-bottom: 11px !important;
+            margin-bottom: -5px !important;
+            border-bottom-right-radius: 0px !important;
+            border-bottom-left-radius: 0px !important;
+            background: rgb(90 90 90 / 55%);
+        }
+
+        br_ta.sub_cat {
+
+
+            position: absolute !important;
+
+            top: 0px !important;
+            bottom: unset !important;
+            margin-top: -131px !important;
+            border-top: 2px solid white !important;
+            border-bottom: 2px solid white !important;
+            background: rgb(90 90 90 / 55%) !important;
+        }
+
+        br_ta.sub_cat {
+            margin-top: 102px !important;
+            z-index: 4 !important;
+        }
+
+        div#clavs.scrollactive br_ta.sub_cat {
+            margin-top: 51px !important;
+            opacity: 0.5;
+        }
+
+        div#clavs.scrollactive br_ta.sub_cat:hover {
+            opacity: 1;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
@@ -3404,7 +3446,7 @@ $r = $this->get_data([
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js"></script>
 <link   async defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/viewer.css">
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/pdf_viewer.js"></script>
-*/ ?> 
+*/ ?>
 </head>
 
 <body onload="welcomer.run();">

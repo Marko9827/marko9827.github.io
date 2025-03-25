@@ -3409,6 +3409,17 @@ div#clavs br_ta ta_f.active span {
         div#clavs.scrollactive br_ta.sub_cat:hover {
             opacity: 1;
         }
+
+        p-search { 
+            position: fixed;
+            z-index: 3333;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--black-trasparent-color); 
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

@@ -80,7 +80,420 @@ class Application {
     window.requestAnimationFrame(() => this.loop());
   }
 }
+class CustomSearch extends HTMLElement {
+  constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+      this.render();
+      this.Mydata = [];
+      var dataf = [];
+      window.portfolio.data.blog.forEach(element => {
+        dataf.push({
+          type: "image",
+          url: element['source'],
+          id: element['id'],
+          cat: "blog",
+          title: element['title'],
+          thumb: element['thumbail']
+        });
+      });
+      this.Mydata = dataf;
+  }
 
+  render() {
+      const style = document.createElement("style");
+      style.textContent = ` @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+
+ div.cat {
+
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     background: transparent;
+     padding: 5px 10px;
+     border-bottom-right-radius: 5px;
+     font-size: 10px;
+     font-weight: normal;
+     color: white;
+     border-bottom: 1px solid;
+     border-right: 1px solid;
+     background: var(--black-trasparent-color);
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     align-items: center;
+     -webkit-box-orient: horizontal;
+     -webkit-box-direction: normal;
+     -ms-flex-direction: row;
+     flex-direction: row;
+     -ms-flex-line-pack: center;
+     align-content: center;
+     -webkit-box-pack: center;
+     -ms-flex-pack: center;
+     justify-content: center;
+ }
+
+ div.cat span {
+     margin-right: 5px;
+     width: 10px;
+     display: block;
+ }
+
+ .search-container {
+     margin-bottom: 20px;
+     position: absolute;
+     left: 50px;
+     top: 5px;
+     width: calc(100% - 100px);
+ }
+
+ .search-container input#search {
+
+
+     background: transparent;
+     border: none;
+     border-bottom: 2px solid var(--white);
+     padding: 10px 5px;
+     color: white;
+     outline: none;
+     width: 100%;
+
+ }
+
+ .filter-container {
+     margin-bottom: 10px;
+ }
+
+ .results {
+     display: -ms-grid;
+     display: -ms-grid;
+     display: grid;
+     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+     gap: 0px;
+     position: absolute;
+     top: 51px;
+     left: 0px;
+     width: 100%;
+     overflow: auto;
+     padding-top: 5px;
+     -ms-flex-wrap: wrap;
+     flex-wrap: wrap;
+     -ms-flex-pack: distribute;
+     justify-content: space-around;
+     justify-items: stretch;
+     height: -webkit-fit-content;
+     height: -moz-fit-content;
+     height: fit-content;
+     max-height: calc(100% - 56px);
+ }
+ *::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        *::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        *::-webkit-scrollbar-thumb {
+            background-color: white;
+         
+        }
+
+        *::-webkit-scrollbar-thumb:hover {
+            background-color: white;
+        }
+
+ .results .result {
+     max-height: 200px;
+     background: lch(100 0 0 / 0.11);
+     margin: 4px;
+     cursor: pointer;
+     text-decoration: none;
+ }
+
+ .result span {
+     color: white;
+     display:block;
+     height:50px;
+ }
+
+ div.div_header img.logo_backscr_img {
+     border: 2px solid var(--cdn_primary);
+     width: 24px;
+     height: 24px;
+     border-radius: 50px;
+     padding: 4px;
+     position: absolute;
+     top: 7px;
+     left: 7px;
+ }
+
+ .result {
+     border: 2px solid #ddd;
+     padding: 10px;
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-orient: vertical;
+     -webkit-box-direction: normal;
+     -ms-flex-direction: column;
+     flex-direction: column;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     align-items: center;
+     opacity: 0;
+     -webkit-transform: scale(0.8);
+     -ms-transform: scale(0.8);
+     transform: scale(0.8);
+     -webkit-animation: fadeIn 0.5s forwards ease-in-out;
+     animation: fadeIn 0.5s forwards ease-in-out;
+     border-radius: 5px;
+ }
+
+ div.result_box iframe,
+ div.result_box img,
+ div.result_box video {
+     width: 100%;
+     height: 150px;
+     opacity: 0;
+     -webkit-animation: fadeInOpacity 1s forwards ease-in-out;
+     animation: fadeInOpacity 1s forwards ease-in-out;
+     border-radius: 10px;
+     border: none;
+     object-fit:cover;
+     transition: .3s;
+ }
+
+ iframe {
+     width: 100%;
+     height: 150px;
+     opacity: 0;
+     -webkit-animation: fadeInOpacity 1s forwards ease-in-out;
+     animation: fadeInOpacity 1s forwards ease-in-out;
+ }
+
+ @-webkit-keyframes fadeIn {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(0.8);
+         transform: scale(0.8);
+     }
+
+     to {
+         opacity: 1;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+         -webkit-transform: scale(0.8);
+         transform: scale(0.8);
+     }
+
+     to {
+         opacity: 1;
+         -webkit-transform: scale(1);
+         transform: scale(1);
+     }
+ }
+
+ @-webkit-keyframes fadeInOpacity {
+     from {
+         opacity: 0;
+     }
+
+     to {
+         opacity: 1;
+     }
+ }
+
+ @keyframes fadeInOpacity {
+     from {
+         opacity: 0;
+     }
+
+     to {
+         opacity: 1;
+     }
+ }
+
+ div.div_header {
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width: 100%;
+     height: 51px;
+     background: var(--black-trasparent-color);
+     display: -webkit-inline-box;
+     display: -ms-inline-flexbox;
+     display: inline-flex;
+     -webkit-box-shadow: 0 0px 8px 0 rgb(0 0 0 / 20%), 0 6px 70px 0 rgb(0 0 0 / 10%);
+     box-shadow: 0 0px 8px 0 rgb(0 0 0 / 20%), 0 6px 70px 0 rgb(0 0 0 / 10%);
+     z-index: 33;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     align-items: center;
+     -ms-flex-line-pack: center;
+     align-content: center;
+     -ms-flex-pack: distribute;
+     justify-content: space-around;
+     -ms-flex-wrap: nowrap;
+     flex-wrap: nowrap;
+ }
+      `;
+
+      const container = document.createElement("div"),
+        div_header = document.createElement("div");
+        container.classList.add('container');
+        div_header.classList.add("div_header");
+
+        container.appendChild(div_header);
+ 
+      
+      const searchContainer = document.createElement("div");
+      searchContainer.classList.add("search-container");
+      const searchInput = document.createElement("input");
+      searchInput.type = "text";
+      searchInput.id = "search";
+      searchInput.placeholder = "Search...";
+      // 
+      const autocompleteDiv = document.createElement("div");
+      autocompleteDiv.classList.add("autocomplete");
+      // 
+      searchContainer.appendChild(searchInput);
+      searchContainer.appendChild(autocompleteDiv);
+
+      const filterContainer = document.createElement("div");
+      filterContainer.classList.add("filter-container");
+      const filterLabel = document.createElement("label");
+      filterLabel.setAttribute("for", "filter");
+      filterLabel.textContent = "Filter by category:";
+      const filterSelect = document.createElement("select");
+      filterSelect.id = "filter";
+      ["all", "image", "text", "video", "document"].forEach(category => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+          filterSelect.appendChild(option);
+      });
+      filterContainer.appendChild(filterLabel);
+      filterContainer.appendChild(filterSelect);
+
+      const resultsContainer = document.createElement("div");
+      resultsContainer.classList.add("results");
+      resultsContainer.id = "results";
+
+      const imgLogo = document.createElement("img");
+      imgLogo.classList.add("logo_backscr_img");
+      imgLogo.alt = "logo";
+      imgLogo.src = "/svg_logo_backscr_img";
+      
+
+      div_header.appendChild(imgLogo);
+      div_header.appendChild(searchContainer);
+      div_header.appendChild(filterContainer);
+      container.appendChild(resultsContainer);
+
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(container);
+
+      
+      searchInput.addEventListener("keyup", () => this.performSearch());
+      filterSelect.addEventListener("change", () => this.performSearch());
+  }
+
+  handleAutocomplete(event, autocompleteDiv) {
+    const query = event.target.value.toLowerCase();
+    const suggestions = ["Sample Image", "Sample Text", "Sample Video", "Sample Document", "Example Data"];
+    autocompleteDiv.innerHTML = "";
+    
+    if (query.length > 0) {
+        const filteredSuggestions = suggestions.filter(s => s.toLowerCase().includes(query));
+        filteredSuggestions.forEach(suggestion => {
+            const div = document.createElement("div");
+            div.textContent = suggestion;
+            div.addEventListener("click", () => {
+                event.target.value = suggestion;
+                autocompleteDiv.innerHTML = "";
+                this.performSearch();
+            });
+            autocompleteDiv.appendChild(div);
+        });
+    }
+  }
+
+  performSearch() {
+    const query = this.shadowRoot.querySelector("#search").value.toLowerCase();
+    const filter = this.shadowRoot.querySelector("#filter").value;
+    const resultsContainer = this.shadowRoot.querySelector("#results");
+    
+    // Čišćenje prethodnih rezultata pre nove pretrage
+    resultsContainer.innerHTML = "";
+
+    const data = this.Mydata;
+    
+    const filteredData = data.filter(item => 
+        (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
+    );
+    
+    filteredData.forEach((item, index) => {
+        const div = document.createElement("div"),
+        div_m = document.createElement("div");
+        div_m.classList.add("result_box");
+        div.appendChild(div_m);
+
+        div.classList.add("result");
+
+        let titleSpan = document.createElement("span");
+        titleSpan.textContent = item.title;
+        div_m.appendChild(titleSpan);
+
+        if (item.type === "image") {
+            const img = document.createElement("img");
+            img.src = item.thumb;
+            img.alt = item.title;
+            img.setAttribute("style","opacity:0;");
+            img.onload = function(){
+              img.removeAttribute("style");
+            };
+            div_m.appendChild(img);
+        } else if (item.type === "text") {
+            let textSpan = document.createElement("span"); 
+            textSpan.textContent = item.content.length > 25 ? item.content.substring(0, 25) + "..." : item.content;
+            div_m.appendChild(textSpan);
+        } else if (item.type === "video") {
+            const video = document.createElement("video");
+            video.controls = true;
+            const source = document.createElement("source");
+            source.src = item.url;
+            source.type = "video/mp4";
+            video.appendChild(source);
+            div_m.appendChild(video);
+        } else if (item.type === "document") {
+            const iframe = document.createElement("iframe");
+            iframe.src = item.url;
+            div_m.appendChild(iframe);
+        }
+
+        div.addEventListener("click", function()  {
+          if(item.cat == "blog"){
+            window.welcomer.blogloader(item.id);
+          }
+          document.querySelector('p-search').remove();
+        },true);
+       
+        
+        // setTimeout(() => {
+            resultsContainer.appendChild(div);
+        // }, index * 200);
+    });
+}
+}
 class EditorSDK extends HTMLElement {
   constructor() {
     super();
@@ -2170,6 +2583,14 @@ const welcomer = {
     },
   ],
   pages: {
+    search: {
+      page: function(){
+        const main = document.createElement("div"),
+        logo = document.createElement("img");
+        div.classList.add("search_main");
+        
+      }
+    },
     page_history: [
       {
         page: "start_page",
@@ -2350,7 +2771,9 @@ const welcomer = {
         };
         return f;
       });
-
+      if (!customElements.get("p-search")){
+        customElements.define("p-search", CustomSearch);
+      }
       if (!customElements.get("video-player")) {
         customElements.define("video-player", VideoPlayer);
       }
@@ -3002,6 +3425,11 @@ document.querySelector("body").appendChild(parser.body);
         case "gallery":
           welcomer.blg_history_replace("/?p=gallery");
           welcomer.start();
+          break;
+        case "search":
+          // <p-search></p-search>
+          const p_search=  document.createElement("p-search");
+          document.body.appendChild(p_search);
           break;
         case "blog":
           welcomer.blg_history_replace("/?p=blog");
@@ -5000,10 +5428,18 @@ document.querySelector("body").appendChild(parser.body);
     if (myParam !== null) {
       if (myParam == "blog") {
         this.blogloader(myParam_id);
+        return;
       } else if (myParam == "editor") {
         this.editor.start();
+        return;
       } else {
+        if(myParam == "search"){
+          const p_search=  document.createElement("p-search");
+          document.body.appendChild(p_search);
+          return;
+        }
         this.pgloader(window.location.origin + "/?pages=" + myParam);
+        return;
       }
     }
   },
@@ -7676,7 +8112,7 @@ document.querySelector("body").appendChild(parser.body);
     },
   },
   blg_history_replace: function (st) {
-    welcomer.uBoss({}, "", `${st}`);
+    welcomer.uBoss(history.state, "", `${st}`);
     $("body").attr("data-url-id", st);
     if (st == "/?p=blog" || st == "?p=blog") {
       $("div#clavs br_ta").addClass("active_scr");
@@ -8238,6 +8674,10 @@ document.querySelector("body").appendChild(parser.body);
     }
   },
   search_Kompjiler: function (tt) {
+    const p_search=  document.createElement("p-search");
+    document.body.appendChild(p_search);
+
+    return;
     const urlParams = new URLSearchParams(window.location.search);
     const attr = $(tt).attr("data-hmm"),
       hd = $("div_header"),
@@ -8613,7 +9053,7 @@ document.querySelector("body").appendChild(parser.body);
   body_reset_form: ` 
 <editor-sdk style='display:none; position:fixed; width: 100%; height:100%; z-index:4323423423; background:black;'></editor-sdk>
 <!-- <video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video> -->
-
+ 
 
 <p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
 <div id="content_Space"></div>

@@ -102,37 +102,36 @@ class CustomSearch extends HTMLElement {
 
   render() {
       const style = document.createElement("style");
-      style.textContent = ` @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+      style.textContent = ` @import url('https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
 
  div.cat {
-
-     position: absolute;
-     left: 0px;
-     top: 0px;
-     background: transparent;
-     padding: 5px 10px;
-     border-bottom-right-radius: 5px;
-     font-size: 10px;
-     font-weight: normal;
-     color: white;
-     border-bottom: 1px solid;
-     border-right: 1px solid;
-     background: var(--black-trasparent-color);
-     display: -webkit-box;
-     display: -ms-flexbox;
-     display: flex;
-     -webkit-box-align: center;
-     -ms-flex-align: center;
-     align-items: center;
-     -webkit-box-orient: horizontal;
-     -webkit-box-direction: normal;
-     -ms-flex-direction: row;
-     flex-direction: row;
-     -ms-flex-line-pack: center;
-     align-content: center;
-     -webkit-box-pack: center;
-     -ms-flex-pack: center;
-     justify-content: center;
+position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: transparent;
+    padding: 5px 10px;
+    border-top-right-radius: 5px;
+    font-size: 10px;
+    font-weight: normal;
+    color: white;
+    border-top: 2px solid;
+    border-right: 2px solid;
+    background: var(--black-trasparent-color);
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
  }
 
  div.cat span {
@@ -187,6 +186,13 @@ class CustomSearch extends HTMLElement {
      height: -moz-fit-content;
      height: fit-content;
      max-height: calc(100% - 56px);
+
+     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    -o-transition: .3s !important;
+    transition: .3s !important;
  }
  *::-webkit-scrollbar {
             width: 5px;
@@ -359,7 +365,7 @@ class CustomSearch extends HTMLElement {
       searchContainer.classList.add("search-container");
       const searchInput = document.createElement("input");
       searchInput.type = "text";
-      searchInput.id = "search";
+      searchInput.id = "search"; 
       searchInput.placeholder = "Search...";
       // 
       const autocompleteDiv = document.createElement("div");
@@ -479,7 +485,15 @@ class CustomSearch extends HTMLElement {
             iframe.src = item.url;
             div_m.appendChild(iframe);
         }
-
+        const cat = document.createElement("div"),
+        cat_i = document.createElement("i");
+        cat.classList.add('cat');
+        if (item.cat == "blog"){
+              cat_i.setAttribute("class","bi bi-files-alt");
+              // cat.appendChild(cat_i);
+              cat.appendChild(document.createTextNode("Blog"));
+        } 
+        div_m.appendChild(cat);
         div.addEventListener("click", function()  {
           if(item.cat == "blog"){
             window.welcomer.blogloader(item.id);

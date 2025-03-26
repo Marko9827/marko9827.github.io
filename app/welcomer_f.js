@@ -399,6 +399,8 @@ position: absolute;
       imgLogo.alt = "logo";
       imgLogo.src = "/svg_logo_backscr_img";
       
+      const div_close = document.createElement("i");
+      div_close.setAttribute("class","");
 
       div_header.appendChild(imgLogo);
       div_header.appendChild(searchContainer);

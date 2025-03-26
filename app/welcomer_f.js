@@ -80,6 +80,130 @@ class Application {
     window.requestAnimationFrame(() => this.loop());
   }
 }
+
+class CustomCombobox extends HTMLElement {
+  constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+ 
+      this.combobox = document.createElement("div");
+      this.combobox.classList.add("custom-combobox");
+ 
+      this.selected = document.createElement("div");
+      this.selected.classList.add("combobox-selected");
+      this.selected.textContent = this.getAttribute("placeholder") || "Izaberi opciju";
+ 
+      this.items = document.createElement("div");
+      this.items.classList.add("combobox-items");
+ 
+      this.combobox.appendChild(this.selected);
+      this.combobox.appendChild(this.items);
+      this.shadowRoot.appendChild(this.combobox);
+ 
+      const style = document.createElement("style");
+      style.textContent = `
+            .custom-combobox {
+     position: relative;
+     width: 200px;
+     font-family: Arial, sans-serif;
+ }
+
+ *::-webkit-scrollbar {
+     width: 5px;
+ }
+
+ *::-webkit-scrollbar-track {
+     background: transparent;
+ }
+
+ *::-webkit-scrollbar-thumb {
+     background-color: white;
+
+ }
+
+ *::-webkit-scrollbar-thumb:hover {
+     background-color: white;
+ }
+
+ .custom-combobox:hover {
+
+     background: #ffffff36;
+ }
+
+ .combobox-selected {
+     background: trasparent;
+     padding: 10px;
+     border: 1px solid #ccc;
+     cursor: pointer;
+     color: white;
+     border-radius: 5px;
+     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+ }
+
+ .combobox-items {
+     position: absolute;
+     width: 100%;
+     background: #ffffff36;
+     border: 1px solid #ccc;
+     border-top: none;
+     max-height: 150px;
+     overflow-y: auto;
+     color: white;
+     display: none;
+     z-index: 10;
+     border-radius: 0 0 5px 5px;
+     backdrop-filter: blur(5px);
+ }
+
+ .combobox-items div {
+     padding: 10px;
+     cursor: pointer;
+ }
+
+ .combobox-items div:hover {
+     background: #ddd;
+     color: #333;
+ }
+
+ .combobox-active .combobox-items {
+     display: block;
+ }
+      `;
+      this.shadowRoot.appendChild(style);
+
+      this.selected.addEventListener("click", () => this.toggleDropdown());
+    //  document.addEventListener("click", (event) => this.closeDropdown(event));
+  }
+ 
+  toggleDropdown() {
+      this.combobox.classList.toggle("combobox-active");
+  }
+ 
+  closeDropdown(event) {
+      if (!this.contains(event.target)) {
+          this.combobox.classList.remove("combobox-active");
+      }
+  }
+ 
+  addOption(value, text) {
+      const item = document.createElement("div");
+      item.textContent = text;
+      item.setAttribute("data-value", value);
+      item.addEventListener("click", () => this.selectOption(value, text));
+      this.items.appendChild(item);
+  }
+  
+  selectOption(value, text) {
+      this.selected.textContent = text;
+      this.selected.setAttribute("data-value", value);
+      this.combobox.classList.remove("combobox-active");
+      
+      this.dispatchEvent(new CustomEvent("change", { detail: { value, text } }));
+  }
+}
+
 class CustomSearch extends HTMLElement {
   constructor() {
       super();
@@ -87,6 +211,19 @@ class CustomSearch extends HTMLElement {
       this.render();
       this.Mydata = [];
       var dataf = [];
+      var pr_i = 0;
+      window.portfolio.data.projects.forEach(element => {
+        dataf.push({
+          type: "image",
+          url: element['href'],
+          id: pr_i,
+          cat: "projects",
+          title: element['title'],
+          thumb: element['img']
+        });
+        pr_i++
+      });
+      pr_i = 0;
       window.portfolio.data.blog.forEach(element => {
         dataf.push({
           type: "image",
@@ -148,6 +285,10 @@ position: absolute;
      width: calc(100% - 100px);
  }
 
+  .search-container input#search-internal-autofill-selected {
+ background: transparent;
+ }
+
  .search-container input#search {
 
 
@@ -163,6 +304,7 @@ position: absolute;
 
  .filter-container {
      margin-bottom: 10px;
+     display:none;
  }
 
  .results {
@@ -351,6 +493,18 @@ position: absolute;
      -ms-flex-wrap: nowrap;
      flex-wrap: nowrap;
  }
+
+ i.btn_close { 
+     display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: var(--cdn_primary);
+    font-size: 24px;
+    position: absolute;
+ top: 12px;
+    right: 8px;
+
+ }
       `;
 
       const container = document.createElement("div"),
@@ -400,11 +554,17 @@ position: absolute;
       imgLogo.src = "/svg_logo_backscr_img";
       
       const div_close = document.createElement("i");
-      div_close.setAttribute("class","");
+      div_close.setAttribute("class","bi bi-x-lg btn_close");
+      div_close.addEventListener("click",function(){
+        document.querySelectorAll('p-search').forEach(eel => eel.remove() );
+        history.replaceState({ page: 1}, "", `/`);
+      });
 
       div_header.appendChild(imgLogo);
       div_header.appendChild(searchContainer);
+      div_header.appendChild(div_close);
       div_header.appendChild(filterContainer);
+      
       container.appendChild(resultsContainer);
 
       this.shadowRoot.appendChild(style);
@@ -445,6 +605,10 @@ position: absolute;
 
     const data = this.Mydata;
     
+    if(query.length === 0){
+      return;
+    }
+
     const filteredData = data.filter(item => 
         (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
     );
@@ -492,13 +656,23 @@ position: absolute;
         cat.classList.add('cat');
         if (item.cat == "blog"){
               cat_i.setAttribute("class","bi bi-files-alt");
-              // cat.appendChild(cat_i);
-              cat.appendChild(document.createTextNode("Blog"));
+              // cat.appendChild(cat_i); 
         } 
+        if (item.cat == "projects"){
+          cat_i.setAttribute("class","bi bi-files-alt"); 
+    } 
+        
+    cat.appendChild(document.createTextNode(item.cat.toUpperCase()));
         div_m.appendChild(cat);
         div.addEventListener("click", function()  {
           if(item.cat == "blog"){
             window.welcomer.blogloader(item.id);
+          }
+          if(item.cat == "projects"){
+
+            if(item.link == ""){
+
+            }
           }
           document.querySelector('p-search').remove();
         },true);
@@ -2600,12 +2774,11 @@ const welcomer = {
   ],
   pages: {
     search: {
-      page: function(){
+      page: function () {
         const main = document.createElement("div"),
-        logo = document.createElement("img");
+          logo = document.createElement("img");
         div.classList.add("search_main");
-        
-      }
+      },
     },
     page_history: [
       {
@@ -2787,7 +2960,10 @@ const welcomer = {
         };
         return f;
       });
-      if (!customElements.get("p-search")){
+      if(!customElements.get("custom-combobox")){
+        customElements.define("custom-combobox", CustomCombobox);
+      }
+      if (!customElements.get("p-search")) {
         customElements.define("p-search", CustomSearch);
       }
       if (!customElements.get("video-player")) {
@@ -3444,7 +3620,7 @@ document.querySelector("body").appendChild(parser.body);
           break;
         case "search":
           // <p-search></p-search>
-          const p_search=  document.createElement("p-search");
+          const p_search = document.createElement("p-search");
           document.body.appendChild(p_search);
           break;
         case "blog":
@@ -5449,8 +5625,8 @@ document.querySelector("body").appendChild(parser.body);
         this.editor.start();
         return;
       } else {
-        if(myParam == "search"){
-          const p_search=  document.createElement("p-search");
+        if (myParam == "search") {
+          const p_search = document.createElement("p-search");
           document.body.appendChild(p_search);
           return;
         }
@@ -6478,9 +6654,9 @@ document.querySelector("body").appendChild(parser.body);
   callGalleryBID(ID) {
     const checkImage = function (url, callback) {
       const img = new Image();
-      img.setAttribute('data-zoom-image',url);
+      img.setAttribute("data-zoom-image", url);
       img.src = url;
-      img.onload = () => callback(true, img,url);
+      img.onload = () => callback(true, img, url);
       img.onerror = () => callback(false, img, url);
     };
     window.portfolio.data.gallery.gallery.forEach(function (v1) {
@@ -6494,18 +6670,16 @@ document.querySelector("body").appendChild(parser.body);
           );
           await welcomer.pages.start_page("gallery");
           await welcomer.pages.gallery.lda(gallery_name);
-          await checkImage(v2["img"], 
-            (res, img , url )=>{
-              if(res){
+          await checkImage(v2["img"], (res, img, url) => {
+            if (res) {
               welcomer.infoVa_img_gallery(img);
-              }else{
-                welcomer.pages.gallery.call_video_gallery_Preview(url);
-              }
-              welcomer.blg_history_replace(
-                `/?p=gallery&album=${gallery_name}&id=${ID}`
-              );
-            });
-       
+            } else {
+              welcomer.pages.gallery.call_video_gallery_Preview(url);
+            }
+            welcomer.blg_history_replace(
+              `/?p=gallery&album=${gallery_name}&id=${ID}`
+            );
+          });
         }
       });
     });
@@ -8690,7 +8864,7 @@ document.querySelector("body").appendChild(parser.body);
     }
   },
   search_Kompjiler: function (tt) {
-    const p_search=  document.createElement("p-search");
+    const p_search = document.createElement("p-search");
     document.body.appendChild(p_search);
 
     return;
@@ -9456,11 +9630,11 @@ document.querySelector("body").appendChild(parser.body);
       document.createElement("br").classList.add("hide_noy")
     );
   },
-  bckrnd: async function(){
+  bckrnd: async function () {
     const video_wall = document.createElement("video");
     document.body.appendChild(video_wall);
-    video_wall.classList.add('wallpaperVideo');
-    video_wall.classList.add('video_is_hidden');
+    video_wall.classList.add("wallpaperVideo");
+    video_wall.classList.add("video_is_hidden");
     video_wall.loop = true;
     video_wall.autoplay = true;
     video_wall.muted = true;
@@ -9492,7 +9666,7 @@ document.querySelector("body").appendChild(parser.body);
         }, 1000);
         video_wall.play();
         video_wall.classList.remove("video_is_hidden");
-      } else { 
+      } else {
       }
     };
     await xhr.send(`v=${data.v}`);
@@ -9583,7 +9757,7 @@ document.querySelector("body").appendChild(parser.body);
     ); */
 
     document.body.appendChild(img);
-/*
+    /*
     setTimeout(async () => {
       const video_wall = document.querySelector("video");
       const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };

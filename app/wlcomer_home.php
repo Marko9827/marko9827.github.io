@@ -3418,7 +3418,8 @@ div#clavs br_ta ta_f.active span {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background: var(--black-trasparent-color); 
+            background: var(--black-trasparent-color);
+            backdrop-filter: blur(2px);
         }
 
         #buttons {

@@ -3420,6 +3420,10 @@ div#clavs br_ta ta_f.active span {
             overflow: hidden;
             background: var(--black-trasparent-color); 
         }
+
+        #buttons {
+            background: #ffffff08;
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

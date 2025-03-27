@@ -209,6 +209,7 @@ class CustomSearch extends HTMLElement {
       super();
       this.attachShadow({ mode: "open" });
       this.render();
+      this.query = "";
       this.Mydata = [];
       var dataf = [];
       var pr_i = 0;
@@ -239,36 +240,38 @@ class CustomSearch extends HTMLElement {
 
   render() {
       const style = document.createElement("style");
-      style.textContent = ` @import url('https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
+      style.textContent = ` 
+      
+  @import url('https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
 
  div.cat {
-position: absolute;
-    left: 0px;
-    bottom: 0px;
-    background: transparent;
-    padding: 5px 10px;
-    border-top-right-radius: 5px;
-    font-size: 10px;
-    font-weight: normal;
-    color: white;
-    border-top: 2px solid;
-    border-right: 2px solid;
-    background: var(--black-trasparent-color);
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-line-pack: center;
-    align-content: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+     position: absolute;
+     left: 0px;
+     bottom: 0px;
+     background: transparent;
+     padding: 5px 10px;
+     border-top-right-radius: 5px;
+     font-size: 10px;
+     font-weight: normal;
+     color: white;
+     border-top: 2px solid;
+     border-right: 2px solid;
+     background: var(--black-trasparent-color);
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     align-items: center;
+     -webkit-box-orient: horizontal;
+     -webkit-box-direction: normal;
+     -ms-flex-direction: row;
+     flex-direction: row;
+     -ms-flex-line-pack: center;
+     align-content: center;
+     -webkit-box-pack: center;
+     -ms-flex-pack: center;
+     justify-content: center;
  }
 
  div.cat span {
@@ -282,11 +285,11 @@ position: absolute;
      position: absolute;
      left: 50px;
      top: 5px;
-     width: calc(100% - 100px);
+     width: calc(100% - 125px);
  }
 
-  .search-container input#search-internal-autofill-selected {
- background: transparent;
+ .search-container input#search-internal-autofill-selected {
+     background: transparent;
  }
 
  .search-container input#search {
@@ -299,12 +302,13 @@ position: absolute;
      color: white;
      outline: none;
      width: 100%;
+     padding-right:30px;
 
  }
 
  .filter-container {
      margin-bottom: 10px;
-     display:none;
+     display: none;
  }
 
  .results {
@@ -330,28 +334,29 @@ position: absolute;
      max-height: calc(100% - 56px);
 
      filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-    enable-background: new 0 0 512 512 !important;
-    -webkit-transition: .3s !important;
-    -o-transition: .3s !important;
-    transition: .3s !important;
+     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+     enable-background: new 0 0 512 512 !important;
+     -webkit-transition: .3s !important;
+     -o-transition: .3s !important;
+     transition: .3s !important;
  }
+
  *::-webkit-scrollbar {
-            width: 5px;
-        }
+     width: 5px;
+ }
 
-        *::-webkit-scrollbar-track {
-            background: transparent;
-        }
+ *::-webkit-scrollbar-track {
+     background: transparent;
+ }
 
-        *::-webkit-scrollbar-thumb {
-            background-color: white;
-         
-        }
+ *::-webkit-scrollbar-thumb {
+     background-color: white;
 
-        *::-webkit-scrollbar-thumb:hover {
-            background-color: white;
-        }
+ }
+
+ *::-webkit-scrollbar-thumb:hover {
+     background-color: white;
+ }
 
  .results .result {
      max-height: 200px;
@@ -363,8 +368,15 @@ position: absolute;
 
  .result span {
      color: white;
-     display:block;
-     height:50px;
+     display: block;
+     height: 32px;
+       overflow: hidden;
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+     text-overflow: ellipsis;
+  width:90%;
+  max-width:90%;
+  text-align: center;
  }
 
  div.div_header img.logo_backscr_img {
@@ -400,6 +412,27 @@ position: absolute;
      border-radius: 5px;
  }
 
+ div.result_box {
+     width: 100%;
+     display: -webkit-box;
+     display: -ms-flexbox;
+     display: flex;
+     -webkit-box-orient: vertical;
+     -webkit-box-direction: normal;
+     -ms-flex-direction: column;
+     flex-direction: column;
+     -ms-flex-wrap: nowrap;
+     flex-wrap: nowrap;
+     -webkit-box-pack: center;
+     -ms-flex-pack: center;
+     justify-content: center;
+     -ms-flex-line-pack: center;
+     align-content: center;
+     -webkit-box-align: center;
+     -ms-flex-align: center;
+     align-items: center;
+ }
+
  div.result_box iframe,
  div.result_box img,
  div.result_box video {
@@ -410,7 +443,10 @@ position: absolute;
      animation: fadeInOpacity 1s forwards ease-in-out;
      border-radius: 10px;
      border: none;
-     object-fit:cover;
+     -o-object-fit: cover;
+     object-fit: cover;
+     -webkit-transition: .3s;
+     -o-transition: .3s;
      transition: .3s;
  }
 
@@ -494,15 +530,26 @@ position: absolute;
      flex-wrap: nowrap;
  }
 
- i.btn_close { 
-     display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
-    display: inline-flex;
-    color: var(--cdn_primary);
-    font-size: 24px;
+ i.btn_clear { 
     position: absolute;
- top: 12px;
-    right: 8px;
+    color: white;
+    right: 45px;
+    top: 12.1px; 
+    cursor: pointer;
+ }
+ .hide{
+    display: none;
+ }
+ i.btn_close {
+     display: -webkit-inline-box;
+     display: -ms-inline-flexbox;
+     display: inline-flex;
+     color: var(--cdn_primary);
+     font-size: 24px;
+     position: absolute;
+     top: 12px;
+     right: 8px;
+     cursor: pointer;
 
  }
       `;
@@ -513,8 +560,9 @@ position: absolute;
         div_header.classList.add("div_header");
 
         container.appendChild(div_header);
- 
-      
+        this.btn_clear = document.createElement("i");
+
+        this.btn_clear.setAttribute("title","Clear Search");
       const searchContainer = document.createElement("div");
       searchContainer.classList.add("search-container");
       const searchInput = document.createElement("input");
@@ -554,15 +602,24 @@ position: absolute;
       imgLogo.src = "/svg_logo_backscr_img";
       
       const div_close = document.createElement("i");
-      div_close.setAttribute("class","bi bi-x-lg btn_close");
+      div_close.setAttribute("class","bi bi-x-lg btn_close hide");
       div_close.addEventListener("click",function(){
         document.querySelectorAll('p-search').forEach(eel => eel.remove() );
         history.replaceState({ page: 1}, "", `/`);
       });
+      this.btn_clear.setAttribute("class","bi bi-x-lg btn_clear");
+  
+      this.btn_clear.addEventListener("click", () => this.cancelhande());
+      /*
+        searchInput.value = "";
+        btn_clear.classList.remove('hide');
+        d.performSearch();
+      });*/
 
       div_header.appendChild(imgLogo);
       div_header.appendChild(searchContainer);
       div_header.appendChild(div_close);
+      div_header.appendChild(this.btn_clear);
       div_header.appendChild(filterContainer);
       
       container.appendChild(resultsContainer);
@@ -573,6 +630,11 @@ position: absolute;
       
       searchInput.addEventListener("keyup", () => this.performSearch());
       filterSelect.addEventListener("change", () => this.performSearch());
+  }
+
+  cancelhande(){
+    this.btn_clear.classList.add("hide");
+    this.performSearch();
   }
 
   handleAutocomplete(event, autocompleteDiv) {
@@ -606,20 +668,21 @@ position: absolute;
     const data = this.Mydata;
     
     if(query.length === 0){
+      this.btn_clear.classList.add('hide');
       return;
     }
 
     const filteredData = data.filter(item => 
         (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
     );
-    
+    this.btn_clear.classList.remove('hide');
+
     filteredData.forEach((item, index) => {
         const div = document.createElement("div"),
         div_m = document.createElement("div");
         div_m.classList.add("result_box");
         div.appendChild(div_m);
-
-        div.classList.add("result");
+         div.classList.add("result");
 
         let titleSpan = document.createElement("span");
         titleSpan.textContent = item.title;
@@ -5617,6 +5680,7 @@ document.querySelector("body").appendChild(parser.body);
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");
+    const myParam_query = urlParams.get('q');
     if (myParam !== null) {
       if (myParam == "blog") {
         this.blogloader(myParam_id);
@@ -5628,6 +5692,11 @@ document.querySelector("body").appendChild(parser.body);
         if (myParam == "search") {
           const p_search = document.createElement("p-search");
           document.body.appendChild(p_search);
+          if(myParam_query !== null){
+            if(myParam_query.length > 1){
+              p_search.query(myParam_query)
+            }
+          }
           return;
         }
         this.pgloader(window.location.origin + "/?pages=" + myParam);

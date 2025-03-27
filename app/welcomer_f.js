@@ -536,9 +536,12 @@ class CustomSearch extends HTMLElement {
     right: 45px;
     top: 12.1px; 
     cursor: pointer;
+    transition: .3s;
  }
  .hide{
-    display: none;
+    transform: scale(0);
+    opacity:0;
+    pointer-events: none;
  }
  i.btn_close {
      display: -webkit-inline-box;
@@ -602,12 +605,12 @@ class CustomSearch extends HTMLElement {
       imgLogo.src = "/svg_logo_backscr_img";
       
       const div_close = document.createElement("i");
-      div_close.setAttribute("class","bi bi-x-lg btn_close hide");
+      div_close.setAttribute("class","bi bi-x-lg btn_close  ");
       div_close.addEventListener("click",function(){
         document.querySelectorAll('p-search').forEach(eel => eel.remove() );
         history.replaceState({ page: 1}, "", `/`);
       });
-      this.btn_clear.setAttribute("class","bi bi-x-lg btn_clear");
+      this.btn_clear.setAttribute("class","bi bi-x-lg btn_clear hide");
   
       this.btn_clear.addEventListener("click", () => this.cancelhande());
       /*
@@ -634,6 +637,7 @@ class CustomSearch extends HTMLElement {
 
   cancelhande(){
     this.btn_clear.classList.add("hide");
+    this.shadowRoot.querySelector("#search").value = "";
     this.performSearch();
   }
 
@@ -656,7 +660,12 @@ class CustomSearch extends HTMLElement {
         });
     }
   }
-
+  set(q){
+    if(q.length === 0){}else{
+      this.shadowRoot.querySelector("#search").value = q;
+      this.performSearch()
+    }
+  }
   performSearch() {
     const query = this.shadowRoot.querySelector("#search").value.toLowerCase();
     const filter = this.shadowRoot.querySelector("#filter").value;
@@ -669,13 +678,15 @@ class CustomSearch extends HTMLElement {
     
     if(query.length === 0){
       this.btn_clear.classList.add('hide');
-      return;
+      history.replaceState(history.state, "",`/?p=search`); 
+       return;
     }
 
     const filteredData = data.filter(item => 
         (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
     );
     this.btn_clear.classList.remove('hide');
+    history.replaceState(history.state, "",`/?p=search&q=${query}`);
 
     filteredData.forEach((item, index) => {
         const div = document.createElement("div"),
@@ -733,11 +744,11 @@ class CustomSearch extends HTMLElement {
           }
           if(item.cat == "projects"){
 
-            if(item.link == ""){
-
-            }
+            
           }
+          if(!item.link == ""){
           document.querySelector('p-search').remove();
+          }
         },true);
        
         
@@ -5694,7 +5705,7 @@ document.querySelector("body").appendChild(parser.body);
           document.body.appendChild(p_search);
           if(myParam_query !== null){
             if(myParam_query.length > 1){
-              p_search.query(myParam_query)
+              p_search.set(myParam_query)
             }
           }
           return;

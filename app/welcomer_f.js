@@ -608,7 +608,7 @@ class CustomSearch extends HTMLElement {
       div_close.setAttribute("class","bi bi-x-lg btn_close  ");
       div_close.addEventListener("click",function(){
         document.querySelectorAll('p-search').forEach(eel => eel.remove() );
-        history.replaceState({ page: 1}, "", `/`);
+        // history.replaceState({ page: 1}, "", `/`);
       });
       this.btn_clear.setAttribute("class","bi bi-x-lg btn_clear hide");
   
@@ -678,7 +678,7 @@ class CustomSearch extends HTMLElement {
     
     if(query.length === 0){
       this.btn_clear.classList.add('hide');
-      history.replaceState(history.state, "",`/?p=search`); 
+    //  history.replaceState(history.state, "",`/?p=search`); 
        return;
     }
 
@@ -686,7 +686,7 @@ class CustomSearch extends HTMLElement {
         (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
     );
     this.btn_clear.classList.remove('hide');
-    history.replaceState(history.state, "",`/?p=search&q=${query}`);
+    //history.replaceState(history.state, "",`/?p=search&q=${query}`);
 
     filteredData.forEach((item, index) => {
         const div = document.createElement("div"),
@@ -9356,7 +9356,7 @@ document.querySelector("body").appendChild(parser.body);
     <btns_i><input type="text" placeholder="Search ..." data-hmm="search"
         onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
         data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
-    <btns_r><i class="bi bi-search F_bi_search" data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"
+    <btns_r><i class="bi bi-search  " data-hmm="true" data-onclick="welcomer.search_Kompjiler(this);"
         title="Search project..."></i><i class="bi bi-filetype-pdf pdf_download" title="Download my CV as PDF"></i><i
         class="bi bi-house pdf_page_home_btn" data-onclick="welcomer.blogloader('all');"
         title="Return to Blog home page"></i><i class="bi bi-telegram tg_button"

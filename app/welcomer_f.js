@@ -702,6 +702,7 @@ class CustomSearch extends HTMLElement {
         if (item.type === "image") {
             const img = document.createElement("img");
             img.src = item.thumb;
+            img.setAttribute("loading","lazy");
             img.alt = item.title;
             img.setAttribute("style","transform: scale(0);");
             img.onload = function(){

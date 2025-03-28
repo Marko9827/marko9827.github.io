@@ -703,7 +703,7 @@ class CustomSearch extends HTMLElement {
             const img = document.createElement("img");
             img.src = item.thumb;
             img.alt = item.title;
-            img.setAttribute("style","opacity:0;");
+            img.setAttribute("style","transform: scale(0);");
             img.onload = function(){
               img.removeAttribute("style");
             };
@@ -735,12 +735,15 @@ class CustomSearch extends HTMLElement {
         if (item.cat == "projects"){
           cat_i.setAttribute("class","bi bi-files-alt"); 
     } 
+
+
         
     cat.appendChild(document.createTextNode(item.cat.toUpperCase()));
         div_m.appendChild(cat);
         div.addEventListener("click", function()  {
           if(item.cat == "blog"){
             window.welcomer.blogloader(item.id);
+            document.querySelector('p-search').remove();
           }
           if(item.cat == "projects"){
 

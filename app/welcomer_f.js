@@ -2350,18 +2350,64 @@ class PostContent extends HTMLElement {
     }
   }
 
+  parseMe(id){
+    var data = [];
+    window.portfolio.data.blog.forEach(function(et){
+      if(et['id'] == id){
+          data = et;
+          return true;
+      }
+    });
+    this.post_data = data;
+  }
+  foreach_data_hashs(el,data){
+     const tag = document.createElement("tag");
+     tag.textContent = "#" + data;
+     el.appendChild(tag);
+  }
   constructor() {
     super();
 
     const shadow = this.attachShadow({ mode: "open" });
+    this.post_data = [];
     const template = document.createElement("template");
 
     const style = document.createElement("style"),
+    tags = document.createElement("tags"),
       div_content = document.createElement("div_content");
 
+      const urlParamsf = new URLSearchParams(window.location.search);   
+      if (urlParamsf.has("id")) {
+        this.parseMe(urlParamsf.get('id'));
+        console.log(this.post_data);
+        for (var i = 0; i < this.post_data['keywords'].length; i++){
+          const tag = document.createElement("tag");
+          tag.textContent = "#" + this.post_data['keywords'][i];
+         tags.appendChild(tag);
+        }
+   
+      }
+ 
     style.textContent = `${window.atob(
       window.portfolio.data.blog_style_bundle
     )} 
+
+    tags {
+    
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    padding: 5px 30px;
+    }
+
+    tags tag { 
+          background: white;
+    color: #333 !important; 
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    }
+
     :::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}
     
     div#controls {
@@ -2506,6 +2552,7 @@ div#controls img:hover {
     `;
     shadow.appendChild(style);
     /* template.innerHTML = ` <div_content> </div_content>`;*/
+  //  shadow.appendChild(tags);
     shadow.appendChild(div_content);
     const child = shadow.querySelector(".content-wrapper");
     // var aer =
@@ -2527,6 +2574,7 @@ div#controls img:hover {
       shared_links: [],
     }
   ) {
+    
     const div_content = this.shadowRoot.querySelector("div_content");
     // div_content.innerHTML = `${data}`;
     div_content.textContent = "";

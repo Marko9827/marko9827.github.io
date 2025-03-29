@@ -83,25 +83,26 @@ class Application {
 
 class CustomCombobox extends HTMLElement {
   constructor() {
-      super();
-      this.attachShadow({ mode: "open" });
- 
-      this.combobox = document.createElement("div");
-      this.combobox.classList.add("custom-combobox");
- 
-      this.selected = document.createElement("div");
-      this.selected.classList.add("combobox-selected");
-      this.selected.textContent = this.getAttribute("placeholder") || "Izaberi opciju";
- 
-      this.items = document.createElement("div");
-      this.items.classList.add("combobox-items");
- 
-      this.combobox.appendChild(this.selected);
-      this.combobox.appendChild(this.items);
-      this.shadowRoot.appendChild(this.combobox);
- 
-      const style = document.createElement("style");
-      style.textContent = `
+    super();
+    this.attachShadow({ mode: "open" });
+
+    this.combobox = document.createElement("div");
+    this.combobox.classList.add("custom-combobox");
+
+    this.selected = document.createElement("div");
+    this.selected.classList.add("combobox-selected");
+    this.selected.textContent =
+      this.getAttribute("placeholder") || "Izaberi opciju";
+
+    this.items = document.createElement("div");
+    this.items.classList.add("combobox-items");
+
+    this.combobox.appendChild(this.selected);
+    this.combobox.appendChild(this.items);
+    this.shadowRoot.appendChild(this.combobox);
+
+    const style = document.createElement("style");
+    style.textContent = `
             .custom-combobox {
      position: relative;
      width: 200px;
@@ -171,76 +172,76 @@ class CustomCombobox extends HTMLElement {
      display: block;
  }
       `;
-      this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(style);
 
-      this.selected.addEventListener("click", () => this.toggleDropdown());
+    this.selected.addEventListener("click", () => this.toggleDropdown());
     //  document.addEventListener("click", (event) => this.closeDropdown(event));
   }
- 
+
   toggleDropdown() {
-      this.combobox.classList.toggle("combobox-active");
+    this.combobox.classList.toggle("combobox-active");
   }
- 
+
   closeDropdown(event) {
-      if (!this.contains(event.target)) {
-          this.combobox.classList.remove("combobox-active");
-      }
-  }
- 
-  addOption(value, text) {
-      const item = document.createElement("div");
-      item.textContent = text;
-      item.setAttribute("data-value", value);
-      item.addEventListener("click", () => this.selectOption(value, text));
-      this.items.appendChild(item);
-  }
-  
-  selectOption(value, text) {
-      this.selected.textContent = text;
-      this.selected.setAttribute("data-value", value);
+    if (!this.contains(event.target)) {
       this.combobox.classList.remove("combobox-active");
-      
-      this.dispatchEvent(new CustomEvent("change", { detail: { value, text } }));
+    }
+  }
+
+  addOption(value, text) {
+    const item = document.createElement("div");
+    item.textContent = text;
+    item.setAttribute("data-value", value);
+    item.addEventListener("click", () => this.selectOption(value, text));
+    this.items.appendChild(item);
+  }
+
+  selectOption(value, text) {
+    this.selected.textContent = text;
+    this.selected.setAttribute("data-value", value);
+    this.combobox.classList.remove("combobox-active");
+
+    this.dispatchEvent(new CustomEvent("change", { detail: { value, text } }));
   }
 }
 
 class CustomSearch extends HTMLElement {
   constructor() {
-      super();
-      this.attachShadow({ mode: "open" });
-      this.render();
-      this.query = "";
-      this.Mydata = [];
-      var dataf = [];
-      var pr_i = 0;
-      window.portfolio.data.projects.forEach(element => {
-        dataf.push({
-          type: "image",
-          url: element['href'],
-          id: pr_i,
-          cat: "projects",
-          title: element['title'],
-          thumb: element['img']
-        });
-        pr_i++
+    super();
+    this.attachShadow({ mode: "open" });
+    this.render();
+    this.query = "";
+    this.Mydata = [];
+    var dataf = [];
+    var pr_i = 0;
+    window.portfolio.data.projects.forEach((element) => {
+      dataf.push({
+        type: "image",
+        url: element["href"],
+        id: pr_i,
+        cat: "projects",
+        title: element["title"],
+        thumb: element["img"],
       });
-      pr_i = 0;
-      window.portfolio.data.blog.forEach(element => {
-        dataf.push({
-          type: "image",
-          url: element['source'],
-          id: element['id'],
-          cat: "blog",
-          title: element['title'],
-          thumb: element['thumbail']
-        });
+      pr_i++;
+    });
+    pr_i = 0;
+    window.portfolio.data.blog.forEach((element) => {
+      dataf.push({
+        type: "image",
+        url: element["source"],
+        id: element["id"],
+        cat: "blog",
+        title: element["title"],
+        thumb: element["thumbail"],
       });
-      this.Mydata = dataf;
+    });
+    this.Mydata = dataf;
   }
 
   render() {
-      const style = document.createElement("style");
-      style.textContent = ` 
+    const style = document.createElement("style");
+    style.textContent = ` 
       
   @import url('https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
 
@@ -279,6 +280,9 @@ class CustomSearch extends HTMLElement {
      width: 10px;
      display: block;
  }
+
+
+
 
  .search-container {
      margin-bottom: 20px;
@@ -557,85 +561,84 @@ class CustomSearch extends HTMLElement {
  }
       `;
 
-      const container = document.createElement("div"),
-        div_header = document.createElement("div");
-        container.classList.add('container');
-        div_header.classList.add("div_header");
+    const container = document.createElement("div"),
+      div_header = document.createElement("div");
+    container.classList.add("container");
+    div_header.classList.add("div_header");
 
-        container.appendChild(div_header);
-        this.btn_clear = document.createElement("i");
+    container.appendChild(div_header);
+    this.btn_clear = document.createElement("i");
 
-        this.btn_clear.setAttribute("title","Clear Search");
-      const searchContainer = document.createElement("div");
-      searchContainer.classList.add("search-container");
-      const searchInput = document.createElement("input");
-      searchInput.type = "text";
-      searchInput.id = "search"; 
-      searchInput.placeholder = "Search...";
-      // 
-      const autocompleteDiv = document.createElement("div");
-      autocompleteDiv.classList.add("autocomplete");
-      // 
-      searchContainer.appendChild(searchInput);
-      searchContainer.appendChild(autocompleteDiv);
+    this.btn_clear.setAttribute("title", "Clear Search");
+    const searchContainer = document.createElement("div");
+    searchContainer.classList.add("search-container");
+    const searchInput = document.createElement("input");
+    searchInput.type = "text";
+    searchInput.id = "search";
+    searchInput.placeholder = "Search...";
+    //
+    const autocompleteDiv = document.createElement("div");
+    autocompleteDiv.classList.add("autocomplete");
+    //
+    searchContainer.appendChild(searchInput);
+    searchContainer.appendChild(autocompleteDiv);
 
-      const filterContainer = document.createElement("div");
-      filterContainer.classList.add("filter-container");
-      const filterLabel = document.createElement("label");
-      filterLabel.setAttribute("for", "filter");
-      filterLabel.textContent = "Filter by category:";
-      const filterSelect = document.createElement("select");
-      filterSelect.id = "filter";
-      ["all", "image", "text", "video", "document"].forEach(category => {
-          const option = document.createElement("option");
-          option.value = category;
-          option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
-          filterSelect.appendChild(option);
-      });
-      filterContainer.appendChild(filterLabel);
-      filterContainer.appendChild(filterSelect);
+    const filterContainer = document.createElement("div");
+    filterContainer.classList.add("filter-container");
+    const filterLabel = document.createElement("label");
+    filterLabel.setAttribute("for", "filter");
+    filterLabel.textContent = "Filter by category:";
+    const filterSelect = document.createElement("select");
+    filterSelect.id = "filter";
+    ["all", "image", "text", "video", "document"].forEach((category) => {
+      const option = document.createElement("option");
+      option.value = category;
+      option.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+      filterSelect.appendChild(option);
+    });
+    filterContainer.appendChild(filterLabel);
+    filterContainer.appendChild(filterSelect);
 
-      const resultsContainer = document.createElement("div");
-      resultsContainer.classList.add("results");
-      resultsContainer.id = "results";
+    const resultsContainer = document.createElement("div");
+    resultsContainer.classList.add("results");
+    resultsContainer.id = "results";
 
-      const imgLogo = document.createElement("img");
-      imgLogo.classList.add("logo_backscr_img");
-      imgLogo.alt = "logo";
-      imgLogo.src = "/svg_logo_backscr_img";
-      
-      const div_close = document.createElement("i");
-      div_close.setAttribute("class","bi bi-x-lg btn_close  ");
-      div_close.addEventListener("click",function(){
-        document.querySelectorAll('p-search').forEach(eel => eel.remove() );
-        // history.replaceState({ page: 1}, "", `/`);
-      });
-      this.btn_clear.setAttribute("class","bi bi-x-lg btn_clear hide");
-  
-      this.btn_clear.addEventListener("click", () => this.cancelhande());
-      /*
+    const imgLogo = document.createElement("img");
+    imgLogo.classList.add("logo_backscr_img");
+    imgLogo.alt = "logo";
+    imgLogo.src = "/svg_logo_backscr_img";
+
+    const div_close = document.createElement("i");
+    div_close.setAttribute("class", "bi bi-x-lg btn_close  ");
+    div_close.addEventListener("click", function () {
+      document.querySelectorAll("p-search").forEach((eel) => eel.remove());
+      // history.replaceState({ page: 1}, "", `/`);
+    });
+    this.btn_clear.setAttribute("class", "bi bi-x-lg btn_clear hide");
+
+    this.btn_clear.addEventListener("click", () => this.cancelhande());
+    /*
         searchInput.value = "";
         btn_clear.classList.remove('hide');
         d.performSearch();
       });*/
 
-      div_header.appendChild(imgLogo);
-      div_header.appendChild(searchContainer);
-      div_header.appendChild(div_close);
-      div_header.appendChild(this.btn_clear);
-      div_header.appendChild(filterContainer);
-      
-      container.appendChild(resultsContainer);
+    div_header.appendChild(imgLogo);
+    div_header.appendChild(searchContainer);
+    div_header.appendChild(div_close);
+    div_header.appendChild(this.btn_clear);
+    div_header.appendChild(filterContainer);
 
-      this.shadowRoot.appendChild(style);
-      this.shadowRoot.appendChild(container);
+    container.appendChild(resultsContainer);
 
-      
-      searchInput.addEventListener("keyup", () => this.performSearch());
-      filterSelect.addEventListener("change", () => this.performSearch());
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(container);
+
+    searchInput.addEventListener("keyup", () => this.performSearch());
+    filterSelect.addEventListener("change", () => this.performSearch());
   }
 
-  cancelhande(){
+  cancelhande() {
     this.btn_clear.classList.add("hide");
     this.shadowRoot.querySelector("#search").value = "";
     this.performSearch();
@@ -643,124 +646,137 @@ class CustomSearch extends HTMLElement {
 
   handleAutocomplete(event, autocompleteDiv) {
     const query = event.target.value.toLowerCase();
-    const suggestions = ["Sample Image", "Sample Text", "Sample Video", "Sample Document", "Example Data"];
+    const suggestions = [
+      "Sample Image",
+      "Sample Text",
+      "Sample Video",
+      "Sample Document",
+      "Example Data",
+    ];
     autocompleteDiv.innerHTML = "";
-    
+
     if (query.length > 0) {
-        const filteredSuggestions = suggestions.filter(s => s.toLowerCase().includes(query));
-        filteredSuggestions.forEach(suggestion => {
-            const div = document.createElement("div");
-            div.textContent = suggestion;
-            div.addEventListener("click", () => {
-                event.target.value = suggestion;
-                autocompleteDiv.innerHTML = "";
-                this.performSearch();
-            });
-            autocompleteDiv.appendChild(div);
+      const filteredSuggestions = suggestions.filter((s) =>
+        s.toLowerCase().includes(query)
+      );
+      filteredSuggestions.forEach((suggestion) => {
+        const div = document.createElement("div");
+        div.textContent = suggestion;
+        div.addEventListener("click", () => {
+          event.target.value = suggestion;
+          autocompleteDiv.innerHTML = "";
+          this.performSearch();
         });
+        autocompleteDiv.appendChild(div);
+      });
     }
   }
-  set(q){
-    if(q.length === 0){}else{
+  set(q) {
+    if (q.length === 0) {
+    } else {
       this.shadowRoot.querySelector("#search").value = q;
-      this.performSearch()
+      this.performSearch();
     }
   }
   performSearch() {
     const query = this.shadowRoot.querySelector("#search").value.toLowerCase();
     const filter = this.shadowRoot.querySelector("#filter").value;
     const resultsContainer = this.shadowRoot.querySelector("#results");
-    
+
     // Čišćenje prethodnih rezultata pre nove pretrage
     resultsContainer.innerHTML = "";
 
     const data = this.Mydata;
-    
-    if(query.length === 0){
-      this.btn_clear.classList.add('hide');
-    //  history.replaceState(history.state, "",`/?p=search`); 
-       return;
+
+    if (query.length === 0) {
+      this.btn_clear.classList.add("hide");
+      //  history.replaceState(history.state, "",`/?p=search`);
+      return;
     }
 
-    const filteredData = data.filter(item => 
-        (filter === "all" || item.type === filter) && item.title.toLowerCase().includes(query)
+    const filteredData = data.filter(
+      (item) =>
+        (filter === "all" || item.type === filter) &&
+        item.title.toLowerCase().includes(query)
     );
-    this.btn_clear.classList.remove('hide');
+    this.btn_clear.classList.remove("hide");
     //history.replaceState(history.state, "",`/?p=search&q=${query}`);
 
     filteredData.forEach((item, index) => {
-        const div = document.createElement("div"),
+      const div = document.createElement("div"),
         div_m = document.createElement("div");
-        div_m.classList.add("result_box");
-        div.appendChild(div_m);
-         div.classList.add("result");
+      div_m.classList.add("result_box");
+      div.appendChild(div_m);
+      div.classList.add("result");
 
-        let titleSpan = document.createElement("span");
-        titleSpan.textContent = item.title;
-        div_m.appendChild(titleSpan);
+      let titleSpan = document.createElement("span");
+      titleSpan.textContent = item.title;
+      div_m.appendChild(titleSpan);
 
-        if (item.type === "image") {
-            const img = document.createElement("img");
-            img.src = item.thumb;
-            img.setAttribute("loading","lazy");
-            img.alt = item.title;
-            img.setAttribute("style","transform: scale(0);");
-            img.onload = function(){
-              img.removeAttribute("style");
-            };
-            div_m.appendChild(img);
-        } else if (item.type === "text") {
-            let textSpan = document.createElement("span"); 
-            textSpan.textContent = item.content.length > 25 ? item.content.substring(0, 25) + "..." : item.content;
-            div_m.appendChild(textSpan);
-        } else if (item.type === "video") {
-            const video = document.createElement("video");
-            video.controls = true;
-            const source = document.createElement("source");
-            source.src = item.url;
-            source.type = "video/mp4";
-            video.appendChild(source);
-            div_m.appendChild(video);
-        } else if (item.type === "document") {
-            const iframe = document.createElement("iframe");
-            iframe.src = item.url;
-            div_m.appendChild(iframe);
-        }
-        const cat = document.createElement("div"),
+      if (item.type === "image") {
+        const img = document.createElement("img");
+        img.src = item.thumb;
+        img.setAttribute("loading", "lazy");
+        img.alt = item.title;
+        img.setAttribute("style", "transform: scale(0);");
+        img.onload = function () {
+          img.removeAttribute("style");
+        };
+        div_m.appendChild(img);
+      } else if (item.type === "text") {
+        let textSpan = document.createElement("span");
+        textSpan.textContent =
+          item.content.length > 25
+            ? item.content.substring(0, 25) + "..."
+            : item.content;
+        div_m.appendChild(textSpan);
+      } else if (item.type === "video") {
+        const video = document.createElement("video");
+        video.controls = true;
+        const source = document.createElement("source");
+        source.src = item.url;
+        source.type = "video/mp4";
+        video.appendChild(source);
+        div_m.appendChild(video);
+      } else if (item.type === "document") {
+        const iframe = document.createElement("iframe");
+        iframe.src = item.url;
+        div_m.appendChild(iframe);
+      }
+      const cat = document.createElement("div"),
         cat_i = document.createElement("i");
-        cat.classList.add('cat');
-        if (item.cat == "blog"){
-              cat_i.setAttribute("class","bi bi-files-alt");
-              // cat.appendChild(cat_i); 
-        } 
-        if (item.cat == "projects"){
-          cat_i.setAttribute("class","bi bi-files-alt"); 
-    } 
+      cat.classList.add("cat");
+      if (item.cat == "blog") {
+        cat_i.setAttribute("class", "bi bi-files-alt");
+        // cat.appendChild(cat_i);
+      }
+      if (item.cat == "projects") {
+        cat_i.setAttribute("class", "bi bi-files-alt");
+      }
 
-
-        
-    cat.appendChild(document.createTextNode(item.cat.toUpperCase()));
-        div_m.appendChild(cat);
-        div.addEventListener("click", function()  {
-          if(item.cat == "blog"){
+      cat.appendChild(document.createTextNode(item.cat.toUpperCase()));
+      div_m.appendChild(cat);
+      div.addEventListener(
+        "click",
+        function () {
+          if (item.cat == "blog") {
             window.welcomer.blogloader(item.id);
-            document.querySelector('p-search').remove();
+            document.querySelector("p-search").remove();
           }
-          if(item.cat == "projects"){
+          if (item.cat == "projects") {
+          }
+          if (!item.link == "") {
+            document.querySelector("p-search").remove();
+          }
+        },
+        true
+      );
 
-            
-          }
-          if(!item.link == ""){
-          document.querySelector('p-search').remove();
-          }
-        },true);
-       
-        
-        // setTimeout(() => {
-            resultsContainer.appendChild(div);
-        // }, index * 200);
+      // setTimeout(() => {
+      resultsContainer.appendChild(div);
+      // }, index * 200);
     });
-}
+  }
 }
 class EditorSDK extends HTMLElement {
   constructor() {
@@ -2350,20 +2366,20 @@ class PostContent extends HTMLElement {
     }
   }
 
-  parseMe(id){
+  parseMe(id) {
     var data = [];
-    window.portfolio.data.blog.forEach(function(et){
-      if(et['id'] == id){
-          data = et;
-          return true;
+    window.portfolio.data.blog.forEach(function (et) {
+      if (et["id"] == id) {
+        data = et;
+        return true;
       }
     });
     this.post_data = data;
   }
-  foreach_data_hashs(el,data){
-     const tag = document.createElement("tag");
-     tag.textContent = "#" + data;
-     el.appendChild(tag);
+  foreach_data_hashs(el, data) {
+    const tag = document.createElement("tag");
+    tag.textContent = "#" + data;
+    el.appendChild(tag);
   }
   constructor() {
     super();
@@ -2373,50 +2389,78 @@ class PostContent extends HTMLElement {
     const template = document.createElement("template");
 
     const style = document.createElement("style"),
-    tags = document.createElement("tags"),
+      tags = document.createElement("tags"),
       div_content = document.createElement("div_content");
 
-      const urlParamsf = new URLSearchParams(window.location.search);   
-      if (urlParamsf.has("id")) {
-        this.parseMe(urlParamsf.get('id'));
-        console.log(this.post_data);
-        for (var i = 0; i < this.post_data['keywords'].length; i++){
-          const tag = document.createElement("tag");
-          tag.textContent = "#" + this.post_data['keywords'][i];
-         tags.appendChild(tag);
-        }
-   
+    const urlParamsf = new URLSearchParams(window.location.search);
+    if (urlParamsf.has("id")) {
+      this.parseMe(urlParamsf.get("id"));
+
+      for (var i = 0; i < this.post_data["category"].length; i++) {
+        const tag = document.createElement("tag");
+        tag.textContent = "#" + this.post_data["category"][i];
+      //  tags.appendChild(tag);
       }
- 
+    }
+
     style.textContent = `${window.atob(
       window.portfolio.data.blog_style_bundle
     )} 
+tags {
 
-    tags {
-    
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
     display: inline-flex;
-    padding: 5px 30px;
-    }
+    padding: 0px 15px;
+    padding-bottom: 0px;
+    padding-top: 5px;
+}
 
-    tags tag { 
-          background: white;
-    color: #333 !important; 
-    padding: 5px 10px;
+tags a {
+    background: white;
+    color: #333 !important;
+    padding: 3px 8px;
     border-radius: 6px;
     font-size: 11px;
-    }
+    margin-right: 10px;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+    enable-background: new 0 0 512 512 !important;
+    border: 2px solid white; 
+    cursor: pointer;
+}
 
-    :::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}
-    
-    div#controls {
+tags a:hover {
+    background: var(--black-trasparent-color);
+    color: white !important; 
+}
+
+:::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--cdn_white);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+div#controls {
     position: fixed;
     right: 20px;
     top: 70px;
     background: var(--black-trasparent-color);
+    display: -ms-grid;
     display: grid;
     z-index: 333333;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
     justify-content: center;
     padding-bottom: 10px;
     border-radius: 150px;
@@ -2443,17 +2487,24 @@ div#controls img.top_control {
     margin-bottom: 0px;
     padding: 0px;
 }
+
 div#controls separator {
     background: white;
     height: 1px;
     opacity: 0.3;
-    width:100%;
-  }
-    div.content-wrapper.rotation_manual ,
-    img#zoomImage.rotation_manual {
-      transition: transform .5s ease !important;
-      pointer-events:none;
-    }
+    width: 100%;
+}
+
+div.content-wrapper.rotation_manual,
+img#zoomImage.rotation_manual {
+    -webkit-transition: -webkit-transform .5s ease !important;
+    transition: -webkit-transform .5s ease !important;
+    -o-transition: transform .5s ease !important;
+    transition: transform .5s ease !important;
+    transition: transform .5s ease, -webkit-transform .5s ease !important;
+    pointer-events: none;
+}
+
 div#controls img.top_control {
     color: white;
     font-size: 25px;
@@ -2471,6 +2522,7 @@ div#controls img.top_control {
     margin-bottom: 0px;
     padding: 0px;
 }
+
 div#controls img.close_control {
     color: white;
     font-size: 25px;
@@ -2493,7 +2545,7 @@ div#controls img.close_control {
 }
 
 div#controls img.bottom_rotate {
- color: white;
+    color: white;
     font-size: 25px;
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
@@ -2512,6 +2564,7 @@ div#controls img.bottom_rotate {
     padding: 0px;
     margin-top: 0px;
 }
+
 div#controls img.bottom_control {
     color: white;
     font-size: 25px;
@@ -2532,16 +2585,17 @@ div#controls img.bottom_control {
     padding: 0px;
     margin-top: 0px;
 }
-div#controls span.precent_control {
 
-color: white;
-text-align: center;
-margin: auto;
-display: block;
-font-size: 8px;
-padding: 0px 10px !important; 
-margin-top: 3px;
+div#controls span.precent_control { 
+    color: white;
+    text-align: center;
+    margin: auto;
+    display: block;
+    font-size: 8px;
+    padding: 0px 10px !important;
+    margin-top: 3px;
 }
+
 div#controls img {
     opacity: 0.8 !important;
 }
@@ -2552,7 +2606,7 @@ div#controls img:hover {
     `;
     shadow.appendChild(style);
     /* template.innerHTML = ` <div_content> </div_content>`;*/
-  //  shadow.appendChild(tags);
+    shadow.appendChild(tags);
     shadow.appendChild(div_content);
     const child = shadow.querySelector(".content-wrapper");
     // var aer =
@@ -2574,12 +2628,30 @@ div#controls img:hover {
       shared_links: [],
     }
   ) {
-    
     const div_content = this.shadowRoot.querySelector("div_content");
     // div_content.innerHTML = `${data}`;
     div_content.textContent = "";
     div_content.appendChild(this.HTML_PARSE(data));
+    const tags = this.shadowRoot.querySelector("tags");
+    const urlParamsf = new URLSearchParams(window.location.search);
+    if (urlParamsf.has("id")) {
+      this.parseMe(urlParamsf.get("id"));
+      this.parseMe(urlParamsf.get("id"));
 
+      for (var i = 0; i < this.post_data["category"].length; i++) {
+        const tag = document.createElement("a");
+        tag.textContent = "#" + this.post_data["category"][i];
+        tag.title = `Open ${this.post_data["category"][i]} Category in new tab`;
+        tag.setAttribute("href", `/?p=blog&c=${this.post_data['category'][i]}`);
+        tag.target = "_top";
+        /* 
+        tag.addEventListener("click", function(){
+            window.top.location.href = `/?p=blog&c=${this.post_data['category'][i]}`;
+        });*/
+        
+       tags.appendChild(tag);
+      }
+    }
     welcomer.cards_generateV2(div_content, url);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
@@ -3086,7 +3158,7 @@ const welcomer = {
         };
         return f;
       });
-      if(!customElements.get("custom-combobox")){
+      if (!customElements.get("custom-combobox")) {
         customElements.define("custom-combobox", CustomCombobox);
       }
       if (!customElements.get("p-search")) {
@@ -5743,7 +5815,7 @@ document.querySelector("body").appendChild(parser.body);
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p");
     const myParam_id = urlParams.get("id");
-    const myParam_query = urlParams.get('q');
+    const myParam_query = urlParams.get("q");
     if (myParam !== null) {
       if (myParam == "blog") {
         this.blogloader(myParam_id);
@@ -5755,9 +5827,9 @@ document.querySelector("body").appendChild(parser.body);
         if (myParam == "search") {
           const p_search = document.createElement("p-search");
           document.body.appendChild(p_search);
-          if(myParam_query !== null){
-            if(myParam_query.length > 1){
-              p_search.set(myParam_query)
+          if (myParam_query !== null) {
+            if (myParam_query.length > 1) {
+              p_search.set(myParam_query);
             }
           }
           return;

@@ -3104,8 +3104,8 @@ div#clavs br_ta ta_f.active span {
             filter: invert(1) !important;
         }
 
-        ta_f[data-category="technews"],
-        ta_f[data-category="technews"] * {
+        ta_f[data-category="technews"]:not([data-scn="nasa"]),
+        ta_f[data-category="technews"] *:not([data-scn="nasa"]) {
             pointer-events: none;
         }
 
@@ -3425,6 +3425,9 @@ div#clavs br_ta ta_f.active span {
         #buttons {
             background: #ffffff08;
         }
+        div#clavs.scrollactive br_ta * {
+    transition: .2s !important;
+}
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

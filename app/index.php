@@ -1289,152 +1289,105 @@ class portfolio_marko
     }
     function MetaTags()
     {
-
-
-        $r = json_decode($this->get_data([
-            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-            "headers" => [
-                'Content-Type: application/json',
-                'Authorization: Bearer 32M052k350QaeofkaeopfF',
-            ]
-        ]), true);
-        $person = $r['data']['blog'];
-        //$person = json_decode(file_get_contents(ROOT . "/data_s/blog/blgd.json"), true);
         $data = null;
-
-
+        $title = "Marko Nikolić";
+        $description = "Is my personal website.";
+        $keywords = "Marko Nikolić, IT, developer, blog, portfolio";
+        $ogImage = SITE_HOST . "/?mnps=image_og&v=" . time();
+        $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
+    
         if (!empty($_GET['id']) || !empty($_GET['blog'])) {
-            $off = false;
-
-            foreach ($person as $key => $value) {
-                if ("$value[id]" == "$_GET[id]") {
+            $r = json_decode($this->get_data([
+                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "headers" => [
+                    'Content-Type: application/json',
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                ]
+            ]), true);
+    
+            $person = $r['data']['blog'];
+    
+            foreach ($person as $value) {
+                if ((string)$value['id'] === (string)$_GET['id']) {
                     $data = $value;
+                    break;
                 }
             }
-            $c_category_get = "";
-            if (!empty($_GET['c'])) {
-                $c_category_get = " $_GET[c] ";
+    
+            if ($data) {
+                $cat = !empty($_GET['c']) ? $_GET['c'] : "";
+                $title = "Blog > $cat {$data['title']} | Marko Nikolić";
+                $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
+                $keywords = implode(",", $data['keywords']);
+                $ogImage = "{$data['thumbail']}&for=og&v=" . time();
             }
-
-            echo '<title >';
-
-
-            $title = "Blog > $c_category_get $data[title] | Marko Nikolić";
-            echo $title;
+        } elseif (!empty($_GET['p'])) {
+            switch ($_GET['p']) {
+                case 'cv-pdf':
+                    $title = "Marko Nikolić > CV";
+                    break;
+                case 'visitcard':
+                    $title = "Marko Nikolić > Visitcard";
+                    break;
+                case 'Projects':
+                    $title = "Marko Nikolić > Projects";
+                    break;
+                case 'blog':
+                    $cat = !empty($_GET['c']) ? $_GET['c'] : "";
+                    $title = "Blog > $cat | Marko Nikolić";
+                    break;
+            }
+        } 
         ?>
-            </title>
-            <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="<?php echo "$data[title]"; ?> | Marko Nikolić IT. Is my personal website. ">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-            <meta name="author" content="Marko Nikolic">
-            <meta name="keywords" content="<?php
-                                            /*$t = "";
-foreach($data->keywords as $index => $v){
-echo $v .",";
-}*/
-                                            $faf = $data["keywords"];
-                                            $c = count($data["keywords"]);
-                                            $ci = 0;
-                                            foreach ($faf as $v) {
-                                                echo $v;
-                                                if ($ci < $c) {
-                                                    echo ",";
-                                                }
-                                                $ci++;
-                                            }
-                                            ?>">
-
-            <meta name="theme-color" content="#333">
-            <meta property="og:type" content="website" />
-            <meta name="author" content="Marko Nikolic">
-            <link rel="manifest" href="/manifest.webmanifest">
-
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:site" content="@markoni62595164" />
-            <meta name="twitter:creator" content="@markoni62595164" />
-            <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
-            <meta property="og:title" content="<?php echo $title; ?>" />
-            <meta property="og:description" content="<?php echo "$data[title]"; ?> | Marko Nikolić IT. Is my personal website. ">
-            <meta property="og:image" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url" content="<?php echo $data["thumbail"]; ?>&for=og&v=<?php echo time(); ?>" />
-            <meta property="og:image:type" content="image/png" />
-            <meta property="og:image:width" content="1024">
-            <meta property="og:image:height" content="630">
-            <meta property="og:locale" content="en_GB" />
-        <?php
-
-
-
-        } else {
-            $ttitle_attr = "";
-            if (!empty($_GET['p'])) {
-                if ($_GET['p'] == "cv-pdf") {
-                    $ttitle_attr = "Marko Nikolić > CV";
-                } else if ($_GET['p'] == "visitcard") {
-                    $ttitle_attr = "Marko Nikolić > Visitcard";
-                } else if ($_GET['p'] == "Projects") {
-                    $ttitle_attr = "Marko Nikolić > Projects";
-                } else if ($_GET['p'] == "blog") {
-                    if (!empty($_GET['c'])) {
-                        $ttitle_attr = "Blog > $_GET[c] > Marko Nikolić";
-                    }
-                } else {
-                    $ttitle_attr = "Marko Nikolić";
-                }
-            } else {
-                $ttitle_attr = "Marko Nikolić";
-            }
-        ?>
-            <title>
-                <?php
-                if (!empty($_GET['p'])) {
-                    if ($_GET['p'] == "cv-pdf") {
-                        echo "Marko Nikolić > CV";
-                    } else if ($_GET['p'] == "visitcard") {
-                        echo "Marko Nikolić > Visitcard";
-                    } else if ($_GET['p'] == "Projects") {
-                        echo "Marko Nikolić > Projects";
-                    } else if ($_GET['p'] == "blog") {
-                        if (!empty($_GET['c'])) {
-                            echo "Blog > $_GET[c] | Marko Nikolić";
-                        }
-                    } else {
-                        echo "Marko Nikolić";
-                    }
-                } else {
-                    echo "Marko Nikolić";
-                }
-                ?>
-            </title>
-            <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-            <meta name="description" content="Is my personal website. ">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
-            <meta name="author" content="Marko Nikolic">
-
-            <meta name="theme-color" content="#333">
-            <meta property="og:type" content="website" />
-            <meta name="author" content="Marko Nikolic">
-            <link rel="manifest" href="/manifest.webmanifest">
-
-            <meta name="twitter:card" content="summary" />
-            <meta name="twitter:site" content="@markoni62595164" />
-            <meta name="twitter:creator" content="@markoni62595164" />
-            <meta property="og:url" content="<?php echo SITE_HOST . $_SERVER['REQUEST_URI']; ?>" />
-            <meta property="og:title" content="<?php echo $ttitle_attr; ?>" />
-            <meta property="og:description" content="Is my personal website." />
-            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image" itemprop="image" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:url" itemprop="image"
-                content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:secure_url" content="<?php echo SITE_HOST; ?>/?mnps=image_og&v=<?php echo time(); ?>" />
-            <meta property="og:image:type" content="image/png" />
-            <meta property="og:image:width" content="1024">
-            <meta property="og:image:height" content="630">
-            <meta property="og:locale" content="en_GB" />
-            <?php
+        <title><?php echo htmlspecialchars($title); ?></title>
+        <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
+        <meta name="description" content="<?php echo htmlspecialchars($description); ?>">
+        <meta name="keywords" content="<?php echo htmlspecialchars($keywords); ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
+        <meta name="author" content="Marko Nikolic">
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="<?php echo $canonicalUrl; ?>" />
+        <meta name="theme-color" content="#333">
+    
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="<?php echo $canonicalUrl; ?>" />
+        <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>" />
+        <meta property="og:description" content="<?php echo htmlspecialchars($description); ?>" />
+        <meta property="og:image" content="<?php echo $ogImage; ?>" />
+        <meta property="og:image:secure_url" content="<?php echo $ogImage; ?>" />
+        <meta property="og:image:type" content="image/png" />
+        <meta property="og:image:width" content="1024" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:locale" content="en_GB" />
+        <meta property="og:site_name" content="Marko Nikolić" />
+    
+        <!-- Twitter -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@markoni62595164" />
+        <meta name="twitter:creator" content="@markoni62595164" />
+        <meta name="twitter:title" content="<?php echo htmlspecialchars($title); ?>" />
+        <meta name="twitter:description" content="<?php echo htmlspecialchars($description); ?>" />
+        <meta name="twitter:image" content="<?php echo $ogImage; ?>" /> 
+        <link rel="manifest" href="/manifest.webmanifest"> 
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "url": "<?php echo SITE_HOST; ?>",
+            "name": "Marko Nikolić",
+            "author": {
+                "@type": "Person",
+                "name": "Marko Nikolić"
+            },
+            "description": "<?php echo htmlspecialchars($description); ?>",
+            "inLanguage": "en-GB"
         }
+        </script>
+        <?php
     }
+    
+
     function error_page($status)
     {
 

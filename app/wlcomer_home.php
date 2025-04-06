@@ -235,10 +235,12 @@ ob_start(function ($b) {
     return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
 });
 header("Content-Type: text/html charset=utf-8");
+//self::MetaTags();
+//exit();
 ?>
 <!DOCTYPE html>
-<html id="themes_html" lang="en" data-location="<?= "GM 213 - 3LOC4SE24"; ?>" class="no-js"
-    prefix="og: https://ogp.me/ns#" data-rand="<?php echo $rand; ?>">
+<html id="themes_html" lang="en" data-location="<?= "GM213-3LOC4SE24"; ?>" class="no-js" prefix="og: https://ogp.me/ns#"
+    data-rand="<?php echo $rand; ?>">
 
 <head>
     <meta charset="utf-8">
@@ -3410,7 +3412,7 @@ div#clavs br_ta ta_f.active span {
             opacity: 1;
         }
 
-        p-search { 
+        p-search {
             position: fixed;
             z-index: 3333;
             left: 0px;
@@ -3425,9 +3427,44 @@ div#clavs br_ta ta_f.active span {
         #buttons {
             background: #ffffff08;
         }
+
         div#clavs.scrollactive br_ta * {
-    transition: .2s !important;
-}
+            transition: .2s !important;
+        }
+
+        project grider_box div_txt {
+
+            position: absolute;
+            left: 0px;
+            top: 34px;
+            right: 0px;
+            bottom: 0px;
+            border: 3px solid var(--primary_light);
+            width: 100%;
+            /* padding: 2px !important; */
+            border-top: 0px;
+            box-shadow: none;
+            filter: none;
+            height: calc(100% - 50px);
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+
+        }
+
+        project grider_box div_txt txt_f {
+
+            display: block;
+            height: 100%;
+            background: #000000;
+            color: white;
+            padding: 10px;
+            overflow: hidden;
+            width: 100%;
+            font-size: 11px;
+            text-align: justify;
+            mask-image: linear-gradient(180deg, #ffffff, transparent);
+
+        }
     </style>
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>

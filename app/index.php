@@ -48,7 +48,8 @@ class RSS
     public function getOgImage($url)
     {
         $html = @file_get_contents($url);
-        if (!$html) return "";
+        if (!$html)
+            return "";
 
         $doc = new DOMDocument();
         @$doc->loadHTML($html);
@@ -74,11 +75,54 @@ class RSS
             "CNN" => "http://rss.cnn.com/rss/edition.rss"
         ];
         $forbidden_words = [
-            "porno", "seks", "adult", "xxx", "nasilje", "ubistvo", "krv", "rat",
-            "violence", "murder", "blood", "war", "terror", "kill", "death", "gun", "weapon", "abuse",
-            "violence", "meurtre", "sang", "guerre", "terreur", "tuer", "mort", "arme", "abus", "crime",
-            "gewalt", "mord", "blut", "krieg", "terror", "töten", "tod", "waffe", "missbrauch", "verbrechen",
-            "насилие", "убийство", "кровь", "война", "террор", "убить", "смерть", "оружие", "преступление", "жестокость"
+            "porno",
+            "seks",
+            "adult",
+            "xxx",
+            "nasilje",
+            "ubistvo",
+            "krv",
+            "rat",
+            "violence",
+            "murder",
+            "blood",
+            "war",
+            "terror",
+            "kill",
+            "death",
+            "gun",
+            "weapon",
+            "abuse",
+            "violence",
+            "meurtre",
+            "sang",
+            "guerre",
+            "terreur",
+            "tuer",
+            "mort",
+            "arme",
+            "abus",
+            "crime",
+            "gewalt",
+            "mord",
+            "blut",
+            "krieg",
+            "terror",
+            "töten",
+            "tod",
+            "waffe",
+            "missbrauch",
+            "verbrechen",
+            "насилие",
+            "убийство",
+            "кровь",
+            "война",
+            "террор",
+            "убить",
+            "смерть",
+            "оружие",
+            "преступление",
+            "жестокость"
         ];
         $news = [];
 
@@ -89,9 +133,9 @@ class RSS
                     $title = (string) $item->title;
                     $description = (string) $item->description;
                     $link = (string) $item->link;
-                    $pubDate = (string) $item->pubDate; 
+                    $pubDate = (string) $item->pubDate;
                     $formattedDate = date("Y-m-d H:i:s", strtotime($pubDate));
-         
+
                     $is_forbidden = false;
                     foreach ($forbidden_words as $word) {
                         if (stripos($title, $word) !== false || stripos($description, $word) !== false) {
@@ -99,10 +143,11 @@ class RSS
                             break;
                         }
                     }
-                    if ($is_forbidden) continue;
-         
+                    if ($is_forbidden)
+                        continue;
+
                     $og_image = self::getOgImage($link);
-        
+
                     $news[] = [
                         "source" => $source,
                         "title" => $title,
@@ -112,10 +157,10 @@ class RSS
                     ];
                 }
             }
-        } 
+        }
         usort($news, fn($a, $b) => strtotime($b["date"]) - strtotime($a["date"]));
         return json_encode($news, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-    } 
+    }
     /**
      * Summary of RSSFEED
      * @param mixed $rss_url
@@ -155,7 +200,9 @@ class RSS
 
     /**
      */
-    public function __construct() {}
+    public function __construct()
+    {
+    }
 }
 
 //  header("Access-Control-Allow-Origin: *"); 
@@ -411,6 +458,43 @@ class portfolio_marko
             $pages_base64 = base64_encode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/visitcard/index1.php"));
         }
         return $pages_base64;
+    }
+    /**
+     * Summary of getOpenGraphData
+     * @param mixed $url
+     * @return string[]|null
+     */
+    public function getOpenGraphData($url)
+    {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36',
+            CURLOPT_TIMEOUT => 10,
+        ]);
+        $html = curl_exec($ch);
+        curl_close($ch);
+
+        if (!$html)
+            return null;
+
+        libxml_use_internal_errors(true);
+        $doc = new DOMDocument();
+        @$doc->loadHTML($html);
+
+        $tags = $doc->getElementsByTagName('meta');
+        $ogData = [];
+
+        foreach ($tags as $tag) {
+            if ($tag->hasAttribute('property') && strpos($tag->getAttribute('property'), 'og:') === 0) {
+                $property = str_replace('og:', '', $tag->getAttribute('property'));
+                $content = $tag->getAttribute('content');
+                $ogData[$property] = $content;
+            }
+        }
+
+        return $ogData;
     }
     public function get_data(
         $r = [
@@ -676,7 +760,7 @@ class portfolio_marko
                     return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
                 });
 
-?>
+                ?>
 
                 <html>
 
@@ -708,24 +792,24 @@ class portfolio_marko
                         </p>
                     </video>
                     <script async type="text/javascript">
-                        f = function() {
-                            document.addEventListener("contextmenu", function(e) {
+                        f = function () {
+                            document.addEventListener("contextmenu", function (e) {
                                 e.preventDefault();
                                 return false;
                             });
-                            document.addEventListener("selectstart", function(e) {
+                            document.addEventListener("selectstart", function (e) {
                                 e.preventDefault();
                                 return false;
                             });
-                            document.addEventListener("dragstart", function(e) {
+                            document.addEventListener("dragstart", function (e) {
                                 e.preventDefault();
                                 return false;
                             });
-                            document.querySelectorAll("script").forEach(function(res) {
+                            document.querySelectorAll("script").forEach(function (res) {
                                 res.remove();
                                 console.clear();
                             });
-                            document.addEventListener('keydown', function(event) {
+                            document.addEventListener('keydown', function (event) {
                                 if ((event.ctrlKey || event.metaKey) && event.key === 's') {
                                     event.preventDefault();
 
@@ -742,7 +826,7 @@ class portfolio_marko
 
                 </html>
 
-            <?php
+                <?php
                 exit();
             } else {
                 $this->error_page(404);
@@ -796,18 +880,18 @@ class portfolio_marko
             </style>
             <div id="root" class="solarsystem"></div>
             <script type="module" src="/demo&id=S3503&hangar=main" nonce="<?php echo $nonce; ?>"></script>
-        <?php exit();
+            <?php exit();
         }
         if ($h == "controls_plus") {
             header('Content-Type: image/svg+xml');
             ob_start();
-        ?>
+            ?>
             <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
                 <path
                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
             </svg>
 
-        <?php $b = ob_get_clean();
+            <?php $b = ob_get_clean();
             echo self::minifySVG($b);
             exit();
         }
@@ -817,31 +901,31 @@ class portfolio_marko
         if ($h == 'controls_close') {
             header('Content-Type: image/svg+xml');
             ob_start();
-        ?>
+            ?>
             <svg xmlns="http://www.w3.org/2000/svg" fill="#b14747" viewBox="0 0 16 16">
                 <path
                     d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z" />
             </svg>
-        <?php $b = ob_get_clean();
+            <?php $b = ob_get_clean();
             echo self::minifySVG($b);
             exit();
         }
         if ($h == "controls_minus") {
             header('Content-Type: image/svg+xml');
             ob_start();
-        ?>
+            ?>
             <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 16 16">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z" />
             </svg>
 
-        <?php $b = ob_get_clean();
+            <?php $b = ob_get_clean();
             echo self::minifySVG($b);
             exit();
         }
         if ($h == "loader") {
             header('Content-Type: image/svg+xml');
             ob_start();
-        ?>
+            ?>
 
             <svg class="Vjideo_sjpinner Vjideo_sjpinner_center" xmlns="http://www.w3.org/2000/svg" height="50" width="50"
                 viewBox="0 0 50 50" style="
@@ -923,7 +1007,7 @@ class portfolio_marko
                 </style>
                 <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle>
             </svg>
-        <?php
+            <?php
             $b = ob_get_clean();
             echo self::minifySVG($b);
             exit();
@@ -938,7 +1022,7 @@ class portfolio_marko
         }
         if ($h == "logo_nasa") {
             header('Content-Type: image/svg+xml');
-        ?>
+            ?>
             <svg height="92" viewBox="0 0 110 92" width="110" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50.049" cy="45" fill="#0b3d91" r="40.14" />
                 <g fill="#fff">
@@ -977,26 +1061,38 @@ class portfolio_marko
                     <circle cx="82.479" cy="60.42" r=".45" />
                     <circle cx="76.719" cy="57.96" r=".45" />
                     <circle cx="70.839" cy="58.2" r=".45" />
-                    <path d="M58.71 12.288l1.119-.107-1.117-.063c-.035-.216-.208-.385-.426-.413l-.107-1.114-.064 1.123c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.061-1.146C58.507 12.651 58.671 12.492 58.71 12.288z" />
-                    <path d="M39.824 24.746l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.123c-.203.045-.358.214-.383.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C39.622 25.11 39.786 24.95 39.824 24.746z" />
-                    <path d="M81.659 57.684l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.123c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C81.456 58.048 81.62 57.889 81.659 57.684z" />
-                    <path d="M36.044 74.906l1.119-.107-1.117-.063c-.035-.216-.208-.385-.426-.413l-.107-1.113-.063 1.122c-.203.045-.358.214-.383.424l-1.144.104 1.152.062c.042.193.198.345.394.38l.104 1.148.062-1.146C35.841 75.27 36.006 75.11 36.044 74.906z" />
-                    <path d="M78.104 66.506l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.122c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C77.901 66.87 78.066 66.71 78.104 66.506z" />
-                    <path d="M59.568 35.385c-4.667 1.814-9.219 3.433-13.06 4.635-7.805 2.444-29.16 9.06-42.06 17.4l1.08.42c7.86-4.44 12.969-5.835 17.88-7.38 5.34-1.68 22.603-5.72 30.42-7.92 2.641-.743 5.734-1.716 9.01-2.9-.762-1.063-1.566-2.129-2.412-3.193C60.143 36.088 59.856 35.734 59.568 35.385zM65.27 43.244c-1.13.763-2.077 1.372-2.74 1.756-3.84 2.22-22.561 15-26.82 17.94s-16.08 14.1-19.56 17.34l-.12 1.319c11.22-10.08 14.74-12.566 19.2-15.959 5.52-4.2 16.939-11.97 20.82-14.46 3.71-2.38 7.056-4.569 10.059-6.572-.049-.082-.098-.164-.147-.247C65.736 43.99 65.505 43.618 65.27 43.244zM82.809 24.72c-5.466 3.204-14.081 7.071-22.439 10.352.2.245.399.492.597.741.934 1.176 1.815 2.36 2.644 3.545 6.57-2.42 13.779-5.668 19.499-9.599-2.725 2.582-11.734 9.315-17.227 13.068.283.461.557.922.822 1.381 8.322-5.569 13.922-9.668 17.185-12.409 4.5-3.78 14.76-12.24 18.66-23.58C95.709 16.92 87.621 21.899 82.809 24.72z" fill="#fc3d21" />
-                    <path d="M44.884 54.939c-.885-1.114-2.109-2.606-3.028-3.763-1.229-1.547-2.366-3.11-3.408-4.671-.34.085-.679.17-1.018.255 1.258 1.963 2.655 3.923 4.177 5.839 1.112 1.4 2.123 2.527 2.641 3.228.105.142.313.456.594.874.324-.22.651-.442.981-.666C45.504 55.688 45.189 55.323 44.884 54.939zM51.344 60.803c-.727-.688-2.49-1.837-4.325-3.561-.405.278-.814.56-1.224.844 1.185 1.67 2.799 3.721 4.063 4.319C51.762 63.307 52.275 61.685 51.344 60.803zM60.967 35.813c-10.492-13.206-23.309-20.461-28.835-16.07-4.292 3.41-2.53 13.376 3.386 23.845.306-.105.609-.208.909-.31-5.971-10.2-7.605-19.679-3.557-22.896 5.087-4.042 17.37 3.241 27.558 16.064 2.109 2.654 3.963 5.318 5.533 7.915 6.012 9.95 7.857 18.948 3.703 22.621-1.271 1.124-5.155 1.565-10.243-.725-.071.089.043.33.132.389 4.392 1.766 8.599 2.439 10.723.752C75.38 63.342 71.459 49.019 60.967 35.813z" />
-                    <path d="M15.969 37.38h6.72l5.64 9.57c0 0 0-6.93 0-7.47 0-.84-1.065-1.935-1.44-2.1.45 0 4.38 0 4.65 0-.285.075-1.2 1.185-1.2 2.1 0 .45 0 10.5 0 10.98 0 .675.975 1.605 1.44 1.965h-6.48l-5.73-9.615c0 0 0 7.17 0 7.56 0 .75.735 1.47 1.5 2.085h-4.95c.705-.3 1.38-1.245 1.44-1.995s0-10.425 0-10.845C17.559 38.7 16.674 37.95 15.969 37.38z" />
-                    <path d="M77.439 52.425h8.94c-.495-.12-1.05-.705-1.35-1.485-.3-.78-5.04-13.56-5.04-13.56H76.59c-.964.694-1.997 1.426-3.1 2.197-.003.028-.006.056-.011.083-.148.9-2.808 10.534-2.97 11.01-.225.66-1.38 1.395-1.845 1.785h4.815c-.48-.54-.87-1.065-.78-1.665.09-.6.36-1.8.36-1.8h4.98c.225.6.393 1.139.48 1.65C78.624 51.255 77.994 51.945 77.439 52.425zM73.509 47.07l1.68-5.49 2.22 5.49H73.509zM72.752 37.928c.247-.182.495-.365.742-.548h-1.305C72.319 37.5 72.534 37.689 72.752 37.928z" />
-                    <path d="M38.559 50.79c.09-.6.36-1.8.36-1.8h4.98c.225.6.393 1.139.48 1.65.105.615-.525 1.305-1.08 1.785h7.871c.164-.11.327-.22.49-.329-.305-.27-.586-.675-.771-1.156-.3-.78-5.04-13.56-5.04-13.56h-7.8c.375.345 1.455 1.275 1.29 2.28-.147.9-2.808 10.534-2.97 11.01-.225.66-1.38 1.395-1.845 1.785h4.815C38.859 51.915 38.469 51.39 38.559 50.79zM41.049 41.58l2.22 5.49h-3.9L41.049 41.58z" />
-                    <path d="M65.748 44.848c-1.468.978-3.017 1.999-4.649 3.065.732.355 1.315.801 1.371 1.377.104 1.082-2.07 1.605-4.035 1.38-.393-.045-.779-.148-1.147-.286-.408.263-.82.528-1.238.796-.425.273-.941.609-1.53.997v1.553c.39-.765 1.243-1.45 1.905-1.485.285-.015 1.275.9 5.355.675 1.98-.109 5.805-2.22 5.745-4.65C67.489 46.834 66.739 45.714 65.748 44.848zM54.519 48.6v1.582c.361-.241.717-.478 1.066-.709C55.036 49.091 54.647 48.734 54.519 48.6zM64.353 43.855c-.38-.225-.765-.422-1.134-.596-1.92-.9-3.93-1.065-4.35-2.28-.296-.857.54-1.65 2.58-1.62 2.04.03 3.93 1.245 4.44 1.68v-3.87c-.15.15-.808.905-1.41.78-1.155-.24-3.12-.553-5.37-.54-2.58.015-4.8 2.009-4.875 4.53-.105 3.525 2.715 4.485 4.305 5.04.164.057.351.118.554.183 1.525-.992 2.731-1.756 3.437-2.163C63.004 44.726 63.625 44.334 64.353 43.855z" />
+                    <path
+                        d="M58.71 12.288l1.119-.107-1.117-.063c-.035-.216-.208-.385-.426-.413l-.107-1.114-.064 1.123c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.061-1.146C58.507 12.651 58.671 12.492 58.71 12.288z" />
+                    <path
+                        d="M39.824 24.746l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.123c-.203.045-.358.214-.383.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C39.622 25.11 39.786 24.95 39.824 24.746z" />
+                    <path
+                        d="M81.659 57.684l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.123c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C81.456 58.048 81.62 57.889 81.659 57.684z" />
+                    <path
+                        d="M36.044 74.906l1.119-.107-1.117-.063c-.035-.216-.208-.385-.426-.413l-.107-1.113-.063 1.122c-.203.045-.358.214-.383.424l-1.144.104 1.152.062c.042.193.198.345.394.38l.104 1.148.062-1.146C35.841 75.27 36.006 75.11 36.044 74.906z" />
+                    <path
+                        d="M78.104 66.506l1.119-.107-1.117-.063c-.034-.216-.208-.385-.426-.413l-.107-1.114-.063 1.122c-.202.045-.357.214-.382.424l-1.144.104 1.152.062c.042.193.198.344.394.38l.104 1.148.062-1.146C77.901 66.87 78.066 66.71 78.104 66.506z" />
+                    <path
+                        d="M59.568 35.385c-4.667 1.814-9.219 3.433-13.06 4.635-7.805 2.444-29.16 9.06-42.06 17.4l1.08.42c7.86-4.44 12.969-5.835 17.88-7.38 5.34-1.68 22.603-5.72 30.42-7.92 2.641-.743 5.734-1.716 9.01-2.9-.762-1.063-1.566-2.129-2.412-3.193C60.143 36.088 59.856 35.734 59.568 35.385zM65.27 43.244c-1.13.763-2.077 1.372-2.74 1.756-3.84 2.22-22.561 15-26.82 17.94s-16.08 14.1-19.56 17.34l-.12 1.319c11.22-10.08 14.74-12.566 19.2-15.959 5.52-4.2 16.939-11.97 20.82-14.46 3.71-2.38 7.056-4.569 10.059-6.572-.049-.082-.098-.164-.147-.247C65.736 43.99 65.505 43.618 65.27 43.244zM82.809 24.72c-5.466 3.204-14.081 7.071-22.439 10.352.2.245.399.492.597.741.934 1.176 1.815 2.36 2.644 3.545 6.57-2.42 13.779-5.668 19.499-9.599-2.725 2.582-11.734 9.315-17.227 13.068.283.461.557.922.822 1.381 8.322-5.569 13.922-9.668 17.185-12.409 4.5-3.78 14.76-12.24 18.66-23.58C95.709 16.92 87.621 21.899 82.809 24.72z"
+                        fill="#fc3d21" />
+                    <path
+                        d="M44.884 54.939c-.885-1.114-2.109-2.606-3.028-3.763-1.229-1.547-2.366-3.11-3.408-4.671-.34.085-.679.17-1.018.255 1.258 1.963 2.655 3.923 4.177 5.839 1.112 1.4 2.123 2.527 2.641 3.228.105.142.313.456.594.874.324-.22.651-.442.981-.666C45.504 55.688 45.189 55.323 44.884 54.939zM51.344 60.803c-.727-.688-2.49-1.837-4.325-3.561-.405.278-.814.56-1.224.844 1.185 1.67 2.799 3.721 4.063 4.319C51.762 63.307 52.275 61.685 51.344 60.803zM60.967 35.813c-10.492-13.206-23.309-20.461-28.835-16.07-4.292 3.41-2.53 13.376 3.386 23.845.306-.105.609-.208.909-.31-5.971-10.2-7.605-19.679-3.557-22.896 5.087-4.042 17.37 3.241 27.558 16.064 2.109 2.654 3.963 5.318 5.533 7.915 6.012 9.95 7.857 18.948 3.703 22.621-1.271 1.124-5.155 1.565-10.243-.725-.071.089.043.33.132.389 4.392 1.766 8.599 2.439 10.723.752C75.38 63.342 71.459 49.019 60.967 35.813z" />
+                    <path
+                        d="M15.969 37.38h6.72l5.64 9.57c0 0 0-6.93 0-7.47 0-.84-1.065-1.935-1.44-2.1.45 0 4.38 0 4.65 0-.285.075-1.2 1.185-1.2 2.1 0 .45 0 10.5 0 10.98 0 .675.975 1.605 1.44 1.965h-6.48l-5.73-9.615c0 0 0 7.17 0 7.56 0 .75.735 1.47 1.5 2.085h-4.95c.705-.3 1.38-1.245 1.44-1.995s0-10.425 0-10.845C17.559 38.7 16.674 37.95 15.969 37.38z" />
+                    <path
+                        d="M77.439 52.425h8.94c-.495-.12-1.05-.705-1.35-1.485-.3-.78-5.04-13.56-5.04-13.56H76.59c-.964.694-1.997 1.426-3.1 2.197-.003.028-.006.056-.011.083-.148.9-2.808 10.534-2.97 11.01-.225.66-1.38 1.395-1.845 1.785h4.815c-.48-.54-.87-1.065-.78-1.665.09-.6.36-1.8.36-1.8h4.98c.225.6.393 1.139.48 1.65C78.624 51.255 77.994 51.945 77.439 52.425zM73.509 47.07l1.68-5.49 2.22 5.49H73.509zM72.752 37.928c.247-.182.495-.365.742-.548h-1.305C72.319 37.5 72.534 37.689 72.752 37.928z" />
+                    <path
+                        d="M38.559 50.79c.09-.6.36-1.8.36-1.8h4.98c.225.6.393 1.139.48 1.65.105.615-.525 1.305-1.08 1.785h7.871c.164-.11.327-.22.49-.329-.305-.27-.586-.675-.771-1.156-.3-.78-5.04-13.56-5.04-13.56h-7.8c.375.345 1.455 1.275 1.29 2.28-.147.9-2.808 10.534-2.97 11.01-.225.66-1.38 1.395-1.845 1.785h4.815C38.859 51.915 38.469 51.39 38.559 50.79zM41.049 41.58l2.22 5.49h-3.9L41.049 41.58z" />
+                    <path
+                        d="M65.748 44.848c-1.468.978-3.017 1.999-4.649 3.065.732.355 1.315.801 1.371 1.377.104 1.082-2.07 1.605-4.035 1.38-.393-.045-.779-.148-1.147-.286-.408.263-.82.528-1.238.796-.425.273-.941.609-1.53.997v1.553c.39-.765 1.243-1.45 1.905-1.485.285-.015 1.275.9 5.355.675 1.98-.109 5.805-2.22 5.745-4.65C67.489 46.834 66.739 45.714 65.748 44.848zM54.519 48.6v1.582c.361-.241.717-.478 1.066-.709C55.036 49.091 54.647 48.734 54.519 48.6zM64.353 43.855c-.38-.225-.765-.422-1.134-.596-1.92-.9-3.93-1.065-4.35-2.28-.296-.857.54-1.65 2.58-1.62 2.04.03 3.93 1.245 4.44 1.68v-3.87c-.15.15-.808.905-1.41.78-1.155-.24-3.12-.553-5.37-.54-2.58.015-4.8 2.009-4.875 4.53-.105 3.525 2.715 4.485 4.305 5.04.164.057.351.118.554.183 1.525-.992 2.731-1.756 3.437-2.163C63.004 44.726 63.625 44.334 64.353 43.855z" />
                 </g>
             </svg>
 
-        <?php
+            <?php
             exit();
         }
         if ($h == "svg_logo_backscr_img") {
             header('Content-Type: image/svg+xml');
-        ?>
+            ?>
             <svg id="logo_backscr_img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
                 preserveAspectRatio="xMidYMid slice">
                 <defs>
@@ -1051,8 +1147,21 @@ class portfolio_marko
                         repeatCount="indefinite"></animateTransform>
                 </rect>
             </svg>
-        <?php
+            <?php
             exit();
+        }
+        if ($h == "garph_preview") { 
+            $this->get_data([
+            "url" => "https://api.eronelit.com/graph",
+            "headers" => [
+
+
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ],
+            "data" => [
+                "urlf" => $_GET['url']
+            ]
+        ]);
         }
         if ($h == "feed") {
             #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
@@ -1287,41 +1396,24 @@ class portfolio_marko
         echo $rss_feed;
         exit();
     }
-    function MetaTags()
+
+    public function MetaTags()
     {
-        $data = null;
+        $data = [];
         $title = "Marko Nikolić";
         $description = "Is my personal website.";
         $keywords = "Marko Nikolić, IT, developer, blog, portfolio";
         $ogImage = SITE_HOST . "/?mnps=image_og&v=" . time();
         $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
-    
-        if (!empty($_GET['id']) || !empty($_GET['blog'])) {
-            $r = json_decode($this->get_data([
-                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-                "headers" => [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                ]
-            ]), true);
-    
-            $person = $r['data']['blog'];
-    
-            foreach ($person as $value) {
-                if ((string)$value['id'] === (string)$_GET['id']) {
-                    $data = $value;
-                    break;
-                }
-            }
-    
-            if ($data) {
-                $cat = !empty($_GET['c']) ? $_GET['c'] : "";
-                $title = "Blog > $cat {$data['title']} | Marko Nikolić";
-                $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
-                $keywords = implode(",", $data['keywords']);
-                $ogImage = "{$data['thumbail']}&for=og&v=" . time();
-            }
-        } elseif (!empty($_GET['p'])) {
+        $r = json_decode($this->get_data([
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]), true);
+        if (!empty($_GET['p'])) {
+            
             switch ($_GET['p']) {
                 case 'cv-pdf':
                     $title = "Marko Nikolić > CV";
@@ -1332,14 +1424,77 @@ class portfolio_marko
                 case 'Projects':
                     $title = "Marko Nikolić > Projects";
                     break;
+                case 'gallery':
+                    $title = "Gallery | Marko Nikolić";
+
+                    $id = !empty($_GET['id']) ? $_GET['id'] : "";
+
+                    // window.portfolio.data.gallery.gallery[0]['gallery'][0]
+
+                    $gallery = $r['data']['gallery']['gallery'];
+                    if (empty($_GET['album'])) {
+                        break;
+                    }
+                    foreach ($gallery as $value) {
+                        foreach ($value as $val) {
+                            if ((string) $value['name'] === (string) $_GET['album']) {
+                                $data = $val;
+                                $title = "$data[title] - Gallery | Marko Nikolić";
+                                $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
+                                $ogImage = "$val[thumb]";
+                                if ((string) $val['id'] === (string) $id) {
+                                    $data = $val;
+                                    $title = "$data[title] - Gallery | Marko Nikolić";
+                                    $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
+                                    $ogImage = "$val[thumb]";
+                                }
+                            }
+                        }
+                    }
+
+
+                    break;
                 case 'blog':
+                    if (!empty($_GET['id']) || !empty($_GET['blog'])) {
+
+
+                        $person = $r['data']['blog'];
+            
+                        foreach ($person as $value) {
+                            if ((string) $value['id'] === (string) $_GET['id']) {
+                                $data = $value;
+                                break;
+                            }
+                        }
+            
+                        if ($data) {
+                            $cat = !empty($_GET['c']) ? $_GET['c'] : "";
+                            $title = "Blog > $cat {$data['title']} | Marko Nikolić";
+                            $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
+                            $keywords = implode(",", $data['keywords']);
+                            $ogImage = "{$data['thumbail']}&for=og&v=" . time();
+                        }
+                    } 
                     $cat = !empty($_GET['c']) ? $_GET['c'] : "";
                     $title = "Blog > $cat | Marko Nikolić";
+
+                    $person = $r['data']['blog'];
+
+                    foreach ($person as $value) {
+                        if ((string) $value['id'] === (string) $_GET['id']) {
+                            $data = $value;
+                            break;
+                        }
+                    }
+
+
+
+                    $ogImage = "{$data['thumbail']}&for=og&v=" . time();
                     break;
             }
-        } 
+        }
         ?>
-        <title><?php echo htmlspecialchars($title); ?></title>
+        <title><?php echo $title; ?></title>
         <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
         <meta name="description" content="<?php echo htmlspecialchars($description); ?>">
         <meta name="keywords" content="<?php echo htmlspecialchars($keywords); ?>">
@@ -1348,7 +1503,7 @@ class portfolio_marko
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="<?php echo $canonicalUrl; ?>" />
         <meta name="theme-color" content="#333">
-    
+
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
         <meta property="og:url" content="<?php echo $canonicalUrl; ?>" />
@@ -1361,32 +1516,32 @@ class portfolio_marko
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:site_name" content="Marko Nikolić" />
-    
+
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@markoni62595164" />
         <meta name="twitter:creator" content="@markoni62595164" />
         <meta name="twitter:title" content="<?php echo htmlspecialchars($title); ?>" />
         <meta name="twitter:description" content="<?php echo htmlspecialchars($description); ?>" />
-        <meta name="twitter:image" content="<?php echo $ogImage; ?>" /> 
-        <link rel="manifest" href="/manifest.webmanifest"> 
+        <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
+        <link rel="manifest" href="/manifest.webmanifest">
         <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            "url": "<?php echo SITE_HOST; ?>",
-            "name": "Marko Nikolić",
-            "author": {
-                "@type": "Person",
-                "name": "Marko Nikolić"
-            },
-            "description": "<?php echo htmlspecialchars($description); ?>",
-            "inLanguage": "en-GB"
-        }
-        </script>
+                                {
+                                    "@context": "https://schema.org",
+                                    "@type": "WebSite",
+                                    "url": "https://<?php echo SITE_HOST; ?>",
+                                    "name": "Marko Nikolić",
+                                    "author": {
+                                        "@type": "Person",
+                                        "name": "Marko Nikolić"
+                                    },
+                                    "description": "<?php echo htmlspecialchars($description); ?>",
+                                    "inLanguage": "en-GB"
+                                }
+                                </script>
         <?php
     }
-    
+
 
     function error_page($status)
     {
@@ -1891,7 +2046,9 @@ class portfolio_marko
         return null; // Item with the specified ID not found
     }
 
-    function wlcomer_headers_arr() {}
+    function wlcomer_headers_arr()
+    {
+    }
 
     function RUN()
     {
@@ -1920,30 +2077,30 @@ class portfolio_marko
                     } else {
                         echo file_get_contents($file);
                     } ?>
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                    <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                    <link rel="preload" as="font"
-                        href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                        type="font/woff2">
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                        rel="stylesheet">
-                    <link
-                        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                        rel="stylesheet">
-                    <?php
-                    $currentUrl = $_SERVER['REQUEST_URI'];
-                    $urlParts = explode('/', $currentUrl)[2];
-                    $dataAfterSlash = $urlParts;
-                    $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
-                    echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
-                    echo "<style type='text/css'>$css</style>";
-                    echo "<script type='text/javascript'>$js </script>";
-                    echo '<div class="cursor " style="opacity: 0;></div>';
-                    exit();
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                        <link rel="preload" as="font"
+                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                            type="font/woff2">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <link
+                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                            rel="stylesheet">
+                        <?php
+                        $currentUrl = $_SERVER['REQUEST_URI'];
+                        $urlParts = explode('/', $currentUrl)[2];
+                        $dataAfterSlash = $urlParts;
+                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $_POST['id']);
+                        echo "<dnm_footer>Last modified: $dataAfterSlash " . $r["time"] . "</dnm_footer>";
+                        echo "<style type='text/css'>$css</style>";
+                        echo "<script type='text/javascript'>$js </script>";
+                        echo '<div class="cursor " style="opacity: 0;></div>';
+                        exit();
                 } else {
                     $this->error_page(404);
                 }
@@ -1953,73 +2110,73 @@ class portfolio_marko
                     $parsed_url = parse_url($_SERVER['HTTP_REFERER']);
                     $host = $parsed_url['host'];
                     if ($host == "$_SERVER[HTTP_HOST]") {
-                    ?>
+                        ?>
 
-                        <html>
+                                <html>
 
-                        <head>
-                            <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
-                            <style>
-                                * {
-                                    margin: 0px;
-                                    padding: 0px;
-                                }
-
-                                div#my-video {
-                                    position: fixed;
-                                    left: 0px;
-                                    top: 0px;
-                                    width: 100%;
-                                    height: 100%;
-                                }
-                            </style>
-                        </head>
-
-                        <body onload="f();">
-                            <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
-                                poster="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>00" data-setup="{}">
-                                <source src="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>" type="video/mp4" />
-                                <p class="vjs-no-js">
-                                    To view this video please enable JavaScript, and consider upgrading to a
-                                    web browser that supports HTML5 video.
-                                </p>
-                            </video>
-                            <script async type="text/javascript">
-                                f = function() {
-                                    document.addEventListener("contextmenu", function(e) {
-                                        e.preventDefault();
-                                        return false;
-                                    });
-                                    document.addEventListener("selectstart", function(e) {
-                                        e.preventDefault();
-                                        return false;
-                                    });
-                                    document.addEventListener("dragstart", function(e) {
-                                        e.preventDefault();
-                                        return false;
-                                    });
-                                    document.querySelectorAll("script").forEach(function(res) {
-                                        //     res.remove();
-                                        console.clear();
-                                    });
-                                    document.addEventListener('keydown', function(event) {
-                                        if ((event.ctrlKey || event.metaKey) && event.key === 's') {
-                                            event.preventDefault();
-
+                                <head>
+                                    <link href="<?= CDN ?>/node_modules/video.js/dist/video-js.min.css" rel="stylesheet" />
+                                    <style>
+                                        * {
+                                            margin: 0px;
+                                            padding: 0px;
                                         }
-                                        if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
-                                            event.preventDefault();
 
+                                        div#my-video {
+                                            position: fixed;
+                                            left: 0px;
+                                            top: 0px;
+                                            width: 100%;
+                                            height: 100%;
                                         }
-                                    });
-                                }
-                            </script>
-                            <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
-                        </body>
+                                    </style>
+                                </head>
 
-                        </html>
+                                <body onload="f();">
+                                    <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+                                        poster="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>00" data-setup="{}">
+                                        <source src="<?php echo API_HOST . "&blog=$_GET[blog]"; ?>" type="video/mp4" />
+                                        <p class="vjs-no-js">
+                                            To view this video please enable JavaScript, and consider upgrading to a
+                                            web browser that supports HTML5 video.
+                                        </p>
+                                    </video>
+                                    <script async type="text/javascript">
+                                        f = function () {
+                                            document.addEventListener("contextmenu", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.addEventListener("selectstart", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.addEventListener("dragstart", function (e) {
+                                                e.preventDefault();
+                                                return false;
+                                            });
+                                            document.querySelectorAll("script").forEach(function (res) {
+                                                //     res.remove();
+                                                console.clear();
+                                            });
+                                            document.addEventListener('keydown', function (event) {
+                                                if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                                                    event.preventDefault();
 
-                    <?php
+                                                }
+                                                if ((event.ctrlKey || event.metaKey) && event.key === 'p') {
+                                                    event.preventDefault();
+
+                                                }
+                                            });
+                                        }
+                                    </script>
+                                    <script src="<?= CDN ?>/node_modules/video.js/dist/video.min.js"></script>
+                                </body>
+
+                                </html>
+
+                        <?php
                     } else {
                         $this->error_page(404);
                     }
@@ -2429,34 +2586,34 @@ class portfolio_marko
 
 
                         echo file_get_contents($file);
-                    ?>
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
-                        <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
-                        <link rel="preload" as="font"
-                            href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
-                            type="font/woff2">
-                        <link
-                            href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                            rel="stylesheet">
-                        <link
-                            href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-                            rel="stylesheet">
-<?php
-                        $currentUrl = $_SERVER['REQUEST_URI'];
-                        $urlParts = explode('/', $currentUrl);
+                        ?>
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/bootstrap-icons.css" as="style">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/jquery/dist/jquery.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" href="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js" as="script">
+                                                                                                                                                                                                                                                                <link rel="preload" as="font"
+                                                                                                                                                                                                                                                                    href="<?php echo CDN; ?>/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3"
+                                                                                                                                                                                                                                                                    type="font/woff2">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                                                                                                                                                                                                                                                                <link
+                                                                                                                                                                                                                                                                    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+                                                                                                                                                                                                                                                                    rel="stylesheet">
+                            <?php
+                            $currentUrl = $_SERVER['REQUEST_URI'];
+                            $urlParts = explode('/', $currentUrl);
 
-                        $urlParts = array_filter($urlParts);
+                            $urlParts = array_filter($urlParts);
 
-                        $dataAfterSlash = end($urlParts);
-                        $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
-                        echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
-                        echo "<style type='text/css'>$css</style>";
-                        echo "<script type='text/javascript'>$js </script>";
+                            $dataAfterSlash = end($urlParts);
+                            $r = $this->getItemById("$_SERVER[DOCUMENT_ROOT]/app/data_s/blog/blgd.json", $dataAfterSlash);
+                            echo "<dnm_footer>Last modified: " . $r["time"] . "</dnm_footer>";
+                            echo "<style type='text/css'>$css</style>";
+                            echo "<script type='text/javascript'>$js </script>";
 
-                        exit();
+                            exit();
                     } else {
                         $this->error_page(404);
                     }

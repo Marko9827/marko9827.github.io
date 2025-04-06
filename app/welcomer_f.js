@@ -3942,7 +3942,7 @@ document.querySelector("body").appendChild(parser.body);
         if (!galleryContainer) return;
         for (let i = 0; i < v.length; i++) {
           const project = document.createElement("project");
-          project.style.transform = "scale(0)";
+          project.style.transform = "scale(0)"; 
           const griderBox = document.createElement("grider_box");
           const p = document.createElement("p");
           const span = document.createElement("span");
@@ -4008,7 +4008,7 @@ document.querySelector("body").appendChild(parser.body);
           img.addEventListener("load", () =>
             welcomer.loaded_imgPrld(img, div_not_i)
           );
-          griderBox.appendChild(img);
+          griderBox.appendChild(img); 
           project.appendChild(griderBox);
           galleryContainer.appendChild(project);
           div_not_i++;
@@ -4082,6 +4082,7 @@ document.querySelector("body").appendChild(parser.body);
         if (varr.type == "albums") {
           for (let i = 0; i < arr.length; i++) {
             const project = document.createElement("project");
+             
             project.setAttribute("id-int", i);
             const p_open = document.createElement("p_open");
             p_open.setAttribute("data-title", "Open Album");
@@ -6028,7 +6029,7 @@ document.querySelector("body").appendChild(parser.body);
       }
       if (tt_category_name == "All" || tt_category_name == "all") {
         $("grider_viewer").append(
-          `<project data-category="${window.btoa(
+          `<project  data-category="${window.btoa(
             v?.category
           )}" ${thi}id-int="${div_not_i}" title="${
             v?.title
@@ -6054,7 +6055,7 @@ document.querySelector("body").appendChild(parser.body);
                 img_src_d = `${v.thumbail}&thumb=true`;
               }
               $("grider_viewer").append(
-                `<project data-category="${window.btoa(
+                `<project  data-category="${window.btoa(
                   v?.category
                 )}" ${thi}id-int="${div_not_i}" title="${
                   v?.title
@@ -6136,8 +6137,18 @@ document.querySelector("body").appendChild(parser.body);
       if (welcomer.isimagec(v?.category, "image")) {
         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);"> <i class="bi bi-image-fill"></i> Open image </p_open>`;
       }
+      var img_backr = "";
+      img_backr = `<img loading="lazy" ${thi} 
+      ondragstart="return false;" 
+      onload="welcomer.loaded_img(this,${div_not_i});" 
+      src="${img_src_d}" 
+      data-zoom-image="${img_src_d}" 
+      alt="${v.title}" />`;
+      if(v.type == "text"){
+        img_backr = `<div_txt>${v.description}</div_txt>`;
+      }
       $("grider_viewer").append(
-        `<project data-category="${window.btoa(
+        `<project   data-category="${window.btoa(
           v?.category
         )}" ${thi}id-int="${div_not_i}" title="${
           v?.title
@@ -6147,9 +6158,7 @@ document.querySelector("body").appendChild(parser.body);
           v.id
         });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv> <img src="${
           welcomer.loader_svg
-        }" class="loader_post" height="50" width="50" /> <img loading="lazy" ${thi}ondragstart="return false;" onload="welcomer.loaded_img(this,${div_not_i});" src="${img_src_d}" data-zoom-image="${img_src_d}" alt="${
-          v.title
-        }"> </grider_box> </project>`
+        }" class="loader_post" height="50" width="50" /> ${img_backr} </grider_box> </project>`
       );
       div_not_i++;
     });

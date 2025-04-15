@@ -2435,6 +2435,21 @@ tags a:hover {
     color: white !important; 
 }
 
+
+bdkr {
+ position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: url(/bagdes&name=text);
+    background-position: center 30dvb;
+    background-repeat: no-repeat;
+    background-size: contain;
+    opacity: 0.1;
+    z-index: -1;
+}
+
 :::-webkit-scrollbar {
     width: 5px;
 }
@@ -2648,10 +2663,17 @@ div#controls img:hover {
         tag.addEventListener("click", function(){
             window.top.location.href = `/?p=blog&c=${this.post_data['category'][i]}`;
         });*/
+        
 
         tags.appendChild(tag);
       }
+      if(`${this.post_data['id']}` == `${urlParamsf.get("id")}`) {
+        if(this.post_data['type'] == "text"){
+        div_content.appendChild(document.createElement("bdkr"));
+      }
     }
+    }
+    
     welcomer.cards_generateV2(div_content, url);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
@@ -3001,11 +3023,15 @@ const welcomer = {
         const urlParamsf = new URLSearchParams(window.location.search),
           urlParamsf_f = urlParamsf.get("c");
         if (!urlParamsf.has("c")) {
-          if(urlParamsf.has("sc")){
-            welcomer.uBoss({}, "", `/?p=blog&c=${urlParamsf_f}&sc=${urlParamsf_f_sc}`);
-            } else {
-              welcomer.uBoss({}, "", `/?p=blog&c=${urlParamsf_f}`);
-            }
+          if (urlParamsf.has("sc")) {
+            welcomer.uBoss(
+              {},
+              "",
+              `/?p=blog&c=${urlParamsf_f}&sc=${urlParamsf_f_sc}`
+            );
+          } else {
+            welcomer.uBoss({}, "", `/?p=blog&c=${urlParamsf_f}`);
+          }
           $("body").removeAttr("data-category-name");
         }
       });
@@ -3331,17 +3357,17 @@ const welcomer = {
     },
 
     category_tempator_t: function (me) {
-      document.querySelectorAll('div#clavs br_ta ta_f').forEach(el => { el.classList.remove('active');  });
+      document.querySelectorAll("div#clavs br_ta ta_f").forEach((el) => {
+        el.classList.remove("active");
+      });
 
-      document.querySelectorAll('br_ta.sub_cat').forEach(element => {
-          element.remove();
+      document.querySelectorAll("br_ta.sub_cat").forEach((element) => {
+        element.remove();
       });
       this.category_tempator({
         me: me,
         where: "html.anim_djenerated div#clavs",
-        data: [
-          "projects",
-        ],
+        data: ["projects"],
         name: me?.getAttribute("data-scn"),
         nest: true,
       });
@@ -3378,13 +3404,9 @@ const welcomer = {
       const br_ta = document.createElement("br_ta");
       if (d.nest) {
         br_ta.classList.add("sub_cat");
-        br_ta.setAttribute("style","opacity: 0;");
+        br_ta.setAttribute("style", "opacity: 0;");
       }
-      welcomer.uBoss(
-        {},
-        "",
-        `/?p=blog&c=${d.me.getAttribute("data-scn")}`
-      );
+      welcomer.uBoss({}, "", `/?p=blog&c=${d.me.getAttribute("data-scn")}`);
       var arrayrH = welcomer.remove_duplicates(d.data),
         active_scrf_2 = document.createElement("ta_f");
       active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
@@ -3395,24 +3417,27 @@ const welcomer = {
       active_scrf_2.setAttribute("class", "active");
       active_scrf_2.setAttribute("data-category", "All");
       active_scrf_2.onclick = function () {
-        document.querySelectorAll('div#clavs br_ta ta_f').forEach(el => { el.classList.remove('active');  });
+        document.querySelectorAll("div#clavs br_ta ta_f").forEach((el) => {
+          el.classList.remove("active");
+        });
 
-        document.querySelectorAll('br_ta.sub_cat').forEach(element => {
+        document.querySelectorAll("br_ta.sub_cat").forEach((element) => {
           element.remove();
         });
         welcomer.blogljoad_posts_category(
           active_scrf_2.getAttribute("data-category")
         );
-        document.querySelectorAll("div#clavs br_ta ta_f:not([data-scn])").forEach(function (r) {
-          r.classList.remove("active");
-        });
+        document
+          .querySelectorAll("div#clavs br_ta ta_f:not([data-scn])")
+          .forEach(function (r) {
+            r.classList.remove("active");
+          });
         active_scrf_2.classList.add("active");
         welcomer.uBoss({}, "", `/?p=blog`);
       };
       //$("div#clavs br_ta").append(active_scrf_2);
       if (d.nest == false) {
-      br_ta.appendChild(active_scrf_2);     
-       
+        br_ta.appendChild(active_scrf_2);
       }
       arrayrH.forEach(function (re) {
         const active_scrf = document.createElement("ta_f");
@@ -3448,24 +3473,26 @@ const welcomer = {
             active_scrf.getAttribute("data-category")
           );
           active_scrf.classList.add("active");
-         
+
           if (
             active_scrf.getAttribute("data-category") !== "All" ||
             active_scrf.getAttribute("data-category") !== "all"
           ) {
-            if(d.nest){
+            if (d.nest) {
               welcomer.uBoss(
                 {},
                 "",
-                `/?p=blog&c=${d.me.getAttribute("data-scn")}&sc=${active_scrf.getAttribute("data-category")}`
+                `/?p=blog&c=${d.me.getAttribute(
+                  "data-scn"
+                )}&sc=${active_scrf.getAttribute("data-category")}`
               );
-            }else{
-            welcomer.uBoss(
-              {},
-              "",
-              `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
-            );
-          }
+            } else {
+              welcomer.uBoss(
+                {},
+                "",
+                `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
+              );
+            }
             if (
               active_scrf.getAttribute("data-category") == "astronomy" ||
               active_scrf.getAttribute("data-category") == "Astronomy"
@@ -3493,7 +3520,7 @@ const welcomer = {
       document.querySelectorAll(d.where).forEach(function (me) {
         me.prepend(br_ta);
       });
-      setTimeout(() => br_ta.removeAttribute("style"),100);
+      setTimeout(() => br_ta.removeAttribute("style"), 100);
     },
     headers: {
       call: function () {},
@@ -3942,7 +3969,7 @@ document.querySelector("body").appendChild(parser.body);
         if (!galleryContainer) return;
         for (let i = 0; i < v.length; i++) {
           const project = document.createElement("project");
-          project.style.transform = "scale(0)"; 
+          project.style.transform = "scale(0)";
           const griderBox = document.createElement("grider_box");
           const p = document.createElement("p");
           const span = document.createElement("span");
@@ -4008,7 +4035,7 @@ document.querySelector("body").appendChild(parser.body);
           img.addEventListener("load", () =>
             welcomer.loaded_imgPrld(img, div_not_i)
           );
-          griderBox.appendChild(img); 
+          griderBox.appendChild(img);
           project.appendChild(griderBox);
           galleryContainer.appendChild(project);
           div_not_i++;
@@ -4082,7 +4109,7 @@ document.querySelector("body").appendChild(parser.body);
         if (varr.type == "albums") {
           for (let i = 0; i < arr.length; i++) {
             const project = document.createElement("project");
-             
+
             project.setAttribute("id-int", i);
             const p_open = document.createElement("p_open");
             p_open.setAttribute("data-title", "Open Album");
@@ -5655,8 +5682,12 @@ document.querySelector("body").appendChild(parser.body);
         urlParamsf_f = urlParamsf.get("c"),
         urlParamsf_f_sc = urlParamsf.get("sc");
       if (urlParamsf.has("c")) {
-        if(urlParamsf.has("sc")){
-        welcomer.uBoss({}, "", `/?p=blog&c=${urlParamsf_f}&sc=${urlParamsf_f_sc}`);
+        if (urlParamsf.has("sc")) {
+          welcomer.uBoss(
+            {},
+            "",
+            `/?p=blog&c=${urlParamsf_f}&sc=${urlParamsf_f_sc}`
+          );
         } else {
           welcomer.uBoss({}, "", `/?p=blog&c=${urlParamsf_f}`);
         }
@@ -5714,7 +5745,7 @@ document.querySelector("body").appendChild(parser.body);
         );
         $("body").removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
-        document.querySelector("p-container").set(`${res}`);
+        document.querySelector("p-container").set(`${res}`,f);
         // document.querySelector('div#clavs div_header').setAttribute("style", " opacity:1;transform:unset;");
         welcomer.cards_generate(f);
         document
@@ -6082,6 +6113,307 @@ document.querySelector("body").appendChild(parser.body);
     $(Vjideo_sjpinner).hide();
   },
   blogljoad_posts: function (arr = []) {
+    var arrayr = [];
+    var categoryTemp = document.querySelector("div#clavs br_ta");
+    var ljoader = document.querySelector("#reaload_page");
+    var Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner");
+    var div_header = document.querySelector("div_header");
+    var clavs = document.getElementById("clavs");
+    var div_not_i = 0;
+    document.querySelector("gridder_loader").src = "/loader";
+
+    ljoader.style.display = "none";
+    Vjideo_sjpinner.style.display = "block";
+
+    var ttt_f = this;
+    clavs.style.cssText = "opacity:1;transform:unset;";
+
+    document
+      .querySelectorAll("iframe:not(.iframe_mask)")
+      .forEach(function (iframe) {
+        iframe.style.display = "none";
+      });
+
+    categoryTemp.classList.remove("active_scr");
+
+    var grider_viewer = document.querySelector("grider_viewer");
+    grider_viewer.style.display = "block";
+    grider_viewer.removeAttribute("style");
+    grider_viewer.innerHTML = "";
+
+    div_header.classList.remove("ld_completeld_complete");
+    window.arr_temp = arr;
+    categoryTemp.innerHTML = '<i class="br_ta_funnel bi bi-funnel"></i>';
+
+    arr.forEach(function (v) {
+      try {
+        for (var i = 0; i < v?.category.length; i++) {
+          arrayr.push(v.category[i]);
+        }
+      } catch (r) {}
+      arrayr.forEach(function (x) {
+        arrayr[x] = (arrayr[x] || 0) + 1;
+      });
+      var thi = "class='is_touch'";
+      var p_open = "";
+      if (v.id !== "") {
+        if (v.type) {
+          p_open = `<p_open title="Open:/?p=blog&id=${v.id}" onclick="welcomer.blogloader(${div_not_i});">
+                      <i class="bi bi-link"></i> Open post
+                    </p_open>`;
+        } else {
+          p_open = `<p_open title="Download:${v.title}" onclick="welcomer.blogloader(${div_not_i});">
+                      <i class="bi bi-cloud-arrow-down"></i> Download<br>
+                      <i class="bi bi-shield-check"></i> (Secure download)
+                    </p_open>`;
+        }
+      }
+      p_open = `<p_open title="Open:/?p=blog&id=${v.id}" onclick="welcomer.blogloader(${v.id});">
+                  <i class="bi bi-link"></i> Open post
+                </p_open>`;
+      if (welcomer.isMobile()) {
+        thi = `onclick='welcomer.blogloader(${v.id})'`;
+      }
+      var img_src_d = `${v.thumbail}`;
+      if (!img_src_d.includes("data:")) {
+        img_src_d = `${v.thumbail}&thumb=true`;
+      }
+      var p_image = "";
+      if (welcomer.isimagec(v?.category, "image")) {
+        p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);">
+                     <i class="bi bi-image-fill"></i> Open image
+                   </p_open>`;
+      }
+      var img_backr = "";
+      var display_none = "";
+      var project = "";
+      const bagdes = [
+        {
+          name: "text",
+          data: "bi bi-file-text-fill",
+          is_me: ["p,h1,h2,h3,h4,h5,span,tspan"],
+        },
+        {
+          name: "image",
+          data: "bi bi-file-earmark-image-fill",
+          is_me: ["img"],
+        },
+        {
+          name: "video",
+          data: "bi bi-file-earmark-play-fill",
+          is_me: ["video", "video-player-v2"],
+        },
+        {
+          name: "iframe",
+          data: "bi bi-file-earmark-richtext-fill",
+          is_me: ["iframe"],
+        },
+      ];
+      var bagde_list = "";
+      if (v?.page) {
+        bagdes.forEach((badge) => {
+          let tags = [];
+          badge.is_me.forEach((item) => {
+            if (item.indexOf(",") !== -1) {
+              tags = tags.concat(item.split(","));
+            } else {
+              tags.push(item);
+            }
+          });
+          tags = tags.map((tag) => tag.trim());
+          let found = false;
+
+          tags.forEach((tag) => {
+            if (!found && v?.page.indexOf(`<${tag}`) !== -1) {
+              bagde_list += `<i class="${badge.data}" ></i>`;
+            }
+            found = true;
+          });
+        });
+      }
+
+      img_backr = `<i_list>${bagde_list}</i_list><img loading="lazy" ${thi} 
+        ondragstart="return false;" 
+        onload="welcomer.loaded_img(this,${div_not_i});" 
+        src="${img_src_d}" 
+        data-zoom-image="${img_src_d}" 
+        alt="${v.title}" />`;
+      if (v.type == "text") {
+        img_backr = `<i_list>${bagde_list}</i_list><div_txt><span>${v?.description}</span></div_txt>`;
+        display_none = 'style="display:none;"';
+        project = 'class="section_loadet_img"';
+      }
+
+      grider_viewer.insertAdjacentHTML(
+        "beforeend",
+        `<project ${project} data-category="${window.btoa(
+          v?.category
+        )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
+           <grider_box>
+             <p><span>${v.title}</span></p>
+             ${p_open}
+             ${p_image}
+             <fiv><i onclick="welcomer.blogloader(${
+               v.id
+             });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+             <img ${display_none} src="${
+          welcomer.loader_svg
+        }" class="loader_post" height="50" width="50" />
+             ${img_backr}
+           </grider_box>
+         </project>`
+      );
+      div_not_i++;
+    });
+
+    var arrayrH = welcomer.remove_duplicates(arrayr);
+
+    var active_scrf_2 = document.createElement("ta_f");
+    active_scrf_2.setAttribute("data-title", `Click "All" for open category`);
+    active_scrf_2.setAttribute("data-c", arrayrH.length);
+    active_scrf_2.innerHTML = `All <span>${welcomer.blogljoad_posts_category_cbc(
+      "All"
+    )}</span>`;
+    active_scrf_2.classList.add("active");
+    active_scrf_2.setAttribute("data-category", "All");
+    active_scrf_2.onclick = function () {
+      welcomer.blogljoad_posts_category(
+        active_scrf_2.getAttribute("data-category")
+      );
+      document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
+        r.classList.remove("active");
+      });
+      active_scrf_2.classList.add("active");
+      welcomer.uBoss({}, "", `/?p=blog`);
+    };
+    categoryTemp.appendChild(active_scrf_2);
+
+    categoryTemp.insertAdjacentHTML(
+      "beforeend",
+      `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews">
+         <span_t style="font-size:9px !important;font-weight:bold;text-align:center;">
+           <blue-warp></blue-warp>Tech/Science News<br>Coming Soon
+         </span_t>
+       </ta_f>`
+    );
+    categoryTemp.insertAdjacentHTML(
+      "beforeend",
+      `<ta_f data-c="9" onclick="welcomer.pages.category_tempator_t('nasa')" data-title="null" data-category="technews" data-feed="nasa" data-scn="nasa">
+         <span_t style="font-size:9px !important;font-weight:bold;text-align:center;">
+           News from NASA<br>Coming Soon
+         </span_t>
+       </ta_f>`
+    );
+
+    const ta_f_NASA = document.createElement("ta_f");
+    const ta_f_NASA_span = document.createElement("span_t");
+    ta_f_NASA.setAttribute("data-title", "nasa");
+    ta_f_NASA.setAttribute("data-category", "technews");
+    ta_f_NASA.setAttribute("data-feed", "nasa");
+    ta_f_NASA.setAttribute("data-scn", "nasa");
+    ta_f_NASA.addEventListener("click", function () {
+      welcomer.pages.category_tempator_t(ta_f_NASA);
+    });
+    ta_f_NASA_span.style.cssText =
+      "font-size:9px !important;font-weight:bold;text-align:center;";
+    ta_f_NASA_span.textContent = "News from NASA";
+    ta_f_NASA.appendChild(ta_f_NASA_span);
+
+    arrayrH.forEach(function (re) {
+      const active_scrf = document.createElement("ta_f");
+      active_scrf.setAttribute("data-c", arrayrH.length);
+      active_scrf.setAttribute(
+        "data-title",
+        `Click "${ttt_f.capitalize_str(re)}" for open All category`
+      );
+      var t = "";
+      if (re === "telegram" || re === "Telegram") {
+        t = `<i class="bi bi-telegram"></i> `;
+      } else if (re === "deviantart" || re === "Deviantart") {
+        t = `<i class="fab fa-deviantart"></i> `;
+      } else if (re === "video" || re === "Video") {
+        t = `<i class="bi bi-film"></i> `;
+      } else if (re === "astronomy" || re === "Astronomy") {
+        t = `<i class="fas fa-space-shuttle"></i> `;
+      }
+      active_scrf.innerHTML = `${t}${re}<span>${welcomer.blogljoad_posts_category_cbc(
+        re
+      )}</span>`;
+      active_scrf.setAttribute("data-category", re);
+      active_scrf.onclick = function () {
+        document
+          .querySelectorAll("div#clavs br_ta ta_f")
+          .forEach(function (el) {
+            el.classList.remove("active");
+          });
+        document.querySelectorAll("br_ta.sub_cat").forEach(function (element) {
+          element.remove();
+        });
+        document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
+          r.classList.remove("active");
+        });
+        welcomer.blogljoad_posts_category(
+          active_scrf.getAttribute("data-category")
+        );
+        active_scrf.classList.add("active");
+        if (active_scrf.getAttribute("data-category").toLowerCase() !== "all") {
+          welcomer.uBoss(
+            {},
+            "",
+            `/?p=blog&c=${active_scrf.getAttribute("data-category")}`
+          );
+          if (
+            active_scrf.getAttribute("data-category").toLowerCase() ===
+            "astronomy"
+          ) {
+            document.querySelector("body").classList.add("active");
+          } else {
+            document.querySelector("body").removeAttribute("active");
+          }
+          document
+            .querySelector("body")
+            .setAttribute(
+              "data-category-name",
+              active_scrf.getAttribute("data-category")
+            );
+          welcomer.titleC(
+            `Blog > ${active_scrf.getAttribute("data-category")}- Marko Nikolić`
+          );
+        }
+      };
+      if (re === "NASA" || re === "nasa") {
+        const nasaSpan = document.createElement("span_t");
+        active_scrf.setAttribute("data-title", "nasa");
+        active_scrf.setAttribute("data-category", "technews");
+        active_scrf.setAttribute("data-feed", "nasa");
+        active_scrf.setAttribute("data-scn", "nasa");
+        nasaSpan.style.cssText =
+          "font-size:9px !important;font-weight:bold;text-align:center;";
+        nasaSpan.textContent = "News from NASA";
+        active_scrf.appendChild(nasaSpan);
+        categoryTemp.appendChild(active_scrf);
+      } else {
+        categoryTemp.appendChild(active_scrf);
+      }
+    });
+
+    categoryTemp.classList.remove("active_scr");
+    div_header.classList.add("ld_completeld_complete2");
+    ljoader.style.display = "block";
+    document.querySelectorAll("div_header span").forEach(function (el) {
+      el.innerHTML = "Marko Nikolić > Blog";
+    });
+
+    document.querySelectorAll(".F_bi_search").forEach(function (el) {
+      el.style.display = "block";
+    });
+
+    document.querySelectorAll("gridder_loader").forEach(function (el) {
+      el.removeAttribute("style");
+    });
+    Vjideo_sjpinner.style.display = "none";
+  },
+  blogljoad_posts_old: function (arr = []) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
       ljoader = document.querySelector("#reaload_page"),
@@ -6137,15 +6469,19 @@ document.querySelector("body").appendChild(parser.body);
       if (welcomer.isimagec(v?.category, "image")) {
         p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);"> <i class="bi bi-image-fill"></i> Open image </p_open>`;
       }
-      var img_backr = "";
+      var img_backr = "",
+        display_none = "",
+        project = "";
       img_backr = `<img loading="lazy" ${thi} 
       ondragstart="return false;" 
       onload="welcomer.loaded_img(this,${div_not_i});" 
       src="${img_src_d}" 
       data-zoom-image="${img_src_d}" 
       alt="${v.title}" />`;
-      if(v.type == "text"){
-        img_backr = `<div_txt>${v.description}</div_txt>`;
+      if (v.type == "text") {
+        img_backr = `<div_txt><span>${v.title}</span></div_txt>`;
+        display_none = 'style="display:none;"';
+        project = 'style=""';
       }
       $("grider_viewer").append(
         `<project   data-category="${window.btoa(
@@ -6156,7 +6492,7 @@ document.querySelector("body").appendChild(parser.body);
           v.title
         }</span></p> ${p_open}${p_image}<fiv><i onclick="welcomer.blogloader(${
           v.id
-        });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv> <img src="${
+        });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv> <img ${display_none} src="${
           welcomer.loader_svg
         }" class="loader_post" height="50" width="50" /> ${img_backr} </grider_box> </project>`
       );
@@ -6186,25 +6522,27 @@ document.querySelector("body").appendChild(parser.body);
       `<ta_f data-c="9" data-title="Click &quot;Deviantart&quot;for open All category" data-category="technews"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;"><blue-warp></blue-warp>Tech/Science News<br>Coming Soon</span_t></ta_f>`
     );
     $("div#clavs br_ta").append(
-       `<ta_f data-c="9" onclick="welcomer.pages.category_tempator_t('nasa")" data-title="null" data-category="technews" data-feed="nasa"  data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;" >News from NASA<br>Coming Soon</span_t></ta_f>`
-    ); 
+      `<ta_f data-c="9" onclick="welcomer.pages.category_tempator_t('nasa")" data-title="null" data-category="technews" data-feed="nasa"  data-scn="nasa"> <span_t style=" font-size:9px !important;font-weight:bold;text-align:center;" >News from NASA<br>Coming Soon</span_t></ta_f>`
+    );
 
     const ta_f_NASA = document.createElement("ta_f"),
-    ta_f_NASA_span = document.createElement("span_t");
-    ta_f_NASA.setAttribute("data-title","nasa");
-    ta_f_NASA.setAttribute("data-category","technews"); 
-    ta_f_NASA.setAttribute("data-feed","nasa"); 
-    ta_f_NASA.setAttribute("data-scn","nasa");
-    ta_f_NASA.addEventListener("click", () => welcomer.pages.category_tempator_t(ta_f_NASA) );
-    ta_f_NASA_span.setAttribute("style"," font-size:9px !important;font-weight:bold;text-align:center;");
+      ta_f_NASA_span = document.createElement("span_t");
+    ta_f_NASA.setAttribute("data-title", "nasa");
+    ta_f_NASA.setAttribute("data-category", "technews");
+    ta_f_NASA.setAttribute("data-feed", "nasa");
+    ta_f_NASA.setAttribute("data-scn", "nasa");
+    ta_f_NASA.addEventListener("click", () =>
+      welcomer.pages.category_tempator_t(ta_f_NASA)
+    );
+    ta_f_NASA_span.setAttribute(
+      "style",
+      " font-size:9px !important;font-weight:bold;text-align:center;"
+    );
     ta_f_NASA_span.textContent = "News from NASA";
     ta_f_NASA.appendChild(ta_f_NASA_span);
     // $("div#clavs br_ta").append(ta_f_NASA);
 
-
     arrayrH.forEach(function (re) {
-
-    
       const active_scrf = document.createElement("ta_f");
       active_scrf.setAttribute("data-c", arrayrH.length);
       active_scrf.setAttribute(
@@ -6228,12 +6566,14 @@ document.querySelector("body").appendChild(parser.body);
         re
       )}</span>`;
       active_scrf.setAttribute("data-category", re);
-       
+
       active_scrf.onclick = function () {
-        document.querySelectorAll('div#clavs br_ta ta_f').forEach(el => { el.classList.remove('active');  });
-        document.querySelectorAll('br_ta.sub_cat').forEach(element => {
+        document.querySelectorAll("div#clavs br_ta ta_f").forEach((el) => {
+          el.classList.remove("active");
+        });
+        document.querySelectorAll("br_ta.sub_cat").forEach((element) => {
           element.remove();
-      });
+        });
         document.querySelectorAll("div#clavs br_ta ta_f").forEach(function (r) {
           r.classList.remove("active");
         });
@@ -6270,21 +6610,22 @@ document.querySelector("body").appendChild(parser.body);
         }
       };
       /* */
-      if(re == "NASA" || re == "nasa") { 
+      if (re == "NASA" || re == "nasa") {
         const ta_f_NASA_span = document.createElement("span_t");
-        active_scrf.setAttribute("data-title","nasa");
-        active_scrf.setAttribute("data-category","technews"); 
-        active_scrf.setAttribute("data-feed","nasa"); 
-        active_scrf.setAttribute("data-scn","nasa");
-        ta_f_NASA_span.setAttribute("style"," font-size:9px !important;font-weight:bold;text-align:center;");
+        active_scrf.setAttribute("data-title", "nasa");
+        active_scrf.setAttribute("data-category", "technews");
+        active_scrf.setAttribute("data-feed", "nasa");
+        active_scrf.setAttribute("data-scn", "nasa");
+        ta_f_NASA_span.setAttribute(
+          "style",
+          " font-size:9px !important;font-weight:bold;text-align:center;"
+        );
         ta_f_NASA_span.textContent = "News from NASA";
         active_scrf.appendChild(ta_f_NASA_span);
         $("div#clavs br_ta").append(active_scrf);
- 
-      } 
+      }
       /* */
       $("div#clavs br_ta").append(active_scrf);
-     
     });
     $("div#clavs br_ta").removeClass("active_scr");
     $("div_header").addClass("ld_completeld_complete2");

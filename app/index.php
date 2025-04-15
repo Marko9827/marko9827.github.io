@@ -1150,18 +1150,36 @@ class portfolio_marko
             <?php
             exit();
         }
-        if ($h == "garph_preview") { 
+        if ($h == "garph_preview") {
             $this->get_data([
-            "url" => "https://api.eronelit.com/graph",
-            "headers" => [
+                "url" => "https://api.eronelit.com/graph",
+                "headers" => [
 
 
-                'Authorization: Bearer 32M052k350QaeofkaeopfF',
-            ],
-            "data" => [
-                "urlf" => $_GET['url']
-            ]
-        ]);
+                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                ],
+                "data" => [
+                    "urlf" => $_GET['url']
+                ]
+            ]);
+        }
+        if ($h == "big_image") {
+
+        }
+        if ($h == "bagdes") {
+            $color = "white";
+            if (!empty($_GET['color'])) {
+                $color = $_GET['color'];
+            }
+            switch ($_GET['name']) {
+                case "text":
+                    header("Content-Type: image/svg+xml");
+                    echo "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"150\" height=\"150\" fill=\"$color\" class=\"bi bi-file-text-fill\" viewBox=\"0 0 16 16\">\r\n  <path d=\"M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1\"/>\r\n</svg>";
+                    break;
+                default:
+                self::error_page(404);
+            }
+            exit();
         }
         if ($h == "feed") {
             #   $r = file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
@@ -1413,7 +1431,7 @@ class portfolio_marko
             ]
         ]), true);
         if (!empty($_GET['p'])) {
-            
+
             switch ($_GET['p']) {
                 case 'cv-pdf':
                     $title = "Marko Nikolić > CV";
@@ -1459,14 +1477,14 @@ class portfolio_marko
 
 
                         $person = $r['data']['blog'];
-            
+
                         foreach ($person as $value) {
                             if ((string) $value['id'] === (string) $_GET['id']) {
                                 $data = $value;
                                 break;
                             }
                         }
-            
+
                         if ($data) {
                             $cat = !empty($_GET['c']) ? $_GET['c'] : "";
                             $title = "Blog > $cat {$data['title']} | Marko Nikolić";
@@ -1474,7 +1492,7 @@ class portfolio_marko
                             $keywords = implode(",", $data['keywords']);
                             $ogImage = "{$data['thumbail']}&for=og&v=" . time();
                         }
-                    } 
+                    }
                     $cat = !empty($_GET['c']) ? $_GET['c'] : "";
                     $title = "Blog > $cat | Marko Nikolić";
 
@@ -1526,19 +1544,19 @@ class portfolio_marko
         <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
         <link rel="manifest" href="/manifest.webmanifest">
         <script type="application/ld+json">
-                                {
-                                    "@context": "https://schema.org",
-                                    "@type": "WebSite",
-                                    "url": "https://<?php echo SITE_HOST; ?>",
-                                    "name": "Marko Nikolić",
-                                    "author": {
-                                        "@type": "Person",
-                                        "name": "Marko Nikolić"
-                                    },
-                                    "description": "<?php echo htmlspecialchars($description); ?>",
-                                    "inLanguage": "en-GB"
-                                }
-                                </script>
+                                                {
+                                                    "@context": "https://schema.org",
+                                                    "@type": "WebSite",
+                                                    "url": "https://<?php echo SITE_HOST; ?>",
+                                                    "name": "Marko Nikolić",
+                                                    "author": {
+                                                        "@type": "Person",
+                                                        "name": "Marko Nikolić"
+                                                    },
+                                                    "description": "<?php echo htmlspecialchars($description); ?>",
+                                                    "inLanguage": "en-GB"
+                                                }
+                                                </script>
         <?php
     }
 

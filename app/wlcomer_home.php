@@ -3443,27 +3443,79 @@ div#clavs br_ta ta_f.active span {
             width: 100%;
             /* padding: 2px !important; */
             border-top: 0px;
+            -webkit-box-shadow: none;
             box-shadow: none;
+            -webkit-filter: none;
             filter: none;
             height: calc(100% - 50px);
             border-bottom-left-radius: 6px;
             border-bottom-right-radius: 6px;
+            pointer-events: none;
+
+        }
+
+        project grider_box i_list {
+
+            position: absolute;
+            left: 8px;
+            bottom: 21px;
+            z-index: 1;
+            opacity: 1;
+            color: white;
+            pointer-events: none;
+            display: -webkit-inline-box;
+            display: -ms-inline-flexbox;
+            display: inline-flex;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -ms-flex-wrap: nowrap;
+            flex-wrap: nowrap;
 
         }
 
         project grider_box div_txt txt_f {
 
-            display: block;
-            height: 100%;
-            background: #000000;
-            color: white;
-            padding: 10px;
-            overflow: hidden;
+            position: absolute;
+            left: 0px;
+            top: 34px;
+            right: 0px;
+            bottom: 0px;
+            border: 3px solid var(--primary_light);
             width: 100%;
-            font-size: 11px;
-            text-align: justify;
-            mask-image: linear-gradient(180deg, #ffffff, transparent);
+            border-top: 0px;
+            background: -o-linear-gradient(bottom, black, transparent);
+            background: -webkit-gradient(linear, left bottom, left top, from(black), to(transparent));
+            background: linear-gradient(0deg, black, transparent);
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            -webkit-filter: none;
+            filter: none;
+            height: calc(100% - 50px);
+            border-bottom-left-radius: 6px;
+            border-bottom-right-radius: 6px;
+            color: #ffffff8c;
+            padding: 10px;
+        }
 
+        project grider_box div_txt span {
+            color: white;
+            -webkit-mask-image: linear-gradient(1deg, #000000f2, transparent);
+            mask-image: linear-gradient(178deg, #000000f2, transparent);
+            padding: 10px;
+            height: 100%;
+            display: block;
+            width: 100%;
+            position: relative;
+            height: 100%;
+            font-size: large;
+            background: black;
         }
     </style>
     <?php

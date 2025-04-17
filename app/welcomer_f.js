@@ -80,6 +80,433 @@ class Application {
     window.requestAnimationFrame(() => this.loop());
   }
 }
+  
+class CustomDropdown extends HTMLElement {
+  constructor() {
+    super();
+    const shadow = this.attachShadow({ mode: "open" });
+    this.shadowRoot = shadow;
+    this._data = null;
+    this._ui_lang = {
+      "select_option": "Select Option",
+      "ajax_error_json": "Invalid JSON in 'data' attribute:"
+  };
+    this._selectedText = this._ui_lang['select_option']
+    this._customTemplate = null;
+    this.selected = "";
+    this._toggleDropdown = this._toggleDropdown.bind(this);
+    this._documentClickHandler = this._documentClickHandler.bind(this);
+    this._optionClickHandler = this._optionClickHandler.bind(this);
+    this._searchHandler = this._searchHandler.bind(this);
+  }
+  static get observedAttributes() {
+    return ['data', 'data-ajax'];
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (name === 'data') {
+      try {
+        this._data = JSON.parse(newValue);
+        this.render();
+      } catch (error) {
+        console.error("Invalid JSON in 'data' attribute:", error);
+        this._data = null;
+      }
+    } else if (name === 'data-ajax') {
+      if (newValue) {
+        this._fetchData(newValue);
+      }
+    }
+  }
+  connectedCallback() {
+    if (this.hasAttribute("data-ajax")) {
+      const url = this.getAttribute("data-ajax");
+      this._fetchData(url);
+    } else if (this.hasAttribute("data")) {
+      try {
+        this._data = JSON.parse(this.getAttribute("data"));
+      } catch (e) {
+        console.error("Invalid JSON in 'data' attribute:", e);
+        this._data = null;
+      }
+      this.render();
+      this._addEventListeners();
+    } else {
+      this.render();
+      this._addEventListeners();
+    }
+  }
+  disconnectedCallback() {
+    this._removeEventListeners();
+  }
+  _fetchData(url) {
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Network error: " + response.status);
+        }
+        return response.json();
+      })
+      .then(json => {
+        this._data = json;
+        this.render();
+        this._addEventListeners();
+      })
+      .catch(error => {
+        console.error("Error fetching AJAX data:", error);
+      });
+  }
+  setTemplate(templateString) {
+    this._customTemplate = templateString;
+    this.render();
+  }
+  setData(data) {
+    this._data = data;
+    this.render();
+    this._addEventListeners();
+  }
+  selectByID(id = ""){
+    
+  }
+  render() {
+    this._removeEventListeners();
+    if (this._data && this._data.selected) {
+      let selectedValue = this._data.selected;
+      let found = false;
+      if (this._data.groups) {
+        this._data.groups.forEach(group => {
+          if (group.options) {
+            group.options.forEach(option => {
+              if (option.value === selectedValue) {
+                this._selectedText = option.text;
+                
+
+                this._optionClickHandler(event);
+
+
+                found = true;
+              }
+            });
+          }
+        });
+      }
+      if (!found) {
+        this._selectedText = "Izaberi opciju";
+      }
+    } else {
+      this._selectedText = "Izaberi opciju";
+    }
+    while (this.shadowRoot.firstChild) {
+      this.shadowRoot.firstChild.remove();
+    }
+    const style = document.createElement("style");
+    style.textContent = `
+      .custom-dropdown {
+        border: 1px solid #ccc;
+        width: 450px;
+        background: #fff;
+        font-family: Arial, sans-serif;
+        position: relative;
+        user-select: none;
+      }
+      .dropdown-header {
+        padding: 10px;
+        cursor: pointer;
+        background: #f8f8f8;
+        border-bottom: 1px solid #ccc;
+        display:grid;
+      }
+      .dropdown-options {
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: #fff;
+        border: 1px solid #ccc;
+        border-top: none;
+      }
+      .search-container {
+        padding: 5px;
+        border-bottom: 1px solid #ccc;
+        position: sticky;
+        top: 0;
+        background: white;
+      }
+      .search-input {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      .group {
+        margin-bottom: 5px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+      }
+      .group-label {
+        font-weight: bold;
+        padding: 5px 10px;
+        background: #f0f0f0;
+        border-bottom: 1px solid #ddd;
+      }
+      .option {
+        padding: 8px 10px;
+        cursor: pointer;
+      }
+      .option:hover {
+        background: #e2e2e2;
+      }
+      .option.selected {
+        background: #d0e7ff;
+      }
+      .option.card {
+        display: inline-flex;
+        align-items: center;
+      }
+      .option.card img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-right: 5px;
+      }
+      .option.card div {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: baseline;
+        border-left: 0.5px solid #2f506159;
+        padding-left: 5px;
+        margin-left: 5px;
+      }
+      .option.card div h5 {
+        margin: 0 !important;
+        margin-bottom: 5px !important;
+      }
+      .option.card div p {
+        margin: 0 !important;
+        margin-top: 5px !important;
+        font-size: 11px;
+      }
+    `;
+    const container = document.createElement("div");
+    container.className = "custom-dropdown";
+    const header = document.createElement("div");
+    header.className = "dropdown-header";
+    header.textContent = this._selectedText;
+    const optionsContainer = document.createElement("div");
+    optionsContainer.className = "dropdown-options";
+    const searchContainer = document.createElement("div");
+    searchContainer.className = "search-container";
+    const searchInput = document.createElement("input");
+    searchInput.className = "search-input";
+    searchInput.type = "text";
+    searchInput.placeholder = "Pretraži...";
+    searchContainer.appendChild(searchInput);
+    optionsContainer.appendChild(searchContainer);
+    if (this._data && this._data.groups && this._data.groups.length > 0) {
+      this._data.groups.forEach(group => {
+        const groupDiv = document.createElement("div");
+        groupDiv.className = "group";
+        if (group.label) {
+          const groupLabel = document.createElement("div");
+          groupLabel.className = "group-label";
+          groupLabel.textContent = group.label;
+          groupDiv.appendChild(groupLabel);
+        }
+        if (group.options && group.options.length > 0) {
+          group.options.forEach(option => {
+            const optionDiv = document.createElement("div");
+            optionDiv.className = "option";
+            if (this._data && this._data.selected && option.value === this._data.selected) {
+              optionDiv.classList.add("selected");
+            }
+            optionDiv.setAttribute("data-value", option.value);
+            if (option.type === "card") {
+              optionDiv.classList.add("card");
+              const img = document.createElement("img");
+              img.onerror = function() {
+                  img.src = "/logo.svg";
+              };
+              img.src = option.card.img;
+              img.loading = "lazy";
+              img.alt = option.text;
+             
+              optionDiv.appendChild(img);
+              const cardDiv = document.createElement("div");
+              const h5 = document.createElement("h5");
+              h5.textContent = option.card.title;
+              h5.style.margin = "0px";
+              h5.style.marginBottom = "5px";
+              cardDiv.appendChild(h5);
+              const p = document.createElement("p");
+              p.textContent = option.card.descr;
+              p.style.margin = "0px";
+              p.style.marginTop = "5px";
+              cardDiv.appendChild(p);
+              optionDiv.appendChild(cardDiv);
+            } else {
+              optionDiv.textContent = option.text;
+            }
+            groupDiv.appendChild(optionDiv);
+          });
+        }
+        optionsContainer.appendChild(groupDiv);
+      });
+    } else {
+      const groupDiv = document.createElement("div");
+      groupDiv.className = "group";
+      const optionDiv = document.createElement("div");
+      optionDiv.className = "option";
+      optionDiv.textContent = "Nema opcija";
+      groupDiv.appendChild(optionDiv);
+      optionsContainer.appendChild(groupDiv);
+    }
+    container.appendChild(header);
+    container.appendChild(optionsContainer);
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(container);
+    this._headerEl = header;
+    this._optionsEl = optionsContainer;
+    this._searchInputEl = searchInput;
+    this._addEventListeners();
+
+    
+  }
+  _addEventListeners() {
+    if (this._headerEl) {
+      this._headerEl.addEventListener("click", this._toggleDropdown);
+    }
+    if (this._optionsEl) {
+      this._optionsEl.addEventListener("click", this._optionClickHandler);
+    }
+    if (this._searchInputEl) {
+      this._searchInputEl.addEventListener("keyup", this._searchHandler);
+    }
+    document.addEventListener("click", this._documentClickHandler);
+  }
+  _removeEventListeners() {
+    if (this._headerEl) {
+      this._headerEl.removeEventListener("click", this._toggleDropdown);
+    }
+    if (this._optionsEl) {
+      this._optionsEl.removeEventListener("click", this._optionClickHandler);
+    }
+    if (this._searchInputEl) {
+      this._searchInputEl.removeEventListener("keyup", this._searchHandler);
+    }
+    document.removeEventListener("click", this._documentClickHandler);
+  }
+  _toggleDropdown(e) {
+    e.stopPropagation();
+    if (this._optionsEl) {
+      this._optionsEl.style.display = (this._optionsEl.style.display === "block") ? "none" : "block";
+    }
+  }
+  _documentClickHandler(e) {
+    const path = e.composedPath();
+    if (!path.includes(this) && this._optionsEl) {
+      this._optionsEl.style.display = "none";
+    }
+  }
+  _updateHeaderContent(selectedValue) {
+      if (!this._data) return;
+  
+      let selectedOption = null;
+  
+      this._data.groups.forEach(group => {
+          group.options.forEach(option => {
+              if (option.value === selectedValue) {
+                  selectedOption = option;
+              }
+          });
+      });
+  
+      if (!selectedOption) return;
+  
+      this._headerEl.innerHTML = '';
+  
+      if (selectedOption.type === 'card') {
+          const cardDiv = document.createElement('div');
+          cardDiv.classList.add('option', 'card');
+  
+          const img = document.createElement('img');
+          img.onerror = () => img.src = '/logo.svg';
+          img.src = selectedOption.card.img;
+          img.loading = 'lazy';
+          img.alt = selectedOption.text;
+  
+          const textDiv = document.createElement('div');
+          const h5 = document.createElement('h5');
+          h5.textContent = selectedOption.card.title;
+  
+          const p = document.createElement('p');
+          p.textContent = selectedOption.card.descr;
+  
+          textDiv.appendChild(h5);
+          textDiv.appendChild(p);
+  
+          cardDiv.appendChild(img);
+          cardDiv.appendChild(textDiv);
+  
+          this._headerEl.appendChild(cardDiv);
+      } else {
+          this._headerEl.textContent = selectedOption.text;
+      }
+  }
+  
+  _optionClickHandler(e) {
+      e.stopPropagation();
+      const optionElem = e.target.closest('.option');
+      if (optionElem) {
+          const selectedValue = optionElem.getAttribute("data-value");
+          this._data.selected = selectedValue;
+          this._selectedText = optionElem.textContent;
+          this.selected = selectedValue;
+          this._updateHeaderContent(selectedValue);
+  
+          if (this._optionsEl) {
+              this._optionsEl.style.display = "none";
+          }
+  
+          const allOptions = this.shadowRoot.querySelectorAll('.option');
+          allOptions.forEach(opt => opt.classList.remove("selected"));
+          optionElem.classList.add("selected");
+  
+          this.dispatchEvent(new CustomEvent("optionSelected", {
+              detail: { value: selectedValue, text: this._selectedText },
+              bubbles: true,
+              composed: true
+          }));
+      }
+  }
+  
+  _searchHandler(e) {
+    const query = e.target.value.toLowerCase();
+    const groups = this.shadowRoot.querySelectorAll('.dropdown-options .group');
+    groups.forEach(group => {
+      const options = group.querySelectorAll('.option');
+      let anyVisible = false;
+      options.forEach(option => {
+        const optionText = option.textContent.toLowerCase();
+        if (optionText.includes(query)) {
+          option.style.display = "block";
+          anyVisible = true;
+        } else {
+          option.style.display = "none";
+        }
+      });
+      group.style.display = anyVisible ? "block" : "none";
+    });
+  }
+}
+
 
 class CustomCombobox extends HTMLElement {
   constructor() {
@@ -3189,6 +3616,10 @@ const welcomer = {
         };
         return f;
       });
+      
+    if(!customElements.get('custom-dropdown')){
+      customElements.define('custom-dropdown', CustomDropdown);
+  }
       if (!customElements.get("custom-combobox")) {
         customElements.define("custom-combobox", CustomCombobox);
       }

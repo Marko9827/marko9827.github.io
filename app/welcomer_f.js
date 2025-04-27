@@ -81,6 +81,125 @@ class Application {
   }
 }
   
+
+class ProjectCard extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+  }
+
+  connectedCallback() { 
+    const title     = this.getAttribute('title') || '';
+    const category  = this.getAttribute('data-category') || '';
+    const idInt     = this.getAttribute('id-int');
+    const postId    = this.getAttribute('data-post-id');
+    const thumb     = this.getAttribute('data-thumb') || '';
+    const zoomImg   = this.getAttribute('data-zoom-image') || thumb;
+    const type      = this.getAttribute('data-type') || 'image';
+    const description = this.getAttribute('data-description') || '';
+    const page      = this.getAttribute('data-page') || '';
+
+    // Root container
+    const project = document.createElement('project');
+    project.setAttribute('data-category', category);
+    project.setAttribute('id-int', idInt);
+    project.title = title;
+    if (this.hasAttribute('onclick')) {
+      project.setAttribute('onclick', this.getAttribute('onclick'));
+    }
+
+    // grider_box
+    const box = document.createElement('grider_box');
+    project.appendChild(box);
+
+    // Title
+    const titleP = document.createElement('p');
+    const spanTitle = document.createElement('span');
+    spanTitle.textContent = title;
+    titleP.appendChild(spanTitle);
+    box.appendChild(titleP);
+
+    // Open post / download button
+    const btnOpen = document.createElement('p_open');
+    const openTitle = type !== 'text'
+      ? `Open:/?p=blog&id=${postId}`
+      : `Download:${title}`;
+    btnOpen.setAttribute('title', openTitle);
+    btnOpen.addEventListener('click', () => welcomer.blogloader(postId));
+    btnOpen.innerHTML = type !== 'text'
+      ? '<i class="bi bi-link"></i> Open post'
+      : '<i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)';
+    box.appendChild(btnOpen);
+
+    // Open image button
+    if (welcomer.isimagec(JSON.parse(atob(category)), 'image')) {
+      const btnImg = document.createElement('p_open');
+      btnImg.classList.add('open_img');
+      btnImg.setAttribute('data-title', 'Click for view image in full size');
+      btnImg.addEventListener('click', () => welcomer.blogloader_img(postId));
+      btnImg.innerHTML = '<i class="bi bi-image-fill"></i> Open image';
+      box.appendChild(btnImg);
+    }
+
+    // Info icon
+    const fiv = document.createElement('fiv');
+    const info = document.createElement('i');
+    info.className = 'bi bi-info-circle';
+    info.title = 'Go to blog post...';
+    info.addEventListener('click', () => welcomer.blogloader(postId));
+    fiv.appendChild(info);
+    box.appendChild(fiv);
+
+    // Loader placeholder
+    if (type === 'image') {
+      const loaderImg = document.createElement('img');
+      loaderImg.src = welcomer.loader_svg;
+      loaderImg.className = 'loader_post';
+      loaderImg.height = 50;
+      loaderImg.width = 50;
+      box.appendChild(loaderImg);
+    }
+
+    // Content: text or image
+    if (type === 'text') {
+      const txt = document.createElement('div_txt');
+      const spanDesc = document.createElement('span');
+      spanDesc.textContent = description;
+      txt.appendChild(spanDesc);
+      box.appendChild(txt);
+    } else {
+      const list = document.createElement('i_list');
+      // Badges
+      const badgeCfg = [
+        { tag:'p', icon:'bi bi-file-text-fill' },
+        { tag:'img', icon:'bi bi-file-earmark-image-fill' },
+        { tag:'video', icon:'bi bi-file-earmark-play-fill' },
+        { tag:'iframe', icon:'bi bi-file-earmark-richtext-fill' }
+      ];
+      badgeCfg.forEach(cfg => {
+        if (page.includes(`<${cfg.tag}`)) {
+          const i = document.createElement('i');
+          i.className = cfg.icon;
+          list.appendChild(i);
+        }
+      }); 
+      const img = document.createElement('img');
+      img.loading = 'lazy';
+      if (!welcomer.isMobile()) img.classList.add('is_touch');
+      img.alt = title;
+      img.src = thumb;
+      img.setAttribute('data-zoom-image', zoomImg);
+      img.ondragstart = () => false;
+      img.onload = () => welcomer.loaded_img(img, idInt);
+      list.appendChild(img);
+
+      box.appendChild(list);
+    }
+ 
+    this.shadowRoot.appendChild(project);
+  }
+}
+
 class CustomDropdown extends HTMLElement {
   constructor() {
     super();
@@ -3617,12 +3736,16 @@ const welcomer = {
         return f;
       });
       
+    if(!customElements.get('project-card')){
+      customElements.define('project-card', ProjectCard);
+    }
+
     if(!customElements.get('custom-dropdown')){
       customElements.define('custom-dropdown', CustomDropdown);
-  }
-      if (!customElements.get("custom-combobox")) {
+    }
+    if (!customElements.get("custom-combobox")) {
         customElements.define("custom-combobox", CustomCombobox);
-      }
+    }
       if (!customElements.get("p-search")) {
         customElements.define("p-search", CustomSearch);
       }
@@ -6448,7 +6571,10 @@ document.querySelector("body").appendChild(parser.body);
       }
     }
   },
-  blogljoad_posts_category: function (tt_category_name) {
+  grid_box: function(params = []){
+
+  },
+  blogljoad_posts_category: function (tt_category_name = "All") {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
       ljoader = document.querySelector("#reaload_page"),
@@ -6470,7 +6596,163 @@ document.querySelector("body").appendChild(parser.body);
     $("grider_viewer").show().removeAttr("style");
     $("div_header").removeClass("ld_completeld_complete");
     $("grider_viewer").html("");
+    var grider_viewer = document.querySelector("grider_viewer");
+    grider_viewer.style.display = "block";
+    grider_viewer.removeAttribute("style");
+    grider_viewer.innerHTML = "";
     arr.forEach(function (v) {
+      try {
+        for (var i = 0; i < v?.category.length; i++) {
+          arrayr.push(v.category[i]);
+        }
+      } catch (r) {}
+      arrayr.forEach(function (x) {
+        arrayr[x] = (arrayr[x] || 0) + 1;
+      });
+      var thi = "class='is_touch'";
+      var p_open = "";
+      if (v.id !== "") {
+        if (v.type) {
+          p_open = `<p_open title="Open:/?p=blog&id=${v.id}" onclick="welcomer.blogloader(${div_not_i});">
+                      <i class="bi bi-link"></i> Open post
+                    </p_open>`;
+        } else {
+          p_open = `<p_open title="Download:${v.title}" onclick="welcomer.blogloader(${div_not_i});">
+                      <i class="bi bi-cloud-arrow-down"></i> Download<br>
+                      <i class="bi bi-shield-check"></i> (Secure download)
+                    </p_open>`;
+        }
+      }
+      p_open = `<p_open title="Open:/?p=blog&id=${v.id}" onclick="welcomer.blogloader(${v.id});">
+                  <i class="bi bi-link"></i> Open post
+                </p_open>`;
+      if (welcomer.isMobile()) {
+        thi = `onclick='welcomer.blogloader(${v.id})'`;
+      }
+      var img_src_d = `${v.thumbail}`;
+      if (!img_src_d.includes("data:")) {
+        img_src_d = `${v.thumbail}&thumb=true`;
+      }
+      var p_image = "";
+      if (welcomer.isimagec(v?.category, "image")) {
+        p_image = `<p_open class="open_img" data-title="Click for view image in full size" onclick="welcomer.blogloader_img(1073568435);">
+                     <i class="bi bi-image-fill"></i> Open image
+                   </p_open>`;
+      }
+      var img_backr = "";
+      var display_none = "";
+      var project = "";
+      const bagdes = [
+        {
+          name: "text",
+          data: "bi bi-file-text-fill",
+          is_me: ["p,h1,h2,h3,h4,h5,span,tspan"],
+        },
+        {
+          name: "image",
+          data: "bi bi-file-earmark-image-fill",
+          is_me: ["img"],
+        },
+        {
+          name: "video",
+          data: "bi bi-file-earmark-play-fill",
+          is_me: ["video", "video-player-v2"],
+        },
+        {
+          name: "iframe",
+          data: "bi bi-file-earmark-richtext-fill",
+          is_me: ["iframe"],
+        },
+      ];
+      var bagde_list = "";
+      if (v?.page) {
+        bagdes.forEach((badge) => {
+          let tags = [];
+          badge.is_me.forEach((item) => {
+            if (item.indexOf(",") !== -1) {
+              tags = tags.concat(item.split(","));
+            } else {
+              tags.push(item);
+            }
+          });
+          tags = tags.map((tag) => tag.trim());
+          let found = false;
+
+          tags.forEach((tag) => {
+            if (!found && v?.page.indexOf(`<${tag}`) !== -1) {
+              bagde_list += `<i class="${badge.data}" ></i>`;
+            }
+            found = true;
+          });
+        });
+      }
+
+
+      img_backr = `<i_list>${bagde_list}</i_list><img loading="lazy" ${thi} 
+        ondragstart="return false;" 
+        onload="welcomer.loaded_img(this,${div_not_i});" 
+        src="${img_src_d}" 
+        data-zoom-image="${img_src_d}" 
+        alt="${v.title}" />`;
+      if (v.type == "text") {
+        img_backr = `<i_list>${bagde_list}</i_list><div_txt><span>${v?.description}</span></div_txt>`;
+        display_none = 'style="display:none;"';
+        project = 'class="section_loadet_img"';
+      }
+
+      if (tt_category_name == "All" || tt_category_name == "all") {
+      grider_viewer.insertAdjacentHTML(
+        "beforeend",
+        `<project ${project} data-category="${window.btoa(
+          v?.category
+        )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
+           <grider_box>
+             <p><span>${v.title}</span></p>
+             ${p_open}
+             ${p_image}
+             <fiv><i onclick="welcomer.blogloader(${
+               v.id
+             });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+             <img ${display_none} src="${
+          welcomer.loader_svg
+        }" class="loader_post" height="50" width="50" />
+             ${img_backr}
+           </grider_box>
+         </project>`
+      );
+      div_not_i++;
+    } else {
+      try{
+      for (var i = 0; i < v?.category.length; i++) {
+        if (tt_category_name == v.category[i]) {
+      grider_viewer.insertAdjacentHTML(
+        "beforeend",
+        `<project ${project} data-category="${window.btoa(
+          v?.category
+        )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
+           <grider_box>
+             <p><span>${v.title}</span></p>
+             ${p_open}
+             ${p_image}
+             <fiv><i onclick="welcomer.blogloader(${
+               v.id
+             });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
+             <img ${display_none} src="${
+          welcomer.loader_svg
+        }" class="loader_post" height="50" width="50" />
+             ${img_backr}
+           </grider_box>
+         </project>`
+      );      div_not_i++;
+    }
+  }}catch(f){}
+    }
+    tt_category_name_false = false;
+
+    });
+    /*
+    arr.forEach(function (v) {
+      continue;
       var thi = "class='is_touch'",
         p_open = "";
       var p_image = ``;
@@ -6535,7 +6817,7 @@ document.querySelector("body").appendChild(parser.body);
         } catch (r) {}
       }
       tt_category_name_false = false;
-    });
+    });*/
     $("div_header").addClass("ld_completeld_complete2");
     $(ljoader).show();
     $("div_header span").html("Marko Nikolić > Blog");
@@ -6674,8 +6956,7 @@ document.querySelector("body").appendChild(parser.body);
         display_none = 'style="display:none;"';
         project = 'class="section_loadet_img"';
       }
-
-      grider_viewer.insertAdjacentHTML(
+       grider_viewer.insertAdjacentHTML(
         "beforeend",
         `<project ${project} data-category="${window.btoa(
           v?.category
@@ -6695,6 +6976,7 @@ document.querySelector("body").appendChild(parser.body);
          </project>`
       );
       div_not_i++;
+      
     });
 
     var arrayrH = welcomer.remove_duplicates(arrayr);
@@ -6844,6 +7126,7 @@ document.querySelector("body").appendChild(parser.body);
     });
     Vjideo_sjpinner.style.display = "none";
   },
+  
   blogljoad_posts_old: function (arr = []) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),

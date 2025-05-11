@@ -5,6 +5,13 @@ if (window.TrustedTypes) {
     createScript: (input) => input,
   });
 }
+window.solarday = function(){
+  const startDate = new Date('1998-03-16'); 
+const currentDate = new Date(); 
+const diffInMs = currentDate - startDate; 
+const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+return daysPassed;
+};
 window.getJSON = function (call = () => {}) {
   fetch(`${window.location.origin}/feed`, {
     method: "POST",
@@ -3795,6 +3802,13 @@ const welcomer = {
       content_space.id = "content_Space";
       //
     },
+    solarday: function(){
+      const startDate = new Date('1998-03-16'); 
+const currentDate = new Date(); 
+const diffInMs = currentDate - startDate; 
+const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+return daysPassed;
+    },
     reset_body_aprs: function () {
       const aerElement = document.createElement("div");
       aerElement.classList.add("aer-container");
@@ -3826,7 +3840,7 @@ const welcomer = {
       const boxShadowSpan = document.createElement("span");
       boxShadowSpan.classList.add("box_shadow_h");
       boxShadowSpan.innerHTML =
-        'Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025';
+       `Marko Nikolić - Portfolio <i class="far fa-copyright"></i> ${this.solarday()}`;
       spjParagraph.appendChild(boxShadowSpan);
       spjin.appendChild(spjParagraph);
 
@@ -10574,7 +10588,7 @@ document.querySelector("body").appendChild(parser.body);
 <div id="content_Space"></div>
 <hh_anim_start>
   <spjin>
-    <p><span class="box_shadow_h">Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025 </span></p>
+    <p><span class="box_shadow_h"> Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: ${window.solarday()}</span></p>
     <spj>
     <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="logo" loading="lazy" /><br class="hide_noy"><br class="hide_noy">
       <h3>Marko Nikolić</h3>
@@ -10759,7 +10773,7 @@ document.querySelector("body").appendChild(parser.body);
           createElementWithAttributes("span", { class: "box_shadow_h" }, [
             "Marko Nikolić - Portfolio ",
             createElementWithAttributes("i", { class: "far fa-copyright" }),
-            "2012 - 2025",
+            "2012 - 202f5",
           ]),
         ]),
         createElementWithAttributes("spj", {}, [
@@ -10851,7 +10865,7 @@ document.querySelector("body").appendChild(parser.body);
     const span = document.createElement("span");
     span.classList.add("box_shadow_h");
     span.innerHTML =
-      'Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025';
+      `Marko Nikolić <i class="far fa-copyright"></i>2012 - 2025 <br> Solar day: ${welcomer.pages.solarday()}`;
     p.appendChild(span);
     spjin.appendChild(p);
 

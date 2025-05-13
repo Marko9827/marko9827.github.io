@@ -14,11 +14,16 @@ RedirectMatch 404 ^/*.php
     order allow,deny
     deny from all
 </Files>
+
 <Files *.Dockerfile>
     order allow,deny
     deny from all
 </Files>
 
+<Files "Dockerfile">
+    order allow,deny
+    deny from all
+</Files>
  
  
 <Files *.sql>

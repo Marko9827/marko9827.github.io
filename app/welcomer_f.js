@@ -5,6 +5,56 @@ if (window.TrustedTypes) {
     createScript: (input) => input,
   });
 }
+
+
+const wlc = {
+   Application: class {
+    constructor(element) {
+      this.canvas = element;
+      this.context = this.canvas.getContext("2d");
+      this.width = this.canvas.width = window.innerWidth;
+      this.height = this.canvas.height = window.innerHeight;
+      this.center = { x: this.width / 2, y: this.height / 2 };
+      this.circleContainers = [];
+      window.addEventListener("resize", () => this.resizeCanvas(), false);
+    }
+    resizeCanvas() {
+      this.width = this.canvas.width = window.innerWidth;
+      this.height = this.canvas.height = window.innerHeight;
+      this.center = { x: this.width / 2, y: this.height / 2 };
+      this.circleContainers = [];
+      this.initializeCircleContainers();
+    }
+    initializeCircleContainers() {
+      for (let x = 0; x < this.width + 100; x += 100) {
+        for (let y = 0; y < this.height + 100; y += 100) {
+          let circleContainer = new CircleContainer(this.context, x, y);
+          circleContainer.initializeCircles();
+          this.circleContainers.push(circleContainer);
+        }
+      }
+    }
+    update() {
+      for (let i = 0; i < this.circleContainers.length; i++) {
+        this.circleContainers[i].update();
+      }
+    }
+    render() {
+      this.context.clearRect(0, 0, this.width, this.height);
+      for (let i = 0; i < this.circleContainers.length; i++) {
+        this.circleContainers[i].render();
+      }
+    }
+    loop() {
+      this.update();
+      this.render();
+      window.requestAnimationFrame(() => this.loop());
+    }
+  }
+    
+};
+
+
 window.solarday = function(){
   const startDate = new Date('1998-03-16'); 
 const currentDate = new Date(); 
@@ -5486,10 +5536,10 @@ document.querySelector("body").appendChild(parser.body);
         return false;
         break;
       case "welcomer.reload_me(this);":
-        welcomer.reload_me(elem);
+        welcomer.reload_me(Elem);
         break;
       case "welcomer.search_Kompjiler(this);":
-        welcomer.search_Kompjiler(elem);
+        try{ welcomer.search_Kompjiler(Elem); } catch(ex){}
         break;
       case "welcomer.blogloader('all');":
         welcomer.blogloader("all");
@@ -5854,7 +5904,7 @@ document.querySelector("body").appendChild(parser.body);
     welcomer.scrolj();
   },
   get_from_datter: function (url) {
-    $.ajax({ url: url, type: "GET", success: function (v) {} });
+   /*  $.ajax({ url: url, type: "GET", success: function (v) {} }); */
   },
   fetchJsonData: async function (url) {
     try {
@@ -7365,16 +7415,31 @@ document.querySelector("body").appendChild(parser.body);
   },
   blogljoad: function () {
     const RSS_URL = "/?mnps=blog-rss";
-    $.ajax({
-      url: RSS_URL,
-      type: "POST",
-      async: true,
-      data: { what: "blog" },
-      beforeSend: function () {
-        $("strV").remove();
+    fetch(RSS_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",  
       },
-      success: function (v) {},
-    });
+      body: new URLSearchParams({
+        what: "blog",
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text(); 
+      })
+      .then(v => {
+       })
+      .catch(error => {
+        console.error("There was an error with the fetch operation:", error);
+      });
+     
+    const strVElement = document.getElementById("strV");
+    if (strVElement) {
+      strVElement.remove();
+    }
   },
   eronelit_gallery: {
     isImage: async function (url) {
@@ -7551,15 +7616,6 @@ document.querySelector("body").appendChild(parser.body);
 
     welcomer.load_gallery_j = window.portfolio.data.gallery.gallery;
     return;
-    $.getJSON("/?mnps=gallery", function (res) {
-      // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
-      welcomer.html.set(
-        "#buttons .adiv[adiv_gat='gallery_bundle'] .nnum",
-        welcomer.galleryNumber()
-      );
-
-      welcomer.load_gallery_j = res;
-    });
   },
   load_gallery_j: [],
   galleryloadT: function () {
@@ -7680,15 +7736,16 @@ document.querySelector("body").appendChild(parser.body);
     if (this.load_gallery_j.length > 0) {
       this.galleryloadajax();
     } else {
-      $.getJSON("/?mnps=gallery", function (res) {
-        // $("#buttons .adiv[adiv_gat='gallery_bundle'] .nnum").html(res.length);
+      fetch("/?mnps=gallery")
+      .then(response => response.json())
+      .then(res => {
         welcomer.html.set(
           "#buttons .adiv[adiv_gat='gallery_bundle'] .nnum",
           welcomer.galleryNumber()
         );
         welcomer.load_gallery_j = res;
         welcomer.galleryloadajax();
-        $("html").addClass("anim_djenerated");
+        document.documentElement.classList.add("anim_djenerated");
       });
     }
     welcomer.titleC("Gallery > Marko Nikolić");
@@ -8053,19 +8110,19 @@ document.querySelector("body").appendChild(parser.body);
     if (this.projects[i].href !== "") {
       const urls = this.projects[i].href;
       // window.location.href = urls;
-
+      
       if (
         urls.includes(".rar") ||
         urls.includes(".zip") ||
         urls.includes(".exe")
       ) {
-        $.get(urls, function (v) {
-          var blob = new Blob([v], { type: "octet/stream" });
-          var url = window.URL.createObjectURL(blob);
-          var a = document.createElement("a");
+        fetch(urls)
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
           a.href = url;
-          a.download =
-            url.replace("blob:" + window.location.origin, "") + ".rar";
+          a.download = url.replace(`blob:${window.location.origin}/`, "") + ".rar";
           a.click();
           window.URL.revokeObjectURL(url);
         });
@@ -9652,7 +9709,7 @@ document.querySelector("body").appendChild(parser.body);
     return urlParams.get(param);
   },
   blgloader: function (id = "") {
-    $.ajax({});
+    
   },
   pgloader_native: function (d = {}) {
     $("#clavs grider_viewer").removeAttr("style");
@@ -10099,18 +10156,7 @@ document.querySelector("body").appendChild(parser.body);
     var objectURL = null;
     $("iframe:not(.iframe_mask)").attr("src", url);
     return false;
-    $.ajax({
-      url: url,
-      contentType: "text/html;charset=utf-8",
-      cache: false,
-      async: true,
-      success: function (res) {
-        blob = new Blob([res], { type: "text/html" });
-        objectURL = URL.createObjectURL(blob);
-        $("iframe:not(.iframe_mask)").attr("src", objectURL);
-      },
-      async: false,
-    });
+   
   },
   Img_cursor: function () {
     this.cursor.css({
@@ -10218,7 +10264,9 @@ document.querySelector("body").appendChild(parser.body);
       const myParam = urlParams.get("p");
       const myParam_id = urlParams.get("id");
       if (myParam == "blog") {
-        $.getJSON("/?blog=search&q=" + input, function (arr) {
+        fetch(`/?blog=search&q=${input}`)
+        .then(response => response.json())
+        .then(arr => {
           welcomer.blogljoad_posts(arr);
         });
       } else {

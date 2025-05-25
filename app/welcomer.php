@@ -735,7 +735,7 @@ if (!empty($_GET['drc'])) {
 
 
                                      /* BETA CODE *f/
-                                     $.getJSON("https://api.localhost/app&id=A03429468246",function(data){
+                                     $.getJSON("https://api.eronelit.com/app&id=A03429468246",function(data){
                                          window.portfolio = data;
                                          $.get("/?pages=cv-pdf", function(res) {
                                      window.portfolio.data.pages.cv_pdf.c = `${`${res}`}`;

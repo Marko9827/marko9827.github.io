@@ -65,8 +65,8 @@ function createScriptElements_array()
 
 $cdn_urls = createScriptElements_array();
 
-//"api.eronelit.com   cdn.eronelit.com api.localhost https:";
-$fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com";
+//"api.eronelit.com   cdn.eronelit.com api.eronelit.com https:";
+$fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.eronelit.com fonts.googleapis.com";
 $nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
 $script_nonce = $nonce_h;

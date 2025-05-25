@@ -1943,7 +1943,7 @@ class portfolio_marko
     }
     function sharedUlr($aerea)
     {
-        $url = "https://api.localhost/graph";
+        $url = "https://api.eronelit.com/graph";
         $postData = [
             'token' => '32M052k350QaeofkaeopfF',
             'key' => '3402340234239J939592369',

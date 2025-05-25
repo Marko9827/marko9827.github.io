@@ -10,6 +10,9 @@ js/301F942.js
 /node_modules
 *.db
 /m_dr_vendor
-**.mp4
+
+
+**/*.mp4
+
 
 

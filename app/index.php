@@ -24,6 +24,17 @@ if (!empty($_GET['p'])) {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
+    } 
+}
+
+if (!empty($_GET['api'])){
+    if ($_GET['api'] == "avatar") {
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        header("Content-Type: image/png");
+        @readfile("$_SERVER[DOCUMENT_ROOT]/app/img/slika314.jpg");
+        exit();
     }
 }
 

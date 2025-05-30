@@ -2737,12 +2737,9 @@ div#controls img:hover {
   }
   ld() {}
 
-  srcDiv(src = null){
-    const node = document.querySelector(src) ||  src;
-const clone = node.cloneNode(true);
- 
+  srcDiv(src = null){ 
     if (src) {
-      this.shadowRoot.querySelector("div#zoomImage").appendChild(clone);
+      this.shadowRoot.querySelector("div#zoomImage").innerHTML = src;
       this.shadowRoot.querySelector("img#zoomImage").remove();
       this.shadowRoot.querySelector(".zoomWindow").removeAttribute("style");
       var controller = new ImageZoomPan(
@@ -3006,6 +3003,15 @@ class PDFViewerElement extends HTMLElement {
   }
 }
 class PostContent extends HTMLElement {
+
+  zoom() {
+    const ImagePreview_src = document.createElement("image-preview");
+    var htmls = this.div_content.innerHTML;
+  //  htmls = htmls.querySelector('dnm_footer').remove();
+    ImagePreview_src.srcDiv(htmls);
+    document.body.appendChild(ImagePreview_src);
+  }
+
   anim(container, text) {
     const t = this;
     container.addEventListener("click", (e) => {
@@ -3091,8 +3097,8 @@ class PostContent extends HTMLElement {
     const template = document.createElement("template");
 
     const style = document.createElement("style"),
-      tags = document.createElement("tags"),
-      div_content = document.createElement("div_content");
+      tags = document.createElement("tags");
+      this.div_content = document.createElement("div_content");
 
     const urlParamsf = new URLSearchParams(window.location.search);
     if (urlParamsf.has("id")) {
@@ -3324,7 +3330,7 @@ div#controls img:hover {
     shadow.appendChild(style);
     /* template.innerHTML = ` <div_content> </div_content>`;*/
     shadow.appendChild(tags);
-    shadow.appendChild(div_content);
+    shadow.appendChild(this.div_content);
     const child = shadow.querySelector(".content-wrapper");
     // var aer =
     // const rls = new ImageZoomPan();

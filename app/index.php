@@ -624,7 +624,10 @@ class portfolio_marko
     function Pages($h = "home")
     {
         session_start();
-        if ($h == "demo") {
+        
+        if ($h == "games"){
+            
+        }else  if ($h == "demo") {
             header("X-Robots-Tag: noindex, nofollow");
             if (!empty($_GET['id'])) {
                 $f = "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";

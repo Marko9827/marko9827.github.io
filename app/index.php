@@ -745,6 +745,10 @@ class portfolio_marko
 
             }
          
+            $data = [
+                
+            ];
+
             header("Content-type: text/html");
            
             ob_start(function ($b) {
@@ -784,12 +788,14 @@ class portfolio_marko
                 <meta name="twitter:description"
                     content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
                 <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
-                <style>
-                @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+                <style type="text/css">
+       @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
 
 * {
     margin: 0px;
     padding: 0px;
+    user-drag: none;
+    -webkit-user-drag: none
 }
 
 html,
@@ -962,7 +968,9 @@ footer {
     flex-direction: row;
     gap: 10px;
     margin-top: 8px;
-    justify-content: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .all a.instagram {
@@ -997,6 +1005,7 @@ h4 {
     margin-bottom: 17px;
 }
 
+
                 </style>
             </head>
 
@@ -1030,7 +1039,7 @@ h4 {
                     </div>
                     <h4>All my social networks</h4>
                     <div class="all">
-                        <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
+                        <a aria-label="Instagram" href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
                             <i class="bi bi-instagram" aria-hidden="true"></i>
                         </a>
                         <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer"

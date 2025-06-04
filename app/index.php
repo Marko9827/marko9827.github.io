@@ -559,6 +559,15 @@ class portfolio_marko
             curl_close($ch);
         }*/
     }
+    function minifyHtmlCss(string $htmlCss): string
+{
+    $htmlCss = preg_replace('#/\*[\s\S]*?\*/#', '', $htmlCss);
+    $htmlCss = preg_replace('#<!--[\s\S]*?-->#', '', $htmlCss);
+    $htmlCss = str_replace(["\r\n", "\r", "\n", "\t"], ' ', $htmlCss);
+    $htmlCss = preg_replace('/\s+/', ' ', $htmlCss);
+    $htmlCss = preg_replace('/>\s+</', '><', $htmlCss);
+    return trim($htmlCss);
+}
     function minifyCSS($css)
     {
         $css = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css);
@@ -735,7 +744,14 @@ class portfolio_marko
                 exit();
 
             }
-            header("Content-type: text/html"); ?>
+         
+            header("Content-type: text/html");
+           
+            ob_start(function ($b) {
+                return self::minifyHtmlCss($b);
+            });
+            ?>
+            
             <!DOCTYPE html>
             <html lang="sr">
 
@@ -769,16 +785,13 @@ class portfolio_marko
                     content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
                 <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
                 <style>
-                    @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+                @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
 
 * {
     margin: 0px;
     padding: 0px;
 }
 
-/* --------------------------------------------
-           RESET & BASIC SETTINGS
-           -------------------------------------------- */
 html,
 body {
     margin: 0;
@@ -790,7 +803,6 @@ body {
     color: #2d3748;
 }
 
-/* Establish a flex container that fills the viewport */
 body {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -807,15 +819,11 @@ body {
             align-items: center;
 }
 
-/* --------------------------------------------
-           NOTIFICATION CONTAINER
-           -------------------------------------------- */
 .notification {
     width: 100%;
     max-width: 400px;
     background-color: #fff;
     border-left: 5px solid #1877F2;
-    /* Facebook blue accent */
     padding: 24px;
     border-radius: 8px;
     -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -825,7 +833,6 @@ body {
     margin: 16px;
 }
 
-/* Bold heading inside notification */
 .notification b {
     display: block;
     font-size: 1.4rem;
@@ -833,7 +840,6 @@ body {
     color: #2d3748;
 }
 
-/* Paragraphs */
 .notification p {
     margin: 0 0 16px 0;
     line-height: 1.6;
@@ -841,9 +847,6 @@ body {
     font-size: 1rem;
 }
 
-/* --------------------------------------------
-           LINKS (BUTTON-LIKE WITH ICONS)
-           -------------------------------------------- */
 .links {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -880,21 +883,17 @@ body {
 
 .links a.instagram {
     background-color: #C13584;
-    /* Instagram magenta */
 }
 
 .links a.facebook {
     background-color: #1877F2;
-    /* Facebook blue */
 }
 
-.links a:hover, .all a:hover {
+.links a:hover,
+.all a:hover {
     opacity: 0.9;
 }
 
-/* --------------------------------------------
-           FOOTER
-           -------------------------------------------- */
 footer {
     font-size: 0.85rem;
     color: #718096;
@@ -905,9 +904,6 @@ footer {
     background: transparent;
 }
 
-/* --------------------------------------------
-           RESPONSIVE ADJUSTMENTS
-           -------------------------------------------- */
 @media (max-width: 480px) {
     .notification {
         margin: 0 12px 12px 12px;
@@ -929,27 +925,25 @@ footer {
 
 .all a {
     display: -webkit-box;
-display: -ms-flexbox;
-display: flex
-;
--webkit-box-align: center;
--ms-flex-align: center;
-align-items: center;
--webkit-box-pack: center;
--ms-flex-pack: center;
-justify-content: center;
-gap: 8px;
-/* padding: 10px 0; */
-border-radius: 5px;
-color: #fff;
-text-decoration: none;
-font-weight: bold;
-font-size: 1rem;
--webkit-transition: opacity 0.2s ease-in-out;
--o-transition: opacity 0.2s ease-in-out;
-transition: opacity 0.2s ease-in-out;
-width: 38px;
-height: 38px;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 8px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -o-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+    width: 38px;
+    height: 38px;
 }
 
 .all a img {
@@ -968,6 +962,7 @@ height: 38px;
     flex-direction: row;
     gap: 10px;
     margin-top: 8px;
+    justify-content: center;
 }
 
 .all a.instagram {
@@ -990,7 +985,7 @@ height: 38px;
     background-color: #24292e;
 }
 
-.all a.youtube { 
+.all a.youtube {
     background-color: #FF0000;
 }
 
@@ -1001,6 +996,7 @@ h4 {
     margin-top: 15px;
     margin-bottom: 17px;
 }
+
                 </style>
             </head>
 

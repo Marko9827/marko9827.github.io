@@ -712,7 +712,8 @@ class portfolio_marko
             @readfile("$_SERVER[DOCUMENT_ROOT]/app/index.html");
             exit();
         }
-        if ($h == "socialnew"){
+        
+        if ($h == "socialnew" || $h == "social"){
 
             if(!empty($_GET['og_social'])){
                 header("Content-Type: image/png");

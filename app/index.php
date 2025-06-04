@@ -862,6 +862,12 @@ class portfolio_marko
       My old Facebook account and Instagram are blocked.<br>
       Because there are people who report your account on purpose. To do you harm. Let's move on though...
     </p>
+    <p>
+    Мой старый аккаунт Facebook и Instagram заблокированы.<br>
+Потому что есть люди, которые специально жалуются на твой аккаунт.
+Чтобы навредить тебе.
+Тем не менее, мы идём дальше…
+    </p>
     <div class="links">
       <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
         <i class="bi bi-instagram" aria-hidden="true"></i>
@@ -869,7 +875,7 @@ class portfolio_marko
       </a>
       <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer" class="facebook">
         <i class="bi bi-facebook" aria-hidden="true"></i>
-        Facebook: Посетите моју страницу
+        Facebook: My new profile(private)
       </a>
     </div>
   </div>

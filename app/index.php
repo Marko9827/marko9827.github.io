@@ -888,7 +888,7 @@ body {
     /* Facebook blue */
 }
 
-.links a:hover {
+.links a:hover, .all a:hover {
     opacity: 0.9;
 }
 

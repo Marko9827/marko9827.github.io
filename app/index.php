@@ -1009,9 +1009,26 @@ class portfolio_marko
     padding-bottom: 12px;
 }
 
-b {
+ 
+ 
+.all a{
+    -webkit-transition: .2s transform;
+    -o-transition: .2s transform;
+    transition: .2s transform;
+} 
+.all a:hover {
+    -webkit-transform:scale(1.1);
+        -ms-transform:scale(1.1);
+            transform:scale(1.1);
 }
-
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    background: -webkit-gradient(linear, left top, left bottom, from(white), to(black));
+    background: -o-linear-gradient(top, white, black);
+    background: linear-gradient(to bottom, white, black);
+}
  
                 </style>
             </head>

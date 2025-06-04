@@ -1067,7 +1067,7 @@ transform:scale(1.1);
                             <i class="bi bi-instagram" aria-hidden="true"></i>
                             Instagram: @nikoliccc0002
                         </a>
-                        <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer"
+                        <a href="https://www.facebook.com/profile.php?id=61576909296856" target="_blank" rel="noopener noreferrer"
                             class="facebook">
                             <i class="bi bi-facebook" aria-hidden="true"></i>
                             Facebook: My new profile(private)
@@ -1079,7 +1079,7 @@ transform:scale(1.1);
                             rel="noopener noreferrer" class="instagram">
                             <i class="bi bi-instagram" aria-hidden="true"></i>
                         </a>
-                        <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer"
+                        <a href="https://www.facebook.com/profile.php?id=61576909296856" target="_blank" rel="noopener noreferrer"
                             class="facebook">
                             <i class="bi bi-facebook" aria-hidden="true"></i>
                         </a>

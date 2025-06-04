@@ -1019,7 +1019,7 @@ b {
             <body>
                 <div class="notification">
                     <b><i class="bi bi-bell-fill"></i> Obaveštenje/Notice</b>
-                    <span>6/4/2025 - 01:53</span>  <p-content>
+                    <span><i class="bi bi-clock-fill"></i> 6/4/2025 - 01:53</span>  <p-content>
                         <p style="    padding-top: 5px;">
                             Stari Facebook nalog i Instagram su mi blokirani.<br>
                             Jer postoje ljudi koji ti prijavljivalju nalog namerno. Da bi ti načinili zlo. Ipak idemo dalje...

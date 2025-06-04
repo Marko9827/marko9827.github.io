@@ -791,244 +791,254 @@ class portfolio_marko
                 <style type="text/css">
                     @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
 
-                    * {
-                        margin: 0px;
-                        padding: 0px;
-                        user-drag: none;
-                        -webkit-user-drag: none
-                    }
-
-                    html,
-                    body {
-                        margin: 0;
-                        padding: 0;
-                        height: 100%;
-                        font-family: Arial, sans-serif;
-                        background: -o-linear-gradient(315deg, #f0f4f8, #e2e8f0);
-                        background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
-                        color: #2d3748;
-                    }
-
-                    body {
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-orient: vertical;
-                        -webkit-box-direction: normal;
-                        -ms-flex-direction: column;
-                        flex-direction: column;
-                        -webkit-box-pack: center;
-                        -ms-flex-pack: center;
-                        justify-content: center;
-                        -webkit-box-align: center;
-                        -ms-flex-align: center;
-                        align-items: center;
-                    }
-
-                    .notification {
-                        width: 100%;
-                        max-width: 400px;
-                        background-color: #fff;
-                        border-left: 5px solid #1877F2;
-                        padding: 24px;
-                        border-radius: 8px;
-                        -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                        -webkit-box-sizing: border-box;
-                        box-sizing: border-box;
-                        margin: 16px;
-                    }
-
-                    .notification b {
-                        display: block;
-                        font-size: 1.4rem;
-                        margin-bottom: 0px;
-                        color: #2d3748;
-                    }
-
-                    .notification p {
-                        margin: 0 0 16px 0;
-                        line-height: 1.6;
-                        color: #4a5568;
-                        font-size: 1rem;
-                    }
-
-                    .links {
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-orient: vertical;
-                        -webkit-box-direction: normal;
-                        -ms-flex-direction: column;
-                        flex-direction: column;
-                        gap: 10px;
-                        margin-top: 8px;
-                    }
-
-                    .links a {
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-align: center;
-                        -ms-flex-align: center;
-                        align-items: center;
-                        -webkit-box-pack: center;
-                        -ms-flex-pack: center;
-                        justify-content: center;
-                        gap: 8px;
-                        padding: 10px 0;
-                        border-radius: 5px;
-                        color: #fff;
-                        text-decoration: none;
-                        font-weight: bold;
-                        font-size: 1rem;
-                        -webkit-transition: opacity 0.2s ease-in-out;
-                        -o-transition: opacity 0.2s ease-in-out;
-                        transition: opacity 0.2s ease-in-out;
-                    }
-
-                    .links a.instagram {
-                        background-color: #C13584;
-                    }
-
-                    .links a.facebook {
-                        background-color: #1877F2;
-                    }
-
-                    .links a:hover,
-                    .all a:hover {
-                        opacity: 0.9;
-                    }
-
-                    footer {
-                        font-size: 0.85rem;
-                        color: #718096;
-                        margin-top: auto;
-                        padding: 12px 0;
-                        width: 100%;
-                        text-align: center;
-                        background: transparent;
-                    }
-
-                    @media (max-width: 480px) {
-                        .notification {
-                            margin: 0 12px 12px 12px;
-                            padding: 20px;
-                        }
-
-                        .notification b {
-                            font-size: 1.2rem;
-                        }
-
-                        .notification p {
-                            font-size: 0.95rem;
-                        }
-
-                        .links a {
-                            font-size: 0.95rem;
-                        }
-                    }
-
-                    .all a {
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-align: center;
-                        -ms-flex-align: center;
-                        align-items: center;
-                        -webkit-box-pack: center;
-                        -ms-flex-pack: center;
-                        justify-content: center;
-                        gap: 8px;
-                        border-radius: 5px;
-                        color: #fff;
-                        text-decoration: none;
-                        font-weight: bold;
-                        font-size: 1rem;
-                        -webkit-transition: opacity 0.2s ease-in-out;
-                        -o-transition: opacity 0.2s ease-in-out;
-                        transition: opacity 0.2s ease-in-out;
-                        width: 38px;
-                        height: 38px;
-                    }
-
-                    .all a img {
-                        height: 38px;
-                        width: 38px;
-                        border-radius: 5px;
-                    }
-
-                    .all {
-                        display: -webkit-box;
-                        display: -ms-flexbox;
-                        display: flex;
-                        -webkit-box-orient: vertical;
-                        -webkit-box-direction: normal;
-                        -ms-flex-direction: column;
-                        flex-direction: row;
-                        gap: 10px;
-                        margin-top: 8px;
-                        -webkit-box-pack: center;
-                        -ms-flex-pack: center;
-                        justify-content: center;
-                    }
-
-                    .all a.instagram {
-                        background-color: #C13584;
-                    }
-
-                    .all a.facebook {
-                        background-color: #1877F2;
-                    }
-
-                    .all a.tiktok {
-                        background-color: #111;
-                    }
-
-                    .all a.linkedin {
-                        background-color: #0077B5;
-                    }
-
-                    .all a.github {
-                        background-color: #24292e;
-                    }
-
-                    .all a.youtube {
-                        background-color: #FF0000;
-                    }
-
-                    h4 {
-                        text-align: center;
-                        border-bottom: 1px solid;
-                        padding-bottom: 15px;
-                        margin-top: 15px;
-                        margin-bottom: 17px;
-                    }
-                    span {
-    font-size: 11px;
-    padding-bottom: 12px;
+* {
+    margin: 0px;
+    padding: 0px;
+    user-drag: none;
+    -webkit-user-drag: none
 }
 
- 
- 
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: -o-linear-gradient(315deg, #f0f4f8, #e2e8f0);
+    background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+    color: #2d3748;
+}
+
+body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.notification {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-left: 5px solid #1877F2;
+    padding: 24px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 16px;
+}
+
+.notification b {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 0px;
+    color: #2d3748;
+}
+
+.notification p {
+    margin: 0 0 16px 0;
+    line-height: 1.6;
+    color: #4a5568;
+    font-size: 1rem;
+}
+
+.links {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.links a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -o-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.links a.instagram {
+    background-color: #C13584;
+}
+
+.links a.facebook {
+    background-color: #1877F2;
+}
+
+.links a:hover,
+.all a:hover {
+    opacity: 0.9;
+}
+
+footer {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-top: auto;
+    padding: 12px 0;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+}
+
+@media (max-width: 480px) {
+    .notification {
+        margin: 0 12px 12px 12px;
+        padding: 20px;
+    }
+
+    .notification b {
+        font-size: 1.2rem;
+        -webkit-user-select:none;
+           -moz-user-select:none;
+            -ms-user-select:none;
+                user-select:none;
+    }
+
+    .notification p {
+        font-size: 0.95rem;
+    }
+
+    .links a {
+        font-size: 0.95rem;
+    }
+}
+
+.all a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -o-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+    width: 38px;
+    height: 38px;
+}
+
+.all a img {
+    height: 38px;
+    width: 38px;
+    border-radius: 5px;
+}
+
+.all {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 8px;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.all a.instagram {
+    background-color: #C13584;
+}
+
+.all a.facebook {
+    background-color: #1877F2;
+}
+
+.all a.tiktok {
+    background-color: #111;
+}
+
+.all a.linkedin {
+    background-color: #0077B5;
+}
+
+.all a.github {
+    background-color: #24292e;
+}
+
+.all a.youtube {
+    background-color: #FF0000;
+}
+
+h4 {
+    text-align: center;
+    border-bottom: 1px solid;
+    padding-bottom: 15px;
+    margin-top: 15px;
+    margin-bottom: 17px;
+}
+span {
+font-size: 11px;
+padding-bottom: 12px;
+-webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+user-select:none;
+}
+
+.links * , 
+.all *,
+h4, footer {
+    -webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+user-select:none;
+}
+
+
+
 .all a{
-    -webkit-transition: .2s transform;
-    -o-transition: .2s transform;
-    transition: .2s transform;
+-webkit-transition: .2s transform;
+-o-transition: .2s transform;
+transition: .2s transform;
 } 
 .all a:hover {
-    -webkit-transform:scale(1.1);
-        -ms-transform:scale(1.1);
-            transform:scale(1.1);
+-webkit-transform:scale(1.1);
+-ms-transform:scale(1.1);
+transform:scale(1.1);
 }
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
-    background: -webkit-gradient(linear, left top, left bottom, from(white), to(black));
-    background: -o-linear-gradient(top, white, black);
-    background: linear-gradient(to bottom, white, black);
-}
+
  
                 </style>
             </head>

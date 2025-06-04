@@ -24,10 +24,10 @@ if (!empty($_GET['p'])) {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
-    } 
+    }
 }
 
-if (!empty($_GET['api'])){
+if (!empty($_GET['api'])) {
     if ($_GET['api'] == "avatar") {
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
@@ -624,10 +624,10 @@ class portfolio_marko
     function Pages($h = "home")
     {
         session_start();
-        
-        if ($h == "games"){
-            
-        }else  if ($h == "demo") {
+
+        if ($h == "games") {
+
+        } else if ($h == "demo") {
             header("X-Robots-Tag: noindex, nofollow");
             if (!empty($_GET['id'])) {
                 $f = "$_SERVER[DOCUMENT_ROOT]/app/demos/$_GET[id].html";
@@ -712,198 +712,369 @@ class portfolio_marko
             @readfile("$_SERVER[DOCUMENT_ROOT]/app/index.html");
             exit();
         }
-        
-        if ($h == "socialnew" || $h == "social"){
 
-            if(!empty($_GET['og_social'])){
-                header("Content-Type: image/png");
-                @readfile("$_SERVER[DOCUMENT_ROOT]/app/og_social.png");
+        if ($h == "socialnew" || $h == "social") {
+
+            if (!empty($_GET['og_social'])) {
+                switch ($_GET['og_social']) {
+
+                    case "vk":
+                        header("Content-type: image/svg+xml");
+                        echo '<svg  viewBox="0 0 48 48" style="background: #0077ff;" fill="#0077ff" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 23.04C0 12.1788 0 6.74826 3.37413 3.37413C6.74826 0 12.1788 0 23.04 0H24.96C35.8212 0 41.2517 0 44.6259 3.37413C48 6.74826 48 12.1788 48 23.04V24.96C48 35.8212 48 41.2517 44.6259 44.6259C41.2517 48 35.8212 48 24.96 48H23.04C12.1788 48 6.74826 48 3.37413 44.6259C0 41.2517 0 35.8212 0 24.96V23.04Z" fill="#0077FF"/>
+<path d="M25.54 34.5801C14.6 34.5801 8.3601 27.0801 8.1001 14.6001H13.5801C13.7601 23.7601 17.8 27.6401 21 28.4401V14.6001H26.1602V22.5001C29.3202 22.1601 32.6398 18.5601 33.7598 14.6001H38.9199C38.0599 19.4801 34.4599 23.0801 31.8999 24.5601C34.4599 25.7601 38.5601 28.9001 40.1201 34.5801H34.4399C33.2199 30.7801 30.1802 27.8401 26.1602 27.4401V34.5801H25.54Z" fill="white"/>
+</svg>
+';
+                        break;
+                    default:
+                        header("Content-Type: image/png");
+                        @readfile("$_SERVER[DOCUMENT_ROOT]/app/og_social.png");
+
+                        break;
+                }
                 exit();
+
             }
             header("Content-type: text/html"); ?>
-     <!DOCTYPE html>
-<html lang="sr">
-<head>
-  <meta charset="UTF-8">
-  <title>Obaveštenje/Notice – Marko Nikolić</title>
+            <!DOCTYPE html>
+            <html lang="sr">
 
-  <!-- Responsive meta tag -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+            <head>
+                <meta charset="UTF-8">
+                <title>Obaveštenje/Notice – Marko Nikolić</title>
 
-  <!-- SEO meta tags -->
-  <meta name="description" content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
-  <meta name="keywords" content="Facebook, Instagram, obaveštenje, blokiran nalog, novi nalog, Marko Nikolić">
-  <meta name="author" content="Marko Nikolić">
-  <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
-  
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Obaveštenje/Notice – Marko Nikolić">
-  <meta property="og:description" content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
-  <meta property="og:url" content="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
-  <meta property="og:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og";?>">
+                <!-- Responsive meta tag -->
+                <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Obaveštenje/Notice – Marko Nikolić">
-  <meta name="twitter:description" content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
-  <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og";?>">
-  <style>
-    @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
-    /* --------------------------------------------
-       RESET & BASIC SETTINGS
-       -------------------------------------------- */
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
-      color: #2d3748;
-    }
+                <!-- SEO meta tags -->
+                <meta name="description"
+                    content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
+                <meta name="keywords" content="Facebook, Instagram, obaveštenje, blokiran nalog, novi nalog, Marko Nikolić">
+                <meta name="author" content="Marko Nikolić">
+                <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
 
-    /* Establish a flex container that fills the viewport */
-    body {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+                <!-- Open Graph / Facebook --> 
+                <meta property="og:type" content="website">
+                <meta property="og:title" content="Obaveštenje/Notice – Marko Nikolić">
+                <meta property="og:description"
+                    content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
+                <meta property="og:url"
+                    content="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
+                <meta property="og:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
 
-    /* --------------------------------------------
-       NOTIFICATION CONTAINER
-       -------------------------------------------- */
+                <!-- Twitter Card -->
+                <meta name="twitter:card" content="summary_large_image">
+                <meta name="twitter:title" content="Obaveštenje/Notice – Marko Nikolić">
+                <meta name="twitter:description"
+                    content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
+                <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
+                <style>
+                    @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* --------------------------------------------
+           RESET & BASIC SETTINGS
+           -------------------------------------------- */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background: -o-linear-gradient(315deg, #f0f4f8, #e2e8f0);
+    background: linear-gradient(135deg, #f0f4f8, #e2e8f0);
+    color: #2d3748;
+}
+
+/* Establish a flex container that fills the viewport */
+body {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+/* --------------------------------------------
+           NOTIFICATION CONTAINER
+           -------------------------------------------- */
+.notification {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border-left: 5px solid #1877F2;
+    /* Facebook blue accent */
+    padding: 24px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+    margin: 16px;
+}
+
+/* Bold heading inside notification */
+.notification b {
+    display: block;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    color: #2d3748;
+}
+
+/* Paragraphs */
+.notification p {
+    margin: 0 0 16px 0;
+    line-height: 1.6;
+    color: #4a5568;
+    font-size: 1rem;
+}
+
+/* --------------------------------------------
+           LINKS (BUTTON-LIKE WITH ICONS)
+           -------------------------------------------- */
+.links {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.links a {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    gap: 8px;
+    padding: 10px 0;
+    border-radius: 5px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    -webkit-transition: opacity 0.2s ease-in-out;
+    -o-transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.links a.instagram {
+    background-color: #C13584;
+    /* Instagram magenta */
+}
+
+.links a.facebook {
+    background-color: #1877F2;
+    /* Facebook blue */
+}
+
+.links a:hover {
+    opacity: 0.9;
+}
+
+/* --------------------------------------------
+           FOOTER
+           -------------------------------------------- */
+footer {
+    font-size: 0.85rem;
+    color: #718096;
+    margin-top: auto;
+    padding: 12px 0;
+    width: 100%;
+    text-align: center;
+    background: transparent;
+}
+
+/* --------------------------------------------
+           RESPONSIVE ADJUSTMENTS
+           -------------------------------------------- */
+@media (max-width: 480px) {
     .notification {
-      width: 100%;
-      max-width: 400px;
-      background-color: #fff;
-      border-left: 5px solid #1877F2; /* Facebook blue accent */
-      padding: 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      box-sizing: border-box;
-      margin: 16px;
+        margin: 0 12px 12px 12px;
+        padding: 20px;
     }
 
-    /* Bold heading inside notification */
     .notification b {
-      display: block;
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-      color: #2d3748;
+        font-size: 1.2rem;
     }
 
-    /* Paragraphs */
     .notification p {
-      margin: 0 0 16px 0;
-      line-height: 1.6;
-      color: #4a5568;
-      font-size: 1rem;
-    }
-
-    /* --------------------------------------------
-       LINKS (BUTTON-LIKE WITH ICONS)
-       -------------------------------------------- */
-    .links {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 8px;
+        font-size: 0.95rem;
     }
 
     .links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 10px 0;
-      border-radius: 5px;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: opacity 0.2s ease-in-out;
-    }
-
-    .links a.instagram {
-      background-color: #C13584; /* Instagram magenta */
-    }
-
-    .links a.facebook {
-      background-color: #1877F2; /* Facebook blue */
-    }
-
-    .links a:hover {
-      opacity: 0.9;
-    }
-
-    /* --------------------------------------------
-       FOOTER
-       -------------------------------------------- */
-    footer {
-      font-size: 0.85rem;
-      color: #718096;
-      margin-top: auto;
-      padding: 12px 0;
-      width: 100%;
-      text-align: center;
-      background: transparent;
-    }
-
-    /* --------------------------------------------
-       RESPONSIVE ADJUSTMENTS
-       -------------------------------------------- */
-    @media (max-width: 480px) {
-      .notification {
-        margin: 0 12px 12px 12px;
-        padding: 20px;
-      }
-      .notification b {
-        font-size: 1.2rem;
-      }
-      .notification p {
         font-size: 0.95rem;
-      }
-      .links a {
-        font-size: 0.95rem;
-      }
     }
-  </style>
-</head>
-<body>
-  <div class="notification">
-    <b><i class="bi bi-bell-fill"></i> Obaveštenje/Notice</b>
-    <p>
-      Stari Facebook nalog i Instagram su mi blokirani.<br>
-      Jer postoje ljudi koji ti prijavljivalju nalog namerno. Da bi ti načinili zlo. Ipak idemo dalje...
-    </p>
-    <p>
-      My old Facebook account and Instagram are blocked.<br>
-      Because there are people who report your account on purpose. To do you harm. Let's move on though...
-    </p>
-    <p>
-    Мой старый аккаунт Facebook и Instagram заблокированы.<br>
-Потому что есть люди, которые специально жалуются на твой аккаунт.
-Чтобы навредить тебе.
-Тем не менее, мы идём дальше…
-    </p>
-    <div class="links">
-      <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
-        <i class="bi bi-instagram" aria-hidden="true"></i>
-        Instagram: @nikoliccc0002
-      </a>
-      <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer" class="facebook">
-        <i class="bi bi-facebook" aria-hidden="true"></i>
-        Facebook: My new profile(private)
-      </a>
-    </div>
-  </div>
+}
 
-  <footer>
-    &copy; <?php echo date('Y'); ?> Marko Nikolić – <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>
-  </footer>
-</body>
-</html>
+.all a {
+    display: -webkit-box;
+display: -ms-flexbox;
+display: flex
+;
+-webkit-box-align: center;
+-ms-flex-align: center;
+align-items: center;
+-webkit-box-pack: center;
+-ms-flex-pack: center;
+justify-content: center;
+gap: 8px;
+/* padding: 10px 0; */
+border-radius: 5px;
+color: #fff;
+text-decoration: none;
+font-weight: bold;
+font-size: 1rem;
+-webkit-transition: opacity 0.2s ease-in-out;
+-o-transition: opacity 0.2s ease-in-out;
+transition: opacity 0.2s ease-in-out;
+width: 38px;
+height: 38px;
+}
+
+.all a img {
+    height: 38px;
+    width: 38px;
+    border-radius: 5px;
+}
+
+.all {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.all a.instagram {
+    background-color: #C13584;
+}
+
+.all a.facebook {
+    background-color: #1877F2;
+}
+
+.all a.tiktok {
+    background-color: #111;
+}
+
+.all a.linkedin {
+    background-color: #0077B5;
+}
+
+.all a.github {
+    background-color: #24292e;
+}
+
+.all a.youtube { 
+    background-color: #FF0000;
+}
+
+h4 {
+    text-align: center;
+    border-bottom: 1px solid;
+    padding-bottom: 15px;
+    margin-top: 15px;
+    margin-bottom: 17px;
+}
+                </style>
+            </head>
+
+            <body>
+                <div class="notification">
+                    <b><i class="bi bi-bell-fill"></i> Obaveštenje/Notice</b>
+                    <p>
+                        Stari Facebook nalog i Instagram su mi blokirani.<br>
+                        Jer postoje ljudi koji ti prijavljivalju nalog namerno. Da bi ti načinili zlo. Ipak idemo dalje...
+                    </p>
+                    <p>
+                        My old Facebook account and Instagram are blocked.<br>
+                        Because there are people who report your account on purpose. To do you harm. Let's move on though...
+                    </p>
+                    <p>
+                        Мой старый аккаунт Facebook и Instagram заблокированы.<br>
+                        Потому что есть люди, которые специально жалуются на твой аккаунт.
+                        Чтобы навредить тебе.
+                        Тем не менее, мы идём дальше…
+                    </p>
+                    <div class="links">
+                        <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
+                            <i class="bi bi-instagram" aria-hidden="true"></i>
+                            Instagram: @nikoliccc0002
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer"
+                            class="facebook">
+                            <i class="bi bi-facebook" aria-hidden="true"></i>
+                            Facebook: My new profile(private)
+                        </a>
+                    </div>
+                    <h4>All my social networks</h4>
+                    <div class="all">
+                        <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="instagram">
+                            <i class="bi bi-instagram" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61576909296856a" target="_blank" rel="noopener noreferrer"
+                            class="facebook">
+                            <i class="bi bi-facebook" aria-hidden="true"></i>
+                        </a>
+                        </a>
+                        <a href="https://www.tiktok.com/@nikoliccc02" target="_blank" rel="noopener noreferrer" class="tiktok">
+                            <i class="bi bi-tiktok" aria-hidden="true"></i>
+
+                        </a>
+                        <a href="https://www.linkedin.com/in/markonikolic98/" target="_blank" rel="noopener noreferrer"
+                            class="linkedin">
+                            <i class="bi bi-linkedin" aria-hidden="true"></i>
+                        </a>
+                        <a href="https://github.com/Marko9827" target="_blank" rel="noopener noreferrer" class="github">
+                            <i class="bi bi-github" aria-hidden="true"></i>
+                        </a>
+
+                        <a href="https://vk.com/marko982347" target="_blank" rel="noopener noreferrer" class="img">
+                            <img src="/socialnew&og_social=vk" alt="logo image" loading="lazy" />
+                        </a>
+
+                        <a href="https://www.youtube.com/@MarkoMakiNikolic" target="_blank" rel="noopener noreferrer" class="youtube">
+                        <i class="bi bi-youtube" aria-hidden="true"></i>
+                        </a>
+
+
+
+
+                    </div>
+                </div>
+
+                <footer>
+                    &copy; <?php echo date('Y'); ?> Marko Nikolić –
+                    <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>
+                </footer>
+            </body>
+
+            </html>
 
 
 
@@ -1389,7 +1560,7 @@ class portfolio_marko
                     echo "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"150\" height=\"150\" fill=\"$color\" class=\"bi bi-file-text-fill\" viewBox=\"0 0 16 16\">\r\n  <path d=\"M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2M5 4h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1m0 2h3a.5.5 0 0 1 0 1H5a.5.5 0 0 1 0-1\"/>\r\n</svg>";
                     break;
                 default:
-                self::error_page(404);
+                    self::error_page(404);
             }
             exit();
         }
@@ -1756,19 +1927,19 @@ class portfolio_marko
         <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
         <link rel="manifest" href="/manifest.webmanifest">
         <script type="application/ld+json">
-                                                {
-                                                    "@context": "https://schema.org",
-                                                    "@type": "WebSite",
-                                                    "url": "https://<?php echo SITE_HOST; ?>",
-                                                    "name": "Marko Nikolić",
-                                                    "author": {
-                                                        "@type": "Person",
-                                                        "name": "Marko Nikolić"
-                                                    },
-                                                    "description": "<?php echo htmlspecialchars($description); ?>",
-                                                    "inLanguage": "en-GB"
-                                                }
-                                                </script>
+                                                                {
+                                                                    "@context": "https://schema.org",
+                                                                    "@type": "WebSite",
+                                                                    "url": "https://<?php echo SITE_HOST; ?>",
+                                                                    "name": "Marko Nikolić",
+                                                                    "author": {
+                                                                        "@type": "Person",
+                                                                        "name": "Marko Nikolić"
+                                                                    },
+                                                                    "description": "<?php echo htmlspecialchars($description); ?>",
+                                                                    "inLanguage": "en-GB"
+                                                                }
+                                                                </script>
         <?php
     }
 

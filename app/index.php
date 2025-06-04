@@ -713,6 +713,12 @@ class portfolio_marko
             exit();
         }
         if ($h == "social"){
+
+            if(!empty($_GET['og_social'])){
+                header("Content-Type: image/png");
+                @readfile("$_SERVER[DOCUMENT_ROOT]/app/og_social.png");
+                exit();
+            }
             header("Content-type: text/html"); ?>
      <!DOCTYPE html>
 <html lang="sr">
@@ -729,6 +735,18 @@ class portfolio_marko
   <meta name="author" content="Marko Nikolić">
   <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
   
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Obaveštenje/Notice – Marko Nikolić">
+  <meta property="og:description" content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
+  <meta property="og:url" content="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
+  <meta property="og:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/social&og_social=og";?>">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Obaveštenje/Notice – Marko Nikolić">
+  <meta name="twitter:description" content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
+  <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/social&og_social=og";?>">
   <style>
     @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
     /* --------------------------------------------

@@ -437,15 +437,7 @@
                 "alt" => "VK logo",
                 "label" => "VK - ВКонтакте",
                 "type" => "text-image"
-            ],
-            [
-                "url" => "https://www.youtube.com/@MarkoMakiNikolic",
-                "class" => "youtube",
-                "icon" => "bi bi-youtube",
-                "label" => "Youtube",
-                "type" => "text",
-                "alt" => "Youtube"
-            ] 
+            ]
         ];
 
 

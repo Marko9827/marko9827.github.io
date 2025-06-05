@@ -81,7 +81,7 @@
             width: 100%;
             max-width: 400px;
             background-color: #fff;
-            border-left: 5px solid #1877F2;
+            border-left: 5px solid #455A64;
             padding: 24px;
             border-radius: 8px;
             -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

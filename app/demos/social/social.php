@@ -86,6 +86,7 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+            background-image: linear-gradient(45deg, #ffffff21, #ffffff21), url(/socialnew&og_social=grid);
         }
 
         .notification {

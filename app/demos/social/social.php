@@ -429,7 +429,8 @@
                 "icon" => "bi bi-github",
                 "label" => "GitHub",
                 "type" => "text"
-            ],
+            ]
+            /*,
             [
                 "url" => "https://vk.com/marko982347",
                 "class" => "vk",
@@ -437,7 +438,7 @@
                 "alt" => "VK logo",
                 "label" => "VK - ВКонтакте",
                 "type" => "text-image"
-            ]
+            ]*/
         ];
 
 

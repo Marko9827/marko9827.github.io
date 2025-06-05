@@ -256,6 +256,12 @@
             border: 1px solid #1877F2;;
         }
 
+        .links a.telegram,
+        .all a.telegram {
+            background-color: #24A1DE;
+            border: 1px solid #24A1DE;
+        }
+
         .links a.tiktok,
         .all a.tiktok {
             background-color: #111;
@@ -373,12 +379,34 @@
         <?php
         $json = [
             [
+                "url" => "https://www.linkedin.com/in/markonikolic98/",
+                "class" => "linkedin",
+                "icon" => "bi bi-linkedin",
+                "label" => "Linkedin",
+                "type" => "text"
+            ],
+            [
                 "url" => "https://instagram.com/nikoliccc0002",
                 "class" => "instagram",
                 "icon" => "bi bi-instagram",
                 "label" => "Instagram",
                 "type" => "text"
             ],
+            [  "url" => "https://t.me/nikoliccc02",
+                "class" => "telegram",
+                "icon" => "bi bi-telegram",
+                "label" => "Telegram Channel",
+                "type" => "text" 
+            ], 
+            [
+                "url" => "https://www.deviantart.com/marko9827",
+                "class" => "deviantart",
+                "icon" => "",
+                "img" => "/socialnew&og_social=deviantart",
+                "label" => "DeviantArt",
+                "type" => "text-image",
+                "alt" => "DeviantArt"
+            ] ,
             [
                 "url" => "https://www.facebook.com/nikoliccc0002",
                 "class" => "facebook",
@@ -393,13 +421,7 @@
                 "label" => "TikTok",
                 "type" => "text"
             ],
-            [
-                "url" => "https://www.linkedin.com/in/markonikolic98/",
-                "class" => "linkedin",
-                "icon" => "bi bi-linkedin",
-                "label" => "Linkedin",
-                "type" => "text"
-            ],
+          
             [
                 "url" => "https://github.com/Marko9827",
                 "class" => "github",
@@ -422,15 +444,6 @@
                 "label" => "Youtube",
                 "type" => "text",
                 "alt" => "Youtube"
-            ],
-            [
-                "url" => "https://www.deviantart.com/marko9827",
-                "class" => "deviantart",
-                "icon" => "",
-                "img" => "/socialnew&og_social=deviantart",
-                "label" => "DeviantArt",
-                "type" => "text-image",
-                "alt" => "DeviantArt"
             ] 
         ];
 

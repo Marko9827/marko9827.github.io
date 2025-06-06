@@ -431,6 +431,7 @@
                 "type" => "text"
             ]
             /*,
+            
             [
                 "url" => "https://vk.com/marko982347",
                 "class" => "vk",

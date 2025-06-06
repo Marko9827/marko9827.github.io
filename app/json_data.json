@@ -6,7 +6,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -14,7 +14,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/requirejs/require.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/requirejs/require.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -22,7 +22,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/ez-plus/src/jquery.ez-plus.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/ez-plus/src/jquery.ez-plus.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -30,7 +30,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/popper.js/dist/umd/popper.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -38,7 +38,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -46,7 +46,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video-js.min.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -54,7 +54,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/codemirror/lib/codemirror.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -62,7 +62,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -70,7 +70,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/popper.js/dist/umd/popper.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -78,7 +78,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
+            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
             "as": "font",
             "type": "font/woff2",
             "crossorigin": ""
@@ -86,7 +86,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -96,7 +96,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/loader.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/monaco-editor@0.45.0/min/vs/loader.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -131,7 +131,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -139,7 +139,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/popper.js/dist/umd/popper.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -147,7 +147,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -155,7 +155,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/video.js/dist/video-js.min.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video-js.min.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -163,7 +163,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/codemirror/lib/codemirror.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -171,7 +171,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -179,7 +179,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/popper.js/dist/umd/popper.min.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -187,7 +187,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
+            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2?524846017b983fc8ded9325d94ed40f3",
             "as": "font",
             "type": "font/woff2",
             "crossorigin": ""
@@ -211,7 +211,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com//node_modules/@fortawesome/fontawesome-free/css/all.min.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -219,7 +219,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com//node_modules/bootstrap-icons/font/bootstrap-icons.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -227,7 +227,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css",
+            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -235,7 +235,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
             "as": "style",
             "type": "",
             "crossorigin": ""
@@ -243,7 +243,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -253,7 +253,7 @@
         {
             "tag": "link",
             "rel": "preload",
-            "href": "https://cdn.eronelit.com//node_modules/monaco-editor@0.45.0/min/vs/loader.js",
+            "href": "https://cdn.markonikolic98.com/node_modules/monaco-editor@0.45.0/min/vs/loader.js",
             "as": "script",
             "type": "",
             "crossorigin": ""
@@ -261,7 +261,7 @@
         {
             "tag": "link",
             "rel": "stylesheet",
-            "href": "https://cdn.eronelit.com/node_modules/video.js/dist/video-js.min.css",
+            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video-js.min.css",
             "as": "",
             "type": "",
             "crossorigin": ""
@@ -279,7 +279,7 @@
         
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com/node_modules/codemirror/lib/codemirror.js",
+            "src": "https://cdn.markonikolic98.com/node_modules/codemirror/lib/codemirror.js",
             "type": "",
             "async": true,
             "defer": false,
@@ -287,7 +287,7 @@
         },
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com/node_modules/video.js/dist/video.min.js",
+            "src": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
             "type": "",
             "async": false,
             "defer": false,
@@ -305,7 +305,7 @@
         },
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com//portfolio/node_modules/popper.js/dist/umd/popper.min.js",
+            "src": "https://cdn.markonikolic98.com/portfolio/node_modules/popper.js/dist/umd/popper.min.js",
             "type": "",
             "async": false,
             "defer": false,
@@ -313,7 +313,7 @@
         },
         {
             "tag": "script",
-            "src": "https://cdn.eronelit.com//portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+            "src": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
             "type": "",
             "async": false,
             "defer": false,

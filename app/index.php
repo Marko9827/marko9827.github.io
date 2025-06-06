@@ -15,7 +15,7 @@ use \DOMDocument;
 
 header('X-Frame-Options: *');
 header_remove("Expect-CT");
-define("CDN", "https://cdn.eronelit.com/");
+define("CDN", "https://cdn.markonikolic98.com/");
 define("API_HOST", "https://api.eronelit.com/app&id=A03429468246&blog=");
 define("ROOT", "$_SERVER[DOCUMENT_ROOT]/app/");
 define("HOST", "$_SERVER[DOCUMENT_ORIGIN]");

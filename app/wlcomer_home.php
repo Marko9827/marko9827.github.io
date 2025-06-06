@@ -5,9 +5,9 @@ define("source_URL", (string) "$_SERVER[HTTP_HOST]");
 define("SITE_HOST_DOMAIN", source_URL);
 define("SITE_HOST", (string) $protocol . source_URL);
 define("API_KEY", "LMV419-516MLE-KTSJPL-AMT492-1MLZMQ");
-define("API_URL", "https://api.eronelit.com/");
+define("API_URL", "https://api.markonikolic98.com/");
 define("SITEURL", API_URL);
-define("CDN", "https://cdn.eronelit.com/"); //SITE_HOST);//"https://cdn.eronelit.com");
+define("CDN", "https://cdn.markonikolic98.com/"); //SITE_HOST);//"https://cdn.eronelit.com");
 define("SOUND_API", "");
 define("SERVER_AJAXS", (string) $protocol . source_URL); //https://tree.localhost");
 function generate_nonce()
@@ -66,7 +66,7 @@ function createScriptElements_array()
 $cdn_urls = createScriptElements_array();
 
 //"api.eronelit.com   cdn.eronelit.com api.eronelit.com https:";
-$fonts = " fonts.gstatic.com   api.eronelit.com cdn.eronelit.com api.eronelit.com fonts.googleapis.com";
+$fonts = " fonts.gstatic.com   api.eronelit.com cdn.markonikolic98.com api.markonikolic98.com cdn.eronelit.com api.eronelit.com fonts.googleapis.com";
 $nonce_h = base64_encode(random_bytes(16));
 $nonce = $nonce_h;
 $script_nonce = $nonce_h;
@@ -1941,9 +1941,9 @@ div#clavs br_ta ta_f.active span {
             }
 
             <?php
-        } ?>
-        @import url(https://cdn.eronelit.com/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
-        @import url(https://cdn.eronelit.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        }   ?>
+        @import url(https://<?php echo CDN;  ?>/echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+        @import url(https://<?php echo CDN;  ?>/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
 
         ta_f[data-category="deviantart"] i {
             margin-right: 5px;

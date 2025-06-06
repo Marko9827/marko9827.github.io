@@ -20,7 +20,7 @@ define("SERVER_AJAXS", "$protocol$_SERVER[HTTP_HOST]"); //https://tree.localhost
 
 define("NONCE", base64_encode(substr(sha1(mt_rand()), 1, 20)));
 
-$cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://cdn.localhost";
+$cdn_urls = "https://cdnjs.cloudflare.com https://cdn.eronelit.com https://markonikolic98.com https://cdn.localhost";
 $font_src = "https://cdn.scaleflex.it https://fonts.gstatic.com https://cdn.eronelit.com https://cdn.localhost";
 
 

@@ -9,11 +9,11 @@
     <!-- Responsive meta tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="max-image-preview:large">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
-    <link rel="dns-prevefch" href="https://cdn.eronelit.com/">
+     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prevefch" href="https://cdn.markonikolic98.com/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://cdn.eronelit.com/" crossorigin />
+    <link rel="preconnect" href="https://cdn.markonikolic98.com/" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
     <!-- SEO meta tags -->
@@ -39,7 +39,7 @@
         content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
     <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
     <style type="text/css">
-        @import url(https://cdn.eronelit.com/node_modules/bootstrap-icons/font/bootstrap-icons.css);
+       <?php echo "@import url(". CDN ."/node_modules/bootstrap-icons/font/bootstrap-icons.css);"; ?>
 
         * {
             margin: 0px;

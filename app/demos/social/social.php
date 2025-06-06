@@ -431,7 +431,7 @@
                 "type" => "text"
             ]
             /*,
-            // new update 3
+            // new update 51q
             [
                 "url" => "https://vk.com/marko982347",
                 "class" => "vk",

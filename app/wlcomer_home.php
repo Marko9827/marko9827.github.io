@@ -258,11 +258,13 @@ header("Content-Type: text/html charset=utf-8");
     <?php } ?>
     <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
+    <link rel='dns-prefetch' href='https://api.markonikolic98.com' />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-    <link rel='preconnect' href='https://cdn.eronelit.com' />
+    <link rel='preconnect' href='https://cdn.markonikolic98.com' /> 
+    <link rel='preconnect' href='https://api.markonikolic98.com' />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <meta name="google" content="notranslate">
     <meta name="referrer" content="origin">

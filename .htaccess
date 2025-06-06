@@ -2113,6 +2113,8 @@ Header set X-Download-Options "noopen"
 #Header set Access-Control-Allow-Methods "GET"
  Header set Platform eronelit.com
 
+ Header set panel eronelit-panel
+
  Header set X-Frame-Options "SAMEORIGIN"
 
 

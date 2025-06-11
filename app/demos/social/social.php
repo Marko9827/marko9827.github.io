@@ -47,7 +47,7 @@
         content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
     <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
     <style type="text/css">
-       <?php echo "@import url(". CDN ."/node_modules/bootstrap-icons/font/bootstrap-icons.css);"; ?>
+        <?php echo "@import url(" . CDN . "/node_modules/bootstrap-icons/font/bootstrap-icons.css);"; ?>
 
         * {
             margin: 0px;
@@ -86,6 +86,7 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+            background-image: -o-linear-gradient(45deg, #ffffff21, #ffffff21), url(/socialnew&og_social=grid);
             background-image: linear-gradient(45deg, #ffffff21, #ffffff21), url(/socialnew&og_social=grid);
         }
 
@@ -150,7 +151,7 @@
             -o-transition: opacity 0.2s ease-in-out;
             transition: opacity 0.2s ease-in-out;
         }
- 
+
         .links a:hover,
         .all a:hover {
             opacity: 0.9;
@@ -233,28 +234,29 @@
             justify-content: center;
         }
 
-        
+
         .links a.instagram {
             background-color: #C13584;
-            border: 1px solid  #C13584;
+            border: 1px solid #C13584;
         }
 
         .links a.facebook {
             background-color: #1877F2;
-            border: 1px solid  #1877F2;
+            border: 1px solid #1877F2;
         }
 
 
         .links a.instagram,
         .all a.instagram {
             background-color: #C13584;
-            border: 1px solid  #C13584;
+            border: 1px solid #C13584;
         }
 
         .links a.facebook,
         .all a.facebook {
             background-color: #1877F2;
-            border: 1px solid #1877F2;;
+            border: 1px solid #1877F2;
+            ;
         }
 
         .links a.telegram,
@@ -277,7 +279,7 @@
 
         .links a.github,
         .all a.github {
-            background-color: #24292e; 
+            background-color: #24292e;
             border: 1px solid #24292e;
         }
 
@@ -371,6 +373,13 @@
             -ms-user-select: none;
             user-select: none;
         }
+
+        .notification b {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
     </style>
 </head>
 
@@ -393,12 +402,13 @@
                 "label" => "Instagram",
                 "type" => "text"
             ],
-            [  "url" => "https://t.me/nikoliccc02",
+            [
+                "url" => "https://t.me/nikoliccc02",
                 "class" => "telegram",
                 "icon" => "bi bi-telegram",
                 "label" => "Telegram Channel",
-                "type" => "text" 
-            ], 
+                "type" => "text"
+            ],
             [
                 "url" => "https://www.deviantart.com/marko9827",
                 "class" => "deviantart",
@@ -407,7 +417,7 @@
                 "label" => "DeviantArt",
                 "type" => "text-image",
                 "alt" => "DeviantArt"
-            ] ,
+            ],
             [
                 "url" => "https://www.facebook.com/nikoliccc0002",
                 "class" => "facebook",
@@ -422,7 +432,7 @@
                 "label" => "TikTok",
                 "type" => "text"
             ],
-          
+
             [
                 "url" => "https://github.com/Marko9827",
                 "class" => "github",

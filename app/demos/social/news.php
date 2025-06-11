@@ -9,7 +9,7 @@
     <!-- Responsive meta tag -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="max-image-preview:large">
-     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prevefch" href="https://cdn.markonikolic98.com/">
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -39,12 +39,11 @@
         content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
     <meta name="twitter:image" content="<?php echo "https://$_SERVER[HTTP_HOST]/$h&og_social=og"; ?>">
     <style type="text/css">
-       <?php echo "@import url(". CDN ."/node_modules/bootstrap-icons/font/bootstrap-icons.css);"; ?>
+        <?php echo "@import url(" . CDN . "/node_modules/bootstrap-icons/font/bootstrap-icons.css);"; ?>
 
         * {
             margin: 0px;
-            padding: 0px;
-            user-drag: none;
+            padding: 0px; 
             -webkit-user-drag: none
         }
 
@@ -73,6 +72,7 @@
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
+            background-image: -o-linear-gradient(45deg, #ffffff21, #ffffff21), url(/socialnew&og_social=grid);
             background-image: linear-gradient(45deg, #ffffff21, #ffffff21), url(/socialnew&og_social=grid);
 
         }
@@ -295,12 +295,19 @@
         }
 
         a.github.all {
-    padding: 0px 10px;
-    width: -webkit-fit-content;
-    width: -moz-fit-content;
-    width: fit-content;
-    margin-top: 0px;
-}
+            padding: 0px 10px;
+            width: -webkit-fit-content;
+            width: -moz-fit-content;
+            width: fit-content;
+            margin-top: 0px;
+        }
+
+        .notification b {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
     </style>
 </head>
 
@@ -328,8 +335,7 @@
                 <i class="bi bi-instagram" aria-hidden="true"></i>
                 Instagram: @nikoliccc0002
             </a>
-            <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer"
-                class="facebook">
+            <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="facebook">
                 <i class="bi bi-facebook" aria-hidden="true"></i>
                 Facebook: My new profile(private)
             </a>
@@ -340,8 +346,7 @@
                 rel="noopener noreferrer" class="instagram">
                 <i class="bi bi-instagram" aria-hidden="true"></i>
             </a>
-            <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer"
-                class="facebook">
+            <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer" class="facebook">
                 <i class="bi bi-facebook" aria-hidden="true"></i>
             </a>
             </a>
@@ -349,8 +354,7 @@
                 <i class="bi bi-tiktok" aria-hidden="true"></i>
 
             </a>
-            <a href="/social" target="_blank" rel="noopener noreferrer"
-                class="linkedin">
+            <a href="/social" target="_blank" rel="noopener noreferrer" class="linkedin">
                 <i class="bi bi-linkedin" aria-hidden="true"></i>
             </a>
             <a href="/social" target="_blank" rel="noopener noreferrer" class="github all">View all...</a>

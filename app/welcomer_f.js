@@ -95,6 +95,8 @@ function base64Encode(str) {
   return btoa(String.fromCharCode.apply(null, buffer));
 }
 
+
+
 const TWO_PI = Math.PI * 2;
 class Application {
   constructor(element) {

@@ -398,9 +398,18 @@ media-src 'self';" />
         <?php }
     } ?>
     <style type="text/css" nonce="<?php echo $script_nonce; ?>">
+ 
+ 
+:root {
+            --white: white;
+        }
+
         <?php
         include "$_SERVER[DOCUMENT_ROOT]/app/fx_new.css";
         ?>
+
+ 
+
         .zoomContainer:not(:hover, :focus) * {
             left: 0px !important;
             top: 0px !important;

@@ -515,7 +515,7 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-        return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+       # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         $ch = curl_init($r['url']);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
@@ -630,6 +630,26 @@ class portfolio_marko
 
         return trim($svg);
     }
+    function fetchJsonData(string $url): ?string {
+        // pokušaj file_get_contents
+        $json = @file_get_contents($url);
+        if ($json !== false) {
+            return $json;
+        }
+        // fallback na cURL
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT        => 10,
+            ]);
+            $json = curl_exec($ch);
+            curl_close($ch);
+            return $json !== false ? $json : null;
+        }
+        return null;
+    }
     function Pages($h = "home")
     {
         session_start();
@@ -689,6 +709,10 @@ class portfolio_marko
         }
         if ($h == "null") {
             $this->error_page(404);
+            exit();
+        }
+        if ($h == "GM213-3LOC4SE24"){
+            header("Content-Type: text/plain");
             exit();
         }
         if ($h == "mains") {
@@ -789,7 +813,7 @@ class portfolio_marko
                 return self::minifyHtmlCss($b);
             });
          
-            if($h == "socialnew"){
+            if($h == "socialnew" || $h == "news"){
                 include __DIR__ . '/demos/social/news.php';
             }
             if($h == "social"){
@@ -798,18 +822,20 @@ class portfolio_marko
             
             exit();
         }
+        
         if ($h == "feedjson") {
-            header("content-type: text/javascript");
-            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             $r = $this->get_data([
-                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
                 "headers" => [
                     'Content-Type: application/json',
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
             ]);
+            // echo "window.portfolio = $r;";
+            header("content-type: text/javascript");
             echo "window.portfolio = $r;";
             exit();
         }
@@ -1517,12 +1543,13 @@ class portfolio_marko
 
     public function MetaTags()
     {
-        $data = [];
         $title = "Marko Nikolić";
         $description = "Is my personal website.";
         $keywords = "Marko Nikolić, IT, developer, blog, portfolio";
         $ogImage = SITE_HOST . "/?mnps=image_og&v=" . time();
         $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
+    
+        // Dohvati podatke sa API-ja
         $r = json_decode($this->get_data([
             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
             "headers" => [
@@ -1530,135 +1557,123 @@ class portfolio_marko
                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
             ]
         ]), true);
-        if (!empty($_GET['p'])) {
-
-            switch ($_GET['p']) {
+    
+        $page = $_GET['p'] ?? null;
+        $id = $_GET['id'] ?? null;
+        $album = $_GET['album'] ?? null;
+        $cat = $_GET['c'] ?? "";
+    
+        if ($page) {
+            switch ($page) {
                 case 'cv-pdf':
                     $title = "Marko Nikolić > CV";
                     break;
+    
                 case 'visitcard':
                     $title = "Marko Nikolić > Visitcard";
                     break;
+    
                 case 'Projects':
                     $title = "Marko Nikolić > Projects";
                     break;
+    
                 case 'gallery':
                     $title = "Gallery | Marko Nikolić";
-
-                    $id = !empty($_GET['id']) ? $_GET['id'] : "";
-
-                    // window.portfolio.data.gallery.gallery[0]['gallery'][0]
-
-                    $gallery = $r['data']['gallery']['gallery'];
-                    if (empty($_GET['album'])) {
-                        break;
-                    }
-                    foreach ($gallery as $value) {
-                        foreach ($value as $val) {
-                            if ((string) $value['name'] === (string) $_GET['album']) {
-                                $data = $val;
-                                $title = "$data[title] - Gallery | Marko Nikolić";
-                                $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
-                                $ogImage = "$val[thumb]";
-                                if ((string) $val['id'] === (string) $id) {
-                                    $data = $val;
-                                    $title = "$data[title] - Gallery | Marko Nikolić";
-                                    $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
-                                    $ogImage = "$val[thumb]";
+                    $gallery = $r['data']['gallery']['gallery'] ?? [];
+    
+                    if ($album) {
+                        foreach ($gallery as $value) {
+                            if ((string)$value['name'] === (string)$album) {
+                                foreach ($value as $val) {
+                                    if (is_array($val) && isset($val['title'])) {
+                                        $data = $val;
+                                        $title = "{$val['title']} - Gallery | Marko Nikolić";
+                                        $description = "{$val['title']} | Marko Nikolić IT. Is my personal website.";
+                                        $ogImage = $val['thumb'] ?? $ogImage;
+    
+                                        if ((string)$val['id'] === (string)$id) {
+                                            break 2;
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
-
-
                     break;
+    
                 case 'blog':
-                    if (!empty($_GET['id']) || !empty($_GET['blog'])) {
-
-
-                        $person = $r['data']['blog'];
-
-                        foreach ($person as $value) {
-                            if ((string) $value['id'] === (string) $_GET['id']) {
-                                $data = $value;
-                                break;
-                            }
-                        }
-
-                        if ($data) {
-                            $cat = !empty($_GET['c']) ? $_GET['c'] : "";
-                            $title = "Blog > $cat {$data['title']} | Marko Nikolić";
-                            $description = "{$data['title']} | Marko Nikolić IT. Is my personal website.";
-                            $keywords = implode(",", $data['keywords']);
-                            $ogImage = "{$data['thumbail']}&for=og&v=" . time();
-                        }
-                    }
-                    $cat = !empty($_GET['c']) ? $_GET['c'] : "";
-                    $title = "Blog > $cat | Marko Nikolić";
-
-                    $person = $r['data']['blog'];
-
-                    foreach ($person as $value) {
-                        if ((string) $value['id'] === (string) $_GET['id']) {
+                    $blogItems = $r['data']['blog'] ?? [];
+    
+                    foreach ($blogItems as $value) {
+                        if ((string)$value['id'] === (string)$id) {
                             $data = $value;
+                            $title = "Blog > $cat {$value['title']} | Marko Nikolić";
+                            $description = "{$value['title']} | Marko Nikolić IT. Is my personal website.";
+                            $keywords = implode(",", $value['keywords'] ?? []);
+                            $ogImage = "{$value['thumbail']}&for=og&v=" . time();
                             break;
                         }
                     }
-
-
-
-                    $ogImage = "{$data['thumbail']}&for=og&v=" . time();
+    
+                    if (empty($data)) {
+                        $title = "Blog > $cat | Marko Nikolić";
+                    }
+    
                     break;
             }
         }
         ?>
-        <title><?php echo $title; ?></title>
-        <link rel="icon" href="/?mnps=image-favicon?<?php echo time(); ?>" type="image/ico" />
-        <meta name="description" content="<?php echo htmlspecialchars($description); ?>">
-        <meta name="keywords" content="<?php echo htmlspecialchars($keywords); ?>">
+    
+        <title><?= htmlspecialchars($title) ?></title>
+        <link rel="icon" href="/?mnps=image-favicon?<?= time(); ?>" type="image/ico" />
+        <meta name="description" content="<?= htmlspecialchars($description); ?>">
+        <meta name="keywords" content="<?= htmlspecialchars($keywords); ?>">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable='no'">
         <meta name="author" content="Marko Nikolic">
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="<?php echo $canonicalUrl; ?>" />
+        <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl); ?>" />
         <meta name="theme-color" content="#333">
-
+    
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="<?php echo $canonicalUrl; ?>" />
-        <meta property="og:title" content="<?php echo htmlspecialchars($title); ?>" />
-        <meta property="og:description" content="<?php echo htmlspecialchars($description); ?>" />
-        <meta property="og:image" content="<?php echo $ogImage; ?>" />
-        <meta property="og:image:secure_url" content="<?php echo $ogImage; ?>" />
+        <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl); ?>" />
+        <meta property="og:title" content="<?= htmlspecialchars($title); ?>" />
+        <meta property="og:description" content="<?= htmlspecialchars($description); ?>" />
+        <meta property="og:image" content="<?= htmlspecialchars($ogImage); ?>" />
+        <meta property="og:image:secure_url" content="<?= htmlspecialchars($ogImage); ?>" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1024" />
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:site_name" content="Marko Nikolić" />
-
+    
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@markoni62595164" />
         <meta name="twitter:creator" content="@markoni62595164" />
-        <meta name="twitter:title" content="<?php echo htmlspecialchars($title); ?>" />
-        <meta name="twitter:description" content="<?php echo htmlspecialchars($description); ?>" />
-        <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
+        <meta name="twitter:title" content="<?= htmlspecialchars($title); ?>" />
+        <meta name="twitter:description" content="<?= htmlspecialchars($description); ?>" />
+        <meta name="twitter:image" content="<?= htmlspecialchars($ogImage); ?>" />
+    
         <link rel="manifest" href="/manifest.webmanifest">
+    
         <script type="application/ld+json">
-                                                                        {
-                                                                            "@context": "https://schema.org",
-                                                                            "@type": "WebSite",
-                                                                            "url": "https://<?php echo SITE_HOST; ?>",
-                                                                            "name": "Marko Nikolić",
-                                                                            "author": {
-                                                                                "@type": "Person",
-                                                                                "name": "Marko Nikolić"
-                                                                            },
-                                                                            "description": "<?php echo htmlspecialchars($description); ?>",
-                                                                            "inLanguage": "en-GB"
-                                                                        }
-                                                                        </script>
-        <?php
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "url": "https://<?= SITE_HOST; ?>",
+                "name": "Marko Nikolić",
+                "author": {
+                    "@type": "Person",
+                    "name": "Marko Nikolić"
+                },
+                "description": "<?= htmlspecialchars($description); ?>",
+                "inLanguage": "en-GB"
+            }
+        </script>
+    <?php
     }
+    
 
 
     function error_page($status)

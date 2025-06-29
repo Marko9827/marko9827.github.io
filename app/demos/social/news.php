@@ -152,7 +152,7 @@
 
         footer {
             font-size: 0.85rem;
-            color: #718096;
+            color: white;
             margin-top: auto;
             padding: 12px 0;
             width: 100%;
@@ -484,12 +484,14 @@
 
         footer {
             font-size: 0.85rem;
-            color: #718096;
             margin-top: auto;
             padding: 12px 0;
             width: 100%;
             text-align: center;
             background: transparent;
+            -webkit-filter: drop-shadow(0 0 6px #fff);
+            filter: drop-shadow(0 0 6px #fff);
+            color: white;
         }
 
         @media (max-width: 480px) {

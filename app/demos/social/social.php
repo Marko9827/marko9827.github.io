@@ -102,7 +102,7 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             -webkit-box-sizing: border-box;
             box-sizing: border-box;
-            margin: auto; 
+            margin: auto;
 
         }
 
@@ -161,12 +161,14 @@
 
         footer {
             font-size: 0.85rem;
-            color: #718096;
             margin-top: auto;
             padding: 12px 0;
             width: 100%;
             text-align: center;
             background: transparent;
+            -webkit-filter: drop-shadow(0 0 6px #fff);
+            filter: drop-shadow(0 0 6px #fff);
+            color: white;
         }
 
         @media (max-width: 480px) {
@@ -828,7 +830,7 @@
 
         footer {
             font-size: 0.85rem;
-            color: #718096;
+            color: #fff;
             margin-top: auto;
             padding: 12px 0;
             width: 100%;
@@ -1085,8 +1087,8 @@
             max-height: -webkit-fit-content;
             max-height: -moz-fit-content;
             max-height: fit-content;
-            
-    width: 400px; 
+
+            width: 400px;
         }
 
         .notification h4 {
@@ -1095,24 +1097,24 @@
         }
 
         notification_mode {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    max-height: 90%;
-    margin: auto;
-    position: relative;
-    overflow-y: auto;
-    -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: center;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    align-items: center;
-    align-content: center;
-}
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            max-height: 90%;
+            margin: auto;
+            position: relative;
+            overflow-y: auto;
+            -webkit-box-pack: start;
+            -ms-flex-pack: start;
+            justify-content: center;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            align-items: center;
+            align-content: center;
+        }
 
         * {
             cursor: none;
@@ -1254,7 +1256,7 @@ loading="lazy" />
 </div>
 */ ?>
 
-<div class="mouse-light-effect"></div>
+                <div class="mouse-light-effect"></div>
 
             </div>
         </custom-scroll>
@@ -1262,21 +1264,21 @@ loading="lazy" />
 
 
     <svg class="loader" style="display: none;" width="100" height="100" viewBox="0 0 100 100">
-                        <defs>
-                            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
-                                <stop offset="0%" stop-color="#fff" stop-opacity="1"></stop>
-                                <stop offset="100%" stop-color="#fff" stop-opacity="0"></stop>
-                            </radialGradient>
-                        </defs>
-                        <circle cx="50" cy="50" r="20" stroke="#fff" stroke-width="4" fill="none"></circle>
-                        <circle cx="50" cy="50" r="35" fill="url(#glow)" opacity="0.4">
-                            <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
-                                dur="2s" repeatCount="indefinite"></animateTransform>
-                        </circle>
-                        <circle cx="50" cy="50" r="3" fill="#fff">
-                            <animate attributeName="r" values="3;6;3" dur="1.2s" repeatCount="indefinite"></animate>
-                        </circle>
-                    </svg>
+        <defs>
+            <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#fff" stop-opacity="1"></stop>
+                <stop offset="100%" stop-color="#fff" stop-opacity="0"></stop>
+            </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="20" stroke="#fff" stroke-width="4" fill="none"></circle>
+        <circle cx="50" cy="50" r="35" fill="url(#glow)" opacity="0.4">
+            <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="2s"
+                repeatCount="indefinite"></animateTransform>
+        </circle>
+        <circle cx="50" cy="50" r="3" fill="#fff">
+            <animate attributeName="r" values="3;6;3" dur="1.2s" repeatCount="indefinite"></animate>
+        </circle>
+    </svg>
     <footer>
         &copy; <?php echo date('Y'); ?> Marko Nikolić –
         <?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>

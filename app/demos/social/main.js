@@ -33,6 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (loader) {
     customCursor = loader.cloneNode(true);
     customCursor.classList.add("custom-cursor-svg");
+    customCursor.style.left = `-100%`;
+    customCursor.style.top = `-100%`;
     document.body.appendChild(customCursor);
     document.addEventListener("mousemove", (e) => {
       if (customCursor) {

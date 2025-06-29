@@ -1,11 +1,11 @@
 "use strict";
 
-document.addEventListener("DOMContentLoaded", () => {
+const events = () => {
   document.body.addEventListener("contextmenu", (e) => e.preventDefault());
   document.body.addEventListener("selectstart", (e) => e.preventDefault());
   document.body.addEventListener("dragstart", (e) => e.preventDefault());
   const notificationCardd = document.querySelectorAll(".notification");
-  const styles = document.querySelectorAll("style"); 
+  const styles = document.querySelectorAll("style");
   const loader = document.querySelector(".loader");
   const createBlobUrlFromString = function (text, mimeType = "text/plain") {
     const blob = new Blob([text], { type: mimeType });
@@ -43,35 +43,36 @@ document.addEventListener("DOMContentLoaded", () => {
         customCursor.style.top = `${e.clientY}px`;
       }
     });
-
+    /*svg.loader.custom-cursor-svg {
+    transform: scale(0.5) translate(-50px, -50px);
+} */
     document.addEventListener("mouseleave", () => {
       if (customCursor) {
         customCursor.classList.add("hidden");
       }
-    }); 
+    });
     document.addEventListener("mouseenter", () => {
       if (customCursor) {
         customCursor.classList.remove("hidden");
       }
-    }); 
+    });
     document.addEventListener("mouseover", (e) => {
-      if (customCursor && e.target.closest('a')) {
+      if (customCursor && e.target.closest("a")) {
         customCursor.classList.remove("hidden");
       }
-    }); 
+    });
     document.addEventListener("mouseout", (e) => {
-      if (customCursor && e.target.closest('a')) {
+      if (customCursor && e.target.closest("a")) {
         customCursor.classList.add("hidden");
       }
     });
   }
   notificationCardd.forEach(function (notificationCard) {
-
     notificationCard.addEventListener("mouseleave", () => {
       if (customCursor) {
         customCursor.classList.remove("hidden");
       }
-    }); 
+    });
 
     const mouseLight = notificationCard.querySelector(".mouse-light-effect");
     if (notificationCard && mouseLight) {
@@ -83,11 +84,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         mouseLight.style.left = `${x}px`;
         mouseLight.style.top = `${y}px`;
-        if(!e.target.closest('a')){
-        customCursor.classList.add("hidden");
-        }else{
+        if (!e.target.closest("a")) {
+          customCursor.classList.add("hidden");
+        } else {
           customCursor.classList.remove("hidden");
-
         }
       });
 
@@ -105,7 +105,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     document.querySelectorAll("script").forEach((el) => el.remove());
   }, 1000);
-});
+};
+
+document.addEventListener("DOMContentLoaded", events);
 
 const welcomer = {
   Dots_color: 196,

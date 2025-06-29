@@ -701,7 +701,7 @@ body.open_f .contanct_frm iframe {
 i.input_icon {
   position: absolute;
   right: 11px;
-  margin-top: 40px;
+  margin-top: 32px;
   font-size: 25px;
   pointer-events: none;
 }

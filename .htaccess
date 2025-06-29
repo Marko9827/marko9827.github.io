@@ -10,6 +10,11 @@ RedirectMatch 404 ^/app/?$
 RedirectMatch 404 ^/vendor/?$ 
 RedirectMatch 404 ^/*.php
 
+<FilesMatch "\.php$">
+  ForceType application/x-httpd-php
+</FilesMatch>
+
+
 <Files *.yml>
     order allow,deny
     deny from all

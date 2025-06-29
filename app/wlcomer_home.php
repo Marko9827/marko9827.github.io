@@ -234,7 +234,8 @@ ob_start(function ($b) {
     $html = preg_replace('/[\r\n]/', '', $html);
     return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
 });
-header("Content-Type: text/html charset=utf-8");
+header("Content-Type: text/html; charset=UTF-8");
+
 //self::MetaTags();
 //exit();
 ?>

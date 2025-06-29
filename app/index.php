@@ -750,6 +750,10 @@ class portfolio_marko
 
             if (!empty($_GET['og_social'])) {
                 switch ($_GET['og_social']) {
+                    case "static":
+                        header("Content-Type: text/javascript");
+                        include $_SERVER['DOCUMENT_ROOT'] . '/app/demos/social/main.js';
+                        break;
                     case "grid":
                         header("Content-type: image/svg+xml");
 
@@ -822,7 +826,16 @@ class portfolio_marko
             
             exit();
         }
-        
+        if($h == "socialnew" || $h == "news"){
+            header("Content-type: text/html");
+
+            ob_start(function ($b) {
+                return self::minifyHtmlCss($b);
+            });
+            include __DIR__ . '/demos/social/news.php';
+
+              exit();  
+        }
         if ($h == "feedjson") {
              header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);

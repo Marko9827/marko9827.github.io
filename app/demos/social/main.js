@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let customCursor = null;
   if (loader) {
     customCursor = loader.cloneNode(true);
+    customCursor.removeAttribute("style");
     customCursor.classList.add("custom-cursor-svg");
     customCursor.style.left = `-100%`;
     customCursor.style.top = `-100%`;

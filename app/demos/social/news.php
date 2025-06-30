@@ -162,9 +162,18 @@
 
         @media (max-width: 480px) {
             .notification {
+                /*
                 margin: 0 12px 12px 12px;
-                padding: 20px;
+                 padding: 20px;*/
+                 margin: 0 12px 12px 12px;
+        padding: 20px;
+        width: 90%;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
             }
+
+            
 
             .notification b {
                 font-size: 1.2rem;
@@ -768,10 +777,77 @@
         }
 
         svg.loader.custom-cursor-svg.hidden {
-            opacity: 0 ;
+            opacity: 0;
         }
-        svg.loader.custom-cursor-svg:not(.hidden){
+
+        svg.loader.custom-cursor-svg:not(.hidden) {
             opacity: 1;
+        }
+
+
+        .ripple {
+            position: fixed;
+            width: 30px;
+            height: 30px;
+            border: 3px solid white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: rippleAnimation 0.9s ease-out forwards;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes rippleAnimation {
+            0% {
+                opacity: 0.6;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(8);
+            }
+        }
+
+        video {
+           
+    position: fixed;
+    display: block;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+    z-index: -1; 
+        }
+
+        body:not(.light) blue-warp {
+            background: black;
+        }
+
+        body.light blue-warp {
+            -webkit-filter: grayscale(1);
+            filter: grayscale(1);
+            background: #000000ad;
+        }
+
+        body:not(.light) video {
+            opacity: 0;
+        }
+
+        @media screen and (max-width: 480px) {
+            .notification {
+                /*
+                margin: 0 12px 12px 12px;
+                 padding: 20px;*/
+                 margin: 0 12px 12px 12px;
+        padding: 20px;
+        width: 90%;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+            }
         }
     </style>
     <script src="/socialnew&og_social=static" type="text/javascript"></script>
@@ -779,10 +855,11 @@
 </head>
 
 <body>
+ 
     <blue-warp></blue-warp>
     <notification_mode>
         <custom-scroll>
-            <div class="notification">
+            <div class="notification" id="4239423518936">
 
                 <h3>
                     <svg class="loader" width="100" height="100" viewBox="0 0 100 100">
@@ -811,7 +888,7 @@
                         Tech spoiler and ...</p>
                     <div class="mouse-light-effect"></div>
             </div>
-            <div class="notification">
+            <div class="notification" id="3259138671136">
                 <b><i class="bi bi-bell-fill"></i> Obaveštenje/Notice</b>
                 <span><i class="bi bi-clock-fill"></i> 6/4/2025 - 01:53</span> <p-content>
                     <p style="    padding-top: 5px;">

@@ -1,12 +1,416 @@
 "use strict";
 
+let animationFrameId = null;
+
+const ex = (callback) => {
+  try {
+    callback();
+  } catch (EX) {}
+};
+const videoC = (canvas, ctx) => {
+  const video = document.getElementById("backgroundV");
+
+  function drawVideoFrame() {
+    if (!video.paused && !video.ended) {
+      const videoRatio = video.videoWidth / video.videoHeight;
+      const canvasRatio = canvas.width / canvas.height;
+
+      let sx, sy, sWidth, sHeight;
+      let dx, dy, dWidth, dHeight;
+      if (videoRatio > canvasRatio) {
+        sHeight = video.videoHeight;
+        sWidth = sHeight * canvasRatio;
+        sx = (video.videoWidth - sWidth) / 2;
+        sy = 0;
+      } else {
+        sWidth = video.videoWidth;
+        sHeight = sWidth / canvasRatio;
+        sx = 0;
+        sy = (video.videoHeight - sHeight) / 2;
+      }
+      dx = 0;
+      dy = 0;
+      dWidth = canvas.width;
+      dHeight = canvas.height;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(video, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+      animationFrameId = requestAnimationFrame(drawVideoFrame);
+    }
+  }
+
+  video.addEventListener("canplaythrough", () => {
+    drawVideoFrame();
+  });
+
+  video.addEventListener("pause", () => {
+    console.log("Video paused");
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  });
+
+  video.addEventListener("ended", () => {
+    console.log("Video ended");
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  });
+
+  video.addEventListener("play", () => {
+    console.log("Video play event detected, ensuring drawing loop is active.");
+    if (!animationFrameId) {
+      drawVideoFrame();
+    }
+  });
+  video.addEventListener("loadedmetadata", () => {
+    console.log("Video metadata loaded.");
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  });
+};
 const events = () => {
+  document.body.addEventListener("contextmenu", (e) => e.preventDefault());
+  document.body.addEventListener("selectstart", (e) => e.preventDefault());
+  document.body.addEventListener("dragstart", (e) => e.preventDefault());
+
+  const notificationCardd = document.querySelectorAll(".notification");
+  const styles = document.querySelectorAll("style");
+  const loader = document.querySelector(".loader");
+
+  let audioCtx = null;
+  let heartbeatInterval = null;
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  document.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      mouseX = e.touches[0].clientX;
+      mouseY = e.touches[0].clientY;
+    }
+  });
+  function createRipple(intensity = 1) {
+    const ripple = document.createElement("div");
+    ripple.className = "ripple";
+    ripple.style.borderColor = intensity > 0.9 ? "#fff" : "#fff";
+    ripple.style.width = ripple.style.height = `${30 * intensity}px`;
+    ripple.style.left = `${mouseX}px`;
+    ripple.style.top = `${mouseY}px`;
+    notificationCardd.forEach((el) => {
+      if (el.id == "4239423518936") {
+        el.appendChild(ripple);
+      }
+    });
+
+    ripple.addEventListener("animationend", () => {
+      ripple.remove();
+    });
+  }
+
+  function beat(time, volume = 1) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(100, time);
+
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(0.9 * volume, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(800, time);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(time);
+    osc.stop(time + 0.2);
+
+    setTimeout(
+      () => createRipple(volume),
+      (time - audioCtx.currentTime) * 1000
+    );
+  }
+
+  function startHeartbeat() {
+    if (!audioCtx || audioCtx.state === "closed") {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    const now = audioCtx.currentTime;
+    beat(now, 1);
+    beat(now + 0.22, 0.8);
+
+    heartbeatInterval = setInterval(() => {
+      const t = audioCtx.currentTime;
+      beat(t, 1);
+      beat(t + 0.22, 0.8);
+    }, 1000);
+  }
+
+  function stopHeartbeat() {
+    if (heartbeatInterval) {
+      clearInterval(heartbeatInterval);
+      heartbeatInterval = null;
+    }
+
+    if (audioCtx) {
+      audioCtx.close();
+      audioCtx = null;
+    }
+  }
+
+  function initAudioContext() {
+    if (!audioCtx || audioCtx.state === "closed") {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      if (audioCtx.state === "suspended") {
+        const unlock = () => {
+          try {
+            audioCtx.resume().then(() => {
+              document.body.removeEventListener("touchstart", unlock);
+              document.body.removeEventListener("mousedown", unlock);
+            });
+          } catch (Ex) {}
+        };
+        document.body.addEventListener("touchstart", unlock, false);
+        document.body.addEventListener("mousedown", unlock, false);
+      }
+    }
+  }
+
+  function startHeartbeat() {
+    initAudioContext();
+    if (audioCtx && audioCtx.state === "running") {
+      const now = audioCtx.currentTime;
+      beat(now, 1);
+      beat(now + 0.22, 0.8);
+
+      heartbeatInterval = setInterval(() => {
+        const t = audioCtx.currentTime;
+        beat(t, 1);
+        beat(t + 0.22, 0.8);
+      }, 1000);
+    } else {
+    }
+  }
+
+  let customCursor = null;
+  if (loader) {
+    customCursor = loader.cloneNode(true);
+    customCursor.removeAttribute("style");
+    customCursor.classList.add("custom-cursor-svg");
+    customCursor.style.left = `-100%`;
+    customCursor.style.top = `-100%`;
+    document.body.appendChild(customCursor);
+
+    const isTouchDevice =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+    if (!isTouchDevice) {
+      document.addEventListener("mousemove", (e) => {
+        if (customCursor) {
+          customCursor.style.left = `${e.clientX}px`;
+          customCursor.style.top = `${e.clientY}px`;
+        }
+      });
+      document.addEventListener("mouseleave", () => {
+        if (customCursor) {
+          customCursor.classList.add("hidden");
+        }
+      });
+      document.addEventListener("mouseenter", () => {
+        if (customCursor) {
+          customCursor.classList.remove("hidden");
+        }
+      });
+      document.addEventListener("mouseover", (e) => {
+        if (customCursor && e.target.closest("a")) {
+          customCursor.classList.remove("hidden");
+        }
+      });
+      document.addEventListener("mouseout", (e) => {
+        if (customCursor && e.target.closest("a")) {
+          customCursor.classList.add("hidden");
+        }
+      });
+    } else {
+      if (customCursor) customCursor.classList.add("hidden");
+    }
+  }
+
+  notificationCardd.forEach(function (notificationCard) {
+    const mouseLight = notificationCard.querySelector(".mouse-light-effect");
+    if (notificationCard && mouseLight) {
+      notificationCard.addEventListener("touchmove", (e) => {
+        if (e.touches.length > 0) {
+          const touch = e.touches[0];
+          const rect = notificationCard.getBoundingClientRect();
+
+          const x = touch.clientX - rect.left;
+          const y = touch.clientY - rect.top;
+
+          mouseLight.style.left = `${x}px`;
+          mouseLight.style.top = `${y}px`;
+          if (!e.target.closest("a")) {
+            if (customCursor) customCursor.classList.add("hidden");
+          } else {
+            if (customCursor) customCursor.classList.remove("hidden");
+          }
+        }
+      });
+
+      notificationCard.addEventListener("mousemove", (e) => {
+        const rect = notificationCard.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        mouseLight.style.left = `${x}px`;
+        mouseLight.style.top = `${y}px`;
+        if (!e.target.closest("a")) {
+          if (customCursor) customCursor.classList.add("hidden");
+        } else {
+          if (customCursor) customCursor.classList.remove("hidden");
+        }
+      });
+
+      notificationCard.addEventListener("touchstart", () => {
+        mouseLight.style.opacity = "1";
+        document.body.classList.add("light");
+        if (notificationCard.getAttribute("id") == "4239423518936") {
+          startHeartbeat();
+        }
+      });
+
+      notificationCard.addEventListener("touchend", () => {
+        mouseLight.style.opacity = "0";
+        document.body.classList.remove("light");
+        stopHeartbeat();
+      });
+
+      notificationCard.addEventListener("mouseenter", () => {
+        mouseLight.style.opacity = "1";
+        document.body.classList.add("light");
+        if (notificationCard.getAttribute("id") == "4239423518936") {
+          startHeartbeat();
+        }
+      });
+
+      notificationCard.addEventListener("mouseleave", () => {
+        mouseLight.style.opacity = "0";
+        document.body.classList.remove("light");
+        stopHeartbeat();
+      });
+    }
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll("script").forEach((el) => el.remove());
+  }, 1000);
+};
+
+const eventsf = () => {
   document.body.addEventListener("contextmenu", (e) => e.preventDefault());
   document.body.addEventListener("selectstart", (e) => e.preventDefault());
   document.body.addEventListener("dragstart", (e) => e.preventDefault());
   const notificationCardd = document.querySelectorAll(".notification");
   const styles = document.querySelectorAll("style");
   const loader = document.querySelector(".loader");
+
+  let audioCtx = null;
+  let heartbeatInterval = null;
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+
+  document.addEventListener("mousemove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  function createRipple(intensity = 1) {
+    return;
+    const ripple = document.createElement("div");
+    ripple.className = "ripple";
+    ripple.style.borderColor = intensity > 0.9 ? "#fff" : "#fff";
+    ripple.style.width = ripple.style.height = `${30 * intensity}px`;
+    ripple.style.left = `${mouseX}px`;
+    ripple.style.top = `${mouseY}px`;
+    notificationCardd.forEach((el) => {
+      if (el.id == "4239423518936") {
+        el.appendChild(ripple);
+      }
+    });
+
+    ripple.addEventListener("animationend", () => {
+      ripple.remove();
+    });
+  }
+
+  function beat(time, volume = 1) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(100, time);
+
+    gain.gain.setValueAtTime(0, time);
+    gain.gain.linearRampToValueAtTime(0.9 * volume, time + 0.005);
+    gain.gain.exponentialRampToValueAtTime(0.001, time + 0.15);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(800, time);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(time);
+    osc.stop(time + 0.2);
+
+    setTimeout(
+      () => createRipple(volume),
+      (time - audioCtx.currentTime) * 1000
+    );
+  }
+
+  function startHeartbeat() {
+    if (!audioCtx || audioCtx.state === "closed") {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    const now = audioCtx.currentTime;
+    beat(now, 1);
+    beat(now + 0.22, 0.8);
+
+    heartbeatInterval = setInterval(() => {
+      const t = audioCtx.currentTime;
+      beat(t, 1);
+      beat(t + 0.22, 0.8);
+    }, 1000);
+  }
+
+  function stopHeartbeat() {
+    if (heartbeatInterval) {
+      clearInterval(heartbeatInterval);
+      heartbeatInterval = null;
+    }
+
+    if (audioCtx) {
+      audioCtx.close();
+      audioCtx = null;
+    }
+  }
+
   const createBlobUrlFromString = function (text, mimeType = "text/plain") {
     const blob = new Blob([text], { type: mimeType });
     const blobUrl = URL.createObjectURL(blob);
@@ -94,11 +498,15 @@ const events = () => {
       notificationCard.addEventListener("mouseenter", () => {
         mouseLight.style.opacity = "1";
         document.body.classList.add("light");
+        if (notificationCard.getAttribute("id") == "4239423518936") {
+          startHeartbeat();
+        }
       });
 
       notificationCard.addEventListener("mouseleave", () => {
         mouseLight.style.opacity = "0";
         document.body.classList.remove("light");
+        stopHeartbeat();
       });
     }
   });
@@ -128,6 +536,7 @@ class CustomScroll extends HTMLElement {
             -o-transition: .3s;
             transition: .3s;
         }
+ 
              
         .wrapper {
           height: 100%;
@@ -146,6 +555,8 @@ class CustomScroll extends HTMLElement {
           height: 100%;
           border-radius: 30px;
           background: rgba(0,0,0,0.1);
+            -webkit-transition: opacity 0.5s ease;
+            -o-transition: opacity 0.5s ease;
             transition: opacity 0.5s ease;
           opacity: 0;
           pointer-events: none;
@@ -166,6 +577,13 @@ class CustomScroll extends HTMLElement {
     
             filter: drop-shadow(0 0 6px #fff);
     }
+
+    
+        @media (max-width: 480px) {
+          .wrapper {
+            padding-right: 0px; 
+          }
+        }
 
       :host(:hover) .scrollbar {
           opacity: 1;
@@ -203,8 +621,6 @@ class CustomScroll extends HTMLElement {
     wrapper.addEventListener("scroll", updateThumb);
     window.addEventListener("resize", updateThumb);
     updateThumb();
-
-    // Drag behavior
     let isDragging = false;
     let startY, startScrollTop;
 
@@ -232,7 +648,217 @@ class CustomScroll extends HTMLElement {
     });
   }
 }
+class VideoCanvasBackground extends HTMLElement {
+  constructor() {
+    super();
 
+    const shadowRoot = this.attachShadow({ mode: "open" });
+
+    // Unutar Shadow DOM-a ćemo imati <slot> koji će "povući" video element iz Light DOM-a
+    shadowRoot.innerHTML = `
+          <style>
+              :host {
+                  display: block;
+                  overflow: hidden;
+              }
+              /* Video element koji je provučen kroz slot je skriven */
+              ::slotted(video) {
+                  display: none;
+              }
+              canvas {
+                  display: block;
+                  background-color: #000;
+                  width: 100%;
+                  height: 100%;
+              }
+          </style>
+          <slot name="video-source"></slot> <canvas></canvas> `;
+
+    this.canvas = shadowRoot.querySelector("canvas");
+    this.context = this.canvas.getContext("2d");
+
+    this.video = null;
+    this.animationFrameId = null;
+    this.videoLoaded = false;
+  }
+
+  connectedCallback() {
+    const videoSlot = this.shadowRoot.querySelector(
+      'slot[name="video-source"]'
+    );
+
+    videoSlot.addEventListener("slotchange", () => {
+      const assignedNodes = videoSlot.assignedNodes({ flatten: true });
+      this.video = assignedNodes.find((node) => node.tagName === "VIDEO");
+
+      if (this.video) {
+        this._setupVideoListeners();
+        this._resizeCanvas();
+      } else {
+        console.warn(
+          'VideoCanvasBackground: Video element nije pronađen u slotu "video-source".'
+        );
+      }
+    });
+
+    const initialAssignedNodes = videoSlot.assignedNodes({ flatten: true });
+    this.video = initialAssignedNodes.find((node) => node.tagName === "VIDEO");
+    if (this.video) {
+      this._setupVideoListeners();
+      this._resizeCanvas();
+    } else {
+      console.log(
+        "VideoCanvasBackground: Video element još nije dodeljen slotu, čekam slotchange."
+      );
+    }
+
+    window.addEventListener("resize", this._resizeCanvas.bind(this));
+  }
+
+  disconnectedCallback() {
+    this._stopDrawingLoop();
+    if (this.video) {
+      this.video.pause();
+      this.video.removeEventListener(
+        "loadedmetadata",
+        this._handleVideoMetadataLoaded
+      );
+      this.video.removeEventListener(
+        "canplaythrough",
+        this._handleCanPlayThrough
+      );
+      this.video.removeEventListener("play", this._startDrawingLoop);
+      this.video.removeEventListener("pause", this._stopDrawingLoop);
+      this.video.removeEventListener("ended", this._stopDrawingLoop);
+      this.video.removeEventListener("error", this._handleVideoError);
+    }
+    window.removeEventListener("resize", this._resizeCanvas);
+  }
+
+  _setupVideoListeners() {
+    if (this.video._listenersAttached) return;
+
+    this.video.addEventListener(
+      "loadedmetadata",
+      this._handleVideoMetadataLoaded.bind(this)
+    );
+    this.video.addEventListener(
+      "canplaythrough",
+      this._handleCanPlayThrough.bind(this)
+    );
+    this.video.addEventListener("play", this._startDrawingLoop.bind(this));
+    this.video.addEventListener("pause", this._stopDrawingLoop.bind(this));
+    this.video.addEventListener("ended", this._stopDrawingLoop.bind(this));
+    this.video.addEventListener("error", this._handleVideoError.bind(this));
+    this.video._listenersAttached = true;
+  }
+
+  _handleVideoMetadataLoaded() {
+    console.log("Meta-podaci videa učitani.");
+    this.videoLoaded = true;
+    if (!this.animationFrameId) {
+      this._drawVideoFrame();
+    }
+  }
+
+  _handleCanPlayThrough() {
+    console.log("Video spreman za neprekidnu reprodukciju.");
+    this.video
+      .play()
+      .catch((e) => console.error("Automatska reprodukcija nije uspela:", e));
+
+    if (!this.animationFrameId) {
+      this._startDrawingLoop();
+    }
+  }
+
+  _handleVideoError(e) {
+    console.error("Greška pri učitavanju videa:", e);
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.context.fillStyle = "#333";
+    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this._stopDrawingLoop();
+  }
+
+  _resizeCanvas() {
+    this.canvas.width = this.offsetWidth;
+    this.canvas.height = this.offsetHeight;
+    this._drawVideoFrame();
+  }
+
+  _drawVideoFrame() {
+    if (
+      this.video &&
+      this.videoLoaded &&
+      this.video.readyState >= 2 &&
+      !this.video.paused &&
+      !this.video.ended
+    ) {
+      const videoRatio = this.video.videoWidth / this.video.videoHeight;
+      const canvasRatio = this.canvas.width / this.canvas.height;
+
+      let sx, sy, sWidth, sHeight;
+      let dx, dy, dWidth, dHeight;
+
+      if (videoRatio > canvasRatio) {
+        sHeight = this.video.videoHeight;
+        sWidth = sHeight * canvasRatio;
+        sx = (this.video.videoWidth - sWidth) / 2;
+        sy = 0;
+      } else {
+        sWidth = this.video.videoWidth;
+        sHeight = sWidth / canvasRatio;
+        sx = 0;
+        sy = (this.video.videoHeight - sHeight) / 2;
+      }
+
+      dx = 0;
+      dy = 0;
+      dWidth = this.canvas.width;
+      dHeight = this.canvas.height;
+
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.context.drawImage(
+        this.video,
+        sx,
+        sy,
+        sWidth,
+        sHeight,
+        dx,
+        dy,
+        dWidth,
+        dHeight
+      );
+    } else if (!this.videoLoaded || (this.video && this.video.readyState < 2)) {
+      this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      this.context.fillStyle = "#1a1a1a";
+      this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
+    if (this.video && !this.video.paused && !this.video.ended) {
+      this.animationFrameId = requestAnimationFrame(
+        this._drawVideoFrame.bind(this)
+      );
+    }
+  }
+
+  _startDrawingLoop() {
+    if (!this.animationFrameId) {
+      this.animationFrameId = requestAnimationFrame(
+        this._drawVideoFrame.bind(this)
+      );
+      console.log("Petlja za crtanje videa pokrenuta.");
+    }
+  }
+
+  _stopDrawingLoop() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+      console.log("Petlja za crtanje videa zaustavljena.");
+    }
+  }
+}
 class BlueWarp extends HTMLElement {
   constructor() {
     super();
@@ -248,9 +874,9 @@ class BlueWarp extends HTMLElement {
             width: 100%;
             height: 100%; }#canvas {  margin: 0 auto; display: block; -webkit-filter: url('#shadowed-goo') blur(2px); filter: url('#shadowed-goo') blur(2px); pointer-events: none !important;`;
 
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas"),
+      vcanvas = document.createElement("canvas");
     canvas.id = "canvas";
-    canvas.textContent = "Your browser doesn't support canvas";
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 
     svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
@@ -381,6 +1007,7 @@ class BlueWarp extends HTMLElement {
     defs.appendChild(filterGoo);
     svg.appendChild(defs);
     this.shadowMode.appendChild(canvas);
+    this.shadowMode.appendChild(vcanvas);
     this.shadowMode.appendChild(svg);
     this.shadowMode.appendChild(style);
     const application = new Application(canvas);
@@ -398,6 +1025,7 @@ class Application {
     this.height = this.canvas.height = window.innerHeight;
     this.center = { x: this.width / 2, y: this.height / 2 };
     this.circleContainers = [];
+
     window.addEventListener("resize", () => this.resizeCanvas(), false);
   }
   resizeCanvas() {
@@ -511,4 +1139,8 @@ if (!customElements.get("blue-warp")) {
 
 if (!customElements.get("custom-scroll")) {
   customElements.define("custom-scroll", CustomScroll);
+}
+
+if (!customElements.get("v-cnvs")) {
+  customElements.define("v-cnvs", VideoCanvasBackground);
 }

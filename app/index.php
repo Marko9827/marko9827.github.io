@@ -817,6 +817,7 @@ class portfolio_marko
                 return self::minifyHtmlCss($b);
             });
          
+
             if($h == "socialnew" || $h == "news"){
                 include __DIR__ . '/demos/social/news.php';
             }
@@ -835,6 +836,11 @@ class portfolio_marko
             include __DIR__ . '/demos/social/news.php';
 
               exit();  
+        }
+        if ($h == "video"){
+            header("Content-Type: video/mp4");
+            @readfile("$_SERVER[DOCUMENT_ROOT]/cinematic_MainMenu.mp4");
+            exit();
         }
         if ($h == "feedjson") {
              header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");

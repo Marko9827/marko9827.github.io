@@ -2,7 +2,6 @@
 
 
 define("NONCE", "$_SESSION[Bearer_token_temp]");
-
 session_start();
 $protocol = "https://";
 define("source_URL", (string) "$_SERVER[HTTP_HOST]");
@@ -28,6 +27,10 @@ if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
 
 
 
+/**
+ * Summary of portfolio_marko
+ * @author marko <info@markonikolic98.com>
+ */
 class portfolio_marko
 {
 
@@ -47,7 +50,19 @@ class portfolio_marko
         $_SESSION["Bearer_token_temp"] = self::generate_nonce();
         $_SESSION['Bearer_token_temp'] = $this->nonce_h;
     }
+    private function page(){
+        
+    }
+    private function run(string $page = "home")
+    {   
+        switch($page){
+            case "home":
 
+                default:
+                
+                break;
+        }
+    }
     private function generate_nonce()
     {
         return bin2hex(random_bytes(16));
@@ -345,25 +360,25 @@ class portfolio_marko
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                {
-                                                                                                                                                                    "@context": "https://schema.org",
-                                                                                                                                                                    "@type": "WebSite",
-                                                                                                                                                                    "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                    "name": "Marko Nikolić",
-                                                                                                                                                                    "author": {
-                                                                                                                                                                        "@type": "Person",
-                                                                                                                                                                        "name": "Marko Nikolić"
-                                                                                                                                                                    },
-                                                                                                                                                                    "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                    "inLanguage": "en-GB"
-                                                                                                                                                                }
-                                                                                                                                                            </script>
+                                                                                                                                                                                {
+                                                                                                                                                                                    "@context": "https://schema.org",
+                                                                                                                                                                                    "@type": "WebSite",
+                                                                                                                                                                                    "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                    "name": "Marko Nikolić",
+                                                                                                                                                                                    "author": {
+                                                                                                                                                                                        "@type": "Person",
+                                                                                                                                                                                        "name": "Marko Nikolić"
+                                                                                                                                                                                    },
+                                                                                                                                                                                    "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                    "inLanguage": "en-GB"
+                                                                                                                                                                                }
+                                                                                                                                                                            </script>
         <?php
     }
 
 
 
-    function error_page($status)
+    public function error_page($status)
     {
 
 

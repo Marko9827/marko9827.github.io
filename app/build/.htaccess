@@ -2123,3 +2123,8 @@ AddDefaultCharset UTF-8
  RewriteEngine On
  RewriteCond %{HTTPS} !=on
  RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+ 
+ 
+ <IfModule mod_mime.c>
+  AddType application/javascript .mjs
+</IfModule>

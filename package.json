@@ -30,6 +30,8 @@
     "marked": "^13.0.2",
     "monaco": "^1.201704190613.0",
     "monaco-editor": "^0.45.0",
+    "pdfjs": "^2.5.4",
+    "pdfjs-dist": "^5.3.31",
     "puppeteer": "^2.0.0",
     "stats": "^1.0.0"
   }

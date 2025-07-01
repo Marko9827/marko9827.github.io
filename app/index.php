@@ -2169,6 +2169,7 @@ class portfolio_marko
         if (is_dir($dir)) {
             self::emptyFolder($dir, true, [
                 "node_modules",
+                "assets/static/plugins/pdfjs",
                 ".git"
             ]);
         } else {
@@ -2186,6 +2187,8 @@ class portfolio_marko
             "$dir/assets/static/ui/img",
             "$dir/assets/static/ui/img/bagdes",
             "$dir/assets/static/img/logo",
+            "$dir/assets/static/plugins",
+            "$dir/assets/static/plugins/pdfjs",
             "$dir/media",
             "$dir/pages"
         ];
@@ -2379,7 +2382,10 @@ class portfolio_marko
         if (!is_dir("$dir/pwa")){
             self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/pwa", "$dir/pwa");
         }
-
+        self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/app/build/component", "$dir/backend");
+       # if (!is_dir("$dir/assets/static/plugins/pdfjs")){
+        self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/static/plugins/pdfjs", "$dir/assets/static/plugins/pdfjs");
+         
         exit();
     }
     public function loader_static()

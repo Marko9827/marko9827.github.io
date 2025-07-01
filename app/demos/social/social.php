@@ -1,8 +1,3 @@
-<?php
-
-
-?>
-
 <!DOCTYPE html>
 <html lang="sr">
 
@@ -1229,35 +1224,7 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-
-                <?php /*
-
-<div class="all">
-<?php foreach ($socials as $item): ?>
-<?php if ($item['type'] === 'icon-only'): ?>
-<a aria-label="<?= ucfirst($item['class']) ?>"
-href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>"
-target="_blank"
-rel="noopener noreferrer"
-class="<?= htmlspecialchars($item['class'], ENT_QUOTES) ?>">
-<i class="<?= htmlspecialchars($item['icon'], ENT_QUOTES) ?>" aria-hidden="true"></i>
-</a>
-<?php elseif ($item['type'] === 'icon-only-image'): ?>
-<a href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>"
-target="_blank"
-rel="noopener noreferrer"
-class="<?= htmlspecialchars($item['class'], ENT_QUOTES) ?>">
-<img src="<?= htmlspecialchars($item['img'], ENT_QUOTES) ?>"
-alt="<?= htmlspecialchars($item['alt'] ?? '', ENT_QUOTES) ?>"
-loading="lazy" />
-</a>
-<?php endif; ?>
-<?php endforeach; ?>
-</div>
-*/ ?>
-
                 <div class="mouse-light-effect"></div>
-
             </div>
         </custom-scroll>
     </notification_mode>

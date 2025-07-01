@@ -6,6 +6,7 @@ js/301F942.js
 /data
 /data_s/data_f
 /cache
+/build/
 /m_dr_vendor
 /node_modules
 *.db

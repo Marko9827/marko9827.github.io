@@ -8,9 +8,136 @@ if (window.TrustedTypes) {
 
 window.CDN_URL = "cdn.markonikolic98.com";
 
+class CustomScroll extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+
+    this.shadowRoot.innerHTML = `
+      <style>
+        :host {
+          display: block;
+          position: relative;
+          overflow: hidden;
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+        }
+ 
+             
+        .wrapper {
+          height: 100%;
+          overflow-y: scroll;
+          scrollbar-width: none;
+          padding-right: 20px;
+        }
+        .wrapper::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar {
+          position: absolute;
+          top: 0;
+          right: 2px;
+          width: 8px;
+          height: 100%;
+          border-radius: 30px;
+          background: rgba(0,0,0,0.1);
+            -webkit-transition: opacity 0.5s ease;
+            -o-transition: opacity 0.5s ease;
+            transition: opacity 0.5s ease;
+          opacity: 0;
+          pointer-events: none;
+        }
+        .thumb {
+        position: absolute;
+    width: 100%;
+    border-radius: 4px;
+    cursor: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
+    -webkit-backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
+    enable-background: new 0 0 512 512; 
+        }
+  .thumb:hover { 
+    
+    -webkit-filter: drop-shadow(0 0 6px #fff); 
+    
+            filter: drop-shadow(0 0 6px #fff);
+    }
+
+    
+        @media (max-width: 480px) {
+          .wrapper {
+            padding-right: 0px; 
+          }
+        }
+
+      :host(:hover) .scrollbar {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      </style>
+      <div class="wrapper">
+        <slot></slot>
+      </div>
+      <div class="scrollbar">
+        <div class="thumb"></div>
+      </div>
+    `;
+  }
+
+  connectedCallback() {
+    const wrapper = this.shadowRoot.querySelector(".wrapper");
+    const thumb = this.shadowRoot.querySelector(".thumb");
+
+    const updateThumb = () => {
+      const contentHeight = wrapper.scrollHeight;
+      const containerHeight = wrapper.clientHeight;
+      const scrollTop = wrapper.scrollTop;
+
+      const thumbHeight = Math.max(
+        (containerHeight * containerHeight) / contentHeight,
+        30
+      );
+      const thumbTop = (scrollTop * containerHeight) / contentHeight;
+
+      thumb.style.height = thumbHeight + "px";
+      thumb.style.top = thumbTop + "px";
+    };
+
+    wrapper.addEventListener("scroll", updateThumb);
+    window.addEventListener("resize", updateThumb);
+    updateThumb();
+    let isDragging = false;
+    let startY, startScrollTop;
+
+    thumb.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startY = e.clientY;
+      startScrollTop = wrapper.scrollTop;
+      document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      document.body.style.userSelect = "";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const deltaY = e.clientY - startY;
+      const scrollableHeight = wrapper.scrollHeight - wrapper.clientHeight;
+      const thumbHeight = thumb.clientHeight;
+      const containerHeight = wrapper.clientHeight;
+      const scrollRatio = scrollableHeight / (containerHeight - thumbHeight);
+
+      wrapper.scrollTop = startScrollTop + deltaY * scrollRatio;
+    });
+  }
+}
 
 const wlc = {
-   Application: class {
+  Application: class {
     constructor(element) {
       this.canvas = element;
       this.context = this.canvas.getContext("2d");
@@ -52,19 +179,19 @@ const wlc = {
       this.render();
       window.requestAnimationFrame(() => this.loop());
     }
-  }
-    
+  },
 };
 
-
-window.solarday = function(){
-  const startDate = new Date('1998-03-16'); 
-const currentDate = new Date(); 
-const diffInMs = currentDate - startDate; 
-const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-return daysPassed;
+window.solarday = function () {
+  const startDate = new Date("1998-03-16");
+  const currentDate = new Date();
+  const diffInMs = currentDate - startDate;
+  const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  return daysPassed;
 };
 window.getJSON = function (call = () => {}) {
+  
+  return;
   fetch(`${window.location.origin}/feed`, {
     method: "POST",
     headers: {
@@ -94,8 +221,6 @@ function base64Encode(str) {
   const buffer = encoder.encode(str);
   return btoa(String.fromCharCode.apply(null, buffer));
 }
-
-
 
 const TWO_PI = Math.PI * 2;
 class Application {
@@ -141,122 +266,121 @@ class Application {
     window.requestAnimationFrame(() => this.loop());
   }
 }
-  
 
 class ProjectCard extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: 'open' });
+    this.attachShadow({ mode: "open" });
   }
 
-  connectedCallback() { 
-    const title     = this.getAttribute('title') || '';
-    const category  = this.getAttribute('data-category') || '';
-    const idInt     = this.getAttribute('id-int');
-    const postId    = this.getAttribute('data-post-id');
-    const thumb     = this.getAttribute('data-thumb') || '';
-    const zoomImg   = this.getAttribute('data-zoom-image') || thumb;
-    const type      = this.getAttribute('data-type') || 'image';
-    const description = this.getAttribute('data-description') || '';
-    const page      = this.getAttribute('data-page') || '';
+  connectedCallback() {
+    const title = this.getAttribute("title") || "";
+    const category = this.getAttribute("data-category") || "";
+    const idInt = this.getAttribute("id-int");
+    const postId = this.getAttribute("data-post-id");
+    const thumb = this.getAttribute("data-thumb") || "";
+    const zoomImg = this.getAttribute("data-zoom-image") || thumb;
+    const type = this.getAttribute("data-type") || "image";
+    const description = this.getAttribute("data-description") || "";
+    const page = this.getAttribute("data-page") || "";
 
     // Root container
-    const project = document.createElement('project');
-    project.setAttribute('data-category', category);
-    project.setAttribute('id-int', idInt);
+    const project = document.createElement("project");
+    project.setAttribute("data-category", category);
+    project.setAttribute("id-int", idInt);
     project.title = title;
-    if (this.hasAttribute('onclick')) {
-      project.setAttribute('onclick', this.getAttribute('onclick'));
+    if (this.hasAttribute("onclick")) {
+      project.setAttribute("onclick", this.getAttribute("onclick"));
     }
 
     // grider_box
-    const box = document.createElement('grider_box');
+    const box = document.createElement("grider_box");
     project.appendChild(box);
 
     // Title
-    const titleP = document.createElement('p');
-    const spanTitle = document.createElement('span');
+    const titleP = document.createElement("p");
+    const spanTitle = document.createElement("span");
     spanTitle.textContent = title;
     titleP.appendChild(spanTitle);
     box.appendChild(titleP);
 
     // Open post / download button
-    const btnOpen = document.createElement('p_open');
-    const openTitle = type !== 'text'
-      ? `Open:/?p=blog&id=${postId}`
-      : `Download:${title}`;
-    btnOpen.setAttribute('title', openTitle);
-    btnOpen.addEventListener('click', () => welcomer.blogloader(postId));
-    btnOpen.innerHTML = type !== 'text'
-      ? '<i class="bi bi-link"></i> Open post'
-      : '<i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)';
+    const btnOpen = document.createElement("p_open");
+    const openTitle =
+      type !== "text" ? `Open:/?p=blog&id=${postId}` : `Download:${title}`;
+    btnOpen.setAttribute("title", openTitle);
+    btnOpen.addEventListener("click", () => welcomer.blogloader(postId));
+    btnOpen.innerHTML =
+      type !== "text"
+        ? '<i class="bi bi-link"></i> Open post'
+        : '<i class="bi bi-cloud-arrow-down"></i> Download<br><i class="bi bi-shield-check"></i> (Secure download)';
     box.appendChild(btnOpen);
 
     // Open image button
-    if (welcomer.isimagec(JSON.parse(atob(category)), 'image')) {
-      const btnImg = document.createElement('p_open');
-      btnImg.classList.add('open_img');
-      btnImg.setAttribute('data-title', 'Click for view image in full size');
-      btnImg.addEventListener('click', () => welcomer.blogloader_img(postId));
+    if (welcomer.isimagec(JSON.parse(atob(category)), "image")) {
+      const btnImg = document.createElement("p_open");
+      btnImg.classList.add("open_img");
+      btnImg.setAttribute("data-title", "Click for view image in full size");
+      btnImg.addEventListener("click", () => welcomer.blogloader_img(postId));
       btnImg.innerHTML = '<i class="bi bi-image-fill"></i> Open image';
       box.appendChild(btnImg);
     }
 
     // Info icon
-    const fiv = document.createElement('fiv');
-    const info = document.createElement('i');
-    info.className = 'bi bi-info-circle';
-    info.title = 'Go to blog post...';
-    info.addEventListener('click', () => welcomer.blogloader(postId));
+    const fiv = document.createElement("fiv");
+    const info = document.createElement("i");
+    info.className = "bi bi-info-circle";
+    info.title = "Go to blog post...";
+    info.addEventListener("click", () => welcomer.blogloader(postId));
     fiv.appendChild(info);
     box.appendChild(fiv);
 
     // Loader placeholder
-    if (type === 'image') {
-      const loaderImg = document.createElement('img');
+    if (type === "image") {
+      const loaderImg = document.createElement("img");
       loaderImg.src = welcomer.loader_svg;
-      loaderImg.className = 'loader_post';
+      loaderImg.className = "loader_post";
       loaderImg.height = 50;
       loaderImg.width = 50;
       box.appendChild(loaderImg);
     }
 
     // Content: text or image
-    if (type === 'text') {
-      const txt = document.createElement('div_txt');
-      const spanDesc = document.createElement('span');
+    if (type === "text") {
+      const txt = document.createElement("div_txt");
+      const spanDesc = document.createElement("span");
       spanDesc.textContent = description;
       txt.appendChild(spanDesc);
       box.appendChild(txt);
     } else {
-      const list = document.createElement('i_list');
+      const list = document.createElement("i_list");
       // Badges
       const badgeCfg = [
-        { tag:'p', icon:'bi bi-file-text-fill' },
-        { tag:'img', icon:'bi bi-file-earmark-image-fill' },
-        { tag:'video', icon:'bi bi-file-earmark-play-fill' },
-        { tag:'iframe', icon:'bi bi-file-earmark-richtext-fill' }
+        { tag: "p", icon: "bi bi-file-text-fill" },
+        { tag: "img", icon: "bi bi-file-earmark-image-fill" },
+        { tag: "video", icon: "bi bi-file-earmark-play-fill" },
+        { tag: "iframe", icon: "bi bi-file-earmark-richtext-fill" },
       ];
-      badgeCfg.forEach(cfg => {
+      badgeCfg.forEach((cfg) => {
         if (page.includes(`<${cfg.tag}`)) {
-          const i = document.createElement('i');
+          const i = document.createElement("i");
           i.className = cfg.icon;
           list.appendChild(i);
         }
-      }); 
-      const img = document.createElement('img');
-      img.loading = 'lazy';
-      if (!welcomer.isMobile()) img.classList.add('is_touch');
+      });
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      if (!welcomer.isMobile()) img.classList.add("is_touch");
       img.alt = title;
       img.src = thumb;
-      img.setAttribute('data-zoom-image', zoomImg);
+      img.setAttribute("data-zoom-image", zoomImg);
       img.ondragstart = () => false;
       img.onload = () => welcomer.loaded_img(img, idInt);
       list.appendChild(img);
 
       box.appendChild(list);
     }
- 
+
     this.shadowRoot.appendChild(project);
   }
 }
@@ -268,10 +392,10 @@ class CustomDropdown extends HTMLElement {
     this.shadowRoot = shadow;
     this._data = null;
     this._ui_lang = {
-      "select_option": "Select Option",
-      "ajax_error_json": "Invalid JSON in 'data' attribute:"
-  };
-    this._selectedText = this._ui_lang['select_option']
+      select_option: "Select Option",
+      ajax_error_json: "Invalid JSON in 'data' attribute:",
+    };
+    this._selectedText = this._ui_lang["select_option"];
     this._customTemplate = null;
     this.selected = "";
     this._toggleDropdown = this._toggleDropdown.bind(this);
@@ -280,10 +404,10 @@ class CustomDropdown extends HTMLElement {
     this._searchHandler = this._searchHandler.bind(this);
   }
   static get observedAttributes() {
-    return ['data', 'data-ajax'];
+    return ["data", "data-ajax"];
   }
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'data') {
+    if (name === "data") {
       try {
         this._data = JSON.parse(newValue);
         this.render();
@@ -291,7 +415,7 @@ class CustomDropdown extends HTMLElement {
         console.error("Invalid JSON in 'data' attribute:", error);
         this._data = null;
       }
-    } else if (name === 'data-ajax') {
+    } else if (name === "data-ajax") {
       if (newValue) {
         this._fetchData(newValue);
       }
@@ -320,18 +444,18 @@ class CustomDropdown extends HTMLElement {
   }
   _fetchData(url) {
     fetch(url)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Network error: " + response.status);
         }
         return response.json();
       })
-      .then(json => {
+      .then((json) => {
         this._data = json;
         this.render();
         this._addEventListeners();
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching AJAX data:", error);
       });
   }
@@ -344,24 +468,20 @@ class CustomDropdown extends HTMLElement {
     this.render();
     this._addEventListeners();
   }
-  selectByID(id = ""){
-    
-  }
+  selectByID(id = "") {}
   render() {
     this._removeEventListeners();
     if (this._data && this._data.selected) {
       let selectedValue = this._data.selected;
       let found = false;
       if (this._data.groups) {
-        this._data.groups.forEach(group => {
+        this._data.groups.forEach((group) => {
           if (group.options) {
-            group.options.forEach(option => {
+            group.options.forEach((option) => {
               if (option.value === selectedValue) {
                 this._selectedText = option.text;
-                
 
                 this._optionClickHandler(event);
-
 
                 found = true;
               }
@@ -491,7 +611,7 @@ class CustomDropdown extends HTMLElement {
     searchContainer.appendChild(searchInput);
     optionsContainer.appendChild(searchContainer);
     if (this._data && this._data.groups && this._data.groups.length > 0) {
-      this._data.groups.forEach(group => {
+      this._data.groups.forEach((group) => {
         const groupDiv = document.createElement("div");
         groupDiv.className = "group";
         if (group.label) {
@@ -501,23 +621,27 @@ class CustomDropdown extends HTMLElement {
           groupDiv.appendChild(groupLabel);
         }
         if (group.options && group.options.length > 0) {
-          group.options.forEach(option => {
+          group.options.forEach((option) => {
             const optionDiv = document.createElement("div");
             optionDiv.className = "option";
-            if (this._data && this._data.selected && option.value === this._data.selected) {
+            if (
+              this._data &&
+              this._data.selected &&
+              option.value === this._data.selected
+            ) {
               optionDiv.classList.add("selected");
             }
             optionDiv.setAttribute("data-value", option.value);
             if (option.type === "card") {
               optionDiv.classList.add("card");
               const img = document.createElement("img");
-              img.onerror = function() {
-                  img.src = "/logo.svg";
+              img.onerror = function () {
+                img.src = "/logo.svg";
               };
               img.src = option.card.img;
               img.loading = "lazy";
               img.alt = option.text;
-             
+
               optionDiv.appendChild(img);
               const cardDiv = document.createElement("div");
               const h5 = document.createElement("h5");
@@ -556,8 +680,6 @@ class CustomDropdown extends HTMLElement {
     this._optionsEl = optionsContainer;
     this._searchInputEl = searchInput;
     this._addEventListeners();
-
-    
   }
   _addEventListeners() {
     if (this._headerEl) {
@@ -586,7 +708,8 @@ class CustomDropdown extends HTMLElement {
   _toggleDropdown(e) {
     e.stopPropagation();
     if (this._optionsEl) {
-      this._optionsEl.style.display = (this._optionsEl.style.display === "block") ? "none" : "block";
+      this._optionsEl.style.display =
+        this._optionsEl.style.display === "block" ? "none" : "block";
     }
   }
   _documentClickHandler(e) {
@@ -596,84 +719,86 @@ class CustomDropdown extends HTMLElement {
     }
   }
   _updateHeaderContent(selectedValue) {
-      if (!this._data) return;
-  
-      let selectedOption = null;
-  
-      this._data.groups.forEach(group => {
-          group.options.forEach(option => {
-              if (option.value === selectedValue) {
-                  selectedOption = option;
-              }
-          });
+    if (!this._data) return;
+
+    let selectedOption = null;
+
+    this._data.groups.forEach((group) => {
+      group.options.forEach((option) => {
+        if (option.value === selectedValue) {
+          selectedOption = option;
+        }
       });
-  
-      if (!selectedOption) return;
-  
-      this._headerEl.innerHTML = '';
-  
-      if (selectedOption.type === 'card') {
-          const cardDiv = document.createElement('div');
-          cardDiv.classList.add('option', 'card');
-  
-          const img = document.createElement('img');
-          img.onerror = () => img.src = '/logo.svg';
-          img.src = selectedOption.card.img;
-          img.loading = 'lazy';
-          img.alt = selectedOption.text;
-  
-          const textDiv = document.createElement('div');
-          const h5 = document.createElement('h5');
-          h5.textContent = selectedOption.card.title;
-  
-          const p = document.createElement('p');
-          p.textContent = selectedOption.card.descr;
-  
-          textDiv.appendChild(h5);
-          textDiv.appendChild(p);
-  
-          cardDiv.appendChild(img);
-          cardDiv.appendChild(textDiv);
-  
-          this._headerEl.appendChild(cardDiv);
-      } else {
-          this._headerEl.textContent = selectedOption.text;
-      }
+    });
+
+    if (!selectedOption) return;
+
+    this._headerEl.innerHTML = "";
+
+    if (selectedOption.type === "card") {
+      const cardDiv = document.createElement("div");
+      cardDiv.classList.add("option", "card");
+
+      const img = document.createElement("img");
+      img.onerror = () => (img.src = "/logo.svg");
+      img.src = selectedOption.card.img;
+      img.loading = "lazy";
+      img.alt = selectedOption.text;
+
+      const textDiv = document.createElement("div");
+      const h5 = document.createElement("h5");
+      h5.textContent = selectedOption.card.title;
+
+      const p = document.createElement("p");
+      p.textContent = selectedOption.card.descr;
+
+      textDiv.appendChild(h5);
+      textDiv.appendChild(p);
+
+      cardDiv.appendChild(img);
+      cardDiv.appendChild(textDiv);
+
+      this._headerEl.appendChild(cardDiv);
+    } else {
+      this._headerEl.textContent = selectedOption.text;
+    }
   }
-  
+
   _optionClickHandler(e) {
-      e.stopPropagation();
-      const optionElem = e.target.closest('.option');
-      if (optionElem) {
-          const selectedValue = optionElem.getAttribute("data-value");
-          this._data.selected = selectedValue;
-          this._selectedText = optionElem.textContent;
-          this.selected = selectedValue;
-          this._updateHeaderContent(selectedValue);
-  
-          if (this._optionsEl) {
-              this._optionsEl.style.display = "none";
-          }
-  
-          const allOptions = this.shadowRoot.querySelectorAll('.option');
-          allOptions.forEach(opt => opt.classList.remove("selected"));
-          optionElem.classList.add("selected");
-  
-          this.dispatchEvent(new CustomEvent("optionSelected", {
-              detail: { value: selectedValue, text: this._selectedText },
-              bubbles: true,
-              composed: true
-          }));
+    e.stopPropagation();
+    const optionElem = e.target.closest(".option");
+    if (optionElem) {
+      const selectedValue = optionElem.getAttribute("data-value");
+      this._data.selected = selectedValue;
+      this._selectedText = optionElem.textContent;
+      this.selected = selectedValue;
+      this._updateHeaderContent(selectedValue);
+
+      if (this._optionsEl) {
+        this._optionsEl.style.display = "none";
       }
+
+      const allOptions = this.shadowRoot.querySelectorAll(".option");
+      allOptions.forEach((opt) => opt.classList.remove("selected"));
+      optionElem.classList.add("selected");
+
+      this.dispatchEvent(
+        new CustomEvent("optionSelected", {
+          detail: { value: selectedValue, text: this._selectedText },
+          bubbles: true,
+          composed: true,
+        })
+      );
+    }
   }
-  
+
   _searchHandler(e) {
     const query = e.target.value.toLowerCase();
-    const groups = this.shadowRoot.querySelectorAll('.dropdown-options .group');
-    groups.forEach(group => {
-      const options = group.querySelectorAll('.option');
+    const groups = this.shadowRoot.querySelectorAll(".dropdown-options .group");
+    groups.forEach((group) => {
+      const options = group.querySelectorAll(".option");
       let anyVisible = false;
-      options.forEach(option => {
+      options.forEach((option) => {
         const optionText = option.textContent.toLowerCase();
         if (optionText.includes(query)) {
           option.style.display = "block";
@@ -686,7 +811,6 @@ class CustomDropdown extends HTMLElement {
     });
   }
 }
-
 
 class CustomCombobox extends HTMLElement {
   constructor() {
@@ -1213,7 +1337,7 @@ class CustomSearch extends HTMLElement {
     const imgLogo = document.createElement("img");
     imgLogo.classList.add("logo_backscr_img");
     imgLogo.alt = "logo";
-    imgLogo.src = "/svg_logo_backscr_img";
+    imgLogo.src = "/svg_logo_backscr_img.svg";
 
     const div_close = document.createElement("i");
     div_close.setAttribute("class", "bi bi-x-lg btn_close  ");
@@ -1673,7 +1797,7 @@ class Editor extends HTMLElement {
     divHeader.setAttribute("data-url", "editor");
 
     const logoImg = document.createElement("img");
-    logoImg.setAttribute("src", "/svg_logo_backscr_img");
+    logoImg.setAttribute("src", "/svg_logo_backscr_img.svg");
     logoImg.setAttribute("loading", "lazy");
     logoImg.setAttribute("id", "logo_backscr_img");
     logoImg.setAttribute("alt", "Loading");
@@ -2648,7 +2772,7 @@ div#controls img:hover {
     // :
 
     const ImageBox = document.createElement("img"),
-    ImageBox1 = document.createElement("div");
+      ImageBox1 = document.createElement("div");
     ImageBox.id = "zoomImage";
     ImageBox1.id = "zoomImage";
 
@@ -2741,7 +2865,7 @@ div#controls img:hover {
   }
   ld() {}
 
-  srcDiv(src = null){ 
+  srcDiv(src = null) {
     if (src) {
       this.shadowRoot.querySelector("div#zoomImage").innerHTML = src;
       this.shadowRoot.querySelector("img#zoomImage").remove();
@@ -2751,7 +2875,7 @@ div#controls img:hover {
         this.shadowRoot.querySelector("div#zoomImage"),
         this.shadowRoot.querySelector("span.precent_control")
       );
-   
+
       this.shadowRoot
         .querySelector("img.top_control")
         .addEventListener("click", function (e) {
@@ -2777,9 +2901,7 @@ div#controls img:hover {
           e.preventDefault();
 
           const box = this.shadowRoot.querySelector("img#zoomImage"),
-          box1 = this.shadowRoot.querySelector("div#zoomImage");
-
-          
+            box1 = this.shadowRoot.querySelector("div#zoomImage");
 
           clearTimeout(clickTimeout);
 
@@ -2790,7 +2912,7 @@ div#controls img:hover {
           clickTimeout = setTimeout(() => {
             box.classList.remove("rotation_manual");
           }, 500);
-          // 
+          //
           if (!box1.classList.contains("rotation_manual")) {
             box1.classList.add("rotation_manual");
           }
@@ -2811,7 +2933,7 @@ div#controls img:hover {
     } else {
     }
   }
-  src(src = "") { 
+  src(src = "") {
     if (src) {
       this.shadowRoot.querySelector("#zoomImage").setAttribute("src", `${src}`);
       this.shadowRoot.querySelector(".zoomWindow").removeAttribute("style");
@@ -2820,7 +2942,7 @@ div#controls img:hover {
         this.shadowRoot.querySelector("img#zoomImage"),
         this.shadowRoot.querySelector("span.precent_control")
       );
-    
+
       this.shadowRoot
         .querySelector("img.top_control")
         .addEventListener("click", function (e) {
@@ -2846,9 +2968,7 @@ div#controls img:hover {
           e.preventDefault();
 
           const box = this.shadowRoot.querySelector("img#zoomImage"),
-          box1 = this.shadowRoot.querySelector("div#zoomImage");
-
-          
+            box1 = this.shadowRoot.querySelector("div#zoomImage");
 
           clearTimeout(clickTimeout);
 
@@ -2859,7 +2979,7 @@ div#controls img:hover {
           clickTimeout = setTimeout(() => {
             box.classList.remove("rotation_manual");
           }, 500);
-          // 
+          //
           if (!box1.classList.contains("rotation_manual")) {
             box1.classList.add("rotation_manual");
           }
@@ -3007,11 +3127,10 @@ class PDFViewerElement extends HTMLElement {
   }
 }
 class PostContent extends HTMLElement {
-
   zoom() {
     const ImagePreview_src = document.createElement("image-preview");
     var htmls = this.div_content.innerHTML;
-  //  htmls = htmls.querySelector('dnm_footer').remove();
+    //  htmls = htmls.querySelector('dnm_footer').remove();
     ImagePreview_src.srcDiv(htmls);
     document.body.appendChild(ImagePreview_src);
   }
@@ -3102,7 +3221,7 @@ class PostContent extends HTMLElement {
 
     const style = document.createElement("style"),
       tags = document.createElement("tags");
-      this.div_content = document.createElement("div_content");
+    this.div_content = document.createElement("div_content");
 
     const urlParamsf = new URLSearchParams(window.location.search);
     if (urlParamsf.has("id")) {
@@ -3375,17 +3494,16 @@ div#controls img:hover {
         tag.addEventListener("click", function(){
             window.top.location.href = `/?p=blog&c=${this.post_data['category'][i]}`;
         });*/
-        
 
         tags.appendChild(tag);
       }
-      if(`${this.post_data['id']}` == `${urlParamsf.get("id")}`) {
-        if(this.post_data['type'] == "text"){
-        div_content.appendChild(document.createElement("bdkr"));
+      if (`${this.post_data["id"]}` == `${urlParamsf.get("id")}`) {
+        if (this.post_data["type"] == "text") {
+          div_content.appendChild(document.createElement("bdkr"));
+        }
       }
     }
-    }
-    
+
     welcomer.cards_generateV2(div_content, url);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
@@ -3562,7 +3680,9 @@ class VideoPlayerV2 extends HTMLElement {
     const template = document.createElement("template");
     template.innerHTML = ` <style nonce="${
       window.stmp
-    }" > @import url('https://${window.CDN_URL}/node_modules/video.js/dist/video-js.min.css');video-player-v2{display:block;}@media screen and (min-width:450px){.content-wrapper iframe,.content-wrapper video-player-v2{height:80vh !important;max-height:80vh !important;min-height:80vh !important;}}iframe,video-player-v2{margin:20px 0px !important;}iframe,video-player-v2{height:70vh !important;min-height:70vh !important;pointer-events:unset !important;object-fit:contain;}img,iframe{max-height:70vh !important;object-fit:contain;}.video-js{width:100%;height:100%;opacity:0;transition:.3s;background-color:rgb(0 0 0 / 48%);opacity:1;}#canvas_img{position:absolute;left:0px;top:0px;width:100%;height:100%;background:black;object-fit:cover;z-index:-1;filter:blur(7px);opacity:0;}#canvas_img{opacity:1;}</style> <video id="video-player" class="video-js vjs-default-skin" controls nonce="${
+    }" > @import url('https://${
+      window.CDN_URL
+    }/node_modules/video.js/dist/video-js.min.css');video-player-v2{display:block;}@media screen and (min-width:450px){.content-wrapper iframe,.content-wrapper video-player-v2{height:80vh !important;max-height:80vh !important;min-height:80vh !important;}}iframe,video-player-v2{margin:20px 0px !important;}iframe,video-player-v2{height:70vh !important;min-height:70vh !important;pointer-events:unset !important;object-fit:contain;}img,iframe{max-height:70vh !important;object-fit:contain;}.video-js{width:100%;height:100%;opacity:0;transition:.3s;background-color:rgb(0 0 0 / 48%);opacity:1;}#canvas_img{position:absolute;left:0px;top:0px;width:100%;height:100%;background:black;object-fit:cover;z-index:-1;filter:blur(7px);opacity:0;}#canvas_img{opacity:1;}</style> <video id="video-player" class="video-js vjs-default-skin" controls nonce="${
       window.stmp
     }" preload="auto" data-setup='{}'> <source src="${this.getAttribute(
       "src"
@@ -3901,12 +4021,8 @@ const welcomer = {
         };
         return f;
       });
-      
-
-
 
       class CvPanel extends HTMLElement {
-
         async #imageUrlToBlobUrl(imageUrl) {
           try {
             const response = await fetch(imageUrl);
@@ -3916,21 +4032,19 @@ const welcomer = {
             const imageBlob = await response.blob();
             const blobUrl = URL.createObjectURL(imageBlob);
             return blobUrl;
-          } catch (error) { 
+          } catch (error) {
             return null;
           }
         }
-        
-      
-        constructor(){
+
+        constructor() {
           super();
-          this.attachShadow({ mode: 'open' });
-          this.profileBlobUrl = null;   
+          this.attachShadow({ mode: "open" });
+          this.profileBlobUrl = null;
         }
-       async connectedCallback() { 
-      
+        async connectedCallback() {
           const div = document.createElement("div"),
-          style = document.createElement("style");
+            style = document.createElement("style");
           style.textContent = `
        
       * {
@@ -3938,7 +4052,9 @@ const welcomer = {
       }
       
       #box_back , #backgro_row{
-      background-image: url(${this.#imageUrlToBlobUrl('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpldj0iaHR0cDovL3d3dy53My5vcmcvMjAwMS94bWwtZXZlbnRzIiB2ZXJzaW9uPSIxLjEiIGJhc2VQcm9maWxlPSJmdWxsIiBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJoZXhhZ29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCA1NzYgNTEyIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtaGV4YWdvbiBmYS13LTE4IGZhLTN4IiBzdHlsZT0iICAgICBwb3NpdGlvbjogYWJzb2x1dGU7IiBmaWxsPSIjMzM3YWI3IiBvcGFjaXR5PSIwLjYiPiANCiAgICANCiAgICA8cGF0aCBkPSJtMzMuMzkwNjI1IDI2MS4zMjAzMTJoNjYuNzczNDM3bDMzLjM4NjcxOS01Ny44MjgxMjQtMzMuMzg2NzE5LTU3LjgyODEyNmgtNjYuNzczNDM3bC0zMy4zOTA2MjUgNTcuODI4MTI2em0wIDAiLz4NCiAgICA8cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im0zMy4zOTA2MjUgNDExLjMyMDMxMmg2Ni43NzM0MzdsMzMuMzg2NzE5LTU3LjgyODEyNC0zMy4zODY3MTktNTcuODI4MTI2aC02Ni43NzM0MzdsLTMzLjM5MDYyNSA1Ny44MjgxMjZ6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0yODUuNjg3NSAxNDUuNjY0MDYyLTMzLjA4OTg0NCA1Ny4zMDQ2ODgtLjMwMDc4MS41MjM0MzguMzAwNzgxLjUyMzQzNyAzMy4wODk4NDQgNTcuMzA0Njg3aDY2Ljc3NzM0NGwzMy4zODY3MTgtNTcuODI4MTI0LTMzLjM4NjcxOC01Ny44MjgxMjZ6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0zNzguNjEzMjgxIDEzMC42NjAxNTYgMzMuMzkwNjI0IDU3LjgyODEyNWg2Ni43NzM0MzhsMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODI4MTI1aC02Ni43NzM0Mzh6bTAgMCIvPg0KDQoNCg0KICAgIDxwYXRoIGQ9Im0xMjYuMTQ4NDM4IDEzMC42NjAxNTYgMzMuMzkwNjI0IDU3LjgyODEyNWg2Ni43NzM0MzhsMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODI4MTI1aC02Ni43NzM0Mzh6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0yNTIuMjk2ODc1IDU3LjgyODEyNSAzMy4zOTA2MjUgNTcuODMyMDMxaDY2Ljc3NzM0NGwzMy4zODY3MTgtNTcuODMyMDMxLTMzLjM4NjcxOC01Ny44MjgxMjVoLTY2Ljc3NzM0NHptMCAwIi8+DQogICAgPHBhdGggZD0ibTIyNi4zMTI1IDMzNC4xNTIzNDQgMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODMyMDMxaC02Ni43NzM0MzhsLTMzLjM5MDYyNCA1Ny44MzIwMzEgMzMuMzkwNjI0IDU3LjgyODEyNXptMCAwIiAgLz4NCg0KDQoNCg0KPC9zdmc+')});
+      background-image: url(${this.#imageUrlToBlobUrl(
+        "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4bWxuczpldj0iaHR0cDovL3d3dy53My5vcmcvMjAwMS94bWwtZXZlbnRzIiB2ZXJzaW9uPSIxLjEiIGJhc2VQcm9maWxlPSJmdWxsIiBhcmlhLWhpZGRlbj0idHJ1ZSIgZm9jdXNhYmxlPSJmYWxzZSIgZGF0YS1wcmVmaXg9ImZhcyIgZGF0YS1pY29uPSJoZXhhZ29uIiByb2xlPSJpbWciIHZpZXdCb3g9IjAgMCA1NzYgNTEyIiBjbGFzcz0ic3ZnLWlubGluZS0tZmEgZmEtaGV4YWdvbiBmYS13LTE4IGZhLTN4IiBzdHlsZT0iICAgICBwb3NpdGlvbjogYWJzb2x1dGU7IiBmaWxsPSIjMzM3YWI3IiBvcGFjaXR5PSIwLjYiPiANCiAgICANCiAgICA8cGF0aCBkPSJtMzMuMzkwNjI1IDI2MS4zMjAzMTJoNjYuNzczNDM3bDMzLjM4NjcxOS01Ny44MjgxMjQtMzMuMzg2NzE5LTU3LjgyODEyNmgtNjYuNzczNDM3bC0zMy4zOTA2MjUgNTcuODI4MTI2em0wIDAiLz4NCiAgICA8cGF0aCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGQ9Im0zMy4zOTA2MjUgNDExLjMyMDMxMmg2Ni43NzM0MzdsMzMuMzg2NzE5LTU3LjgyODEyNC0zMy4zODY3MTktNTcuODI4MTI2aC02Ni43NzM0MzdsLTMzLjM5MDYyNSA1Ny44MjgxMjZ6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0yODUuNjg3NSAxNDUuNjY0MDYyLTMzLjA4OTg0NCA1Ny4zMDQ2ODgtLjMwMDc4MS41MjM0MzguMzAwNzgxLjUyMzQzNyAzMy4wODk4NDQgNTcuMzA0Njg3aDY2Ljc3NzM0NGwzMy4zODY3MTgtNTcuODI4MTI0LTMzLjM4NjcxOC01Ny44MjgxMjZ6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0zNzguNjEzMjgxIDEzMC42NjAxNTYgMzMuMzkwNjI0IDU3LjgyODEyNWg2Ni43NzM0MzhsMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODI4MTI1aC02Ni43NzM0Mzh6bTAgMCIvPg0KDQoNCg0KICAgIDxwYXRoIGQ9Im0xMjYuMTQ4NDM4IDEzMC42NjAxNTYgMzMuMzkwNjI0IDU3LjgyODEyNWg2Ni43NzM0MzhsMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODI4MTI1aC02Ni43NzM0Mzh6bTAgMCIvPg0KICAgIDxwYXRoIGQ9Im0yNTIuMjk2ODc1IDU3LjgyODEyNSAzMy4zOTA2MjUgNTcuODMyMDMxaDY2Ljc3NzM0NGwzMy4zODY3MTgtNTcuODMyMDMxLTMzLjM4NjcxOC01Ny44MjgxMjVoLTY2Ljc3NzM0NHptMCAwIi8+DQogICAgPHBhdGggZD0ibTIyNi4zMTI1IDMzNC4xNTIzNDQgMzMuMzkwNjI1LTU3LjgyODEyNS0zMy4zOTA2MjUtNTcuODMyMDMxaC02Ni43NzM0MzhsLTMzLjM5MDYyNCA1Ny44MzIwMzEgMzMuMzkwNjI0IDU3LjgyODEyNXptMCAwIiAgLz4NCg0KDQoNCg0KPC9zdmc+"
+      )});
       
       }
       
@@ -4654,38 +4770,41 @@ const welcomer = {
           </div>`;
           this.shadowRoot.appendChild(div);
           div.appendChild(style);
-      
-          const profileImgElement = this.shadowRoot.getElementById('cv_profile_img');
+
+          const profileImgElement =
+            this.shadowRoot.getElementById("cv_profile_img");
           const originalImageUrl = profileImgElement.src; // Get the initial src
-      
-          if (originalImageUrl) { 
-            this.profileBlobUrl = await this.#imageUrlToBlobUrl(originalImageUrl);
-      
-            if (this.profileBlobUrl) { 
+
+          if (originalImageUrl) {
+            this.profileBlobUrl = await this.#imageUrlToBlobUrl(
+              originalImageUrl
+            );
+
+            if (this.profileBlobUrl) {
               profileImgElement.src = this.profileBlobUrl;
             }
           }
-      
-      
         }
       }
-        
-      
-      if(!customElements.get('cv-panel')){
-        customElements.define('cv-panel',CvPanel);
+
+      if (!customElements.get("custom-scroll")) {
+        customElements.define("custom-scroll", CustomScroll);
       }
-      
 
-    if(!customElements.get('project-card')){
-      customElements.define('project-card', ProjectCard);
-    }
+      if (!customElements.get("cv-panel")) {
+        customElements.define("cv-panel", CvPanel);
+      }
 
-    if(!customElements.get('custom-dropdown')){
-      customElements.define('custom-dropdown', CustomDropdown);
-    }
-    if (!customElements.get("custom-combobox")) {
+      if (!customElements.get("project-card")) {
+        customElements.define("project-card", ProjectCard);
+      }
+
+      if (!customElements.get("custom-dropdown")) {
+        customElements.define("custom-dropdown", CustomDropdown);
+      }
+      if (!customElements.get("custom-combobox")) {
         customElements.define("custom-combobox", CustomCombobox);
-    }
+      }
       if (!customElements.get("p-search")) {
         customElements.define("p-search", CustomSearch);
       }
@@ -4735,12 +4854,12 @@ const welcomer = {
       content_space.id = "content_Space";
       //
     },
-    solarday: function(){
-      const startDate = new Date('1998-03-16'); 
-const currentDate = new Date(); 
-const diffInMs = currentDate - startDate; 
-const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-return daysPassed;
+    solarday: function () {
+      const startDate = new Date("1998-03-16");
+      const currentDate = new Date();
+      const diffInMs = currentDate - startDate;
+      const daysPassed = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+      return daysPassed;
     },
     reset_body_aprs: function () {
       const aerElement = document.createElement("div");
@@ -4772,14 +4891,13 @@ return daysPassed;
       const spjParagraph = document.createElement("p");
       const boxShadowSpan = document.createElement("span");
       boxShadowSpan.classList.add("box_shadow_h");
-      boxShadowSpan.innerHTML =
-       `Marko Nikolić - Portfolio <i class="far fa-copyright"></i> ${this.solarday()}`;
+      boxShadowSpan.innerHTML = `Marko Nikolić - Portfolio <i class="far fa-copyright"></i> ${this.solarday()}`;
       spjParagraph.appendChild(boxShadowSpan);
       spjin.appendChild(spjParagraph);
 
       const spj = document.createElement("spj");
       const logoImg = document.createElement("img");
-      logoImg.src = "/svg_logo_backscr_img";
+      logoImg.src = "/svg_logo_backscr_img.svg";
       logoImg.id = "logo_backscr_img";
       logoImg.alt = "logo";
       logoImg.loading = "lazy";
@@ -5079,7 +5197,7 @@ return daysPassed;
         dvheader.classList.add("dvheader");
 
         const img = document.createElement("img");
-        img.src = "/svg_logo_backscr_img";
+        img.src = "/svg_logo_backscr_img.svg";
         img.id = "logo_backscr_img";
         img.alt = "Logo";
         /* - */
@@ -5150,7 +5268,7 @@ return daysPassed;
         divHeader.className = "div_header";
 
         const img = document.createElement("img");
-        img.src = "/svg_logo_backscr_img";
+        img.src = "/svg_logo_backscr_img.svg";
         img.id = "logo_backscr_img";
         img.alt = "Logo";
         divHeader.appendChild(img);
@@ -6099,7 +6217,7 @@ document.querySelector("body").appendChild(parser.body);
   $: {},
   f: "$",
   gallery_temp: [],
-  zoomElement: function(elm){
+  zoomElement: function (elm) {
     const ImagePreview_src = document.createElement("image-preview");
     ImagePreview_src.srcDiv(elm);
     document.body.appendChild(ImagePreview_src);
@@ -6427,7 +6545,9 @@ document.querySelector("body").appendChild(parser.body);
         welcomer.reload_me(Elem);
         break;
       case "welcomer.search_Kompjiler(this);":
-        try{ welcomer.search_Kompjiler(Elem); } catch(ex){}
+        try {
+          welcomer.search_Kompjiler(Elem);
+        } catch (ex) {}
         break;
       case "welcomer.blogloader('all');":
         welcomer.blogloader("all");
@@ -6792,7 +6912,7 @@ document.querySelector("body").appendChild(parser.body);
     welcomer.scrolj();
   },
   get_from_datter: function (url) {
-   /*  $.ajax({ url: url, type: "GET", success: function (v) {} }); */
+    /*  $.ajax({ url: url, type: "GET", success: function (v) {} }); */
   },
   fetchJsonData: async function (url) {
     try {
@@ -7251,7 +7371,7 @@ document.querySelector("body").appendChild(parser.body);
         );
         $("body").removeAttr("data-category-name");
         $("div#clavs br_ta").addClass("active_scr");
-        document.querySelector("p-container").set(`${res}`,f);
+        document.querySelector("p-container").set(`${res}`, f);
         // document.querySelector('div#clavs div_header').setAttribute("style", " opacity:1;transform:unset;");
         welcomer.cards_generate(f);
         document
@@ -7523,9 +7643,7 @@ document.querySelector("body").appendChild(parser.body);
       }
     }
   },
-  grid_box: function(params = []){
-
-  },
+  grid_box: function (params = []) {},
   blogljoad_posts_category: function (tt_category_name = "All") {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
@@ -7639,7 +7757,6 @@ document.querySelector("body").appendChild(parser.body);
         });
       }
 
-
       img_backr = `<i_list>${bagde_list}</i_list><img loading="lazy" ${thi} 
         ondragstart="return false;" 
         onload="welcomer.loaded_img(this,${div_not_i});" 
@@ -7653,11 +7770,11 @@ document.querySelector("body").appendChild(parser.body);
       }
 
       if (tt_category_name == "All" || tt_category_name == "all") {
-      grider_viewer.insertAdjacentHTML(
-        "beforeend",
-        `<project ${project} data-category="${window.btoa(
-          v?.category
-        )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
+        grider_viewer.insertAdjacentHTML(
+          "beforeend",
+          `<project ${project} data-category="${window.btoa(
+            v?.category
+          )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
            <grider_box>
              <p><span>${v.title}</span></p>
              ${p_open}
@@ -7666,22 +7783,22 @@ document.querySelector("body").appendChild(parser.body);
                v.id
              });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
              <img ${display_none} src="${
-          welcomer.loader_svg
-        }" class="loader_post" height="50" width="50" />
+            welcomer.loader_svg
+          }" class="loader_post" height="50" width="50" />
              ${img_backr}
            </grider_box>
          </project>`
-      );
-      div_not_i++;
-    } else {
-      try{
-      for (var i = 0; i < v?.category.length; i++) {
-        if (tt_category_name == v.category[i]) {
-      grider_viewer.insertAdjacentHTML(
-        "beforeend",
-        `<project ${project} data-category="${window.btoa(
-          v?.category
-        )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
+        );
+        div_not_i++;
+      } else {
+        try {
+          for (var i = 0; i < v?.category.length; i++) {
+            if (tt_category_name == v.category[i]) {
+              grider_viewer.insertAdjacentHTML(
+                "beforeend",
+                `<project ${project} data-category="${window.btoa(
+                  v?.category
+                )}" ${thi} id-int="${div_not_i}" title="${v?.title}">
            <grider_box>
              <p><span>${v.title}</span></p>
              ${p_open}
@@ -7690,17 +7807,18 @@ document.querySelector("body").appendChild(parser.body);
                v.id
              });" class="bi bi-info-circle" title="Go to blog post..."></i></fiv>
              <img ${display_none} src="${
-          welcomer.loader_svg
-        }" class="loader_post" height="50" width="50" />
+                  welcomer.loader_svg
+                }" class="loader_post" height="50" width="50" />
              ${img_backr}
            </grider_box>
          </project>`
-      );      div_not_i++;
-    }
-  }}catch(f){}
-    }
-    tt_category_name_false = false;
-
+              );
+              div_not_i++;
+            }
+          }
+        } catch (f) {}
+      }
+      tt_category_name_false = false;
     });
     /*
     arr.forEach(function (v) {
@@ -7908,7 +8026,7 @@ document.querySelector("body").appendChild(parser.body);
         display_none = 'style="display:none;"';
         project = 'class="section_loadet_img"';
       }
-       grider_viewer.insertAdjacentHTML(
+      grider_viewer.insertAdjacentHTML(
         "beforeend",
         `<project ${project} data-category="${window.btoa(
           v?.category
@@ -7928,7 +8046,6 @@ document.querySelector("body").appendChild(parser.body);
          </project>`
       );
       div_not_i++;
-      
     });
 
     var arrayrH = welcomer.remove_duplicates(arrayr);
@@ -8078,7 +8195,7 @@ document.querySelector("body").appendChild(parser.body);
     });
     Vjideo_sjpinner.style.display = "none";
   },
-  
+
   blogljoad_posts_old: function (arr = []) {
     var arrayr = [],
       categoryTemp = document.querySelector("div#clavs br_ta"),
@@ -8306,24 +8423,23 @@ document.querySelector("body").appendChild(parser.body);
     fetch(RSS_URL, {
       method: "POST",
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",  
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
         what: "blog",
       }),
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.text(); 
+        return response.text();
       })
-      .then(v => {
-       })
-      .catch(error => {
+      .then((v) => {})
+      .catch((error) => {
         console.error("There was an error with the fetch operation:", error);
       });
-     
+
     const strVElement = document.getElementById("strV");
     if (strVElement) {
       strVElement.remove();
@@ -8625,16 +8741,16 @@ document.querySelector("body").appendChild(parser.body);
       this.galleryloadajax();
     } else {
       fetch("/?mnps=gallery")
-      .then(response => response.json())
-      .then(res => {
-        welcomer.html.set(
-          "#buttons .adiv[adiv_gat='gallery_bundle'] .nnum",
-          welcomer.galleryNumber()
-        );
-        welcomer.load_gallery_j = res;
-        welcomer.galleryloadajax();
-        document.documentElement.classList.add("anim_djenerated");
-      });
+        .then((response) => response.json())
+        .then((res) => {
+          welcomer.html.set(
+            "#buttons .adiv[adiv_gat='gallery_bundle'] .nnum",
+            welcomer.galleryNumber()
+          );
+          welcomer.load_gallery_j = res;
+          welcomer.galleryloadajax();
+          document.documentElement.classList.add("anim_djenerated");
+        });
     }
     welcomer.titleC("Gallery > Marko Nikolić");
   },
@@ -8998,22 +9114,23 @@ document.querySelector("body").appendChild(parser.body);
     if (this.projects[i].href !== "") {
       const urls = this.projects[i].href;
       // window.location.href = urls;
-      
+
       if (
         urls.includes(".rar") ||
         urls.includes(".zip") ||
         urls.includes(".exe")
       ) {
         fetch(urls)
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = url.replace(`blob:${window.location.origin}/`, "") + ".rar";
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
+          .then((response) => response.blob())
+          .then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download =
+              url.replace(`blob:${window.location.origin}/`, "") + ".rar";
+            a.click();
+            window.URL.revokeObjectURL(url);
+          });
       } else {
         window.top.location.href = urls;
         return;
@@ -10596,9 +10713,7 @@ document.querySelector("body").appendChild(parser.body);
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
   },
-  blgloader: function (id = "") {
-    
-  },
+  blgloader: function (id = "") {},
   pgloader_native: function (d = {}) {
     $("#clavs grider_viewer").removeAttr("style");
     const url = d.url,
@@ -11044,7 +11159,6 @@ document.querySelector("body").appendChild(parser.body);
     var objectURL = null;
     $("iframe:not(.iframe_mask)").attr("src", url);
     return false;
-   
   },
   Img_cursor: function () {
     this.cursor.css({
@@ -11153,10 +11267,10 @@ document.querySelector("body").appendChild(parser.body);
       const myParam_id = urlParams.get("id");
       if (myParam == "blog") {
         fetch(`/?blog=search&q=${input}`)
-        .then(response => response.json())
-        .then(arr => {
-          welcomer.blogljoad_posts(arr);
-        });
+          .then((response) => response.json())
+          .then((arr) => {
+            welcomer.blogljoad_posts(arr);
+          });
       } else {
         welcomer.compTxt(input);
       }
@@ -11526,7 +11640,7 @@ document.querySelector("body").appendChild(parser.body);
   <spjin>
     <p><span class="box_shadow_h"> Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: ${window.solarday()}</span></p>
     <spj>
-    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="logo" loading="lazy" /><br class="hide_noy"><br class="hide_noy">
+    <img src="/svg_logo_backscr_img.svg" id="logo_backscr_img" alt="logo" loading="lazy" /><br class="hide_noy"><br class="hide_noy">
       <h3>Marko Nikolić</h3>
       <div class="box_shadow_txtf box_shadow"><span>Full stack Developer</span>
         <sp>-</sp><span>Scientist theories/news</span>
@@ -11543,7 +11657,7 @@ document.querySelector("body").appendChild(parser.body);
 </hh_anim_start>
 <div id="clavs">
   <div_header>
-    <img src="/svg_logo_backscr_img" id="logo_backscr_img" alt="Logo" />
+    <img src="/svg_logo_backscr_img.svg" id="logo_backscr_img" alt="Logo" />
     <i id="reaload_page" title="Reload" data-onclick="welcomer.reload_me(this);"
       class="bi bi-arrow-clockwise"></i><svg class="Vjideo_sjpinner" viewBox="0 0 50 50">
       <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
@@ -11569,7 +11683,9 @@ document.querySelector("body").appendChild(parser.body);
   <grider_viewer class="gridsH grids" onscroll="welcomer.events.scroll.menu();"></grider_viewer><iframe
     title="Ignoring me " class="Ignoring_me_iframe" src=""></iframe><p-container class="shadow_iframe"></p-container>
   <div title="Ignoring me " class="Ignoring_me_iframe shadow_root" src=""></div>
-  <gridder_loader><img alt="loading" loading="lazy" src="${this.loader_svg}" height="55" width="55"></gridder_loader>
+  <gridder_loader><img alt="loading" loading="lazy" src="${
+    this.loader_svg
+  }" height="55" width="55"></gridder_loader>
   <canvas id="canvas">Your browser doesn't support canvas</canvas>
   
   <div class="cursor" style="opacity: 0;"></div>
@@ -11584,7 +11700,7 @@ document.querySelector("body").appendChild(parser.body);
   </info_box><p-c><i class="bi bi-pci-card"></i> 0FPS</p-c>
   <section data-ui-type="gallery" class="hidden_omega"><video-player id="video_preview"></video-player>
     <div_header data-url="editor">
-      <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić > Gallery</span>
+      <img src="/svg_logo_backscr_img.svg" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić > Gallery</span>
       <btns_i><input type="text" placeholder="Search project" data-hmm="search"
           onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
           data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
@@ -11607,7 +11723,7 @@ document.querySelector("body").appendChild(parser.body);
   </section>
   <section data-ui-type="social_feed" class="hidden_omega"></section>
   <section data-ui-type="editor" class="hidden_omega">
-    <div_header data-url="editor">  <img src="/svg_logo_backscr_img" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span>
+    <div_header data-url="editor">  <img src="/svg_logo_backscr_img.svg" loading="lazy" id="logo_backscr_img" alt="Loading" ><span>Marko Nikolić - Portfolio > Editor - BETA</span><span class="editor_t">> Editor - BETA</span>
       <btns_i><input type="text" placeholder="Search project" data-hmm="search"
           onkeyup="welcomer.search_Kompjiler(this);" /><i class="bi bi-x-lg" data-hmm="closeMe"
           data-onclick="welcomer.search_Kompjiler(this);" title="Close Search"></i></btns_i>
@@ -11637,7 +11753,9 @@ document.querySelector("body").appendChild(parser.body);
 </div>
 <div class="contanct_frm">
   <div class="h5_div">
-    <img src="${window.location.origin}/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
+    <img src="${
+      window.location.origin
+    }/svg_logo_backscr_img" loading="lazy"  class="logo_backscr_img_cnt" id="logo_backscr_img" alt="Loading" >
      <i class="bi bi-inbox"></i> Contact me<i class="closec bi bi-x-lg"></i></div>
   <form autocomplete="off">
     <p class="msg"></p><label for="fname">Full Name</label><i class="input_icon bi bi-quote"></i><input type="text"
@@ -11714,7 +11832,7 @@ document.querySelector("body").appendChild(parser.body);
         ]),
         createElementWithAttributes("spj", {}, [
           createElementWithAttributes("img", {
-            src: "/svg_logo_backscr_img",
+            src: "/svg_logo_backscr_img.svg",
             id: "logo_backscr_img",
             alt: "logo",
             loading: "lazy",
@@ -11800,8 +11918,7 @@ document.querySelector("body").appendChild(parser.body);
     const p = document.createElement("p");
     const span = document.createElement("span");
     span.classList.add("box_shadow_h");
-    span.innerHTML =
-      `Marko Nikolić <i class="far fa-copyright"></i>2012 - 2025 <br> Solar day: ${welcomer.pages.solarday()}`;
+    span.innerHTML = `Marko Nikolić <i class="far fa-copyright"></i>2012 - 2025 <br> Solar day: ${welcomer.pages.solarday()}`;
     p.appendChild(span);
     spjin.appendChild(p);
 
@@ -11809,7 +11926,7 @@ document.querySelector("body").appendChild(parser.body);
     spj.classList.add("spj");
 
     const svg = document.createElement("img");
-    svg.src = "/svg_logo_backscr_img";
+    svg.src = "/svg_logo_backscr_img.svg";
     svg.id = "logo_backscr_img";
 
     spj.appendChild(svg);
@@ -12067,12 +12184,9 @@ document.querySelector("body").appendChild(parser.body);
       xhr.send(`v=${data.v}`);
     }, 1000);*/
 
+    const Style_font = document.createElement("style");
 
-    
-
-const Style_font = document.createElement("style");
-
-Style_font.textContent = `@font-face { 
+    Style_font.textContent = `@font-face { 
 font-family: "D3";
 /* Add other properties here, as needed. For example: */
 /*
@@ -12082,8 +12196,8 @@ font-style: normal italic;
 src: url(data:application/font-woff;base64,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);
 }
 
-   `
-document.head.appendChild(Style_font);
+   `;
+    document.head.appendChild(Style_font);
 
     const blob = new Blob([` `], { type: "text/javascript" }),
       S = document.createElement("script");

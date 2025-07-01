@@ -10,6 +10,7 @@ use \League\CommonMark\CommonMarkConverter;
 use GuzzleHttp\Client;
 use \portfolio;
 use \DOMDocument;
+use function file_get_contents;
 
 
 
@@ -43,6 +44,140 @@ if (empty($_SERVER['HTTPS']) || $_SERVER['HTTPS'] === 'off') {
     header('HTTP/1.1 301 Moved Permanently');
     header('Location: ' . $redirect);
     exit();
+}
+
+
+/**
+ * Summary of HtmlModifier
+ */
+class HtmlModifier
+{
+
+    private function replaceUrlInTag(string $type, string $htmlContent, string $oldUrlToFind, string $newUrl): string
+    {
+        $attribute = '';
+        $tag = '';
+        $isInlineContent = false;
+
+        switch (strtolower($type)) {
+            case 'link':
+                $tag = 'link';
+                $attribute = 'href';
+                break;
+            case 'script':
+                $tag = 'script';
+                $attribute = 'src';
+                break;
+            case 'img':
+                $tag = 'img';
+                $attribute = 'src';
+                break;
+            case 'video':
+                $tag = 'video';
+                $attribute = 'src';
+                break;
+            case 'inline_script':
+                $tag = 'script';
+                $isInlineContent = true;
+                break;
+            case 'inline_style':
+                $tag = 'style';
+                $isInlineContent = true;
+                break;
+            default:
+                trigger_error("Nepodržan tip taga: '$type'. Podržani tipovi su 'link', 'script', 'img', 'video', 'inline_script', 'inline_style'.", E_USER_WARNING);
+                return $htmlContent;
+        }
+
+        if ($isInlineContent) {
+            $pattern = '/(<' . $tag . '[^>]*>)(.*?)(<\/' . $tag . '>)/is';
+
+            $replacedContent = preg_replace_callback(
+                $pattern,
+                function ($matches) use ($oldUrlToFind, $newUrl) {
+                    $tagStart = $matches[1];
+                    $content = $matches[2];
+                    $tagEnd = $matches[3];
+
+                    $modifiedContent = str_replace($oldUrlToFind, $newUrl, $content);
+
+                    return $tagStart . $modifiedContent . $tagEnd;
+                },
+                $htmlContent
+            );
+        } else {
+            $pattern = '/(<' . $tag . '[^>]*?' . $attribute . '=["\'])' . preg_quote($oldUrlToFind, '/') . '(["\'][^>]*>)/i';
+
+            $replacedContent = preg_replace_callback(
+                $pattern,
+                fn($matches) => $matches[1] . $newUrl . $matches[2],
+                $htmlContent
+            );
+        }
+
+        return $replacedContent;
+    }
+
+
+    /**
+     * Summary of updateHtml
+     * @param string $type
+     * @param string $htmlContent
+     * @param string $oldUrlToFind
+     * @param string $newUrl
+     * @return string
+     */
+    public function updateHtml(string $type, string $htmlContent, string $oldUrlToFind, string $newUrl): string
+    {
+        return $this->replaceUrlInTag($type, $htmlContent, $oldUrlToFind, $newUrl);
+    }
+
+    /**
+     * Summary of updateExternalFileContent
+     * @param string $filePath
+     * @param string $oldString
+     * @param string $newString
+     * @return bool
+     */
+    public function updateExternalFileContent(string $filePath, string $oldString, string $newString): bool
+    {
+        if (!file_exists($filePath)) {
+            trigger_error("Fajl ne postoji: '$filePath'.", E_USER_WARNING);
+            return false;
+        }
+
+        if (!is_readable($filePath)) {
+            trigger_error("Fajl nije čitljiv: '$filePath'. Proverite dozvole.", E_USER_WARNING);
+            return false;
+        }
+
+        $fileContent = file_get_contents($filePath);
+        if ($fileContent === false) {
+            trigger_error("Greška pri čitanju fajla: '$filePath'.", E_USER_WARNING);
+            return false;
+        }
+
+        $modifiedContent = str_replace($oldString, $newString, $fileContent);
+
+        if ($modifiedContent === $fileContent) {
+            return true;
+        }
+
+        if (!is_writable($filePath)) {
+            trigger_error("Fajl nije pisiv: '$filePath'. Proverite dozvole.", E_USER_WARNING);
+            return false;
+        }
+
+        $result = file_put_contents($filePath, $modifiedContent);
+
+        if ($result === false) {
+            trigger_error("Greška pri pisanju u fajl: '$filePath'.", E_USER_WARNING);
+            return false;
+        }
+
+        return true;
+    }
+
 }
 
 /**
@@ -515,7 +650,7 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-       # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+        # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         $ch = curl_init($r['url']);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
@@ -630,7 +765,8 @@ class portfolio_marko
 
         return trim($svg);
     }
-    function fetchJsonData(string $url): ?string {
+    function fetchJsonData(string $url): ?string
+    {
         // pokušaj file_get_contents
         $json = @file_get_contents($url);
         if ($json !== false) {
@@ -642,7 +778,7 @@ class portfolio_marko
             curl_setopt_array($ch, [
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_TIMEOUT        => 10,
+                CURLOPT_TIMEOUT => 10,
             ]);
             $json = curl_exec($ch);
             curl_close($ch);
@@ -650,6 +786,7 @@ class portfolio_marko
         }
         return null;
     }
+
     function Pages($h = "home")
     {
         session_start();
@@ -711,13 +848,16 @@ class portfolio_marko
             $this->error_page(404);
             exit();
         }
-        if ($h == "GM213-3LOC4SE24"){
+        if ($h == "GM213-3LOC4SE24") {
             header("Content-Type: text/plain");
             exit();
         }
         if ($h == "mains") {
+
+
             $fileT = "$_SERVER[DOCUMENT_ROOT]/app/mainas.css";
             header("Content-Type: text/css");
+            exit();
             header('Content-Length' . filesize($fileT));
 
             // header("Content-type: " . image_type_to_mime_type($mime_type));
@@ -757,31 +897,35 @@ class portfolio_marko
                     case "grid":
                         header("Content-type: image/svg+xml");
 
-                        ?><svg xmlns='http://www.w3.org/2000/svg' opacity="0.4" width='200' height='200' viewBox='0 0 800 800'>
-    <g fill='none' stroke='#455f647d' stroke-width='2.4'>
-        <path d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63'/>
-        <path d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764'/>
-        <path d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880'/>
-        <path d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382'/>
-        <path d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269'/>
-    </g>
-    <g fill='#455f64'>
-        <circle cx='769' cy='229' r='10'/>
-        <circle cx='539' cy='269' r='10'/>
-        <circle cx='603' cy='493' r='10'/>
-        <circle cx='731' cy='737' r='10'/>
-        <circle cx='520' cy='660' r='10'/>
-        <circle cx='309' cy='538' r='10'/>
-        <circle cx='295' cy='764' r='10'/>
-        <circle cx='40' cy='599' r='10'/>
-        <circle cx='102' cy='382' r='10'/>
-        <circle cx='127' cy='80' r='10'/>
-        <circle cx='370' cy='105' r='10'/>
-        <circle cx='578' cy='42' r='10'/>
-        <circle cx='237' cy='261' r='10'/>
-        <circle cx='390' cy='382' r='10'/>
-    </g>
-</svg><?php 
+                        ?><svg xmlns='http://www.w3.org/2000/svg' opacity="0.4" width='200' height='200'
+                            viewBox='0 0 800 800'>
+                            <g fill='none' stroke='#455f647d' stroke-width='2.4'>
+                                <path
+                                    d='M769 229L1037 260.9M927 880L731 737 520 660 309 538 40 599 295 764 126.5 879.5 40 599-197 493 102 382-31 229 126.5 79.5-69-63' />
+                                <path d='M-31 229L237 261 390 382 603 493 308.5 537.5 101.5 381.5M370 905L295 764' />
+                                <path
+                                    d='M520 660L578 842 731 737 840 599 603 493 520 660 295 764 309 538 390 382 539 269 769 229 577.5 41.5 370 105 295 -36 126.5 79.5 237 261 102 382 40 599 -69 737 127 880' />
+                                <path d='M520-140L578.5 42.5 731-63M603 493L539 269 237 261 370 105M902 382L539 269M390 382L102 382' />
+                                <path
+                                    d='M-222 42L126.5 79.5 370 105 539 269 577.5 41.5 927 80 769 229 902 382 603 493 731 737M295-36L577.5 41.5M578 842L295 764M40-201L127 80M102 382L-261 269' />
+                            </g>
+                            <g fill='#455f64'>
+                                <circle cx='769' cy='229' r='10' />
+                                <circle cx='539' cy='269' r='10' />
+                                <circle cx='603' cy='493' r='10' />
+                                <circle cx='731' cy='737' r='10' />
+                                <circle cx='520' cy='660' r='10' />
+                                <circle cx='309' cy='538' r='10' />
+                                <circle cx='295' cy='764' r='10' />
+                                <circle cx='40' cy='599' r='10' />
+                                <circle cx='102' cy='382' r='10' />
+                                <circle cx='127' cy='80' r='10' />
+                                <circle cx='370' cy='105' r='10' />
+                                <circle cx='578' cy='42' r='10' />
+                                <circle cx='237' cy='261' r='10' />
+                                <circle cx='390' cy='382' r='10' />
+                            </g>
+                        </svg><?php
                         break;
                     case "vk":
                         header("Content-type: image/svg+xml");
@@ -816,18 +960,18 @@ class portfolio_marko
             ob_start(function ($b) {
                 return self::minifyHtmlCss($b);
             });
-         
 
-            if($h == "socialnew" || $h == "news"){
+
+            if ($h == "socialnew" || $h == "news") {
                 include __DIR__ . '/demos/social/news.php';
             }
-            if($h == "social"){
+            if ($h == "social") {
                 include __DIR__ . '/demos/social/social.php';
             }
-            
+
             exit();
         }
-        if($h == "socialnew" || $h == "news"){
+        if ($h == "socialnew" || $h == "news") {
             header("Content-type: text/html");
 
             ob_start(function ($b) {
@@ -835,15 +979,26 @@ class portfolio_marko
             });
             include __DIR__ . '/demos/social/news.php';
 
-              exit();  
+            exit();
         }
-        if ($h == "video"){
+
+        if ($h == "mainss") {
+
+            header("Content-Type: text/css");
+            ob_start(function ($b) {
+                return self::minifyHtmlCss($b);
+            });
+            #  include "$_SERVER[DOCUMENT_ROOT]/app/mainas.css";
+            include __DIR__ . '/build/style.css';
+            exit();
+        }
+        if ($h == "video") {
             header("Content-Type: video/mp4");
             @readfile("$_SERVER[DOCUMENT_ROOT]/cinematic_MainMenu.mp4");
             exit();
         }
         if ($h == "feedjson") {
-             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             $r = $this->get_data([
@@ -888,6 +1043,9 @@ class portfolio_marko
             //  $b = ob_get_clean();
             //   echo $this->minifyJS($b);
             exit();
+        }
+        if ($h == "buildd") {
+            self::build();
         }
         if ($h == "video") {
             if (!empty($_GET['id'])) {
@@ -1235,7 +1393,7 @@ class portfolio_marko
             <?php
             exit();
         }
-        if ($h == "svg_logo_backscr_img") {
+        if ($h == "svg_logo_backscr_img" || $h == "svg_logo_backscr_img.svg") {
             header('Content-Type: image/svg+xml');
             ?>
             <svg id="logo_backscr_img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
@@ -1567,7 +1725,7 @@ class portfolio_marko
         $keywords = "Marko Nikolić, IT, developer, blog, portfolio";
         $ogImage = SITE_HOST . "/?mnps=image_og&v=" . time();
         $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
-    
+
         // Dohvati podatke sa API-ja
         $r = json_decode($this->get_data([
             "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
@@ -1576,41 +1734,41 @@ class portfolio_marko
                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
             ]
         ]), true);
-    
+
         $page = $_GET['p'] ?? null;
         $id = $_GET['id'] ?? null;
         $album = $_GET['album'] ?? null;
         $cat = $_GET['c'] ?? "";
-    
+
         if ($page) {
             switch ($page) {
                 case 'cv-pdf':
                     $title = "Marko Nikolić > CV";
                     break;
-    
+
                 case 'visitcard':
                     $title = "Marko Nikolić > Visitcard";
                     break;
-    
+
                 case 'Projects':
                     $title = "Marko Nikolić > Projects";
                     break;
-    
+
                 case 'gallery':
                     $title = "Gallery | Marko Nikolić";
                     $gallery = $r['data']['gallery']['gallery'] ?? [];
-    
+
                     if ($album) {
                         foreach ($gallery as $value) {
-                            if ((string)$value['name'] === (string)$album) {
+                            if ((string) $value['name'] === (string) $album) {
                                 foreach ($value as $val) {
                                     if (is_array($val) && isset($val['title'])) {
                                         $data = $val;
                                         $title = "{$val['title']} - Gallery | Marko Nikolić";
                                         $description = "{$val['title']} | Marko Nikolić IT. Is my personal website.";
                                         $ogImage = $val['thumb'] ?? $ogImage;
-    
-                                        if ((string)$val['id'] === (string)$id) {
+
+                                        if ((string) $val['id'] === (string) $id) {
                                             break 2;
                                         }
                                     }
@@ -1619,12 +1777,12 @@ class portfolio_marko
                         }
                     }
                     break;
-    
+
                 case 'blog':
                     $blogItems = $r['data']['blog'] ?? [];
-    
+
                     foreach ($blogItems as $value) {
-                        if ((string)$value['id'] === (string)$id) {
+                        if ((string) $value['id'] === (string) $id) {
                             $data = $value;
                             $title = "Blog > $cat {$value['title']} | Marko Nikolić";
                             $description = "{$value['title']} | Marko Nikolić IT. Is my personal website.";
@@ -1633,16 +1791,16 @@ class portfolio_marko
                             break;
                         }
                     }
-    
+
                     if (empty($data)) {
                         $title = "Blog > $cat | Marko Nikolić";
                     }
-    
+
                     break;
             }
         }
         ?>
-    
+
         <title><?= htmlspecialchars($title) ?></title>
         <link rel="icon" href="/?mnps=image-favicon?<?= time(); ?>" type="image/ico" />
         <meta name="description" content="<?= htmlspecialchars($description); ?>">
@@ -1652,7 +1810,7 @@ class portfolio_marko
         <meta name="robots" content="index, follow" />
         <link rel="canonical" href="<?= htmlspecialchars($canonicalUrl); ?>" />
         <meta name="theme-color" content="#333">
-    
+
         <!-- Open Graph -->
         <meta property="og:type" content="website" />
         <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl); ?>" />
@@ -1665,7 +1823,7 @@ class portfolio_marko
         <meta property="og:image:height" content="630" />
         <meta property="og:locale" content="en_GB" />
         <meta property="og:site_name" content="Marko Nikolić" />
-    
+
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@markoni62595164" />
@@ -1673,26 +1831,26 @@ class portfolio_marko
         <meta name="twitter:title" content="<?= htmlspecialchars($title); ?>" />
         <meta name="twitter:description" content="<?= htmlspecialchars($description); ?>" />
         <meta name="twitter:image" content="<?= htmlspecialchars($ogImage); ?>" />
-    
+
         <link rel="manifest" href="/manifest.webmanifest">
-    
+
         <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
-                "@type": "WebSite",
-                "url": "https://<?= SITE_HOST; ?>",
-                "name": "Marko Nikolić",
-                "author": {
-                    "@type": "Person",
-                    "name": "Marko Nikolić"
-                },
-                "description": "<?= htmlspecialchars($description); ?>",
-                "inLanguage": "en-GB"
-            }
-        </script>
-    <?php
+                                                                                                                                            {
+                                                                                                                                                "@context": "https://schema.org",
+                                                                                                                                                "@type": "WebSite",
+                                                                                                                                                "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                "name": "Marko Nikolić",
+                                                                                                                                                "author": {
+                                                                                                                                                    "@type": "Person",
+                                                                                                                                                    "name": "Marko Nikolić"
+                                                                                                                                                },
+                                                                                                                                                "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                "inLanguage": "en-GB"
+                                                                                                                                            }
+                                                                                                                                        </script>
+        <?php
     }
-    
+
 
 
     function error_page($status)
@@ -1894,7 +2052,7 @@ class portfolio_marko
         }
         curl_close($ch);
     }
-    private function emptyFolder($folderPath)
+    private function emptyFolder($folderPath, $ignore_dirs = true, $dirs = [])
     {
         if (!is_dir($folderPath)) {
             return false;
@@ -1905,6 +2063,9 @@ class portfolio_marko
             $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
 
             if (is_dir($filePath)) {
+                if (in_array($filePath, $dirs)) {
+                    continue;  
+                }
                 self::emptyFolder($filePath);
                 rmdir($filePath);
             } else {
@@ -1928,24 +2089,302 @@ class portfolio_marko
         $response = file_get_contents($url, false, $context);
         return $response;
     }
+    private function getFromBuild(string $resource = "")
+    {
+        $dir = "$_SERVER[DOCUMENT_ROOT]/build";
+        $resourceis_static = false;
+        $data = json_decode(file_get_contents("$dir/data.json"), true);
+        $ext = "txt";
+        foreach ($data['static'] as $val) {
+            if (!$val['name'] == $resource) {
+                continue;
+            }
+            $ext = $val['ext'];
+        }
+
+
+    }
+
+    private function replaceLink(string $type, string $htmlContent, string $oldLinkToFind, string $newLink): string
+    {
+        $pattern = '/(<link[^>]*?href=["\'])' . preg_quote($oldLinkToFind, '/') . '(["\'][^>]*>)/i';
+
+        $replacedContent = preg_replace_callback($pattern, fn($matches) => "$matches[1]$newLink$matches[2]", $htmlContent);
+
+        return $replacedContent;
+    }
+    private function copyDirectory(string $source, string $destination): bool
+    {
+        if (!is_dir($source)) {
+            echo "Error: Source directory '$source' does not exist.\n";
+            return false;
+        }
+
+        if (!is_dir($destination)) {
+            if (!mkdir($destination, 0777, true)) { // 0777 is permissive, adjust as needed
+                echo "Error: Could not create destination directory '$destination'.\n";
+                return false;
+            }
+        }
+
+        $dir = opendir($source);
+        if ($dir === false) {
+            echo "Error: Could not open source directory '$source'.\n";
+            return false;
+        }
+
+        while (($file = readdir($dir)) !== false) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $sourcePath = $source . DIRECTORY_SEPARATOR . $file;
+            $destinationPath = $destination . DIRECTORY_SEPARATOR . $file;
+
+            if (is_dir($sourcePath)) {
+                if (!self::copyDirectory($sourcePath, $destinationPath)) {
+                    closedir($dir);
+                    return false;
+                }
+            } else {
+                // If it's a file, copy it
+                if (!copy($sourcePath, $destinationPath)) {
+                    echo "Error: Could not copy file '$sourcePath' to '$destinationPath'.\n";
+                    closedir($dir);
+                    return false;
+                }
+            }
+        }
+
+        closedir($dir);
+        return true;
+    }
     private function build()
     {
+
+        $modifer = new HtmlModifier();
+
         header("Content-Type: text/plain");
-        $dir = "$_SERVER[DOCUMENT_ROOT]/build";
+        $dir = "$_SERVER[DOCUMENT_ROOT]/../portfolio_beta";
         if (is_dir($dir)) {
-            self::emptyFolder($dir);
+            self::emptyFolder($dir, true, [
+                "node_modules",
+                ".git"
+            ]);
         } else {
             mkdir($dir);
         }
+        $dir_builder = [
+            (string) $dir,
+            "$dir/data",
+            "$dir/backend",
+            "$dir/assets",
+            "$dir/assets/static",
+            "$dir/assets/static/js",
+            "$dir/assets/static/css",
+            "$dir/assets/static/img",
+            "$dir/assets/static/ui/img",
+            "$dir/assets/static/ui/img/bagdes",
+            "$dir/assets/static/img/logo",
+            "$dir/media",
+            "$dir/pages"
+        ];
+        foreach ($dir_builder as $val) {
+            if (!is_dir($val)) {
+                mkdir($val, 0777, true);
+            }
+        }
 
-        $client = new Client();
-        $response = $client->get("https://$_SERVER[HTTP_HOST]/build_static");
 
-        echo $response->getBody();
-        # $response = shell_exec($command);
-        // .'.$dir.'/index.html');
+        $created = time();
+        $data = null;
+        $data['version'] = time();
+        $data['static'] = [];
 
+        array_push($data['static'], [
+            "name" => "style",
+            "time" => $created,
+            "source" => "static",
+            "ext" => "css"
+        ]);
+        $css_static = "";
+        $js_static = "";
+        $css_static .= file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/mainas.css");
+        $css_static .= file_get_contents(__DIR__ . '/style.php');
+        //
+        array_push($data['static'], [
+            "name" => "jscode",
+            "time" => $created,
+            "source" => "static",
+            "ext" => "js"
+        ]);
+        $js_static .= "\"use strict\"; \n\n/* " . time() . " */\n";
+
+        $js_static .= "const version = function(){
+            return '" . time() . "';
+        };";
+
+        $r = $this->get_data([
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "headers" => [
+                'Content-Type: application/json',
+                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+            ]
+        ]);
+        // js
+        # echo "window.portfolio = $r; \n"; 
+
+
+
+        $js_static .= "window.stmp = '$_SESSION[Bearer_token_temp]';";
+        # include ROOT . "welcomer_f_old.js";
+        $js_static .= file_get_contents(ROOT . "welcomer_f.js");
+        //
+
+        ob_start();
+        $_SESSION['Bearer_token_temp'] = bin2hex(random_bytes(30 / 2));
+        include ROOT . "wlcomer_home.php";
+
+        $response = ob_get_clean();
+
+
+        $updates = [
+            [
+                'tag' => 'link',
+                'search_string' => "/mainss",
+                'replace_string' => "./assets/static/css/style.css"
+            ],
+            [
+                'tag' => 'script',
+                'search_string' => "/main",
+                'replace_string' => "./assets/static/js/jscode.js"
+            ],
+            [
+                'tag' => 'script',
+                'search_string' => "https://portfolio.localhost/main",
+                'replace_string' => "./assets/static/js/jscode.js"
+            ],
+/*
+            [
+                'tag' => 'script',
+                'search_string' => "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
+                'replace_string' => "./node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ],
+            [
+                'tag' => 'link',
+                'search_string' => "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css",
+                'replace_string' => "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+
+            ],
+            [
+                'tag' => 'link',
+                'search_string' => " https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
+                'replace_string' => "./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
+
+            ],
+*/
+            [
+                'tag' => 'link',
+                'search_string' => "/svg_logo_backscr_img",
+                'replace_string' => "./favicon.svg"
+            ],
+            [
+                'tag' => 'link',
+                'search_string' => "/?mnps=image-favicon?1751370364",
+                'replace_string' => "./favicon.svg"
+            ]
+        ];
+
+        foreach ($updates as $update) {
+            $response = $modifer->updateHtml(
+                $update['tag'],
+                $response,
+                $update['search_string'],
+                $update['replace_string']
+            );
+        }
+
+
+        /*
+        $response = $modifer->updateHtml("link", $response, "/mainss", "./css/style.css");
+        $response = $modifer->updateHtml("script", $response, "/main", "./js/jscode.js");
+        // $index_Data = "";    
+        $response = $modifer->updateHtml("script", $response, "https://portfolio.localhost/main", "./js/jscode.js");
+            $response = $modifer->updateHtml("link", $response, "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js", "./js/jscode.js");
+                */
+
+
+        $js_minifed = self::minifyJS($js_static);
+
+        file_put_contents("$dir/assets/static/js/jscode.js", $js_minifed);
+        file_put_contents("$dir/assets/static/css/style.css", file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/build/style.css'));
+        file_put_contents("$dir/data/data.json", json_encode($data));
+        file_put_contents("$dir/data/feed.json", file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json"));
+        file_put_contents("$dir/assets/static/index.html", $response);
         file_put_contents("$dir/index.html", $response);
+        file_put_contents("$dir/assets/static/img/logo.anim.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
+        file_put_contents("$dir/favicon.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
+        file_put_contents("$dir/assets/static/img/logo/nasa.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/nasa.svg"));           
+        file_put_contents("$dir/manifest.webmanifest", file_get_contents("$_SERVER[DOCUMENT_ROOT]/manifest.webmanifest"));
+        file_put_contents("$dir/.htaccess", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/.htaccess"));
+        file_put_contents("$dir/package.json", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/package.json"));
+        file_put_contents("$dir/package-lock.json", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/package-lock.json"));
+        file_put_contents("$dir/assets/static/ui/img/loader.svg", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/app/build/loader.svg"));
+        file_put_contents("$dir/assets/static/ui/img/bagdes/text.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/bagdes/text.svg"));
+        // shell_exec(" );
+
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/js/jscode.js",
+            "/svg_logo_backscr_img.svg",
+            "/assets/static/img/logo.anim.svg"
+        );
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/js/jscode.js",
+            "/?svc=logo_plain",
+            "/assets/static/img/logo.anim.svg"
+        );
+
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/css/style.css",
+            "/logo_nasa",
+            "/assets/static/img/logo/nasa.svg",
+        );
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/js/jscode.js",
+            "/svg_logo_backscr_img",
+            "/assets/static/img/logo.anim.svg"
+        );
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/js/jscode.js",
+            "/loader",
+            "/assets/static/ui/img/loader.svg"
+        );
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/css/style.css",
+            "/loader",
+            "/assets/static/ui/img/loader.svg"
+        );
+
+        $modifer->updateExternalFileContent(
+            "$dir/assets/static/js/jscode.js",
+            "/bagdes&name=text",
+            "/assets/static/ui/img/bagdes/text.svg"
+        );
+         
+        // svg_logo_backscr_img
+
+        if (!is_dir("$dir/node_modules")) {
+            self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/node_modules", "$dir/node_modules");
+        }
+        if (!is_dir("$dir/pwa")){
+            self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/pwa", "$dir/pwa");
+        }
+
+        exit();
+    }
+    public function loader_static()
+    {
+
     }
     public function sitemapGenerator()
     {

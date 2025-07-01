@@ -1545,6 +1545,7 @@ if (!empty($_GET['drc'])) {
 
             include ROOT . "wlcomer_home.php";
 
+        exit();
 
             #  echo $this->minifyHtml($t);
         }

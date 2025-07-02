@@ -12024,9 +12024,7 @@ document.querySelector("body").appendChild(parser.body);
   },
   body_reset_form: ` 
 <editor-sdk style='display:none; position:fixed; width: 100%; height:100%; z-index:4323423423; background:black;'></editor-sdk>
-<!-- <video style="opacity:0;"loop autoplay muted autobuffer playsinline class="wallpaperVideo video_is_hidden"></video> -->
  
-
 <p class="p-c"> Do you love random videos?<br>- Tip: Reload page...</p>
 <div id="content_Space"></div>
 <hh_anim_start>

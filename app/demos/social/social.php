@@ -24,7 +24,7 @@
         content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
     <meta name="keywords" content="Facebook, Instagram, obaveštenje, blokiran nalog, novi nalog, Marko Nikolić">
     <meta name="author" content="Marko Nikolić">
-    <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
+    <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/social">
     <link rel="stylesheet" href="<?php echo CDN . "/node_modules/bootstrap-icons/font/bootstrap-icons.css"; ?>" />
 
     <!-- Open Graph / Facebook -->
@@ -240,8 +240,8 @@
         }
 
         .links a.facebook {
-            background-color: #1877F2;
-            border: 1px solid #1877F2;
+            background-color: #0C54AC;
+            border: 1px solid #0C54AC;
         }
 
 
@@ -253,15 +253,15 @@
 
         .links a.facebook,
         .all a.facebook {
-            background-color: #1877F2;
-            border: 1px solid #1877F2;
+            background-color: #0C54AC;
+            border: 1px solid #0C54AC;
             ;
         }
 
         .links a.telegram,
         .all a.telegram {
-            background-color: #24A1DE;
-            border: 1px solid #24A1DE;
+            background-color: #202020;
+            border: 1px solid #202020;
         }
 
         .links a.tiktok,
@@ -483,7 +483,7 @@
         }
 
         .links a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .links a:hover,
@@ -573,7 +573,7 @@
         }
 
         .all a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .all a.tiktok {
@@ -815,7 +815,7 @@
         }
 
         .links a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .links a:hover,
@@ -905,7 +905,7 @@
         }
 
         .all a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .all a.tiktok {
@@ -1161,7 +1161,7 @@
                         "img" => "/socialnew&og_social=deviantart",
                         "label" => "DeviantArt",
                         "type" => "text-image",
-                        "alt" => "DeviantArt"
+                        "alt" => "DeviantArt logo"
                     ],
                     [
                         "url" => "https://www.facebook.com/nikoliccc0002",
@@ -1205,7 +1205,11 @@
                 <div class="links">
                     <?php foreach ($json as $item): ?>
                         <?php if ($item['type'] === 'text'): ?>
-                            <a href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>" target="_blank"
+                            <a  target="_blank"
+                            aria-label="<?= htmlspecialchars($item['label'], ENT_QUOTES) ?>" 
+                            rel="noopener noreferrer" 
+                            
+                            href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>" target="_blank"
                                 rel="noopener noreferrer" class="<?= htmlspecialchars($item['class'], ENT_QUOTES) ?>">
                                 <?php if (!empty($item['icon'])): ?>
                                     <i class="<?= htmlspecialchars($item['icon'], ENT_QUOTES) ?>" aria-hidden="true"></i>
@@ -1214,7 +1218,12 @@
 
                             </a>
                         <?php elseif ($item['type'] === 'text-image'): ?>
-                            <a href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>" target="_blank"
+                            <a 
+                            
+                            aria-label="<?= htmlspecialchars($item['label'], ENT_QUOTES) ?>" 
+                            rel="noopener noreferrer" 
+
+                            href="<?= htmlspecialchars($item['url'], ENT_QUOTES) ?>" target="_blank"
                                 rel="noopener noreferrer" class="<?= htmlspecialchars($item['class'], ENT_QUOTES) ?>">
                                 <img src="<?= htmlspecialchars($item['img'], ENT_QUOTES) ?>"
                                     alt="<?= htmlspecialchars($item['alt'] ?? '', ENT_QUOTES) ?>" loading="lazy" />
@@ -1253,3 +1262,4 @@
 </body>
 
 </html>
+<?php exit(); ?>

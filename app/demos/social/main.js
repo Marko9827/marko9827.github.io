@@ -141,6 +141,8 @@ const events = () => {
   }
 
   function beat(time, volume = 1) {
+
+return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     const filter = audioCtx.createBiquadFilter();

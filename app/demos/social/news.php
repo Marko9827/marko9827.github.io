@@ -15,13 +15,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://cdn.markonikolic98.com/" crossorigin />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/news">
 
     <!-- SEO meta tags -->
     <meta name="description"
         content="Stari Facebook nalog i Instagram su blokirani. Posetite moj novi Instagram i Facebook nalog za najnovije objave.">
     <meta name="keywords" content="Facebook, Instagram, obaveštenje, blokiran nalog, novi nalog, Marko Nikolić">
     <meta name="author" content="Marko Nikolić">
-    <link rel="canonical" href="https://<?php echo htmlspecialchars($_SERVER['HTTP_HOST'], ENT_QUOTES, 'UTF-8'); ?>/">
+ 
+
     <link rel="stylesheet" href="<?php echo CDN . "/node_modules/bootstrap-icons/font/bootstrap-icons.css"; ?>" />
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -142,7 +144,7 @@
         }
 
         .links a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .links a:hover,
@@ -241,7 +243,7 @@
         }
 
         .all a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .all a.tiktok {
@@ -483,7 +485,7 @@
         }
 
         .links a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .links a:hover,
@@ -575,7 +577,7 @@
         }
 
         .all a.facebook {
-            background-color: #1877F2;
+            background-color: #0C54AC;
         }
 
         .all a.tiktok {
@@ -979,13 +981,13 @@
                     </p>
                 </p-content>
                 <div class="links">
-                    <a href="https://instagram.com/nikoliccc0002" target="_blank" rel="noopener noreferrer"
-                        class="instagram">
+                    <a href="https://instagram.com/nikoliccc0002" target="_blank" aria-label="Instagram: @nikoliccc0002"
+                        rel="noopener noreferrer" class="instagram">
                         <i class="bi bi-instagram" aria-hidden="true"></i>
                         Instagram: @nikoliccc0002
                     </a>
-                    <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer"
-                        class="facebook">
+                    <a href="https://www.facebook.com/nikoliccc0002" target="_blank"
+                        aria-label="Facebook: My new profile(private)" rel="noopener noreferrer" class="facebook">
                         <i class="bi bi-facebook" aria-hidden="true"></i>
                         Facebook: My new profile(private)
                     </a>
@@ -996,17 +998,18 @@
                         rel="noopener noreferrer" class="instagram">
                         <i class="bi bi-instagram" aria-hidden="true"></i>
                     </a>
-                    <a href="https://www.facebook.com/nikoliccc0002" target="_blank" rel="noopener noreferrer"
-                        class="facebook">
+                    <a href="https://www.facebook.com/nikoliccc0002" target="_blank"
+                        aria-label="Facebook: My new profile(private)" rel="noopener noreferrer" class="facebook">
                         <i class="bi bi-facebook" aria-hidden="true"></i>
                     </a>
                     </a>
-                    <a href="https://www.tiktok.com/@nikoliccc02" target="_blank" rel="noopener noreferrer"
-                        class="tiktok">
+                    <a href="https://www.tiktok.com/@nikoliccc02" target="_blank" aria-label="My TikTok Profile"
+                        rel="noopener noreferrer" class="tiktok">
                         <i class="bi bi-tiktok" aria-hidden="true"></i>
 
                     </a>
-                    <a href="/social" target="_blank" rel="noopener noreferrer" class="linkedin">
+                    <a href="/social" target="_blank" rel="noopener noreferrer" class="linkedin"
+                        aria-label="My Linkedin Profile">
                         <i class="bi bi-linkedin" aria-hidden="true"></i>
                     </a>
                     <a href="/social" target="_blank" rel="noopener noreferrer" class="github all">View all...</a>
@@ -1026,3 +1029,4 @@
 </body>
 
 </html>
+<?php exit(); ?>

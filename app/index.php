@@ -993,6 +993,9 @@ class portfolio_marko
             exit();
         }
         if ($h == "video") {
+            if(!$_SERVER['HTTP_REFERER'] == "/news" || !$_SERVER['HTTP_REFERER'] == "/socialnew"){
+                self::error_page(404);
+            }
             header("Content-Type: video/mp4");
             @readfile("$_SERVER[DOCUMENT_ROOT]/cinematic_MainMenu.mp4");
             exit();

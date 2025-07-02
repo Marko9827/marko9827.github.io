@@ -1471,6 +1471,8 @@ body[data-hmm="ld_completeld_complete3"] .F_bi_search {
     background-repeat: no-repeat !important;
 }
 
+canvas-v.wallpaperVideo,
+canvas.wallpaperVideo,
 video.wallpaperVideo {
     position: fixed;
     left: 0px;
@@ -1484,6 +1486,9 @@ video.wallpaperVideo {
     -o-transition: .3s !important;
     transition: .3s !important;
     opacity: 0.5;
+    object-fit: cover;
+    -o-object-fit: cover;
+    pointer-events: none;
 }
 
 div#content_Space {

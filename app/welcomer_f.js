@@ -5,9 +5,382 @@ if (window.TrustedTypes) {
     createScript: (input) => input,
   });
 }
+const video = (core = { where: document.body, src: null, attr: [], objectFit: 'scale-down' }) => {
+   
+  const canvas = document.createElement("canvas"),    
+   ctx = canvas.getContext("2d"),
+   videoElement = document.createElement("video");  
+   core.where.appendChild(canvas);
+  videoElement.src = core.src
+  videoElement.crossOrigin = "anonymous";
+  videoElement.muted = true;
+  videoElement.loop = true;
+  
+ 
+
+  videoElement.addEventListener("loadedmetadata", () => {
+    canvas.width = videoElement.videoWidth;
+    canvas.height = videoElement.videoHeight;
+    videoElement.play();
+    canvas.removeAttribute("id");
+    drawFrame();
+  });
+ 
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+       videoElement.pause();
+    } else {
+       videoElement.play();
+    }
+  }); 
+
+  function drawFrame() {
+ 
+    if (videoElement.paused || videoElement.ended) {
+          requestAnimationFrame(drawFrame);  
+        return; 
+    }
+
+    const videoWidth = videoElement.videoWidth;
+    const videoHeight = videoElement.videoHeight;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
+    let sx = 0, sy = 0, sWidth = videoWidth, sHeight = videoHeight;
+    let dx = 0, dy = 0, dWidth = canvasWidth, dHeight = canvasHeight;
+
+    const videoAspectRatio = videoWidth / videoHeight;
+    const canvasAspectRatio = canvasWidth / canvasHeight;
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    switch (core.objectFit) {
+      case 'cover':
+        if (videoAspectRatio > canvasAspectRatio) {
+          sHeight = videoWidth / canvasAspectRatio;
+          sy = (videoHeight - sHeight) / 2;
+        } else {
+          sWidth = videoHeight * canvasAspectRatio;
+          sx = (videoWidth - sWidth) / 2;
+        }
+        break;
+
+      case 'contain':
+        if (videoAspectRatio > canvasAspectRatio) {
+          dWidth = canvasWidth;
+          dHeight = canvasWidth / videoAspectRatio;
+          dy = (canvasHeight - dHeight) / 2;
+        } else {
+          dHeight = canvasHeight;
+          dWidth = canvasHeight * videoAspectRatio;
+          dx = (canvasWidth - dWidth) / 2;
+        }
+        break;
+
+      case 'fill':
+         break;
+
+      case 'scale-down':
+        if (videoAspectRatio > canvasAspectRatio) {
+            dWidth = canvasWidth;
+            dHeight = canvasWidth / videoAspectRatio;
+            dy = (canvasHeight - dHeight) / 2;
+        } else {
+            dHeight = canvasHeight;
+            dWidth = canvasHeight * videoAspectRatio;
+            dx = (canvasWidth - dWidth) / 2;
+        }
+        if (dWidth > videoWidth || dHeight > videoHeight) {
+            dWidth = videoWidth;
+            dHeight = videoHeight;
+            dx = (canvasWidth - dWidth) / 2;
+            dy = (canvasHeight - dHeight) / 2;
+        }
+        break;
+
+      case 'none':
+        dWidth = videoWidth;
+        dHeight = videoHeight;
+        dx = (canvasWidth - dWidth) / 2;
+        dy = (canvasHeight - dHeight) / 2;
+        break;
+
+      default: 
+        if (videoAspectRatio > canvasAspectRatio) {
+          dWidth = canvasWidth;
+          dHeight = canvasWidth / videoAspectRatio;
+          dy = (canvasHeight - dHeight) / 2;
+        } else {
+          dHeight = canvasHeight;
+          dWidth = canvasHeight * videoAspectRatio;
+          dx = (canvasWidth - dWidth) / 2;
+        }
+        break;
+    }
+    
+    ctx.drawImage(videoElement, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+    
+    requestAnimationFrame(drawFrame);
+  }
+  
+  return canvas;
+};
 
 window.CDN_URL = "cdn.markonikolic98.com";
+class CanvasVElement extends HTMLElement {
+  constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
 
+      this._videoElement = document.createElement("video");
+      this._canvas = document.createElement("canvas");
+      this._ctx = this._canvas.getContext("2d");
+
+      this._videoElement.crossOrigin = "anonymous";
+      this._videoElement.muted = true; 
+      this._videoElement.loop = true;
+
+      this._currentObjectFit = 'cover';
+      this._currentRotate = 0;
+      this._currentScale = 1;
+      this._currentOpacity = 1;
+
+      this._targetRotate = 0;
+      this._targetScale = 1;
+      this._targetOpacity = 1;
+      this._targetObjectFit = 'cover';
+
+      this._animationSpeed = 0.1; 
+      this._animationThreshold = 0.001; 
+
+      this._animationFrameId = null; 
+
+      this.shadowRoot.appendChild(this._canvas);
+
+      const style = document.createElement('style');
+      style.textContent = `
+          canvas {
+              display: block;
+              width: 100%;
+              height: 100%;
+              background-color: #000;
+              border-radius: inherit;
+          }
+      `;
+      this.shadowRoot.appendChild(style);
+  }
+
+  connectedCallback() {
+      this._videoElement.addEventListener("loadedmetadata", this._handleLoadedMetadata.bind(this));
+      document.addEventListener("visibilitychange", this._handleVisibilityChange.bind(this));
+
+      this._updateCanvasDimensions();
+
+      this._resizeObserver = new ResizeObserver(entries => {
+          for (let entry of entries) {
+              if (entry.target === this) {
+                  this._updateCanvasDimensions();
+              }
+          }
+      });
+      this._resizeObserver.observe(this);
+
+      if (this._animationFrameId === null) { 
+          this._drawFrame();
+      }
+  }
+
+  disconnectedCallback() {
+      this._videoElement.removeEventListener("loadedmetadata", this._handleLoadedMetadata.bind(this));
+      document.removeEventListener("visibilitychange", this._handleVisibilityChange.bind(this));
+      if (this._animationFrameId) {
+          cancelAnimationFrame(this._animationFrameId);
+          this._animationFrameId = null; 
+      }
+      if (this._resizeObserver) {
+          this._resizeObserver.disconnect();
+      }
+  }
+
+  _updateCanvasDimensions() {
+      const rect = this._canvas.getBoundingClientRect();
+      this._canvas.width = rect.width;
+      this._canvas.height = rect.height;
+
+  }
+
+  _handleLoadedMetadata() {
+
+      this._videoElement.play().catch(error => {
+          console.warn("Video autoplay failed on loadedmetadata:", error);
+
+      });
+
+  }
+
+  _handleVisibilityChange() {
+      if (document.hidden) {
+          this._videoElement.pause();
+      } else {
+          this._videoElement.play().catch(error => {
+              console.warn("Video resume failed on visibilitychange:", error);
+          });
+      }
+  }
+
+  _drawFrame() {
+
+      const videoReadyAndPlaying = !this._videoElement.paused &&
+                                   !this._videoElement.ended &&
+                                   this._videoElement.readyState >= 2; 
+
+      let animatingTransforms = false; 
+
+      if (Math.abs(this._targetRotate - this._currentRotate) > this._animationThreshold) {
+          this._currentRotate += (this._targetRotate - this._currentRotate) * this._animationSpeed;
+          animatingTransforms = true;
+      } else {
+          this._currentRotate = this._targetRotate; 
+      }
+
+      if (Math.abs(this._targetScale - this._currentScale) > this._animationThreshold) {
+          this._currentScale += (this._targetScale - this._currentScale) * this._animationSpeed;
+          animatingTransforms = true;
+      } else {
+          this._currentScale = this._targetScale;
+      }
+
+      if (Math.abs(this._targetOpacity - this._currentOpacity) > this._animationThreshold) {
+          this._currentOpacity += (this._targetOpacity - this._currentOpacity) * this._animationSpeed;
+          animatingTransforms = true;
+      } else {
+          this._currentOpacity = this._targetOpacity;
+      }
+
+      if ((videoReadyAndPlaying && this._videoElement.videoWidth > 0 && this._videoElement.videoHeight > 0) || animatingTransforms) {
+          const videoWidth = this._videoElement.videoWidth;
+          const videoHeight = this._videoElement.videoHeight;
+          const canvasWidth = this._canvas.width;
+          const canvasHeight = this._canvas.height;
+
+          this._ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+          this._ctx.save();
+          this._ctx.globalAlpha = this._currentOpacity; 
+          this._ctx.translate(canvasWidth / 2, canvasHeight / 2);
+          this._ctx.rotate(this._currentRotate * Math.PI / 180); 
+          this._ctx.scale(this._currentScale, this._currentScale); 
+          this._ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
+
+          let sx = 0, sy = 0, sWidth = videoWidth, sHeight = videoHeight;
+          let dx = 0, dy = 0, dWidth = canvasWidth, dHeight = canvasHeight;
+
+          const videoAspectRatio = videoWidth / videoHeight;
+          const canvasAspectRatio = canvasWidth / canvasHeight;
+
+          switch (this._targetObjectFit) {
+              case 'cover':
+                  if (videoAspectRatio > canvasAspectRatio) {
+                      sHeight = videoWidth / canvasAspectRatio;
+                      sy = (videoHeight - sHeight) / 2;
+                  } else {
+                      sWidth = videoHeight * canvasAspectRatio;
+                      sx = (videoWidth - sWidth) / 2;
+                  }
+                  break;
+
+              case 'contain':
+                  if (videoAspectRatio > canvasAspectRatio) {
+                      dWidth = canvasWidth;
+                      dHeight = canvasWidth / videoAspectRatio;
+                      dy = (canvasHeight - dHeight) / 2;
+                  } else {
+                      dHeight = canvasHeight;
+                      dWidth = canvasHeight * videoAspectRatio;
+                      dx = (canvasWidth - dWidth) / 2;
+                  }
+                  break;
+
+              case 'fill':
+                  break;
+
+              case 'scale-down':
+                  if (videoAspectRatio > canvasAspectRatio) {
+                      dWidth = canvasWidth;
+                      dHeight = canvasWidth / videoAspectRatio;
+                      dy = (canvasHeight - dHeight) / 2;
+                  } else {
+                      dHeight = canvasHeight;
+                      dWidth = canvasHeight * videoAspectRatio;
+                      dx = (canvasWidth - dWidth) / 2;
+                  }
+                  if (dWidth > videoWidth || dHeight > videoHeight) {
+                      dWidth = videoWidth;
+                      dHeight = videoHeight;
+                      dx = (canvasWidth - dWidth) / 2;
+                      dy = (canvasHeight - dHeight) / 2;
+                  }
+                  break;
+
+              case 'none':
+                  dWidth = videoWidth;
+                  dHeight = videoHeight;
+                  dx = (canvasWidth - dWidth) / 2;
+                  dy = (canvasHeight - dHeight) / 2;
+                  break;
+
+              default:
+                  if (videoAspectRatio > canvasAspectRatio) {
+                      dWidth = canvasWidth;
+                      dHeight = canvasWidth / videoAspectRatio;
+                      dy = (canvasHeight - dHeight) / 2;
+                  } else {
+                      dHeight = canvasHeight;
+                      dWidth = canvasHeight * videoAspectRatio;
+                      dx = (canvasWidth - dWidth) / 2;
+                  }
+                  break;
+          }
+
+          this._ctx.drawImage(this._videoElement, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+          this._ctx.restore();
+      }
+
+      this._animationFrameId = requestAnimationFrame(this._drawFrame.bind(this));
+  }
+
+  setSrc(src) {
+      this._videoElement.src = src;
+      this._videoElement.load(); 
+
+      this._videoElement.play().catch(error => {
+          console.warn("Autoplay failed on setSrc:", error);
+
+      });
+
+  }
+
+  setObjectFit(fit) {
+      if (['contain', 'cover', 'fill', 'scale-down', 'none'].includes(fit)) {
+          this._targetObjectFit = fit; 
+
+          this._currentObjectFit = fit;
+
+      } else {
+          console.warn(`Nevažeća vrednost za object-fit: ${fit}. Koristi se 'contain' kao podrazumevano.`);
+          this._targetObjectFit = 'contain';
+          this._currentObjectFit = 'contain';
+      }
+  }
+
+  setTransform({ rotate = this._targetRotate, scale = this._targetScale, opacity = this._targetOpacity }) {
+      this._targetRotate = rotate;
+      this._targetScale = scale;
+      this._targetOpacity = opacity;
+
+  }
+}
+ 
 class CustomScroll extends HTMLElement {
   constructor() {
     super();
@@ -190,7 +563,6 @@ window.solarday = function () {
   return daysPassed;
 };
 window.getJSON = function (call = () => {}) {
-  
   return;
   fetch(`${window.location.origin}/feed`, {
     method: "POST",
@@ -4787,6 +5159,10 @@ const welcomer = {
         }
       }
 
+      if (!customElements.get("canvas-v")){
+        customElements.define('canvas-v', CanvasVElement);
+      };
+
       if (!customElements.get("custom-scroll")) {
         customElements.define("custom-scroll", CustomScroll);
       }
@@ -9188,12 +9564,24 @@ document.querySelector("body").appendChild(parser.body);
     if (this.conf.black) {
       if (this.isChrome) {
         canvas.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
-        wallpaperVideo.style.cssText =
+      /*  wallpaperVideo.style.cssText =
           "opacity:1;transform:rotate(45deg) scale(2);";
+          */
+          welcomer.video_canva.setTransform({
+            rotate: parseFloat(45),
+            scale: parseFloat(2),
+            opacity: parseFloat(1)
+        });
       } else {
         canvas.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
-        wallpaperVideo.style.cssText =
+       /* wallpaperVideo.style.cssText =
           "opacity:1;transform:rotate(45deg) scale(2);";
+          */
+          welcomer.video_canva.setTransform({
+            rotate: parseFloat(45),
+            scale: parseFloat(2),
+            opacity: parseFloat(1)
+        });
       }
     } else {
       if (this.isChrome) {
@@ -9214,7 +9602,12 @@ document.querySelector("body").appendChild(parser.body);
     const canvas = document.querySelector("#canvas");
     const wallpaperVideo = document.querySelector(".wallpaperVideo");
     canvas.removeAttribute("style");
-    wallpaperVideo.removeAttribute("style");
+    // wallpaperVideo.removeAttribute("style");
+    welcomer.video_canva.setTransform({
+      rotate: parseFloat(0),
+      scale: parseFloat(1),
+      opacity: parseFloat(0.5)
+  });
   },
   hide: function (elem) {
     document.querySelectorAll(elem).forEach(function (v) {
@@ -12022,9 +12415,11 @@ document.querySelector("body").appendChild(parser.body);
       document.createElement("br").classList.add("hide_noy")
     );
   },
+  video_canva: null,
   bckrnd: async function () {
-    const video_wall = document.createElement("video");
+    /*  const video_wall = document.createElement("video");
     document.body.appendChild(video_wall);
+    
     video_wall.classList.add("wallpaperVideo");
     video_wall.classList.add("video_is_hidden");
     video_wall.loop = true;
@@ -12032,7 +12427,8 @@ document.querySelector("body").appendChild(parser.body);
     video_wall.muted = true;
     video_wall.autobuffer = true;
     video_wall.playsinline = true;
-
+*/
+ 
     const data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` };
     const v = window.portfolio.data.background_videos;
     const xhr = new XMLHttpRequest();
@@ -12046,18 +12442,33 @@ document.querySelector("body").appendChild(parser.body);
       if (xhr.status === 200) {
         const blob = xhr.response;
         const URL2 = URL.createObjectURL(blob);
-
-        video_wall.src = URL2;
+      
+        welcomer.video_canva = document.createElement("canvas-v");
+        document.body.appendChild(welcomer.video_canva);
+        welcomer.video_canva.setSrc(URL2);
+        welcomer.video_canva.setObjectFit('cover');
+       
+        /* video({ // old way
+          where: document.body,
+          src: URL2,
+          attr: [
+            {
+              name: "class",
+              value: "wallpaperVideo video_is_hidden",
+            },
+          ],
+          objectFit: "scale-down"
+        });*/
+       welcomer.video_canva.classList.add("wallpaperVideo");
+       welcomer.video_canva.classList.add("video_is_hidden");
         try {
           document
             .querySelector("img#svg_loader_img")
             .setAttribute("style", "opacity:0;");
         } catch (ae0) {}
-        setTimeout(() => {
-          document.querySelector("img#svg_loader_img")?.remove();
-        }, 1000);
-        video_wall.play();
-        video_wall.classList.remove("video_is_hidden");
+     
+        welcomer.video_canva.classList.remove("video_is_hidden");
+        
       } else {
       }
     };

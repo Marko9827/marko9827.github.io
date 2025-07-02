@@ -962,7 +962,7 @@ class portfolio_marko
             });
 
 
-            if ($h == "socialnew" || $h == "news") {
+            if ($h == "socialnew" || $h == "new" || $h == "news") {
                 include __DIR__ . '/demos/social/news.php';
             }
             if ($h == "social") {
@@ -971,7 +971,7 @@ class portfolio_marko
 
             exit();
         }
-        if ($h == "socialnew" || $h == "news") {
+        if ($h == "socialnew" || $h == "new" || $h == "news") {
             header("Content-type: text/html");
 
             ob_start(function ($b) {

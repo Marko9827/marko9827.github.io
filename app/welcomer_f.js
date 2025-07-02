@@ -127,20 +127,30 @@ const video = (core = { where: document.body, src: null, attr: [], objectFit: 's
 };
 
 window.CDN_URL = "cdn.markonikolic98.com";
+
+ 
+class Blog_page extends HTMLElement {
+  constructor(){
+    super();
+    this.shadowRoot({ mode: 'open'});
+  }
+}
+
 class CanvasVElement extends HTMLElement {
   constructor() {
       super();
       this.attachShadow({ mode: 'open' });
 
       this._videoElement = document.createElement("video");
+
       this._canvas = document.createElement("canvas");
-      this._ctx = this._canvas.getContext("2d");
+      this._ctx = this._canvas.getContext("2d", { alpha: false });
 
       this._videoElement.crossOrigin = "anonymous";
-      this._videoElement.muted = true; 
+      this._videoElement.muted = true;
       this._videoElement.loop = true;
 
-      this._currentObjectFit = 'cover';
+      this._currentObjectFit = 'contain';
       this._currentRotate = 0;
       this._currentScale = 1;
       this._currentOpacity = 1;
@@ -148,12 +158,16 @@ class CanvasVElement extends HTMLElement {
       this._targetRotate = 0;
       this._targetScale = 1;
       this._targetOpacity = 1;
-      this._targetObjectFit = 'cover';
+      this._targetObjectFit = 'contain';
 
-      this._animationSpeed = 0.1; 
-      this._animationThreshold = 0.001; 
+      this._animationSpeed = 0.08;
+      this._animationThreshold = 0.001;
 
-      this._animationFrameId = null; 
+      this._animationFrameId = null;
+
+      this._frameSkipFactor = 1; 
+      this._performanceCheckInterval = 60; 
+      this._frameCount = 0; 
 
       this.shadowRoot.appendChild(this._canvas);
 
@@ -185,7 +199,7 @@ class CanvasVElement extends HTMLElement {
       });
       this._resizeObserver.observe(this);
 
-      if (this._animationFrameId === null) { 
+      if (this._animationFrameId === null) {
           this._drawFrame();
       }
   }
@@ -195,7 +209,7 @@ class CanvasVElement extends HTMLElement {
       document.removeEventListener("visibilitychange", this._handleVisibilityChange.bind(this));
       if (this._animationFrameId) {
           cancelAnimationFrame(this._animationFrameId);
-          this._animationFrameId = null; 
+          this._animationFrameId = null;
       }
       if (this._resizeObserver) {
           this._resizeObserver.disconnect();
@@ -206,16 +220,12 @@ class CanvasVElement extends HTMLElement {
       const rect = this._canvas.getBoundingClientRect();
       this._canvas.width = rect.width;
       this._canvas.height = rect.height;
-
   }
 
   _handleLoadedMetadata() {
-
       this._videoElement.play().catch(error => {
           console.warn("Video autoplay failed on loadedmetadata:", error);
-
       });
-
   }
 
   _handleVisibilityChange() {
@@ -229,18 +239,39 @@ class CanvasVElement extends HTMLElement {
   }
 
   _drawFrame() {
+      this._frameCount++; 
+
+      if (this._frameCount % this._performanceCheckInterval === 0) {
+
+          if (this._videoElement.readyState < 3) { 
+              this._frameSkipFactor = Math.min(this._frameSkipFactor + 1, 4); 
+              console.warn(`Video readyState nizak (${this._videoElement.readyState}), povećavam frameSkipFactor na ${this._frameSkipFactor}`);
+          } else if (this._videoElement.playbackRate < 1) { 
+              this._frameSkipFactor = Math.min(this._frameSkipFactor + 1, 4); 
+              console.warn(`Video playbackRate nizak (${this._videoElement.playbackRate}), povećavam frameSkipFactor na ${this._frameSkipFactor}`);
+          } else if (this._frameSkipFactor > 1 && this._videoElement.readyState >= 4) { 
+
+              this._frameSkipFactor = Math.max(this._frameSkipFactor - 1, 1);
+              console.log(`Video stabilan, smanjujem frameSkipFactor na ${this._frameSkipFactor}`);
+          }
+      }
+
+      if (this._frameSkipFactor > 1 && this._frameCount % this._frameSkipFactor !== 0) {
+          this._animationFrameId = requestAnimationFrame(this._drawFrame.bind(this));
+          return; 
+      }
 
       const videoReadyAndPlaying = !this._videoElement.paused &&
                                    !this._videoElement.ended &&
                                    this._videoElement.readyState >= 2; 
 
-      let animatingTransforms = false; 
+      let animatingTransforms = false;
 
       if (Math.abs(this._targetRotate - this._currentRotate) > this._animationThreshold) {
           this._currentRotate += (this._targetRotate - this._currentRotate) * this._animationSpeed;
           animatingTransforms = true;
       } else {
-          this._currentRotate = this._targetRotate; 
+          this._currentRotate = this._targetRotate;
       }
 
       if (Math.abs(this._targetScale - this._currentScale) > this._animationThreshold) {
@@ -266,10 +297,10 @@ class CanvasVElement extends HTMLElement {
           this._ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
           this._ctx.save();
-          this._ctx.globalAlpha = this._currentOpacity; 
+          this._ctx.globalAlpha = this._currentOpacity;
           this._ctx.translate(canvasWidth / 2, canvasHeight / 2);
-          this._ctx.rotate(this._currentRotate * Math.PI / 180); 
-          this._ctx.scale(this._currentScale, this._currentScale); 
+          this._ctx.rotate(this._currentRotate * Math.PI / 180);
+          this._ctx.scale(this._currentScale, this._currentScale);
           this._ctx.translate(-canvasWidth / 2, -canvasHeight / 2);
 
           let sx = 0, sy = 0, sWidth = videoWidth, sHeight = videoHeight;
@@ -342,7 +373,11 @@ class CanvasVElement extends HTMLElement {
                   break;
           }
 
-          this._ctx.drawImage(this._videoElement, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+          this._ctx.drawImage(
+              this._videoElement,
+              sx, sy, sWidth, sHeight,
+              Math.round(dx), Math.round(dy), Math.round(dWidth), Math.round(dHeight)
+          );
           this._ctx.restore();
       }
 
@@ -351,21 +386,16 @@ class CanvasVElement extends HTMLElement {
 
   setSrc(src) {
       this._videoElement.src = src;
-      this._videoElement.load(); 
-
+      this._videoElement.load();
       this._videoElement.play().catch(error => {
           console.warn("Autoplay failed on setSrc:", error);
-
       });
-
   }
 
   setObjectFit(fit) {
       if (['contain', 'cover', 'fill', 'scale-down', 'none'].includes(fit)) {
-          this._targetObjectFit = fit; 
-
-          this._currentObjectFit = fit;
-
+          this._targetObjectFit = fit;
+          this._currentObjectFit = fit; 
       } else {
           console.warn(`Nevažeća vrednost za object-fit: ${fit}. Koristi se 'contain' kao podrazumevano.`);
           this._targetObjectFit = 'contain';
@@ -377,7 +407,6 @@ class CanvasVElement extends HTMLElement {
       this._targetRotate = rotate;
       this._targetScale = scale;
       this._targetOpacity = opacity;
-
   }
 }
  
@@ -3877,6 +3906,11 @@ div#controls img:hover {
     }
 
     welcomer.cards_generateV2(div_content, url);
+    document.querySelector("div#clavs.scrollactive div_header").setAttribute('style',`
+    opacity: 1;
+    opacity: 1 !important;
+    pointer-events: unset !important;
+`);
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
       v.addEventListener("click", function (e) {
@@ -7303,7 +7337,221 @@ document.querySelector("body").appendChild(parser.body);
     }
   },
   cards_generate_xhr: null,
-  cards_generateV2: function (parentNODE, fh = {}) {
+    cards_generateV2: function(parentNODE, fh = {}) {
+
+    try {
+        if (welcomer.cards_generate_xhr) {
+            welcomer.cards_generate_xhr.abort();
+        }
+    } catch (error) {
+        console.warn("Nije uspjelo prekidanje prethodnog XHR zahtjeva:", error);
+    }
+
+    const conff = this.conf || welcomer.conf; 
+
+    const iframe = document.querySelector("#clavs iframe:not(.iframe_mask)");
+    let iframeBody = null;
+    if (iframe && iframe.contentDocument) {
+        iframeBody = iframe.contentDocument.body;
+    }
+
+    if (fh.shared_links && fh.shared_links.length > 0 && iframeBody) {
+
+        iframeBody.querySelectorAll("br_box").forEach(box => box.remove());
+
+        const loaderContainer = document.createElement("br_box");
+        loaderContainer.classList.add("loader-state"); 
+
+        const divBraLoader = document.createElement("div");
+        divBraLoader.className = "bra";
+
+        const imgLoader = document.createElement("img");
+        imgLoader.className = "img_background_rljs";
+        imgLoader.onload = function () {
+            welcomer.img_load(this);
+        };
+        imgLoader.src = fh?.thumbail;
+        imgLoader.alt = "Blog > Marko Nikolić";
+        imgLoader.loading = "lazy";
+
+        divBraLoader.appendChild(imgLoader);
+        loaderContainer.appendChild(divBraLoader);
+
+        const peLoader = document.createElement("pe");
+        const iconLoader = document.createElement("i");
+        iconLoader.className = "bi bi-link-45deg";
+        peLoader.appendChild(iconLoader);
+        peLoader.appendChild(document.createTextNode(` ${welcomer.lang().detectedsLinksIn_postmaxn}`));
+        loaderContainer.appendChild(peLoader);
+
+        const brAerLoader = document.createElement("br_aer");
+        brAerLoader.className = "snaped";
+
+        fh.shared_links.forEach(() => {
+            const linkLoader = document.createElement("a");
+            linkLoader.title = "Učitavanje";
+            linkLoader.className = "baer loading_data";
+            linkLoader.target = "_blank";
+            linkLoader.rel = "nofollow noreferrer";
+            linkLoader.role = "button";
+            linkLoader.href = "#"; 
+
+            const imgLinkLoader = document.createElement("img");
+            imgLinkLoader.src = welcomer.loader_svg;
+            linkLoader.appendChild(imgLinkLoader);
+
+            const berfLinkLoader = document.createElement("ber_f");
+            const bartLinkLoader = document.createElement("bar_t");
+            const imgFaviconLoader = document.createElement("img");
+            imgFaviconLoader.src = welcomer.loader_svg;
+            imgFaviconLoader.className = "favicon";
+            imgFaviconLoader.height = 16;
+            imgFaviconLoader.width = 16;
+            bartLinkLoader.appendChild(imgFaviconLoader);
+            bartLinkLoader.appendChild(document.createElement("span")); 
+            berfLinkLoader.appendChild(bartLinkLoader);
+            berfLinkLoader.appendChild(document.createElement("span")); 
+            linkLoader.appendChild(berfLinkLoader);
+
+            brAerLoader.appendChild(linkLoader);
+        });
+
+        loaderContainer.appendChild(brAerLoader);
+
+        iframeBody.appendChild(loaderContainer);
+        iframeBody.appendChild(document.createElement("br"));
+        iframeBody.appendChild(document.createElement("br"));
+        iframeBody.appendChild(document.createElement("br"));
+    }
+
+    welcomer.cards_generate_xhr = new XMLHttpRequest();
+    welcomer.cards_generate_xhr.open("POST", conff["graph"], true);
+
+    welcomer.cards_generate_xhr.onreadystatechange = function () {
+        if (welcomer.cards_generate_xhr.readyState === 4) {
+
+            if (iframeBody) {
+                iframeBody.querySelectorAll("br_box.loader-state").forEach(box => box.remove());
+            }
+
+            if (welcomer.cards_generate_xhr.status === 200) {
+                const responseData = JSON.parse(welcomer.cards_generate_xhr.responseText);
+                const jsjonF = responseData || [];
+
+                if (jsjonF.length > 0) {
+
+                    const contentBrBox = document.createElement("br_box");
+
+                    const divBra = document.createElement("div");
+                    divBra.className = "bra";
+
+                    const imgBackground = document.createElement("img");
+                    imgBackground.className = "img_background_rljs";
+                    imgBackground.onload = function () {
+                        welcomer.img_load(this);
+                    };
+                    imgBackground.src = fh?.thumbail;
+                    imgBackground.alt = "Blog > Marko Nikolić";
+                    imgBackground.loading = "lazy";
+
+                    divBra.appendChild(imgBackground);
+                    contentBrBox.appendChild(divBra);
+
+                    const pe = document.createElement("pe");
+                    const icon = document.createElement("i");
+                    icon.className = "bi bi-link-45deg";
+                    pe.appendChild(icon);
+                    pe.appendChild(document.createTextNode(` ${welcomer.lang().detectedsLinksIn_postmaxn}`));
+                    contentBrBox.appendChild(pe);
+
+                    const brAerContent = document.createElement("br_aer");
+                    brAerContent.className = "snaped";
+
+                    jsjonF.forEach(item => {
+                        const jsjon = item[0]; 
+
+                        const baer = document.createElement("a"); 
+                        baer.className = "baer";
+                        baer.target = "_blank";
+                        baer.rel = "nofollow noreferrer";
+                        baer.href = jsjon["url"];
+                        baer.setAttribute("data-title", "Kliknite (pređite mišem preko slike) za prikaz slike u punoj veličini");
+
+                        const imgLink = document.createElement("img");
+                        imgLink.src = jsjon["thumbail"];
+                        baer.appendChild(imgLink);
+
+                        const berf = document.createElement("ber_f");
+
+                        const bart = document.createElement("bar_t");
+                        const iconImg = document.createElement("img");
+                        iconImg.src = jsjon["icon"];
+                        iconImg.className = "favicon";
+                        iconImg.height = 16;
+                        iconImg.width = 16;
+                        bart.appendChild(iconImg);
+
+                        const spanTitle = document.createElement("span");
+                        spanTitle.textContent = jsjon["title"]; 
+                        bart.appendChild(spanTitle);
+                        berf.appendChild(bart);
+
+                        const spanUrl = document.createElement("span");
+                        spanUrl.textContent = jsjon["url"]; 
+                        berf.appendChild(spanUrl);
+
+                        baer.appendChild(berf); 
+
+                        brAerContent.appendChild(baer); 
+                    });
+
+                    contentBrBox.appendChild(brAerContent); 
+
+                    parentNODE.querySelectorAll("br_box").forEach(box => box.remove());
+
+                    parentNODE.appendChild(contentBrBox.cloneNode(true));
+
+                    if (iframeBody) {
+
+                        iframeBody.querySelectorAll("br_box").forEach(box => box.remove());
+                        iframeBody.appendChild(contentBrBox); 
+                        iframeBody.appendChild(document.createElement("br"));
+                        iframeBody.appendChild(document.createElement("br"));
+                        iframeBody.appendChild(document.createElement("br"));
+
+                        iframeBody.querySelectorAll("a.baer").forEach(function (a) {
+                            a.addEventListener("mouseenter", function () {
+                                if (parent && parent.welcomer && typeof parent.welcomer.showAnchorTitle === 'function') {
+                                    parent.welcomer.showAnchorTitle(a, a.getAttribute("data-title"));
+                                }
+                            });
+                            a.addEventListener("mouseleave", function () {
+                                if (parent && parent.welcomer && typeof parent.welcomer.hideAnchorTitle === 'function') {
+                                    parent.welcomer.hideAnchorTitle();
+                                }
+                            });
+                            a.removeAttribute("title"); 
+                        });
+                    }
+                } else {
+                    console.log("Nema primljenih podataka za cards_generateV2.");
+                }
+            } else {
+                console.error("XHR zahtjev nije uspio sa statusom:", welcomer.cards_generate_xhr.status);
+            }
+        }
+    };
+
+    const jsonData = new FormData();
+    if (fh.shared_links) {
+        jsonData.append("urlf", JSON.stringify(fh.shared_links));
+    } else {
+        jsonData.append("urlf", "[]"); 
+    }
+    jsonData.append("type", "s");
+    welcomer.cards_generate_xhr.send(jsonData);
+},
+  F_cards_generateV2: function (parentNODE, fh = {}) {
     var shared_links = "",
       br_box = document.createElement("br_box"),
       div_bra = document.createElement("div"),

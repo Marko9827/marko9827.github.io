@@ -165,15 +165,15 @@
                 /*
                 margin: 0 12px 12px 12px;
                  padding: 20px;*/
-                 margin: 0 12px 12px 12px;
-        padding: 20px;
-        width: 90%;
-        max-width: 90%;
-        margin-left: auto;
-        margin-right: auto;
+                margin: 0 12px 12px 12px;
+                padding: 20px;
+                width: 90%;
+                max-width: 90%;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            
+
 
             .notification b {
                 font-size: 1.2rem;
@@ -791,35 +791,54 @@
             height: 30px;
             border: 3px solid white;
             border-radius: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
+            -webkit-animation: rippleAnimation 0.9s ease-out forwards;
             animation: rippleAnimation 0.9s ease-out forwards;
             pointer-events: none;
             z-index: 9999;
         }
 
-        @keyframes rippleAnimation {
+        @-webkit-keyframes rippleAnimation {
             0% {
                 opacity: 0.6;
+                -webkit-transform: translate(-50%, -50%) scale(1);
                 transform: translate(-50%, -50%) scale(1);
             }
 
             100% {
                 opacity: 0;
+                -webkit-transform: translate(-50%, -50%) scale(8);
+                transform: translate(-50%, -50%) scale(8);
+            }
+        }
+
+        @keyframes rippleAnimation {
+            0% {
+                opacity: 0.6;
+                -webkit-transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                -webkit-transform: translate(-50%, -50%) scale(8);
                 transform: translate(-50%, -50%) scale(8);
             }
         }
 
         video {
-           
-    position: fixed;
-    display: block;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    -o-object-fit: cover;
-       object-fit: cover;
-    z-index: -1; 
+
+            position: fixed;
+            display: block;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            -o-object-fit: cover;
+            object-fit: cover;
+            z-index: -1;
         }
 
         body:not(.light) blue-warp {
@@ -841,13 +860,61 @@
                 /*
                 margin: 0 12px 12px 12px;
                  padding: 20px;*/
-                 margin: 0 12px 12px 12px;
-        padding: 20px;
-        width: 90%;
-        max-width: 90%;
-        margin-left: auto;
-        margin-right: auto;
+                margin: 0 12px 12px 12px;
+                padding: 20px;
+                width: 90%;
+                max-width: 90%;
+                margin-left: auto;
+                margin-right: auto;
             }
+        }
+
+        canvas {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            -o-object-fit: cover;
+            object-fit: cover;
+            z-index: -1;
+            border-radius: 8px;
+            -webkit-mask-image: radial-gradient(#00000069, transparent);
+            mask-image: radial-gradient(#00000069, transparent);
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        a.link.all {
+            margin-right: 0px;
+            margin-left: auto;
+            position: absolute;
+            right: 0px;
+            bottom: 0px;
+            color: white;
+            margin: 10px;
+            display: block;
+            text-decoration: none;
+            font-size: 12px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-line-pack: center;
+            align-content: center;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+            padding: 0px;
+            border-radius: 0px;
+        }
+
+        * {
+            overflow: hidden !important;
         }
     </style>
     <script src="/socialnew&og_social=static" type="text/javascript"></script>
@@ -855,7 +922,7 @@
 </head>
 
 <body>
- 
+
     <blue-warp></blue-warp>
     <notification_mode>
         <custom-scroll>
@@ -887,6 +954,9 @@
                         Type: Backup & Science Research System<br><br>
                         Tech spoiler and ...</p>
                     <div class="mouse-light-effect"></div>
+                    <a href="https://ark.markonikolic98.com" target="_top" rel="noopener noreferrer" class="link all">
+                        View more...<i class="bi bi-arrow-right-square"></i>
+                    </a>
             </div>
             <div class="notification" id="3259138671136">
                 <b><i class="bi bi-bell-fill"></i> Obaveštenje/Notice</b>

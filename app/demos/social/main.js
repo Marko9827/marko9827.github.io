@@ -70,6 +70,36 @@ const videoC = (canvas, ctx) => {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
   });
 };
+
+const videocanva = function () {
+  const canvas = document.createElement("canvas"),
+    notificationCardd = document.querySelectorAll(".notification");
+  notificationCardd.forEach((el) => {
+    if (el.id == "4239423518936") {
+      el.appendChild(canvas);
+      el.addEventListener(
+        "click",
+        () => (window.location.href = "https://ark.markonikolic98.com")
+      );
+    }
+  });
+  const ctx = canvas.getContext("2d");
+  const video = document.createElement("video");
+  video.src = "/video";
+  video.crossOrigin = "anonymous";
+  video.muted = true;
+  video.loop = true;
+
+  function drawFrame() {
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(drawFrame);
+  }
+  video.addEventListener("canplay", () => {
+    video.play();
+    canvas.removeAttribute("id");
+    drawFrame();
+  });
+};
 const events = () => {
   document.body.addEventListener("contextmenu", (e) => e.preventDefault());
   document.body.addEventListener("selectstart", (e) => e.preventDefault());
@@ -78,7 +108,7 @@ const events = () => {
   const notificationCardd = document.querySelectorAll(".notification");
   const styles = document.querySelectorAll("style");
   const loader = document.querySelector(".loader");
-
+  videocanva();
   let audioCtx = null;
   let heartbeatInterval = null;
   let mouseX = window.innerWidth / 2;
@@ -250,6 +280,7 @@ const events = () => {
 
   notificationCardd.forEach(function (notificationCard) {
     const mouseLight = notificationCard.querySelector(".mouse-light-effect");
+
     if (notificationCard && mouseLight) {
       notificationCard.addEventListener("touchmove", (e) => {
         if (e.touches.length > 0) {

@@ -77,10 +77,7 @@ const videocanva = function () {
   notificationCardd.forEach((el) => {
     if (el.id == "4239423518936") {
       el.appendChild(canvas);
-      el.addEventListener(
-        "click",
-        () => (window.location.href = "https://ark.markonikolic98.com")
-      );
+     
     }
   });
   const ctx = canvas.getContext("2d");

@@ -993,7 +993,7 @@ class portfolio_marko
             exit();
         }
         if ($h == "video") {
-            if(!$_SERVER['HTTP_REFERER'] == "/news" || !$_SERVER['HTTP_REFERER'] == "/socialnew"){
+            if (!$_SERVER['HTTP_REFERER'] == "/news" || !$_SERVER['HTTP_REFERER'] == "/socialnew") {
                 self::error_page(404);
             }
             header("Content-Type: video/mp4");
@@ -1838,19 +1838,19 @@ class portfolio_marko
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                            {
-                                                                                                                                                "@context": "https://schema.org",
-                                                                                                                                                "@type": "WebSite",
-                                                                                                                                                "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                "name": "Marko Nikolić",
-                                                                                                                                                "author": {
-                                                                                                                                                    "@type": "Person",
-                                                                                                                                                    "name": "Marko Nikolić"
-                                                                                                                                                },
-                                                                                                                                                "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                "inLanguage": "en-GB"
-                                                                                                                                            }
-                                                                                                                                        </script>
+                                                                                                                                                    {
+                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                        "author": {
+                                                                                                                                                            "@type": "Person",
+                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                        },
+                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                    }
+                                                                                                                                                </script>
         <?php
     }
 
@@ -2067,7 +2067,7 @@ class portfolio_marko
 
             if (is_dir($filePath)) {
                 if (in_array($filePath, $dirs)) {
-                    continue;  
+                    continue;
                 }
                 self::emptyFolder($filePath);
                 rmdir($filePath);
@@ -2162,8 +2162,18 @@ class portfolio_marko
         closedir($dir);
         return true;
     }
+
+
+    /**
+     * Summary of build
+     * @return never
+     */
     private function build()
     {
+     
+    #  header("Content-Type: text/plain");
+    #  echo "Passed!";
+    #  exit();
 
         $modifer = new HtmlModifier();
 
@@ -2201,7 +2211,6 @@ class portfolio_marko
             }
         }
 
-
         $created = time();
         $data = null;
         $data['version'] = time();
@@ -2237,22 +2246,16 @@ class portfolio_marko
                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
             ]
         ]);
-        // js
-        # echo "window.portfolio = $r; \n"; 
-
-
 
         $js_static .= "window.stmp = '$_SESSION[Bearer_token_temp]';";
-        # include ROOT . "welcomer_f_old.js";
         $js_static .= file_get_contents(ROOT . "welcomer_f.js");
-        //
 
-        ob_start();
-        $_SESSION['Bearer_token_temp'] = bin2hex(random_bytes(30 / 2));
-        include ROOT . "wlcomer_home.php";
+        // ob_start();
+        // $_SESSION['Bearer_token_temp'] = bin2/hex(random_bytes(30 / 2));
+        // include ROOT . "wlcomer_home.php";
+        $response = file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/page.php");
 
-        $response = ob_get_clean();
-
+ 
 
         $updates = [
             [
@@ -2270,25 +2273,6 @@ class portfolio_marko
                 'search_string' => "https://portfolio.localhost/main",
                 'replace_string' => "./assets/static/js/jscode.js"
             ],
-/*
-            [
-                'tag' => 'script',
-                'search_string' => "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
-                'replace_string' => "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ],
-            [
-                'tag' => 'link',
-                'search_string' => "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css",
-                'replace_string' => "./node_modules/bootstrap/dist/css/bootstrap.min.css"
-
-            ],
-            [
-                'tag' => 'link',
-                'search_string' => " https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
-                'replace_string' => "./node_modules/bootstrap-icons/font/bootstrap-icons.min.css"
-
-            ],
-*/
             [
                 'tag' => 'link',
                 'search_string' => "/svg_logo_backscr_img",
@@ -2308,36 +2292,27 @@ class portfolio_marko
                 $update['search_string'],
                 $update['replace_string']
             );
-        }
+        } 
 
-
-        /*
-        $response = $modifer->updateHtml("link", $response, "/mainss", "./css/style.css");
-        $response = $modifer->updateHtml("script", $response, "/main", "./js/jscode.js");
-        // $index_Data = "";    
-        $response = $modifer->updateHtml("script", $response, "https://portfolio.localhost/main", "./js/jscode.js");
-            $response = $modifer->updateHtml("link", $response, "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js", "./js/jscode.js");
-                */
-
-
+   
         $js_minifed = self::minifyJS($js_static);
 
-        file_put_contents("$dir/assets/static/js/jscode.js", $js_minifed);
+        file_put_contents("$dir/assets/static/js/jscode.js", $js_static);
         file_put_contents("$dir/assets/static/css/style.css", file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/app/build/style.css'));
         file_put_contents("$dir/data/data.json", json_encode($data));
         file_put_contents("$dir/data/feed.json", file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json"));
-        file_put_contents("$dir/assets/static/index.html", $response);
-        file_put_contents("$dir/index.html", $response);
+        file_put_contents("$dir/pages/page.php", $response);
+        // file_put_contents("$dir/pages/page.php", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/page.php"));
+                // file_put_contents("$dir/index.html", $response);
         file_put_contents("$dir/assets/static/img/logo.anim.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
         file_put_contents("$dir/favicon.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
-        file_put_contents("$dir/assets/static/img/logo/nasa.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/nasa.svg"));           
+        file_put_contents("$dir/assets/static/img/logo/nasa.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/nasa.svg"));
         file_put_contents("$dir/manifest.webmanifest", file_get_contents("$_SERVER[DOCUMENT_ROOT]/manifest.webmanifest"));
         file_put_contents("$dir/.htaccess", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/.htaccess"));
         file_put_contents("$dir/package.json", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/package.json"));
         file_put_contents("$dir/package-lock.json", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/package-lock.json"));
         file_put_contents("$dir/assets/static/ui/img/loader.svg", file_get_contents($_SERVER['DOCUMENT_ROOT'] . "/app/build/loader.svg"));
         file_put_contents("$dir/assets/static/ui/img/bagdes/text.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/bagdes/text.svg"));
-        // shell_exec(" );
 
         $modifer->updateExternalFileContent(
             "$dir/assets/static/js/jscode.js",
@@ -2376,21 +2351,46 @@ class portfolio_marko
             "/bagdes&name=text",
             "/assets/static/ui/img/bagdes/text.svg"
         );
-         
-        // svg_logo_backscr_img
+ 
 
         if (!is_dir("$dir/node_modules")) {
             self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/node_modules", "$dir/node_modules");
         }
-        if (!is_dir("$dir/pwa")){
+        if (!is_dir("$dir/pwa")) {
             self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/pwa", "$dir/pwa");
         }
         self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/app/build/component", "$dir/backend");
-       # if (!is_dir("$dir/assets/static/plugins/pdfjs")){
         self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/static/plugins/pdfjs", "$dir/assets/static/plugins/pdfjs");
-         
+        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/core.php","$dir/backend/core.php");
+        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/index.php","$dir/index.php");
+        // self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/page.php","$dir/pages/page.php");
+
+
         exit();
     }
+    /**
+     * Summary of copyFile
+     * @param mixed $source
+     * @param mixed $destination
+     * @throws Exception
+     * @return bool
+     */
+    private function copyFile($source, $destination)
+{
+    if (!file_exists($source)) {
+        throw new Exception("Source file does not exist: $source");
+    }
+
+    if (!is_dir(dirname($destination))) {
+        mkdir(dirname($destination), 0777, true);
+    }
+
+    if (!copy($source, $destination)) {
+        throw new Exception("Failed to copy file from $source to $destination");
+    }
+
+    return true;
+}
     public function loader_static()
     {
 

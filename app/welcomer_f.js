@@ -1,10 +1,128 @@
 window.draggable = { style_left: "", style_top: "", enabled: false };
-if (window.TrustedTypes) {
-  const policy = TrustedTypes.createPolicy("default", {
-    createHTML: (input) => input,
-    createScript: (input) => input,
-  });
+ 
+
+const events = () => {
+  function createSvgLoader() {
+    const SVG_NS = "http://www.w3.org/2000/svg";
+  
+    const svg = document.createElementNS(SVG_NS, "svg");
+    svg.setAttribute("class", "loader");
+    svg.setAttribute("width", "100");
+    svg.setAttribute("height", "100");
+    svg.setAttribute("viewBox", "0 0 100 100");
+  
+    // <defs>
+    const defs = document.createElementNS(SVG_NS, "defs");
+    const radialGradient = document.createElementNS(SVG_NS, "radialGradient");
+    radialGradient.setAttribute("id", "glow");
+    radialGradient.setAttribute("cx", "50%");
+    radialGradient.setAttribute("cy", "50%");
+    radialGradient.setAttribute("r", "50%");
+  
+    const stop1 = document.createElementNS(SVG_NS, "stop");
+    stop1.setAttribute("offset", "0%");
+    stop1.setAttribute("stop-color", "#fff");
+    stop1.setAttribute("stop-opacity", "1");
+  
+    const stop2 = document.createElementNS(SVG_NS, "stop");
+    stop2.setAttribute("offset", "100%");
+    stop2.setAttribute("stop-color", "#fff");
+    stop2.setAttribute("stop-opacity", "0");
+  
+    radialGradient.appendChild(stop1);
+    radialGradient.appendChild(stop2);
+    defs.appendChild(radialGradient);
+    svg.appendChild(defs); 
+    const circle1 = document.createElementNS(SVG_NS, "circle");
+    circle1.setAttribute("cx", "50");
+    circle1.setAttribute("cy", "50");
+    circle1.setAttribute("r", "20");
+    circle1.setAttribute("stroke", "#fff");
+    circle1.setAttribute("stroke-width", "4");
+    circle1.setAttribute("fill", "none");
+    svg.appendChild(circle1);
+  
+    // <circle cx="50" cy="50" r="35" fill="url(#glow)" ...>
+    const circle2 = document.createElementNS(SVG_NS, "circle");
+    circle2.setAttribute("cx", "50");
+    circle2.setAttribute("cy", "50");
+    circle2.setAttribute("r", "35");
+    circle2.setAttribute("fill", "url(#glow)");
+    circle2.setAttribute("opacity", "0.4");
+  
+    const animateTransform = document.createElementNS(SVG_NS, "animateTransform");
+    animateTransform.setAttribute("attributeName", "transform");
+    animateTransform.setAttribute("type", "rotate");
+    animateTransform.setAttribute("from", "0 50 50");
+    animateTransform.setAttribute("to", "360 50 50");
+    animateTransform.setAttribute("dur", "2s");
+    animateTransform.setAttribute("repeatCount", "indefinite");
+    circle2.appendChild(animateTransform);
+    svg.appendChild(circle2);
+  
+    // <circle cx="50" cy="50" r="3" fill="#fff">
+    const circle3 = document.createElementNS(SVG_NS, "circle");
+    circle3.setAttribute("cx", "50");
+    circle3.setAttribute("cy", "50");
+    circle3.setAttribute("r", "3");
+    circle3.setAttribute("fill", "#fff");
+  
+    const animate = document.createElementNS(SVG_NS, "animate");
+    animate.setAttribute("attributeName", "r");
+    animate.setAttribute("values", "3;6;3");
+    animate.setAttribute("dur", "1.2s");
+    animate.setAttribute("repeatCount", "indefinite");
+    circle3.appendChild(animate);
+    svg.appendChild(circle3);
+  
+    return svg;
+  }
+  
+  const customCursor = createSvgLoader();
+let loader = true;
+if (loader) { 
+  customCursor.removeAttribute("style");
+  customCursor.classList.add("custom-cursor-svg");
+  customCursor.style.left = `-100%`;
+  customCursor.style.top = `-100%`;
+  document.body.appendChild(customCursor);
+
+  const isTouchDevice =
+    "ontouchstart" in window || navigator.maxTouchPoints > 0;
+
+  if (!isTouchDevice) {
+    document.addEventListener("mousemove", (e) => {
+      if (customCursor) {
+        customCursor.style.left = `${(e.clientX - 15)}px`;
+        customCursor.style.top = `${(e.clientY - 15)}px`;
+      }
+    });
+    document.addEventListener("mouseleave", () => {
+      if (customCursor) {
+        customCursor.classList.add("hidden");
+      }
+    });
+    document.addEventListener("mouseenter", () => {
+      if (customCursor) {
+        customCursor.classList.remove("hidden");
+      }
+    });
+    document.addEventListener("mouseover", (e) => {
+      if (customCursor && e.target.closest("a")) {
+        customCursor.classList.remove("hidden");
+      }
+    });
+    document.addEventListener("mouseout", (e) => {
+      if (customCursor && e.target.closest("a")) {
+        customCursor.classList.add("hidden");
+      }
+    });
+  } else {
+    if (customCursor) customCursor.classList.add("hidden");
+  }
 }
+};
+ 
 const video = (core = { where: document.body, src: null, attr: [], objectFit: 'scale-down' }) => {
    
   const canvas = document.createElement("canvas"),    
@@ -127,12 +245,565 @@ const video = (core = { where: document.body, src: null, attr: [], objectFit: 's
 };
 
 window.CDN_URL = "cdn.markonikolic98.com";
-
+  
  
-class Blog_page extends HTMLElement {
-  constructor(){
+class Page extends HTMLElement {
+
+  
+  constructor() {
     super();
-    this.shadowRoot({ mode: 'open'});
+
+    // Attach shadow DOM sa fokusom
+    this.shadow = this.attachShadow({ mode: "open" });
+
+    this.data = {
+      blog: window.portfolio.data.blog 
+      };
+    // Wrapper i glavni kontejner
+    this.wrapper = document.createElement("div");
+    this.wrapper.id = "clavs";
+    this.wrapper.style.opacity = 1;
+    this.wrapper.style.transform = 'unset';
+
+    // 
+    this.grider_viewer_main = document.createElement("grider_viewer"); 
+    this.grider_viewer = document.createElement("custom_scroll");
+    this.grider_viewer_main.classList.add('grider_viewer_f');
+    this.grider_viewer_main.style.display = 'none';
+    this.grider_viewer.style.display = 'none';
+
+
+    // this.grider_viewer_main.appendChild(this.grider_viewer);
+    //
+    this.blog_br_ta = document.createElement("br_ta");
+    this.blog_br_ta.style.display = 'none';
+    
+    this.wrapper.appendChild(this.blog_br_ta);
+
+    //
+    this.bra_div = document.createElement("div");
+    this.bra_div.classList.add("bra");
+    //
+    this.bra_div_img = document.createElement("img");
+    this.bra_div_img.classList.add("img_background_rljs");
+    this.bra_div_img.loading = "lazy";
+
+    this.bra_div.appendChild(this.bra_div_img);
+
+    this.wrapper.appendChild(this.bra_div);
+    this.wrapper.appendChild( this.blog_br_ta);
+    this.wrapper.appendChild(this.grider_viewer_main);
+     
+    // P container (sadrži sadržaj stranice)
+    this.custom_scroll = document.createElement("custom-scroll");
+    this.p_container = document.createElement("p-container");
+    this.custom_scroll.appendChild(this.p_container);
+    this.wrapper.appendChild(this.custom_scroll);
+
+    // Galerija (privremeni storage)
+    this.gallery_temp = {};
+
+    // header
+    this.div_header = document.createElement("div_header");
+
+
+    // Ubaci sve u shadow DOM
+    this.shadow.appendChild(this.wrapper);
+
+    // Osnovni stil
+    const style = document.createElement("style");
+    style.textContent = `
+      @import url('https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
+      @import url('/mainss'); 
+
+      div.bra {
+      position: fixed;
+    background: black;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.4;
+      }
+
+      grider_viewer.grider_viewer_f {
+    top: 0px !important;
+    padding: 0px !important;
+}
+    `;
+    this.shadow.appendChild(style);
+    
+  } 
+
+  category_tempator(d = { me: null, where: "", data: [], name: "", nest: false }) {
+    if (!d.me || !d.where || typeof d.where !== "string") return;
+  
+    d.me.classList.add("active", "sub_category");
+  
+    const br_ta = document.createElement("br_ta");
+    if (d.nest) {
+      br_ta.classList.add("sub_cat");
+      br_ta.style.opacity = "0";
+    }
+   
+    const unique = [...new Set(d.data)];
+     
+    const ta_all = document.createElement("ta_f");
+    ta_all.setAttribute("data-title", `Click "All" to open all categories`);
+    ta_all.setAttribute("data-c", unique.length);
+    ta_all.className = "active";
+    ta_all.setAttribute("data-category", "All");
+    ta_all.textContent = "All ";
+    const span_count = document.createElement("span");
+    span_count.textContent = this.blogljoad_posts_category_cbc
+      ? this.blogljoad_posts_category_cbc("All")
+      : "";
+    ta_all.appendChild(span_count);
+  
+    ta_all.onclick = () => {
+      br_ta.querySelectorAll("ta_f").forEach(el => el.classList.remove("active"));
+      this.box_creator("All");
+      if (d.nest) {
+        this.uBoss({}, "", `/?p=blog&c=${d.me.getAttribute("data-scn")}`);
+      } else {
+        this.uBoss({}, "", `/?p=blog`);
+      }
+    };
+  
+    if (!d.nest) br_ta.appendChild(ta_all);
+   
+    unique.forEach(re => {
+      const ta_item = document.createElement("ta_f");
+      ta_item.setAttribute("data-c", unique.length);
+      ta_item.setAttribute("data-category", re);
+      ta_item.setAttribute(
+        "data-title",
+        `Click "${this.capitalize_str ? this.capitalize_str(re) : re}" to open category`
+      );
+  
+      let iconHTML = "";
+      switch (re.toLowerCase()) {
+        case "telegram": iconHTML = `<i class="bi bi-telegram"></i> `; break;
+        case "deviantart": iconHTML = `<i class="fab fa-deviantart"></i> `; break;
+        case "video": iconHTML = `<i class="bi bi-film"></i> `; break;
+        case "astronomy": iconHTML = `<i class="fas fa-space-shuttle"></i> `; break;
+      }
+  
+      ta_item.innerHTML = `${iconHTML}${re}<span>${this.blogljoad_posts_category_cbc ? this.blogljoad_posts_category_cbc(re) : ""}</span>`;
+  
+      ta_item.onclick = () => {
+        br_ta.querySelectorAll("ta_f").forEach(el => el.classList.remove("active"));
+        ta_item.classList.add("active");
+  
+        this.box_creator(re);
+  
+        const lower = re.toLowerCase();
+        if (lower !== "all") {
+          if (d.nest) {
+            this.uBoss({}, "", `/?p=blog&c=${d.me.getAttribute("data-scn")}&sc=${re}`);
+          } else {
+            this.uBoss({}, "", `/?p=blog&c=${re}`);
+          }
+  
+          if (lower === "astronomy") {
+            document.body.classList.add("active");
+          } else {
+            document.body.classList.remove("active");
+          }
+  
+          document.body.setAttribute("data-category-name", re);
+          if (this.titleC) this.titleC(`Blog > ${re} - Marko Nikolić`);
+        }
+      };
+  
+      br_ta.appendChild(ta_item);
+    });
+   
+    const whereTargets = d.where;
+    whereTargets.forEach((me) => me.prepend(br_ta));
+  
+    setTimeout(() => br_ta.removeAttribute("style"), 100);
+  }
+  
+
+  img_load (t) {
+    t.classList.add("active");
+    t.removeAttribute("style");
+    t.removeAttribute("onload");
+  }
+ 
+  
+  box_creator(tt_category_name = "All") {
+ 
+    this.grider_viewer.querySelectorAll("*").forEach((e) => {e.remove()});
+  
+    const arr = this.data.blog;
+    let div_not_i = 0;
+    var arrayr = [];
+
+    
+  
+    arr.forEach((v) => {
+      if (!v || !v.title) return;
+  
+      // Filtriranje po kategoriji
+      let shouldShow = tt_category_name.toLowerCase() === "all";
+      if (!shouldShow && Array.isArray(v.category)) {
+        shouldShow = v.category.includes(tt_category_name);
+      }
+      if (!shouldShow) return;
+  
+      // === <project> ===
+      const project = document.createElement("project");
+      project.setAttribute("data-category", window.btoa(v?.category));
+      project.setAttribute("id-int", div_not_i);
+      project.setAttribute("title", v.title);
+      project.style.transform = 'scale(0);';
+
+      if (v.type === "text") {
+        project.classList.add("section_loadet_img");
+      }
+  
+      // === <grider_box> ===
+      const grider_box = document.createElement("grider_box");
+  
+      // <p><span>{title}</span></p>
+      const p = document.createElement("p");
+      const spanTitle = document.createElement("span");
+      spanTitle.textContent = v.title;
+      p.appendChild(spanTitle);
+      grider_box.appendChild(p);
+  
+      // === p_open button ===
+      const p_open = document.createElement("p_open");
+      p_open.setAttribute("title", `Open:/?p=blog&id=${v.id}`);
+      p_open.onclick = () => {
+        const pageer = document.createElement("page-c");
+        document.body.appendChild(pageer);
+        pageer.load(v.id,'blog_id');
+      };
+      const i_link = document.createElement("i");
+      i_link.className = "bi bi-link";
+      p_open.appendChild(i_link);
+      p_open.appendChild(document.createTextNode(" Open post"));
+      grider_box.appendChild(p_open);
+  
+      // === p_image button (ako je image) ===
+      if (window.welcomer?.isimagec(v?.category, "image")) {
+        const p_image = document.createElement("p_open");
+        p_image.className = "open_img";
+        p_image.setAttribute("data-title", "Click for view image in full size");
+        p_image.onclick = () => window.welcomer?.blogloader_img(v.id);
+        const i_img = document.createElement("i");
+        i_img.className = "bi bi-image-fill";
+        p_image.appendChild(i_img);
+        p_image.appendChild(document.createTextNode(" Open image"));
+        grider_box.appendChild(p_image);
+      }
+  
+      // === info ikonica ===
+      const fiv = document.createElement("fiv");
+      const i_info = document.createElement("i");
+      i_info.className = "bi bi-info-circle";
+      i_info.title = "Go to blog post...";
+      i_info.onclick = () => window.welcomer?.blogloader(v.id);
+      fiv.appendChild(i_info);
+      grider_box.appendChild(fiv);
+  
+      // === loader spinner img ===
+      const loader_img = document.createElement("img");
+      loader_img.className = "loader_post";
+      loader_img.setAttribute("height", "50");
+      loader_img.setAttribute("width", "50");
+      loader_img.src = window.welcomer?.loader_svg || "";
+      if (v.type === "text") loader_img.style.display = "none";
+      grider_box.appendChild(loader_img);
+  
+      // === Badge ikone ===
+      const bagdes = [
+        { name: "text", data: "bi bi-file-text-fill", is_me: ["p", "h1", "h2", "h3", "h4", "h5", "span", "tspan"] },
+        { name: "image", data: "bi bi-file-earmark-image-fill", is_me: ["img"] },
+        { name: "video", data: "bi bi-file-earmark-play-fill", is_me: ["video", "video-player-v2"] },
+        { name: "iframe", data: "bi bi-file-earmark-richtext-fill", is_me: ["iframe"] },
+      ];
+  
+      const i_list = document.createElement("i_list");
+      if (v?.page) {
+        bagdes.forEach((badge) => {
+          const found = badge.is_me.some(tag => v.page.includes(`<${tag}`));
+          if (found) {
+            const icon = document.createElement("i");
+            icon.className = badge.data;
+            i_list.appendChild(icon);
+          }
+        });
+      }
+  
+      // === Slika ili opis ===
+      if (v.type === "text") {
+        const div_txt = document.createElement("div_txt");
+        const span = document.createElement("span");
+        span.textContent = v?.description || "";
+        div_txt.appendChild(span);
+        grider_box.appendChild(i_list);
+        grider_box.appendChild(div_txt);
+        project.classList.add("active");
+        project.removeAttribute("style"); 
+        project.style.transform = 'none';  
+      } else {
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.setAttribute("ondragstart", "return false;");
+        img.onload = (e) => {
+          project.classList.add("active");
+          project.removeAttribute("style"); 
+          project.style.transform = 'none';  
+        };
+        img.src = v.thumbail?.includes("data:") ? v.thumbail : `${v.thumbail}&thumb=true`;
+        img.setAttribute("data-zoom-image", img.src);
+        img.alt = v.title;
+        grider_box.appendChild(i_list);
+        grider_box.appendChild(img);
+      }
+  
+      project.appendChild(grider_box);
+      this.grider_viewer_main.appendChild(project);
+  
+      div_not_i++;
+    });
+  
+    // Finalna obrada zaglavlja
+    this.div_header.classList.add("ld_completeld_complete2");
+    this.header({
+      title: "Marko Nikolić > Blog",
+      searchPlaceholder: "Search ...",
+      logo: "/svg_logo_backscr_img.svg",
+      buttonsRight: [
+        { icon: "bi-search", onclick: () =>{
+           const  p_search = document.createElement("p-search"); 
+        this.wrapper.appendChild(p_search); 
+        } },
+        { icon: "bi-filetype-pdf pdf_download", style: "display:none;" },
+        { icon: "bi bi-house pdf_page_home_btn", onclick: "welcomer.blogloader('all');", style: "display:none;" },
+        { icon: "bi bi-telegram tg_button", onclick: "welcomer.Social.tg.open();" },
+        { icon: "bi bi-share", onclick: () => {
+          const Uri = this.div_header.getAttribute("data-url"),
+          title =  this.div_header_span.textContent;
+          
+          if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: `Shared from - ${window.location.origin}`,
+                url: `${Uri}`,
+              })
+              .then(() => {})
+              .catch((error) => {});
+            
+          }
+        } },
+        { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+      ]
+    });
+    this.category_tempator({
+      me: tt_category_name,
+      where: this.wrapper,
+      data: [],
+      name: tt_category_name,
+      nest: false
+    });
+  }
+  
+ 
+  decodeEntities(encodedString) {
+    const textarea = document.createElement('textarea');
+    textarea.innerHTML = encodedString;
+    return textarea.value;
+  }
+  exit(){
+    this.remove();
+  }
+  header(config = {
+    title: "Blog > Dnevnik | 🕊🤍✨ II",
+    searchPlaceholder: "Search ...",
+    logo: "/svg_logo_backscr_img.svg",
+    buttonsRight: [
+      { icon: "bi-search", onclick: () =>{
+         const  p_search = document.createElement("p-search"); 
+      this.wrapper.appendChild(p_search); 
+      } },
+      { icon: "bi-filetype-pdf pdf_download", style: "display:none;" },
+      { icon: "bi bi-house pdf_page_home_btn", onclick: "welcomer.blogloader('all');", style: "display:none;" },
+      { icon: "bi bi-telegram tg_button", onclick: "welcomer.Social.tg.open();" },
+      { icon: "bi bi-share", onclick: () => {
+        const Uri = this.div_header.getAttribute("data-url"),
+        title =  this.div_header_span.textContent;
+        
+        if (navigator.share) {
+          navigator.share({
+              title: title,
+              text: `Shared from - ${window.location.origin}`,
+              url: `${Uri}`,
+            })
+            .then(() => {})
+            .catch((error) => {});
+          
+        }
+      } },
+      { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+    ]
+  }) {
+    
+    this.div_header.className = "ld_completeld_complete ld_completeld_complete2";
+    this.div_header.setAttribute("data-url", "https://portfolio2.localhost/?p=blog&id=1141736809");
+    this.div_header.querySelectorAll("*").forEach(e => e.remove());
+
+
+    // Logo
+    const logo = document.createElement("img");
+    logo.src = config.logo;
+    logo.id = "logo_backscr_img";
+    logo.alt = "Logo";
+    this.div_header.appendChild(logo);
+
+    // Reload dugme
+    const reload = document.createElement("i");
+    reload.id = "reaload_page";
+    reload.className = "bi bi-arrow-clockwise";
+    reload.setAttribute("data-onclick", "welcomer.reload_me(this);");
+    reload.style.display = "block";
+    this.div_header.appendChild(reload);
+
+    // SVG spinner
+    const svg = document.createElement("svg");
+    svg.className = "Vjideo_sjpinner";
+    svg.setAttribute("viewBox", "0 0 50 50");
+    svg.style.display = "none";
+
+    const circle = document.createElement("circle");
+    circle.className = "path";
+    circle.setAttribute("cx", "25");
+    circle.setAttribute("cy", "25");
+    circle.setAttribute("r", "20");
+    circle.setAttribute("fill", "none");
+    circle.setAttribute("stroke-width", "4");
+    svg.appendChild(circle);
+    this.div_header.appendChild(svg);
+
+    // Naslov
+    this.div_header_span = document.createElement("span");
+    this.div_header_span.textContent = config.title;
+    this.div_header.appendChild(this.div_header_span);
+
+    // Pretraga
+    const btns_i = document.createElement("btns_i");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = config.searchPlaceholder;
+    input.setAttribute("data-hmm", "search");
+    input.setAttribute("onkeyup", "welcomer.search_Kompjiler(this);");
+    btns_i.appendChild(input);
+
+    const closeI = document.createElement("i");
+    closeI.className = "bi bi-x-lg";
+    closeI.setAttribute("data-hmm", "closeMe");
+    closeI.setAttribute("data-onclick", "welcomer.search_Kompjiler(this);");
+    btns_i.appendChild(closeI);
+    this.div_header.appendChild(btns_i);
+
+    // Dugmad desno
+    const btns_r = document.createElement("btns_r");
+    config.buttonsRight.forEach(btn => {
+      const i = document.createElement("i");
+      i.className = btn.icon;
+      if (btn.onclick) { 
+        // i.setAttribute("data-onclick", btn.onclick);
+        if (typeof btn.onclick === "function") {
+          i.addEventListener("click", btn.onclick );
+        }
+        }
+      if (btn["data-title"]) i.setAttribute("data-title", btn["data-title"]);
+      if (btn.style) i.setAttribute("style", btn.style);
+      btns_r.appendChild(i);
+    });
+    this.div_header.appendChild(btns_r);
+
+    return  this.div_header;
+  }
+
+  // Učitavanje podataka
+  load(id = "", type = "") {
+    if(this.bra_div_img.classList.contains("active")){
+      this.bra_div_img.classList.remove("active");
+    }
+    let f = {},
+    blogData = ''; 
+    this.custom_scroll.style.display = 'none';
+    this.grider_viewer.style.display = 'none';
+
+    if (type == "blog_category"){
+      this.grider_viewer.style.display = 'block';
+      this.blog_br_ta.style.display = 'inline-flex';
+      this.grider_viewer_main.classList.add("gridsH");
+      this.grider_viewer_main.classList.add("grids");
+      this.grider_viewer_main.removeAttribute("style");
+     this.box_creator(id);
+     return;
+    }
+
+
+    if(type == "blog_id"){
+      this.custom_scroll.style.display = 'block';
+    blogData = window.portfolio?.data?.blog || [];
+    blogData.forEach(res => {
+      if (res.id == id) f = res;
+    });
+
+    
+
+    const res = this.decodeEntities(f.page || "");
+    this.gallery_temp = f.gallery || {};
+  
+    if (typeof this.p_container.set === "function") {
+      this.p_container.set(`${res}`, f);
+    } else {
+      this.p_container.innerHTML = res;
+    }
+    
+    
+
+  
+      this.bra_div_img.src = f.thumbail;
+      this.bra_div_img.classList.add("active");
+      return;
+    }
+  }
+
+  history(url = "") {
+    const ar = {}, v = "";
+
+    history.replaceState(ar, v, `${url}`);
+    const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get("p") || null;
+    const myParam_id = urlParams.get("id") || null;
+
+    if (myParam && !myParam_id) {
+      document.body.setAttribute("data-d", `${myParam}`);
+    }
+    document.body.setAttribute("data-url-id", url);
+
+    if (url === "/?p=blog" || url === "?=blog") {
+      this.wrapper.classList.add("active_scr");
+    }
+  }
+
+  connectedCallback() {
+    const headerElement = this.header();
+    this.wrapper.appendChild(headerElement);
+  }
+
+  disconnectedCallback() { 
+      
   }
 }
 
@@ -1741,11 +2412,9 @@ class CustomSearch extends HTMLElement {
     imgLogo.src = "/svg_logo_backscr_img.svg";
 
     const div_close = document.createElement("i");
+    div_close.title = "Close Search";
     div_close.setAttribute("class", "bi bi-x-lg btn_close  ");
-    div_close.addEventListener("click", function () {
-      document.querySelectorAll("p-search").forEach((eel) => eel.remove());
-      // history.replaceState({ page: 1}, "", `/`);
-    });
+    div_close.addEventListener("click", ()=>this.remove());
     this.btn_clear.setAttribute("class", "bi bi-x-lg btn_clear hide");
 
     this.btn_clear.addEventListener("click", () => this.cancelhande());
@@ -3451,6 +4120,8 @@ class CustomViewer extends HTMLElement {
     }
   }
 }
+
+
 class PDFViewerElement extends HTMLElement {
   constructor() {
     super();
@@ -3864,6 +4535,11 @@ div#controls img:hover {
     class ImageZoomPan {
       constructor(containerId, imageId, percentDisplayId) {*/
   }
+  img_load (t) {
+    t.classList.add("active");
+    t.removeAttribute("style");
+    t.removeAttribute("onload");
+  }
   HTML_PARSE(html) {
     const parser = new DOMParser();
     const html2 = parser.parseFromString(html, "text/html");
@@ -3906,11 +4582,13 @@ div#controls img:hover {
     }
 
     welcomer.cards_generateV2(div_content, url);
+    
+    try {
     document.querySelector("div#clavs.scrollactive div_header").setAttribute('style',`
     opacity: 1;
     opacity: 1 !important;
     pointer-events: unset !important;
-`);
+`);}catch(Ex){}
     document.querySelector("p-container").classList.add("active");
     this.shadowRoot.querySelectorAll("img").forEach(function (v) {
       v.addEventListener("click", function (e) {
@@ -4154,16 +4832,7 @@ class VideoPlayerV2 extends HTMLElement {
   }
 }
 
-const defaultPolicy = trustedTypes.createPolicy("default", {
-  createHTML: (input) => {
-    if (input.includes("<script") || input.includes("onerror")) {
-      throw new Error("Potential XSS detected in HTML input");
-    }
-    return input;
-  },
-  createScript: (input) => input,
-  createScriptURL: (input) => input,
-});
+ 
 
 let videoPlayerElement, // document.querySelector("video-player"),
   pContainerElement; // = document.querySelector("p-container");
@@ -5193,6 +5862,10 @@ const welcomer = {
         }
       }
 
+      if (!customElements.get("page-c")){
+        customElements.define("page-c", Page);
+      }
+
       if (!customElements.get("canvas-v")){
         customElements.define('canvas-v', CanvasVElement);
       };
@@ -5229,6 +5902,9 @@ const welcomer = {
       }
       if (!customElements.get("pdf-viewer")) {
         customElements.define("pdf-viewer", PDFViewerElement);
+      }
+      if (!customElements.get("custom-scroll")) {
+        customElements.define("custom-scroll", CustomScroll);
       }
       if (!customElements.get("image-preview")) {
         customElements.define("image-preview", ImagePreview);
@@ -5404,6 +6080,7 @@ const welcomer = {
     category_tempator: function (
       d = { me: null, where: "", data: [], name: "", nest: false }
     ) {
+      
       /**
        * ta_f.active.sub_category {
     style="
@@ -9914,6 +10591,7 @@ document.querySelector("body").appendChild(parser.body);
     }
     this.offline_data.start();
     this.start(document.querySelector("body"));
+  
   },
   gf: function (call) {
     fetch(`${window.location.origin}/feed`, {
@@ -12663,6 +13341,7 @@ document.querySelector("body").appendChild(parser.body);
   },
   video_canva: null,
   bckrnd: async function () {
+    events();
     /*  const video_wall = document.createElement("video");
     document.body.appendChild(video_wall);
     
@@ -12688,7 +13367,7 @@ document.querySelector("body").appendChild(parser.body);
       if (xhr.status === 200) {
         const blob = xhr.response;
         const URL2 = URL.createObjectURL(blob);
-      
+        document.querySelectorAll("canvas-v").forEach((e) =>e.remove());
         welcomer.video_canva = document.createElement("canvas-v");
         document.body.appendChild(welcomer.video_canva);
         welcomer.video_canva.setSrc(URL2);
@@ -13113,3 +13792,16 @@ src: url(data:application/font-woff;base64,d09GMgABAAAAAB1MAA0AAAABEOgAABzyAAEAA
 };
 
 //;
+
+function test_category(n = ""){
+  const page = document.createElement("page-c"); 
+  document.body.appendChild(page);
+  page.box_creator(n);
+}
+function test_page(id = "", str = "") {
+  const page = document.createElement("page-c");
+  document.body.appendChild(page);
+  page.load(id,str);
+}
+
+ 

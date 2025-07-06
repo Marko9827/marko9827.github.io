@@ -889,6 +889,19 @@ class VideoCanvasBackground extends HTMLElement {
     }
   }
 }
+
+class Page extends HTMLElement {
+  constructor(){
+    super();
+    this.shadowRoot = this.attachShadow({ clonable: false, mode: "open"});
+  }
+  src(){}
+  disconnectedCallback() {}
+  connectedCallback() {
+
+  }
+}
+
 class BlueWarp extends HTMLElement {
   constructor() {
     super();
@@ -1161,6 +1174,10 @@ class Circle {
     context.arc(this.position.x, this.position.y, this.size, 0, TWO_PI);
     context.fill();
   }
+}
+
+if (!customElements.get('page-c')){
+  customElements.define("page-c", Page);
 }
 
 if (!customElements.get("blue-warp")) {

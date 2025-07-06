@@ -256,6 +256,7 @@ hh_anim_start .Vjideo_sjpinner {
 
 #clavs iframe,
 #clavs .shadow_iframe,
+#clavs .grider_viewer,
 #clavs grider_viewer {
     position: absolute;
     top: 50px;
@@ -273,6 +274,7 @@ hh_anim_start .Vjideo_sjpinner {
     overflow: auto;
 }
 
+#clavs .grider_viewer project,
 #clavs grider_viewer project {
     height: 264px;
     padding: 4px !important;
@@ -297,6 +299,9 @@ hh_anim_start .Vjideo_sjpinner {
     opacity: 1 !important
 }
 
+#clavs .grider_viewer video,
+#clavs .grider_viewer img,
+#clavs .grider_viewer div_hr,
 #clavs grider_viewer video,
 #clavs grider_viewer img,
 #clavs grider_viewer div_hr {
@@ -318,6 +323,7 @@ hh_anim_start .Vjideo_sjpinner {
     text-align: center;
 }
 
+#clavs .grider_viewer project p,
 #clavs grider_viewer project p {
     width: 100%;
     right: 0px;
@@ -768,6 +774,7 @@ grider_box {
     enable-background: new 0 0 512 512 !important;
 }
 
+#clavs .grider_viewer project p,
 #clavs grider_viewer project p {
     position: absolute;
     top: 0px;
@@ -776,6 +783,7 @@ grider_box {
     z-index: 3;
 }
 
+#clavs .grider_viewer project img,
 #clavs grider_viewer project img {
     position: absolute;
     left: 0px;
@@ -835,6 +843,7 @@ p_open {
     transition: .3s;
 }
 
+#clavs .grider_viewer .is_touch:hover p_open,
 #clavs grider_viewer .is_touch:hover p_open {
     top: 45px !important;
 }
@@ -910,6 +919,7 @@ hh_anim_start * {
     width: 200px;
 }
 
+#clavs .grider_viewer project fiv,
 #clavs grider_viewer project fiv {
     position: absolute;
     right: 10px;
@@ -932,10 +942,11 @@ hh_anim_start * {
     color: var(--cdn_white);
 }
 
+#clavs .grider_viewer project fiv .bi-info-circle,
 #clavs grider_viewer project fiv .bi-info-circle {
     display: block;
     margin: auto;
-    margin-top: -2px;
+    margin-top: -1px;
 }
 
 info_box {
@@ -2382,6 +2393,7 @@ hh_anim_start spjin #logo_backscr_img {
     pointer-events: none !important;
 }
 
+#clavs .grider_viewer,
 #clavs grider_viewer {
     z-index: 1;
     background: transparent !important;
@@ -2400,10 +2412,14 @@ iframe.iframe_mask {
     mask-image: unset;
 }
 
+#clavs .grider_viewer project p,
 #clavs grider_viewer project p {
     background: var(--primary_light);
 }
 
+#clavs .grider_viewer video,
+#clavs .grider_viewer img,
+#clavs .grider_viewer div_hr,
 #clavs grider_viewer video,
 #clavs grider_viewer img,
 #clavs grider_viewer div_hr {
@@ -2415,6 +2431,7 @@ p_open {
     background: var(--black-trasparent-color);
 }
 
+#clavs .grider_viewer .is_touch:hover p_open,
 #clavs grider_viewer .is_touch:hover p_open {
     top: 45px !important;
     opacity: 1;
@@ -2428,11 +2445,13 @@ p_open.open_img {
     height: fit-content;
 }
 
+#clavs .grider_viewer .is_touch:hover p_open.open_img,
 #clavs grider_viewer .is_touch:hover p_open.open_img {
     top: unset !important;
     bottom: 45px !important;
 }
 
+#clavs .grider_viewer project p span,
 #clavs grider_viewer project p span {
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
@@ -2449,6 +2468,7 @@ iframe.iframe_mask {
 
 #clavs iframe:not(.iframe_mask),
 #clavs .shadow_iframe,
+#clavs .grider_viewer,
 #clavs grider_viewer {
     top: 51px !important;
 }
@@ -2830,10 +2850,12 @@ body:not(.open_f) .contanct_frm.open.cants iframe {
 
 grider_viewer.gridsH.grids.g_gallery {}
 
+#clavs .grider_viewer.gridsH.grids.g_gallery project p,
 grider_viewer.gridsH.grids.g_gallery project p {
     display: none;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project,
 grider_viewer.gridsH.grids.g_gallery project {
     height: 228px !important;
     -webkit-transform: none !important;
@@ -2841,39 +2863,48 @@ grider_viewer.gridsH.grids.g_gallery project {
     transform: none !important;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project img,
 grider_viewer.gridsH.grids.g_gallery project img {
     top: 0px;
 }
 
-grider_viewer.gridsH.grids.g_gallery project grider_box {
+.grider_viewer.gridsH.grids.g_gallery project grider_box,
+ grider_viewer.gridsH.grids.g_gallery project grider_box {
     height: 247px !important;
     bottom: unset !important;
     margin: 0px !important;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project p_open,
 grider_viewer.gridsH.grids.g_gallery project p_open {
     display: none;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project img,
 grider_viewer.g_gallery project img {
     border: 3px solid var(--primary_light) !important;
     border-radius: 5px !important;
     top: 0px !important;
 }
 
+
+.grider_viewer.gridsH.grids.g_gallery project,
 grider_viewer.gridsH.grids.g_gallery project {
     line-height: 0px !important;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project fiv,
 grider_viewer.g_gallery project fiv {
     top: 10px !important;
 }
 
+.grider_viewer.gridsH.grids.g_gallery project fiv .bi-info-circle,
 grider_viewer.g_gallery project fiv .bi-info-circle {
     margin-top: 2px !important;
     margin-left: 2px !important;
 }
 
+.grider_viewer.gridsH.grids.g_gallery *,
 grider_viewer.g_gallery * {
     -webkit-transition: 0.3s !important;
     -o-transition: 0.3s !important;
@@ -5453,4 +5484,23 @@ project grider_box div_txt span {
     height: 100%;
     font-size: large;
     background: black;
+}
+
+.loader{
+    -webkit-filter: drop-shadow(0 0 6px #fff);
+    filter: drop-shadow(0 0 6px #fff);
+    width: 35px;
+    height: 35px;
+    position: fixed;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+* {
+    cursor: none !important;
+}
+
+grider_viewer.grider_viewer_f {
+    top: 0px !important;
+    padding: 0px !important;
 }

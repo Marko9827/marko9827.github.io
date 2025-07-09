@@ -8746,11 +8746,10 @@ document.querySelector("body").appendChild(parser.body);
                         });
                     }
                 } else {
-                    console.log("Nema primljenih podataka za cards_generateV2.");
+                  
                 }
             } else {
-                console.error("XHR zahtjev nije uspio sa statusom:", welcomer.cards_generate_xhr.status);
-            }
+             }
         }
     };
 
@@ -14334,9 +14333,17 @@ function test_category(n = ""){
   page.box_creator(n);
 }
 function test_page(id = "", str = "") {
-  const page = document.createElement("page-c");
-  document.body.appendChild(page);
-  page.load(id,str);
-}
+   let existingPage = document.querySelector(`page-c[data-id="${id}"]`);
 
+  if (!existingPage) {
+ 
+    const page = document.createElement("page-c");
+    page.setAttribute("data-id", id);  
+    document.body.appendChild(page);
+    page.load(id, str);
+  } else {
+   
+    existingPage.load(id, str);
+  }
+}
  

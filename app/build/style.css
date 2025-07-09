@@ -2966,18 +2966,22 @@ grider_viewer.gridsH.grids.g_gallery project grider_box img {
     border-radius: 4px !important;
 }
 
+#clavs .grider_viewer.g_gallery project fiv,
 #clavs grider_viewer.g_gallery project fiv {
     border-radius: 3px !important;
     width: 25px;
     height: 26px;
 }
 
+#clavs .grider_viewer.g_gallery project fiv i.bi-fullscreen ,
 #clavs grider_viewer.g_gallery project fiv i.bi-fullscreen {
     font-size: 18px;
     margin-top: 3.5px;
     margin-left: 3.5px;
 }
 
+
+#clavs .grider_viewer.g_gallery project fiv ,
 #clavs grider_viewer.g_gallery project fiv {
     background: rgb(0 0 0 / 52%);
     color: white;
@@ -3296,6 +3300,7 @@ div#clavs br_ta ta_f {
     align-items: center
 }
 
+#clavs .grider_viewer,
 #clavs grider_viewer {
     padding-top: 65px !important;
 }
@@ -3981,6 +3986,7 @@ div#clavs br_ta ta_f[data-category="telegram"] i {
     background: #555;
 }
 
+#clavs .grider_viewer project img.loader_post, 
 #clavs grider_viewer project img.loader_post {
     z-index: -1;
     width: 50px !important;
@@ -4461,11 +4467,16 @@ div#logContainer .log * {
     background: black;
 }
 
+body[data-url-id="yes"] div#clavs:hover .grider_viewer:hover project:hover,
 body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:hover,
+body[data-url-id="/?p=projects"] div#clavs:hover .grider_viewer:hover project:hover,
 body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:hover {
     opacity: 1;
 }
 
+
+body[data-url-id="yes"] div#clavs:hover .grider_viewer:hover project:not(:hover) *,
+body[data-url-id="/?p=projects"] div#clavs:hover .grider_viewer:hover project:not,
 body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:not(:hover) *,
 body[data-url-id="/?p=projects"] div#clavs:hover grider_viewer:hover project:not(:hover) * {
     opacity: 0.7;
@@ -4475,6 +4486,7 @@ body[data-url-id="/?p=projects"] div#clavs:hover {
     background: rgb(0 0 0 / 60%) !important;
 }
 
+body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:hover,
 body[data-url-id="yes"] div#clavs:hover grider_viewer:hover project:hover {
     opacity: 1;
 }

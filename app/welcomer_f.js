@@ -1,7 +1,169 @@
+
 window.draggable = { style_left: "", style_top: "", enabled: false };
+window.CDN_URL = "cdn.markonikolic98.com";
+
+const pageManager = {
+  historyStack: [],
+
+  openPage(id = "", str = "") {  
+    document.querySelectorAll("page-c").forEach(el => {
+      // el.style.display = "none";
+    });
+
+    let existingPage = document.querySelector(`page-c[data-id="${id}"]`);
+
+    if (!existingPage) {
+      try{
+      const page = document.createElement("page-c");
+      page.setAttribute("data-id", id);
+      document.body.appendChild(page);
+      this.historyStack.push(id); 
+      page.load(id, str);
+    }catch(ex){}} else {
+      existingPage.style.display = "block";
+      this.historyStack.push(id);  
+      existingPage.load(id, str);
+    }
+  },
+
+  closeCurrentPage() {
+    if (this.historyStack.length > 0) {
+      const currentId = this.historyStack.pop();  
+      const currentPage = document.querySelector(`page-c[data-id="${currentId}"]`);
+      if (currentPage) currentPage.remove();
  
+      const previousId = this.historyStack[this.historyStack.length - 1];
+      const previousPage = document.querySelector(`page-c[data-id="${previousId}"]`);
+      if (previousPage) previousPage.style.display = "block";
+    }
+  }
+};
+
+
+class SPARouter {
+  constructor() {
+    this.routes = {};
+    this.scrollRestoration = "manual";
+
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+
+    window.addEventListener("popstate", this._onChange.bind(this));
+  }
+
+  back() {
+    history.back();
+    return;
+    try {
+      const ref = document.referrer;
+      const currentHost = window.location.host;
+  
+      if (ref && new URL(ref).host === currentHost) {
+        history.back();
+      }  
+    } catch (e) { 
+    }
+  }
+
+  init() {
+    
+      this._onChange(); 
+     
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialParams = {};
+      for (const [key, value] of urlParams.entries()) {
+        if (
+          value !== null &&
+          value !== undefined &&
+          value !== "null" &&
+          value !== "undefined" &&
+          value !== ""
+        ) {
+          initialParams[key] = value;
+        }
+      }
+  
+      if (Object.keys(initialParams).length > 0) {
+        this.go(initialParams);  
+      } 
+  }
+
+
+  on(page, callback) {
+    this.routes[page] = callback;
+  }
+
+  setURL(params = {}) {
+    const url = new URL(window.location.href);
+    const search = new URLSearchParams();
+  
+    for (const [key, value] of Object.entries(params)) {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== "null" &&
+        value !== "undefined" &&
+        value !== ""
+      ) {
+        search.set(key, value);
+      }
+    }
+  
+    const newUrl = url.pathname + (search.toString() ? `?${search.toString()}` : "");
+   
+    history.replaceState(history.state, "", newUrl);
+  }
+  
+  go(params = {}, state = {}) {
+    const url = new URL(window.location.href);
+    const search = new URLSearchParams();
+  
+    for (const [key, value] of Object.entries(params)) {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== "null" &&
+        value !== "undefined" &&
+        value !== ""
+      ) {
+        search.set(key, value);
+      }
+    }
+  
+    const newUrl = url.pathname + (search.toString() ? `?${search.toString()}` : "");
+  
+    if (window.location.pathname + window.location.search === newUrl) return;
+  
+    const fullState = { ...state, key: `state-key-${Date.now()}` };
+    history.pushState(fullState, "", newUrl);
+    this._onChange();
+  }
+
+  _onChange() {
+    const params = new URLSearchParams(window.location.search);
+    const page = params.get("p");
+ 
+    if (params.get("c") === "null") {
+      params.delete("c");
+      const clean = `${location.pathname}?${params.toString()}`;
+      history.replaceState(history.state, "", clean);
+    }
+ 
+    if (page && this.routes[page]) {
+      this.routes[page](params, history.state?.key || null);
+    } else if (this.routes["*"]) {
+      this.routes["*"](params, history.state?.key || null);
+    }
+  }
+}
+
+
+const router = new SPARouter();
 
 const events = () => {
+ 
   function createSvgLoader() {
     const SVG_NS = "http://www.w3.org/2000/svg";
   
@@ -121,7 +283,12 @@ if (loader) {
     if (customCursor) customCursor.classList.add("hidden");
   }
 }
+ 
+ 
+
+ 
 };
+
  
 const video = (core = { where: document.body, src: null, attr: [], objectFit: 'scale-down' }) => {
    
@@ -244,8 +411,44 @@ const video = (core = { where: document.body, src: null, attr: [], objectFit: 's
   return canvas;
 };
 
-window.CDN_URL = "cdn.markonikolic98.com";
-  
+   
+const language = {
+  search:"Search ..."
+};
+
+ 
+class SolarSystem extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+ 
+    const style = document.createElement('style');
+    style.textContent = `
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      :host {
+      display:block;
+      width: 150px;
+      height: 150px;
+      }
+    `; 
+    const rootDiv = document.createElement('div');
+    rootDiv.id = 'root';
+    rootDiv.className = 'solarsystem'; 
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = '/demo&id=S3503&hangar=main';
+ 
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(rootDiv); 
+    document.body.appendChild(script);
+  }
+}
+
+ 
+
  
 class Page extends HTMLElement {
 
@@ -272,6 +475,34 @@ class Page extends HTMLElement {
     this.grider_viewer_main.style.display = 'none';
     this.grider_viewer.style.display = 'none'; 
     this.grider_viewer.classList.add('grider_viewer');
+    this.grider_viewer.style.opacity = 0;
+    this.lastScrollTop = 0;
+ 
+    this.grider_viewer.gear("scroll", (top) => { 
+      try{  
+        if(this.grider_viewer.classList.contains("gallery") || this.grider_viewer.classList.contains("projects")){
+          return;
+        }
+      }catch(Ex){}
+      if(top > 400){
+        this.wrapper.classList.add("scrollactive");
+        this.grider_viewer.style.setProperty("margin-top", "0px","important");
+      } else {
+       try{  this.wrapper.classList.remove("scrollactive");
+        this.grider_viewer.style.setProperty("margin-top", "110px","important");
+       }catch(Ex){}
+      }
+
+      if (top < this.lastScrollTop) {
+        if (this.wrapper.className.includes("scrollactive")) {
+          try{
+          this.wrapper.classList.remove("scrollactive");
+          this.grider_viewer.style.setProperty("margin-top", "110px","important");
+          }catch(Ex){ }
+        }
+      }
+      this.lastScrollTop = top <= 0 ? 0 : top; 
+  });
 
 
     this.grider_viewer_main.appendChild(this.grider_viewer);
@@ -294,6 +525,8 @@ class Page extends HTMLElement {
     this.wrapper.appendChild(this.bra_div);
     this.wrapper.appendChild( this.blog_br_ta);
     this.wrapper.appendChild(this.grider_viewer);
+    //
+    this.category_tijemp = [];
      
     // P container (sadrži sadržaj stranice)
     this.custom_scroll = document.createElement("custom-scroll");
@@ -314,8 +547,12 @@ class Page extends HTMLElement {
     // Osnovni stil
     const style = document.createElement("style");
     style.textContent = `
-      @import url('https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
+      @import url('https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css');
+      @import url('https://${window.CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css');
       @import url('/mainss'); 
+
+
+     
 
       div.bra {
       position: fixed;
@@ -502,6 +739,10 @@ class Page extends HTMLElement {
 
 grider_viewer.gridsH.grids.g_gallery {}
 
+.gallery {
+overflow: hidden !important;
+}
+
 #clavs .grider_viewer.gridsH.grids.g_gallery project p,
 grider_viewer.gridsH.grids.g_gallery project p {
     display: none;}
@@ -567,6 +808,45 @@ grider_viewer.gridsH.grids.g_gallery project grider_box {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;}
 
+.grider_viewer.gallery {
+  top: 60px !important;
+}
+
+.grider_viewer.gallery sp_clv {
+    position: absolute;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    bottom: 0px;
+    top: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    z-index: 33333;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+
+.grider_viewer.gallery sp_clv i {
+    font-size: 40px;
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+    
 grider_viewer.gridsH.grids.g_gallery project grider_box img {
     border-radius: 4px !important;}
 
@@ -758,14 +1038,279 @@ div#clavs.gallery_mode section[data-ui-type="gallery"] .grider_viewer:hover proj
 
 grider_viewer.grider_viewer_f {
     top: 0px !important;
-    padding: 0px !important;}
+    padding: 0px !important;
+    }
+
+     .grider_viewer:hover {
+    background: rgb(0 0 0 / 60%) !important;
+}
+
+  .grider_viewer:hover project:not(:hover) {
+    opacity: 0.3 !important;
+  } 
+
+  .grider_viewer:hover project:hover,
+   .grider_viewer:hover project:hover {
+    -webkit-transform: scale(1.05) !important;
+    -ms-transform: scale(1.05) !important;
+    transform: scale(1.05) !important;
+}
+
+.grider_viewer  { 
+
+  opacity: 0;
+}
+
+* {
+  overflow: hidden !important;
+}
+
+div-solarsystem {
+position: absolute;
+left: 0px;
+top: 0px;
+width: 100%;
+height: 100% !important;
+width: 100% !important;
+object-fit: cover !important;
+  }
     `;
+   
+
     this.shadow.appendChild(style);
     
   } 
 
+ 
+  
+
+
+  call_albums(
+    varr = { where:null, arr: [], callback: function () {} },
+    type = "albums"
+  ) {
+    const arr = varr.arr,
+    tthis = this;
+    let div_not_i = 0;
+    const live = ["deviantart"];
+    const element = varr.where
+    if (element) {
+      element.textContent = "";
+    }
+     
+    element.style.setProperty("top", "60px","important");
+    element.style.setProperty("opacity", "1","important");
+
+    
+    if (varr.type == "albums") {
+      element.setAttribute("class", "grider_viewer gridsH grids gallery ");
+    } else {
+      element.setAttribute("class", "grider_viewer gridsH grids g_gallery gallery");
+     
+    }
+    if (varr.type == "albums") {
+      for (let i = 0; i < arr.length; i++) {
+        const project = document.createElement("project");
+
+        project.setAttribute("id-int", i);
+        const p_open = document.createElement("p_open");
+        p_open.setAttribute("data-title", "Open Album");
+        p_open.onclick = function (e) {
+          e.preventDefault();
+          tthis.load(arr[i]['name'], "gallery_name");
+        };
+        const p_open_icon = document.createElement("i");
+        p_open_icon.classList.add("bi", "bi-link");
+        p_open.appendChild(p_open_icon);
+        p_open.appendChild(document.createTextNode(" Open Album"));
+        const name = arr[i]["name"];
+        const image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+        let is_live = null;
+        if (arr[i]["live"] == "T") {
+          is_live = document.createElement("span_live");
+          const btn_l = document.createElement("btn_l");
+          const btn_l_icon = document.createElement("i");
+          btn_l_icon.classList.add("bi", "bi-broadcast-pin");
+          btn_l.appendChild(btn_l_icon);
+          btn_l.appendChild(document.createTextNode(" Live Feed"));
+          is_live.appendChild(btn_l);
+        }
+        const grider_box = document.createElement("grider_box");
+        const p = document.createElement("p");
+        const p_span = document.createElement("span");
+        p_span.textContent = `Album - ${arr[i]["gallery"].length}`;
+        p.appendChild(p_span);
+        grider_box.appendChild(p);
+        grider_box.appendChild(p_open);
+        if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+        const fiv = document.createElement("fiv");
+        const fiv_icon = document.createElement("i");
+        fiv_icon.classList.add("bi", "bi-info-circle");
+        // fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
+        fiv_icon.addEventListener("click", function (e) {
+          e.preventDefault();
+          tthis.load(arr[i]['name'], "gallery_name");
+        });
+        fiv_icon.setAttribute("title", "Go to Album");
+        fiv.appendChild(fiv_icon);
+        grider_box.appendChild(fiv);
+        const sp_clv = document.createElement("sp_clv");
+        const sp_clv_icon = document.createElement("i");
+        sp_clv_icon.classList.add(
+          "bi",
+          arr[i]["name"] == "video" ? "bi-film" : "bi-images"
+        );
+        sp_clv.appendChild(sp_clv_icon);
+        const p_title = document.createElement("p-title");
+        p_title.textContent = name;
+        sp_clv.appendChild(p_title);
+        grider_box.appendChild(sp_clv);
+        project.appendChild(grider_box);
+        varr.where.appendChild(project);
+        if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+        if (
+          arr[i]["gallery"][0]["type"] == "video" ||
+          arr[i]["gallery"][0]["type"] == "video_post"
+        ) {
+          const video = document.createElement("video");
+          video.setAttribute("autoplay", "");
+          video.setAttribute("muted", "");
+          video.setAttribute("playsinline", "");
+          video.setAttribute("loop", "");
+          video.setAttribute("style", "pointer-events:none;");
+          video.setAttribute(
+            "onloadedmetadata",
+            `welcomer.loaded_img(this,${i});`
+          );
+          video.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+          grider_box.appendChild(video);
+        }
+        const img = document.createElement("img");
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("ondragstart", "return false;");
+        // img.setAttribute("onload", `welcomer.loaded_img(this,${i});`);
+        img.onload = function(){
+          project.style.transform = "unset";
+        };
+        if (arr[i]["name"] == "home") {
+          img.setAttribute(
+            "src",
+            `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+          );
+          img.setAttribute(
+            "data-zoom-image",
+            `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+          );
+        } else {
+          img.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+          img.setAttribute(
+            "data-zoom-image",
+            arr[i]["gallery"][0]["thumb"]
+          );
+        }
+        img.setAttribute("alt", name);
+        grider_box.appendChild(img);
+        project.appendChild(grider_box);
+      
+        varr.where.appendChild(project);
+      }
+    }
+    if (varr.type == "gallery") {
+      const v = arr;
+      for (let i = 0; i < v.length; i++) {
+        const project = document.createElement("project");
+        project.setAttribute("style", "transform:scale(0) !important;");
+        project.setAttribute("id-int", `${div_not_i}`);
+        project.setAttribute("box-ui", `uit-${varr.type}`);
+        project.setAttribute("id-img", `uit-${v[i]["ID"]}`);
+        const grider_box = document.createElement("grider_box");
+        let thi = "class='is_touch'";
+        if (welcomer.isMobile()) {
+          thi = `onclick="welcomer.openLink(${div_not_i})"`;
+        }
+        const fiv = document.createElement("fiv");
+        const title = document.createElement("fiv_title");
+        title.textContent = v[i].title;
+
+        const i_click = document.createElement("i");
+        i_click.setAttribute("data-i-type", `${v[i].type}`);
+        i_click.setAttribute("class", "bi bi-fullscreen");
+        i_click.setAttribute("title", "Preview image in full size");
+        i_click.addEventListener("click", function () {
+          
+            const ImagePreview_src = document.createElement("image-preview");
+            ImagePreview_src.src(v[i].img);
+            document.body.appendChild(ImagePreview_src);
+           
+        });
+        fiv.appendChild(i_click);
+        //  fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
+        grider_box.appendChild(fiv);
+        grider_box.appendChild(title);
+        const img = document.createElement("img");
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("ondragstart", "return false;");
+        img.setAttribute(
+          "onerror",
+          `welcomer.loaded_imgPrld_error(this,${div_not_i});`
+        );
+        img.setAttribute(
+          "onload",
+          `welcomer.loaded_imgPrldV2(this,${div_not_i});`
+        );
+        img.setAttribute("src", v[i].thumb);
+        img.setAttribute("data-zoom-image", v[i].img);
+        img.setAttribute("data-real-zoom-if_video", v[i].thumb);
+        img.setAttribute("data-real-zoom-image", v[i].img);
+        img.setAttribute("alt", v[i].title);
+        grider_box.appendChild(img);
+        if (v[i].href != "-") {
+          const a_project = document.createElement("a");
+          a_project.setAttribute("class", "fiv_d");
+
+          a_project.setAttribute(
+            "title",
+            `${v[i]?.fid?.text}:${v[i]?.title}`
+          );
+
+          a_project.setAttribute("href", v[i]["href"]);
+          a_project.setAttribute("target", "_blank");
+          a_project.setAttribute("data-int", `${div_not_i}`);
+          // a_project
+          const a_project_i = document.createElement("i"),
+            a_project_i_text = document.createTextNode(
+              ` ${v[i]?.fid?.text}`
+            );
+          /*
+          a_project_i.addEventListener("click", function(e){
+            welcomer.infoVa(1);
+          });*/
+          a_project_i.setAttribute("class", `${v[i]?.fid?.icon}`);
+          a_project.appendChild(a_project_i);
+          a_project.appendChild(a_project_i_text);
+          /*/ a_project
+
+          a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]?.fid?.icon}"></i> ${v[i]?.fid?.text}`;
+         */
+          // a_project
+          grider_box.appendChild(a_project);
+        }
+        project.appendChild(grider_box);
+        varr.where.appendChild(project);
+        div_not_i++;
+      }
+    }
+
+    varr.where.removeAttribute("style");
+    varr.where.style.setProperty("top", "60px","important");
+    varr.where.style.setProperty("opacity", "1","important");
+    varr?.callback({ l: arr.length, r: arr });
+  }
 
   remove_duplicates (arr) {
+    const uniqueTags = [...new Set(arr)];
+
+    return uniqueTags;
     var obj = {};
     var ret_arr = [];
     for (var i = 0; i < arr.length; i++) {
@@ -800,6 +1345,23 @@ grider_viewer.grider_viewer_f {
     return is_image;
   }
 
+  blogljoad_posts_category_cbc(tt_category_name = "") {
+    var div_not_i = 0;
+    if (tt_category_name == "All" || tt_category_name == "all") {
+      div_not_i = window.portfolio.data.blog.length;
+    } else {
+      for (var ii = 0; ii < window.portfolio.data.blog.length; ii++) {
+        var v = window.portfolio.data.blog[ii];
+        for (var i = 0; i < v?.category?.length; i++) {
+          if (tt_category_name == v.category[i]) {
+            div_not_i++;
+          }
+        }
+      }
+    }
+    return div_not_i;
+  }
+
   category_tempator(d = { me: null, where: "", data: [], name: "", nest: false }) {
      
   
@@ -808,18 +1370,31 @@ grider_viewer.grider_viewer_f {
 
     // d.data.forEach();
 
+  
+
     if (d.nest) {
       br_ta.classList.add("sub_cat");
       br_ta.style.opacity = "0";
     }
+
+    while (this.blog_br_ta.firstChild) {
+      this.blog_br_ta.removeChild(this.blog_br_ta.firstChild);
+       
+    }
+
+ 
+     
+ 
    
     
-    const unique = this.remove_duplicates(d.data);
-  
-   
+    const unique = d.data,
+    tthis = this;
+    
+
+    
     const ta_all = document.createElement("ta_f");
     ta_all.setAttribute("data-title", `Click "All" to open all categories`);
-    ta_all.setAttribute("data-c", unique.length);
+    ta_all.setAttribute("data-c", d.data.length);
     ta_all.className = "active";
     ta_all.setAttribute("data-category", "All");
     ta_all.textContent = "All ";
@@ -833,46 +1408,101 @@ grider_viewer.grider_viewer_f {
       this.blog_br_ta.querySelectorAll("ta_f").forEach(el => el.classList.remove("active"));
       this.box_creator("All");
       if (d.nest) {
-        this.uBoss({}, "", `/?p=blog&c=${d.me.getAttribute("data-scn")}`);
+ 
+        const url = `${window.location.origin}/?p=blog&c=${d.me.getAttribute("data-scn")}`;
+      ///  history.pushState({ something:true}, "",url);
+      const scn = d?.me?.getAttribute?.("data-scn");
+
+      /*
+      router.go(
+        scn ? { p: "blog", c: scn } : { p: "blog" }
+      );*/
       } else {
-        this.uBoss({}, "", `/?p=blog`);
+     const url = `${window.location.origin}/?p=blog`;
+       // history.pushState({ something:true}, "",url);
+      
       }
     };
   
     // if (!d.nest) 
       this.blog_br_ta.appendChild(ta_all);
  
-    unique.forEach(re => {
+    d.data.forEach(re => {
       const ta_item = document.createElement("ta_f");
-      ta_item.setAttribute("data-c", unique.length);
+      ta_item.setAttribute("data-c", d.data.length);
       ta_item.setAttribute("data-category", re);
       ta_item.setAttribute(
         "data-title",
         `Click "${this.capitalize_str ? this.capitalize_str(re) : re}" to open category`
       );
   
-      let iconHTML = "";
+      const addIcon = document.createElement("i");
+    
       switch (re.toLowerCase()) {
-        case "telegram": iconHTML = `<i class="bi bi-telegram"></i> `; break;
-        case "deviantart": iconHTML = `<i class="fab fa-deviantart"></i> `; break;
-        case "video": iconHTML = `<i class="bi bi-film"></i> `; break;
-        case "astronomy": iconHTML = `<i class="fas fa-space-shuttle"></i> `; break;
+        case "telegram": 
+        addIcon.className = "bi bi-telegram";
+          break;
+        case "deviantart": 
+        addIcon.className = "fab fa-deviantart";
+          break;
+        case "video": 
+        addIcon.className = "bi bi-film";
+          break;
+        case "astronomy": 
+        addIcon.className = "fas fa-space-shuttle";
+          break;
+        default:
       }
-  
-      ta_item.innerHTML = `${iconHTML}${re}<span>${this.blogljoad_posts_category_cbc ? this.blogljoad_posts_category_cbc(re) : ""}</span>`;
-  
-      ta_item.onclick = () => {
+       
+
+      const span = document.createElement("span");
+      span.textContent = this.blogljoad_posts_category_cbc ? this.blogljoad_posts_category_cbc(re) : "";
+
+      ta_item.appendChild(addIcon)
+      ta_item.appendChild(document.createTextNode(`${re}`));
+      ta_item.appendChild(span);
+      
+    //  ta_item.innerHTML = `${iconHTML}${re}<span>${this.blogljoad_posts_category_cbc ? this.blogljoad_posts_category_cbc(re) : ""}</span>`;
+        const thiss = this;
+      function kat_mns(){
+         const frm = document.createElement("div-solarsystem");
+        if(re == "astronomy"){
+          
+          if(!tthis.grider_viewer.querySelectorAll("div-solarsystem").length > 0){
+            frm.style.setProperty("height", "100%","important");
+            frm.style.setProperty("width", "100%","important");
+            frm.style.setProperty("position", "absolute","important");
+            frm.style.setProperty("border", "absolute","important");
+            tthis.grider_viewer.appendChild(frm);
+        }
+        } else {
+          frm.remove();
+        }
+ 
         br_ta.querySelectorAll("ta_f").forEach(el => el.classList.remove("active"));
         ta_item.classList.add("active");
-  
-        this.box_creator(re);
+        
+        thiss.box_creator(re, false);
   
         const lower = re.toLowerCase();
         if (lower !== "all") {
-          if (d.nest) {
-            this.uBoss({}, "", `/?p=blog&c=${d.me.getAttribute("data-scn")}&sc=${re}`);
-          } else {
-            this.uBoss({}, "", `/?p=blog&c=${re}`);
+          if (d.nest) { 
+            const url = `${window.location.origin}/?p=blog&c=${d.me.getAttribute("data-scn")}&sc=${re}`;
+            /* history.pushState({ something:true}, "",url); */
+            router.setURL({
+              p:"blog", 
+              c:d.me.getAttribute("data-scn"),
+            sc: re
+          });
+
+          } else { 
+            const url = `${window.location.origin}/?p=blog&c=${re}`;
+            /* history.pushState({ something:true}, "",url); */
+            router.setURL({
+              p:"blog", 
+              c: re
+          });
+          document.title = `Marko Nikolić > Blog > ${re}`;
           }
   
           if (lower === "astronomy") {
@@ -882,14 +1512,16 @@ grider_viewer.grider_viewer_f {
           }
   
           document.body.setAttribute("data-category-name", re);
-          if (this.titleC) this.titleC(`Blog > ${re} - Marko Nikolić`);
+          if (thiss.titleC) thiss.titleC(`Blog > ${re} - Marko Nikolić`);
         }
       };
-  
-      // br_ta.appendChild(ta_item);
-      this.blog_br_ta.appendChild(ta_item);
 
-    });
+      
+      ta_item.onclick = (e) => {e.preventDefault(); kat_mns()};
+  
+      //  br_ta.appendChild(ta_item);
+       this.blog_br_ta.appendChild(ta_item);
+     });
    
    
     // setTimeout(() => br_ta.removeAttribute("style"), 100);
@@ -903,21 +1535,25 @@ grider_viewer.grider_viewer_f {
   }
  
   
-  box_creator(tt_category_name = "All") {
+  box_creator(tt_category_name = "All", cat = false, type = "blog") {
     
     this.grider_viewer.querySelectorAll("project").forEach((e) => {e.remove()});
-  
-    const arr = this.data.blog;
-    let div_not_i = 0;
-    var arrayr = [],
-    tijemp = [];
+    const tthis = this;
+    var arr = this.data.blog,
+    div_not_i = 0,
+    arrayr = [],
+    tijemp = [],
+    fthis = this;
 
-    const fthis = this;
+    if(type == "projects"){
+     arr = window.portfolio.data.projects;
+    }
 
     
   
     arr.forEach((v) => {
       if (!v || !v.title) return;
+ 
   
       // Filtriranje po kategoriji
       let shouldShow = tt_category_name.toLowerCase() === "all";
@@ -928,7 +1564,9 @@ grider_viewer.grider_viewer_f {
   
       // === <project> ===
       const project = document.createElement("project");
-      project.setAttribute("data-category", window.btoa(v?.category));
+      project.setAttribute("data-category", window.btoa(v?.category?.join(",") || ""));
+
+      // project.setAttribute("data-category", window.btoa(v?.category));
       project.setAttribute("id-int", div_not_i);
       project.setAttribute("title", v.title);
       project.style.transform = 'scale(0);';
@@ -951,9 +1589,11 @@ grider_viewer.grider_viewer_f {
       const p_open = document.createElement("p_open");
       p_open.setAttribute("title", `Open:/?p=blog&id=${v.id}`);
       p_open.onclick = () => {
+        /*
         const pageer = document.createElement("page-c");
         document.body.appendChild(pageer);
-        pageer.load(v.id,'blog_id');
+        pageer.load(v.id,'blog_id');*/
+        router.go({p:"blog",id: v.id}, { openedFrom: "blogpage" });
       };
       const i_link = document.createElement("i");
       i_link.className = "bi bi-link";
@@ -1002,6 +1642,7 @@ grider_viewer.grider_viewer_f {
   
       const i_list = document.createElement("i_list");
       if (v?.page) {
+        try{
         bagdes.forEach((badge) => {
           const found = badge.is_me.some(tag => v.page.includes(`<${tag}`));
           if (found) {
@@ -1009,7 +1650,7 @@ grider_viewer.grider_viewer_f {
             icon.className = badge.data;
             i_list.appendChild(icon);
           }
-        });
+        });}catch(Ex){}
       }
   
       // === Slika ili opis ===
@@ -1032,7 +1673,13 @@ grider_viewer.grider_viewer_f {
           project.removeAttribute("style"); 
           project.style.transform = 'none';  
         };
+        if(type == "projects"){
+          
+          
+          img.src = v.img?.includes("data:") ? v.img : `${v.img}&thumb=true`;
+        } else{
         img.src = v.thumbail?.includes("data:") ? v.thumbail : `${v.thumbail}&thumb=true`;
+        }
         img.setAttribute("data-zoom-image", img.src);
         img.alt = v.title;
         grider_box.appendChild(i_list);
@@ -1043,26 +1690,22 @@ grider_viewer.grider_viewer_f {
       this.grider_viewer.append(project);
     
 
-      try {
+      if (Array.isArray(v?.category)) {
         for (var i = 0; i < v?.category.length; i++) {
           tijemp.push(v.category[i]);
-        }
-      } catch (r) {}
-      tijemp.forEach(function (x) {
-        tijemp[x] = (tijemp[x] || 0) + 1;
-      });
+        } 
+      }
+    
+     
+    
       div_not_i++;
     });
-
-    this.category_tempator({
-      me: "all",
-      where: this.wrapper,
-      data: tijemp,
-      name: tt_category_name,
-      nest: false
+    tijemp.forEach(function (x) {
+       tijemp[x] = (tijemp[x] || 0) + 1;
     });
-  
-    // Finalna obrada zaglavlja
+     
+    this.category_tijemp = tijemp;
+
     this.div_header.classList.add("ld_completeld_complete2");
     this.header({
       title: "Marko Nikolić > Blog",
@@ -1091,10 +1734,15 @@ grider_viewer.grider_viewer_f {
             
           }
         } },
-        { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+        { icon: "bi bi-x-lg  ", onclick: () => { 
+         router.setURL({});
+         document.title = "Marko Nikolić";
+         tthis.remove();
+         } }
       ]
     });
 
+     
      
   }
   
@@ -1108,7 +1756,7 @@ grider_viewer.grider_viewer_f {
     this.remove();
   }
   header(config = {
-    title: "Blog > Dnevnik | 🕊🤍✨ II",
+    title: "Blog",
     searchPlaceholder: "Search ...",
     logo: "/svg_logo_backscr_img.svg",
     buttonsRight: [
@@ -1116,9 +1764,7 @@ grider_viewer.grider_viewer_f {
          const  p_search = document.createElement("p-search"); 
       this.wrapper.appendChild(p_search); 
       } },
-      { icon: "bi-filetype-pdf pdf_download", style: "display:none;" },
-      { icon: "bi bi-house pdf_page_home_btn", onclick: "welcomer.blogloader('all');", style: "display:none;" },
-      { icon: "bi bi-telegram tg_button", onclick: "welcomer.Social.tg.open();" },
+    
       { icon: "bi bi-share", onclick: () => {
         const Uri = this.div_header.getAttribute("data-url"),
         title =  this.div_header_span.textContent;
@@ -1134,10 +1780,15 @@ grider_viewer.grider_viewer_f {
           
         }
       } },
-      { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+      { icon: "bi bi-x-lg close_btnf", onclick: () => { 
+        router.setURL({});
+        document.title = "Marko Nikolić";
+          this.remove();
+       } }
     ]
   }) {
-    
+    document.title = config.title;
+
     this.div_header.className = "ld_completeld_complete ld_completeld_complete2";
     this.div_header.setAttribute("data-url", "https://portfolio2.localhost/?p=blog&id=1141736809");
     this.div_header.querySelectorAll("*").forEach(e => e.remove());
@@ -1214,34 +1865,222 @@ grider_viewer.grider_viewer_f {
 
     return  this.div_header;
   }
-
-  // Učitavanje podataka
+ 
   load(id = "", type = "") {
     if(this.bra_div_img.classList.contains("active")){
       this.bra_div_img.classList.remove("active");
     }
+    this.category_tijemp = [];
+    const tthis = this;
     let f = {},
     blogData = ''; 
+    this.gallery_back = false;
     this.custom_scroll.style.display = 'none';
     this.grider_viewer.style.display = 'none';
+   /* this.grider_viewer.setAttribute("data-type",type);*/
 
+    if (type == "cv-pdf"){
+      this.header({
+        title: "Marko Nikolić > CV",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+         
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = window.location.href,
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },  { 
+            icon: "bi bi-x-lg close_btnf", 
+            onclick: () => { 
+              router.back();  this.remove(); 
+            } 
+          }
+          
+        ]
+      });
+      if(this.wrapper.querySelectorAll(".Viewiframe").length < 1){
+      const iframe = document.createElement("iframe");
+      iframe.src = "/?pages=cv-pdf";
+      iframe.classList.add("Viewiframe");
+      this.wrapper.appendChild(iframe);
+      iframe.style.setProperty("margin-top", "49px","important");
+
+     
+      }
+    }
+    if (type == "gallery_name"){
+      this.header({
+        title: "Gallery > " + id,
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          { icon: "bi bi-arrow-left-short", onclick: () => {  
+            tthis.load("","gallery");
+          }
+        },
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } }
+          
+        ]
+      });
+      var gallery_name = {
+        name:"",
+        exist: false
+      };
+      window.portfolio.data.gallery.gallery.forEach(function(res){
+        if(res['name'] == id){
+          gallery_name['name'] = res['gallery']
+          gallery_name['exist'] = true; 
+        }
+      });
+      this.call_albums({
+        where: this.grider_viewer ,
+        arr:   gallery_name['name'],
+        callback: function (e) {},
+        type: "gallery",
+      });
+    }
+
+    if (type == "gallery"){
+      this.header({
+        title: "Marko Nikolić > Gallery",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },
+          { icon: "bi bi-x-lg close_btnf", onclick: () => { router.back();  this.remove(); } }
+        ]
+      });
+      this.call_albums({
+        where: this.grider_viewer ,
+        arr: window.portfolio.data.gallery.gallery,
+        callback: function (e) {},
+        type: "albums",
+      });
+      this.grider_viewer.style.opacity = 1;
+
+    }
+    if (type == "projects"){
+      this.grider_viewer.style.display = 'block';
+    
+      this.grider_viewer.classList.add("gridsH");
+      this.grider_viewer.classList.add("grids");
+      this.grider_viewer.classList.add('projects');
+       
+      this.grider_viewer.removeAttribute("style");
+      this.header({
+        title: "Marko Nikolić > Projects",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },
+          { icon: "bi bi-x-lg close_btnf", onclick: () => { router.back();  this.remove(); } }
+        ]
+      });
+ 
+     this.box_creator("all",true,"projects");   
+    
+    this.grider_viewer.style.setProperty("margin-top", "60px","important");
+    
+    this.wrapper.querySelectorAll("br_ta.sub_cat").forEach((element) => {
+       element.remove();
+    });
+    this.grider_viewer.style.opacity = 1;
+
+    }
     if (type == "blog_category"){
       this.grider_viewer.style.display = 'block';
       this.blog_br_ta.style.display = 'inline-flex';
       this.grider_viewer.classList.add("gridsH");
       this.grider_viewer.classList.add("grids");
+      document.title = "Marko Nikolić > Blog";
       this.grider_viewer.removeAttribute("style");
-     this.box_creator(id);
+      
+ 
+     this.box_creator(id,true);  
+     const fsvt = this.remove_duplicates(this.category_tijemp);
+     
+      this.category_tempator({
+        me: "all",
+        where: this.wrapper,
+        data: fsvt,
+        name: "all",
+        nest: false
+      });
+  
+     const url = `${window.location.origin}/?p=blog`;
+    //  history.pushState({ something:true}, "",url);
 
+   
 
     this.blog_br_ta.classList.remove("active");
     
-
+    this.grider_viewer.style.setProperty("margin-top", "110px","important");
+    
     this.wrapper.querySelectorAll("br_ta.sub_cat").forEach((element) => {
        element.remove();
     });
-     
-     return;
+    this.grider_viewer.style.opacity = 1;
+
+    const currentParams = new URLSearchParams(window.location.search); 
+    if(currentParams.get("c")){
+      this.blog_br_ta.querySelector(`ta_f[data-category='${currentParams.get('c')}']`).click();
+    }
+      return;
     }
 
 
@@ -1252,22 +2091,79 @@ grider_viewer.grider_viewer_f {
       if (res.id == id) f = res;
     });
 
-    
+
+    const url = `${window.location.origin}/?p=blog&id=${id}`;
+  //  history.pushState({ something:true}, "",url);
+    router.go({
+      p:"blog", 
+      id:id 
+  });
 
     const res = this.decodeEntities(f.page || "");
     this.gallery_temp = f.gallery || {};
   
+    this.header({
+      title: f.title,
+      searchPlaceholder: "Search ...",
+      logo: "/svg_logo_backscr_img.svg",
+      buttonsRight: [
+        { icon: "bi-search", onclick: () =>{
+           const  p_search = document.createElement("p-search"); 
+        this.wrapper.appendChild(p_search); 
+        } },
+           { icon: "bi bi-share", onclick: () => {
+          const Uri = this.div_header.getAttribute("data-url"),
+          title =  this.div_header_span.textContent;
+          
+          if (navigator.share) {
+            navigator.share({
+                title: title,
+                text: `Shared from - ${window.location.origin}`,
+                url: `${Uri}`,
+              })
+              .then(() => {})
+              .catch((error) => {});
+            
+          }
+        } },
+        { icon: "bi bi-x-lg close_btnf", onclick: () => {   
+          const currentParams = new URLSearchParams(window.location.search); 
+          if(currentParams.get("p")){
+              if(currentParams.get("p") == "Blog"){
+                document.title = "Marko Nikolić > Blog";  
+                /* history.pushState({ something:true}, "",url); */
+                if(currentParams.get("c")){
+                router.setURL({
+                  p:"blog", 
+                  c: currentParams.get("c")
+                });
+              } else{
+                router.setURL({
+                  p:"blog", 
+                });
+              }
+              }
+          } else{
+            document.title = "Marko Nikolić";  
+          }    tthis.exit();
+          }
+       
+        }
+      ]
+    });
+ 
     if (typeof this.p_container.set === "function") {
-      this.p_container.set(`${res}`, f);
-    } else {
-      this.p_container.innerHTML = res;
+      this.p_container.set(`${res}`, f); 
+    } else { 
     }
-    
-    
+     
+    this.custom_scroll.style.setProperty("margin-top", "51px","important");
 
   
       this.bra_div_img.src = f.thumbail;
       this.bra_div_img.classList.add("active");
+      this.grider_viewer.style.opacity = 1;
+
       return;
     }
   }
@@ -1438,15 +2334,12 @@ class CanvasVElement extends HTMLElement {
 
           if (this._videoElement.readyState < 3) { 
               this._frameSkipFactor = Math.min(this._frameSkipFactor + 1, 4); 
-              console.warn(`Video readyState nizak (${this._videoElement.readyState}), povećavam frameSkipFactor na ${this._frameSkipFactor}`);
-          } else if (this._videoElement.playbackRate < 1) { 
+           } else if (this._videoElement.playbackRate < 1) { 
               this._frameSkipFactor = Math.min(this._frameSkipFactor + 1, 4); 
-              console.warn(`Video playbackRate nizak (${this._videoElement.playbackRate}), povećavam frameSkipFactor na ${this._frameSkipFactor}`);
-          } else if (this._frameSkipFactor > 1 && this._videoElement.readyState >= 4) { 
+           } else if (this._frameSkipFactor > 1 && this._videoElement.readyState >= 4) { 
 
               this._frameSkipFactor = Math.max(this._frameSkipFactor - 1, 1);
-              console.log(`Video stabilan, smanjujem frameSkipFactor na ${this._frameSkipFactor}`);
-          }
+           }
       }
 
       if (this._frameSkipFactor > 1 && this._frameCount % this._frameSkipFactor !== 0) {
@@ -1624,7 +2517,7 @@ class CustomScroll extends HTMLElement {
           height: 100%;
           overflow-y: scroll;
           scrollbar-width: none;
-          padding-right: 20px;
+          padding-right: 5px;
         }
         .wrapper::-webkit-scrollbar {
           display: none;
@@ -1679,6 +2572,14 @@ class CustomScroll extends HTMLElement {
         <div class="thumb"></div>
       </div>
     `;
+    
+  }
+
+  gear(type, callback) {
+    if (!this._handlers) this._handlers = {};
+    if (!this._handlers[type]) this._handlers[type] = [];
+
+    this._handlers[type].push(callback);
   }
 
   append(child) {
@@ -1696,40 +2597,47 @@ class CustomScroll extends HTMLElement {
   connectedCallback() {
     const wrapper = this.shadowRoot.querySelector(".wrapper");
     const thumb = this.shadowRoot.querySelector(".thumb");
-
+  
     const updateThumb = () => {
       const contentHeight = wrapper.scrollHeight;
       const containerHeight = wrapper.clientHeight;
       const scrollTop = wrapper.scrollTop;
-
+      const scrollLeft = wrapper.scrollLeft;
+  
       const thumbHeight = Math.max(
         (containerHeight * containerHeight) / contentHeight,
         30
       );
       const thumbTop = (scrollTop * containerHeight) / contentHeight;
-
+  
       thumb.style.height = thumbHeight + "px";
       thumb.style.top = thumbTop + "px";
+  
+      if (this._handlers && this._handlers["scroll"]) {
+        this._handlers["scroll"].forEach(fn => fn(scrollTop, scrollLeft));
+      }
     };
-
+  
     wrapper.addEventListener("scroll", updateThumb);
     window.addEventListener("resize", updateThumb);
     updateThumb();
+  
+    // === THUMB DRAG
     let isDragging = false;
     let startY, startScrollTop;
-
+  
     thumb.addEventListener("mousedown", (e) => {
       isDragging = true;
       startY = e.clientY;
       startScrollTop = wrapper.scrollTop;
       document.body.style.userSelect = "none";
     });
-
+  
     document.addEventListener("mouseup", () => {
       isDragging = false;
       document.body.style.userSelect = "";
     });
-
+  
     document.addEventListener("mousemove", (e) => {
       if (!isDragging) return;
       const deltaY = e.clientY - startY;
@@ -1737,10 +2645,77 @@ class CustomScroll extends HTMLElement {
       const thumbHeight = thumb.clientHeight;
       const containerHeight = wrapper.clientHeight;
       const scrollRatio = scrollableHeight / (containerHeight - thumbHeight);
-
       wrapper.scrollTop = startScrollTop + deltaY * scrollRatio;
     });
+  
+    // === TOUCHPAD SIMULACIJA + INERCIJA
+    let isTouchpadScrolling = false;
+    let startY_touchpad = 0;
+    let startScrollTop_touchpad = 0;
+  
+    let velocity = 0;
+    let lastY = 0;
+    let lastTime = 0;
+    let inertiaFrame = null;
+  
+    const stopInertia = () => {
+      if (inertiaFrame) {
+        cancelAnimationFrame(inertiaFrame);
+        inertiaFrame = null;
+      }
+    };
+  
+    const applyInertia = () => {
+      if (Math.abs(velocity) < 0.1) {
+        velocity = 0;
+        return;
+      }
+      wrapper.scrollTop -= velocity;
+      velocity *= 0.95; 
+      inertiaFrame = requestAnimationFrame(applyInertia);
+    };
+  
+    wrapper.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      isTouchpadScrolling = true;
+      startY_touchpad = e.clientY;
+      startScrollTop_touchpad = wrapper.scrollTop;
+      document.body.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
+      stopInertia();
+      lastY = e.clientY;
+      lastTime = Date.now();
+    });
+  
+    document.addEventListener("mouseup", () => {
+      isTouchpadScrolling = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+  
+      const now = Date.now();
+      const deltaTime = now - lastTime;
+      if (deltaTime < 300) {
+        // momentum ako je brzo pomereno
+        inertiaFrame = requestAnimationFrame(applyInertia);
+      }
+    });
+  
+    document.addEventListener("mousemove", (e) => {
+      if (!isTouchpadScrolling) return;
+      const now = Date.now();
+      const dy = e.clientY - lastY;
+      const dt = now - lastTime;
+      if (dt > 0) {
+        velocity = dy / dt * 20; // brzina (skalirano)
+      }
+      lastY = e.clientY;
+      lastTime = now;
+  
+      wrapper.scrollTop = startScrollTop_touchpad - (e.clientY - startY_touchpad);
+    });
   }
+  
+  
 }
 
 const wlc = {
@@ -3095,13 +4070,14 @@ class CustomSearch extends HTMLElement {
         "click",
         function () {
           if (item.cat == "blog") {
-            window.welcomer.blogloader(item.id);
-            document.querySelector("p-search").remove();
+            // window.welcomer.blogloader(item.id);
+            router.go({p:'blog', id: item.id});
+            // document.querySelector("p-search").remove();
           }
           if (item.cat == "projects") {
           }
           if (!item.link == "") {
-            document.querySelector("p-search").remove();
+            // document.querySelector("p-search").remove();
           }
         },
         true
@@ -6434,6 +7410,11 @@ const welcomer = {
       if (!customElements.get("p-container")) {
         customElements.define("p-container", PostContent);
       }
+
+      if(customElements.get('solar-system')){
+        customElements.define('solar-system', SolarSystem);
+      }
+      
       if (!customElements.get("pdf-viewer")) {
         customElements.define("pdf-viewer", PDFViewerElement);
       }
@@ -7076,8 +8057,16 @@ document.querySelector("body").appendChild(parser.body);
         // window.top.location.reload();
       }
       welcomer.bckrnd();
+      router.init();
     },
     start_page: function (what = "") {
+      if(what == "?p=cv-pdf" || what == "/?p=cv-pdf"){
+        router.go({p:'cv-pdf'});
+      }
+
+      console.log(what);
+
+      return;
       var fjls = false;
       welcomer.yesurls.forEach(function (v) {
         if (v === what) {
@@ -7091,15 +8080,14 @@ document.querySelector("body").appendChild(parser.body);
         welcomer.blg_history_replace("/");
         welcomer.start();
       }
-      return;
+     return;
       switch (what) {
         case "home":
           welcomer.blg_history_replace("/");
           welcomer.start();
           break;
         case "gallery":
-          welcomer.blg_history_replace("/?p=gallery");
-          welcomer.start();
+          router.go({p:'gallery'});
           break;
         case "search":
           // <p-search></p-search>
@@ -7107,12 +8095,13 @@ document.querySelector("body").appendChild(parser.body);
           document.body.appendChild(p_search);
           break;
         case "blog":
-          welcomer.blg_history_replace("/?p=blog");
-          welcomer.start();
+          // welcomer.blg_history_replace("/?p=blog");
+          // welcomer.start();
+          // window.pg("blog");
+          router.go({p:'blog'});
           break;
         case "projects":
-          welcomer.blg_history_replace("/?p=gallery");
-          welcomer.start();
+          router.go({p:'projects'});
           break;
         default:
           welcomer.blg_history_replace("/");
@@ -7338,14 +8327,9 @@ document.querySelector("body").appendChild(parser.body);
           element.textContent = "";
         }
         if (varr.type == "albums") {
-          element.setAttribute("class", "gridsH grids ");
+          element.setAttribute("class", "gridsH grids gallery");
         } else {
-          element.setAttribute("class", "gridsH grids g_gallery ");
-          document
-            .querySelector(
-              'div#clavs.gallery_mode section[data-ui-type="gallery"] i.bi.bi-arrow-left-short.editor_btns.undo'
-            )
-            .classList.add("active");
+        
         }
         if (varr.type == "albums") {
           for (let i = 0; i < arr.length; i++) {
@@ -7354,10 +8338,10 @@ document.querySelector("body").appendChild(parser.body);
             project.setAttribute("id-int", i);
             const p_open = document.createElement("p_open");
             p_open.setAttribute("data-title", "Open Album");
-            p_open.setAttribute(
-              "onclick",
-              `welcomer.pages.gallery.lda('${arr[i]["name"]}')`
-            );
+           
+            p_open.onclick = function(){
+              router.go({p:'gallery', album: arr[i]['name'] });
+            }
             const p_open_icon = document.createElement("i");
             p_open_icon.classList.add("bi", "bi-link");
             p_open.appendChild(p_open_icon);
@@ -7388,7 +8372,8 @@ document.querySelector("body").appendChild(parser.body);
             // fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
             fiv_icon.addEventListener("click", function (e) {
               e.preventDefault();
-              welcomer.blogloader(`${i}`);
+              router.go({p:'gallery', album: arr[i]['name'] });
+
             });
             fiv_icon.setAttribute("title", "Go to Album");
             fiv.appendChild(fiv_icon);
@@ -7532,8 +8517,7 @@ document.querySelector("body").appendChild(parser.body);
               .appendChild(project);
             div_not_i++;
           }
-        }
-
+        } 
         varr?.callback({ l: arr.length, r: arr });
       },
       call_albumsV2: function (
@@ -8125,30 +9109,29 @@ document.querySelector("body").appendChild(parser.body);
   home_list: function (elm, Elem = "") {
     switch (Elem) {
       case "welcomer.pages.start_page('blog');":
-        welcomer.blg_history_replace("/?p=blog");
-        welcomer.start();
+        /*welcomer.blg_history_replace("/?p=blog");
+        welcomer.start();*/
+        router.go({p:'blog'});
         break;
       case "welcomer.pages.start_page('cv-pdf');":
-        welcomer.blg_history_replace("/?p=cv-pdf");
-        welcomer.start();
+        router.go({p:'cv-pdf'});
         break;
       case "welcomer.pages.start_page('tg_channel');":
         welcomer.blg_history_replace("/?p=tg_channel");
         welcomer.start();
         break;
       case "welcomer.pages.start_page('gallery');":
-        welcomer.blg_history_replace("/?p=gallery");
-        welcomer.start();
+        router.go({p:'gallery'});
         break;
       case "welcomer.pages.start_page('projects');":
-        welcomer.blg_history_replace("/?p=projects");
-        welcomer.start();
+        router.go({p:'projects'});
+
         break;
 
       case "CTHP();":
       case "CTHP()":
-        welcomer.blg_history_replace("/");
-        welcomer.start();
+        window.top.location.href = "/";
+        
         break;
       case "welcomer.cp();":
         welcomer.cp();
@@ -8188,7 +9171,7 @@ document.querySelector("body").appendChild(parser.body);
         $(elem).removeClass("info_box_active");
         break;
       case "welcomer.pgloader('/?pages=cv-pdf');":
-        welcomer.pgloader("/?pages=cv-pdf");
+        router.go({p:'cv-pdf'});
         break;
       case "welcomer.Hclose(this);":
         welcomer.Hclose(elm);
@@ -8686,7 +9669,7 @@ document.querySelector("body").appendChild(parser.body);
                         baer.className = "baer";
                         baer.target = "_blank";
                         baer.rel = "nofollow noreferrer";
-                        baer.href = jsjon["url"];
+                        try{baer.href = jsjon["url"]; } catch(Ex) { }
                         baer.setAttribute("data-title", "Kliknite (pređite mišem preko slike) za prikaz slike u punoj veličini");
 
                         const imgLink = document.createElement("img");
@@ -9161,7 +10144,7 @@ document.querySelector("body").appendChild(parser.body);
           const div_solarsystem = document.createElement("div-solarsystem");
           div_solarsystem.classList.add("solarsystem");
           div_solarsystem.id = "root";
-          document.querySelector("div#clavs").appendChild(div_solarsystem);
+       //   document.querySelector("div#clavs").appendChild(div_solarsystem);
         }
       } else {
         welcomer.blg_history_replace("/?p=blog");
@@ -9333,7 +10316,13 @@ document.querySelector("body").appendChild(parser.body);
     const myParam_query = urlParams.get("q");
     if (myParam !== null) {
       if (myParam == "blog") {
-        this.blogloader(myParam_id);
+        // this.blogloader(myParam_id);
+        // router.go({p:'blog'});
+        if(myParam_id){
+        test_page(myParam_id,'blog_id');
+        }else{
+          test_page("all",'blog_category');
+        }
         return;
       } else if (myParam == "editor") {
         this.editor.start();
@@ -9420,6 +10409,7 @@ document.querySelector("body").appendChild(parser.body);
     }
   },
   remove_duplicates: function (arr) {
+ 
     var obj = {};
     var ret_arr = [];
     for (var i = 0; i < arr.length; i++) {
@@ -10994,6 +11984,7 @@ document.querySelector("body").appendChild(parser.body);
     // }
   },
   start_v2: function (j) {
+ 
     this.constructor();
     document
       .querySelector("gridder_loader img")
@@ -11026,21 +12017,22 @@ document.querySelector("body").appendChild(parser.body);
       /*  wallpaperVideo.style.cssText =
           "opacity:1;transform:rotate(45deg) scale(2);";
           */
+         try {
           welcomer.video_canva.setTransform({
             rotate: parseFloat(45),
             scale: parseFloat(2),
             opacity: parseFloat(1)
-        });
+        });}catch(Ex){}
       } else {
         canvas.style.cssText = "opacity:1;transform:rotate(45deg) scale(2);";
        /* wallpaperVideo.style.cssText =
           "opacity:1;transform:rotate(45deg) scale(2);";
-          */
+          */   try {
           welcomer.video_canva.setTransform({
             rotate: parseFloat(45),
             scale: parseFloat(2),
             opacity: parseFloat(1)
-        });
+        });}catch(Ex){}
       }
     } else {
       if (this.isChrome) {
@@ -11062,11 +12054,12 @@ document.querySelector("body").appendChild(parser.body);
     const wallpaperVideo = document.querySelector(".wallpaperVideo");
     canvas.removeAttribute("style");
     // wallpaperVideo.removeAttribute("style");
+    try{
     welcomer.video_canva.setTransform({
       rotate: parseFloat(0),
       scale: parseFloat(1),
       opacity: parseFloat(0.5)
-  });
+  });}catch(ex){}
   },
   hide: function (elem) {
     document.querySelectorAll(elem).forEach(function (v) {
@@ -12588,6 +13581,10 @@ document.querySelector("body").appendChild(parser.body);
     $("div_header").attr("data-url", url);
   },
   pgloader: function (url = "") {
+    if(url == "?p=cv-pdf" || url == "/?p=cv-pdf"){
+      router.go({p:'cv-pdf'});
+    }
+    return;
     this.spoiler({
       u: url,
       c: function () {
@@ -12755,6 +13752,7 @@ document.querySelector("body").appendChild(parser.body);
     });
   },
   pgloaderH: function (url = "") {
+    return;
     var ljoader = document.querySelector("#reaload_page"),
       Vjideo_sjpinner = document.querySelector(".Vjideo_sjpinner"),
       div_header = document.querySelector("div_header"),
@@ -12820,6 +13818,7 @@ document.querySelector("body").appendChild(parser.body);
     $("title").html(str);
   },
   uBoss: function (ar = {}, v = "", url = "") {
+    /*
     history.replaceState(ar, v, `${url}`);
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get("p") || null;
@@ -12828,7 +13827,7 @@ document.querySelector("body").appendChild(parser.body);
       if (!myParam_id) {
         document.body.setAttribute("data-d", `${myParam}`);
       }
-    }
+    }*/
   },
   HcloseF: function () {
     this.hmm("You ", function () {
@@ -14333,17 +15332,84 @@ function test_category(n = ""){
   page.box_creator(n);
 }
 function test_page(id = "", str = "") {
+
+  pageManager.openPage(id, str);
+
+ 
    let existingPage = document.querySelector(`page-c[data-id="${id}"]`);
 
-  if (!existingPage) {
- 
+  if (!existingPage) { try{
     const page = document.createElement("page-c");
     page.setAttribute("data-id", id);  
     document.body.appendChild(page);
     page.load(id, str);
-  } else {
+  }catch(Ex){}
+ 
+ } else {
    
     existingPage.load(id, str);
   }
 }
+
+router.on("cv-pdf", (params) => {
+  test_page("", "cv-pdf");
+});
+
+router.on("gallery", (params) => {
+  const id = params.get("id"),
+  p = params.get("p"),
+  c = params.get("c"),
+  album = params.get("album");
+    document.querySelectorAll("page-c").forEach((e) => e.remove());
+  if(album){ 
+    test_page(album, "gallery_name");
+  } else {
+    test_page("", "gallery");
+  }
+});
+router.on("projects", (params) => {
+  const id = params.get("id"),
+  p = params.get("p"),
+  c = params.get("c");
+    document.querySelectorAll("page-c").forEach((e) => e.remove());
+    test_page("", "projects");
+
+}); 
+router.on("contact", (params) => {
+  const id = params.get("id"),
+  p = params.get("p"),
+  c = params.get("c");
+    document.querySelectorAll("page-c").forEach((e) => e.remove());
+  if(p){ 
+
+  }
+}); 
+router.on("blog", (params) => {
+  const id = params.get("id"),
+  p = params.get("p"),
+  c = params.get("c");
+  // document.querySelectorAll("page-c").forEach((e) => e.remove());
+  if(id){
+    test_page(id,'blog_id');
+  } else if(c) {
+    test_page(c,'blog_category');
+  } else {
+    if(p == "blog"){
+    test_page('all','blog_category');
+    }
+  }
+});
+  
+router.init();
+
+window.pg = async function(n = "blog"){
+   if(n == "blog"){
+      router.go({p:'blog'});
+   }
+};
+
+window.addEventListener("popstate", (e) => {
+  console.log("Popstate fired. State:", e.state); // { key: ..., openedFrom: ... }
+});
+
  

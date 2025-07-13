@@ -650,7 +650,7 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-        # return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
+        return file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json");
         $ch = curl_init($r['url']);
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // Return the response as a string
@@ -1182,6 +1182,7 @@ class portfolio_marko
                 * {
                     margin: 0px;
                     padding: 0px;
+                    cursor:none !important;
                 }
             </style>
             <div id="root" class="solarsystem"></div>

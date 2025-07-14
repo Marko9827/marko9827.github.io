@@ -426,6 +426,178 @@
     <div id="printContainer"></div>
     <script type="text/javascript">
 
+
+const IndexedDBUtil = {
+  db: null,
+  quotaExceeded: false,
+  async initDB() {
+    if (this.db) return this.db;
+
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("GalleryDB", 1);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("images")) {
+          const store = db.createObjectStore("images", { keyPath: "id" });
+          store.createIndex("album", "album", { unique: false });
+        }
+        if (!db.objectStoreNames.contains("pdfs")) {
+          const store = db.createObjectStore("pdfs", { keyPath: "id" });
+          store.createIndex("pdf", "pdf", { unique: false });
+        }
+      };
+
+      request.onsuccess = (event) => {
+        this.db = event.target.result;
+        resolve(this.db);
+      };
+
+      request.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+
+  async storePDF(albumName, id, blob) {
+    if (this.quotaExceeded) return;
+  
+    const db = await this.initDB();
+    const tx = db.transaction("pdfs", "readwrite");
+    const store = tx.objectStore("pdfs");
+  
+    const fullId = `${albumName}-${id}`;
+  
+    return new Promise((resolve, reject) => {
+      const existingReq = store.get(fullId);
+  
+      existingReq.onsuccess = () => {
+        if (existingReq.result) {
+          resolve();  
+        } else {
+          const putReq = store.put({
+            id: fullId,
+            album: albumName,
+            blob: blob,
+          });
+  
+          putReq.onsuccess = () => resolve();
+          putReq.onerror = (event) => {
+            const err = event.target.error;
+            if (err?.name === "QuotaExceededError") {
+              this.quotaExceeded = true; 
+            }
+            reject(err);
+          };
+        }
+      };
+  
+      existingReq.onerror = (event) => reject(event.target.error);
+    });
+  },
+  async getOrFetchPDF(albumName, id, url) {
+    try {
+      const existingBlob = await this.getPDF(albumName, id);
+      if (existingBlob) {
+        return URL.createObjectURL(existingBlob);
+      }
+  
+      const blob = await this.fetchPDFAsBlob(url);
+  
+      if (!this.quotaExceeded) {
+        try {
+          await this.storePDF(albumName, id, blob);
+        } catch (e) {
+          if (e?.name === "QuotaExceededError") {
+            this.quotaExceeded = true; 
+          } else {  
+          }
+        }
+      }
+  
+      return URL.createObjectURL(blob);
+    } catch (e) { 
+      return url;
+    }
+  },
+  async getPDF(albumName, id) {
+    const db = await this.initDB();
+    const fullId = `${albumName}-${id}`;
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("pdfs", "readonly");
+      const store = tx.objectStore("pdfs");
+      const req = store.get(fullId);
+      req.onsuccess = () => resolve(req.result?.blob || null);
+      req.onerror = (event) => reject(event.target.error);
+    });
+  },
+  
+  async fetchPDFAsBlob(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch PDF.");
+    return await res.blob();
+  },
+
+  async storeBlob(albumName, id, blob) {
+    const db = await this.initDB();
+    const tx = db.transaction("images", "readwrite");
+    const store = tx.objectStore("images");
+
+    const fullId = `${albumName}-${id}`;
+    const existingReq = store.get(fullId);
+
+    return new Promise((resolve, reject) => {
+      existingReq.onsuccess = () => {
+        if (existingReq.result) {
+          
+          resolve(); 
+        } else {
+          existingReq.onsuccess = () => {
+            if (existingReq.result) {
+              resolve(); 
+            } else {
+              const putReq = store.put({
+                id: fullId,
+                album: albumName,
+                blob: blob,
+              });
+          
+              putReq.onsuccess = () => resolve();
+          
+              putReq.onerror = (event) => {
+                if (event.target.error?.name === "QuotaExceededError") {
+                  this.quotaExceeded = true;
+                 }
+                reject(event.target.error);
+              };
+            }
+          };
+        }
+      };
+      existingReq.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+  async getBlob(albumName, id) {
+    const db = await this.initDB();
+    const fullId = `${albumName}-${id}`;
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readonly");
+      const store = tx.objectStore("images");
+      const req = store.get(fullId);
+      req.onsuccess = () => resolve(req.result?.blob || null);
+      req.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+  async fetchImageAsBlob(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch image.");
+    return await res.blob();
+  }
+};
+
+
+
 document.addEventListener('keydown', function(event) { 
     if ((event.ctrlKey || event.metaKey) && event.key === 's') { 
         event.preventDefault();
@@ -443,9 +615,14 @@ document.onload =function(){  document.addEventListener('keydown', function(even
         event.preventDefault(); 
     }
 });}
-setTimeout(function() {
-                    PDFViewerApplication.open("<?php
-                      echo "https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=$_GET[id]"; ?>");
+
+
+ 
+setTimeout(async function()   {
+
+    const PDF = await IndexedDBUtil.getOrFetchPDF("blog", "<?php echo $_GET["id"]; ?>", "<?php echo "https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=$_GET[id]"; ?>");
+console.log(PDF);
+                    PDFViewerApplication.open(PDF);
                 }, 1500);
 
        

@@ -25,9 +25,15 @@ class Page extends HTMLElement {
     this.grider_viewer_main.style.display = 'none';
     this.grider_viewer.style.display = 'none'; 
     this.grider_viewer.classList.add('grider_viewer');
+    this.grider_viewer.style.opacity = 0;
     this.lastScrollTop = 0;
  
     this.grider_viewer.gear("scroll", (top) => { 
+      try{  
+        if(this.grider_viewer.classList.contains("gallery") || this.grider_viewer.classList.contains("projects")){
+          return;
+        }
+      }catch(Ex){}
       if(top > 400){
         this.wrapper.classList.add("scrollactive");
         this.grider_viewer.style.setProperty("margin-top", "0px","important");
@@ -91,9 +97,10 @@ class Page extends HTMLElement {
     // Osnovni stil
     const style = document.createElement("style");
     style.textContent = `
-      @import url('https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css');
-      @import url('https://cdn.markonikolic98.com/node_modules/@fortawesome/fontawesome-free/css/all.min.css');
+      @import url('https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css');
+      @import url('https://${window.CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css');
       @import url('/mainss'); 
+
 
      
 
@@ -282,6 +289,10 @@ class Page extends HTMLElement {
 
 grider_viewer.gridsH.grids.g_gallery {}
 
+.gallery {
+overflow: hidden !important;
+}
+
 #clavs .grider_viewer.gridsH.grids.g_gallery project p,
 grider_viewer.gridsH.grids.g_gallery project p {
     display: none;}
@@ -347,6 +358,45 @@ grider_viewer.gridsH.grids.g_gallery project grider_box {
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;}
 
+.grider_viewer.gallery {
+  top: 60px !important;
+}
+
+.grider_viewer.gallery sp_clv {
+    position: absolute;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    bottom: 0px;
+    top: 0px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    z-index: 33333;
+    color: white;
+    font-size: 13px;
+    text-align: center;
+}
+
+.grider_viewer.gallery sp_clv i {
+    font-size: 40px;
+    width: 60px;
+    height: 60px;
+    display: block;
+}
+    
 grider_viewer.gridsH.grids.g_gallery project grider_box img {
     border-radius: 4px !important;}
 
@@ -556,6 +606,24 @@ grider_viewer.grider_viewer_f {
     transform: scale(1.05) !important;
 }
 
+.grider_viewer  { 
+
+  opacity: 0;
+}
+
+* {
+  overflow: hidden !important;
+}
+
+div-solarsystem {
+position: absolute;
+left: 0px;
+top: 0px;
+width: 100%;
+height: 100% !important;
+width: 100% !important;
+object-fit: cover !important;
+  }
     `;
    
 
@@ -563,6 +631,231 @@ grider_viewer.grider_viewer_f {
     
   } 
 
+ 
+  
+
+
+  call_albums(
+    varr = { where:null, arr: [], callback: function () {} },
+    type = "albums"
+  ) {
+    const arr = varr.arr,
+    tthis = this;
+    let div_not_i = 0;
+    const live = ["deviantart"];
+    const element = varr.where
+    if (element) {
+      element.textContent = "";
+    }
+     
+    element.style.setProperty("top", "60px","important");
+    element.style.setProperty("opacity", "1","important");
+
+    
+    if (varr.type == "albums") {
+      element.setAttribute("class", "grider_viewer gridsH grids gallery ");
+    } else {
+      element.setAttribute("class", "grider_viewer gridsH grids g_gallery gallery");
+     
+    }
+    if (varr.type == "albums") {
+      for (let i = 0; i < arr.length; i++) {
+        const project = document.createElement("project");
+
+        project.setAttribute("id-int", i);
+        const p_open = document.createElement("p_open");
+        p_open.setAttribute("data-title", "Open Album");
+        p_open.onclick = function (e) {
+          e.preventDefault();
+          tthis.load(arr[i]['name'], "gallery_name");
+        };
+        const p_open_icon = document.createElement("i");
+        p_open_icon.classList.add("bi", "bi-link");
+        p_open.appendChild(p_open_icon);
+        p_open.appendChild(document.createTextNode(" Open Album"));
+        const name = arr[i]["name"];
+        const image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+        let is_live = null;
+        if (arr[i]["live"] == "T") {
+          is_live = document.createElement("span_live");
+          const btn_l = document.createElement("btn_l");
+          const btn_l_icon = document.createElement("i");
+          btn_l_icon.classList.add("bi", "bi-broadcast-pin");
+          btn_l.appendChild(btn_l_icon);
+          btn_l.appendChild(document.createTextNode(" Live Feed"));
+          is_live.appendChild(btn_l);
+        }
+        const grider_box = document.createElement("grider_box");
+        const p = document.createElement("p");
+        const p_span = document.createElement("span");
+        p_span.textContent = `Album - ${arr[i]["gallery"].length}`;
+        p.appendChild(p_span);
+        grider_box.appendChild(p);
+        grider_box.appendChild(p_open);
+        if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+        const fiv = document.createElement("fiv");
+        const fiv_icon = document.createElement("i");
+        fiv_icon.classList.add("bi", "bi-info-circle");
+        // fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
+        fiv_icon.addEventListener("click", function (e) {
+          e.preventDefault();
+          tthis.load(arr[i]['name'], "gallery_name");
+        });
+        fiv_icon.setAttribute("title", "Go to Album");
+        fiv.appendChild(fiv_icon);
+        grider_box.appendChild(fiv);
+        const sp_clv = document.createElement("sp_clv");
+        const sp_clv_icon = document.createElement("i");
+        sp_clv_icon.classList.add(
+          "bi",
+          arr[i]["name"] == "video" ? "bi-film" : "bi-images"
+        );
+        sp_clv.appendChild(sp_clv_icon);
+        const p_title = document.createElement("p-title");
+        p_title.textContent = name;
+        sp_clv.appendChild(p_title);
+        grider_box.appendChild(sp_clv);
+        project.appendChild(grider_box);
+        varr.where.appendChild(project);
+        if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+        if (
+          arr[i]["gallery"][0]["type"] == "video" ||
+          arr[i]["gallery"][0]["type"] == "video_post"
+        ) {
+          const video = document.createElement("video");
+          video.setAttribute("autoplay", "");
+          video.setAttribute("muted", "");
+          video.setAttribute("playsinline", "");
+          video.setAttribute("loop", "");
+          video.setAttribute("style", "pointer-events:none;");
+          video.setAttribute(
+            "onloadedmetadata",
+            `welcomer.loaded_img(this,${i});`
+          );
+          video.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+          grider_box.appendChild(video);
+        }
+        const img = document.createElement("img");
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("ondragstart", "return false;");
+        // img.setAttribute("onload", `welcomer.loaded_img(this,${i});`);
+        img.onload = function(){
+          project.style.transform = "unset";
+        };
+        if (arr[i]["name"] == "home") {
+          img.setAttribute(
+            "src",
+            `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+          );
+          img.setAttribute(
+            "data-zoom-image",
+            `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+          );
+        } else {
+          img.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
+          img.setAttribute(
+            "data-zoom-image",
+            arr[i]["gallery"][0]["thumb"]
+          );
+        }
+        img.setAttribute("alt", name);
+        grider_box.appendChild(img);
+        project.appendChild(grider_box);
+      
+        varr.where.appendChild(project);
+      }
+    }
+    if (varr.type == "gallery") {
+      const v = arr;
+      for (let i = 0; i < v.length; i++) {
+        const project = document.createElement("project");
+        project.setAttribute("style", "transform:scale(0) !important;");
+        project.setAttribute("id-int", `${div_not_i}`);
+        project.setAttribute("box-ui", `uit-${varr.type}`);
+        project.setAttribute("id-img", `uit-${v[i]["ID"]}`);
+        const grider_box = document.createElement("grider_box");
+        let thi = "class='is_touch'";
+        if (welcomer.isMobile()) {
+          thi = `onclick="welcomer.openLink(${div_not_i})"`;
+        }
+        const fiv = document.createElement("fiv");
+        const title = document.createElement("fiv_title");
+        title.textContent = v[i].title;
+
+        const i_click = document.createElement("i");
+        i_click.setAttribute("data-i-type", `${v[i].type}`);
+        i_click.setAttribute("class", "bi bi-fullscreen");
+        i_click.setAttribute("title", "Preview image in full size");
+        i_click.addEventListener("click", function () {
+          
+            const ImagePreview_src = document.createElement("image-preview");
+            ImagePreview_src.src(v[i].img);
+            document.body.appendChild(ImagePreview_src);
+           
+        });
+        fiv.appendChild(i_click);
+        //  fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
+        grider_box.appendChild(fiv);
+        grider_box.appendChild(title);
+        const img = document.createElement("img");
+        img.setAttribute("loading", "lazy");
+        img.setAttribute("ondragstart", "return false;");
+        img.setAttribute(
+          "onerror",
+          `welcomer.loaded_imgPrld_error(this,${div_not_i});`
+        );
+        img.setAttribute(
+          "onload",
+          `welcomer.loaded_imgPrldV2(this,${div_not_i});`
+        );
+        img.setAttribute("src", v[i].thumb);
+        img.setAttribute("data-zoom-image", v[i].img);
+        img.setAttribute("data-real-zoom-if_video", v[i].thumb);
+        img.setAttribute("data-real-zoom-image", v[i].img);
+        img.setAttribute("alt", v[i].title);
+        grider_box.appendChild(img);
+        if (v[i].href != "-") {
+          const a_project = document.createElement("a");
+          a_project.setAttribute("class", "fiv_d");
+
+          a_project.setAttribute(
+            "title",
+            `${v[i]?.fid?.text}:${v[i]?.title}`
+          );
+
+          a_project.setAttribute("href", v[i]["href"]);
+          a_project.setAttribute("target", "_blank");
+          a_project.setAttribute("data-int", `${div_not_i}`);
+          // a_project
+          const a_project_i = document.createElement("i"),
+            a_project_i_text = document.createTextNode(
+              ` ${v[i]?.fid?.text}`
+            );
+          /*
+          a_project_i.addEventListener("click", function(e){
+            welcomer.infoVa(1);
+          });*/
+          a_project_i.setAttribute("class", `${v[i]?.fid?.icon}`);
+          a_project.appendChild(a_project_i);
+          a_project.appendChild(a_project_i_text);
+          /*/ a_project
+
+          a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]?.fid?.icon}"></i> ${v[i]?.fid?.text}`;
+         */
+          // a_project
+          grider_box.appendChild(a_project);
+        }
+        project.appendChild(grider_box);
+        varr.where.appendChild(project);
+        div_not_i++;
+      }
+    }
+
+    varr.where.removeAttribute("style");
+    varr.where.style.setProperty("top", "60px","important");
+    varr.where.style.setProperty("opacity", "1","important");
+    varr?.callback({ l: arr.length, r: arr });
+  }
 
   remove_duplicates (arr) {
     const uniqueTags = [...new Set(arr)];
@@ -644,7 +937,8 @@ grider_viewer.grider_viewer_f {
  
    
     
-    const unique = d.data;
+    const unique = d.data,
+    tthis = this;
     
 
     
@@ -721,10 +1015,23 @@ grider_viewer.grider_viewer_f {
     //  ta_item.innerHTML = `${iconHTML}${re}<span>${this.blogljoad_posts_category_cbc ? this.blogljoad_posts_category_cbc(re) : ""}</span>`;
         const thiss = this;
       function kat_mns(){
+         const frm = document.createElement("div-solarsystem");
+        if(re == "astronomy"){
+          
+          if(!tthis.grider_viewer.querySelectorAll("div-solarsystem").length > 0){
+            frm.style.setProperty("height", "100%","important");
+            frm.style.setProperty("width", "100%","important");
+            frm.style.setProperty("position", "absolute","important");
+            frm.style.setProperty("border", "absolute","important");
+            tthis.grider_viewer.appendChild(frm);
+        }
+        } else {
+          frm.remove();
+        }
  
         br_ta.querySelectorAll("ta_f").forEach(el => el.classList.remove("active"));
         ta_item.classList.add("active");
-  
+        
         thiss.box_creator(re, false);
   
         const lower = re.toLowerCase();
@@ -745,6 +1052,7 @@ grider_viewer.grider_viewer_f {
               p:"blog", 
               c: re
           });
+          document.title = `Marko Nikolić > Blog > ${re}`;
           }
   
           if (lower === "astronomy") {
@@ -777,20 +1085,25 @@ grider_viewer.grider_viewer_f {
   }
  
   
-  box_creator(tt_category_name = "All", cat = false, type = "image") {
+  box_creator(tt_category_name = "All", cat = false, type = "blog") {
     
     this.grider_viewer.querySelectorAll("project").forEach((e) => {e.remove()});
-  
+    const tthis = this;
     var arr = this.data.blog,
     div_not_i = 0,
     arrayr = [],
     tijemp = [],
     fthis = this;
 
+    if(type == "projects"){
+     arr = window.portfolio.data.projects;
+    }
+
     
   
     arr.forEach((v) => {
       if (!v || !v.title) return;
+ 
   
       // Filtriranje po kategoriji
       let shouldShow = tt_category_name.toLowerCase() === "all";
@@ -879,6 +1192,7 @@ grider_viewer.grider_viewer_f {
   
       const i_list = document.createElement("i_list");
       if (v?.page) {
+        try{
         bagdes.forEach((badge) => {
           const found = badge.is_me.some(tag => v.page.includes(`<${tag}`));
           if (found) {
@@ -886,7 +1200,7 @@ grider_viewer.grider_viewer_f {
             icon.className = badge.data;
             i_list.appendChild(icon);
           }
-        });
+        });}catch(Ex){}
       }
   
       // === Slika ili opis ===
@@ -909,7 +1223,13 @@ grider_viewer.grider_viewer_f {
           project.removeAttribute("style"); 
           project.style.transform = 'none';  
         };
+        if(type == "projects"){
+          
+          
+          img.src = v.img?.includes("data:") ? v.img : `${v.img}&thumb=true`;
+        } else{
         img.src = v.thumbail?.includes("data:") ? v.thumbail : `${v.thumbail}&thumb=true`;
+        }
         img.setAttribute("data-zoom-image", img.src);
         img.alt = v.title;
         grider_box.appendChild(i_list);
@@ -964,7 +1284,11 @@ grider_viewer.grider_viewer_f {
             
           }
         } },
-        { icon: "bi bi-x-lg close_btnf", onclick: () => { history.back();  this.remove(); } }
+        { icon: "bi bi-x-lg  ", onclick: () => { 
+         router.setURL({});
+         document.title = "Marko Nikolić";
+         tthis.remove();
+         } }
       ]
     });
 
@@ -982,7 +1306,7 @@ grider_viewer.grider_viewer_f {
     this.remove();
   }
   header(config = {
-    title: "Blog > Dnevnik | 🕊🤍✨ II",
+    title: "Blog",
     searchPlaceholder: "Search ...",
     logo: "/svg_logo_backscr_img.svg",
     buttonsRight: [
@@ -990,9 +1314,7 @@ grider_viewer.grider_viewer_f {
          const  p_search = document.createElement("p-search"); 
       this.wrapper.appendChild(p_search); 
       } },
-      { icon: "bi-filetype-pdf pdf_download", style: "display:none;" },
-      { icon: "bi bi-house pdf_page_home_btn", onclick: "welcomer.blogloader('all');", style: "display:none;" },
-      { icon: "bi bi-telegram tg_button", onclick: "welcomer.Social.tg.open();" },
+    
       { icon: "bi bi-share", onclick: () => {
         const Uri = this.div_header.getAttribute("data-url"),
         title =  this.div_header_span.textContent;
@@ -1008,10 +1330,15 @@ grider_viewer.grider_viewer_f {
           
         }
       } },
-      { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+      { icon: "bi bi-x-lg close_btnf", onclick: () => { 
+        router.setURL({});
+        document.title = "Marko Nikolić";
+          this.remove();
+       } }
     ]
   }) {
-    
+    document.title = config.title;
+
     this.div_header.className = "ld_completeld_complete ld_completeld_complete2";
     this.div_header.setAttribute("data-url", "https://portfolio2.localhost/?p=blog&id=1141736809");
     this.div_header.querySelectorAll("*").forEach(e => e.remove());
@@ -1094,19 +1421,183 @@ grider_viewer.grider_viewer_f {
       this.bra_div_img.classList.remove("active");
     }
     this.category_tijemp = [];
+    const tthis = this;
     let f = {},
     blogData = ''; 
+    this.gallery_back = false;
     this.custom_scroll.style.display = 'none';
     this.grider_viewer.style.display = 'none';
    /* this.grider_viewer.setAttribute("data-type",type);*/
 
+    if (type == "cv-pdf"){
+      this.header({
+        title: "Marko Nikolić > CV",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+         
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = window.location.href,
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },  { 
+            icon: "bi bi-x-lg close_btnf", 
+            onclick: () => { 
+              router.back();  this.remove(); 
+            } 
+          }
+          
+        ]
+      });
+      if(this.wrapper.querySelectorAll(".Viewiframe").length < 1){
+      const iframe = document.createElement("iframe");
+      iframe.src = "/?pages=cv-pdf";
+      iframe.classList.add("Viewiframe");
+      this.wrapper.appendChild(iframe);
+      iframe.style.setProperty("margin-top", "49px","important");
 
+     
+      }
+    }
+    if (type == "gallery_name"){
+      this.header({
+        title: "Gallery > " + id,
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          { icon: "bi bi-arrow-left-short", onclick: () => {  
+            tthis.load("","gallery");
+          }
+        },
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } }
+          
+        ]
+      });
+      var gallery_name = {
+        name:"",
+        exist: false
+      };
+      window.portfolio.data.gallery.gallery.forEach(function(res){
+        if(res['name'] == id){
+          gallery_name['name'] = res['gallery']
+          gallery_name['exist'] = true; 
+        }
+      });
+      this.call_albums({
+        where: this.grider_viewer ,
+        arr:   gallery_name['name'],
+        callback: function (e) {},
+        type: "gallery",
+      });
+    }
+
+    if (type == "gallery"){
+      this.header({
+        title: "Marko Nikolić > Gallery",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },
+          { icon: "bi bi-x-lg close_btnf", onclick: () => { router.back();  this.remove(); } }
+        ]
+      });
+      this.call_albums({
+        where: this.grider_viewer ,
+        arr: window.portfolio.data.gallery.gallery,
+        callback: function (e) {},
+        type: "albums",
+      });
+      this.grider_viewer.style.opacity = 1;
+
+    }
+    if (type == "projects"){
+      this.grider_viewer.style.display = 'block';
+    
+      this.grider_viewer.classList.add("gridsH");
+      this.grider_viewer.classList.add("grids");
+      this.grider_viewer.classList.add('projects');
+       
+      this.grider_viewer.removeAttribute("style");
+      this.header({
+        title: "Marko Nikolić > Projects",
+        searchPlaceholder: "Search ...",
+        logo: "/svg_logo_backscr_img.svg",
+        buttonsRight: [
+          
+          { icon: "bi bi-share", onclick: () => {
+            const Uri = this.div_header.getAttribute("data-url"),
+            title =  this.div_header_span.textContent;
+            
+            if (navigator.share) {
+              navigator.share({
+                  title: title,
+                  text: `Shared from - ${window.location.origin}`,
+                  url: `${Uri}`,
+                })
+                .then(() => {})
+                .catch((error) => {});
+              
+            }
+          } },
+          { icon: "bi bi-x-lg close_btnf", onclick: () => { router.back();  this.remove(); } }
+        ]
+      });
+ 
+     this.box_creator("all",true,"projects");   
+    
+    this.grider_viewer.style.setProperty("margin-top", "60px","important");
+    
+    this.wrapper.querySelectorAll("br_ta.sub_cat").forEach((element) => {
+       element.remove();
+    });
+    this.grider_viewer.style.opacity = 1;
+
+    }
     if (type == "blog_category"){
       this.grider_viewer.style.display = 'block';
       this.blog_br_ta.style.display = 'inline-flex';
       this.grider_viewer.classList.add("gridsH");
       this.grider_viewer.classList.add("grids");
-       
+      document.title = "Marko Nikolić > Blog";
       this.grider_viewer.removeAttribute("style");
       
  
@@ -1133,7 +1624,12 @@ grider_viewer.grider_viewer_f {
     this.wrapper.querySelectorAll("br_ta.sub_cat").forEach((element) => {
        element.remove();
     });
-     
+    this.grider_viewer.style.opacity = 1;
+
+    const currentParams = new URLSearchParams(window.location.search); 
+    if(currentParams.get("c")){
+      this.blog_br_ta.querySelector(`ta_f[data-category='${currentParams.get('c')}']`).click();
+    }
       return;
     }
 
@@ -1180,7 +1676,29 @@ grider_viewer.grider_viewer_f {
             
           }
         } },
-        { icon: "bi bi-x-lg close_btnf", onclick: () => { this.exit(); } }
+        { icon: "bi bi-x-lg close_btnf", onclick: () => {   
+          const currentParams = new URLSearchParams(window.location.search); 
+          if(currentParams.get("p")){
+              if(currentParams.get("p") == "Blog"){
+                document.title = "Marko Nikolić > Blog";  
+                /* history.pushState({ something:true}, "",url); */
+                if(currentParams.get("c")){
+                router.setURL({
+                  p:"blog", 
+                  c: currentParams.get("c")
+                });
+              } else{
+                router.setURL({
+                  p:"blog", 
+                });
+              }
+              }
+          } else{
+            document.title = "Marko Nikolić";  
+          }    tthis.exit();
+          }
+       
+        }
       ]
     });
  
@@ -1194,6 +1712,8 @@ grider_viewer.grider_viewer_f {
   
       this.bra_div_img.src = f.thumbail;
       this.bra_div_img.classList.add("active");
+      this.grider_viewer.style.opacity = 1;
+
       return;
     }
   }

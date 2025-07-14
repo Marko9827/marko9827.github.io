@@ -1,6 +1,179 @@
 
 window.draggable = { style_left: "", style_top: "", enabled: false };
 window.CDN_URL = "cdn.markonikolic98.com";
+ 
+
+const IndexedDBUtil = {
+  db: null,
+  quotaExceeded: false,
+  async initDB() {
+    if (this.db) return this.db;
+
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("GalleryDB", 2);
+
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("images")) {
+          const store = db.createObjectStore("images", { keyPath: "id" });
+          store.createIndex("album", "album", { unique: false });
+        }
+        if (!db.objectStoreNames.contains("pdfs")) {
+          const store = db.createObjectStore("pdfs", { keyPath: "id" });
+          store.createIndex("pdf", "pdf", { unique: false });
+        }
+      };
+
+      request.onsuccess = (event) => {
+        this.db = event.target.result;
+        resolve(this.db);
+      };
+
+      request.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+
+  async storePDF(albumName, id, blob) {
+    if (this.quotaExceeded) return;
+  
+    const db = await this.initDB();
+    const tx = db.transaction("pdfs", "readwrite");
+    const store = tx.objectStore("pdfs");
+  
+    const fullId = `${albumName}-${id}`;
+  
+    return new Promise((resolve, reject) => {
+      const existingReq = store.get(fullId);
+  
+      existingReq.onsuccess = () => {
+        if (existingReq.result) {
+          resolve();  
+        } else {
+          const putReq = store.put({
+            id: fullId,
+            album: albumName,
+            blob: blob,
+          });
+  
+          putReq.onsuccess = () => resolve();
+          putReq.onerror = (event) => {
+            const err = event.target.error;
+            if (err?.name === "QuotaExceededError") {
+              this.quotaExceeded = true; 
+            }
+            reject(err);
+          };
+        }
+      };
+  
+      existingReq.onerror = (event) => reject(event.target.error);
+    });
+  },
+  async getOrFetchPDF(albumName, id, url) {
+    try {
+      const existingBlob = await this.getPDF(albumName, id);
+      if (existingBlob) {
+        return URL.createObjectURL(existingBlob);
+      }
+  
+      const blob = await this.fetchPDFAsBlob(url);
+  
+      if (!this.quotaExceeded) {
+        try {
+          await this.storePDF(albumName, id, blob);
+        } catch (e) {
+          if (e?.name === "QuotaExceededError") {
+            this.quotaExceeded = true; 
+          } else {  
+          }
+        }
+      }
+  
+      return URL.createObjectURL(blob);
+    } catch (e) { 
+      return url;
+    }
+  },
+  async getPDF(albumName, id) {
+    const db = await this.initDB();
+    const fullId = `${albumName}-${id}`;
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("pdfs", "readonly");
+      const store = tx.objectStore("pdfs");
+      const req = store.get(fullId);
+      req.onsuccess = () => resolve(req.result?.blob || null);
+      req.onerror = (event) => reject(event.target.error);
+    });
+  },
+  
+  async fetchPDFAsBlob(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch PDF.");
+    return await res.blob();
+  },
+
+  async storeBlob(albumName, id, blob) {
+    const db = await this.initDB();
+    const tx = db.transaction("images", "readwrite");
+    const store = tx.objectStore("images");
+
+    const fullId = `${albumName}-${id}`;
+    const existingReq = store.get(fullId);
+
+    return new Promise((resolve, reject) => {
+      existingReq.onsuccess = () => {
+        if (existingReq.result) {
+          
+          resolve(); 
+        } else {
+          existingReq.onsuccess = () => {
+            if (existingReq.result) {
+              resolve(); 
+            } else {
+              const putReq = store.put({
+                id: fullId,
+                album: albumName,
+                blob: blob,
+              });
+          
+              putReq.onsuccess = () => resolve();
+          
+              putReq.onerror = (event) => {
+                if (event.target.error?.name === "QuotaExceededError") {
+                  this.quotaExceeded = true;
+                 }
+                reject(event.target.error);
+              };
+            }
+          };
+        }
+      };
+      existingReq.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+  async getBlob(albumName, id) {
+    const db = await this.initDB();
+    const fullId = `${albumName}-${id}`;
+    return new Promise((resolve, reject) => {
+      const tx = db.transaction("images", "readonly");
+      const store = tx.objectStore("images");
+      const req = store.get(fullId);
+      req.onsuccess = () => resolve(req.result?.blob || null);
+      req.onerror = (event) => reject(event.target.error);
+    });
+  },
+
+  async fetchImageAsBlob(url) {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("Failed to fetch image.");
+    return await res.blob();
+  }
+};
+
+
+
 
 const pageManager = {
   historyStack: [],
@@ -1076,19 +1249,77 @@ object-fit: cover !important;
   }
     `;
    
+   
 
     this.shadow.appendChild(style);
     
   } 
 
- 
+  observer_LazyLoader = {
+    observer: null,
+    timers: new WeakMap(),
+  
+    init(callback) {
+      this.observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const target = entry.target;
+  
+          if (entry.isIntersecting) {
+            const timer = setTimeout(() => {
+              callback(target);
+              this.observer.unobserve(target);
+            }, 1000); 
+  
+            this.timers.set(target, timer);
+          } else {
+            clearTimeout(this.timers.get(target));
+            this.timers.delete(target);
+          }
+        });
+      }, { threshold: 0.5 });  
+    },
+  
+    observe(el) {
+      if (this.observer) this.observer.observe(el);
+    }
+  };
+
+  async storeOneImage(albumName, item) {
+    const db = await this.openDB();
+    const tx = db.transaction(this.storeName, "readwrite");
+    const store = tx.objectStore(this.storeName);
+  
+    const blob = await this.fetchImageAsBlob(item.thumb);
+    const data = {
+      ID: item.ID,
+      title: item.title,
+      img: item.img,
+      thumb: item.thumb,
+      blob: blob, // direktno čuvamo blob
+    };
+  
+    return new Promise((resolve, reject) => {
+      const request = store.put(data);
+      request.onsuccess = () => resolve(true);
+      request.onerror = (e) => reject(e);
+    });
+  }
   
 
-
-  call_albums(
-    varr = { where:null, arr: [], callback: function () {} },
+  static async fetchImageAsBlob(url) {
+    const response = await fetch(url);
+    let urlr = url;
+    if (response.ok){
+    urlr = response.blob();
+    } 
+    return urlr;
+  }
+  
+ async call_albums(
+    varr = { where:null, name:"", arr: [], callback: function () {} },
     type = "albums"
   ) {
+     
     const arr = varr.arr,
     tthis = this;
     let div_not_i = 0;
@@ -1097,6 +1328,10 @@ object-fit: cover !important;
     if (element) {
       element.textContent = "";
     }
+ 
+    const div = varr.where;
+
+    [...div.childNodes].forEach(node => div.removeChild(node));
      
     element.style.setProperty("top", "60px","important");
     element.style.setProperty("opacity", "1","important");
@@ -1117,6 +1352,7 @@ object-fit: cover !important;
         p_open.setAttribute("data-title", "Open Album");
         p_open.onclick = function (e) {
           e.preventDefault();
+        
           tthis.load(arr[i]['name'], "gallery_name");
         };
         const p_open_icon = document.createElement("i");
@@ -1149,6 +1385,7 @@ object-fit: cover !important;
         // fiv_icon.setAttribute("onclick", `welcomer.blogloader(${i});`);
         fiv_icon.addEventListener("click", function (e) {
           e.preventDefault();
+       
           tthis.load(arr[i]['name'], "gallery_name");
         });
         fiv_icon.setAttribute("title", "Go to Album");
@@ -1215,91 +1452,159 @@ object-fit: cover !important;
         varr.where.appendChild(project);
       }
     }
-    if (varr.type == "gallery") {
-      const v = arr;
+    
+    if (varr.type === "gallery") { 
+      const albumName = varr.name || "default";
+      let v = varr.arr;
+  
+      
+
+  
       for (let i = 0; i < v.length; i++) {
+        const item = v[i];
+
+        let isLoaded = false;
+  
         const project = document.createElement("project");
         project.setAttribute("style", "transform:scale(0) !important;");
         project.setAttribute("id-int", `${div_not_i}`);
         project.setAttribute("box-ui", `uit-${varr.type}`);
-        project.setAttribute("id-img", `uit-${v[i]["ID"]}`);
+        project.setAttribute("id-img", `uit-${item.ID}`);
+  
         const grider_box = document.createElement("grider_box");
-        let thi = "class='is_touch'";
-        if (welcomer.isMobile()) {
-          thi = `onclick="welcomer.openLink(${div_not_i})"`;
-        }
+  
         const fiv = document.createElement("fiv");
         const title = document.createElement("fiv_title");
-        title.textContent = v[i].title;
-
+        title.textContent = item.title;
+  
         const i_click = document.createElement("i");
-        i_click.setAttribute("data-i-type", `${v[i].type}`);
+        i_click.setAttribute("data-i-type", `${item.type}`);
         i_click.setAttribute("class", "bi bi-fullscreen");
         i_click.setAttribute("title", "Preview image in full size");
-        i_click.addEventListener("click", function () {
-          
-            const ImagePreview_src = document.createElement("image-preview");
-            ImagePreview_src.src(v[i].img);
-            document.body.appendChild(ImagePreview_src);
-           
+        i_click.addEventListener("click", () => {
+          const ImagePreview_src = document.createElement("image-preview");
+          ImagePreview_src.src(item.img);
+          document.body.appendChild(ImagePreview_src);
         });
+  
         fiv.appendChild(i_click);
-        //  fiv.innerHTML = `<i onclick="welcomer.infoVa(${div_not_i});" data-i-type="${v[i].type}" class="bi bi-fullscreen" title="Preview image in full size"></i>`;
         grider_box.appendChild(fiv);
         grider_box.appendChild(title);
+  
         const img = document.createElement("img");
         img.setAttribute("loading", "lazy");
         img.setAttribute("ondragstart", "return false;");
-        img.setAttribute(
-          "onerror",
-          `welcomer.loaded_imgPrld_error(this,${div_not_i});`
-        );
-        img.setAttribute(
-          "onload",
-          `welcomer.loaded_imgPrldV2(this,${div_not_i});`
-        );
-        img.setAttribute("src", v[i].thumb);
-        img.setAttribute("data-zoom-image", v[i].img);
-        img.setAttribute("data-real-zoom-if_video", v[i].thumb);
-        img.setAttribute("data-real-zoom-image", v[i].img);
-        img.setAttribute("alt", v[i].title);
+        img.setAttribute("alt", item.title);
+  
+        img.onerror = () => welcomer.loaded_imgPrld_error(img, div_not_i);
+        const existingBlob = await IndexedDBUtil.getBlob(albumName, item.ID);
+
+        if (!existingBlob) {
+        tthis.observer_LazyLoader.init((img) =>{
+        img.onload = async () => {
+          if (isLoaded) {
+            project.removeAttribute("style");
+            return;
+          }           
+
+          if (!existingBlob) {
+            const blob = await IndexedDBUtil.fetchImageAsBlob(item.thumb);
+            const objectURL = URL.createObjectURL(blob);
+            img.src = objectURL; 
+            img.setAttribute("data-zoom-image", objectURL);
+            img.setAttribute("data-real-zoom-if_video", objectURL);
+            img.setAttribute("data-real-zoom-image", objectURL);
+        
+            project.removeAttribute("style");
+            isLoaded = true;
+            await IndexedDBUtil.storeBlob(albumName, item.ID, blob);
+            
+          } 
+         
+        };
+         
+        if(existingBlob){
+          const objectURL = URL.createObjectURL(existingBlob);
+          img.src = objectURL;
+          isLoaded = true;
+          img.setAttribute("data-zoom-image", objectURL);
+          img.setAttribute("data-real-zoom-if_video", objectURL);
+          img.setAttribute("data-real-zoom-image", objectURL);
+        } else{
+          img.src = item.thumb;
+          img.setAttribute("data-zoom-image", item.img);
+          img.setAttribute("data-real-zoom-if_video", item.thumb);
+          img.setAttribute("data-real-zoom-image", item.img); 
+        }
+         
+      });
+      tthis.observer_LazyLoader.observe(img);
+    } else {
+      img.onload = async () => {
+        if (isLoaded) {
+          project.removeAttribute("style");
+          return;
+        }           
+
+        if (!existingBlob) {
+          const blob = await IndexedDBUtil.fetchImageAsBlob(item.thumb);
+          const objectURL = URL.createObjectURL(blob);
+          img.src = objectURL; 
+          img.setAttribute("data-zoom-image", objectURL);
+          img.setAttribute("data-real-zoom-if_video", objectURL);
+          img.setAttribute("data-real-zoom-image", objectURL);
+      
+          project.removeAttribute("style");
+          isLoaded = true;
+          await IndexedDBUtil.storeBlob(albumName, item.ID, blob);
+          
+        } 
+       
+      };
+       
+      if(existingBlob){
+        const objectURL = URL.createObjectURL(existingBlob);
+        img.src = objectURL;
+        isLoaded = true;
+        img.setAttribute("data-zoom-image", objectURL);
+        img.setAttribute("data-real-zoom-if_video", objectURL);
+        img.setAttribute("data-real-zoom-image", objectURL);
+      } else{
+        img.src = item.thumb;
+        img.setAttribute("data-zoom-image", item.img);
+        img.setAttribute("data-real-zoom-if_video", item.thumb);
+        img.setAttribute("data-real-zoom-image", item.img); 
+      }
+    }
+
+      
         grider_box.appendChild(img);
-        if (v[i].href != "-") {
+  
+        if (item.href !== "-") {
           const a_project = document.createElement("a");
-          a_project.setAttribute("class", "fiv_d");
-
-          a_project.setAttribute(
-            "title",
-            `${v[i]?.fid?.text}:${v[i]?.title}`
-          );
-
-          a_project.setAttribute("href", v[i]["href"]);
-          a_project.setAttribute("target", "_blank");
+          a_project.className = "fiv_d";
+          a_project.title = `${item?.fid?.text}:${item?.title}`;
+          a_project.href = item.href;
+          a_project.target = "_blank";
           a_project.setAttribute("data-int", `${div_not_i}`);
-          // a_project
-          const a_project_i = document.createElement("i"),
-            a_project_i_text = document.createTextNode(
-              ` ${v[i]?.fid?.text}`
-            );
-          /*
-          a_project_i.addEventListener("click", function(e){
-            welcomer.infoVa(1);
-          });*/
-          a_project_i.setAttribute("class", `${v[i]?.fid?.icon}`);
+  
+          const a_project_i = document.createElement("i");
+          a_project_i.className = `${item?.fid?.icon}`;
+          const a_project_i_text = document.createTextNode(` ${item?.fid?.text}`);
+  
           a_project.appendChild(a_project_i);
           a_project.appendChild(a_project_i_text);
-          /*/ a_project
-
-          a_project.innerHTML = `<i onclick="welcomer.infoVa(1);" class="${v[i]?.fid?.icon}"></i> ${v[i]?.fid?.text}`;
-         */
-          // a_project
           grider_box.appendChild(a_project);
         }
+  
         project.appendChild(grider_box);
         varr.where.appendChild(project);
         div_not_i++;
       }
     }
+    
+    
+    
 
     varr.where.removeAttribute("style");
     varr.where.style.setProperty("top", "60px","important");
@@ -1716,9 +2021,7 @@ object-fit: cover !important;
            const  p_search = document.createElement("p-search"); 
         this.wrapper.appendChild(p_search); 
         } },
-        { icon: "bi-filetype-pdf pdf_download", style: "display:none;" },
-        { icon: "bi bi-house pdf_page_home_btn", onclick: "welcomer.blogloader('all');", style: "display:none;" },
-        { icon: "bi bi-telegram tg_button", onclick: "welcomer.Social.tg.open();" },
+        
         { icon: "bi bi-share", onclick: () => {
           const Uri = this.div_header.getAttribute("data-url"),
           title =  this.div_header_span.textContent;
@@ -1736,7 +2039,7 @@ object-fit: cover !important;
         } },
         { icon: "bi bi-x-lg  ", onclick: () => { 
          router.setURL({});
-         document.title = "Marko Nikolić";
+         document.title = "Marko Nikolić"; 
          tthis.remove();
          } }
       ]
@@ -1949,16 +2252,20 @@ object-fit: cover !important;
       });
       var gallery_name = {
         name:"",
+        title:"",
         exist: false
       };
       window.portfolio.data.gallery.gallery.forEach(function(res){
         if(res['name'] == id){
-          gallery_name['name'] = res['gallery']
+          gallery_name['name'] = res['gallery'];
+          gallery_name['title'] == res['name'];
           gallery_name['exist'] = true; 
         }
       });
+      
       this.call_albums({
         where: this.grider_viewer ,
+        name:  id,
         arr:   gallery_name['name'],
         callback: function (e) {},
         type: "gallery",
@@ -1990,8 +2297,10 @@ object-fit: cover !important;
           { icon: "bi bi-x-lg close_btnf", onclick: () => { router.back();  this.remove(); } }
         ]
       });
+    
       this.call_albums({
         where: this.grider_viewer ,
+        name: "",
         arr: window.portfolio.data.gallery.gallery,
         callback: function (e) {},
         type: "albums",
@@ -4273,7 +4582,7 @@ class EditorSDK extends HTMLElement {
   define() {
     return {
       doSomething: function () {
-        console.log("Something!");
+        
       },
     };
   }
@@ -8064,7 +8373,7 @@ document.querySelector("body").appendChild(parser.body);
         router.go({p:'cv-pdf'});
       }
 
-      console.log(what);
+      
 
       return;
       var fjls = false;
@@ -8163,31 +8472,10 @@ document.querySelector("body").appendChild(parser.body);
       },
       ldaff: function () {},
       t: function () {
-        this.call_albums({
-          where: "grider_viewer#gallery-container",
-          arr: window.portfolio.data.gallery.gallery,
-          callback: function (e) {},
-          type: "albums",
-        });
-        welcomer.get_events();
+  
       },
       lda: function (what = "") {
-        welcomer.blg_history_replace(
-          `${window.location.origin}/?p=gallery&album=${what}`
-        );
-        var aerls = window.portfolio.data.gallery.gallery;
-        for (var i = 0; i < aerls.length; i++) {
-          if (`${what}` == `${aerls[i]["name"]}`) {
-            welcomer.load_gallery_j = aerls[i]["gallery"];
-            this.call_albums({
-              where: "grider_viewer#gallery-container",
-              arr: aerls[i]["gallery"],
-              callback: function (e) {},
-              type: "gallery",
-            });
-            welcomer.get_events();
-          }
-        }
+       
       },
       galleryloadajaxv2: function (name = "") {
         let div_not_i = 0;
@@ -8318,7 +8606,7 @@ document.querySelector("body").appendChild(parser.body);
       call_albums(
         varr = { where: "", arr: [], callback: function () {} },
         type = "albums"
-      ) {
+      ) { 
         const arr = varr.arr;
         let div_not_i = 0;
         const live = ["deviantart"];
@@ -8756,7 +9044,7 @@ document.querySelector("body").appendChild(parser.body);
   },
   trcp: function (left_fH = 0) {
     return;
-    console.log(left_fH);
+    
     const editorWrapper2 = document.querySelector("editor-wrapper");
     const editorContainer = document.querySelector("div#editor-container");
     const editorSection = document.querySelector(
@@ -15409,7 +15697,7 @@ window.pg = async function(n = "blog"){
 };
 
 window.addEventListener("popstate", (e) => {
-  console.log("Popstate fired. State:", e.state); // { key: ..., openedFrom: ... }
+  
 });
 
  

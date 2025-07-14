@@ -2093,7 +2093,7 @@ object-fit: cover !important;
     document.title = config.title;
 
     this.div_header.className = "ld_completeld_complete ld_completeld_complete2";
-    this.div_header.setAttribute("data-url", "https://portfolio2.localhost/?p=blog&id=1141736809");
+    this.div_header.setAttribute("data-url", "https://portfolio2.eronelit.com/?p=blog&id=1141736809");
     this.div_header.querySelectorAll("*").forEach(e => e.remove());
 
 
@@ -9730,7 +9730,7 @@ document.querySelector("body").appendChild(parser.body);
       title:
         "Pegasus project - Connection PC and Brain with no chips is possible!",
       description:
-        "Is possible no only in theory?!<br><br>Pegasus project is project,Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.localhost/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
+        "Is possible no only in theory?!<br><br>Pegasus project is project,Connecting the brain to the computer using WiFi frequency and brain neuro signals. The connection is used by using a modified WiFi signal... Similar as Neural link but you don't need chips... <br><br> More coming soon! <img loading='lazy' class='is_touch in_hover' ondragstart='return false;' src='/?blog=13_jul_2024_23_40/43515315' data-zoom-image='https://portfolio.eronelit.com/?p=projects' alt='Pegasus project - Connection PC and Brain with no chips is possible!'>",
       complete: function (res) {
         document.querySelector("body").appendChild(res);
       },

@@ -1199,7 +1199,8 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
 
              
-            $r = $this->get_data([
+  
+  /*          $r = $this->get_data([
                 "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
                 "headers" => [
                     'Content-Type: application/json',
@@ -1207,7 +1208,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
                 ]
             ]); 
          echo "const portfolio = $r; \n"; 
-
+*/
 
             echo "window.stmp = '".base64_encode("$_SERVER[HTTP_HOST]")."';";
             # include ROOT . "welcomer_f_old.js";

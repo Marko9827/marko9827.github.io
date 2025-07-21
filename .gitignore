@@ -7,13 +7,14 @@ js/301F942.js
 /data_s/data_f
 /cache
 /build/
-/m_dr_vendor
-/node_modules
+/m_dr_vendor 
 *.db
-/m_dr_vendor
-
-
+/m_dr_vendor 
 **/*.mp4
+
+/node_modules/
+/**/node_modules/
+
 
 
 

@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use \portfolio;
 use \DOMDocument;
 use function file_get_contents;
+use \Imagick;
 
 
 
@@ -787,6 +788,31 @@ class portfolio_marko
         return null;
     }
 
+    private function getAuthorizationHeader()
+    {
+        $rls = null;
+        if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $rls = trim($_SERVER["HTTP_AUTHORIZATION"]);
+            
+        } elseif (function_exists('getallheaders')) {
+            $headers = getallheaders();
+            if (isset($headers['Authorization'])) {
+                $rls =  trim($headers['Authorization']);
+            }
+        }
+         
+        return $rls;
+    }
+
+    private function getBearerToken()
+    {
+        $authHeader = self::getAuthorizationHeader();
+        if ($authHeader && preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+            return $matches[1];
+        }
+        return null;
+    }
+
     function Pages($h = "home")
     {
         session_start();
@@ -1000,10 +1026,143 @@ class portfolio_marko
             @readfile("$_SERVER[DOCUMENT_ROOT]/cinematic_MainMenu.mp4");
             exit();
         }
+        if ($h == "feedjsont") {
+
+
+        }
+
+        if ($h == "pdf_viewer_logo") {
+            header("Content-Type: image/svg+xml");
+
+            ?>
+            <svg xmlns="http://www.w3.org/2000/svg" height="45" width="45" fill="none" class="bi bi-square" viewBox="0 0 150 150"
+                style="background: transparent;
+-webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
+">
+                <mask id="myMask">
+                    <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
+
+                </mask>
+                <path
+                    d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z" />
+
+
+                <mask id="myMask">
+                    <circle cx="50" cy="50" r="30" fill="lightgray" stroke="#333" stroke-width="2" />
+
+                </mask>
+                <svg id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                    style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
+
+                    <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Circle with a border -->
+                        <circle cx="50" cy="50" r="35" fill="rgba(0, 0, 0, 0.639)" stroke="#fff" stroke-width="2" />
+                        <foreignObject x="0" y="0" width="90" height="90">
+                            <svg mask="url(#myMask)" id="logo_backscr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                                style="background: rgb(169 169 169) !important;" preserveAspectRatio="xMidYMid slice">
+
+
+                                <style type="text/css">
+                                    * {
+                                        margin: 0px;
+                                        padding: 0px;
+
+                                    }
+
+                                    body {
+                                        background: rgb(169 169 169) !important;
+
+                                    }
+
+                                    svg {
+                                        position: fixed;
+                                        left: 0px;
+                                        top: 0px;
+                                        width: 100%;
+                                        height: 100%;
+                                    }
+                                </style>
+                                <defs>
+                                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                                    </radialGradient>
+                                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite">
+                                        </animate>
+                                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                                    </radialGradient>
+                                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite">
+                                        </animate>
+                                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                                    </radialGradient>
+                                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                                    </radialGradient>
+                                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite">
+                                        </animate>
+                                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                                    </radialGradient>
+                                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite">
+                                        </animate>
+                                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                                    </radialGradient>
+                                </defs>
+                                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)"
+                                    transform="rotate(334.41 50 50)">
+                                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                                        repeatCount="indefinite"></animateTransform>
+                                </rect>
+                                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                                    transform="rotate(255.072 50 50)">
+                                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50"
+                                        dur="12s" repeatCount="indefinite"></animateTransform>
+                                </rect>
+                                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)"
+                                    transform="rotate(139.903 50 50)">
+                                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                                        repeatCount="indefinite"></animateTransform>
+                                </rect>
+                            </svg>
+                        </foreignObject>
+                    </svg>
+                </svg>
+            </svg><?php
+
+            exit();
+        }
+
+        if ($h == "pdf_extractor") {
+
+        }
+
+        if ($h == "editor") {
+            header("Content-Type: text/html");
+            include __DIR__ . "/editor.php";
+            exit();
+        }
+
         if ($h == "feedjson") {
-            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-            header("Cache-Control: post-check=0, pre-check=0", false);
-            header("Pragma: no-cache");
+
+
+
             $r = $this->get_data([
                 "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
                 "headers" => [
@@ -1011,9 +1170,18 @@ class portfolio_marko
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
             ]);
-            // echo "window.portfolio = $r;";
-            header("content-type: text/javascript");
+
+            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+            header("Cache-Control: post-check=0, pre-check=0", false);
+            header("Pragma: no-cache");
+            header('Content-Type: application/json');
+
             echo "window.portfolio = $r;";
+            header("content-type: text/javascript");
+            echo "window.portfolio = $r; \n \n";
+            if (strpos($_SERVER['HTTP_HOST'], ".localhost")) {
+                echo "window.portfolio.host = 'https://api.localhost';";
+            }
             exit();
         }
         if ($h == "main") {
@@ -1022,29 +1190,102 @@ class portfolio_marko
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             ob_start();
-            echo "\"use strict\"; \n\n/* " . time() . " */\n";
+            echo "(function () { \"use strict\"; \n\n/* " . time() . " */\n";
 
             echo "const version = function(){
                 return '" . time() . "';
             };";
 
+
+            /*
             $r = $this->get_data([
-                "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
                 "headers" => [
                     'Content-Type: application/json',
                     'Authorization: Bearer 32M052k350QaeofkaeopfF',
                 ]
-            ]);
-            # echo "window.portfolio = $r; \n"; 
+            ]);*/
+            #  echo "const portfolio = $r; \n"; 
 
 
-            echo "window.stmp = '$_SESSION[Bearer_token_temp]';";
+            echo "window.stmp = '".base64_encode("$_SERVER[HTTP_HOST]")."';";
             # include ROOT . "welcomer_f_old.js";
-            include ROOT . "welcomer_f.js";
+            include ROOT . "s.js";
+
+            # aer 
+            # include ROOT . "welcomer_f.js";
             # @readfile(ROOT . "welcomer_f.js");
+
 
             //  $b = ob_get_clean();
             //   echo $this->minifyJS($b);
+            exit();
+        }
+        if ($h == "icons"){
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                header('Content-Type: text/html; charset=utf-8');
+                $this->error_page(405);
+                exit();
+            }
+            if(base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]"){
+                http_response_code(401);
+                echo json_encode(["error" => "Unauthorized"]);
+                exit();
+            }
+            header("Content-Type: text/plain");
+            @readfile(__DIR__. './sf.svg');
+            exit();
+        }
+        if ($h == "contact") {
+
+
+           
+            if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+                header('Content-Type: text/html; charset=utf-8');
+                $this->error_page(405);
+                exit();
+            }
+            if(base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]"){
+                http_response_code(401);
+                echo json_encode(["error" => "Unauthorized"]);
+                exit();
+            }
+            header("content-type: text/json");
+            define("ROOTcontacts", "$_SERVER[DOCUMENT_ROOT]/../markonikolic98");
+            if (!empty($_POST["fm"]) || !empty($_POST['fe']) || !empty($_POST["fn"])) {
+                if (!is_dir(ROOTcontacts)) {
+                    mkdir(ROOTcontacts);
+                }
+                if (!is_dir(ROOTcontacts . "/data_s")) {
+                    mkdir(ROOTcontacts . "/data_s");
+                }
+                if (!is_dir(ROOTcontacts . "/data_s/data_f/")) {
+                    mkdir(ROOTcontacts . "/data_s/data_f/");
+                }
+                $rand = time() . rand();
+                $to = date('m_d_Y_h_i_sa', time()) . "-$rand-$_POST[fe]-contact.json";
+                $subject = $_POST['fn'];
+                $message = $_POST['fm'];
+                $headers = 'From: ' . $_POST['fe'] . '' . "\r\n" .
+                    'X-Mailer: eronelit.com';
+
+                // $r = json_encode($_POST);
+                $r = array();
+                $r[0]->name = $subject;
+                $r[0]->message = "$_POST[fm]";
+                $r[0]->email = "$_POST[fe]";
+                // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
+                $far = base64_encode(json_encode($r));
+
+                $ff = file_put_contents(ROOTcontacts . "/data_s/data_f/$to", "$far");
+                if ($ff) {
+                    //mail($to, $subject, $message, $headers)){
+                    echo "yes";
+                } else {
+                    echo "no";
+                }
+            } else {
+            }
             exit();
         }
         if ($h == "buildd") {
@@ -1182,7 +1423,7 @@ class portfolio_marko
                 * {
                     margin: 0px;
                     padding: 0px;
-                    cursor:none !important;
+                    cursor: none !important;
                 }
             </style>
             <div id="root" class="solarsystem"></div>
@@ -1839,19 +2080,19 @@ class portfolio_marko
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                    {
-                                                                                                                                                        "@context": "https://schema.org",
-                                                                                                                                                        "@type": "WebSite",
-                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                        "name": "Marko Nikolić",
-                                                                                                                                                        "author": {
-                                                                                                                                                            "@type": "Person",
-                                                                                                                                                            "name": "Marko Nikolić"
-                                                                                                                                                        },
-                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                        "inLanguage": "en-GB"
-                                                                                                                                                    }
-                                                                                                                                                </script>
+                                                                                                                                                                    {
+                                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                                        "author": {
+                                                                                                                                                                            "@type": "Person",
+                                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                                        },
+                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                                    }
+                                                                                                                                                                </script>
         <?php
     }
 
@@ -1861,15 +2102,16 @@ class portfolio_marko
     {
 
 
-        $codes = array(
-            403 => array('403 Forbidden', 'The server has refused to fulfill your request.'),
-            404 => array('404 Not Found', 'was not found on this server.'),
-            405 => array('405 Method Not Allowed', 'The method specified in the Request-Line is not allowed for the specified resource.'),
-            408 => array('408 Request Timeout', 'Your browser failed to send a request in the time allowed by the server.'),
-            500 => array('500 Internal Server Error', 'The request was unsuccessful due to an unexpected condition encountered by the server.'),
-            502 => array('502 Bad Gateway', 'The server received an invalid response from the upstream server while trying to fulfill the request.'),
-            504 => array('504 Gateway Timeout', 'The upstream server failed to send a request in the time allowed by the server.')
-        );
+        $codes = [
+            401 => ['403 Forbidden', 'The server has refused to fulfill your request.'],
+            403 => ['403 Forbidden', 'The server has refused to fulfill your request.'],
+            404 => ['404 Not Found', 'was not found on this server.'],
+            405 => ['405 Method Not Allowed', 'The method specified in the Request-Line is not allowed for the specified resource.'],
+            408 => ['408 Request Timeout', 'Your browser failed to send a request in the time allowed by the server.'],
+            500 => ['500 Internal Server Error', 'The request was unsuccessful due to an unexpected condition encountered by the server.'],
+            502 => ['502 Bad Gateway', 'The server received an invalid response from the upstream server while trying to fulfill the request.'],
+            504 => ['504 Gateway Timeout', 'The upstream server failed to send a request in the time allowed by the server.']
+        ];
 
 
 
@@ -2171,15 +2413,15 @@ class portfolio_marko
      */
     private function build()
     {
-     
-    #  header("Content-Type: text/plain");
-    #  echo "Passed!";
-    #  exit();
+
+        #  header("Content-Type: text/plain");
+        #  echo "Passed!";
+        #  exit();
 
         $modifer = new HtmlModifier();
 
         header("Content-Type: text/plain");
-        $dir = "$_SERVER[DOCUMENT_ROOT]/../portfolio_beta";
+        $dir = "$_SERVER[DOCUMENT_ROOT]/pwa/static/";
         if (is_dir($dir)) {
             self::emptyFolder($dir, true, [
                 "node_modules",
@@ -2256,7 +2498,7 @@ class portfolio_marko
         // include ROOT . "wlcomer_home.php";
         $response = file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/page.php");
 
- 
+
 
         $updates = [
             [
@@ -2293,9 +2535,9 @@ class portfolio_marko
                 $update['search_string'],
                 $update['replace_string']
             );
-        } 
+        }
 
-   
+
         $js_minifed = self::minifyJS($js_static);
 
         file_put_contents("$dir/assets/static/js/jscode.js", $js_static);
@@ -2304,7 +2546,7 @@ class portfolio_marko
         file_put_contents("$dir/data/feed.json", file_get_contents("$_SERVER[DOCUMENT_ROOT]/temp.json"));
         file_put_contents("$dir/pages/page.php", $response);
         // file_put_contents("$dir/pages/page.php", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/page.php"));
-                // file_put_contents("$dir/index.html", $response);
+        // file_put_contents("$dir/index.html", $response);
         file_put_contents("$dir/assets/static/img/logo.anim.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
         file_put_contents("$dir/favicon.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/logo.anim.svg"));
         file_put_contents("$dir/assets/static/img/logo/nasa.svg", file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/build/nasa.svg"));
@@ -2352,7 +2594,7 @@ class portfolio_marko
             "/bagdes&name=text",
             "/assets/static/ui/img/bagdes/text.svg"
         );
- 
+
 
         if (!is_dir("$dir/node_modules")) {
             self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/node_modules", "$dir/node_modules");
@@ -2362,8 +2604,8 @@ class portfolio_marko
         }
         self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/app/build/component", "$dir/backend");
         self::copyDirectory("$_SERVER[DOCUMENT_ROOT]/static/plugins/pdfjs", "$dir/assets/static/plugins/pdfjs");
-        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/core.php","$dir/backend/core.php");
-        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/index.php","$dir/index.php");
+        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/core.php", "$dir/backend/core.php");
+        self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/index.php", "$dir/index.php");
         // self::copyFile("$_SERVER[DOCUMENT_ROOT]/app/build/page.php","$dir/pages/page.php");
 
 
@@ -2377,21 +2619,21 @@ class portfolio_marko
      * @return bool
      */
     private function copyFile($source, $destination)
-{
-    if (!file_exists($source)) {
-        throw new Exception("Source file does not exist: $source");
-    }
+    {
+        if (!file_exists($source)) {
+            throw new Exception("Source file does not exist: $source");
+        }
 
-    if (!is_dir(dirname($destination))) {
-        mkdir(dirname($destination), 0777, true);
-    }
+        if (!is_dir(dirname($destination))) {
+            mkdir(dirname($destination), 0777, true);
+        }
 
-    if (!copy($source, $destination)) {
-        throw new Exception("Failed to copy file from $source to $destination");
-    }
+        if (!copy($source, $destination)) {
+            throw new Exception("Failed to copy file from $source to $destination");
+        }
 
-    return true;
-}
+        return true;
+    }
     public function loader_static()
     {
 
@@ -2885,6 +3127,8 @@ class portfolio_marko
         } else if (!empty($_GET['pdf_file'])) {
             $file = ROOT . "data_s/blog/image/$_GET[id].pdf";
             if ($_GET['pdf_file'] == "view") {
+                $this->error_page(404);
+                exit();
                 include ROOT . "views/pdf_viewer.php";
                 # include ROOT . "Scripts/pdf_viewer.php";
             } else if ($_GET['pdf_file'] == "file") {

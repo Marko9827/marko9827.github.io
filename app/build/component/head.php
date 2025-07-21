@@ -34,7 +34,7 @@
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script src="<?php echo "https://" . source_URL . "/feedjson&v=".time(); ?>" nonce="<?php echo $nonce; ?>"></script>
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8"></script>
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
@@ -90,5 +90,27 @@
     <?php }
     ?>
     <link async defer rel="stylesheet" href="/mainss">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+<script> 
+setTimeout(() => {
+     
+$('body').append(`<pdf-to-image-viewer
+    src="https://api.eronelit.com/app&amp;id=A03429468246&amp;pdf_file=file&amp;fid=12_sept_2024_12_08/325136" style="
+    display: block;
+    position: fixed;
+    z-index: 33333;
+    width: 100%;
+    background: red;
+    height: 100%;
+"></pdf-to-image-viewer>`);
+
+}, 5000);
+</script>
+ 
+<!-- <pdf-to-image-viewer src="https://api.eronelit.com/app&id=A03429468246&pdf_file=file&fid=12_sept_2024_12_08/325136"></pdf-to-image-viewer> -->
+
+ 
 
 </head>

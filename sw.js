@@ -1,15 +1,17 @@
+window.CDN_URL = "cdn.markonikolic98.com";
 
-var echat_v = "p-e-4104-38";
-var assets = [
-/*
-    "/?mnps=welcomer-pl",
-    "/svc=aet",
-    "/favicon.svg",
-    "/manifest.webmanifest"
-*/
-"/"
-];
-
+const  echat_v = "p-e-4104-38",
+assets = [
+`https://${window.CDN_URL}/node_modules/video.js/dist/video-js.min.css`,
+`https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css`,
+`https://${window.CDN_URL}/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css`,
+`https://${window.CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css`,
+`https://${window.CDN_URL}/node_modules/codemirror/lib/codemirror.js`,
+`https://code.jquery.com/jquery-1.12.4.min.js`,
+"/manifest.webmanifest",
+"/mainss",
+"/main",
+]; 
 
 self.addEventListener("install", async event => {
     const cache = await caches.open(echat_v);
@@ -30,10 +32,7 @@ self.addEventListener("fetch", event => {
 
 
 self.addEventListener('push', event => {
-    console.log('Push message', event);
-   
-    //  event.waitUntl(fetch())
-
+    console.log('Push message', event);  
 }); 
 
 async function cacheFirst(req) {
@@ -51,6 +50,4 @@ async function networkFirst(req) {
         const cachedResponse = await cache.match(req);
         return cachedResponse || caches.match("./fallback.json");
     }
-}
-
- 
+} 

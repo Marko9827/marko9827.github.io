@@ -706,6 +706,7 @@ if (!empty($_GET['drc'])) {
                 header("Cache-Control: post-check=0, pre-check=0", false);
                 header("Pragma: no-cache");
                 ob_start();
+                
                 echo "/* " . time() . " */\n";
 
                 $r = $this->get_data([
@@ -725,7 +726,7 @@ if (!empty($_GET['drc'])) {
         */
                 // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
 
-
+             
 
                 echo "window.portfolio = $r; \n";
 

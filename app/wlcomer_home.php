@@ -12,9 +12,12 @@ define("SOUND_API", "");
 define("SERVER_AJAXS", (string) $protocol . source_URL); //https://tree.localhost");
 function generate_nonce()
 {
-    return bin2hex(random_bytes(16));
+    return base64_encode("$_SERVER[HTTP_HOST]");
+    // return bin2hex(random_bytes(16));
 }
-$_SESSION["Bearer_token_temp"] = generate_nonce();
+  $_SESSION["Bearer_token_temp"] = base64_encode("$_SERVER[HTTP_HOST]");
+  
+  //generate_nonce();
 define("NONCE", "$_SESSION[Bearer_token_temp]");
 
 
@@ -22,6 +25,7 @@ define("NONCE", "$_SESSION[Bearer_token_temp]");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
+$_SESSION['Bearer_token_temp'] = bin2hex(random_bytes(30 / 2));
 
 
 if (substr_count($_SERVER["HTTP_ACCEPT_ENCODING"], "gzip")) {
@@ -234,10 +238,8 @@ ob_start(function ($b) {
     $html = preg_replace('/[\r\n]/', '', $html);
     return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
 });
+ob_clean();
 header("Content-Type: text/html; charset=UTF-8");
-
-//self::MetaTags();
-//exit();
 ?>
 <!DOCTYPE html>
 <html id="themes_html" lang="en" data-location="<?= "GM213-3LOC4SE24"; ?>" class="no-js" prefix="og: https://ogp.me/ns#"
@@ -264,7 +266,7 @@ header("Content-Type: text/html; charset=UTF-8");
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.eronelit.com" crossorigin>
-    <link rel='preconnect' href='https://cdn.markonikolic98.com' /> 
+    <link rel='preconnect' href='https://cdn.markonikolic98.com' />
     <link rel='preconnect' href='https://api.markonikolic98.com' />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <meta name="google" content="notranslate">
@@ -277,12 +279,14 @@ header("Content-Type: text/html; charset=UTF-8");
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script  async src="<?php echo "https://" . source_URL . "/main"; ?>" 
-    nonce="<?php echo $nonce; ?>"
-        type="text/javascript" charset="UTF-8"></script>
+    <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
+        type="text/javascript" charset="UTF-8">
+    </script>
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
 
-    <?php if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
+    <?php
+    /*
+    if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
         <script defer src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js" nonce="<?php echo $nonce; ?>"></script>
         <script defer src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"
             integrity="sha512-J5ha2LF4Le+PBQnI5+xAVJDR+sZG9uSgroy4n/A6TLjNkvYQbqZA8WHZdaOvJ0HiKkBC9Frmvs10rFDSHKmveQ=="
@@ -295,7 +299,7 @@ header("Content-Type: text/html; charset=UTF-8");
     createLinkElements($data['allLinks']);
     createScriptElements($data['scripts']);
 
-   
+
     $token = bin2hex(random_bytes(64));
     echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
@@ -366,7 +370,7 @@ media-src 'self';" />
             </style>
         <?php }
     } ?>
-   
+
     <?php
     if ($_SERVER['HTTP_HOST'] == "markonikolic98.com") { ?>
         <!-- Google tag (gtag.js) -->
@@ -403,18 +407,29 @@ $r = $this->get_data([
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js"></script>
 <link   async defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/viewer.css">
 <script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/pdf_viewer.js"></script>
-*/ ?>
-<link   async defer rel="stylesheet" href="/mainss">
+*/
+    ?>
+    <link async defer rel="stylesheet" href="/mainss">
+
+
+    <link crossorigin  rel="preload"
+        href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" as="style" />
+    <link  crossorigin  rel="preload" defer href="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
+
+    <link async defer rel="stylesheet" crossorigin 
+        href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css">
+
+    <script crossorigin  type="text/javascript" defer src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
 
 </head>
 
-<body onload="welcomer.run();">
+<body>
 
-    <!-- (: SUDO :) -->
+
 </body>
 
 </html>
-<?php 
+<?php
 /*
 $b = ob_get_clean();
 $build_index = "$_SERVER[DOCUMENT_ROOT]/build/index.html";

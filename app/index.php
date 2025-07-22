@@ -1353,6 +1353,8 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
         if ($h == "main") {
             $js_static = "";
 
+echo 1;
+
             header("content-type: text/javascript");
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);

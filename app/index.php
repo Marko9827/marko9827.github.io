@@ -793,14 +793,14 @@ class portfolio_marko
         $rls = null;
         if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $rls = trim($_SERVER["HTTP_AUTHORIZATION"]);
-            
+
         } elseif (function_exists('getallheaders')) {
             $headers = getallheaders();
             if (isset($headers['Authorization'])) {
-                $rls =  trim($headers['Authorization']);
+                $rls = trim($headers['Authorization']);
             }
         }
-         
+
         return $rls;
     }
 
@@ -813,7 +813,169 @@ class portfolio_marko
         return null;
     }
 
-    function Pages($h = "home")
+    private function xor_encrypt($text, $key)
+    {
+        $text_bytes = mb_convert_encoding($text, 'UTF-8');
+        $key_bytes = mb_convert_encoding($key, 'UTF-8');
+        $result = '';
+        for ($i = 0, $j = 0; $i < strlen($text_bytes); $i++, $j++) {
+            if ($j >= strlen($key_bytes))
+                $j = 0;
+            $result .= $text_bytes[$i] ^ $key_bytes[$j];
+        }
+        return $result;
+    }
+
+
+
+    private function js_to_dna($text)
+    {
+        $binary = '';
+        foreach (str_split($text) as $c) {
+            $binary .= sprintf('%08b', ord($c));
+        }
+
+        $dna = '';
+        for ($i = 0; $i < strlen($binary); $i += 2) {
+            $pair = substr($binary, $i, 2);
+            switch ($pair) {
+                case '00':
+                    $dna .= 'A';
+                    break;
+                case '01':
+                    $dna .= 'C';
+                    break;
+                case '10':
+                    $dna .= 'G';
+                    break;
+                case '11':
+                    $dna .= 'T';
+                    break;
+            }
+        }
+
+        return $dna;
+    }
+
+    private function format_dna_array($dna, $line_length = 60)
+    {
+        $lines = str_split($dna, $line_length);
+        $quoted = array_map(fn($l) => '"' . $l . '"', $lines);
+        return "[\n  " . implode(",\n  ", $quoted) . "\n]";
+    }
+
+    public function protect_js_dna($js_code)
+    {
+        $js_code = $this->minifyJS_code($js_code);
+        $dna = $this->js_to_dna($js_code);
+
+        return <<<JS
+    (function(){
+      "use strict";
+      try {
+        const dna = "$dna";
+        const bin = dna.match(/.{1}/g).map(l => {
+          return {"A":"00","C":"01","G":"10","T":"11"}[l];
+        }).join("");
+        const bytes = bin.match(/.{8}/g).map(b => parseInt(b, 2));
+        const decoded = new TextDecoder().decode(new Uint8Array(bytes));
+        (1,eval)(decoded);
+      } catch(e) {
+        console.log("💥 Not working. Human! ", e);
+      }
+    })();
+    JS;
+    }
+
+    private function protect_js($js_code)
+    {
+
+        return self::protect_js_dna($js_code);
+
+        $js_code = self::minifyJS_code($js_code);
+
+        $host = $_SERVER['HTTP_HOST'];
+
+        $encrypted = self::xor_encrypt($js_code, $host);
+        $b64 = base64_encode($encrypted);
+
+        $parts = str_split($b64, rand(20, 40));
+        $joined = implode('"+ "', $parts);
+
+        return <<<JS
+(function(){
+  "use strict";   
+  try {
+    const _0x4f2 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const __ = h => new TextEncoder().encode(h);
+    const $$ = (arr, key) => arr.map((v, i) => v ^ key[i % key.length]);
+    const ___ = bin => new TextDecoder().decode(bin);
+    const _b64 = "$joined";
+    const _bin = _0x4f2(_b64);
+    const _key = __(location.host);
+    const _dec = $$(_bin, _key);
+    const _src = ___(_dec);
+    (1,eval)(_src); 
+  } catch(e) {
+    console.log("⛔️", e.message);
+    window.stop?.();
+  }
+})();
+JS;
+    }
+    private function minifyJS_code($code = "")
+    {
+
+
+        $code = preg_replace('#/\*.*?\*/#s', '', $code);
+        $lines = explode("\n", $code);
+        foreach ($lines as &$line) {
+            $quote_open = false;
+            $escaped = false;
+            $out = '';
+            for ($i = 0; $i < strlen($line); $i++) {
+                $char = $line[$i];
+                if ($char === '"' || $char === "'") {
+                    if (!$escaped && (!$quote_open || $quote_open === $char)) {
+                        $quote_open = $quote_open === $char ? false : $char;
+                    }
+                }
+
+                if (!$quote_open && substr($line, $i, 2) === '//' && !preg_match('#https?:\/\/#', substr($line, 0, $i + 2))) {
+                    break;
+                }
+
+                $escaped = ($char === '\\' && !$escaped);
+                $out .= $char;
+            }
+            $line = rtrim($out);
+        }
+
+        return implode("\n", $lines);
+    }
+
+    private function gnerateJS(){
+        $js_static = "";
+        header("content-type: text/javascript");
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        ob_start();
+        $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
+        $js_static .= "(function () { \"use strict\"; \n\n/* " . time() . " */\n";
+
+        $js_static .= "const version = function(){
+            return '" . time() . "';
+        };";
+
+        $$js_static .= "window.stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
+
+        $js_static .= file_get_contents(ROOT . "s.js");
+
+        file_put_contents($f, self::protect_js($js_static));
+ 
+    }
+    private function Pages($h = "home")
     {
         session_start();
 
@@ -1174,80 +1336,63 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
-            
+
             header("content-type: text/javascript");
 
             echo "window.portfolio = $r;";
-           # header("content-type: text/javascript");
+            # header("content-type: text/javascript");
             echo "window.portfolio = $r; \n \n";
             if (strpos($_SERVER['HTTP_HOST'], ".localhost")) {
                 echo "window.portfolio.host = 'https://api.localhost';";
             }
             exit();
         }
+        if ($h == "sbct") {
+           # self::gnerateJS();    
+        }
         if ($h == "main") {
+            $js_static = "";
+
             header("content-type: text/javascript");
             header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
             header("Cache-Control: post-check=0, pre-check=0", false);
             header("Pragma: no-cache");
             ob_start();
-            echo "(function () { \"use strict\"; \n\n/* " . time() . " */\n";
-
-            echo "const version = function(){
-                return '" . time() . "';
-            };";
-
-
-             
-  
-  /*          $r = $this->get_data([
-                "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
-                "headers" => [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer 32M052k350QaeofkaeopfF',
-                ]
-            ]); 
-         echo "const portfolio = $r; \n"; 
-*/
-
-            echo "window.stmp = '".base64_encode("$_SERVER[HTTP_HOST]")."';";
-            # include ROOT . "welcomer_f_old.js";
-            include ROOT . "s.js";
-
-            # aer 
-            # include ROOT . "welcomer_f.js";
-            # @readfile(ROOT . "welcomer_f.js");
-
-
-            //  $b = ob_get_clean();
-            //   echo $this->minifyJS($b);
+            $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
+            // echo self::protect_js($js_static);
+            if (!file_exists($f)) { 
+                self::gnerateJS();  
+                @readfile($f);  
+            } else{
+                @readfile($f);
+            }
             exit();
         }
-        if ($h == "icons"){
+        if ($h == "icons") {
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 header('Content-Type: text/html; charset=utf-8');
                 $this->error_page(405);
                 exit();
             }
-            if(base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]"){
+            if (base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]") {
                 http_response_code(401);
                 echo json_encode(["error" => "Unauthorized"]);
                 exit();
             }
             header("Content-Type: text/plain");
-            @readfile(__DIR__. './sf.svg');
+            @readfile(__DIR__ . './sf.svg');
             exit();
         }
         if ($h == "contact") {
 
 
-           
+
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 header('Content-Type: text/html; charset=utf-8');
                 $this->error_page(405);
                 exit();
             }
-            if(base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]"){
+            if (base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]") {
                 http_response_code(401);
                 echo json_encode(["error" => "Unauthorized"]);
                 exit();
@@ -2082,19 +2227,19 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                    {
-                                                                                                                                                                        "@context": "https://schema.org",
-                                                                                                                                                                        "@type": "WebSite",
-                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                        "name": "Marko Nikolić",
-                                                                                                                                                                        "author": {
-                                                                                                                                                                            "@type": "Person",
-                                                                                                                                                                            "name": "Marko Nikolić"
-                                                                                                                                                                        },
-                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                        "inLanguage": "en-GB"
-                                                                                                                                                                    }
-                                                                                                                                                                </script>
+                                                                                                                                                                                    {
+                                                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                                                        "author": {
+                                                                                                                                                                                            "@type": "Person",
+                                                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                                                        },
+                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                                                    }
+                                                                                                                                                                                </script>
         <?php
     }
 

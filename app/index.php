@@ -1348,7 +1348,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             exit();
         }
         if ($h == "sbct") {
-           # self::gnerateJS();    
+             self::gnerateJS();    
         }
         if ($h == "main") {
             $js_static = "";

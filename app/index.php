@@ -872,7 +872,7 @@ class portfolio_marko
         return <<<JS
     (function(){
       "use strict";
-      
+      try {
         const dna = "$dna";
         const bin = dna.match(/.{1}/g).map(l => {
           return {"A":"00","C":"01","G":"10","T":"11"}[l];
@@ -880,7 +880,7 @@ class portfolio_marko
         const bytes = bin.match(/.{8}/g).map(b => parseInt(b, 2));
         const decoded = new TextDecoder().decode(new Uint8Array(bytes));
         (1,eval)(decoded);
-    
+      }catch(ex){}
     })();
     JS;
     }
@@ -968,7 +968,8 @@ JS;
         return $content;
     }
 
-    private function get_SVSG()   {
+    private function get_SVSG()
+    {
         $svg = file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/sf.xml");
 
 
@@ -996,7 +997,7 @@ JS;
                 'paths' => $paths
             ];
         }
-        
+
         return json_encode($output);
 
     }
@@ -1005,11 +1006,11 @@ JS;
      * Summary of gnerateJS
      * @return string 
      */
-    private function gnerateJS() 
+    private function gnerateJS()
     {
         $js_static = "";
-        
-        $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
+
+        $f = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
         $js_static .= "(function initWhenReady() { \"use strict\"; \n\n/* " . time() . " */\n";
 
         $js_static .= "const version = function(){
@@ -1017,31 +1018,29 @@ JS;
         };";
 
         $js_static .= "const stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
-  
+
 
         $j_s = self::get_SVSG();
-             
-        $js_static .=  "window.svg_paths = $j_s;";
 
-        $css =   self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
+        $js_static .= "window.svg_paths = $j_s;";
 
-        $js_static .=  "const mainss_import = `$css`;";
-      
-       # $js_static .=  
+ 
+
+        # $js_static .=  
         $js_static .= file_get_contents(ROOT . "s.js");
         $dir = dirname($f);
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        $data = $js_static;
-        $data = self::minifyJS_code(self::protect_js($js_static));
+          $data = self::minifyJS_code($js_static);
+       # $data =  self::minifyJS_code($js_static) ;
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
         ob_start();
-        return $data; 
+        return $data;
     }
 
     private function cleanId($id)
@@ -1247,7 +1246,7 @@ JS;
             exit();
         }
 
-        if ($h == "mainss") { 
+        if ($h == "mainss") {
             header("Content-Type: text/css");
             ob_start(function ($b) {
                 return self::minifyHtmlCss($b);
@@ -1256,9 +1255,9 @@ JS;
             $file = __DIR__ . '/build/style_minifed.css';
             $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
 
-            if(!file_exists($file)){
-                 file_put_contents($file , $cst);
-            } 
+            if (!file_exists($file)) {
+                file_put_contents($file, $cst);
+            }
             header("Content-Type: text/css");
             include $file;
             exit();
@@ -1404,7 +1403,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             exit();
         }
 
-        if ($h == "mask"){
+        if ($h == "mask") {
             header("Content-Type: image/png");
             @readfile("$_SERVER[DOCUMENT_ROOT]/app/build/mask.png");
             exit();
@@ -1428,39 +1427,42 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
             header("content-type: text/javascript");
 
-          #  echo "window.portfolio = $r;";
+            #  echo "window.portfolio = $r;";
             # header("content-type: text/javascript");
             echo "var portfolio = $r; \n \n";
             if (strpos($_SERVER['HTTP_HOST'], ".localhost")) {
                 echo "portfolio.host = 'https://api.localhost'; \n \n";
             }
 
-           
-           
+            $css = file_get_contents(__DIR__ . '/build/style_minifed.css');
+
+            echo "const mainss_import = `$css`;";
+
             exit();
         }
         if ($h == "sbct") {
-            self::gnerateJS();
+            
 
             $file = __DIR__ . '/build/style_minifed.css';
             $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
 
-            
-                 file_put_contents($file , $cst);
-          
-           
+
+            file_put_contents($file, $cst);
+
+            self::gnerateJS();
             echo time();
         }
         if ($h == "main") {
-          
-            $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
-            $dir = dirname($f); 
+
+            $f = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
+
+            $dir = dirname($f);
             if (!file_exists($f)) {
                 self::gnerateJS();
             }
 
-            header('Content-Type: application/javascript'); 
-            echo self::readLargeFile($f);
+            header('Content-Type: application/javascript');
+            include $f;
             exit();
         }
         if ($h == "icons") {
@@ -2350,19 +2352,19 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                                                            {
-                                                                                                                                                                                                                "@context": "https://schema.org",
-                                                                                                                                                                                                                "@type": "WebSite",
-                                                                                                                                                                                                                "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                                                                "name": "Marko Nikolić",
-                                                                                                                                                                                                                "author": {
-                                                                                                                                                                                                                    "@type": "Person",
-                                                                                                                                                                                                                    "name": "Marko Nikolić"
-                                                                                                                                                                                                                },
-                                                                                                                                                                                                                "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                                                                "inLanguage": "en-GB"
-                                                                                                                                                                                                            }
-                                                                                                                                                                                                        </script>
+                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                                                                                        "author": {
+                                                                                                                                                                                                                            "@type": "Person",
+                                                                                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                                                                                        },
+                                                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                </script>
         <?php
     }
 

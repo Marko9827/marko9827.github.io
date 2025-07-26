@@ -2304,7 +2304,7 @@ hh_anim_start spj {
 }
 
 @media only screen and (min-width: 700px) {
-    div#buttons {
+    #buttons {
         width: 80%;
         margin: auto;
     }
@@ -3238,7 +3238,7 @@ p_open {
     font-size: 12px !important;
 }
 
-div#clavs br_ta {
+div#clavs .br_ta {
     position: sticky;
     background: var(--black-trasparent-color);
     top: 51.1px;
@@ -3253,8 +3253,8 @@ div#clavs br_ta {
     height: fit-content;
 }
 
-div#clavs br_ta sub_ta ta_f,
-div#clavs br_ta ta_f {
+div#clavs .br_ta sub_ta ta_f,
+div#clavs .br_ta ta_f {
     margin: 0px 4px;
     padding: 6px;
     border-radius: 6px;
@@ -3262,15 +3262,15 @@ div#clavs br_ta ta_f {
     background: var(--black-trasparent-color);
 }
 
-div#clavs br_ta sub_ta ta_f.active,
-div#clavs br_ta sub_ta ta_f:hover,
-div#clavs br_ta ta_f.active,
-div#clavs br_ta ta_f:hover {
+div#clavs .br_ta sub_ta ta_f.active,
+div#clavs .br_ta sub_ta ta_f:hover,
+div#clavs .br_ta ta_f.active,
+div#clavs .br_ta ta_f:hover {
     background: var(--hard_white);
     color: var(--black-trasparent-color);
 }
 
-div#clavs br_ta {
+div#clavs .br_ta {
     overflow-x: scroll;
     display: -webkit-inline-box;
     display: -ms-inline-flexbox;
@@ -3285,13 +3285,13 @@ div#clavs br_ta {
     transition: margin-left 0.5s;
 }
 
-div#clavs br_ta::-webkit-scrollbar {
+div#clavs .br_ta::-webkit-scrollbar {
     width: 0px !important;
     height: 0px !important;
 }
 
-div#clavs br_ta sub_ta ta_f,
-div#clavs br_ta ta_f {
+div#clavs .br_ta sub_ta ta_f,
+div#clavs .br_ta ta_f {
     scroll-snap-align: center;
     -ms-flex-negative: 0;
     flex-shrink: 0;
@@ -3323,17 +3323,17 @@ div#clavs br_ta ta_f {
     padding-top: 65px !important;
 }
 
-div#clavs br_ta {
+div#clavs .br_ta {
     transition: .3s;
 }
 
-div#clavs br_ta.active_scr {
+div#clavs .br_ta.active_scr {
     transform: translateY(-50px);
     opacity: 0;
 }
 
-div#clavs br_ta,
-div#clavs br_ta ta_f {
+div#clavs .br_ta,
+div#clavs .br_ta ta_f {
     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
     enable-background: new 0 0 512 512 !important;
@@ -3580,7 +3580,7 @@ div.bra img.img_background_rljs.active {
     opacity: 0.9;
 }
 
-div#buttons.box_shadow img.aepraaa3 {
+#buttons.box_shadow img.aepraaa3 {
     background: transparent;
     border: none;
     position: absolute;
@@ -3597,11 +3597,11 @@ div#buttons.box_shadow img.aepraaa3 {
     opacity: 0;
 }
 
-div#buttons.box_shadow .adiv:hover img.aepraaa3.loading {
+#buttons.box_shadow .adiv:hover img.aepraaa3.loading {
     opacity: 0 !important;
 }
 
-div#buttons.box_shadow .adiv:hover img.aepraaa3:not(.loading) {
+#buttons.box_shadow .adiv:hover img.aepraaa3:not(.loading) {
     opacity: 0.5;
 }
 
@@ -3834,7 +3834,7 @@ dnm_footer {
     transition: .3s;
 }
 
-div#clavs br_ta ta_f.active span {
+div#clavs .br_ta ta_f.active span {
     content: "3";
     color: black;
     padding: 6px;
@@ -3847,7 +3847,7 @@ div#clavs br_ta ta_f.active span {
     font-size: 10px !important;
 }
 
-div#clavs br_ta ta_f.active span {
+div#clavs .br_ta ta_f.active span {
     color: transparent;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3872,7 +3872,7 @@ div#clavs br_ta ta_f.active span {
     border-top-left-radius: 5px;
 }
 
-div#clavs br_ta ta_f.active {
+div#clavs .br_ta ta_f.active {
     padding-right: 0px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3886,9 +3886,9 @@ div#clavs br_ta ta_f.active {
     align-content: center;
 }
 
-div#clavs br_ta ta_f:not(.active) span {}
+div#clavs .br_ta ta_f:not(.active) span {}
 
-div#clavs br_ta ta_f span {
+div#clavs .br_ta ta_f span {
     -webkit-transform: translateX(30px);
     -ms-transform: translateX(30px);
     transform: translateX(30px);
@@ -3897,7 +3897,7 @@ div#clavs br_ta ta_f span {
     padding: 0px !important;
 }
 
-div#clavs br_ta ta_f:hover span {
+div#clavs .br_ta ta_f:hover span {
     -webkit-transform: none !important;
     -ms-transform: none !important;
     transform: none !important;
@@ -3906,7 +3906,7 @@ div#clavs br_ta ta_f:hover span {
     padding: 6px !important;
 }
 
-div#clavs br_ta ta_f.active span {
+div#clavs .br_ta ta_f.active span {
     -webkit-transform: none !important;
     -ms-transform: none !important;
     transform: none !important;
@@ -3915,7 +3915,7 @@ div#clavs br_ta ta_f.active span {
     padding: 6px !important;
 }
 
-div#clavs br_ta ta_f span {
+div#clavs .br_ta ta_f span {
     content: "3";
     color: black;
     padding: 6px;
@@ -3928,11 +3928,11 @@ div#clavs br_ta ta_f span {
     font-size: 10px !important;
 }
 
-div#clavs br_ta ta_f span {
+div#clavs .br_ta ta_f span {
     font-weight: bold;
 }
 
-div#clavs br_ta ta_f span {
+div#clavs .br_ta ta_f span {
     color: transparent;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3957,7 +3957,7 @@ div#clavs br_ta ta_f span {
     border-top-left-radius: 5px;
 }
 
-div#clavs br_ta ta_f {
+div#clavs .br_ta ta_f {
     padding-right: 0px;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3971,18 +3971,18 @@ div#clavs br_ta ta_f {
     align-content: center;
 }
 
-div#clavs br_ta ta_f {
+div#clavs .br_ta ta_f {
     text-transform: capitalize !important;
 }
 
-i.br_ta_funnel.bi.bi-funnel {
+i..br_ta_funnel.bi.bi-funnel {
     margin-top: 6px;
     margin-left: 6px;
     margin-right: 6px;
     pointer-events: none;
 }
 
-div#clavs br_ta ta_f[data-category="telegram"] i {
+div#clavs .br_ta ta_f[data-category="telegram"] i {
     margin-right: 5px;
     padding-right: 2px;
 }
@@ -5166,13 +5166,13 @@ video-player-v2 {
 }
 
 div#clavs div_header,
-div#clavs br_ta,
+div#clavs .br_ta,
 #clavs grider_viewer {
     transition: .3s !important;
 }
 
 div#clavs.scrollactive div_header,
-div#clavs.scrollactive br_ta {}
+div#clavs.scrollactive .br_ta {}
 
 div#clavs.scrollactive div_header {
     opacity: 0 !important;
@@ -5184,7 +5184,7 @@ div#clavs.scrollactive grider_viewer {
     padding-top: 10px !important;
 }
 
-div#clavs.scrollactive br_ta {
+div#clavs.scrollactive .br_ta {
     top: 0px;
 }
 
@@ -5364,7 +5364,7 @@ video.wallpaperVideo {
     object-fit: cover;
 }
 
-div#clavs br_ta ta_f[data-feed="nasa"] {
+div#clavs .br_ta ta_f[data-feed="nasa"] {
     background-image: url(/logo_nasa), -o-linear-gradient(45deg, black, #0B3D91);
     background-image: url(/logo_nasa), linear-gradient(45deg, black, #0B3D91);
     background-size: contain;
@@ -5380,7 +5380,7 @@ div#clavs br_ta ta_f[data-feed="nasa"] {
     color: white !important;
 }
 
-div#clavs br_ta ta_f[data-feed="nasa"] span_t {
+div#clavs .br_ta ta_f[data-feed="nasa"] span_t {
     text-align: right !important;
     padding-right: 10px;
 }
@@ -5393,7 +5393,7 @@ ta_f.active.sub_category {
     background: rgb(90 90 90 / 55%);
 }
 
-br_ta.sub_cat {
+.br_ta.sub_cat {
     position: absolute !important;
     top: 0px !important;
     bottom: unset !important;
@@ -5403,17 +5403,17 @@ br_ta.sub_cat {
     background: rgb(90 90 90 / 55%) !important;
 }
 
-br_ta.sub_cat {
+.br_ta.sub_cat {
     margin-top: 102px !important;
     z-index: 4 !important;
 }
 
-div#clavs.scrollactive br_ta.sub_cat {
+div#clavs.scrollactive .br_ta.sub_cat {
     margin-top: 51px !important;
     opacity: 0.5;
 }
 
-div#clavs.scrollactive br_ta.sub_cat:hover {
+div#clavs.scrollactive .br_ta.sub_cat:hover {
     opacity: 1;
 }
 
@@ -5433,7 +5433,7 @@ p-search {
     background: #ffffff08;
 }
 
-div#clavs.scrollactive br_ta * {
+div#clavs.scrollactive .br_ta * {
     transition: .2s !important;
 }
 

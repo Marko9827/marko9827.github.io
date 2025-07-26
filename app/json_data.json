@@ -38,14 +38,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+        
         {
             "tag": "link",
             "rel": "preload",
@@ -133,14 +126,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+      
         {
             "tag": "link",
             "rel": "preload",
@@ -243,14 +229,7 @@
             "defer": false,
             "crossorigin": ""
         },
-        {
-            "tag": "script",
-            "src": "https://cdn.markonikolic98.com/node_modules/video.js/dist/video.min.js",
-            "type": "",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },
+     
      
         
         {

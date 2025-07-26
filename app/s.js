@@ -2366,7 +2366,7 @@ div.content_Space { background-color: transparent; background-image: -webkit-gra
 
       :host { --cdn_primary: #ffff; --btn-disable: #fff; --seo-color: #fff; --primary_light: #ffffff4f; --textshadow_media: 0px 0px 0px var(--cdn_white), 3px 3px 5px #00000047; --cdn_white: #333; --hard_white: #fff; --red: #b90808; --white: white; --section-bg: #333; --green: #2e7d32; --header-a: #e6e6e6; --product-background: linear-gradient(45deg, #1b5e20, #10bf19); --ads-background: linear-gradient(45deg, rgb(148 31 148), #c55e05); --event-background: linear-gradient(45deg, rgb(148 31 148), #2196f3); --job-background: linear-gradient(45deg, rgb(148 31 148), #3f51b5); --black-trasparent-color: rgba(0, 0, 0, 0.639); --grid-image: url(/?url=source&sourcelogin=grid.svg); --shield-image: url(/?url=source&sourcelogin=shield.svg); --stars-25: #b32020; --stars-40: #FFD700; --stars-60: #d56617; --stars-75: var(--green); }
       
-div#buttons.box_shadow img.aepraaa3 {
+#buttons.box_shadow img.aepraaa3 {
 display:none;}
 
       div#clavs {
@@ -2543,7 +2543,7 @@ hh_anim_start spj {
       this.wrapper.appendChild(style);
       this.wrapper.id = "clavs";
       this.shadow.appendChild(this.wrapper);
-      this.buttons = document.createElement("div");
+      this.buttons = document.createElement("div"); 
 
       this.arrowRight = document.createElement("icon-i");
       this.arrowRight.className =
@@ -2918,6 +2918,19 @@ hh_anim_start spj {
     }
 
     renderWelcomeSection() {
+      function daysSince(dateString) {
+        const [day, month, year] = dateString.split('/').map(Number);
+        const startDate = new Date(year, month - 1, day);
+        const today = new Date();
+       
+        startDate.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+      
+        const diffTime = today - startDate;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+      }
+
       const section = document.createElement("hh_anim_start");
       const tthis = this;
 
@@ -2925,7 +2938,7 @@ hh_anim_start spj {
       const p = document.createElement("p");
       const span = document.createElement("span");
       span.className = "box_shadow_h";
-      span.innerHTML = `Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: 9987`;
+      span.innerHTML = `Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: ${daysSince("16/03/1998")}`;
       p.appendChild(span);
 
       const spj = document.createElement("spj");
@@ -3535,7 +3548,8 @@ hh_anim_start spj {
 
       this.grider_viewer_main.appendChild(this.grider_viewer);
       //
-      this.blog_br_ta = document.createElement("br_ta");
+      this.blog_br_ta = document.createElement("custom-scrolh");
+      this.blog_br_ta.classList.add('br_ta');
       this.blog_br_ta.style.display = "none";
 
       this.wrapper.appendChild(this.blog_br_ta);
@@ -4063,7 +4077,7 @@ div#clavs.gallery_mode section[data-ui-type="gallery"] .grider_viewer sp_clv {
     -webkit-transition: .3s !important;}
 
 div#clavs div_header,
-div#clavs br_ta,
+div#clavs .br_ta,
 #clavs .grider_viewer {
     transition: .3s !important;}
 
@@ -4171,7 +4185,7 @@ ta_f icon-i {
           margin-top: 1px;
 }
 
-div#clavs br_ta ta_f {
+div#clavs .br_ta ta_f {
  display: -webkit-box;
     display: -ms-flexbox;
 }
@@ -4752,11 +4766,11 @@ div#clavs br_ta ta_f {
           kat_mns();
         };
 
-        //  br_ta.appendChild(ta_item);
+        //  .br_ta.appendChild(ta_item);
         this.blog_br_ta.appendChild(ta_item);
       });
 
-      // setTimeout(() => br_ta.removeAttribute("style"), 100);
+      // setTimeout(() => .br_ta.removeAttribute("style"), 100);
     }
 
     img_load(t) {
@@ -11274,7 +11288,7 @@ border-bottom-left-radius: 10px;
       fullBtn.className = 'fullscreen';
       fullBtn.title = 'Fullscreen';
       fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
-      right.appendChild(subsBtn);
+      // right.appendChild(subsBtn);
       right.appendChild(speedBtn);
       right.appendChild(pipBtn);
       right.appendChild(fullBtn);
@@ -11651,8 +11665,260 @@ background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%));
   });
 }
 
+class CustomScrollV2 extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: "open" });
+    this._handlers = {};
+  }
+
+  gear(type, callback) {
+    if (!this._handlers[type]) this._handlers[type] = [];
+    this._handlers[type].push(callback);
+  }
+
+  append(child) {
+    if (child instanceof Node) {
+      this.appendChild(child);
+    }
+  }
+
+  clearLightDOM() {
+    while (this.firstChild) {
+      this.removeChild(this.firstChild);
+    }
+  }
+
+  connectedCallback() {
+    const style = `
+    slot {
+    display:-webkit-inline-box;
+    display:-ms-inline-flexbox;
+    display:inline-flex;
+    }
+      .wrapper {
+        width: 100%;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        padding-bottom: 5px;
+        scrollbar-width: none;
+      }
+
+      .wrapper::-webkit-scrollbar {
+        display: none;
+      }
+
+      .scrollbar {
+        position: absolute;
+        bottom: 2px;
+        left: 0;
+        height: 8px;
+        width: 100%;
+        border-radius: 30px;
+        background: rgba(0, 0, 0, 0.1);
+        -webkit-transition: opacity 0.5s ease;
+        -o-transition: opacity 0.5s ease;
+        transition: opacity 0.5s ease;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .thumb {
+        position: absolute;
+        height: 100%;
+        border-radius: 4px;
+        cursor: none;
+        background-color: rgba(255, 255, 255, 0.2);
+        backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
+        -webkit-backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
+      }
+
+      .thumb:hover {
+        -webkit-filter: drop-shadow(0 0 6px #fff);
+                filter: drop-shadow(0 0 6px #fff);
+      }
+
+      :host(:hover) .scrollbar {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .content {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        gap: 10px;
+        -webkit-box-align: stretch;
+            -ms-flex-align: stretch;
+                align-items: stretch;
+      }
+    `;
+
+    this.shadowRoot.innerHTML = `
+      <style>${style}</style>
+      <div class="wrapper">
+        <div class="content"><slot></slot></div>
+      </div>
+      <div class="scrollbar"><div class="thumb"></div></div>
+    `;
+
+    const wrapper = this.shadowRoot.querySelector(".wrapper");
+    const thumb = this.shadowRoot.querySelector(".thumb");
+    const content = wrapper.querySelector(".content");
+
+    // === Scrollbar thumb update
+    const updateThumb = () => {
+      const contentWidth = wrapper.scrollWidth;
+      const containerWidth = wrapper.clientWidth;
+      const scrollLeft = wrapper.scrollLeft;
+
+      const thumbWidth = Math.max((containerWidth * containerWidth) / contentWidth, 30);
+      const thumbLeft = (scrollLeft * containerWidth) / contentWidth;
+
+      thumb.style.width = `${thumbWidth}px`;
+      thumb.style.left = `${thumbLeft}px`;
+
+      if (this._handlers["scroll"]) {
+        this._handlers["scroll"].forEach((cb) => cb(wrapper.scrollTop, wrapper.scrollLeft));
+      }
+    };
+
+    wrapper.addEventListener("scroll", () => {
+      updateThumb();
+      onScrollActivity();
+    });
+
+    window.addEventListener("resize", updateThumb);
+    updateThumb();
+
+    // === Disable pointer-events during scroll
+    let scrollDisableTimer = null;
+
+    const disablePointerEvents = () => {
+      if (!content) return;
+      for (const el of content.children) {
+        el.style.pointerEvents = "none";
+      }
+    };
+
+    const enablePointerEvents = () => {
+      if (!content) return;
+      for (const el of content.children) {
+        el.style.pointerEvents = "";
+      }
+    };
+
+    const onScrollActivity = () => {
+      disablePointerEvents();
+      if (scrollDisableTimer) clearTimeout(scrollDisableTimer);
+      scrollDisableTimer = setTimeout(() => {
+        enablePointerEvents();
+      }, 200); // 200ms bez skrola
+    };
+
+    // === THUMB DRAG
+    let isDragging = false;
+    let startX, startScrollLeft;
+
+    thumb.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      startX = e.clientX;
+      startScrollLeft = wrapper.scrollLeft;
+      document.body.style.userSelect = "none";
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      document.body.style.userSelect = "";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - startX;
+      const scrollableWidth = wrapper.scrollWidth - wrapper.clientWidth;
+      const thumbWidth = thumb.clientWidth;
+      const containerWidth = wrapper.clientWidth;
+      const scrollRatio = scrollableWidth / (containerWidth - thumbWidth);
+      wrapper.scrollLeft = startScrollLeft + deltaX * scrollRatio;
+    });
+
+    // === TOUCHPAD DRAG + INERCIJA
+    let isTouchScrolling = false;
+    let startX_drag = 0;
+    let startScrollLeft_drag = 0;
+    let velocity = 0;
+    let lastX = 0;
+    let lastTime = 0;
+    let inertiaFrame = null;
+
+    const stopInertia = () => {
+      if (inertiaFrame) {
+        cancelAnimationFrame(inertiaFrame);
+        inertiaFrame = null;
+      }
+    };
+
+    const applyInertia = () => {
+      if (Math.abs(velocity) < 0.1) {
+        velocity = 0;
+        return;
+      }
+      wrapper.scrollLeft -= velocity;
+      velocity *= 0.95;
+      inertiaFrame = requestAnimationFrame(applyInertia);
+    };
+
+    wrapper.addEventListener("mousedown", (e) => {
+      if (e.button !== 0) return;
+      isTouchScrolling = true;
+      startX_drag = e.clientX;
+      startScrollLeft_drag = wrapper.scrollLeft;
+      document.body.style.cursor = "grabbing";
+      document.body.style.userSelect = "none";
+      stopInertia();
+      lastX = e.clientX;
+      lastTime = Date.now();
+    });
+
+    document.addEventListener("mouseup", () => {
+      if (!isTouchScrolling) return;
+      isTouchScrolling = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+
+      const now = Date.now();
+      const deltaTime = now - lastTime;
+      if (deltaTime < 300) {
+        inertiaFrame = requestAnimationFrame(applyInertia);
+      }
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (!isTouchScrolling) return;
+      const now = Date.now();
+      const dx = e.clientX - lastX;
+      const dt = now - lastTime;
+      if (dt > 0) velocity = (dx / dt) * 20;
+      lastX = e.clientX;
+      lastTime = now;
+
+      const dragDelta = e.clientX - startX_drag;
+      wrapper.scrollLeft = startScrollLeft_drag - dragDelta;
+    });
+  }
+}
+
+ 
+ 
+
+
+
   if (!customElements.get("custom-scroll")) {
     customElements.define("custom-scroll", CustomScroll);
+  }
+
+  if (!customElements.get("custom-scrolh")) {
+    customElements.define("custom-scrolh", CustomScrollV2);
   }
 
   if (!customElements.get("cv-panel")) {
@@ -12701,7 +12967,7 @@ filter: grayscale(1) !important;`
     initMonaco() {
       if (!window.monaco) {
         const loader = document.createElement('script');
-        loader.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js';
+        loader.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js';
         loader.onload = () => this.setupEditor();
         document.head.appendChild(loader);
       } else {
@@ -12712,7 +12978,7 @@ filter: grayscale(1) !important;`
     setupEditor() {
       const container = this.shadowRoot.getElementById('editor-container');
   
-      require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
+      require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs' } });
       require(['vs/editor/editor.main'], () => {
         this.editor = monaco.editor.create(container, {
           value: `<!DOCTYPE html>

@@ -1018,7 +1018,7 @@ JS;
         };";
 
         $js_static .= "const stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
- 
+
 
         # $js_static .=  
         $js_static .= file_get_contents(ROOT . "s.js");
@@ -1026,8 +1026,8 @@ JS;
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        $data = self::protect_js_dna($js_static);
-        # $data =  self::minifyJS_code($js_static) ;
+        // $data = self::protect_js_dna($js_static);
+        $data =  self::minifyJS_code($js_static) ;
         unlink($f);
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");
@@ -1044,6 +1044,48 @@ JS;
         $id = preg_replace('/^\d+-/', '', $id);      // skida npr. 0- sa početka
         $id = str_replace(['bi-', 'bi'], '', $id);
         return $id;
+    }
+
+    private function ALLOW($file_or_string = false)
+    {
+        $allowedReferers = [
+            'https://portfolio.localhost',
+            'https://markonikolic98.com',
+            'https://ark.markonikolic98.com',
+        ];
+
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+        $allowed = false;
+
+        foreach ($allowedReferers as $allowedHost) {
+            if (strpos($referer, $allowedHost) === 0) {
+                $allowed = true;
+                break;
+            }
+        }
+
+        if (!$allowed) {
+            self::error_page(404);
+            exit();
+        }
+        $file_or_string = false;
+        if ($file_or_string) {
+            $lastModified = filemtime($file_or_string);
+
+            header('Content-Type: application/javascript');
+            header('Cache-Control: public, max-age=31536000');
+            header('Expires: ' . gmdate('D, d M Y H:i:s', time() + 31536000) . ' GMT');
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $lastModified) . ' GMT');
+
+            if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+                $ifModifiedSince = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+                if ($ifModifiedSince >= $lastModified) {
+                    header('HTTP/1.1 304 Not Modified');
+                    exit;
+                }
+            }
+        }
     }
 
     private function Pages($h = "home")
@@ -1406,7 +1448,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
         if ($h == "feedjson") {
 
-
+            self::ALLOW();
 
             $r = $this->get_data([
                 "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
@@ -1431,7 +1473,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
             $css = file_get_contents(__DIR__ . '/build/style_minifed.css');
 
-            echo "const mainss_import = `$css`;"; 
+            echo "const mainss_import = `$css`;";
             exit();
         }
         if ($h == "sbct") {
@@ -1446,23 +1488,28 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             $icons = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain_icon.json';
 
             unlink($icons);
-            file_put_contents($icons," window.svg_paths = " .  self::get_SVSG().";");
+            file_put_contents($icons, " window.svg_paths = " . self::get_SVSG() . ";");
 
 
             self::gnerateJS();
             echo time();
         }
         if ($h == "mainc") {
+            
+
             $f = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain_icon.json';
             if (!file_exists($f)) {
                 file_put_contents($f, self::protect_js_dna(self::get_SVSG()));
             }
+            self::ALLOW($f);
             header('Content-Type: application/javascript');
             include $f;
             exit();
 
         }
         if ($h == "main") {
+
+            self::ALLOW();
 
             $f = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
 
@@ -2362,19 +2409,19 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                                                                            {
-                                                                                                                                                                                                                                "@context": "https://schema.org",
-                                                                                                                                                                                                                                "@type": "WebSite",
-                                                                                                                                                                                                                                "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                                                                                "name": "Marko Nikolić",
-                                                                                                                                                                                                                                "author": {
-                                                                                                                                                                                                                                    "@type": "Person",
-                                                                                                                                                                                                                                    "name": "Marko Nikolić"
-                                                                                                                                                                                                                                },
-                                                                                                                                                                                                                                "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                                                                                "inLanguage": "en-GB"
-                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                        </script>
+                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                                                                                                                        "author": {
+                                                                                                                                                                                                                                                            "@type": "Person",
+                                                                                                                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                                                                                                                        },
+                                                                                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                </script>
         <?php
     }
 

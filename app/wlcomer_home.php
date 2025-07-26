@@ -276,13 +276,14 @@ header("Content-Type: text/html; charset=UTF-8");
     <meta name="msapplication-tap-highlight" content="no">
     <!-- #region -->
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>">
-    
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/mainc"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8">
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
 
     <?php

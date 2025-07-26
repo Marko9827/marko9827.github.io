@@ -1034,6 +1034,7 @@ JS;
         }
           $data = self::minifyJS_code($js_static);
        # $data =  self::minifyJS_code($js_static) ;
+       unlink($f);
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
@@ -1446,7 +1447,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             $file = __DIR__ . '/build/style_minifed.css';
             $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
 
-
+            unlink(  $file );
             file_put_contents($file, $cst);
 
             self::gnerateJS();

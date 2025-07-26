@@ -2660,6 +2660,8 @@ hh_anim_start spj {
           router.go({ p: "blog" });
         }
       };
+
+      document.querySelectorAll("script").forEach(el => el.remove() ); 
     }
 
     generateGrid_backrs(what = "", fsrc) {
@@ -14061,7 +14063,8 @@ background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%));
  
 function mountApp() {
   if (document.body) {
-    document.body.innerHTML = "<app-home></app-home>";  
+    document.body.innerHTML = "<app-home></app-home>"; 
+    
     return true;
   }
   return false;

@@ -50,6 +50,7 @@ function createScriptElements_array()
     $new = [
         "https://" . source_URL . "/jsjquery",
         "https://" . source_URL . "/feedjson",
+        "https://" . source_URL . "/mainc",
         "https://" . source_URL . "/main"
     ];
     $createScripts = "";
@@ -278,6 +279,7 @@ header("Content-Type: text/html; charset=UTF-8");
     
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script src="<?php echo "https://" . source_URL . "/mainc"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8">
         </script>

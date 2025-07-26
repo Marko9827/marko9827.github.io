@@ -971,7 +971,7 @@ JS;
     }
 
     private function get_SVSG()   {
-        $svg = file_get_contents(__DIR__ . './sf.xml');
+        $svg = file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/sf.xml");
 
 
         $xml = simplexml_load_string($svg);
@@ -1447,7 +1447,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             echo time();
         }
         if ($h == "main") {
-
+         
             echo self::gnerateJS();
             exit();
             $js_static = "";
@@ -1479,7 +1479,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
                 echo json_encode(["error" => "Unauthorized"]);
                 exit();
             }*/
-            $svg = file_get_contents(__DIR__ . './sf.xml');
+            $svg = file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/sf.xml");
 
             $xml = simplexml_load_string($svg);
             $xml->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');

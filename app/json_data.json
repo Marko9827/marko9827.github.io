@@ -3,14 +3,7 @@
         
        
        
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
-            "as": "style",
-            "type": "",
-            "crossorigin": ""
-        },
+        
         {
             "tag": "link",
             "rel": "preload",
@@ -19,14 +12,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/node_modules/ez-plus/src/jquery.ez-plus.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+      
         {
             "tag": "link",
             "rel": "preload",
@@ -35,14 +21,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+      
         {
             "tag": "link",
             "rel": "preload",
@@ -128,14 +107,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
-            "as": "style",
-            "type": "",
-            "crossorigin": ""
-        },
+       
         {
             "tag": "link",
             "rel": "preload",
@@ -144,14 +116,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "preload",
-            "href": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
-            "as": "script",
-            "type": "",
-            "crossorigin": ""
-        },
+      
         {
             "tag": "link",
             "rel": "preload",
@@ -216,14 +181,7 @@
             "type": "",
             "crossorigin": ""
         },
-        {
-            "tag": "link",
-            "rel": "stylesheet",
-            "href": "https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css",
-            "as": "",
-            "type": "",
-            "crossorigin": ""
-        },
+      
         {
             "tag": "link",
             "rel": "stylesheet",
@@ -311,14 +269,8 @@
             "defer": false,
             "crossorigin": ""
         },
-        {
-            "tag": "script",
-            "src": "https://cdn.markonikolic98.com/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js",
-            "type": "",
-            "async": false,
-            "defer": false,
-            "crossorigin": ""
-        },
+      
+        
         {
             "tag": "script",
             "src": "",

@@ -1,4 +1,12 @@
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box; 
+}  
+
 * {
+    
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -1488,8 +1496,8 @@ video.wallpaperVideo {
     position: fixed;
     left: 0px;
     right: 0px;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
+    width:  100%;
+    height: 100%;
     -o-object-fit: scale-fit;
     object-fit: scale-fit;
     background: black;
@@ -2194,6 +2202,8 @@ editor-history-rp p {
 }
 
 #buttons a i,
+#buttons a icon-i,
+#buttons .adiv icon-i,
 #buttons .adiv i {
     font-size: 40px !important;
     width: 60px;
@@ -4004,8 +4014,8 @@ div#clavs br_ta ta_f[data-category="telegram"] i {
     top: 0px !important;
 }
 
-@import url(https://https://cdn.markonikolic98.com//echat/node_modules/@fortawesome/fontawesome-free/css/all.min.css);
-@import url(https://https://cdn.markonikolic98.com//node_modules/@fortawesome/fontawesome-free/css/all.min.css);
+ 
+ 
 
 ta_f[data-category="deviantart"] i {
     margin-right: 5px;
@@ -4878,6 +4888,7 @@ a.fiv_d {
     enable-background: new 0 0 512 512 !important;
 }
 
+a.fiv_d icon-i,
 a.fiv_d i {
     margin-right: 6px;
 }

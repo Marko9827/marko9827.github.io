@@ -1,57 +1,31 @@
  
 
   window.draggable = { style_left: "", style_top: "", enabled: false };
-  window.CDN_URL = "cdn.markonikolic98.com";
+  const CDN_URL = "cdn.markonikolic98.com";
 
- 
+  const CDN_URL_BOOSTRAP_ICONS_STRCSS = "";
+  const CDN_CSS_MAIN = "";
 
+    
+  //`   @import url('https://${CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css'); @import url("https://${CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css");`; 
+  const CDN_URL_BOOSTRAP_ICONS_STRCSS_URL = `https://${CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css`;
+  
+  let obj = portfolio.data.menu; 
+  let firstKey = Object.keys(obj)[0];
+  delete obj[firstKey];
+  
+     portfolio.data.menu = obj;
 
+  
 
   const app_loader = { gallery_temp: 0 },
     welcomer = {
+      svg_loader: "/loader",
       cards_generate_xhr: null,
       gallery_temp: 0,
       cp: function () {
-        $("iframe.iframe_mask").removeAttr("style");
-        const form = $(".contanct_frm form");
-        const df = document.querySelector(".contanct_frm"),
-          f1 = Math.floor(Math.random() * 10),
-          f2 = Math.floor(Math.random() * 10);
-        if (df.classList.contains("yes")) {
-          df.classList.remove("yes");
-        }
-        if (df.classList.contains("open")) {
-          document.body.classList.remove("open_f");
-          df.classList.remove("open");
-          this.rnd = 0;
-        } else {
-          this.send_again();
-          if (document.body.offsetWidth < 700) {
-            welcomer.bell_out("");
-            document.body.classList.add("open_f");
-          }
-          document
-            .querySelector(".contanct_frm #norobot")
-            .setAttribute("placeholder", `${f1}+ ${f2}= ? - Type and hit enter.`);
-          document.querySelector(".contanct_frm #norobot").value = "";
-          this.rnd = f1 + f2;
-          df.classList.add("open");
-        }
-        document
-          .querySelector(".contanct_frm #norobot")
-          .addEventListener("keyup", function () {
-            if (
-              parseInt(document.querySelector(".contanct_frm #norobot").value) ==
-              welcomer.rnd
-            ) {
-              $(".contanct_frm form").scrollTop($(".contanct_frm form").height());
-              df.classList.add("yes");
-            } else {
-              if (df.classList.contains("yes")) {
-                df.classList.remove("yes");
-              }
-            }
-          });
+       
+        
       },
       lang: function () {
         var lang = "en";
@@ -78,7 +52,7 @@
         try {
           var offset = welcomer.offset();
           const anchorTitle = document.getElementById("anchorTitle"),
-            i = document.createElement("i"),
+            i = document.createElement("icon-i"),
             tt = document.createTextNode(text);
           i.setAttribute("class", "bi bi-info-square");
           i.setAttribute("style", "padding-right:2px;");
@@ -91,7 +65,7 @@
         return;
         var offset = welcomer.offset();
         const anchorTitle = document.getElementById("anchorTitle"),
-          i = document.createElement("i"),
+          i = document.createElement("icon-i"),
           tt = document.createTextNode(text);
         if (anchorTitle) {
           anchorTitle.innerHTML =
@@ -120,7 +94,7 @@
       },
       conf: {
         token: `${window.stmp}`,
-        graph: `${window.portfolio.host}/graph`,
+        graph: `${portfolio.host}/graph`,
         api: "/feed",
         black: true,
       },
@@ -195,7 +169,7 @@
           loaderContainer.appendChild(divBraLoader);
 
           const peLoader = document.createElement("pe");
-          const iconLoader = document.createElement("i");
+          const iconLoader = document.createElement("icon-i");
           iconLoader.className = "bi bi-link-45deg";
           peLoader.appendChild(iconLoader);
           peLoader.appendChild(
@@ -281,7 +255,7 @@
                 contentBrBox.appendChild(divBra);
 
                 const pe = document.createElement("pe");
-                const icon = document.createElement("i");
+                const icon = document.createElement("icon-i");
                 icon.className = "bi bi-link-45deg";
                 pe.appendChild(icon);
                 pe.appendChild(
@@ -664,7 +638,7 @@
           });
           edimls.setAttribute("style", "transform:none");
         },
-        cdn: `https://${window.CDN_URL}/node_modules/monaco-editor@0.45.0/min/`,
+        cdn: `https://${CDN_URL}/node_modules/monaco-editor@0.45.0/min/`,
         callEditor_r_h: function () {
           window.location.href = "/?p=editor";
         },
@@ -774,7 +748,7 @@
           const m_down = document.querySelector("btns_r.btns_r_editor_right");
           m_down.textContent = "";
           this.call_nav_conf.forEach(function (res) {
-            var i = document.createElement("i");
+            var i = document.createElement("icon-i");
             i.setAttribute("class", res.icon);
             i.addEventListener("click", function () {
               try {
@@ -920,7 +894,7 @@
               shadowRoot.appendChild(styleLink);
               require.config({
                 paths: {
-                  vs: `https://${window.CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs`,
+                  vs: `https://${CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs`,
                 },
               });
               if (id < 1) {
@@ -1460,7 +1434,7 @@
           shadowRoot.appendChild(styleLink);
           require.config({
             paths: {
-              vs: `https://${window.CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs`,
+              vs: `https://${CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs`,
             },
           });
 
@@ -2371,10 +2345,11 @@
 
       style.textContent = `
 
-      @import url("https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css"); \n
-      @import url("https://${window.CDN_URL}/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css");
-
-      @import url("/mainss"); \n
+    ${CDN_URL_BOOSTRAP_ICONS_STRCSS} \n
+      /*
+      @import url("https://${CDN_URL}/portfolio/node_modules/bootstrap/dist/css/bootstrap.min.css");
+*/
+    ${mainss_import} \n
 
       :host {
       
@@ -2420,6 +2395,149 @@ pointer-events: none !important;
       border-color: var(--hard_white) !important;
 }
 
+#buttons {
+    position: fixed;
+    overflow-x: scroll;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    overflow-x: auto !important;
+    -ms-scroll-snap-type: x mandatory;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    -webkit-transition: margin-left 0.5s;
+    -o-transition: margin-left 0.5s;
+    scroll-behavior: smooth;
+    transition: margin-left 0.5s;
+    -webkit-mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+    mask-image: -webkit-linear-gradient(left, transparent, transparent 0%, white 10%, white 93%, transparent 100%);
+    z-index: 333333;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    width: -webkit-fill-available;
+}
+
+#buttons a,
+#buttons .adiv {
+    scroll-snap-align: center;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: -webkit-fit-content;
+    width: -moz-fit-content;
+    width: fit-content;
+    border-radius: 10px;
+    -webkit-transform-origin: center center;
+    -ms-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    transition: -webkit-transform 0.5s;
+    -webkit-transition: -webkit-transform 0.5s;
+    -o-transition: transform 0.5s;
+    transition: transform 0.5s;
+    transition: transform 0.5s, -webkit-transform 0.5s;
+    position: relative;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    margin: 0px 5px;
+}
+
+#buttons a i,
+#buttons a icon-i,
+#buttons .adiv icon-i,
+#buttons .adiv i {
+    font-size: 40px !important;
+    width: 60px;
+    text-align: center;
+    height: 60px;
+    margin: 0px !important;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-line-pack: center;
+    align-content: center;
+}
+
+#buttons a span,
+#buttons .adiv span {
+    padding-top: 10px;
+    font-size: 13px !important;
+}
+
+hh_anim_start spj {
+    width: -webkit-fill-available;
+}
+
+#buttons a,
+#buttons .adiv {
+    width: 150px !important;
+    height: 150px;
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-line-pack: center;
+    align-content: center;
+}
+
+#buttons a,
+#buttons .adiv {
+    display: -ms-grid !important;
+    display: grid !important;
+    text-align: center !important;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+    justify-items: center;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
+    -ms-flex-line-pack: center;
+    align-content: center;
+}
+
+#buttons {
+    padding-block: 10px;
+}
+
+#buttons::-webkit-scrollbar {
+    width: 4px;
+    border-radius: 30px !important;
+    height: 5px;
+}
+
+#buttons::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#buttons::-webkit-scrollbar-thumb {
+    background: white !important;
+}
+
+#buttons::-webkit-scrollbar-thumb:hover {
+    background: transparent;
+}
+
+
       `;
 
       this.wrapper.appendChild(style);
@@ -2427,12 +2545,13 @@ pointer-events: none !important;
       this.shadow.appendChild(this.wrapper);
       this.buttons = document.createElement("div");
 
-      this.arrowRight = document.createElement("i");
+      this.arrowRight = document.createElement("icon-i");
       this.arrowRight.className =
-        "bi bi-arrow-right-circle-fill catascrollEchatTv_right catascrollEchatTv";
+        "  catascrollEchatTv_right catascrollEchatTv";
       this.arrowRight.style.transform = "scale(1)";
+      this.arrowRight.setAttribute("name", "arrow-right-circle-fill");
 
-      this.arrowLeft = document.createElement("i");
+      this.arrowLeft = document.createElement("icon-i");
       this.arrowLeft.className =
         "bi bi-arrow-left-circle-fill catascrollEchatTv";
       this.arrowLeft.style.transform = "scale(1)";
@@ -2451,7 +2570,7 @@ pointer-events: none !important;
       this.lang = [];
       this.conf = {
         token: `${window.stmp}`,
-        graph: `${window.portfolio.host}/graph`,
+        graph: `${portfolio.host}/graph`,
         api: "/feed",
         black: true,
       };
@@ -2551,7 +2670,7 @@ pointer-events: none !important;
       if (what == "gallery_bundle") {
       }
       if (what == "blog_bundle") {
-        srcf = window.portfolio.data.blog[0]["thumbail"];
+        srcf = portfolio.data.blog[0]["thumbail"];
       }
       fsrc(srcf);
     }
@@ -2745,7 +2864,7 @@ pointer-events: none !important;
     }
 
     generateVidejo() {
-      const v = window.portfolio.data.background_videos,
+      const v = portfolio.data.background_videos,
         tthis = this,
         data = { v: `${Math.floor(Math.random() * (20 - 5 + 1)) + 10}` },
         xhr = new XMLHttpRequest();
@@ -2963,7 +3082,7 @@ pointer-events: none !important;
           v.href.f === false
             ? document.createElement("a")
             : document.createElement("div");
-        const i = document.createElement("i");
+        const i = document.createElement("icon-i");
         const span = document.createElement("span");
         const img = document.createElement("img");
         const nnum = document.createElement("div");
@@ -2979,6 +3098,7 @@ pointer-events: none !important;
         img.setAttribute("data-title", v.title);
         img.setAttribute("onerror", "$(this).attr('style','display:none;');");
         img.setAttribute("onload", "$(this).attr('style','');");
+        
 
         if (v.visible === "yes") {
           el.setAttribute("data-iam-hidden", "yes");
@@ -3029,8 +3149,8 @@ pointer-events: none !important;
         }
 
         el.append(i);
-        el.append(span);
-        el.append(img);
+        el.append(span);/* Testing...
+        // el.append(img); */
 
         buttonsBox.appendChild(el);
       });
@@ -3350,7 +3470,7 @@ pointer-events: none !important;
       this.shadow = this.attachShadow({ mode: "open" });
 
       this.data = {
-        blog: window.portfolio.data.blog,
+        blog: portfolio.data.blog,
       };
       // Wrapper i glavni kontejner
       this.wrapper = document.createElement("div");
@@ -3452,9 +3572,9 @@ pointer-events: none !important;
       // Osnovni stil
       const style = document.createElement("style");
       style.textContent = `
-      @import url('https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css');
-      @import url('https://${window.CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css');
-      @import url('/mainss'); 
+    ${CDN_URL_BOOSTRAP_ICONS_STRCSS}
+ 
+      ${mainss_import}
 
 
      
@@ -3600,7 +3720,8 @@ pointer-events: none !important;
 #clavs .grider_viewer project fiv .bi-info-circle {
     display: block;
     margin: auto;
-    margin-top: -1px;}
+    margin-top: -1px;
+}
 
 #clavs .grider_viewer,
 #clavs .grider_viewer {
@@ -3745,6 +3866,16 @@ grider_viewer.gridsH.grids.g_gallery project grider_box {
     text-align: center;
 }
 
+#clavs .grider_viewer.g_gallery project fiv i.bi-fullscreen ,
+#clavs grider_viewer.g_gallery project fiv i.bi-fullscreen,
+#clavs .grider_viewer.g_gallery project fiv icon-i.bi-fullscreen ,
+#clavs grider_viewer.g_gallery project fiv  icon-i.bi-fullscreen {
+    font-size: 18px;
+    margin-top: 3.5px;
+    margin-left: 3.5px;
+}
+
+.grider_viewer.gallery sp_clv icon-i,
 .grider_viewer.gallery sp_clv i {
     font-size: 40px;
     width: 60px;
@@ -3979,6 +4110,70 @@ height: 100% !important;
 width: 100% !important;
 object-fit: cover !important;
   }
+
+  div#clavs svg,
+    div#clavs icon-i,
+div#clavs i,
+div#clavs span {
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    -o-transition: .3s !important;
+    transition: .3s !important;
+}
+
+a.fiv_d icon-i,
+a.fiv_d i {
+    margin-right: 6px;
+}
+
+btns_r icon-i:last-child {
+padding-right: 0px;
+}
+
+btns_r icon-i {
+    padding: 0px 10px;
+}
+
+icon-i.btn_close,
+i.btn_close {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: var(--cdn_primary);
+    font-size: 24px;
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    cursor: pointer;
+}
+ta_f[data-category="deviantart"] i,
+ta_f[data-category="deviantart"] icon-i {
+    margin-right: 5px;
+}
+
+ta_f[data-category="astronomy"]:hover icon-i,
+ta_f[data-category="astronomy"].active icon-i {
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+ta_f icon-i {
+    margin-right: 5px;
+    }
+
+
+#clavs .grider_viewer project fiv .bi-info-circle, #clavs .grider_viewer project fiv .bi-info-circle {
+          margin-top: 1px;
+}
+
+div#clavs br_ta ta_f {
+ display: -webkit-box;
+    display: -ms-flexbox;
+}
+
     `;
 
       this.loader_svg = "/loader";
@@ -4099,7 +4294,7 @@ object-fit: cover !important;
 
             tthis.load(arr[i]["name"], "gallery_name");
           };
-          const p_open_icon = document.createElement("i");
+          const p_open_icon = document.createElement("icon-i");
           p_open_icon.classList.add("bi", "bi-link");
           p_open.appendChild(p_open_icon);
           p_open.appendChild(document.createTextNode(" Open Album"));
@@ -4109,7 +4304,7 @@ object-fit: cover !important;
           if (arr[i]["live"] == "T") {
             is_live = document.createElement("span_live");
             const btn_l = document.createElement("btn_l");
-            const btn_l_icon = document.createElement("i");
+            const btn_l_icon = document.createElement("icon-i");
             btn_l_icon.classList.add("bi", "bi-broadcast-pin");
             btn_l.appendChild(btn_l_icon);
             btn_l.appendChild(document.createTextNode(" Live Feed"));
@@ -4124,7 +4319,7 @@ object-fit: cover !important;
           grider_box.appendChild(p_open);
           if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
           const fiv = document.createElement("fiv");
-          const fiv_icon = document.createElement("i");
+          const fiv_icon = document.createElement("icon-i");
           fiv_icon.classList.add("bi", "bi-info-circle");
           fiv_icon.addEventListener("click", function (e) {
             e.preventDefault();
@@ -4135,7 +4330,7 @@ object-fit: cover !important;
           fiv.appendChild(fiv_icon);
           grider_box.appendChild(fiv);
           const sp_clv = document.createElement("sp_clv");
-          const sp_clv_icon = document.createElement("i");
+          const sp_clv_icon = document.createElement("icon-i");
           sp_clv_icon.classList.add(
             "bi",
             arr[i]["name"] == "video" ? "bi-film" : "bi-images"
@@ -4175,11 +4370,11 @@ object-fit: cover !important;
           if (arr[i]["name"] == "home") {
             img.setAttribute(
               "src",
-              `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+              `${portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
             );
             img.setAttribute(
               "data-zoom-image",
-              `${window.portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
+              `${portfolio.host}/app&id=A03429468246&mnps=gallery&img=${name}&icon=${name}&c=v2`
             );
           } else {
             img.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
@@ -4214,7 +4409,7 @@ object-fit: cover !important;
           const title = document.createElement("fiv_title");
           title.textContent = item.title;
 
-          const i_click = document.createElement("i");
+          const i_click = document.createElement("icon-i");
           i_click.setAttribute("data-i-type", `${item.type}`);
           i_click.setAttribute("class", "bi bi-fullscreen");
           i_click.setAttribute("title", "Preview image in full size");
@@ -4319,7 +4514,7 @@ object-fit: cover !important;
             a_project.target = "_blank";
             a_project.setAttribute("data-int", `${div_not_i}`);
 
-            const a_project_i = document.createElement("i");
+            const a_project_i = document.createElement("icon-i");
             a_project_i.className = `${item?.fid?.icon}`;
             const a_project_i_text = document.createTextNode(
               ` ${item?.fid?.text}`
@@ -4358,7 +4553,7 @@ object-fit: cover !important;
     }
 
     blogloader_img(id = "") {
-      var arr = window.portfolio.data.blog;
+      var arr = portfolio.data.blog;
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) {
           if (welcomer.gallery_temp.length > 0) {
@@ -4382,10 +4577,10 @@ object-fit: cover !important;
     blogljoad_posts_category_cbc(tt_category_name = "") {
       var div_not_i = 0;
       if (tt_category_name == "All" || tt_category_name == "all") {
-        div_not_i = window.portfolio.data.blog.length;
+        div_not_i = portfolio.data.blog.length;
       } else {
-        for (var ii = 0; ii < window.portfolio.data.blog.length; ii++) {
-          var v = window.portfolio.data.blog[ii];
+        for (var ii = 0; ii < portfolio.data.blog.length; ii++) {
+          var v = portfolio.data.blog[ii];
           for (var i = 0; i < v?.category?.length; i++) {
             if (tt_category_name == v.category[i]) {
               div_not_i++;
@@ -4464,7 +4659,7 @@ object-fit: cover !important;
           }" to open category`
         );
 
-        const addIcon = document.createElement("i");
+        const addIcon = document.createElement("icon-i");
 
         switch (re.toLowerCase()) {
           case "telegram":
@@ -4580,7 +4775,7 @@ object-fit: cover !important;
         fthis = this;
 
       if (type == "projects") {
-        arr = window.portfolio.data.projects;
+        arr = portfolio.data.projects;
       }
 
       arr.forEach((v) => {
@@ -4604,6 +4799,7 @@ object-fit: cover !important;
         project.setAttribute("id-int", div_not_i);
         project.setAttribute("title", v.title);
         project.style.transform = "scale(0);";
+        project.style.opacity = 0;
 
         if (v.type === "text") {
           project.classList.add("section_loadet_img");
@@ -4634,7 +4830,7 @@ object-fit: cover !important;
             router.go({ p: "blog", id: v.id }, { openedFrom: "blogpage" });
           }
         };
-        const i_link = document.createElement("i");
+        const i_link = document.createElement("icon-i");
         i_link.className = "bi bi-link";
         p_open.appendChild(i_link);
         if (type == "projects") {
@@ -4659,7 +4855,7 @@ object-fit: cover !important;
             "Click for view image in full size"
           );
           p_image.onclick = () => fthis?.blogloader_img(v.id);
-          const i_img = document.createElement("i");
+          const i_img = document.createElement("icon-i");
           i_img.className = "bi bi-image-fill";
           p_image.appendChild(i_img);
           p_image.appendChild(document.createTextNode(" Open image"));
@@ -4668,7 +4864,7 @@ object-fit: cover !important;
 
         // === info ikonica ===
         const fiv = document.createElement("fiv");
-        const i_info = document.createElement("i");
+        const i_info = document.createElement("icon-i");
         i_info.className = "bi bi-info-circle";
         i_info.title = "Go to blog post...";
         i_info.onclick = () => window.welcomer?.blogloader(v.id);
@@ -4680,9 +4876,9 @@ object-fit: cover !important;
         loader_img.className = "loader_post";
         loader_img.setAttribute("height", "50");
         loader_img.setAttribute("width", "50");
-        loader_img.src = window.welcomer?.loader_svg || "";
+        loader_img.src =  tthis.loader_svg;
         if (v.type === "text") loader_img.style.display = "none";
-        grider_box.appendChild(loader_img);
+     //   grider_box.appendChild(loader_img);
 
         // === Badge ikone ===
         const bagdes = [
@@ -4716,7 +4912,7 @@ object-fit: cover !important;
                 v.page.includes(`<${tag}`)
               );
               if (found) {
-                const icon = document.createElement("i");
+                const icon = document.createElement("icon-i");
                 icon.className = badge.data;
                 i_list.appendChild(icon);
               }
@@ -4739,10 +4935,12 @@ object-fit: cover !important;
           const img = document.createElement("img");
           img.loading = "lazy";
           img.setAttribute("ondragstart", "return false;");
+          img.setAttribute("style","opacity: 0");
           img.onload = (e) => {
             project.classList.add("active");
             project.removeAttribute("style");
             project.style.transform = "none";
+            img.removeAttribute("style");
           };
           if (type == "projects") {
             img.src = v.img?.includes("data:") ? v.img : `${v.img}&thumb=true`;
@@ -4781,7 +4979,7 @@ object-fit: cover !important;
         logo: "/svg_logo_backscr_img.svg",
         buttonsRight: [
           {
-            icon: "bi-search",
+            icon: "search",
             onclick: () => {
               const p_search = document.createElement("p-search");
               this.wrapper.appendChild(p_search);
@@ -4833,7 +5031,7 @@ object-fit: cover !important;
         logo: "/svg_logo_backscr_img.svg",
         buttonsRight: [
           {
-            icon: "bi-search",
+            icon: "search",
             onclick: () => {
               const p_search = document.createElement("p-search");
               this.wrapper.appendChild(p_search);
@@ -4887,7 +5085,7 @@ object-fit: cover !important;
       this.div_header.appendChild(logo);
 
       // Reload dugme
-      const reload = document.createElement("i");
+      const reload = document.createElement("icon-i");
       reload.id = "reaload_page";
       reload.className = "bi bi-arrow-clockwise";
       reload.setAttribute("data-onclick", "welcomer.reload_me(this);");
@@ -4924,7 +5122,7 @@ object-fit: cover !important;
       input.setAttribute("onkeyup", "welcomer.search_Kompjiler(this);");
       btns_i.appendChild(input);
 
-      const closeI = document.createElement("i");
+      const closeI = document.createElement("icon-i");
       closeI.className = "bi bi-x-lg";
       closeI.setAttribute("data-hmm", "closeMe");
       closeI.setAttribute("data-onclick", "welcomer.search_Kompjiler(this);");
@@ -4934,7 +5132,7 @@ object-fit: cover !important;
       // Dugmad desno
       const btns_r = document.createElement("btns_r");
       config.buttonsRight.forEach((btn) => {
-        const i = document.createElement("i");
+        const i = document.createElement("icon-i");
         i.className = btn.icon;
         if (btn.onclick) {
           // i.setAttribute("data-onclick", btn.onclick);
@@ -5093,7 +5291,7 @@ object-fit: cover !important;
           title: "",
           exist: false,
         };
-        window.portfolio.data.gallery.gallery.forEach(function (res) {
+        portfolio.data.gallery.gallery.forEach(function (res) {
           if (res["name"] == id) {
             gallery_name["name"] = res["gallery"];
             gallery_name["title"] == res["name"];
@@ -5147,7 +5345,7 @@ object-fit: cover !important;
         this.call_albums({
           where: this.grider_viewer,
           name: "",
-          arr: window.portfolio.data.gallery.gallery,
+          arr: portfolio.data.gallery.gallery,
           callback: function (e) {},
           type: "albums",
         });
@@ -5249,7 +5447,7 @@ object-fit: cover !important;
 
       if (type == "blog_id") {
         this.custom_scroll.style.display = "block";
-        blogData = window.portfolio?.data?.blog || [];
+        blogData = portfolio?.data?.blog || [];
         blogData.forEach((res) => {
           if (res.id == id) f = res;
         });
@@ -5270,7 +5468,7 @@ object-fit: cover !important;
           logo: "/svg_logo_backscr_img.svg",
           buttonsRight: [
             {
-              icon: "bi-search",
+              icon: "search",
               onclick: () => {
                 const p_search = document.createElement("p-search");
                 this.wrapper.appendChild(p_search);
@@ -6018,7 +6216,7 @@ object-fit: cover !important;
     })
       .then((response) => response.json())
       .then((data) => {
-        window.portfolio = data;
+        portfolio = data;
         call();
       })
       .catch((error) => {
@@ -6143,7 +6341,7 @@ object-fit: cover !important;
 
       // Info icon
       const fiv = document.createElement("fiv");
-      const info = document.createElement("i");
+      const info = document.createElement("icon-i");
       info.className = "bi bi-info-circle";
       info.title = "Go to blog post...";
       info.addEventListener("click", () => welcomer.blogloader(postId));
@@ -6178,7 +6376,7 @@ object-fit: cover !important;
         ];
         badgeCfg.forEach((cfg) => {
           if (page.includes(`<${cfg.tag}`)) {
-            const i = document.createElement("i");
+            const i = document.createElement("icon-i");
             i.className = cfg.icon;
             list.appendChild(i);
           }
@@ -6764,7 +6962,7 @@ object-fit: cover !important;
       this.Mydata = [];
       var dataf = [];
       var pr_i = 0;
-      window.portfolio.data.projects.forEach((element) => {
+      portfolio.data.projects.forEach((element) => {
         dataf.push({
           type: "image",
           url: element["href"],
@@ -6776,7 +6974,7 @@ object-fit: cover !important;
         pr_i++;
       });
       pr_i = 0;
-      window.portfolio.data.blog.forEach((element) => {
+      portfolio.data.blog.forEach((element) => {
         dataf.push({
           type: "image",
           url: element["source"],
@@ -6792,9 +6990,9 @@ object-fit: cover !important;
     render() {
       const style = document.createElement("style");
       style.textContent = ` 
-      
-  @import url('https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css');
-
+ 
+    ${CDN_URL_BOOSTRAP_ICONS_STRCSS}
+ 
  div.cat {
      position: absolute;
      left: 0px;
@@ -7109,6 +7307,20 @@ object-fit: cover !important;
      cursor: pointer;
 
  }
+
+
+
+ icon-i.btn_close {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    color: var(--cdn_primary);
+    font-size: 24px;
+    position: absolute;
+    top: 12px;
+    right: 8px;
+    cursor: pointer;
+}
       `;
 
       const container = document.createElement("div"),
@@ -7117,7 +7329,7 @@ object-fit: cover !important;
       div_header.classList.add("div_header");
 
       container.appendChild(div_header);
-      this.btn_clear = document.createElement("i");
+      this.btn_clear = document.createElement("icon-i");
 
       this.btn_clear.setAttribute("title", "Clear Search");
       const searchContainer = document.createElement("div");
@@ -7159,7 +7371,7 @@ object-fit: cover !important;
       imgLogo.alt = "logo";
       imgLogo.src = "/svg_logo_backscr_img.svg";
 
-      const div_close = document.createElement("i");
+      const div_close = document.createElement("icon-i");
       div_close.title = "Close Search";
       div_close.setAttribute("class", "bi bi-x-lg btn_close  ");
       div_close.addEventListener("click", () => this.remove());
@@ -7295,7 +7507,7 @@ object-fit: cover !important;
           div_m.appendChild(iframe);
         }
         const cat = document.createElement("div"),
-          cat_i = document.createElement("i");
+          cat_i = document.createElement("icon-i");
         cat.classList.add("cat");
         if (item.cat == "blog") {
           cat_i.setAttribute("class", "bi bi-files-alt");
@@ -7422,7 +7634,7 @@ object-fit: cover !important;
       btnsI.appendChild(searchInput);
 
       // Search close icon
-      const searchCloseIcon = document.createElement("i");
+      const searchCloseIcon = document.createElement("icon-i");
       searchCloseIcon.classList.add("bi", "bi-x-lg");
       searchCloseIcon.setAttribute("data-hmm", "closeMe");
       searchCloseIcon.setAttribute(
@@ -7439,7 +7651,7 @@ object-fit: cover !important;
       btnsR.classList.add("btns_r_editor_right");
 
       // Undo button
-      const undoButton = document.createElement("i");
+      const undoButton = document.createElement("icon-i");
       undoButton.classList.add(
         "bi",
         "bi-arrow-left-short",
@@ -7449,7 +7661,7 @@ object-fit: cover !important;
       btnsR.appendChild(undoButton);
 
       // Redo button
-      const redoButton = document.createElement("i");
+      const redoButton = document.createElement("icon-i");
       redoButton.classList.add(
         "bi",
         "bi-arrow-right-short",
@@ -7461,7 +7673,7 @@ object-fit: cover !important;
       btnsR.appendChild(redoButton);
 
       // Download button
-      const downloadButton = document.createElement("i");
+      const downloadButton = document.createElement("icon-i");
       downloadButton.classList.add(
         "bi",
         "bi-file-earmark-arrow-down",
@@ -7472,7 +7684,7 @@ object-fit: cover !important;
       btnsR.appendChild(downloadButton);
 
       // Question button
-      const questionButton = document.createElement("i");
+      const questionButton = document.createElement("icon-i");
       questionButton.classList.add("bi", "bi-question-lg");
       questionButton.setAttribute(
         "data-onclick",
@@ -7481,14 +7693,14 @@ object-fit: cover !important;
       btnsR.appendChild(questionButton);
 
       // Share button
-      const shareButton = document.createElement("i");
+      const shareButton = document.createElement("icon-i");
       shareButton.classList.add("bi", "bi-share");
       shareButton.setAttribute("data-onclick", "welcomer.share();");
       shareButton.setAttribute("title", "Share");
       btnsR.appendChild(shareButton);
 
       // Close button
-      const closeButton = document.createElement("i");
+      const closeButton = document.createElement("icon-i");
       closeButton.classList.add("bi", "bi-x-lg", "close_btnf");
       closeButton.setAttribute("data-onclick", "CTHP();");
       closeButton.setAttribute("title", "Close");
@@ -7649,7 +7861,7 @@ object-fit: cover !important;
       btnsI.appendChild(searchInput);
 
       // Search close icon
-      const searchCloseIcon = document.createElement("i");
+      const searchCloseIcon = document.createElement("icon-i");
       searchCloseIcon.classList.add("bi", "bi-x-lg");
       searchCloseIcon.setAttribute("data-hmm", "closeMe");
       searchCloseIcon.setAttribute(
@@ -7666,7 +7878,7 @@ object-fit: cover !important;
       btnsR.classList.add("btns_r_editor_right");
 
       // Undo button
-      const undoButton = document.createElement("i");
+      const undoButton = document.createElement("icon-i");
       undoButton.classList.add(
         "bi",
         "bi-arrow-left-short",
@@ -7676,7 +7888,7 @@ object-fit: cover !important;
       btnsR.appendChild(undoButton);
 
       // Redo button
-      const redoButton = document.createElement("i");
+      const redoButton = document.createElement("icon-i");
       redoButton.classList.add(
         "bi",
         "bi-arrow-right-short",
@@ -7688,7 +7900,7 @@ object-fit: cover !important;
       btnsR.appendChild(redoButton);
 
       // Download button
-      const downloadButton = document.createElement("i");
+      const downloadButton = document.createElement("icon-i");
       downloadButton.classList.add(
         "bi",
         "bi-file-earmark-arrow-down",
@@ -7699,7 +7911,7 @@ object-fit: cover !important;
       btnsR.appendChild(downloadButton);
 
       // Question button
-      const questionButton = document.createElement("i");
+      const questionButton = document.createElement("icon-i");
       questionButton.classList.add("bi", "bi-question-lg");
       questionButton.setAttribute(
         "data-onclick",
@@ -7708,14 +7920,14 @@ object-fit: cover !important;
       btnsR.appendChild(questionButton);
 
       // Share button
-      const shareButton = document.createElement("i");
+      const shareButton = document.createElement("icon-i");
       shareButton.classList.add("bi", "bi-share");
       shareButton.setAttribute("data-onclick", "welcomer.share();");
       shareButton.setAttribute("title", "Share");
       btnsR.appendChild(shareButton);
 
       // Close button
-      const closeButton = document.createElement("i");
+      const closeButton = document.createElement("icon-i");
       closeButton.classList.add("bi", "bi-x-lg", "close_btnf");
       closeButton.setAttribute("data-onclick", "CTHP();");
       closeButton.setAttribute("title", "Close");
@@ -8437,7 +8649,7 @@ div#controls img {
 div#controls img:hover {
     opacity: 1 !important;
 }`;
-      style.textContent = `${controls_style} @import url(https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css); :root{--cdn_primary:#ffff;--btn-disable:#fff;--seo-color:#fff;--primary_light:#ffffff4f;--textshadow_media:0px 0px 0px var(--cdn_white),3px 3px 5px #00000047;--cdn_white:#333;--hard_white:#fff;--red:#b90808;--section-bg:#333;--green:#2e7d32;--header-a:#e6e6e6;--product-background:linear-gradient(45deg,#1b5e20,#10bf19);--ads-background:linear-gradient(45deg,rgb(148 31 148),#c55e05);--event-background:linear-gradient(45deg,rgb(148 31 148),#2196f3);--job-background:linear-gradient(45deg,rgb(148 31 148),#3f51b5);--black-trasparent-color:rgba(0,0,0,0.639);--grid-image:url(/?url=source&sourcelogin=grid.svg);--shield-image:url(/?url=source&sourcelogin=shield.svg);--stars-25:#b32020;--stars-40:#FFD700;--stars-60:#d56617;--stars-75:var(--green);}img.zoomImg{position:fixed !important;z-index:3333333;top:0px !important;left:0px !important;width:100% !important;height:100% !important;opacity:1 !important;background:var(--black-trasparent-color);}.zoomContainer{position:fixed;z-index:333333;left:0px;top:0px;width:100%;height:100%;opacity:1 !important;}.zoomContainer .zoomWindowContainer div{left:10px !important;top:10px !important;width:100%;width:100% !important;display:block !important;z-index:3333 !important;height:100% !important;position:fixed;float:unset !important;bottom:0px !important;border:none;position:fixed !important;right:10px !important;width:unset !important;bottom:10px !important;height:unset !important;margin:0px !important;padding:2px !important;border-radius:10px !important;border:2px solid var(--primary_light) !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;}.zoomWindowContainer{position:fixed !important;left:0px;top:0px !important;background:var(--black-trasparent-color);width:100%;height:100% !important;width:100% !important;}.zoomer_exit{position:fixed;top:20px;right:20px;z-index:333333;color:white;font-size:25px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;background:var(--black-trasparent-color);width:25px !important;height:25px !important;padding:0px 5.6px;border-radius:6px;}#helper_id_helper{pointer-events:none !important;position:fixed;left:20px;top:20px;background:var(--black-trasparent-color);z-index:333333;color:var(--white);padding:5px 10px;border-radius:6px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;}div#helper_id_helper3{position:absolute;left:20px;z-index:33333;bottom:30px;right:20px;bottom:20px;border-radius:0px 0px 9px 9px !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;pointer-events:none !important;}div#helper_id_helper3 p{border-radius:6px !important;background:var(--black-trasparent-color);color:var(--white);padding:10px;display:block;margin:auto;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;text-align:center;}.zoomWindow{pointer-events:unset !important; z-index:999;display:none;position:absolute;float:left;height:0px;width:0px;border:4px solid rgb(136,136,136);background-position:0px 0px;background-repeat:no-repeat;cursor:inherit;overflow:hidden;}img_loader{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%;height:100%;position:absolute;pointer-events:none;}img_loader img#loader{display:block;z-index:1;left:0px;top:0px;margin:auto;width:45px;height:45px;}.zoomWindow{-o-object-fit:scale-down;object-fit:scale-down;width:100%;background-size:contain;background-position:center;pointer-events:none;}`;
+      style.textContent = `${controls_style} ${CDN_URL_BOOSTRAP_ICONS_STRCSS} :root{--cdn_primary:#ffff;--btn-disable:#fff;--seo-color:#fff;--primary_light:#ffffff4f;--textshadow_media:0px 0px 0px var(--cdn_white),3px 3px 5px #00000047;--cdn_white:#333;--hard_white:#fff;--red:#b90808;--section-bg:#333;--green:#2e7d32;--header-a:#e6e6e6;--product-background:linear-gradient(45deg,#1b5e20,#10bf19);--ads-background:linear-gradient(45deg,rgb(148 31 148),#c55e05);--event-background:linear-gradient(45deg,rgb(148 31 148),#2196f3);--job-background:linear-gradient(45deg,rgb(148 31 148),#3f51b5);--black-trasparent-color:rgba(0,0,0,0.639);--grid-image:url(/?url=source&sourcelogin=grid.svg);--shield-image:url(/?url=source&sourcelogin=shield.svg);--stars-25:#b32020;--stars-40:#FFD700;--stars-60:#d56617;--stars-75:var(--green);}img.zoomImg{position:fixed !important;z-index:3333333;top:0px !important;left:0px !important;width:100% !important;height:100% !important;opacity:1 !important;background:var(--black-trasparent-color);}.zoomContainer{position:fixed;z-index:333333;left:0px;top:0px;width:100%;height:100%;opacity:1 !important;}.zoomContainer .zoomWindowContainer div{left:10px !important;top:10px !important;width:100%;width:100% !important;display:block !important;z-index:3333 !important;height:100% !important;position:fixed;float:unset !important;bottom:0px !important;border:none;position:fixed !important;right:10px !important;width:unset !important;bottom:10px !important;height:unset !important;margin:0px !important;padding:2px !important;border-radius:10px !important;border:2px solid var(--primary_light) !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;}.zoomWindowContainer{position:fixed !important;left:0px;top:0px !important;background:var(--black-trasparent-color);width:100%;height:100% !important;width:100% !important;}.zoomer_exit{position:fixed;top:20px;right:20px;z-index:333333;color:white;font-size:25px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;background:var(--black-trasparent-color);width:25px !important;height:25px !important;padding:0px 5.6px;border-radius:6px;}#helper_id_helper{pointer-events:none !important;position:fixed;left:20px;top:20px;background:var(--black-trasparent-color);z-index:333333;color:var(--white);padding:5px 10px;border-radius:6px;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.3));enable-background:new 0 0 512 512 !important;}div#helper_id_helper3{position:absolute;left:20px;z-index:33333;bottom:30px;right:20px;bottom:20px;border-radius:0px 0px 9px 9px !important;filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));-webkit-filter:drop-shadow(2px 2px 2px rgba(0,0,0,0.2));enable-background:new 0 0 512 512 !important;pointer-events:none !important;}div#helper_id_helper3 p{border-radius:6px !important;background:var(--black-trasparent-color);color:var(--white);padding:10px;display:block;margin:auto;width:-webkit-fit-content;width:-moz-fit-content;width:fit-content;text-align:center;}.zoomWindow{pointer-events:unset !important; z-index:999;display:none;position:absolute;float:left;height:0px;width:0px;border:4px solid rgb(136,136,136);background-position:0px 0px;background-repeat:no-repeat;cursor:inherit;overflow:hidden;}img_loader{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-ms-flex-line-pack:center;align-content:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;width:100%;height:100%;position:absolute;pointer-events:none;}img_loader img#loader{display:block;z-index:1;left:0px;top:0px;margin:auto;width:45px;height:45px;}.zoomWindow{-o-object-fit:scale-down;object-fit:scale-down;width:100%;background-size:contain;background-position:center;pointer-events:none;}`;
       template.content.appendChild(style);
       const zoomContainer = document.createElement("div");
       zoomContainer.classList.add("zoomContainer");
@@ -8515,7 +8727,7 @@ div#controls img:hover {
       zoomContainer.appendChild(helper3);
       const helper = document.createElement("span");
       helper.id = "helper_id_helper";
-      const icon = document.createElement("i");
+      const icon = document.createElement("icon-i");
       icon.classList.add("bi", "bi-info-square");
       icon.style.paddingRight = "2px";
       const text = document.createTextNode(" For close click ( X ) button.");
@@ -8531,7 +8743,7 @@ div#controls img:hover {
       helperIdHelper3.id = "helper_id_helper3";
       const helperIdHelper = document.createElement("span");
       helperIdHelper.id = "helper_id_helper";
-      const infoIcon = document.createElement("i");
+      const infoIcon = document.createElement("icon-i");
       infoIcon.className = "bi bi-info-square";
       infoIcon.style.paddingRight = "2px";
       helperIdHelper.appendChild(infoIcon);
@@ -9039,7 +9251,7 @@ div#controls img:hover {
 
     parseMe(id) {
       var data = [];
-      window.portfolio.data.blog.forEach(function (et) {
+      portfolio.data.blog.forEach(function (et) {
         if (et["id"] == id) {
           data = et;
           return true;
@@ -9075,8 +9287,12 @@ div#controls img:hover {
       }
 
       style.textContent = `${window.atob(
-        window.portfolio.data.blog_style_bundle
+        portfolio.data.blog_style_bundle
       )} 
+      img {
+      text-align: center;
+  margin: auto;
+  display: block;}
 tags {
 
     display: -webkit-inline-box;
@@ -9414,7 +9630,7 @@ div#controls img:hover {
     }
     styleTemplate() {
       return `<style nonce="${window.stmp}" type="text/css">${window.atob(
-        window.portfolio.data.blog_style_bundle
+        portfolio.data.blog_style_bundle
       )}::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}</style>`;
     }
   }
@@ -9428,7 +9644,7 @@ div#controls img:hover {
       const style = document.createElement("style");
       style.setAttribute("nonce", window.stmp);
       style.textContent = `
-      @import url('https://${window.CDN_URL}/node_modules/video.js/dist/video-js.min.css');
+      @import url('https://${CDN_URL}/node_modules/video.js/dist/video-js.min.css');
       .video-js {
         width: 100%;
         height: 100%;
@@ -9554,7 +9770,7 @@ div#controls img:hover {
       template.innerHTML = ` <style nonce="${
         window.stmp
       }" > @import url('https://${
-        window.CDN_URL
+        CDN_URL
       }/node_modules/video.js/dist/video-js.min.css');video-player-v2{display:block;}@media screen and (min-width:450px){.content-wrapper iframe,.content-wrapper video-player-v2{height:80vh !important;max-height:80vh !important;min-height:80vh !important;}}iframe,video-player-v2{margin:20px 0px !important;}iframe,video-player-v2{height:70vh !important;min-height:70vh !important;pointer-events:unset !important;object-fit:contain;}img,iframe{max-height:70vh !important;object-fit:contain;}.video-js{width:100%;height:100%;opacity:0;transition:.3s;background-color:rgb(0 0 0 / 48%);opacity:1;}#canvas_img{position:absolute;left:0px;top:0px;width:100%;height:100%;background:black;object-fit:cover;z-index:-1;filter:blur(7px);opacity:0;}#canvas_img{opacity:1;}</style> <video id="video-player" class="video-js vjs-default-skin" controls nonce="${
         window.stmp
       }" preload="auto" data-setup='{}'> <source src="${this.getAttribute(
@@ -10505,6 +10721,934 @@ width: 680px;
     customElements.define("canvas-v", CanvasVElement);
   }
 
+  
+  if (!customElements.get('icon-i_old')) {
+    customElements.define('icon-i_old', class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({mode: 'open'});
+
+        // SVG wrapper i stil
+        this.styleElement = document.createElement('style');
+        this.styleElement.textContent = `
+
+         :host, * {
+          -webkit-user-select:none;
+             -moz-user-select:none;
+              -ms-user-select:none;
+                  user-select:none;
+          cursor: none;
+                  }
+                  
+svg {
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+  vertical-align: middle;
+}
+`;
+
+
+        this.svg = null;
+        this.shadowRoot.appendChild(this.styleElement);
+
+      }
+
+        cleanId(id) {
+return id.replace(/^\d+-/, '').replace(/bi-?/g, '');
+}
+
+      svg_str(id = "bi bi-1-square-fill") {
+const symbols = window.svg_paths;
+const cleaned = this.cleanId(id);  
+
+for (let i = 0; i < symbols.length; i++) {
+  const idf = this.cleanId(symbols[i]['id']);  
+
+  if (idf === cleaned) {
+    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.svg.setAttribute('viewBox', symbols[i]['viewBox']);
+    this.svg.setAttribute('class', id); 
+
+    const paths = symbols[i]['paths'];
+    for (let j = 0; j < paths.length; j++) {
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", paths[j]['d']);  
+      this.svg.appendChild(path);
+    }
+
+    this.shadowRoot.appendChild(this.svg);
+    this.removeAttribute("name"); 
+    break;
+  }
+}
+}
+
+isJsonObject(val) {
+return typeof val === 'object' && val !== null && !Array.isArray(val);
+}
+isJsonString(str) {
+try {
+  const parsed = JSON.parse(str);
+  return typeof parsed === 'object' && parsed !== null;
+} catch (e) {
+  return false;
+}
+}
+
+
+      async connectedCallback() {
+       /* if (!this.isJsonObject(window.svg_paths) || !this.isJsonString(window.svg_paths)) {
+          const response = await fetch("/icons");
+          if (response.ok) {
+            window.svg_paths = await response.json();
+          } else {
+          }
+        }*/
+
+
+        const src = this.getAttribute('name') || null;
+
+        if (src) {
+          this.svg_str(`${src}`);
+        }
+      }
+
+      #name(iconName) {
+        this.shadowRoot.querySelectorAll('svg').forEach(e => e.remove());
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        switch (iconName) {
+
+          case '':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+            path.setAttribute('d', 'M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+            break;
+          case 'bi-inbox':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+            path.setAttribute('d', 'M4.98 4a.5.5 0 0 0-.39.188L1.54 8H6a.5.5 0 0 1 .5.5 1.5 1.5 0 1 0 3 0A.5.5 0 0 1 10 8h4.46l-3.05-3.812A.5.5 0 0 0 11.02 4zm9.954 5H10.45a2.5 2.5 0 0 1-4.9 0H1.066l.32 2.562a.5.5 0 0 0 .497.438h12.234a.5.5 0 0 0 .496-.438zM3.809 3.563A1.5 1.5 0 0 1 4.981 3h6.038a1.5 1.5 0 0 1 1.172.563l3.7 4.625a.5.5 0 0 1 .105.374l-.39 3.124A1.5 1.5 0 0 1 14.117 13H1.883a1.5 1.5 0 0 1-1.489-1.314l-.39-3.124a.5.5 0 0 1 .106-.374z');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+
+            break;
+          case 'x-lg':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+
+            path.setAttribute('d', 'M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+            break;
+          case 'emoji-frown-fill"':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+
+            path.setAttribute('d', 'M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m-2.715 5.933a.5.5 0 0 1-.183-.683A4.5 4.5 0 0 1 8 9.5a4.5 4.5 0 0 1 3.898 2.25.5.5 0 0 1-.866.5A3.5 3.5 0 0 0 8 10.5a3.5 3.5 0 0 0-3.032 1.75.5.5 0 0 1-.683.183M10 8c-.552 0-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5S10.552 8 10 8');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+            break;
+          case 'emoji-laughing-fill':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+
+            path.setAttribute('d', 'M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16M7 6.5c0 .501-.164.396-.415.235C6.42 6.629 6.218 6.5 6 6.5s-.42.13-.585.235C5.164 6.896 5 7 5 6.5 5 5.672 5.448 5 6 5s1 .672 1 1.5m5.331 3a1 1 0 0 1 0 1A5 5 0 0 1 8 13a5 5 0 0 1-4.33-2.5A1 1 0 0 1 4.535 9h6.93a1 1 0 0 1 .866.5m-1.746-2.765C10.42 6.629 10.218 6.5 10 6.5s-.42.13-.585.235C9.164 6.896 9 7 9 6.5c0-.828.448-1.5 1-1.5s1 .672 1 1.5c0 .501-.164.396-.415.23');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+            break;
+          case 'rulers':
+            this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            this.svg.setAttribute('viewBox', '0 0 16 16');
+            this.svg.setAttribute('class', 'bi bi-rulers');
+
+            path.setAttribute('d', 'M1 0a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5v-1H2v-1h4v-1H4v-1h2v-1H2v-1h4V9H4V8h2V7H2V6h4V2h1v4h1V4h1v2h1V2h1v4h1V4h1v2h1V2h1v4h1V1a1 1 0 0 0-1-1z');
+
+            this.svg.appendChild(path);
+            this.shadowRoot.appendChild(this.svg);
+            break;
+
+          default:
+            console.warn(`Icon "${iconName}" not found.`);
+        }
+      }
+    } );
+  }
+
+
+  if(!customElements.get('rotating-border')){
+   customElements.define('rotating-border', class   extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+    }
+
+    connectedCallback() {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'wrapper';
+
+      const content = document.createElement('div');
+      content.className = 'content';
+      content.textContent = this.textContent || 'Rotating Border';
+
+      const style = document.createElement('style');
+      style.textContent = `
+    .wrapper {
+      position: relative;
+      padding: 20px;
+      border-radius: 10px;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .wrapper::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      background: conic-gradient(
+        red,
+        orange,
+        yellow,
+        green,
+        cyan,
+        blue,
+        violet,
+        red
+      );
+      z-index: 0;
+      animation: rotate 4s linear infinite;
+      border-radius: 12px;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      -webkit-mask-composite: destination-out;
+      padding: 5px;
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  `;
+
+      wrapper.appendChild(content);
+      this.shadowRoot.append(style, wrapper);
+    }
+  })
+}
+
+
+  if(!customElements.get('custom-video')){
+  customElements.define('custom-video', class   extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+      this._prevVolume = 1;
+      this.observer = null;
+
+    }
+    disconnectedCallback() {
+      if (this._onKeyDown) {
+        document.removeEventListener('keydown', this._onKeyDown);
+        this._onKeyDown = null;
+      }
+      if (this.observer) {
+        this.observer.disconnect();
+      }
+    }
+    connectedCallback() {
+      this.observer = new MutationObserver((mutations) => {
+        for (const mutation of mutations) {
+
+
+
+        }
+      });
+
+      this.observer.observe(this.shadowRoot, {
+        childList: true,
+        subtree: true,
+        characterData: true,
+        attributes: true
+      });
+
+      const src = this.getAttribute('src') || '';
+      const poster = this.getAttribute('poster') || '';
+      const autoplay = this.hasAttribute('autoplay');
+      const loop = this.hasAttribute('loop');
+
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = CDN_URL_BOOSTRAP_ICONS_STRCSS_URL;
+
+      const style = document.createElement('style');
+      style.textContent = ` 
+  
+
+
+  
+:host {
+
+display: -webkit-box;
+
+display: -ms-flexbox;
+
+display: flex;
+  max-width: 100%;
+  position: relative;
+  font-family: sans-serif;
+  background: black;
+  border-radius: 10px;
+  min-height: 250px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+
+
+}
+
+
+
+
+      video {
+        width: 100%;
+        height: 100%;
+        -o-object-fit: scale-down;
+           object-fit: scale-down;
+        background: black;
+        border-radius: 0px;
+            margin: auto;
+
+            transition: .3s;
+      }
+      .video-feedback {
+
+      position: absolute;
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%) scale(1); */
+  font-size: 4dvh;
+  color: white;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+  transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+  -o-transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, -webkit-transform 0.4s ease;
+  z-index: 20;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex
+;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  left: 0%;
+  top: 0%;
+  pointer-events: none;
+  background: -o-radial-gradient(#00000070, transparent);
+  background: radial-gradient(#00000070, transparent);
+  border-radius: 10px !important;
+
+      }
+      .video-feedback.show {
+        opacity: 1; 
+      }
+      .controls {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        gap: 4px;
+        padding: 8px 12px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        color: white;
+        z-index: 10;
+        background-image: -o-linear-gradient(bottom, black, transparent);
+        background-image: -webkit-gradient(linear, left bottom, left top, from(black), to(transparent));
+        background-image: linear-gradient(360deg, black, transparent);
+     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) ;
+-webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) ;
+enable-background: new 0 0 512 512 ;
+border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+     
+        }
+      .controls-row {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+                justify-content: space-between;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        gap: 8px;
+      }
+      .controls-row > div:first-child {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        gap: 8px;
+      }
+      .progress-time {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        gap: 4px;
+        font-size: 0.8em;
+      }
+
+  
+
+
+      button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.4em;
+        cursor: pointer;
+        position: relative;
+      }
+      .volume {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                align-items: center;
+        gap: 4px;
+        position: relative;
+      }   
+
+`;
+
+      const root = document.createElement("div");
+      const video = document.createElement('video');
+      video.id = 'video';
+      if (poster) video.poster = poster;
+      if (autoplay) video.setAttribute('autoplay', '');
+      if (loop) video.setAttribute('loop', '');
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.style.opacity = '0';
+      video.style.transform = 'scale(0);';
+
+      video.appendChild(document.createTextNode('Your browser does not support the video tag.'));
+
+      const feedback = document.createElement('div');
+      feedback.className = 'video-feedback';
+   
+
+      const controls = document.createElement('div');
+      controls.className = 'controls';
+      const progressBar = document.createElement('progress-bar'),
+        bac_mask = document.createElement("bac-mask");
+      controls.appendChild(bac_mask);
+      controls.appendChild(progressBar);
+
+
+      const controlsRow = document.createElement('div');
+      controlsRow.className = 'controls-row';
+
+      const left = document.createElement('div');
+      const playBtn = document.createElement('button');
+      playBtn.className = 'play';
+      playBtn.title = 'Play/Pause';
+      playBtn.innerHTML = '<icon-i name="play-fill"></icon-i>';
+
+      const volume = document.createElement('div');
+      volume.className = 'volume';
+      const muteBtn = document.createElement('button');
+      muteBtn.className = 'mute';
+      muteBtn.title = 'Mute/Unmute';
+      muteBtn.innerHTML = '<icon-i name="volume-up-fill"></icon-i>';
+      const volumeRange = document.createElement('volume-range');
+      volume.appendChild(muteBtn);
+      volume.appendChild(volumeRange);
+
+      let volumeHoverTimeout;
+
+      volume.addEventListener('mouseenter', () => {
+        clearTimeout(volumeHoverTimeout);
+        volumeRange.style.display = 'block';
+      });
+
+      volume.addEventListener('mouseleave', () => {
+        volumeHoverTimeout = setTimeout(() => {
+          volumeRange.style.display = 'none';
+        }, 300); // malo kašnjenje za prelaz
+      });
+
+      volumeRange.addEventListener('mouseenter', () => {
+        clearTimeout(volumeHoverTimeout);
+        volumeRange.style.display = 'block';
+      });
+
+      volumeRange.addEventListener('mouseleave', () => {
+        volumeHoverTimeout = setTimeout(() => {
+          volumeRange.style.display = 'none';
+        }, 300);
+      });
+
+
+      left.appendChild(playBtn);
+      left.appendChild(volume);
+
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'progress-time';
+      const current = document.createElement('span');
+      current.className = 'current-time';
+      current.textContent = '0:00';
+      const duration = document.createElement('span');
+      duration.className = 'duration';
+      duration.textContent = '0:00';
+      timeDiv.appendChild(current);
+      timeDiv.appendChild(document.createTextNode(' / '));
+      timeDiv.appendChild(duration);
+      timeDiv.appendChild(duration);
+      left.appendChild(timeDiv);
+
+      const right = document.createElement('div');
+      const subsBtn = document.createElement('button');
+      subsBtn.className = 'subtitles';
+      subsBtn.title = 'Subtitles';
+      subsBtn.innerHTML = '<icon-i name="subtitles"></icon-i>';
+      const speedBtn = document.createElement('button');
+      speedBtn.className = 'speed';
+      speedBtn.title = 'Speed';
+      speedBtn.innerHTML = '<icon-i name="gear-fill"></icon-i>';
+      const pipBtn = document.createElement('button');
+      pipBtn.className = 'pip';
+      pipBtn.title = 'Picture-in-Picture';
+      pipBtn.innerHTML = '<icon-i name="box-arrow-in-up-right"></icon-i>';
+      const fullBtn = document.createElement('button');
+      fullBtn.className = 'fullscreen';
+      fullBtn.title = 'Fullscreen';
+      fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
+      right.appendChild(subsBtn);
+      right.appendChild(speedBtn);
+      right.appendChild(pipBtn);
+      right.appendChild(fullBtn);
+
+      controlsRow.appendChild(left);
+      // controlsRow.appendChild(timeDiv);
+      controlsRow.appendChild(right);
+      controls.appendChild(controlsRow);
+
+      this.shadowRoot.appendChild(root);
+      root.appendChild(link);
+      root.appendChild(style);
+      root.appendChild(video);
+      root.appendChild(feedback);
+      root.appendChild(controls);
+      // this.shadowRoot.append(link, style, video, feedback, controls);
+
+      const progress = progressBar;
+      const currentTime = current;
+      const durationTime = duration;
+
+      this.shadowRoot.addEventListener("contextmenu", e => e.preventDefault());
+      this.shadowRoot.addEventListener("dragstart", e => e.preventDefault());
+      this.shadowRoot.addEventListener("selectstart", e => e.preventDefault());
+
+      progress.videoRef = video;
+
+      const formatTime = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+      const showFeedback = icon => {
+        feedback.innerHTML = icon;
+        feedback.classList.add('show');
+        setTimeout(() => feedback.classList.remove('show'), 400);
+      };
+
+      video.addEventListener('loadeddata', () => {
+        try {
+          const canvas = document.createElement('canvas');
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const thumbnail = canvas.toDataURL('image/jpeg');
+          video.setAttribute('poster', thumbnail);
+        } catch (e) { }
+
+      });
+
+      video.addEventListener('loadedmetadata', () => {
+        durationTime.textContent = formatTime(video.duration);
+      });
+
+      video.addEventListener('timeupdate', () => {
+        if (video.hasAttribute("style")) {
+          video.removeAttribute("style");
+        }
+
+        currentTime.textContent = formatTime(video.currentTime);
+        progress.value = video.currentTime / video.duration;
+      });
+
+      progress.addEventListener('seek', e => {
+        video.currentTime = e.detail * video.duration;
+      });
+
+      playBtn.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          playBtn.innerHTML = '<icon-i name="pause-fill"></icon-i>';
+          showFeedback('<icon-i name="pause-circle-fill"></icon-i>');
+        } else {
+          video.pause();
+          playBtn.innerHTML = '<icon-i name="play-fill"></icon-i>';
+          showFeedback('<icon-i name="play-circle-fill"></icon-i>');
+        }
+      });
+
+
+      video.addEventListener('click', () => playBtn.click());
+
+      video.volume = 1;
+      volumeRange.value = 1;
+
+      muteBtn.addEventListener('click', () => {
+        video.muted = !video.muted;
+        if (video.muted) {
+          this._prevVolume = video.volume;
+          volumeRange.value = 0;
+          video.volume = 0;
+        } else {
+          video.volume = this._prevVolume || 1;
+          volumeRange.value = video.volume;
+        }
+        muteBtn.innerHTML = video.muted ? '<icon-i name="volume-mute-fill"></icon-i>' : '<icon-i name="volume-up-fill"></icon-i>';
+      });
+
+      volumeRange.addEventListener('input', e => {
+        const val = parseFloat(e.detail ?? e.target.value);
+        video.volume = val;
+        video.muted = val === 0;
+        muteBtn.innerHTML = video.muted ? '<icon-i name="volume-mute-fill"></icon-i>' : '<icon-i name="volume-up-fill"></icon-i>';
+      });
+
+      fullBtn.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+          this.shadowRoot.host.requestFullscreen?.();
+          fullBtn.innerHTML = '<icon-i name="fullscreen-exit"></icon-i>';
+        } else {
+          fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
+          document.exitFullscreen?.();
+        }
+      });
+
+      pipBtn.addEventListener('click', () => {
+        if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+          video.requestPictureInPicture?.();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.fullscreenElement) {
+          document.exitFullscreen?.();
+        } else if (e.code === 'Space') {
+          e.preventDefault();
+          playBtn.click();
+        }
+      });
+    }
+  })
+}
+
+  
+
+
+
+
+
+  if(!customElements.get('volume-range')){
+  customElements.define('volume-range', class   extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+      this._dragging = false;
+    }
+
+    connectedCallback() {
+      const style = document.createElement('style');
+      style.textContent = `
+    .container {
+      width: 60px;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+    .fill {
+     height:  100%;
+background: transparent;
+background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%)); 
+border-radius: 0.375dvh;
+width: 0dvh; /* was 0% */
+    }
+    .thumb {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+    }
+  `;
+
+      const container = document.createElement('div');
+      container.className = 'container';
+
+      const fill = document.createElement('div');
+      fill.className = 'fill';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+
+      container.appendChild(fill);
+      container.appendChild(thumb);
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(container);
+
+
+
+      this.container = container;
+      this.fill = fill;
+      this.thumb = thumb;
+
+      const updateFromEvent = (e) => {
+        const rect = this.container.getBoundingClientRect();
+        const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+        this.setVolume(percent);
+        this.dispatchEvent(new CustomEvent('input', {detail: percent}));
+      };
+
+      this.container.addEventListener('mousedown', (e) => {
+        this._dragging = true;
+        updateFromEvent(e);
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (this._dragging) updateFromEvent(e);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (this._dragging) this._dragging = false;
+      });
+    }
+
+    setVolume(val) {
+      this.fill.style.width = `${val * 100}%`;
+      this.thumb.style.left = `${val * 100}%`;
+      this._value = val;
+    }
+
+    set value(val) {
+      this.setVolume(val);
+    }
+
+    get value() {
+      return this._value ?? 1;
+    }
+  })
+}
+
+  if(!customElements.get('progress-bar')) {
+  customElements.define('progress-bar', class   extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({mode: 'open'});
+      this._dragging = false;
+      this._wasPlaying = false;
+    }
+
+    connectedCallback() {
+      const style = document.createElement('style');
+      style.textContent = `
+  .container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.3);
+      border-radius: 3px;
+      cursor: pointer;
+      position: relative;
+    }
+    .fill {
+      height: 100%;
+        background: transparent;
+background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%)); 
+      border-radius: 3px;
+      width: 0%;
+    }
+    .thumb {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: white;
+    }
+    .tooltip {
+      position: absolute;
+      bottom: 100%;
+      transform: translateX(-50%);
+      background: black;
+      color: white;
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      display: none;
+      white-space: nowrap;
+    }
+
+  `;
+
+      const container = document.createElement('div');
+      container.className = 'container';
+
+      const fill = document.createElement('div');
+      fill.className = 'fill';
+
+      const thumb = document.createElement('div');
+      thumb.className = 'thumb';
+
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+
+      container.appendChild(fill);
+      container.appendChild(thumb);
+      container.appendChild(tooltip);
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(container);
+
+      this.container = container;
+      this.fill = fill;
+      this.thumb = thumb;
+      this.tooltip = tooltip;
+
+      const updateFromEvent = (e) => {
+        const rect = this.container.getBoundingClientRect();
+        const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+        this.setProgress(percent);
+        if (this._video) this._video.currentTime = this._video.duration * percent;
+        this.dispatchEvent(new CustomEvent('seek', {detail: percent}));
+      };
+
+      const updateTooltip = (e) => {
+        if (!this._video || isNaN(this._video.duration)) {
+          this.tooltip.style.display = 'none';
+          return;
+        }
+
+        const rect = this.container.getBoundingClientRect();
+        const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+        const time = this._video.duration * percent;
+
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+        this.tooltip.textContent = `${minutes}:${seconds}`;
+        this.tooltip.style.left = `${percent * 100}%`;
+        this.tooltip.style.display = 'block';
+      };
+
+      container.addEventListener('mousedown', (e) => {
+        if (this._video) {
+          this._wasPlaying = !this._video.paused;
+          this._video.pause();
+        }
+        this._dragging = true;
+        updateFromEvent(e);
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (this._dragging) updateFromEvent(e);
+
+        updateTooltip(e);
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (this._dragging) {
+          this._dragging = false;
+          if (this._video && this._wasPlaying) this._video.play();
+        }
+      });
+
+      container.addEventListener('mouseleave', () => {
+        this.tooltip.style.display = 'none';
+      });
+    }
+
+    setProgress(val) {
+      this.fill.style.width = `${val * 100}%`;
+      this.thumb.style.left = `${val * 100}%`;
+      this._value = val;
+    }
+
+    set value(val) {
+      this.setProgress(val);
+    }
+
+    set videoRef(v) {
+      this._video = v;
+    }
+
+    get value() {
+      return this._value ?? 0;
+    }
+  });
+}
+
   if (!customElements.get("custom-scroll")) {
     customElements.define("custom-scroll", CustomScroll);
   }
@@ -10527,10 +11671,10 @@ width: 680px;
     customElements.define("p-search", CustomSearch);
   }
   if (!customElements.get("video-player")) {
-    customElements.define("video-player", VideoPlayer);
+     customElements.define("video-player", VideoPlayer);
   }
-  if (!customElements.get("video-player-v2")) {
-    customElements.define("video-player-v2", VideoPlayerV2);
+   if (!customElements.get("video-player-v2")) {
+    //  customElements.define("video-player-v2", VideoPlayerV2);
   }
   if (!customElements.get("p-container")) {
     customElements.define("p-container", PostContent);
@@ -10548,6 +11692,12 @@ if( ! customElements.get("contact-form-box")){
       this.wrapper = document.createElement("div");
       this.sendBtn = document.createElement("button");
 
+      this.selectf = document.createElement('custom-select');
+/* console.log(selectf.value); // npr. "2"
+
+el.addEventListener('change', () => {
+  console.log('Novo izabrano:', el.value);
+});*/
     }
     reset(){
       this.wrapper.querySelectorAll("input, textarea").forEach(function(e){e.value = ""});
@@ -10570,8 +11720,8 @@ if( ! customElements.get("contact-form-box")){
     data.append("fe", window.btoa(fld_email));
     data.append("fm", window.btoa(fld_msg));
     xhr.open("POST", "/contact", true);
-    xhr.setRequestHeader("Authorization", `Bearer ${window.stmp}`);
-    xhr.onload = function () {
+    //xhr.setRequestHeader("Authorization", `Bearer ${window.stmp}`);
+     xhr.onload = function () {
       const res = this.responseText;
       var rest = "";
       fld_form.classList.remove("cants");
@@ -10584,7 +11734,7 @@ if( ! customElements.get("contact-form-box")){
           df.classList.remove("yes");
         }
         i_icon.setAttribute("style",`display: block !important;  font-size: 50px;`);
-        i_icon.name('emoji-laughing-fill');
+        i_icon.setAttribute('class','emoji-laughing-fill');
         restm.appendChild(i_icon);
         restm.appendChild(document.createElement("br"));
         restm.appendChild(document.createTextNode("Thank you for contacting me!"));
@@ -10613,7 +11763,7 @@ if( ! customElements.get("contact-form-box")){
           df.classList.remove("yes");
         }
         i_icon.setAttribute("style",`display: block !important;  font-size: 50px;`);
-        i_icon.name('bi-emoji-frown-fill');
+        i_icon.setAttribute('class','bi-emoji-frown-fill');
         restm.appendChild(i_icon);
         restm.appendChild(document.createElement("br"));
         restm.appendChild(document.createTextNode("Email is not sendet. Failed..."));
@@ -10633,7 +11783,7 @@ if( ! customElements.get("contact-form-box")){
         aerjaer.setAttribute("class","error");
         aerjaer.sendBtn.textContent = "Send message - Try Again";
         rest =
-          '<i class="bi bi-emoji-frown-fill"></i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';
+          '<icon-i class="bi bi-emoji-frown-fill"></icon-i><br>Email is not sendet. Failed...<br> Try again? <span onclick="welcomer.send_email_c();">Click here</span>.';
       }
       // restm.innerHTML = rest;
       fld_form.classList.add("send_yes");
@@ -10658,7 +11808,7 @@ if( ! customElements.get("contact-form-box")){
     connectedCallback() {
       const style = document.createElement("style");
       style.textContent = `
-       @import url(/mainss);
+       ${mainss_import}
 
        .h5_div img {
        margin-right:0px;
@@ -10741,16 +11891,12 @@ backdrop-filter: blur(2px);
   
       const inboxIcon = document.createElement("icon-i");
       // inboxIcon.className = "bi bi-inbox";
-      inboxIcon.name("bi-inbox");
+      inboxIcon.setAttribute('class',"bi-inbox");
 
       const closeIcon = document.createElement("icon-i");
-      // closeIcon.className = "closec bi bi-x-lg";
-      closeIcon.name("x-lg");
-      closeIcon.setAttribute('style',`
-    float: right;
-    width: 25px;
-    text-align: center;
-`);
+      closeIcon.className = "closec x-lg";
+      // closeIcon.name("x-lg");
+      closeIcon.setAttribute('style',` float: right; width: 25px; text-align: center;`);
 closeIcon.title = "Close";
 closeIcon.addEventListener("click",()=> this.close());
       const contact_span = document.createElement("span");
@@ -10774,7 +11920,7 @@ closeIcon.addEventListener("click",()=> this.close());
         const label = document.createElement("label");
         label.setAttribute("for", id);
         label.textContent = labelText;
-        const icon = document.createElement("i");
+        const icon = document.createElement("icon-i");
         icon.className = `input_icon bi ${id === 'fname' ? 'bi-quote' : 'bi-envelope'}`;
         const input = document.createElement("input");
         input.type = type;
@@ -10873,7 +12019,129 @@ closeIcon.addEventListener("click",()=> this.close());
  
 
 }
-  
+
+if(!customElements.get('custom-select')){
+customElements.define('custom-select', class extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+
+    this._value = '';
+    this._label = '';
+
+    const style = `
+      <style>
+        .select {
+          position: relative;
+          user-select: none;
+          font-family: sans-serif;
+        }
+
+        .selected {
+          background: #f0f0f0;
+          padding: 10px;
+          border: 1px solid #ccc;
+          cursor: pointer;
+        }
+
+        .options {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          border: 1px solid #ccc;
+          display: none;
+          max-height: 150px;
+          overflow-y: auto;
+          z-index: 10;
+        }
+
+        .options.open {
+          display: block;
+        }
+
+        .options div {
+          padding: 10px;
+          cursor: pointer;
+        }
+
+        .options div:hover {
+          background: #eee;
+        }
+      </style>
+    `;
+
+    this.shadowRoot.innerHTML = `${style}
+      <div class="select">
+        <div class="selected">Select...</div>
+        <div class="options"></div>
+      </div>
+    `;
+  }
+
+  connectedCallback() {
+    this._selected = this.shadowRoot.querySelector('.selected');
+    this._options = this.shadowRoot.querySelector('.options');
+    this._selectBox = this.shadowRoot.querySelector('.select');
+
+    this._selected.addEventListener('click', () => {
+      this._options.classList.toggle('open');
+    });
+
+    // Close when clicked outside
+    document.addEventListener('click', (e) => {
+      if (!this.contains(e.target) && !this.shadowRoot.contains(e.target)) {
+        this._options.classList.remove('open');
+      }
+    });
+
+    // Init from <option> children
+    const options = Array.from(this.querySelectorAll('option'));
+    this._options.innerHTML = ''; // clear
+
+    options.forEach(opt => {
+      const div = document.createElement('div');
+      div.textContent = opt.textContent;
+      div.dataset.value = opt.value;
+      this._options.appendChild(div);
+
+      if (opt.hasAttribute('selected')) {
+        this._setValue(opt.value, opt.textContent);
+      }
+
+      div.addEventListener('click', () => {
+        this._setValue(opt.value, opt.textContent);
+        this._options.classList.remove('open');
+        this.dispatchEvent(new Event('change'));
+      });
+    });
+
+    // Ako ništa nije selected, koristi prvi
+    if (!this._value && options.length > 0) {
+      const first = options[0];
+      this._setValue(first.value, first.textContent);
+    }
+  }
+
+  _setValue(val, label) {
+    this._value = val;
+    this._label = label;
+    this._selected.textContent = label;
+  }
+
+  get value() {
+    return this._value;
+  }
+
+  set value(val) {
+    const option = this.querySelector(`option[value="${val}"]`);
+    if (option) {
+      this._setValue(val, option.textContent);
+    }
+  }
+});
+} 
 
   if (!customElements.get("pdf-viewer")) {
     customElements.define(
@@ -10938,8 +12206,8 @@ closeIcon.addEventListener("click",()=> this.close());
           // === Style ===
           const style = document.createElement("style");
           style.textContent = `
-           @import url('https://${window.CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css');
-  @import url('https://${window.CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css');
+          ${CDN_URL_BOOSTRAP_ICONS_STRCSS}
+        
 
 
            :host {
@@ -11130,10 +12398,12 @@ white-space: nowrap;
 padding-right: 10px;
           }
 
-             span#filename i:not(.bi-fullscreen) {
+             span#filename i:not(.bi-fullscreen),
+             span#filename icon-i:not(.bi-fullscreen) {
               margin-right: 10px;
              }
 
+               .header icon-i.bi-fullscreen,
            .header i.bi-fullscreen {
 
               background: rgba(0, 0, 0, 0.639);
@@ -11158,7 +12428,7 @@ padding-right: 10px;
           const filenameSpan = document.createElement("span");
           filenameSpan.id = "filename";
 
-          const i_pdf_icon = document.createElement("i");
+          const i_pdf_icon = document.createElement("icon-i");
           i_pdf_icon.setAttribute("class", "bi bi-filetype-pdf");
 
           filenameSpan.appendChild(i_pdf_icon);
@@ -11181,7 +12451,7 @@ padding-right: 10px;
           btns.appendChild(zoomInBtn);
           btns.appendChild(counter);
 
-          const fullscreenBtn = document.createElement("i");
+          const fullscreenBtn = document.createElement("icon-i");
           fullscreenBtn.setAttribute("class", "bi bi-fullscreen");
 
           fullscreenBtn.addEventListener("click", () => {
@@ -11287,7 +12557,7 @@ padding-right: 10px;
               /*              this.filenameEl.textContent = `📄 ${data[0].name.split("_page_")[0]}`;
                */
               this.filenameEl.textContent = "";
-              const i_pdf_icon = document.createElement("i");
+              const i_pdf_icon = document.createElement("icon-i");
               i_pdf_icon.setAttribute("class", "bi bi-filetype-pdf");
 
               filenameSpan.appendChild(i_pdf_icon);
@@ -11376,10 +12646,7 @@ filter: grayscale(1) !important;`
   if (!customElements.get("div-solarsystem")) {
     customElements.define("div-solarsystem", SolarMap);
   }
-
-  $(document).ready(function () {
-    $("body").html("<app-home></app-home>");
-  });
+ 
 
   if(!customElements.get('editor-wrapper-v2')){
   customElements.define('editor-wrapper-v2',
@@ -11474,8 +12741,8 @@ filter: grayscale(1) !important;`
      welcomer.editor.callEditor(1);
   }
   
-  if (!customElements.get('icon-i')) {
-    customElements.define('icon-i', class extends HTMLElement {
+  if (!customElements.get('icon-if')) {
+    customElements.define('icon-if', class extends HTMLElement {
         constructor() {
             super();
             this.attachShadow({mode: 'open'});
@@ -11849,6 +13116,976 @@ if (!customElements.get('monaco-editor-app')) {
   });
 }
 
+
+if (!customElements.get('icon-i')) {
+  customElements.define('icon-i', class extends HTMLElement {
+    static get observedAttributes() {
+      return ['name', 'class'];
+    }
+
+    static get is_poligony() {
+      return false; // koristi path kao Bootstrap icons
+    }
+
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+
+      const style = document.createElement('style');
+      style.textContent = `
+           :host {
+          display: inline;
+          user-select: none;
+          cursor: default; 
+          font-style: normal;
+          font-weight: normal;
+          font-variant: normal;
+          text-transform: none; 
+          vertical-align: -.125em;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+
+      span {
+      display: inline-flex;
+      
+      }
+
+        svg {
+          width: 1em;
+          height: 1em;
+          fill: currentColor;
+          vertical-align: middle;
+        }
+      `;
+
+      this.shadowRoot.appendChild(style);
+      this.container = document.createElement('span');
+      this.shadowRoot.appendChild(this.container);
+    }
+
+    connectedCallback() {
+      this.setAttribute('role', 'img');
+      this.setAttribute('aria-label', this.getAttribute('name') ?? this.getAttribute('class') ?? '');
+      this.render();
+    }
+
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (oldValue !== newValue) {
+        this.setAttribute('aria-label', this.getAttribute('name') ?? this.getAttribute('class') ?? '');
+        this.render();
+      }
+    }
+
+    render() {
+      this.container.textContent = '';  
+
+      const rawAttr = this.getAttribute('name') ?? this.getAttribute('class') ?? '';
+      const matchedId = this.extractIconId(rawAttr);
+      if (!matchedId) {
+        this.container.textContent = rawAttr;
+        return;
+      }
+
+      const symbols = window.svg_paths ?? [];
+      const match = symbols.find(sym => this.cleanId(sym.id) === matchedId);
+      if (!match) {
+        this.container.textContent = matchedId;
+        return;
+      }
+
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('viewBox', match.viewBox || '0 0 16 16');
+      svg.setAttribute('class', matchedId);
+
+      (match.paths || []).forEach(pathData => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', pathData.d);
+        svg.appendChild(path);
+      });
+
+      this.container.appendChild(svg);
+    }
+
+    cleanId(id) {
+      return id
+        .replace(/^\d+-/, '')           
+        .replace(/\bbi-?/g, '')          
+        .replace(/\bfab-?/g, '')      
+        .replace(/\bfa-?/g, '')      
+        .replace(/\bfas-?/g, '')       
+        .trim();      
+    }
+
+    extractIconId(value) {
+      if (!value) return null;
+
+      const parts = value.split(/\s+/);  
+      const symbols = window.svg_paths ?? [];
+
+      for (let part of parts) {
+        const cleaned = this.cleanId(part);
+        if (symbols.some(sym => this.cleanId(sym.id) === cleaned)) {
+          return cleaned;
+        }
+      }
+
+      return this.cleanId(parts[0]);
+    }
+  });
+}
+
+
+
+if(!customElements.get('rotating-border')){
+ customElements.define('rotating-border', class   extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+  }
+
+  connectedCallback() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'wrapper';
+
+    const content = document.createElement('div');
+    content.className = 'content';
+    content.textContent = this.textContent || 'Rotating Border';
+
+    const style = document.createElement('style');
+    style.textContent = `
+  .wrapper {
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .wrapper::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    background: conic-gradient(
+      red,
+      orange,
+      yellow,
+      green,
+      cyan,
+      blue,
+      violet,
+      red
+    );
+    z-index: 0;
+    animation: rotate 4s linear infinite;
+    border-radius: 12px;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    padding: 5px;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  @keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+`;
+
+    wrapper.appendChild(content);
+    this.shadowRoot.append(style, wrapper);
+  }
+})
+}
+
+
+if(!customElements.get('video-player-v2')){
+ customElements.define('video-player-v2', class   extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this._prevVolume = 1;
+    this.observer = null;
+    this.video = document.createElement("video");
+
+  }
+  disconnectedCallback() {
+    if (this._onKeyDown) {
+      document.removeEventListener('keydown', this._onKeyDown);
+      this._onKeyDown = null;
+    }
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+  }
+  connectedCallback() {
+    this.observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+
+
+
+      }
+    });
+
+    this.observer.observe(this.shadowRoot, {
+      childList: true,
+      subtree: true,
+      characterData: true,
+      attributes: true
+    });
+
+    const src = this.getAttribute('src') || this.getAttribute("data-src");
+    const poster = this.getAttribute('poster') || this.getAttribute('data-poster');
+    const autoplay = this.hasAttribute('autoplay');
+    const loop = this.hasAttribute('loop');
+    
+ 
+    const style = document.createElement('style');
+    style.textContent = ` 
+
+
+
+
+:host {
+
+display: -webkit-box;
+
+display: -ms-flexbox;
+
+display: flex;
+max-width: 100%;
+position: relative;
+font-family: sans-serif;
+background: black;
+border-radius: 10px;
+min-height: 250px;
+-webkit-box-align: center;
+    -ms-flex-align: center;
+        align-items: center;
+
+
+}
+
+
+
+
+    video {
+      width: 100%;
+      height: 100%;
+      -o-object-fit: scale-down;
+         object-fit: scale-down;
+      background: black;
+      border-radius: 0px;
+          margin: auto;
+
+          transition: .3s;
+              position: absolute;
+    left: 0px;
+    top: 0px;
+    }
+    .video-feedback {
+
+    position: absolute;
+top: 50%;
+left: 50%;
+/* transform: translate(-50%, -50%) scale(1); */
+font-size: 4dvh;
+color: white;
+opacity: 0;
+pointer-events: none;
+-webkit-transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+transition: opacity 0.4s ease, -webkit-transform 0.4s ease;
+-o-transition: opacity 0.4s ease, transform 0.4s ease;
+transition: opacity 0.4s ease, transform 0.4s ease;
+transition: opacity 0.4s ease, transform 0.4s ease, -webkit-transform 0.4s ease;
+z-index: 20;
+height: 100%;
+width: 100%;
+margin: auto;
+display: -webkit-box;
+display: -ms-flexbox;
+display: flex
+;
+-webkit-box-pack: center;
+    -ms-flex-pack: center;
+        justify-content: center;
+-webkit-box-align: center;
+    -ms-flex-align: center;
+        align-items: center;
+-ms-flex-line-pack: center;
+    align-content: center;
+left: 0%;
+top: 0%;
+pointer-events: none;
+background: -o-radial-gradient(#00000070, transparent);
+background: radial-gradient(#00000070, transparent);
+border-radius: 10px !important;
+
+    }
+    .video-feedback.show {
+      opacity: 1; 
+    }
+    .controls {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: column;
+              flex-direction: column;
+      gap: 4px;
+      padding: 8px 12px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      z-index: 10;
+      background-image: -o-linear-gradient(bottom, black, transparent);
+      background-image: -webkit-gradient(linear, left bottom, left top, from(black), to(transparent));
+      background-image: linear-gradient(360deg, black, transparent);
+   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) ;
+-webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) ;
+enable-background: new 0 0 512 512 ;
+border-bottom-left-radius: 10px;
+border-bottom-right-radius: 10px;
+   
+      }
+    .controls-row {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      gap: 8px;
+    }
+    .controls-row > div:first-child {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      gap: 8px;
+    }
+    .progress-time {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      gap: 4px;
+      font-size: 0.8em;
+    }
+
+
+
+
+    button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.4em;
+      cursor: pointer;
+      position: relative;
+    }
+    .volume {
+      display: -webkit-inline-box;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -webkit-box-align: center;
+          -ms-flex-align: center;
+              align-items: center;
+      gap: 4px;
+      position: relative;
+    }   
+
+    .volume.no-audio {
+      opacity: 0.5;
+    }
+
+    .volume.no-audio * {
+    pointer-events:none;
+    }
+
+    img#poster {
+    
+    width: 100%;
+    height: 100%;
+    background: black;
+    object-fit: scale-down;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    
+    }
+
+
+`;
+
+function hasAudio(videoElement) {
+  return new Promise((resolve) => { 
+    if (videoElement.readyState >= 1) {
+      resolve(checkTracks(videoElement));
+    } else {
+      videoElement.addEventListener('loadedmetadata', () => {
+        resolve(checkTracks(videoElement));
+      }, { once: true });
+    }
+  });
+
+   function checkTracks(video)     { 
+    if (typeof video.mozHasAudio !== "undefined") {
+      return video.mozHasAudio;
+    }
+ 
+    if (video.webkitAudioDecodedByteCount !== undefined) {
+      return video.webkitAudioDecodedByteCount > 0;
+    }
+ 
+    if (video.audioTracks && video.audioTracks.length) {
+      return true;
+    }
+
+    return false;
+  }
+}
+
+    const root = document.createElement("div"); 
+    const video = this.video;
+    const img_poster = document.createElement("img");
+    img_poster.id = "poster";
+    video.id = 'video';
+    if (poster) video.poster = poster;
+    if (autoplay) video.setAttribute('autoplay', '');
+    if (loop) video.setAttribute('loop', '');
+    const source = document.createElement('source');
+    source.src = src; 
+    
+    if (poster) { 
+      img_poster.src  = poster;
+      
+    root.appendChild(      img_poster);
+
+    }
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    video.style.opacity = '0';
+    video.style.transform = 'scale(0);';
+
+    video.appendChild(document.createTextNode('Your browser does not support the video tag.'));
+
+    const feedback = document.createElement('div');
+    feedback.className = 'video-feedback';
+
+    const controls = document.createElement('div');
+    controls.className = 'controls';
+    const progressBar = document.createElement('progress-bar'),
+      bac_mask = document.createElement("bac-mask");
+    controls.appendChild(bac_mask);
+    controls.appendChild(progressBar);
+
+
+    const controlsRow = document.createElement('div');
+    controlsRow.className = 'controls-row';
+
+    const left = document.createElement('div');
+    const playBtn = document.createElement('button');
+    playBtn.className = 'play';
+    playBtn.title = 'Play/Pause';
+    playBtn.innerHTML = '<icon-i name="play-fill"></icon-i>';
+
+    const volume = document.createElement('div');
+    volume.className = 'volume';
+    const muteBtn = document.createElement('button');
+    muteBtn.className = 'mute';
+    muteBtn.title = 'Mute/Unmute';
+    muteBtn.innerHTML = '<icon-i name="volume-up-fill"></icon-i>';
+    const volumeRange = document.createElement('volume-range');
+    volume.appendChild(muteBtn);
+    volume.appendChild(volumeRange);
+
+
+    if(!hasAudio(video)){
+      volume.classList.add(".no-audio");
+    }
+
+    let volumeHoverTimeout;
+
+    volume.addEventListener('mouseenter', () => {
+      clearTimeout(volumeHoverTimeout);
+      volumeRange.style.display = 'block';
+    });
+
+    volume.addEventListener('mouseleave', () => {
+      volumeHoverTimeout = setTimeout(() => {
+        volumeRange.style.display = 'none';
+      }, 300); // malo kašnjenje za prelaz
+    });
+
+    volumeRange.addEventListener('mouseenter', () => {
+      clearTimeout(volumeHoverTimeout);
+      volumeRange.style.display = 'block';
+    });
+
+    volumeRange.addEventListener('mouseleave', () => {
+      volumeHoverTimeout = setTimeout(() => {
+        volumeRange.style.display = 'none';
+      }, 300);
+    });
+
+
+    left.appendChild(playBtn);
+    left.appendChild(volume);
+
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'progress-time';
+    const current = document.createElement('span');
+    current.className = 'current-time';
+    current.textContent = '0:00';
+    const duration = document.createElement('span');
+    duration.className = 'duration';
+    duration.textContent = '0:00';
+    timeDiv.appendChild(current);
+    timeDiv.appendChild(document.createTextNode(' / '));
+    timeDiv.appendChild(duration);
+    timeDiv.appendChild(duration);
+    left.appendChild(timeDiv);
+
+    const right = document.createElement('div');
+    const subsBtn = document.createElement('button');
+    subsBtn.className = 'subtitles';
+    subsBtn.title = 'Subtitles';
+    subsBtn.innerHTML = '<icon-i name="subtitles"></icon-i>';
+    const speedBtn = document.createElement('button');
+    speedBtn.className = 'speed';
+    speedBtn.title = 'Speed';
+    speedBtn.innerHTML = '<icon-i name="gear-fill"></icon-i>';
+    const pipBtn = document.createElement('button');
+    pipBtn.className = 'pip';
+    pipBtn.title = 'Picture-in-Picture';
+    pipBtn.innerHTML = '<icon-i name="box-arrow-in-up-right"></icon-i>';
+    const fullBtn = document.createElement('button');
+    fullBtn.className = 'fullscreen';
+    fullBtn.title = 'Fullscreen';
+    fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
+    right.appendChild(subsBtn);
+    right.appendChild(speedBtn);
+    right.appendChild(pipBtn);
+    right.appendChild(fullBtn);
+
+    controlsRow.appendChild(left);
+    // controlsRow.appendChild(timeDiv);
+    controlsRow.appendChild(right);
+    controls.appendChild(controlsRow);
+
+    this.shadowRoot.appendChild(root);
+    // root.appendChild(link);
+    root.appendChild(style);
+    root.appendChild(video);
+    root.appendChild(feedback);
+    root.appendChild(controls);
+    // this.shadowRoot.append(link, style, video, feedback, controls);
+
+    const progress = progressBar;
+    const currentTime = current;
+    const durationTime = duration;
+
+    this.shadowRoot.addEventListener("contextmenu", e => e.preventDefault());
+    this.shadowRoot.addEventListener("dragstart", e => e.preventDefault());
+    this.shadowRoot.addEventListener("selectstart", e => e.preventDefault());
+
+    progress.videoRef = video;
+
+    const formatTime = t => `${Math.floor(t / 60)}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+    const showFeedback = icon => {
+      feedback.innerHTML = icon;
+      feedback.classList.add('show');
+      setTimeout(() => feedback.classList.remove('show'), 400);
+    };
+
+    
+
+    video.addEventListener('loadedmetadata', () => {
+      durationTime.textContent = formatTime(video.duration);
+  
+    });
+
+    video.addEventListener('timeupdate', () => {
+      if (video.hasAttribute("style")) {
+        video.removeAttribute("style");     img_poster.remove();
+      }
+
+      currentTime.textContent = formatTime(video.currentTime);
+      progress.value = video.currentTime / video.duration;
+    });
+
+    progress.addEventListener('seek', e => {
+      video.currentTime = e.detail * video.duration;
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (video.paused) {
+        video.play();
+        playBtn.innerHTML = '<icon-i name="pause-fill"></icon-i>';
+        showFeedback('<icon-i name="pause-circle-fill"></icon-i>');
+      } else {
+        video.pause();
+        playBtn.innerHTML = '<icon-i name="play-fill"></icon-i>';
+        showFeedback('<icon-i name="play-circle-fill"></icon-i>');
+      }
+    });
+
+
+    video.addEventListener('click', () => playBtn.click());
+
+    video.volume = 1;
+    volumeRange.value = 1;
+
+    muteBtn.addEventListener('click', () => {
+      video.muted = !video.muted;
+      if (video.muted) {
+        this._prevVolume = video.volume;
+        volumeRange.value = 0;
+        video.volume = 0;
+      } else {
+        video.volume = this._prevVolume || 1;
+        volumeRange.value = video.volume;
+      }
+      muteBtn.innerHTML = video.muted ? '<icon-i name="volume-mute-fill"></icon-i>' : '<icon-i name="volume-up-fill"></icon-i>';
+    });
+
+    volumeRange.addEventListener('input', e => {
+      const val = parseFloat(e.detail ?? e.target.value);
+      video.volume = val;
+      video.muted = val === 0;
+      muteBtn.innerHTML = video.muted ? '<icon-i name="volume-mute-fill"></icon-i>' : '<icon-i name="volume-up-fill"></icon-i>';
+    });
+
+    fullBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        this.shadowRoot.host.requestFullscreen?.();
+        fullBtn.innerHTML = '<icon-i name="fullscreen-exit"></icon-i>';
+      } else {
+        fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
+        document.exitFullscreen?.();
+      }
+    });
+
+    pipBtn.addEventListener('click', () => {
+      if (document.pictureInPictureEnabled && !video.disablePictureInPicture) {
+        video.requestPictureInPicture?.();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.fullscreenElement) {
+        document.exitFullscreen?.();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        playBtn.click();
+      }
+    });
+
+    [...this.attributes].forEach(attr => this.removeAttribute(attr.name));
+
+  }
+})
+}
+
+
+
+
+
+
+
+if(!customElements.get('volume-range')){
+customElements.define('volume-range', class   extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this._dragging = false;
+  }
+
+  connectedCallback() {
+    const style = document.createElement('style');
+    style.textContent = `
+  .container {
+    width: 60px;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+  }
+  .fill {
+   height:  100%;
+background: transparent;
+background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%)); 
+border-radius: 0.375dvh;
+width: 0dvh; /* was 0% */
+  }
+  .thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+  }
+`;
+
+    const container = document.createElement('div');
+    container.className = 'container';
+
+    const fill = document.createElement('div');
+    fill.className = 'fill';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+
+    container.appendChild(fill);
+    container.appendChild(thumb);
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(container);
+
+
+
+    this.container = container;
+    this.fill = fill;
+    this.thumb = thumb;
+
+    const updateFromEvent = (e) => {
+      const rect = this.container.getBoundingClientRect();
+      const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+      this.setVolume(percent);
+      this.dispatchEvent(new CustomEvent('input', {detail: percent}));
+    };
+
+    this.container.addEventListener('mousedown', (e) => {
+      this._dragging = true;
+      updateFromEvent(e);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (this._dragging) updateFromEvent(e);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (this._dragging) this._dragging = false;
+    });
+  }
+
+  setVolume(val) {
+    this.fill.style.width = `${val * 100}%`;
+    this.thumb.style.left = `${val * 100}%`;
+    this._value = val;
+  }
+
+  set value(val) {
+    this.setVolume(val);
+  }
+
+  get value() {
+    return this._value ?? 1;
+  }
+})
+}
+
+if(!customElements.get('progress-bar')) {
+customElements.define('progress-bar', class   extends HTMLElement {
+  constructor() {
+    super();
+    this.attachShadow({mode: 'open'});
+    this._dragging = false;
+    this._wasPlaying = false;
+  }
+
+  connectedCallback() {
+    const style = document.createElement('style');
+    style.textContent = `
+.container {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+  }
+  .fill {
+    height: 100%;
+      background: transparent;
+background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%)); 
+    border-radius: 3px;
+    width: 0%;
+  }
+  .thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: white;
+  }
+  .tooltip {
+    position: absolute;
+    bottom: 100%;
+    transform: translateX(-50%);
+    background: black;
+    color: white;
+    font-size: 10px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: none;
+    white-space: nowrap;
+  }
+
+`;
+
+    const container = document.createElement('div');
+    container.className = 'container';
+
+    const fill = document.createElement('div');
+    fill.className = 'fill';
+
+    const thumb = document.createElement('div');
+    thumb.className = 'thumb';
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+
+    container.appendChild(fill);
+    container.appendChild(thumb);
+    container.appendChild(tooltip);
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(container);
+
+    this.container = container;
+    this.fill = fill;
+    this.thumb = thumb;
+    this.tooltip = tooltip;
+
+    const updateFromEvent = (e) => {
+      const rect = this.container.getBoundingClientRect();
+      const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+      this.setProgress(percent);
+      if (this._video) this._video.currentTime = this._video.duration * percent;
+      this.dispatchEvent(new CustomEvent('seek', {detail: percent}));
+    };
+
+    const updateTooltip = (e) => {
+      if (!this._video || isNaN(this._video.duration)) {
+        this.tooltip.style.display = 'none';
+        return;
+      }
+
+      const rect = this.container.getBoundingClientRect();
+      const percent = Math.min(Math.max((e.clientX - rect.left) / rect.width, 0), 1);
+      const time = this._video.duration * percent;
+
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60).toString().padStart(2, '0');
+      this.tooltip.textContent = `${minutes}:${seconds}`;
+      this.tooltip.style.left = `${percent * 100}%`;
+      this.tooltip.style.display = 'block';
+    };
+
+    container.addEventListener('mousedown', (e) => {
+      if (this._video) {
+        this._wasPlaying = !this._video.paused;
+        this._video.pause();
+      }
+      this._dragging = true;
+      updateFromEvent(e);
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (this._dragging) updateFromEvent(e);
+
+      updateTooltip(e);
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (this._dragging) {
+        this._dragging = false;
+        if (this._video && this._wasPlaying) this._video.play();
+      }
+    });
+
+    container.addEventListener('mouseleave', () => {
+      this.tooltip.style.display = 'none';
+    });
+  }
+
+  setProgress(val) {
+    this.fill.style.width = `${val * 100}%`;
+    this.thumb.style.left = `${val * 100}%`;
+    this._value = val;
+  }
+
+  set value(val) {
+    this.setProgress(val);
+  }
+
+  set videoRef(v) {
+    this._video = v;
+  }
+
+  get value() {
+    return this._value ?? 0;
+  }
+});
+}
+
+
+
+ 
+function mountApp() {
+  if (document.body) {
+    document.body.innerHTML = "<app-home></app-home>";  
+    return true;
+  }
+  return false;
+}
+
+if (document.readyState === "complete" || document.readyState === "interactive") {
+  if (!mountApp()) {
+    const observer = new MutationObserver(() => {
+      if (mountApp()) observer.disconnect();
+    });
+
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  }
+} else {
+  document.addEventListener("DOMContentLoaded", () => {
+    if (!mountApp()) {
+      const observer = new MutationObserver(() => {
+        if (mountApp()) observer.disconnect();
+      });
+
+      observer.observe(document.documentElement, { childList: true, subtree: true });
+    }
+  });
+}
 
 })();
 

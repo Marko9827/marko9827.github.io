@@ -5,6 +5,7 @@
         "erusev/parsedown": "^1.7",
         "guzzlehttp/psr7": "^2.6",
         "marcelklehr/link-preview": "^2.0",
-        "guzzlehttp/guzzle": "^5.3"
+        "guzzlehttp/guzzle": "^5.3",
+        "mongodb/mongodb": "^1.20"
     }
 }

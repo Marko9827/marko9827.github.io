@@ -954,27 +954,105 @@ JS;
         return implode("\n", $lines);
     }
 
-    private function gnerateJS(){
+
+    private function readLargeFile($path)
+    {
+        $handle = fopen($path, "rb");
+        if (!$handle) {
+            throw new Exception(self::error_page(404));
+        }
+
+        $content = '';
+        while (!feof($handle)) {
+            $content .= fread($handle, 1024 * 1024);
+        }
+        fclose($handle);
+        return $content;
+    }
+
+    private function get_SVSG()   {
+        $svg = file_get_contents(__DIR__ . './sf.xml');
+
+
+        $xml = simplexml_load_string($svg);
+        $xml->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');
+
+        $symbols = $xml->xpath('//svg:symbol');
+
+        $output = [];
+
+        foreach ($symbols as $symbol) {
+            $id = (string) $symbol['id'];
+            $viewBox = isset($symbol['viewBox']) ? (string) $symbol['viewBox'] : null;
+
+            $paths = [];
+            foreach ($symbol->path as $path) {
+                $paths[] = [
+                    'd' => (string) $path['d']
+                ];
+            }
+
+            $output[] = [
+                'id' => self::cleanId($id),
+                'viewBox' => $viewBox,
+                'paths' => $paths
+            ];
+        }
+        
+        return json_encode($output);
+
+    }
+
+    /**
+     * Summary of gnerateJS
+     * @return string 
+     */
+    private function gnerateJS(): string
+    {
         $js_static = "";
-        header("content-type: text/javascript");
-        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-        header("Cache-Control: post-check=0, pre-check=0", false);
-        header("Pragma: no-cache");
-        ob_start();
+        
         $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
-        $js_static .= "(function () { \"use strict\"; \n\n/* " . time() . " */\n";
+        $js_static .= "(function initWhenReady() { \"use strict\"; \n\n/* " . time() . " */\n";
 
         $js_static .= "const version = function(){
             return '" . time() . "';
         };";
 
-        $$js_static .= "window.stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
+        $js_static .= "const stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
+        $css =   self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
 
+        $js_static .= "const mainss_import = `$css`;";
+
+        $j_s = self::get_SVSG();
+             
+        $js_static .=  "window.svg_paths = $j_s;";
+      
+       # $js_static .=  
         $js_static .= file_get_contents(ROOT . "s.js");
-
-        file_put_contents($f, self::protect_js($js_static));
- 
+        $dir = dirname($f);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0775, true);
+        }
+        $data = $js_static;
+       # $data = self::minifyJS_code(self::protect_js($js_static));
+        file_put_contents($f, $data);
+        header("Content-Type: application/javascript");
+        header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+        header("Cache-Control: post-check=0, pre-check=0", false);
+        header("Pragma: no-cache");
+        ob_start();
+        return (string)$data;
+    
     }
+
+    private function cleanId($id)
+    {
+
+        $id = preg_replace('/^\d+-/', '', $id);      // skida npr. 0- sa početka
+        $id = str_replace(['bi-', 'bi'], '', $id);
+        return $id;
+    }
+
     private function Pages($h = "home")
     {
         session_start();
@@ -1170,14 +1248,20 @@ JS;
             exit();
         }
 
-        if ($h == "mainss") {
-
+        if ($h == "mainss") { 
             header("Content-Type: text/css");
             ob_start(function ($b) {
                 return self::minifyHtmlCss($b);
             });
             #  include "$_SERVER[DOCUMENT_ROOT]/app/mainas.css";
-            include __DIR__ . '/build/style.css';
+            $file = __DIR__ . '/build/style_minifed.css';
+            $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
+
+            if(!file_exists($file)){
+                 file_put_contents($file , $cst);
+            } 
+            header("Content-Type: text/css");
+            include $file;
             exit();
         }
         if ($h == "video") {
@@ -1339,38 +1423,52 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
             header("content-type: text/javascript");
 
-            echo "window.portfolio = $r;";
+          #  echo "window.portfolio = $r;";
             # header("content-type: text/javascript");
-            echo "window.portfolio = $r; \n \n";
+            echo "var portfolio = $r; \n \n";
             if (strpos($_SERVER['HTTP_HOST'], ".localhost")) {
-                echo "window.portfolio.host = 'https://api.localhost';";
+                echo "portfolio.host = 'https://api.localhost'; \n \n";
             }
+
+           
+           
             exit();
         }
         if ($h == "sbct") {
-             self::gnerateJS();    
+            self::gnerateJS();
+
+            $file = __DIR__ . '/build/style_minifed.css';
+            $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
+
+            
+                 file_put_contents($file , $cst);
+          
+           
+            echo time();
         }
         if ($h == "main") {
+
+            echo self::gnerateJS();
+            exit();
             $js_static = "";
 
-echo 1;
 
-            header("content-type: text/javascript");
-            header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
-            header("Cache-Control: post-check=0, pre-check=0", false);
-            header("Pragma: no-cache");
-            ob_start();
+
             $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
+            $dir = dirname($f);
+
             // echo self::protect_js($js_static);
-            if (!file_exists($f)) { 
-                self::gnerateJS();  
-                @readfile($f);  
-            } else{
-                @readfile($f);
+            if (!file_exists($f)) {
+                self::gnerateJS();
             }
+
+            header('Content-Type: application/javascript');
+
+            echo self::readLargeFile($f);
             exit();
         }
         if ($h == "icons") {
+            /*
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 header('Content-Type: text/html; charset=utf-8');
                 $this->error_page(405);
@@ -1380,62 +1478,89 @@ echo 1;
                 http_response_code(401);
                 echo json_encode(["error" => "Unauthorized"]);
                 exit();
+            }*/
+            $svg = file_get_contents(__DIR__ . './sf.xml');
+
+            $xml = simplexml_load_string($svg);
+            $xml->registerXPathNamespace('svg', 'http://www.w3.org/2000/svg');
+
+            $symbols = $xml->xpath('//svg:symbol');
+
+            $output = [];
+
+            foreach ($symbols as $symbol) {
+                $id = (string) $symbol['id'];
+                $viewBox = isset($symbol['viewBox']) ? (string) $symbol['viewBox'] : null;
+
+                $paths = [];
+                foreach ($symbol->path as $path) {
+                    $paths[] = [
+                        'd' => (string) $path['d']
+                    ];
+                }
+
+                $output[] = [
+                    'id' => self::cleanId($id),
+                    'viewBox' => $viewBox,
+                    'paths' => $paths
+                ];
             }
-            header("Content-Type: text/plain");
-            @readfile(__DIR__ . './sf.svg');
+            header('Content-Type: application/json');
+            echo json_encode($output, JSON_PRETTY_PRINT);
             exit();
         }
         if ($h == "contact") {
 
 
-
             if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
                 header('Content-Type: text/html; charset=utf-8');
                 $this->error_page(405);
                 exit();
             }
-            if (base64_decode(self::getBearerToken()) !== "$_SERVER[HTTP_HOST]") {
-                http_response_code(401);
-                echo json_encode(["error" => "Unauthorized"]);
-                exit();
+
+            if (empty($_POST)) {
+                $input = json_decode(file_get_contents("php://input"), true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($input)) {
+                    $_POST = $input;
+                }
             }
-            header("content-type: text/json");
-            define("ROOTcontacts", "$_SERVER[DOCUMENT_ROOT]/../markonikolic98");
-            if (!empty($_POST["fm"]) || !empty($_POST['fe']) || !empty($_POST["fn"])) {
-                if (!is_dir(ROOTcontacts)) {
-                    mkdir(ROOTcontacts);
-                }
-                if (!is_dir(ROOTcontacts . "/data_s")) {
-                    mkdir(ROOTcontacts . "/data_s");
-                }
+
+            if (base64_decode(self::getBearerToken()) !== $_SERVER['HTTP_HOST']) {
+                # exit();
+            }
+
+            header('Content-Type: text/plain');
+
+            define("ROOTcontacts", $_SERVER['DOCUMENT_ROOT'] . "/../markonikolic98");
+
+            $fn = isset($_POST["fn"]) ? base64_decode($_POST["fn"]) : null;
+            $fe = isset($_POST["fe"]) ? base64_decode($_POST["fe"]) : null;
+            $fm = isset($_POST["fm"]) ? base64_decode($_POST["fm"]) : null;
+
+            echo json_encode($fn, $fe, $fm);
+            if ($fn && $fe && $fm) {
                 if (!is_dir(ROOTcontacts . "/data_s/data_f/")) {
-                    mkdir(ROOTcontacts . "/data_s/data_f/");
+                    mkdir(ROOTcontacts . "/data_s/data_f/", 0777, true);
                 }
+
                 $rand = time() . rand();
-                $to = date('m_d_Y_h_i_sa', time()) . "-$rand-$_POST[fe]-contact.json";
-                $subject = $_POST['fn'];
-                $message = $_POST['fm'];
-                $headers = 'From: ' . $_POST['fe'] . '' . "\r\n" .
-                    'X-Mailer: eronelit.com';
+                $filename = date('m_d_Y_h_i_sa', time()) . "-$rand-$fe-contact.json";
 
-                // $r = json_encode($_POST);
-                $r = array();
-                $r[0]->name = $subject;
-                $r[0]->message = "$_POST[fm]";
-                $r[0]->email = "$_POST[fe]";
-                // $r = json_encode("{ 'name':'$subject', 'message':'$_POST[fm]', 'email':'$_POST[fe]' }");
+                $r = [
+                    (object) [
+                        'name' => $fn,
+                        'message' => $fm,
+                        'email' => $fe
+                    ]
+                ];
+
                 $far = base64_encode(json_encode($r));
+                $success = file_put_contents(ROOTcontacts . "/data_s/data_f/$filename", $far);
 
-                $ff = file_put_contents(ROOTcontacts . "/data_s/data_f/$to", "$far");
-                if ($ff) {
-                    //mail($to, $subject, $message, $headers)){
-                    echo "yes";
-                } else {
-                    echo "no";
-                }
-            } else {
+                echo $success ? "yes" : "no";
             }
-            exit();
+            exit;
+
         }
         if ($h == "buildd") {
             self::build();
@@ -2210,8 +2335,8 @@ echo 1;
         <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl); ?>" />
         <meta property="og:title" content="<?= htmlspecialchars($title); ?>" />
         <meta property="og:description" content="<?= htmlspecialchars($description); ?>" />
-        <meta property="og:image" content="<?= htmlspecialchars($ogImage); ?>" />
-        <meta property="og:image:secure_url" content="<?= htmlspecialchars($ogImage); ?>" />
+        <meta property="og:image" content="<?= $ogImage; ?>" />
+        <meta property="og:image:secure_url" content="<?= $ogImage; ?>" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1024" />
         <meta property="og:image:height" content="630" />
@@ -2224,24 +2349,24 @@ echo 1;
         <meta name="twitter:creator" content="@markoni62595164" />
         <meta name="twitter:title" content="<?= htmlspecialchars($title); ?>" />
         <meta name="twitter:description" content="<?= htmlspecialchars($description); ?>" />
-        <meta name="twitter:image" content="<?= htmlspecialchars($ogImage); ?>" />
+        <meta name="twitter:image" content="<?= $ogImage; ?>" />
 
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                                    {
-                                                                                                                                                                                        "@context": "https://schema.org",
-                                                                                                                                                                                        "@type": "WebSite",
-                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                                        "name": "Marko Nikolić",
-                                                                                                                                                                                        "author": {
-                                                                                                                                                                                            "@type": "Person",
-                                                                                                                                                                                            "name": "Marko Nikolić"
-                                                                                                                                                                                        },
-                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                                        "inLanguage": "en-GB"
-                                                                                                                                                                                    }
-                                                                                                                                                                                </script>
+                                                                                                                                                                                                            {
+                                                                                                                                                                                                                "@context": "https://schema.org",
+                                                                                                                                                                                                                "@type": "WebSite",
+                                                                                                                                                                                                                "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                                                "name": "Marko Nikolić",
+                                                                                                                                                                                                                "author": {
+                                                                                                                                                                                                                    "@type": "Person",
+                                                                                                                                                                                                                    "name": "Marko Nikolić"
+                                                                                                                                                                                                                },
+                                                                                                                                                                                                                "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                                                "inLanguage": "en-GB"
+                                                                                                                                                                                                            }
+                                                                                                                                                                                                        </script>
         <?php
     }
 
@@ -3320,7 +3445,7 @@ echo 1;
                 ]);
 
                 // echo "<script type='text/javascript'  charset='UTF-8' id='json_feed'> window.portfolio = $r;</script>";
-                echo "window.portfolio = $r; \n";
+                echo "const portfolio = $r; \n";
                 include "$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery3.6.0.min.js \n";
                 echo file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/Scripts/jquery.min.js");
                 @readfile(ROOT . "welcomer_f.js");

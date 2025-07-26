@@ -1,9 +1,9 @@
 "use strict"; 
 
-/* 1753035302 */
+/* 1753198490 */
 const version = function(){
-            return '1753035302';
-        };window.stmp = 'r1F0wcw+a1sEWBMtqsVBnw==';
+            return '1753198490';
+        };window.stmp = 'Yk1KZ5VfCqFCB6CJMbx4WQ==';
 window.draggable = { style_left: "", style_top: "", enabled: false };
 window.CDN_URL = "cdn.markonikolic98.com";
  

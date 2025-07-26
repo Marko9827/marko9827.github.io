@@ -2608,7 +2608,8 @@ div_not div_panel {
     overflow: hidden;
 }
 
-.contanct_frm form {
+.contanct_frm form,
+.contanct_frm custom-scroll {
     position: absolute;
     overflow-y: auto;
     bottom: 60px;
@@ -2821,29 +2822,35 @@ body:not(.open_f) .contanct_frm.open.cants iframe {
     min-height: 150px;
 }
 
+.contanct_frm custom-scroll p.msg,
 .contanct_frm form p.msg {
     text-align: center;
     margin: auto;
 }
 
+.contanct_frm custom-scroll p.msg span,
 .contanct_frm form p.msg span {
     text-decoration: underline !important;
 }
 
+.contanct_frm custom-scroll.send_yes *:not(.msg, .msg > br, .msg > span, .msg > i) ,
 .contanct_frm form.send_yes *:not(.msg, .msg > br, .msg > span, .msg > i) {
     display: none !important;
 }
 
+.contanct_frm custom-scroll:not(.send_yes) .msg,
 .contanct_frm form:not(.send_yes) .msg {
     display: none !important;
 }
 
+.contanct_frm custom-scroll.send_yes,
 .contanct_frm form.send_yes {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
 }
 
+.contanct_frm custom-scroll.send_yes .msg i,
 .contanct_frm form.send_yes .msg i {
     font-size: 50px;
 }
@@ -3350,16 +3357,16 @@ body.open_f #logo_backscr_img.logo_backscr_img_cnt {
     height: 25px !important;
 }
 
-div.contanct_frm.open.yes fotter {
+.contanct_frm.open.yes fotter {
     transform: none !important;
     background: var(--black-trasparent-color);
 }
 
-div.contanct_frm.open.yes form {
+.contanct_frm.open.yes form {
     padding-bottom: 60px;
 }
 
-div.contanct_frm.open .h5_div {
+.contanct_frm.open .h5_div {
     display: flex;
     align-content: center;
 }

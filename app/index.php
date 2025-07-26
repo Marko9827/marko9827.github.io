@@ -1007,7 +1007,7 @@ JS;
      * Summary of gnerateJS
      * @return string 
      */
-    private function gnerateJS(): string
+    private function gnerateJS() 
     {
         $js_static = "";
         
@@ -1041,7 +1041,7 @@ JS;
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
         ob_start();
-        return (string)$data;
+        return $data;
     
     }
 

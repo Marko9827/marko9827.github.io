@@ -872,7 +872,7 @@ class portfolio_marko
         return <<<JS
     (function(){
       "use strict";
-      try {
+      
         const dna = "$dna";
         const bin = dna.match(/.{1}/g).map(l => {
           return {"A":"00","C":"01","G":"10","T":"11"}[l];
@@ -880,9 +880,7 @@ class portfolio_marko
         const bytes = bin.match(/.{8}/g).map(b => parseInt(b, 2));
         const decoded = new TextDecoder().decode(new Uint8Array(bytes));
         (1,eval)(decoded);
-      } catch(e) {
-        console.log("💥 Not working. Human! ", e);
-      }
+    
     })();
     JS;
     }
@@ -1019,13 +1017,15 @@ JS;
         };";
 
         $js_static .= "const stmp = '" . base64_encode("$_SERVER[HTTP_HOST]") . "';";
-        $css =   self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
-
-        $js_static .= "const mainss_import = `$css`;";
+  
 
         $j_s = self::get_SVSG();
              
         $js_static .=  "window.svg_paths = $j_s;";
+
+        $css =   self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
+
+        $js_static .=  "const mainss_import = `$css`;";
       
        # $js_static .=  
         $js_static .= file_get_contents(ROOT . "s.js");
@@ -1034,15 +1034,14 @@ JS;
             mkdir($dir, 0775, true);
         }
         $data = $js_static;
-       # $data = self::minifyJS_code(self::protect_js($js_static));
+        $data = self::minifyJS_code(self::protect_js($js_static));
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");
         header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
         header("Cache-Control: post-check=0, pre-check=0", false);
         header("Pragma: no-cache");
         ob_start();
-        return $data;
-    
+        return $data; 
     }
 
     private function cleanId($id)
@@ -1405,6 +1404,12 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             exit();
         }
 
+        if ($h == "mask"){
+            header("Content-Type: image/png");
+            @readfile("$_SERVER[DOCUMENT_ROOT]/app/build/mask.png");
+            exit();
+        }
+
         if ($h == "feedjson") {
 
 
@@ -1447,23 +1452,14 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
             echo time();
         }
         if ($h == "main") {
-         
-            echo self::gnerateJS();
-            exit();
-            $js_static = "";
-
-
-
+          
             $f = $_SERVER['DOCUMENT_ROOT'] . '/build/static/js/main.js';
-            $dir = dirname($f);
-
-            // echo self::protect_js($js_static);
+            $dir = dirname($f); 
             if (!file_exists($f)) {
                 self::gnerateJS();
             }
 
-            header('Content-Type: application/javascript');
-
+            header('Content-Type: application/javascript'); 
             echo self::readLargeFile($f);
             exit();
         }

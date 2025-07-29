@@ -2598,6 +2598,10 @@ hh_anim_start spj {
         test_page("", "cv-pdf");
       });
 
+      router.on("search", (params) => {
+        document.body.appendChild(document.createElement('p-search'));
+      });
+
       router.on("editor", (params) => {
         const id = params.get("id"),
         p = params.get("p"),
@@ -7100,34 +7104,39 @@ div#clavs .br_ta ta_f {
      display: none;
  }
 
- .results {
-     display: -ms-grid;
-     display: -ms-grid;
-     display: grid;
-     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-     gap: 0px;
-     position: absolute;
-     top: 51px;
-     left: 0px;
-     width: 100%;
-     overflow: auto;
-     padding-top: 5px;
-     -ms-flex-wrap: wrap;
-     flex-wrap: wrap;
-     -ms-flex-pack: distribute;
-     justify-content: space-around;
-     justify-items: stretch;
-     height: -webkit-fit-content;
-     height: -moz-fit-content;
-     height: fit-content;
-     max-height: calc(100% - 56px);
 
-     filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-     -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
-     enable-background: new 0 0 512 512 !important;
-     -webkit-transition: .3s !important;
-     -o-transition: .3s !important;
-     transition: .3s !important;
+ custom-scroll {
+ 
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 51px);
+    top: 51px;
+
+ }
+
+ .results {
+   display: -ms-grid;
+    display: -ms-grid;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0px;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    padding-top: 0px;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    justify-items: stretch;
+    height: 100%;
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3)) !important;
+    enable-background: new 0 0 512 512 !important;
+    -webkit-transition: .3s !important;
+    -o-transition: .3s !important;
+    transition: .3s !important;
  }
 
  *::-webkit-scrollbar {
@@ -7399,9 +7408,11 @@ div#clavs .br_ta ta_f {
       filterContainer.appendChild(filterLabel);
       filterContainer.appendChild(filterSelect);
 
-      const resultsContainer = document.createElement("div");
-      resultsContainer.classList.add("results");
-      resultsContainer.id = "results";
+      const resultsContainer = document.createElement("custom-scroll"),
+      results_box = document.createElement("div");
+      results_box.classList.add("results");
+      results_box.id = "results";
+      resultsContainer.appendChild(results_box);
 
       const imgLogo = document.createElement("img");
       imgLogo.classList.add("logo_backscr_img");

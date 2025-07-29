@@ -11857,6 +11857,10 @@ class CustomScrollV2 extends HTMLElement {
       wrapper.removeAttribute("style");
     });
 
+    this.setupHoverEvents(wrapper,
+      wrapper.removeAttribute("style"),
+      ()=>{});
+
 
     const content = document.createElement("div");
     content.classList.add("content");
@@ -11893,8 +11897,26 @@ class CustomScrollV2 extends HTMLElement {
         this._handlers["scroll"].forEach((cb) => cb(wrapper.scrollTop, wrapper.scrollLeft));
       }
 
+      function updateArrowVisibility(leftArrow, rightArrow, wrapper, scrollLeft, contentWidth, containerWidth) {
+        const hideLeft = scrollLeft <= 0;
+        const hideRight = scrollLeft >= contentWidth - containerWidth - 2;
+      
+        leftArrow.classList.toggle("hidden", hideLeft);
+        rightArrow.classList.toggle("hidden", hideRight);
+      
+        if (hideLeft || hideRight) {
+          wrapper.removeAttribute("style");
+        } else { 
+          wrapper.style.opacity = "0.2";
+        }
+      }
+
       leftArrow.classList.toggle("hidden", scrollLeft <= 0);
       rightArrow.classList.toggle("hidden", scrollLeft >= contentWidth - containerWidth - 2);
+ 
+
+      updateArrowVisibility(leftArrow, rightArrow, wrapper, wrapper.scrollLeft, wrapper.scrollWidth, wrapper.clientWidth);
+
     };
 
     wrapper.addEventListener("scroll", () => {
@@ -11907,10 +11929,14 @@ class CustomScrollV2 extends HTMLElement {
 
     leftArrow.addEventListener("click", () => {
       wrapper.scrollBy({ left: -100, behavior: "smooth" });
+  
+     
     });
 
     rightArrow.addEventListener("click", () => {
       wrapper.scrollBy({ left: 100, behavior: "smooth" });
+      
+      
     });
 
     let scrollDisableTimer = null;

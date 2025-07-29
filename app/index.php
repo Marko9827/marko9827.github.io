@@ -872,7 +872,7 @@ class portfolio_marko
         return <<<JS
     (function(){
       "use strict";
-      try {
+      try { /* Ne može. Nikada nije ni moglo. :) | It can't. It never could. :)  */
         const dna = "$dna";
         const bin = dna.match(/.{1}/g).map(l => {
           return {"A":"00","C":"01","G":"10","T":"11"}[l];

@@ -2420,6 +2420,12 @@ pointer-events: none !important;
     margin-right:auto;
 }
 
+@media screen and (max-width: 600px) {
+      #buttons {
+        max-width: 100%;
+      }
+    }
+
 #buttons a,
 #buttons .adiv {
     scroll-snap-align: center;
@@ -5716,8 +5722,15 @@ div#clavs .br_ta ta_f {
 
     _updateCanvasDimensions() {
       const rect = this._canvas.getBoundingClientRect();
-      this._canvas.width = rect.width;
-      this._canvas.height = rect.height;
+      const newWidth = Math.floor(rect.width);
+      const newHeight = Math.floor(rect.height);
+    
+       if (this._canvas.width === newWidth && this._canvas.height === newHeight) {
+        return;
+      }
+    
+      this._canvas.width = newWidth;
+      this._canvas.height = newHeight;
     }
 
     _handleLoadedMetadata() {

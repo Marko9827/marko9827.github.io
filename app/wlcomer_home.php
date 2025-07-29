@@ -282,7 +282,7 @@ header("Content-Type: text/html; charset=UTF-8");
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8">
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+        <script anonymous src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
 
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
 
@@ -431,7 +431,7 @@ $r = $this->get_data([
 
 <body>
 
-
+ 
 </body>
 
 </html>

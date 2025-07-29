@@ -2,7 +2,7 @@
 
 
 const version = function(){
-            return '1753565617';
+            return '1753817379';
         };const stmp = 'cG9ydGZvbGlvLmxvY2FsaG9zdA==';
 
   window.draggable = { style_left: "", style_top: "", enabled: false };
@@ -2546,7 +2546,7 @@ hh_anim_start spj {
       this.wrapper.appendChild(style);
       this.wrapper.id = "clavs";
       this.shadow.appendChild(this.wrapper);
-      this.buttons = document.createElement("div");
+      this.buttons = document.createElement("custom-scrolh");
 
       this.arrowRight = document.createElement("icon-i");
       this.arrowRight.className =
@@ -2972,12 +2972,14 @@ hh_anim_start spj {
 
       arrBundle.appendChild(this.arrowRight);
       arrBundle.appendChild(this.arrowLeft);
-      spj.appendChild(arrBundle);
+
 
       this.buttons.id = "buttons";
       this.buttons.className = "box_shadow";
       this.buttons.style.cursor = "grab";
       this.buttons.onscroll = () => this.scrolj();
+
+      spj.appendChild(document.createElement("br"));
       spj.appendChild(this.buttons);
 
       spjin.appendChild(p);
@@ -10612,6 +10614,11 @@ width: 680px;
               updatePreview();
               editor.onDidChangeModelContent(updatePreview);
 
+              preview.onresize = function(){
+                updatePreview();
+                editor.onDidChangeModelContent(updatePreview);
+              };
+
               const resizeObserver = new ResizeObserver(() => editor.layout());
               resizeObserver.observe(editorDiv);
             });
@@ -11555,6 +11562,8 @@ background-image: linear-gradient(270deg, red, rgb(255 0 0 / 60%));
   });
 }
 
+
+
 class CustomScrollV2 extends HTMLElement {
   constructor() {
     super();
@@ -11580,12 +11589,13 @@ class CustomScrollV2 extends HTMLElement {
   }
 
   connectedCallback() {
-    const style = `
-    slot {
-    display:-webkit-inline-box;
-    display:-ms-inline-flexbox;
-    display:inline-flex;
-    }
+    const style = document.createElement("style");
+    style.textContent = `
+       slot {
+        display: -webkit-inline-box;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+      }
       .wrapper {
         width: 100%;
         overflow-x: scroll;
@@ -11619,8 +11629,8 @@ class CustomScrollV2 extends HTMLElement {
         border-radius: 4px;
         cursor: none;
         background-color: rgba(255, 255, 255, 0.2);
-        backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
         -webkit-backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
+                backdrop-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) blur(10px);
       }
 
       .thumb:hover {
@@ -11642,20 +11652,82 @@ class CustomScrollV2 extends HTMLElement {
             -ms-flex-align: stretch;
                 align-items: stretch;
       }
+
+      .arrow {
+      position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-60%);
+        -ms-transform: translateY(-60%);
+            transform: translateY(-60%);
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex
+;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    font-size: 24px;
+    margin-top: -5px;
+      }
+
+      .arrow.left {
+        left: 20px;
+      }
+
+      .arrow.right {
+        right: 20px;
+      }
+
+      .arrow.hidden {
+        display: none;
+      }
     `;
 
-    this.shadowRoot.innerHTML = `
-      <style>${style}</style>
-      <div class="wrapper">
-        <div class="content"><slot></slot></div>
-      </div>
-      <div class="scrollbar"><div class="thumb"></div></div>
-    `;
+    const leftArrow = document.createElement("icon-i");
+    leftArrow.classList.add("arrow", "left","arrow-left-circle-fill", "hidden");
 
-    const wrapper = this.shadowRoot.querySelector(".wrapper");
-    const thumb = this.shadowRoot.querySelector(".thumb");
-    const content = wrapper.querySelector(".content");
 
+    const rightArrow = document.createElement("icon-i");
+    rightArrow.classList.add("arrow", "arrow-right-circle-fill", "right", "hidden");
+
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("wrapper");
+
+    const content = document.createElement("div");
+    content.classList.add("content");
+
+    const slot = document.createElement("slot");
+    content.appendChild(slot);
+    wrapper.appendChild(content);
+
+    const scrollbar = document.createElement("div");
+    scrollbar.classList.add("scrollbar");
+
+    const thumb = document.createElement("div");
+    thumb.classList.add("thumb");
+    scrollbar.appendChild(thumb);
+
+    this.shadowRoot.appendChild(style);
+    this.shadowRoot.appendChild(leftArrow);
+    this.shadowRoot.appendChild(rightArrow);
+    this.shadowRoot.appendChild(wrapper);
+    this.shadowRoot.appendChild(scrollbar);
 
     const updateThumb = () => {
       const contentWidth = wrapper.scrollWidth;
@@ -11671,6 +11743,9 @@ class CustomScrollV2 extends HTMLElement {
       if (this._handlers["scroll"]) {
         this._handlers["scroll"].forEach((cb) => cb(wrapper.scrollTop, wrapper.scrollLeft));
       }
+
+      leftArrow.classList.toggle("hidden", scrollLeft <= 0);
+      rightArrow.classList.toggle("hidden", scrollLeft >= contentWidth - containerWidth - 2);
     };
 
     wrapper.addEventListener("scroll", () => {
@@ -11681,9 +11756,15 @@ class CustomScrollV2 extends HTMLElement {
     window.addEventListener("resize", updateThumb);
     updateThumb();
 
+    leftArrow.addEventListener("click", () => {
+      wrapper.scrollBy({ left: -100, behavior: "smooth" });
+    });
+
+    rightArrow.addEventListener("click", () => {
+      wrapper.scrollBy({ left: 100, behavior: "smooth" });
+    });
 
     let scrollDisableTimer = null;
-
     const disablePointerEvents = () => {
       if (!content) return;
       for (const el of content.children) {
@@ -11705,7 +11786,6 @@ class CustomScrollV2 extends HTMLElement {
         enablePointerEvents();
       }, 200);
     };
-
 
     let isDragging = false;
     let startX, startScrollLeft;
@@ -11731,7 +11811,6 @@ class CustomScrollV2 extends HTMLElement {
       const scrollRatio = scrollableWidth / (containerWidth - thumbWidth);
       wrapper.scrollLeft = startScrollLeft + deltaX * scrollRatio;
     });
-
 
     let isTouchScrolling = false;
     let startX_drag = 0;
@@ -11795,8 +11874,12 @@ class CustomScrollV2 extends HTMLElement {
       const dragDelta = e.clientX - startX_drag;
       wrapper.scrollLeft = startScrollLeft_drag - dragDelta;
     });
+    updateThumb();
+    onScrollActivity();
   }
 }
+
+
 
 
 
@@ -13114,7 +13197,7 @@ if (!customElements.get('monaco-editor-app')) {
         this.shadowRoot.querySelector("size_r").style.display = 'block';
         this.shadowRoot.querySelector("size_r").textContent = "";
         const i = document.createElement("icon-i");
-        i.name("rulers");
+        i.classList.add("rulers");
         this.shadowRoot.querySelector("size_r").appendChild(i);
         this.shadowRoot.querySelector("size_r").appendChild(document.createTextNode(`${this.shadowRoot.querySelector("iframe").offsetWidth}px x ${this.shadowRoot.querySelector("iframe").offsetHeight}px`));
         if (this.editor) this.editor.layout();

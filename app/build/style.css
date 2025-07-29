@@ -221,6 +221,8 @@ hh_anim_start .Vjideo_sjpinner {
     display: -ms-inline-flexbox;
     display: inline-flex;
     margin-top: 15px;
+    
+    max-width: 80%;
 }
 
 #buttons a {
@@ -232,7 +234,7 @@ hh_anim_start .Vjideo_sjpinner {
     -webkit-transition: .3s;
     -o-transition: .3s;
     transition: .3s;
-    font-size: 15px;
+    font-size: 15px; 
 }
 
 #buttons a:hover {

@@ -1436,7 +1436,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
         if ($h == "editor") {
             header("Content-Type: text/html");
-            include __DIR__ . "/editor.php";
+            include __DIR__ . "/editorv3.php";
             exit();
         }
 

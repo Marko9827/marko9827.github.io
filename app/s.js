@@ -11712,7 +11712,15 @@ class CustomScrollV2 extends HTMLElement {
       this.removeChild(this.firstChild);
     }
   }
-
+   setupHoverEvents(el, onEnter, onLeave) {
+ 
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    el.addEventListener("touchstart", onEnter);
+    el.addEventListener("touchend", onLeave);
+    el.addEventListener("touchcancel", onLeave);
+  }
+  
   connectedCallback() {
     const style = document.createElement("style");
     style.textContent = `
@@ -11821,18 +11829,34 @@ class CustomScrollV2 extends HTMLElement {
       .arrow.hidden {
         display: none;
       }
+
+      .wrapper {
+      transition:.3s;
+      }
     `;
 
     const leftArrow = document.createElement("icon-i");
     leftArrow.classList.add("arrow", "left","arrow-left-circle-fill", "hidden");
     // leftArrow.textContent = "◀";
 
+    
     const rightArrow = document.createElement("icon-i");
     rightArrow.classList.add("arrow", "arrow-right-circle-fill", "right", "hidden");
     // rightArrow.textContent = "▶";
 
     const wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
+    this.setupHoverEvents(leftArrow, function(){
+      wrapper.style.opacity = "0.2";
+    },function(){
+      wrapper.removeAttribute("style");
+    });
+    this.setupHoverEvents(rightArrow, function(){
+      wrapper.style.opacity = "0.2";
+    },function(){
+      wrapper.removeAttribute("style");
+    });
+
 
     const content = document.createElement("div");
     content.classList.add("content");

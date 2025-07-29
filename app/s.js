@@ -2416,6 +2416,8 @@ pointer-events: none !important;
     bottom: 0px;
     right: 0px;
     width: -webkit-fill-available;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 #buttons a,

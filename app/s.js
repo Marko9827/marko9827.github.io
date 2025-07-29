@@ -11847,12 +11847,12 @@ class CustomScrollV2 extends HTMLElement {
     const wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
     this.setupHoverEvents(leftArrow, function(){
-      wrapper.style.opacity = "0.2";
+      // wrapper.style.opacity = "0.2";
     },function(){
       wrapper.removeAttribute("style");
     });
     this.setupHoverEvents(rightArrow, function(){
-      wrapper.style.opacity = "0.2";
+      // wrapper.style.opacity = "0.2";
     },function(){
       wrapper.removeAttribute("style");
     });
@@ -11907,7 +11907,7 @@ class CustomScrollV2 extends HTMLElement {
         if (hideLeft || hideRight) {
           wrapper.removeAttribute("style");
         } else { 
-          wrapper.style.opacity = "0.2";
+          // wrapper.style.opacity = "0.2";
         }
       }
 

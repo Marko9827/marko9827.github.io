@@ -4880,7 +4880,11 @@ div#clavs .br_ta ta_f {
             "data-title",
             "Click for view image in full size"
           );
-          p_image.onclick = () => fthis?.blogloader_img(v.id);
+          p_image.onclick = () => {
+            const ImagePreview_src = document.createElement("image-preview");
+            ImagePreview_src.src(v.thumbail);
+            document.body.appendChild(ImagePreview_src);
+          }
           const i_img = document.createElement("icon-i");
           i_img.className = "bi bi-image-fill";
           p_image.appendChild(i_img);
@@ -14102,8 +14106,8 @@ function hasAudio(videoElement) {
     fullBtn.className = 'fullscreen';
     fullBtn.title = 'Fullscreen';
     fullBtn.innerHTML = '<icon-i name="fullscreen"></icon-i>';
-    right.appendChild(subsBtn);
-    right.appendChild(speedBtn);
+    // right.appendChild(subsBtn);
+    // right.appendChild(speedBtn);
     right.appendChild(pipBtn);
     right.appendChild(fullBtn);
 

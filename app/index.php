@@ -1511,15 +1511,31 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
             self::ALLOW();
 
-            $f = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
+            $file = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
 
-            $dir = dirname($f);
-            if (!file_exists($f)) {
+            $dir = dirname($file);
+            if (!file_exists($file)) {
                 self::gnerateJS();
             }
 
+
             header('Content-Type: application/javascript');
-            include $f;
+            header('Content-Length: ' . filesize($file));
+            header('Cache-Control: public, max-age=31536000, immutable'); // dugotrajno keširanje
+            
+            // Streamuj fajl u delovima
+            $fp = fopen($file, 'rb');
+            if ($fp) {
+                while (!feof($fp)) {
+                    echo fread($fp, 8192); // 8KB po iteraciji
+                    flush(); // pošalji klijentu
+                    if (connection_aborted()) break;
+                }
+                fclose($fp);
+            }
+            /*
+            header('Content-Type: application/javascript');
+            include $f;*/
             exit();
         }
         if ($h == "icons") {

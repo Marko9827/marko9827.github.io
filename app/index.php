@@ -1026,8 +1026,8 @@ JS;
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        $data = self::protect_js_dna($js_static);
-        // $data =  self::minifyJS_code($js_static) ;
+        // $data = self::protect_js_dna($js_static);
+        $data =  self::minifyJS_code($js_static) ;
         unlink($f);
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");
@@ -2336,6 +2336,37 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
                     $title = "Marko Nikolić > CV";
                     break;
 
+                case 'gallery':
+                    $title = "Gallery | Marko Nikoić";
+                    if(!empty($_GET['album'])){
+                        $title = "Gallery > $_GET[album] | Marko Nikoić";
+                        if (!empty($_GET['id'])){
+                            $gallery_tijemp = [];
+                            foreach($r['data']['gallery']['gallery'] as $gallery_name){
+                                if($gallery_name['name'] == $_GET['album']){
+                                 
+                                    foreach($gallery_name['gallery'] as $ider){
+                                        if ($ider['ID'] == $_GET['id']){
+                                    
+                                            $title = "Gallery: $ider[title] - $_GET[album] | Marko Nikolić";
+                                            $description = "$ider[title] from $_GET[album] from my Gallery | Marko Nikolić IT, Scientist theories/news, Writing books... Is my personal website.";
+                                            $keywords = "Marko Nikolić, IT, developer, blog, portfolio, gallery, $_GET[albumb], $ider[title]";
+                                            $ogImage = "$ider[thumb]&for=og";
+                                        } else{
+                                            continue;
+                                        }
+                                    }
+                                } else{
+                                    continue;
+                                }
+                            }
+                           
+                          
+                         
+                        }
+                    } 
+                    break;
+
                 case 'visitcard':
                     $title = "Marko Nikolić > Visitcard";
                     break;
@@ -2416,8 +2447,8 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@markoni62595164" />
-        <meta name="twitter:creator" content="@markoni62595164" />
+        <meta name="twitter:site" content="@MarkoMakiN74384" />
+        <meta name="twitter:creator" content="@MarkoMakiN74384" />
         <meta name="twitter:title" content="<?= htmlspecialchars($title); ?>" />
         <meta name="twitter:description" content="<?= htmlspecialchars($description); ?>" />
         <meta name="twitter:image" content="<?= $ogImage; ?>" />
@@ -2438,7 +2469,7 @@ filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4)) !important;
                                                                                                                                                                                                                                                         "inLanguage": "en-GB"
                                                                                                                                                                                                                                                     }
                                                                                                                                                                                                                                                 </script>
-        <?php
+    <?php 
     }
 
 

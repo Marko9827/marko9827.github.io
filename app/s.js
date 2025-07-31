@@ -2077,7 +2077,7 @@
         "adiv_gat": "gallery_bundle",
         "href": {
             "f_u": function(){
-              router.go({ p: "gallery" });
+              router.go({ p: "gallery"  });
 
             },
             "f": true,
@@ -2238,7 +2238,9 @@
   script.src = blobURL;
   script.type = "module";
   // document.body.appendChild(script);
+ 
 
+  
   if (!customElements.get('html-monaco-editor')) {
     customElements.define('html-monaco-editor', class extends HTMLElement {
       constructor() {
@@ -2327,6 +2329,92 @@
   }
   
 
+  if (!customElements.get('html-monaco-editor')) {
+    customElements.define('html-monaco-editor', class extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+  
+        this.shadowRoot.innerHTML = `
+          <style>
+            :host {
+              display: flex;
+              height: 100vh;
+              width: 100%;
+              font-family: sans-serif;
+            }
+            #container {
+              display: flex;
+              width: 100%;
+              height: 100%;
+            }
+            #editor {
+              width: 50%;
+              height: 100%;
+            }
+            iframe {
+              width: 50%;
+              height: 100%;
+              border: none;
+              background: white;
+            }
+          </style>
+          <div id="container">
+            <div id="editor"></div>
+            <iframe id="preview"></iframe>
+          </div>
+        `;
+  
+        this.editorEl = this.shadowRoot.querySelector('#editor');
+        this.previewEl = this.shadowRoot.querySelector('#preview');
+      }
+  
+      connectedCallback() {
+        if (!window.monaco) {
+          const loader = document.createElement('script');
+          loader.src = 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs/loader.js';
+          loader.onload = () => this.initMonaco();
+          document.head.appendChild(loader);
+        } else {
+          this.initMonaco();
+        }
+      }
+  
+      initMonaco() {
+        require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.44.0/min/vs' } });
+        require(['vs/editor/editor.main'], () => {
+          this.editor = monaco.editor.create(this.editorEl, {
+            value: `<!DOCTYPE html>
+  <html>
+    <head>
+      <style>
+        body { font-family: sans-serif; padding: 20px; }
+      </style>
+    </head>
+    <body>
+      <h1>Hello World</h1>
+      <p>This is a live preview</p>
+      <script>
+        console.log("Preview Ready");
+      </script>
+    </body>
+  </html>`,
+            language: 'html',
+            theme: 'vs-dark',
+            automaticLayout: true
+          });
+  
+          this.editor.onDidChangeModelContent(() => {
+            const html = this.editor.getValue();
+            this.previewEl.srcdoc = html;
+          });
+  
+          // Initial load
+          this.previewEl.srcdoc = this.editor.getValue();
+        });
+      }
+    });
+  }
   class app_home extends HTMLElement {
     constructor() {
       super();
@@ -2619,8 +2707,34 @@ hh_anim_start spj {
           c = params.get("c"),
           album = params.get("album");
 
+          const gallery_exist = (v  = {gallery : "", calllback: function(){}}) => {
+            portfolio.data.gallery.gallery.forEach(function(el){
+                if(v.gallery  ==  el['name']){
+                  v.callback(el);
+                }
+            });
+          }
+
         if (album) {
-          test_page(album, "gallery_name");
+          test_page("", "gallery");
+          if(gallery_exist({
+              gallery:album,
+              callback: function(val){
+                console.log(val);
+                const f = document.body.querySelector("page-c:last-child");
+                f.load(album,"gallery_name");
+                for(var i = 0; i < val['gallery'].length; i++){
+                  if(val['gallery'][i]['ID'] == id){
+                  const ImagePreview_src = document.createElement("image-preview");
+                  ImagePreview_src.src(val['gallery'][i]['img']);
+                  document.body.appendChild(ImagePreview_src);
+                  }
+                }
+           
+              }
+          }))
+         
+          return;
         } else {
           test_page("", "gallery");
         }
@@ -3014,7 +3128,7 @@ hh_anim_start spj {
     scrolj() {}
 
     home_list(elm, Elem = "") {
-
+      return;
       switch (Elem) {
         case "welcomer.pages.start_page('blog');":
           router.go({ p: "blog" });
@@ -4323,6 +4437,8 @@ div#clavs .br_ta ta_f {
             e.preventDefault();
 
             tthis.load(arr[i]["name"], "gallery_name");
+            router.setURL({ p: "gallery", album: arr[i]['name']});
+
           };
           const p_open_icon = document.createElement("icon-i");
           p_open_icon.classList.add("bi", "bi-link");
@@ -4353,9 +4469,10 @@ div#clavs .br_ta ta_f {
           fiv_icon.classList.add("bi", "bi-info-circle");
           fiv_icon.addEventListener("click", function (e) {
             e.preventDefault();
+            router.setURL({ p: "gallery", album: arr[i]['name']});
 
             tthis.load(arr[i]["name"], "gallery_name");
-          });
+           });
           fiv_icon.setAttribute("title", "Go to Album");
           fiv.appendChild(fiv_icon);
           grider_box.appendChild(fiv);
@@ -4415,13 +4532,14 @@ div#clavs .br_ta ta_f {
           project.appendChild(grider_box);
 
           varr.where.appendChild(project);
-        }
+        } 
       }
 
       if (varr.type === "gallery") {
         const albumName = varr.name || "default";
         let v = varr.arr;
-
+        varr.where.textContent = "";
+      
         for (let i = 0; i < v.length; i++) {
           const item = v[i];
 
@@ -4447,6 +4565,7 @@ div#clavs .br_ta ta_f {
             const ImagePreview_src = document.createElement("image-preview");
             ImagePreview_src.src(item.img);
             document.body.appendChild(ImagePreview_src);
+            router.setURL({ p: "gallery", album: varr.name, id :item.ID});
           });
 
           fiv.appendChild(i_click);
@@ -4565,8 +4684,29 @@ div#clavs .br_ta ta_f {
       varr.where.style.setProperty("top", "60px", "important");
       varr.where.style.setProperty("opacity", "1", "important");
       varr?.callback({ l: arr.length, r: arr });
+ 
     }
 
+    removeDuplicateIdElements(parentElement) {
+      if (!parentElement || !(parentElement instanceof Element)) {
+        console.error("Neispravan parentElement");
+        return;
+      }
+    
+      const seenIds = new Set();
+      const elementsWithId = parentElement.querySelectorAll('[id]');
+    
+      elementsWithId.forEach(el => {
+        const id = el.id;
+        if (seenIds.has(id)) {
+          if (el.tagName.toLowerCase() === 'project') {
+            el.remove(); 
+          }
+        } else {
+          seenIds.add(id);
+        }
+      });
+    }
     remove_duplicates(arr) {
       const uniqueTags = [...new Set(arr)];
 
@@ -5288,7 +5428,8 @@ div#clavs .br_ta ta_f {
           iframe.style.setProperty("margin-top", "49px", "important");
         }
       }
-      if (type == "gallery_name") {
+
+      if (type == "gallery_name_url") {
         this.#header({
           title: "Gallery > " + id,
           searchPlaceholder: "Search ...",
@@ -5297,7 +5438,10 @@ div#clavs .br_ta ta_f {
             {
               icon: "bi bi-arrow-left-short",
               onclick: () => {
-                tthis.load("", "gallery");
+                tthis.load("","gallery");
+                router.setURL({
+                  p: "gallery"
+                });
               },
             },
             {
@@ -5320,6 +5464,7 @@ div#clavs .br_ta ta_f {
             },
           ],
         });
+        this.grider_viewer.textContent = "";
         var gallery_name = {
           name: "",
           title: "",
@@ -5337,9 +5482,71 @@ div#clavs .br_ta ta_f {
           where: this.grider_viewer,
           name: id,
           arr: gallery_name["name"],
-          callback: function (e) {},
+          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
           type: "gallery",
         });
+        
+        return;
+      }
+      if (type == "gallery_name") {
+        this.#header({
+          title: "Gallery > " + id,
+          searchPlaceholder: "Search ...",
+          logo: "/svg_logo_backscr_img.svg",
+          buttonsRight: [
+            {
+              icon: "bi bi-arrow-left-short",
+              onclick: () => {
+            
+                tthis.load("","gallery");
+                router.setURL({
+                  p: "gallery"
+                });
+              },
+            },
+            {
+              icon: "bi bi-share",
+              onclick: () => {
+                const Uri = this.div_header.getAttribute("data-url"),
+                  title = this.div_header_span.textContent;
+
+                if (navigator.share) {
+                  navigator
+                    .share({
+                      title: title,
+                      text: `Shared from - ${window.location.origin}`,
+                      url: `${Uri}`,
+                    })
+                    .then(() => {})
+                    .catch((error) => {});
+                }
+              },
+            },
+          ],
+        });
+        this.grider_viewer.textContent = "";
+        var gallery_name = {
+          name: "",
+          title: "",
+          exist: false,
+        };
+        portfolio.data.gallery.gallery.forEach(function (res) {
+          if (res["name"] == id) {
+            gallery_name["name"] = res["gallery"];
+            gallery_name["title"] == res["name"];
+            gallery_name["exist"] = true;
+          }
+        });
+
+        this.call_albums({
+          where: this.grider_viewer,
+          name: id,
+          arr: gallery_name["name"],
+          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
+          type: "gallery",
+        });
+        
+        return;
       }
 
       if (type == "gallery") {
@@ -5380,7 +5587,8 @@ div#clavs .br_ta ta_f {
           where: this.grider_viewer,
           name: "",
           arr: portfolio.data.gallery.gallery,
-          callback: function (e) {},
+          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
+
           type: "albums",
         });
         this.grider_viewer.style.opacity = 1;
@@ -6998,6 +7206,8 @@ div#clavs .br_ta ta_f {
     constructor() {
       super();
       this.attachShadow({ mode: "open" });
+      
+      this.results_i_list = document.createElement("i_list");
       this.render();
       this.query = "";
       this.Mydata = [];
@@ -7020,20 +7230,33 @@ div#clavs .br_ta ta_f {
           type: "image",
           url: element["source"],
           id: element["id"],
+          page: element['page'],
           cat: "blog",
           title: element["title"],
           thumb: element["thumbail"],
         });
       });
-      this.Mydata = dataf;
+      this.Mydata = dataf; 
+      
     }
-
+    disconnectedCallback() {
+      this.Mydata = [];
+      this.query = ""; 
+      var dataf = [];
+      var pr_i = 0;
+    }
     render() {
       const style = document.createElement("style");
       style.textContent = ` 
  
     ${CDN_URL_BOOSTRAP_ICONS_STRCSS}
  
+ 
+ div.container {
+ display:-ms-grid;
+ display:grid;
+ }
+
  div.cat {
      position: absolute;
      left: 0px;
@@ -7110,8 +7333,8 @@ div#clavs .br_ta ta_f {
     overflow: hidden;
     position: absolute;
     width: 100%;
-    height: calc(100% - 51px);
-    top: 51px;
+    height: calc(100% - 74px);
+    top: 74px;
 
  }
 
@@ -7305,7 +7528,7 @@ div#clavs .br_ta ta_f {
  }
 
  div.div_header {
-     position: absolute;
+     position: unset;
      left: 0px;
      top: 0px;
      width: 100%;
@@ -7334,10 +7557,14 @@ div#clavs .br_ta ta_f {
     right: 45px;
     top: 12.1px; 
     cursor: pointer;
+    -webkit-transition: .3s;
+    -o-transition: .3s;
     transition: .3s;
  }
  .hide{
-    transform: scale(0);
+    -webkit-transform: scale(0);
+        -ms-transform: scale(0);
+            transform: scale(0);
     opacity:0;
     pointer-events: none;
  }
@@ -7367,6 +7594,37 @@ div#clavs .br_ta ta_f {
     right: 8px;
     cursor: pointer;
 }
+
+ i_list {
+    position: unset;
+    left: 8px;
+    bottom: 21px;
+    z-index: 1;
+    opacity: 1;
+    color: white;
+    pointer-events: none;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-line-pack: center;
+    align-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    margin: 0px 5px;
+}
+
+
+i_list {
+      transition: .3s;
+}
+
       `;
 
       const container = document.createElement("div"),
@@ -7375,6 +7633,7 @@ div#clavs .br_ta ta_f {
       div_header.classList.add("div_header");
 
       container.appendChild(div_header);
+      container.appendChild(this.results_i_list);
       this.btn_clear = document.createElement("icon-i");
 
       this.btn_clear.setAttribute("title", "Clear Search");
@@ -7408,10 +7667,12 @@ div#clavs .br_ta ta_f {
       filterContainer.appendChild(filterLabel);
       filterContainer.appendChild(filterSelect);
 
-      const resultsContainer = document.createElement("custom-scroll"),
+      const resultsContainer = document.createElement("custom-scroll"),    
       results_box = document.createElement("div");
       results_box.classList.add("results");
       results_box.id = "results";
+ 
+      
       resultsContainer.appendChild(results_box);
 
       const imgLogo = document.createElement("img");
@@ -7487,21 +7748,98 @@ div#clavs .br_ta ta_f {
         this.performSearch();
       }
     }
+    
+    generateBagdes(filteredList = []) {
+      const bagdes = [
+        {
+          name: "text",
+          data: "bi bi-file-text-fill",
+          is_me: ["p", "h1", "h2", "h3", "h4", "h5", "span", "tspan"],
+          count: 0
+        },
+        {
+          name: "image",
+          data: "bi bi-file-earmark-image-fill",
+          is_me: ["img"],
+          count: 0
+        },
+        {
+          name: "video",
+          data: "bi bi-file-earmark-play-fill",
+          is_me: ["video", "video-player-v2"],
+          count: 0
+        },
+        {
+          name: "iframe",
+          data: "bi bi-file-earmark-richtext-fill",
+          is_me: ["iframe"],
+          count: 0
+        },
+      ];
+    
+      this.results_i_list.innerHTML = ""; // očisti prethodne bedževe
+    
+      const data = filteredList.length ? filteredList : this.Mydata;
+    
+      data.forEach((item) => {
+        if (!item.page) return;
+        const page = item.page.toLowerCase();
+        bagdes.forEach((badge) => {
+          const found = badge.is_me.some((tag) => page.includes(`<${tag}`));
+          if (found) badge.count++;
+        });
+      });
+    
+      // Dodaj sve bedževe
+      bagdes.forEach((badge) => {
+        const icon = document.createElement("icon-i");
+        icon.className = badge.data;
+        icon.setAttribute("title", `${badge.name}${badge.count > 0 ? `: ${badge.count}` : ''}`);
+    
+        const badgeWrapper = document.createElement("div"),
+        counter = document.createElement("span");
+        badgeWrapper.style.display = "inline-flex";
+        badgeWrapper.style.alignItems = "center";
+        badgeWrapper.style.marginRight = "5px";
+    
+        if (badge.count === 0) {
+          badgeWrapper.style.opacity = "0.5";
+          badgeWrapper.style.pointerEvents = "none"; 
+        }
+    
+        badgeWrapper.appendChild(icon);
+     
+        if (badge.count > 0) {
+          const counter = document.createElement("span")
+          counter.textContent = badge.count;
+          counter.style.marginLeft = "4px";
+          counter.style.fontSize = "12px";
+          counter.style.color = "white";
+          badgeWrapper.style.marginRight = "10px";
+
+          badgeWrapper.appendChild(counter);
+        }
+    
+        this.results_i_list.appendChild(badgeWrapper);
+      });
+    }
+    
+    
+    
+    
     performSearch() {
       const query = this.shadowRoot
         .querySelector("#search")
         .value.toLowerCase();
       const filter = this.shadowRoot.querySelector("#filter").value;
       const resultsContainer = this.shadowRoot.querySelector("#results");
-
-      // Čišćenje prethodnih rezultata pre nove pretrage
-      resultsContainer.innerHTML = "";
+ 
+      resultsContainer.textContent = "";
 
       const data = this.Mydata;
 
       if (query.length === 0) {
         this.btn_clear.classList.add("hide");
-        //  history.replaceState(history.state, "",`/?p=search`);
         return;
       }
 
@@ -7512,7 +7850,7 @@ div#clavs .br_ta ta_f {
       );
       this.btn_clear.classList.remove("hide");
       //history.replaceState(history.state, "",`/?p=search&q=${query}`);
-
+      this.generateBagdes(filteredData);
       filteredData.forEach((item, index) => {
         const div = document.createElement("div"),
           div_m = document.createElement("div");
@@ -7586,8 +7924,10 @@ div#clavs .br_ta ta_f {
 
         // setTimeout(() => {
         resultsContainer.appendChild(div);
+
         // }, index * 200);
       });
+     
     }
   }
   class EditorSDK extends HTMLElement {
@@ -9326,12 +9666,13 @@ div#controls img:hover {
       const urlParamsf = new URLSearchParams(window.location.search);
       if (urlParamsf.has("id")) {
         this.parseMe(urlParamsf.get("id"));
-
+        try{
         for (var i = 0; i < this.post_data["category"].length; i++) {
           const tag = document.createElement("tag");
           tag.textContent = "#" + this.post_data["category"][i];
           //  tags.appendChild(tag);
         }
+      }catch(aef){}
       }
 
       style.textContent = `${window.atob(
@@ -9592,7 +9933,7 @@ div#controls img:hover {
       if (urlParamsf.has("id")) {
         this.parseMe(urlParamsf.get("id"));
         this.parseMe(urlParamsf.get("id"));
-
+        try{
         for (var i = 0; i < this.post_data["category"].length; i++) {
           const tag = document.createElement("a");
           tag.textContent = "#" + this.post_data["category"][i];
@@ -9608,7 +9949,7 @@ div#controls img:hover {
         });*/
 
           tags.appendChild(tag);
-        }
+        }}catch(aef){}
         if (`${this.post_data["id"]}` == `${urlParamsf.get("id")}`) {
           if (this.post_data["type"] == "text") {
             div_content.appendChild(document.createElement("bdkr"));
@@ -10654,51 +10995,81 @@ width: 680px;
       class extends HTMLElement {
         constructor() {
           super();
-
+  
           // 💡 Stilovi globalno
           if (!document.getElementById("monaco-editor-style")) {
             const style = document.createElement("style");
             style.id = "monaco-editor-style";
             style.textContent = `
-          html-monaco-editor {
-            display: flex;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-          }
-          html-monaco-editor #container {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            background: #1e1e1e;
-          }
-          html-monaco-editor #editor {
-            width: 50%;
-            height: 100%;
-          }
-          html-monaco-editor iframe {
-            width: 50%;
-            height: 100%;
-            border: none;
-            background: white;
-          }
-        `;
+              html-monaco-editor {
+                display: flex;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                flex-direction: column;
+              }
+              html-monaco-editor #container {
+                display: flex;
+                flex: 1;
+                background: #1e1e1e;
+              }
+              html-monaco-editor #editor {
+                width: 50%;
+                height: 100%;
+              }
+              html-monaco-editor iframe {
+                width: 50%;
+                height: 100%;
+                border: none;
+                background: white;
+              }
+              html-monaco-editor .code-section {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                flex: 1;
+              }
+              html-monaco-editor .tabs {
+                display: flex;
+                padding: 0 8px;
+                background: #333;
+                color: white;
+                font-family: monospace;
+                height: 25px;
+                align-items: center;
+                font-size: 12px;
+                border-bottom: 1px solid #222;
+              }
+              html-monaco-editor .tabs > div {
+                margin-right: 12px;
+                cursor: default;
+              }
+            `;
             document.head.appendChild(style);
           }
-
+  
           // 📦 Container
           const container = document.createElement("div");
           container.id = "container";
-
+  
+          const codeSection = document.createElement("div");
+          codeSection.className = "code-section";
+  
+          const tabs = document.createElement("div");
+          tabs.className = "tabs";
+          tabs.innerHTML = `<div>JavaScript</div><div>Example: Hello World</div>`;
+  
           const editorDiv = document.createElement("div");
           editorDiv.id = "editor";
-
+  
           const preview = document.createElement("iframe");
-
-          container.appendChild(editorDiv);
+  
+          codeSection.appendChild(tabs);
+          codeSection.appendChild(editorDiv);
+          container.appendChild(codeSection);
           container.appendChild(preview);
           this.appendChild(container);
-
+  
           // 🎨 Monaco CSS
           if (!document.getElementById("monaco-css")) {
             const css = document.createElement("link");
@@ -10708,7 +11079,7 @@ width: 680px;
               "https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/editor/editor.main.css";
             document.head.appendChild(css);
           }
-
+  
           // 🚀 Učitaj Monaco Editor
           const loader = document.createElement("script");
           loader.src =
@@ -10721,38 +11092,30 @@ width: 680px;
             });
             require(["vs/editor/editor.main"], () => {
               const editor = monaco.editor.create(editorDiv, {
-                value: `<!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello World!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
-    <h1>Hello world</h1>
-  </body>
-</html>`,
-                language: "html",
+                value: `function hello() {\n  alert('Hello world!');\n}`,
+                language: "javascript",
                 theme: "vs-dark",
                 fontSize: 14,
                 minimap: { enabled: false },
+                automaticLayout: true,
               });
-
+  
               const updatePreview = () => {
                 const doc =
                   preview.contentDocument || preview.contentWindow.document;
                 doc.open();
-                doc.write(editor.getValue());
+                doc.write(`<!DOCTYPE html><html><head><title>Preview</title></head><body><script>${editor.getValue()}<\/script></body></html>`);
                 doc.close();
               };
-
+  
               updatePreview();
               editor.onDidChangeModelContent(updatePreview);
-
-              preview.onresize = function(){
+  
+              preview.onresize = function () {
                 updatePreview();
                 editor.onDidChangeModelContent(updatePreview);
               };
-
+  
               const resizeObserver = new ResizeObserver(() => editor.layout());
               resizeObserver.observe(editorDiv);
             });
@@ -10762,6 +11125,7 @@ width: 680px;
       }
     );
   }
+  
 
   if (!customElements.get("app-home")) {
     customElements.define("app-home", app_home);
@@ -13258,7 +13622,7 @@ filter: grayscale(1) !important;`
     );
 } 
 
-
+ 
 if (!customElements.get('monaco-editor-app')) {
   customElements.define('monaco-editor-app', class extends HTMLElement {
     constructor() {

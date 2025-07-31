@@ -1,214 +1,341 @@
-template_home = function(){
-const Template_div = document.body;
 
-const video = document.createElement('video');
-video.style.opacity = '0';
-video.loop = true;
-video.autoplay = true;
-video.muted = true;
-video.autobuffer = true;
-video.playsInline = true;
-video.classList.add('wallpaperVideo', 'video_is_hidden');
-Template_div.appendChild(video);
+if (!customElements.get('monaco-editor-app')) {
+  customElements.define('monaco-editor-app', class extends HTMLElement {
+    constructor() {
+      super();
+      this.attachShadow({ mode: 'open' });
+      this.dbName = 'monaco_editor_db';
+      this.storeName = 'projects';
+      this.version = 1;
+      this.editors = {};
+      this.CDN_URL = "cdn.markonikolic98.com";
+      this.history = [];
+      this.historyIndex = -1;
 
-const p_c = document.createElement('p');
-p_c.classList.add("p-c");
-p_c.appendChild(document.createTextNode("Do you want to see the video?"));
-p_c.appendChild(document.createElement('br'));
-p_c.appendChild(document.createTextNode("- Tip: Reload page ..."));
-Template_div.appendChild(p_c);
-const div_content_space = document.createElement('div');
-div_content_space.id = 'content_space';
-Template_div.appendChild(div_content_space);
+      this.languageModels = {
+        html: this.getDefaultHTML(),
+        css: 'body { background: white; }',
+        javascript: 'function hello() { alert("Hello World"); }'
+      };
 
+      document.body.addEventListener("contextmenu", e => { e.preventDefault(); return false });
+      document.body.addEventListener("dragover", e => { e.preventDefault(); return false });
+    }
 
-const hhAnimStart = document.createElement('div');
-hhAnimStart.classList.add('hh_anim_start');
+    connectedCallback() {
+      const style = document.createElement("style");
+      style.textContent = `
+        @import url(https://${this.CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css);
+        :host { display: block; height: 100vh; width: 100vw; }
+        .toolbar { display: flex; justify-content: flex-end; padding: 5px 10px; background: #f3f3f3; border-bottom: 1px solid #ccc; gap: 10px; }
+        .main-wrapper { display: flex; height: calc(100% - 30px); width: 100%; }
+        .editor-container { display: flex; flex-direction: column; flex: 1; overflow: hidden; min-width: 150px; }
+        .editor-block { flex: 1; min-height: 80px; resize: vertical; overflow: auto; border-bottom: 1px solid #aaa; }
+        #separator { width: 5px; background: #888; cursor: ew-resize; }
+        #preview { flex: 1; height: 100%; width: 100%; border: none; }
+        .resizing * { pointer-events: none !important; }
+      `;
 
-const spjin = document.createElement('div');
-spjin.classList.add('spjin');
+      const toolbar = document.createElement("div");
+      toolbar.className = "toolbar";
+      toolbar.innerHTML = `
+        <label>Auto-Reload <input type="checkbox" id="autoReload" checked></label>
+        <button id="undoBtn">↩️ Undo</button>
+        <button id="redoBtn">↪️ Redo</button>
+        <button id="saveBtn">💾 Save</button>
+        <button id="exportBtn">📤 Export HTML</button>
+        <button id="exportZipBtn">📦 Export .ZIP</button>
+        <button id="reloadBtn">🔄 Reload</button>
+      `;
 
-const p = document.createElement('p');
-const span = document.createElement('span');
-span.classList.add('box_shadow_h');
-span.innerHTML = 'Marko Nikolić - Portfolio <i class="far fa-copyright"></i>2012 - 2025';
-p.appendChild(span);
-spjin.appendChild(p);
+      const mainWrapper = document.createElement("div");
+      mainWrapper.className = "main-wrapper";
 
-const spj = document.createElement('div');
-spj.classList.add('spj');
+      const container = document.createElement("div");
+      container.className = "editor-container";
 
-const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-svg.setAttribute('id', 'logo_backscr_img');
-svg.setAttribute('viewBox', '0 0 100 100');
-svg.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+      const htmlEditor = document.createElement("div");
+      htmlEditor.id = "editor-html";
+      htmlEditor.className = "editor-block";
 
-const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-const gradients = [
-  { id: 'Gradient1', color: 'rgba(255, 0, 255, 1)', stopColor: 'rgba(255, 0, 255, 0)', dur: '34s' },
-  { id: 'Gradient2', color: 'rgba(255, 255, 0, 1)', stopColor: 'rgba(255, 255, 0, 0)', dur: '23.5s' },
-  { id: 'Gradient3', color: 'rgba(0, 255, 255, 1)', stopColor: 'rgba(0, 255, 255, 0)', dur: '21.5s' },
-  { id: 'Gradient4', color: 'rgba(0, 255, 0, 1)', stopColor: 'rgba(0, 255, 0, 0)', dur: '23s' },
-  { id: 'Gradient5', color: 'rgba(0,0,255, 1)', stopColor: 'rgba(0,0,255, 0)', dur: '24.5s' },
-  { id: 'Gradient6', color: 'rgba(255,0,0, 1)', stopColor: 'rgba(255,0,0, 0)', dur: '25.5s' }
-];
+      const cssEditor = document.createElement("div");
+      cssEditor.id = "editor-css";
+      cssEditor.className = "editor-block";
 
-gradients.forEach(gradient => {
-  const radialGradient = document.createElementNS('http://www.w3.org/2000/svg', 'radialGradient');
-  radialGradient.setAttribute('id', gradient.id);
-  radialGradient.setAttribute('cx', '50%');
-  radialGradient.setAttribute('cy', '50%');
-  radialGradient.setAttribute('fx', '0.441602%');
-  radialGradient.setAttribute('fy', '50%');
-  radialGradient.setAttribute('r', '.5');
+      const jsEditor = document.createElement("div");
+      jsEditor.id = "editor-javascript";
+      jsEditor.className = "editor-block";
 
-  const animate = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-  animate.setAttribute('attributeName', 'fx');
-  animate.setAttribute('dur', gradient.dur);
-  animate.setAttribute('values', '0%;3%;0%');
-  animate.setAttribute('repeatCount', 'indefinite');
-  radialGradient.appendChild(animate);
+      const separator = document.createElement("div");
+      separator.id = "separator";
 
-  const stop1 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-  stop1.setAttribute('offset', '0%');
-  stop1.setAttribute('stop-color', gradient.color);
-  radialGradient.appendChild(stop1);
+      const consoleLog = document.createElement("div");
+      consoleLog.id = "console-log";
+      consoleLog.style.cssText = "background:#111;color:#0f0;font-family:monospace;font-size:12px;padding:5px;height:100px;overflow:auto;border-top:1px solid #444;";
 
-  const stop2 = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
-  stop2.setAttribute('offset', '100%');
-  stop2.setAttribute('stop-color', gradient.stopColor);
-  radialGradient.appendChild(stop2);
+      const preview = document.createElement("iframe");
+      preview.id = "preview";
 
-  defs.appendChild(radialGradient);
-});
+      container.appendChild(this.createLabeledBlock("HTML", htmlEditor));
+      container.appendChild(this.createLabeledBlock("CSS", cssEditor));
+      container.appendChild(this.createLabeledBlock("JavaScript", jsEditor));
 
-svg.appendChild(defs);
+      mainWrapper.appendChild(container);
+      mainWrapper.appendChild(separator);
+      mainWrapper.appendChild(consoleLog);
+      mainWrapper.appendChild(preview);
 
-const rects = [
-  { x: '13.744%', y: '1.18473%', transform: 'rotate(334.41 50 50)', dur: '20s', values: '25%;0%;25%', durY: '21s', valuesY: '0%;25%;0%', durRotate: '7s' },
-  { x: '-2.17916%', y: '35.4267%', transform: 'rotate(255.072 50 50)', dur: '23s', values: '-25%;0%;-25%', durY: '24s', valuesY: '0%;50%;0%', durRotate: '12s' },
-  { x: '9.00483%', y: '14.5733%', transform: 'rotate(139.903 50 50)', dur: '25s', values: '0%;25%;0%', durY: '12s', valuesY: '0%;25%;0%', durRotate: '9s' }
-];
+      this.shadowRoot.appendChild(style);
 
-rects.forEach(rect => {
-  const rectElement = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-  rectElement.setAttribute('x', rect.x);
-  rectElement.setAttribute('y', rect.y);
-  rectElement.setAttribute('width', '100%');
-  rectElement.setAttribute('height', '100%');
-  rectElement.setAttribute('fill', `url(#${gradients[rects.indexOf(rect)].id})`);
-  rectElement.setAttribute('transform', rect.transform);
+      const labelStyle = document.createElement("style");
+      labelStyle.textContent = `
+        .editor-label {
+          font-family: monospace;
+          font-size: 12px;
+          background: #222;
+          color: white;
+          padding: 4px 10px;
+          margin: 0;
+          border-bottom: 1px solid #444;
+        }
+      `;
+      this.shadowRoot.appendChild(labelStyle);
+      this.shadowRoot.appendChild(toolbar);
+      this.shadowRoot.appendChild(mainWrapper);
 
-  const animateX = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-  animateX.setAttribute('attributeName', 'x');
-  animateX.setAttribute('dur', rect.dur);
-  animateX.setAttribute('values', rect.values);
-  animateX.setAttribute('repeatCount', 'indefinite');
-  rectElement.appendChild(animateX);
+      this.loadEditors();
+      this.initDB();
+      this.enableResize();
 
-  const animateY = document.createElementNS('http://www.w3.org/2000/svg', 'animate');
-  animateY.setAttribute('attributeName', 'y');
-  animateY.setAttribute('dur', rect.durY);
-  animateY.setAttribute('values', rect.valuesY);
-  animateY.setAttribute('repeatCount', 'indefinite');
-  rectElement.appendChild(animateY);
+      window.addEventListener('message', e => {
+        if (e.data.type === 'console-log') {
+          const el = this.shadowRoot.getElementById('console-log');
+          if (el) {
+            const msg = e.data.args.map(a => JSON.stringify(a)).join(' ');
+            const div = document.createElement('div');
+            div.textContent = '> ' + msg;
+            el.appendChild(div);
+            el.scrollTop = el.scrollHeight;
+          }
+        }
+      });
 
-  const animateTransform = document.createElementNS('http://www.w3.org/2000/svg', 'animateTransform');
-  animateTransform.setAttribute('attributeName', 'transform');
-  animateTransform.setAttribute('type', 'rotate');
-  animateTransform.setAttribute('from', '0 50 50');
-  animateTransform.setAttribute('to', '360 50 50');
-  animateTransform.setAttribute('dur', rect.durRotate);
-  animateTransform.setAttribute('repeatCount', 'indefinite');
-  rectElement.appendChild(animateTransform);
+      setTimeout(() => {
+        this.shadowRoot.getElementById("reloadBtn").onclick = () => this.updatePreview();
+        this.shadowRoot.getElementById("undoBtn").onclick = () => this.undo();
+        this.shadowRoot.getElementById("redoBtn").onclick = () => this.redo();
+        this.shadowRoot.getElementById("saveBtn").onclick = () => this.saveToDB();
+        this.shadowRoot.getElementById("exportBtn").onclick = () => this.exportContent();
+        this.shadowRoot.getElementById("exportZipBtn").onclick = () => this.exportZip();
+      }, 500);
+    }
 
-  svg.appendChild(rectElement);
-});
+    updatePreview() {
+      const html = this.languageModels.html || "";
+      const css = `<style>${this.languageModels.css || ""}</style>`;
+      const js = `<script>
+        const originalLog = console.log;
+        console.log = function(...args) {
+          window.parent.postMessage({ type: 'console-log', args }, '*');
+          originalLog.apply(console, args);
+        };
+        ${this.languageModels.javascript || ""}
+      </script>`;
+      const content = `<!DOCTYPE html><html><head>${css}</head><body>${html}${js}</body></html>`;
+      const preview = this.shadowRoot.querySelector("#preview");
+      preview.src = 'data:text/html;charset=utf-8,' + encodeURIComponent(content);
+    }
 
-spj.appendChild(svg);
+    loadEditors() {
+      require.config({ paths: { vs: `https://${this.CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs` } });
+      require(["vs/editor/editor.main"], () => {
+        this.editors.html = monaco.editor.create(this.shadowRoot.querySelector("#editor-html"), {
+          value: this.languageModels.html,
+          language: "html",
+          theme: "vs-dark",
+          automaticLayout: true
+        });
 
-const br1 = document.createElement('br');
-br1.classList.add('hide_noy');
-spj.appendChild(br1);
+        this.editors.css = monaco.editor.create(this.shadowRoot.querySelector("#editor-css"), {
+          value: this.languageModels.css,
+          language: "css",
+          theme: "vs-dark",
+          automaticLayout: true
+        });
 
-const br2 = document.createElement('br');
-br2.classList.add('hide_noy');
-spj.appendChild(br2);
+        this.editors.javascript = monaco.editor.create(this.shadowRoot.querySelector("#editor-javascript"), {
+          value: this.languageModels.javascript,
+          language: "javascript",
+          theme: "vs-dark",
+          automaticLayout: true
+        });
 
-const h3 = document.createElement('h3');
-h3.textContent = 'Marko Nikolić';
-spj.appendChild(h3);
+        for (let lang in this.editors) {
+          this.editors[lang].onDidChangeModelContent(() => {
+            this.languageModels[lang] = this.editors[lang].getValue();
+            if (this.shadowRoot.getElementById("autoReload").checked) {
+              this.updatePreview();
+            }
+          });
+        }
 
-const divBoxShadow = document.createElement('div');
-divBoxShadow.classList.add('box_shadow_txtf', 'box_shadow');
+        this.updatePreview();
+      });
+    }
 
-const spanFullStack = document.createElement('span');
-spanFullStack.textContent = 'Full stack Developer';
-divBoxShadow.appendChild(spanFullStack);
+    createLabeledBlock(label, editorEl) {
+      const wrapper = document.createElement("div");
+      const title = document.createElement("div");
+      title.className = "editor-label";
+      title.textContent = label;
+      wrapper.appendChild(title);
+      wrapper.appendChild(editorEl);
+      return wrapper;
+    }
 
-const sp1 = document.createElement('sp');
-sp1.textContent = '-';
-divBoxShadow.appendChild(sp1);
+    undo() {
+      for (let lang in this.editors) {
+        const editor = this.editors[lang];
+        if (editor) editor.trigger('keyboard', 'undo', null);
+      }
+    }
 
-const spanScientist = document.createElement('span');
-spanScientist.textContent = 'Scientist theories/news';
-divBoxShadow.appendChild(spanScientist);
+    redo() {
+      for (let lang in this.editors) {
+        const editor = this.editors[lang];
+        if (editor) editor.trigger('keyboard', 'redo', null);
+      }
+    }
 
-const sp2 = document.createElement('sp');
-sp2.textContent = '-';
-divBoxShadow.appendChild(sp2);
+    getDefaultHTML() {
+      return `<h1>Hello World!</h1>`;
+    }
 
-const spanWriting = document.createElement('span');
-spanWriting.textContent = 'Writing books';
-divBoxShadow.appendChild(spanWriting);
+    exportContent() {
+      const htmlContent = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Exported Project</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  ${this.languageModels.html}
+  <script src="script.js"></script>
+</body>
+</html>`;
 
-const sp3 = document.createElement('sp');
-sp3.textContent = '-';
-divBoxShadow.appendChild(sp3);
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'project.html';
+      a.click();
+    }
 
-const spanPhotographer = document.createElement('span');
-spanPhotographer.textContent = 'Photographer';
-divBoxShadow.appendChild(spanPhotographer);
+    exportZip() {
+      const zip = new JSZip();
+      zip.file("index.html", `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Exported Project</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  ${this.languageModels.html}
+  <script src="script.js"></script>
+</body>
+</html>`);
+      zip.file("style.css", this.languageModels.css);
+      zip.file("script.js", this.languageModels.javascript);
 
-spj.appendChild(divBoxShadow);
+      zip.generateAsync({ type: "blob" }).then(blob => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "project.zip";
+        a.click();
+      });
+    }
 
-const br3 = document.createElement('br');
-br3.classList.add('hide_noy');
-spj.appendChild(br3);
+    enableResize() {
+      const separator = this.shadowRoot.querySelector('#separator');
+      const container = this.shadowRoot.querySelector('.main-wrapper');
+      let isResizing = false;
 
-const br4 = document.createElement('br');
-spj.appendChild(br4);
+      separator.addEventListener('mousedown', () => {
+        isResizing = true;
+        container.classList.add('resizing');
+        document.addEventListener('mousemove', resize);
+        document.addEventListener('mouseup', stopResize);
+      });
 
-const arrBundle = document.createElement('div');
-arrBundle.classList.add('arr_bundle');
+      const resize = (e) => {
+        const preview = this.shadowRoot.querySelector('#preview');
+        const editorContainer = this.shadowRoot.querySelector('.editor-container');
+        const containerRect = container.getBoundingClientRect();
+        const offsetX = e.clientX - containerRect.left;
+        const minEditorWidth = 100;
+        const maxEditorWidth = containerRect.width - 100;
+        const newEditorWidth = Math.max(minEditorWidth, Math.min(offsetX, maxEditorWidth));
 
-const iRight = document.createElement('i');
-iRight.classList.add('bi', 'bi-arrow-right-circle-fill', 'catascrollEchatTv_right', 'catascrollEchatTv');
-iRight.setAttribute('data-onclick', 'welcomer.bundleSuggestedS(1);');
-iRight.style.transform = 'scale(1)';
-arrBundle.appendChild(iRight);
+        editorContainer.style.flex = 'none';
+        preview.style.flex = 'none';
+        editorContainer.style.width = `${newEditorWidth}px`;
+        preview.style.width = `${containerRect.width - newEditorWidth - 5}px`;
+      };
 
-const iLeft = document.createElement('i');
-iLeft.classList.add('bi', 'bi-arrow-left-circle-fill', 'catascrollEchatTv');
-iLeft.setAttribute('data-onclick', "welcomer.bundleSuggestedS('2');");
-iLeft.style.transform = 'scale(0)';
-arrBundle.appendChild(iLeft);
+      const stopResize = () => {
+        isResizing = false;
+        container.classList.remove('resizing');
+        document.removeEventListener('mousemove', resize);
+        document.removeEventListener('mouseup', stopResize);
+      };
+    }
 
-spj.appendChild(arrBundle);
+    initDB() {
+      const req = indexedDB.open(this.dbName, this.version);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          db.createObjectStore(this.storeName, { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = (e) => {
+        this.db = e.target.result;
+        this.loadFromDB();
+      };
+    }
 
-const divButtons = document.createElement('div');
-divButtons.id = 'buttons';
-divButtons.classList.add('box_shadow');
-divButtons.setAttribute('onscroll', 'welcomer.scrolj();');
-spj.appendChild(divButtons);
+    saveToDB() {
+      const tx = this.db.transaction([this.storeName], 'readwrite');
+      const store = tx.objectStore(this.storeName);
+      const data = {
+        id: 1,
+        content: this.languageModels,
+        time: new Date().toISOString()
+      };
+      store.put(data);
+    }
 
-spjin.appendChild(spj);
-hhAnimStart.appendChild(spjin);
-Template_div.appendChild(hhAnimStart);
-
-
+    loadFromDB() {
+      const tx = this.db.transaction([this.storeName], 'readonly');
+      const store = tx.objectStore(this.storeName);
+      const req = store.get(1);
+      req.onsuccess = () => {
+        try {
+          if (req.result && req.result.content) {
+            this.languageModels = req.result.content;
+            for (let lang in this.editors) {
+              if (this.editors[lang]) {
+                this.editors[lang].setValue(this.languageModels[lang]);
+              }
+            }
+            this.updatePreview();
+          }
+        } catch (e) {}
+      };
+    }
+  });
 }
 
 
-
- 

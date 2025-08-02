@@ -1807,7 +1807,7 @@ background:#caa85b">
   <text x="40" y="1637" fill="white" font-family="monospace" font-size="11">All symbols have been previously explained.</text>
   <text x="40" y="1655" fill="white" font-family="monospace" font-size="11">The primary purpose of the plaque is to enable non-human intelligence to</text>
   <text x="40" y="1673" fill="white" font-family="monospace" font-size="11">understand how a Solar day is calculated in a simple way.</text>
-  <text x="40" y="1691" fill="white" font-family="monospace" font-size="11">© markonikolic.com | Marko Nikolić - Solar day: <?php 
+  <text x="40" y="1691" fill="white" font-family="monospace" font-size="11">© markonikolic98.com | Marko Nikolić - Solar day: <?php 
    $date1 = '1998-03-16';
    $date2 = Date('Y-m-d');
    $date1 = new DateTime($date1);

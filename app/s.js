@@ -2726,8 +2726,18 @@ hh_anim_start spj {
                 f.load(album,"gallery_name");
                 for(var i = 0; i < val['gallery'].length; i++){
                   if(val['gallery'][i]['ID'] == id){
+                    const item = val['gallery'][i];
+                  
                   const ImagePreview_src = document.createElement("image-preview");
-                  ImagePreview_src.src(val['gallery'][i]['img']);
+                  if(item.type == "video"){
+                    const videoplayerv2 = document.createElement("video-player-v2");
+                    videoplayerv2.setAttribute("src",item.img);
+                   setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
+                    videoplayerv2.setAttribute("poster",item.thumb);
+                    ImagePreview_src.srcDiv(videoplayerv2);
+                  } else {
+                    ImagePreview_src.src(item.img);
+                  }
                   document.body.appendChild(ImagePreview_src);
                   }
                 }
@@ -4581,7 +4591,15 @@ div#clavs .br_ta ta_f {
           i_click.setAttribute("title", "Preview image in full size");
           i_click.addEventListener("click", () => {
             const ImagePreview_src = document.createElement("image-preview");
-            ImagePreview_src.src(item.img);
+            if(item.type == "video"){
+              const videoplayerv2 = document.createElement("video-player-v2");
+              videoplayerv2.setAttribute("src",item.img);
+              setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
+              videoplayerv2.setAttribute("poster",item.thumb);
+              ImagePreview_src.srcDiv(videoplayerv2);
+            } else {
+              ImagePreview_src.src(item.img);
+            }
             document.body.appendChild(ImagePreview_src);
             router.setURL({ p: "gallery", album: varr.name, id :item.ID});
           });
@@ -9225,10 +9243,13 @@ div#controls img:hover {
       divLoader.appendChild(controls);
       // :
 
+
       const ImageBox = document.createElement("img"),
         ImageBox1 = document.createElement("div");
       ImageBox.id = "zoomImage";
       ImageBox1.id = "zoomImage";
+
+ 
 
       // :
       divLoader.classList.add("div-loader");
@@ -9321,7 +9342,7 @@ div#controls img:hover {
 
     srcDiv(src = null) {
       if (src) {
-        this.shadowRoot.querySelector("div#zoomImage").innerHTML = src;
+        this.shadowRoot.querySelector("div#zoomImage").appendChild(src);
         this.shadowRoot.querySelector("img#zoomImage").remove();
         this.shadowRoot.querySelector(".zoomWindow").removeAttribute("style");
         var controller = new ImageZoomPan(
@@ -9329,6 +9350,7 @@ div#controls img:hover {
           this.shadowRoot.querySelector("div#zoomImage"),
           this.shadowRoot.querySelector("span.precent_control")
         );
+        this.controller = controller;
 
         this.shadowRoot
           .querySelector("img.top_control")
@@ -9398,6 +9420,10 @@ div#controls img:hover {
           this.shadowRoot.querySelector("img#zoomImage"),
           this.shadowRoot.querySelector("span.precent_control")
         );
+        const tttt = this;
+        this.shadowRoot.querySelector("#zoomImage").addEventListener('dblclick', () =>{ 
+          tttt.controller.reset();
+         });
 
         this.shadowRoot
           .querySelector("img.top_control")

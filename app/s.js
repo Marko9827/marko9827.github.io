@@ -2735,6 +2735,7 @@ hh_anim_start spj {
                    setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
                     videoplayerv2.setAttribute("poster",item.thumb);
                     ImagePreview_src.srcDiv(videoplayerv2);
+                    videoplayerv2.play();
                   } else {
                     ImagePreview_src.src(item.img);
                   }
@@ -4597,6 +4598,8 @@ div#clavs .br_ta ta_f {
               setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
               videoplayerv2.setAttribute("poster",item.thumb);
               ImagePreview_src.srcDiv(videoplayerv2);
+              
+              videoplayerv2.play();
             } else {
               ImagePreview_src.src(item.img);
             }
@@ -14236,6 +14239,12 @@ if(!customElements.get('video-player-v2')){
     if (this.observer) {
       this.observer.disconnect();
     }
+  }
+  play(){
+    this.video.play();
+  }
+  pause(){
+    this.video.pause();
   }
   connectedCallback() {
     this.observer = new MutationObserver((mutations) => {

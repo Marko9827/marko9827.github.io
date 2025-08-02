@@ -2039,6 +2039,7 @@
 
 
   portfolio.data.menu = [
+   
     {
         "title": "My CV",
         "descr": "Look at my CV",
@@ -3044,7 +3045,7 @@ hh_anim_start spj {
     }
 
     renderWelcomeSection() {
-      function daysSince(dateString) {
+      const daysSince = (dateString) => {
         const [day, month, year] = dateString.split('/').map(Number);
         const startDate = new Date(year, month - 1, day);
         const today = new Date();
@@ -3063,8 +3064,25 @@ hh_anim_start spj {
       const spjin = document.createElement("spjin");
       const p = document.createElement("p");
       const span = document.createElement("span");
+      const i_f = document.createElement("i");
+      i_f.setAttribute("class","far fa-copyright");
+      span.appendChild(document.createTextNode("Marko Nikolić"));
+      span.appendChild(i_f);
+      span.appendChild(document.createTextNode(" 2025"));
       span.className = "box_shadow_h";
-      span.innerHTML = `Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: ${daysSince("16/03/1998")}`;
+      span.appendChild(document.createElement("br"));
+      span.appendChild(document.createTextNode(`Solar day: ${daysSince("16/03/1998")}`));
+      // span.innerHTML = `Marko Nikolić <i class="far fa-copyright"></i> 2025 <br> Solar day: ${daysSince("16/03/1998")}`;
+      span.addEventListener("click",function(){
+        const ImagePreview_src = document.createElement("image-preview");
+        ImagePreview_src.src("/message");
+        document.body.appendChild(ImagePreview_src);
+      });
+    
+      /*
+       const ImagePreview_src = document.createElement("image-preview");
+            ImagePreview_src.src("/message");
+            document.body.appendChild(ImagePreview_src); */
       p.appendChild(span);
 
       const spj = document.createElement("spj");
@@ -5336,7 +5354,9 @@ div#clavs .br_ta ta_f {
       this.grider_viewer.style.display = "none";
       /* this.grider_viewer.setAttribute("data-type",type);*/
 
-      if (type == "editor"){
+      if (type == "editor"){      
+       
+        
         this.#header({
           title: "Marko Nikolić > Editor (BETA)",
           searchPlaceholder: "Search ...",
@@ -10993,6 +11013,8 @@ width: 680px;
     customElements.define(
       "html-monaco-editor",
       class extends HTMLElement {
+
+
         constructor() {
           super();
   
@@ -13625,6 +13647,66 @@ filter: grayscale(1) !important;`
  
 if (!customElements.get('monaco-editor-app')) {
   customElements.define('monaco-editor-app', class extends HTMLElement {
+
+    addMonacoEditorAssets(CDN) {
+      const head = document.head;
+    
+      function addElementIfNotExists(tag, attributes) {
+        const selector = Object.keys(attributes)
+          .map(key => `[${key}="${attributes[key]}"]`)
+          .join('');
+        if (!head.querySelector(`${tag}${selector}`)) {
+          const el = document.createElement(tag);
+          for (const key in attributes) {
+            el.setAttribute(key, attributes[key]);
+          }
+          head.appendChild(el);
+        }
+      }
+      addElementIfNotExists("script", {
+        src: "https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js",
+        type: "text/javascript",
+        crossorigin: "",
+        defer: ""
+      });
+      addElementIfNotExists("link", {
+        rel: "preload",
+        as: "style",
+        href: `${CDN}/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css`,
+        crossorigin: ""
+      });
+     
+      addElementIfNotExists("link", {
+        rel: "preload",
+        as: "script",
+        href: "https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js",
+        crossorigin: "",
+        defer: ""
+      });
+     
+      addElementIfNotExists("link", {
+        rel: "stylesheet",
+        href: `${CDN}/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css`,
+        crossorigin: "",
+        async: "",
+        defer: ""
+      });
+     
+      addElementIfNotExists("script", {
+        src: "https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js",
+        defer: "",
+        anonymous: ""
+      });
+     
+      addElementIfNotExists("script", {
+        src: "https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js",
+        type: "text/javascript",
+        crossorigin: "",
+        defer: ""
+      });
+    }
+    
+
     constructor() {
       super();
       this.attachShadow({mode: 'open'});
@@ -13642,7 +13724,7 @@ if (!customElements.get('monaco-editor-app')) {
       document.body.addEventListener("dragover", (e) => {e.preventDefault(); return false});
     }
 
-    connectedCallback() {
+    connectedCallback_F(){ 
       const style = document.createElement("style");
       style.textContent = `
         @import url(https://${this.CDN_URL}/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css);
@@ -13741,6 +13823,10 @@ if (!customElements.get('monaco-editor-app')) {
       this.enableResize();
       this.loadEditor();
       this.initDB();
+    }
+   async connectedCallback() {  
+      await  this.addMonacoEditorAssets(CDN_URL);
+     setTimeout(() => this.connectedCallback_F(), 500);
     }
 
     enableResize() {

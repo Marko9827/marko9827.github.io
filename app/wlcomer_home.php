@@ -282,8 +282,7 @@ header("Content-Type: text/html; charset=UTF-8");
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8">
         </script>
-        <script anonymous src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
-
+ 
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
 
     <?php
@@ -414,7 +413,7 @@ $r = $this->get_data([
 
     <link rel="preload" href="/mainss" as="style" />
     <link rel="stylesheet" href="/mainss">
-
+<?php /*
 
     <link crossorigin rel="preload"
         href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" as="style" />
@@ -422,9 +421,10 @@ $r = $this->get_data([
 
     <link async defer rel="stylesheet" crossorigin
         href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css">
+        <script anonymous src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
 
     <script crossorigin type="text/javascript" defer
-        src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>
+        src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>--> */?>
 
     
 </head>

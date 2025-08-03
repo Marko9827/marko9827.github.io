@@ -168,18 +168,7 @@ function ob_f($b)
     $html = preg_replace('/[\r\n]/', '', $html);
     return $html; // preg_replace(['/(?:(?:\/\*(?:[^*]|(?:\*+[^*\/]))*\*+\/)|(?:(?<!\:|\\\|\')\/\/.*))/', '/[\r\n]/'], ['', ''], $b);
 }
-/* 
- script-src 'self' 'nonce-$nonce' $cdn_urls;
-    script-src-elem 'self'    $cdn_urls ;
- */
-#     script-src $cdn_urls  'nonce-$nonce' ; 
-
-/*
-'strict-dynamic' 'nonce-rAnd0m123' 'unsafe-inline' http: https:;
-
-$csp = (string) "
-   script-src 'nonce-$nonce' 'unsafe-inline' 'unsafe-eval' $cdn_urls 'unsafe-inline' https: 'report-sample' 'wasm-unsafe-eval';
-   */
+ 
 
 $POLIFY = "";
 
@@ -207,7 +196,7 @@ default-src 'none';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
-$csp = "";
+ $csp = "";
 header("Content-Security-Policy:  $csp");
 
 
@@ -283,20 +272,11 @@ header("Content-Type: text/html; charset=UTF-8");
         type="text/javascript" charset="UTF-8">
         </script>
  
-    <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
+    <!-- <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> -->
+  
 
     <?php
-    /*
-    if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
-        <script defer src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js" nonce="<?php echo $nonce; ?>"></script>
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"
-            integrity="sha512-J5ha2LF4Le+PBQnI5+xAVJDR+sZG9uSgroy4n/A6TLjNkvYQbqZA8WHZdaOvJ0HiKkBC9Frmvs10rFDSHKmveQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <?php } /*<script    nonce="<?php echo $nonce_h; ?>"  crossorigin="anonymous" src="https://cdn.eronelit.com/node_modules/jquery3.6.0/dist/jquery.min.js"></script>
-
-<?php
-*/
-    #    createLinkElements($data['preloadLinks']);
+    
     createLinkElements($data['allLinks']);
     createScriptElements($data['scripts']);
 
@@ -305,58 +285,8 @@ header("Content-Type: text/html; charset=UTF-8");
     echo '<meta content="' . $token . '" name="csrf-param" />
 <meta content="' . $token . '" name="csrf-token" />';
     $_SESSION['AuthV2-token'] = $token;
-
-
-
-    /* ?>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' *.googlesyndication.com *.eronelit.com;
-script-src 'self' *.eronelit.com 'unsafe-inline';
-style-src  'self' *.eronelit.com 'unsafe-inline';
-object-src 'self';
-frame-src *;
-base-uri 'self';
-connect-src 'self';
-font-src 'self' fonts.gstatic.com *.eronelit.com;
-frame-src 'self';
-img-src 'self' data: blob:;
-manifest-src 'self';
-media-src 'self';" />
-*f/ ?>
-    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css"
-        as="style" />
-    <!-- <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" /> -->
-    <link rel="stylesheet" nonce="<?php echo $script_nonce; ?>"  href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" />
-    <link rel="preload" href="/?svc=jsc" as="script" nonce="<?php echo $script_nonce; ?>" />
-    <link rel="preload" href="/demo&id=S3503&hangar=main" as="module" nonce="<?php echo $script_nonce; ?>" />
-
-    <script type="module"   nonce="<?php echo $script_nonce; ?>" src="/demo&id=S3503&hangar=main"></script>
-
-    <?php
-
-    ?>
-
-    <script nonce="<?php echo $script_nonce; ?>" defer
-        src="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js"></script>
-    <link rel="preload" href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
-
-    <script nonce="<?php echo $script_nonce; ?>"
-        src="<?php echo CDN; ?>/portfolio/node_modules/popper.js/dist/umd/popper.min.js"></script>
-    <script nonce="<?php echo $script_nonce; ?>"
-        src="<?php echo CDN; ?>/portfolio/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <?php if ($_GET['p'] == "editor") { ?>
-        <script nonce="<?php echo $script_nonce; ?>"  src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-    <?php } ?>
-    <script nonce="<?php echo $script_nonce; ?>" async
-        src="<?php echo CDN; ?>/node_modules/ez-plus/src/jquery.ez-plus.js" type="text/javascript"></script>
-    <script nonce="<?php echo $script_nonce; ?>" defer async src="/?svc=jsc">
-    </script>
-    <link rel="stylesheet" nonce="<?php echo $script_nonce; ?>"
-        href="<?php echo CDN; ?>/node_modules/video.js/dist/video-js.min.css" />
-
-        */ ?>
-
-
-    <?php if (!empty($_GET['tp'])) {
+ 
+  if (!empty($_GET['tp'])) {
         if ($_GET['tp'] == "m") {
             ?>
             <style type="text/css" nonce="<?php echo $script_nonce; ?>">
@@ -391,42 +321,9 @@ media-src 'self';" />
             gtag('config', 'G-NZPKRC33WQ');
         </script>
     <?php }
-    ?>
-    <?php /*   <?php
-$r = $this->get_data([
-"url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
-"headers" => [
-'Content-Type: application/json',
-'Authorization: Bearer 32M052k350QaeofkaeopfF',
-]
-]);
-?>
-
-<meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> 
-
-<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.min.js"></script>
-<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/pdf.worker.min.js"></script>
-<link   async defer rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/viewer.css">
-<script async defer src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.9.120/web/pdf_viewer.js"></script>
-*/
-    ?>
-
+    ?> 
     <link rel="preload" href="/mainss" as="style" />
-    <link rel="stylesheet" href="/mainss">
-<?php /*
-
-    <link crossorigin rel="preload"
-        href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css" as="style" />
-    <link crossorigin rel="preload" defer href="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js" as="script" />
-
-    <link async defer rel="stylesheet" crossorigin
-        href="<?php echo CDN; ?>/node_modules/monaco-editor@0.45.0/min/vs/editor/editor.main.css">
-        <script anonymous src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
-
-    <script crossorigin type="text/javascript" defer
-        src="https://unpkg.com/monaco-editor@0.45.0/min/vs/loader.js"></script>--> */?>
-
-    
+    <link rel="stylesheet" href="/mainss"> 
 </head>
 
 <body>
@@ -435,18 +332,4 @@ $r = $this->get_data([
 </body>
 
 </html>
-<?php
-/*
-$b = ob_get_clean();
-$build_index = "$_SERVER[DOCUMENT_ROOT]/build/index.html";
-if(file_exists($build_index)){
-    unlink($build_index);
-}
-file_put_contents($build_index,ob_f($b));
-        } else {
-            header("Content-Type: text/html charset=utf-8");
-            @readfile("$_SERVER[DOCUMENT_ROOT]/build/index.html");
-            exit();
-        }
-exit();
-*/ ?>
+<?php exit(); ?>

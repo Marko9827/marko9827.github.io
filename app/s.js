@@ -8714,11 +8714,14 @@ i_list {
       this.startX = e.clientX - this.translateX;
       this.startY = e.clientY - this.translateY;
       this.container.style.cursor = "grabbing";
+      this.shadowRoot.querySelector("#controls").style.opacity = 0.4;
     }
 
     stopDrag() {
       this.isDragging = false;
       this.container.style.cursor = "grab";
+      this.shadowRoot.querySelector("#controls").style.opacity = 1;
+ 
     }
 
     dragImage(e) {
@@ -9980,9 +9983,9 @@ div#controls img:hover {
       const tags = this.shadowRoot.querySelector("tags");
       const urlParamsf = new URLSearchParams(window.location.search);
       if (urlParamsf.has("id")) {
-        this.parseMe(urlParamsf.get("id"));
-        this.parseMe(urlParamsf.get("id"));
+        this.parseMe(urlParamsf.get("id")); 
         try{
+          tags.textContent = "";
         for (var i = 0; i < this.post_data["category"].length; i++) {
           const tag = document.createElement("a");
           tag.textContent = "#" + this.post_data["category"][i];
@@ -9992,12 +9995,13 @@ div#controls img:hover {
             `/?p=blog&c=${this.post_data["category"][i]}`
           );
           tag.target = "_top";
+          tags.appendChild(tag);
           /* 
         tag.addEventListener("click", function(){
             window.top.location.href = `/?p=blog&c=${this.post_data['category'][i]}`;
         });*/
 
-          tags.appendChild(tag);
+       
         }}catch(aef){}
         if (`${this.post_data["id"]}` == `${urlParamsf.get("id")}`) {
           if (this.post_data["type"] == "text") {

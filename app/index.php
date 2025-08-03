@@ -1026,8 +1026,8 @@ JS;
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        $data = self::protect_js_dna($js_static);
-        // $data =  self::minifyJS_code($js_static) ;
+        # $data = self::protect_js_dna($js_static);
+        $data =  self::minifyJS_code($js_static) ;
         unlink($f);
         file_put_contents($f, $data);
         header("Content-Type: application/javascript");

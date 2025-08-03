@@ -14026,6 +14026,11 @@ if (!customElements.get('monaco-editor-app')) {
   });
 }
 
+window.addEventListener('keydown', function(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+    e.preventDefault(); 
+  }
+});
 
 if (!customElements.get('icon-i')) {
   customElements.define('icon-i', class extends HTMLElement {

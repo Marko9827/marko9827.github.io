@@ -1,388 +1,1183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>SVG to High-Res PNG Download</title>
-</head>
-<body>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rich Text Editor</title>
+    <style>
+        /* Ažurirani stilovi bez eksternih zavisnosti */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f3f4f6; /* bg-gray-100 */
+            color: #1f2937; /* text-gray-900 */
+            padding: 2rem;
+            transition-property: background-color, color;
+            transition-duration: 300ms;
+        }
 
-<!-- Tvoj SVG ide ovde -->
-<div id="svg-container" style="display:none">
-<!-- Paste SVG here as a string or inline -->
-<!-- Ili možeš staviti SVG direktno u HTML, npr: -->
-<svg id="mySvg" xmlns="http://www.w3.org/2000/svg" width="600" height="1700" style="
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    enable-background: new 0 0 512 512;
-    pointer-events: none;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-            user-select:none;
-background:#caa85b">
-  <!-- Ovde ide sav tvoj SVG sadržaj (copy-paste iz poruke) -->
-  ... (tvoj SVG sadržaj) ...
-</svg>
-</div>
+        body.dark {
+            background-color: #111827; /* dark:bg-gray-900 */
+            color: #f9fafb; /* dark:text-gray-100 */
+        }
+        
+        rich-text-editor {
+            font-family: 'Inter', sans-serif;
+            display: block;
+            width: 100%;
+            max-width: 1000px;
+            background-color: #fff;
+            color: #1f2937;
+            border-radius: 0.75rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        
+        rich-text-editor.dark {
+            background-color: #1f2937;
+            color: #d1d5db;
+            border-color: #374151;
+        }
 
-<button id="downloadBtn">Preuzmi sliku PNG (velika rezolucija)</button>
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
 
+        rich-text-editor.dark .toolbar {
+            border-color: #374151;
+            background-color: #374151;
+        }
 
-             
-<svg xmlns="http://www.w3.org/2000/svg" id="mySvg" width="600" height="1700" style="
+        .toolbar button {
+            padding: 0.6rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+            color: inherit;
+            background-color: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .toolbar button:hover {
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+        }
+        rich-text-editor.dark .toolbar button:hover {
+            background-color: #4b5563;
+            border-color: #6b7280;
+        }
+        .toolbar button:active {
+            transform: scale(0.95);
+        }
 
-    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2));
-    enable-background: new 0 0 512 512;
-    pointer-events: none;
-    -webkit-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-            user-select:none;
-background:#caa85b">
-  <line x1="314.06999965162106" y1="40" x2="285.93000034837894" y2="40" stroke="white" stroke-width="1"/>
-  <line x1="304.6731204527007" y1="46" x2="295.3268795472993" y2="46" stroke="white" stroke-width="1"/>
-  <line x1="291.73971686103545" y1="52" x2="308.26028313896455" y2="52" stroke="white" stroke-width="1"/>
-  <line x1="285.0575308674624" y1="58" x2="314.9424691325376" y2="58" stroke="white" stroke-width="1"/>
-  <line x1="289.6835076122404" y1="64" x2="310.3164923877596" y2="64" stroke="white" stroke-width="1"/>
-  <line x1="302.116800120898" y1="70" x2="297.883199879102" y2="70" stroke="white" stroke-width="1"/>
-  <line x1="312.9481404997331" y1="76" x2="287.0518595002669" y2="76" stroke="white" stroke-width="1"/>
-  <line x1="313.9805862895084" y1="82" x2="286.0194137104916" y2="82" stroke="white" stroke-width="1"/>
-  <line x1="304.4328030999201" y1="88" x2="295.5671969000799" y2="88" stroke="white" stroke-width="1"/>
-  <line x1="291.5303628990745" y1="94" x2="308.4696371009255" y2="94" stroke="white" stroke-width="1"/>
-  <line x1="285.03757520093916" y1="100" x2="314.96242479906084" y2="100" stroke="white" stroke-width="1"/>
-  <line x1="289.86805229173274" y1="106" x2="310.13194770826726" y2="106" stroke="white" stroke-width="1"/>
-  <line x1="302.36618541214875" y1="112" x2="297.63381458785125" y2="112" stroke="white" stroke-width="1"/>
-  <line x1="313.0736365862038" y1="118" x2="286.9263634137962" y2="118" stroke="white" stroke-width="1"/>
-  <line x1="313.88722023491596" y1="124" x2="286.11277976508404" y2="124" stroke="white" stroke-width="1"/>
-  <line x1="304.19123247298387" y1="130" x2="295.80876752701613" y2="130" stroke="white" stroke-width="1"/>
-  <line x1="291.32340353417703" y1="136" x2="308.67659646582297" y2="136" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="110" x2="300" y2="140" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="120" x2="285" y2="130" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="120" x2="315" y2="130" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="140" x2="290" y2="160" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="140" x2="310" y2="160" stroke="white" stroke-width="1"/>
-  <rect x="230" y="180" width="130" height="60" stroke="white" fill="none"/>
-  <rect x="240" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="243" y="194" width="4" height="6" fill="white"/>
-  <rect x="254" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="257" y="194" width="4" height="6" fill="white"/>
-  <rect x="268" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="282" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="296" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="310" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="324" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="327" y="194" width="4" height="6" fill="white"/>
-  <rect x="338" y="190" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="341" y="194" width="4" height="6" fill="white"/>
-  <rect x="240" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="254" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="257" y="214" width="4" height="6" fill="white"/>
-  <rect x="268" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="282" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="285" y="214" width="4" height="6" fill="white"/>
-  <rect x="296" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="310" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="324" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="338" y="210" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="240" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="254" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="268" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="282" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="296" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="310" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="324" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="338" y="230" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="240" y="250" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="254" y="250" width="10" height="14" stroke="white" fill="none"/>
-  <rect x="268" y="250" width="10" height="14" stroke="white" fill="none"/>
-  <circle cx="200" cy="290" r="15" stroke="white" fill="none"/>
-  <circle cx="380" cy="290" r="8" stroke="white" fill="none"/>
-  <line x1="200" y1="290" x2="380" y2="290" stroke="white" stroke-width="1"/>
-  <circle cx="380" cy="290" r="15" stroke="white" fill="none"/>
-  <path d="M 390.58 275.44 A 18 18 0 0 1 380.00 308.00" stroke="white" fill="none"/>
-  <line x1="390" y1="280" x2="380" y2="310" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="360.0" y2="390.0" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="372.07750943219355" y2="424.71069912940465" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="362.34898018587336" y2="468.183148246803" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="313.35125603737885" y2="448.4956747309094" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="282.19832528349485" y2="467.9942329745459" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="237.65101981412667" y2="468.183148246803" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="245.94186792585487" y2="416.03302434705347" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="220.0" y2="390.0" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="209.9031132097581" y2="346.6116260882442" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="262.59061188847596" y2="343.0901110519182" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="282.19832528349485" y2="312.00576702545413" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="322.25209339563145" y2="292.5072087818176" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="337.409388111524" y2="343.0901110519182" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="390" x2="372.0775094321935" y2="355.28930087059535" stroke="white" stroke-width="1"/>
-  <circle cx="220" cy="510" r="2.0" stroke="white" fill="none"/>
-  <circle cx="240" cy="510" r="2.4" stroke="white" fill="none"/>
-  <circle cx="260" cy="510" r="2.8" stroke="white" fill="none"/>
-  <circle cx="280" cy="510" r="3.2" stroke="white" fill="none"/>
-  <circle cx="300" cy="510" r="3.6" stroke="white" fill="none"/>
-  <circle cx="320" cy="510" r="4.0" stroke="white" fill="none"/>
-  <circle cx="340" cy="510" r="4.4" stroke="white" fill="none"/>
-  <circle cx="360" cy="510" r="4.800000000000001" stroke="white" fill="none"/>
-  <circle cx="380" cy="510" r="5.2" stroke="white" fill="none"/>
-  <line x1="260" y1="510" x2="260" y2="490" stroke="white" stroke-width="1"/>
-  <rect x="270" y="590" width="60" height="60" stroke="white" fill="none"/>
-  <rect x="270" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="590" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="270" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="600" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="270" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="610" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="270" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="620" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="270" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="630" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="270" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="280" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="290" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="300" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="310" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <rect x="320" y="640" width="10" height="10" stroke="white" fill="none"/>
-  <circle cx="280" cy="690" r="6" stroke="white" fill="none"/>
-  <circle cx="320" cy="690" r="6" stroke="white" fill="none"/>
-  <line x1="286" y1="690" x2="314" y2="690" stroke="white" stroke-width="1"/>
-  <rect x="200" y="790" width="200" height="30" stroke="white" fill="none"/>
-  <line x1="210" y1="790" x2="210" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="219" y1="790" x2="219" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="228" y1="790" x2="228" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="237" y1="790" x2="237" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="246" y1="790" x2="246" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="255" y1="790" x2="255" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="264" y1="790" x2="264" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="273" y1="790" x2="273" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="282" y1="790" x2="282" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="291" y1="790" x2="291" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="790" x2="300" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="309" y1="790" x2="309" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="318" y1="790" x2="318" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="327" y1="790" x2="327" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="336" y1="790" x2="336" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="345" y1="790" x2="345" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="354" y1="790" x2="354" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="363" y1="790" x2="363" y2="784" stroke="white" stroke-width="1"/>
-  <line x1="372" y1="790" x2="372" y2="778" stroke="white" stroke-width="1"/>
-  <line x1="381" y1="790" x2="381" y2="784" stroke="white" stroke-width="1"/>
-  <path d="M 300 820 L 290 840 L 310 840 Z" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="10" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="18" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="26" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="34" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="42" stroke="white" fill="none"/>
-  <line x1="240" y1="1000" x2="360" y2="1000" stroke="white" stroke-width="1"/>
-  <path d="M 350 995 L 360 1000 L 350 1005" stroke="white" fill="none"/>
-  <circle cx="220" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="220" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="231" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="242" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="253" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="253" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="264" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="264" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="275" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="275" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="286" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="297" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="308" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="308" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="319" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="330" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="330" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="341" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="352" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="363" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="363" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="374" cy="1030" r="4" stroke="white" fill="none"/>
-  <circle cx="374" cy="1030" r="4" fill="white" stroke="white"/>
-  <circle cx="200" cy="910" r="15" stroke="white" fill="none"/>
-  <line x1="200" y1="910" x2="215" y2="910" stroke="white" stroke-width="1"/>
-  <path d="M 219.60 906.03 A 20 20 0 1 1 195.46 890.52" stroke="white" fill="none"/>
-  <path d="M 215 900 L 212 908 L 219 906" stroke="white" fill="none"/>
-  <circle cx="300" cy="910" r="20" stroke="white" fill="none"/>
-  <circle cx="330" cy="910" r="5" stroke="white" fill="none"/>
-  <ellipse cx="300" cy="910" rx="30" ry="20" stroke="white" fill="none"/>
-  <circle cx="400" cy="910" r="10" stroke="white" fill="none"/>
-  <circle cx="440" cy="910" r="6" stroke="white" fill="none"/>
-  <ellipse cx="400" cy="910" rx="40" ry="25" stroke="white" fill="none"/>
-  <circle cx="240" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="252" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="264" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="276" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="288" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="300" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="312" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="324" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="336" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="348" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="360" cy="990" r="3" stroke="white" fill="white"/>
-  <circle cx="372" cy="990" r="3" stroke="white" fill="none"/>
-  <circle cx="240" cy="1040" r="3" stroke="white" fill="white"/>
-  <circle cx="250" cy="1040" r="3" stroke="white" fill="white"/>
-  <circle cx="260" cy="1040" r="3" stroke="white" fill="white"/>
-  <line x1="300" y1="1034" x2="300" y2="1046" stroke="white" stroke-width="1"/>
-  <line x1="294" y1="1040" x2="306" y2="1040" stroke="white" stroke-width="1"/>
-  <circle cx="320" cy="1040" r="3" stroke="white" fill="white"/>
-  <circle cx="330" cy="1040" r="3" stroke="white" fill="white"/>
-  <circle cx="340" cy="1040" r="3" stroke="white" fill="white"/>
-  <circle cx="350" cy="1040" r="3" stroke="white" fill="white"/>
-  <line x1="240" y1="1120" x2="240" y2="1105" stroke="white" stroke-width="1"/>
-  <line x1="260" y1="1120" x2="260" y2="1105" stroke="white" stroke-width="1"/>
-  <line x1="280" y1="1120" x2="280" y2="1115" stroke="white" stroke-width="1"/>
-  <line x1="300" y1="1120" x2="300" y2="1105" stroke="white" stroke-width="1"/>
-  <line x1="320" y1="1120" x2="320" y2="1115" stroke="white" stroke-width="1"/>
-  <line x1="340" y1="1120" x2="340" y2="1105" stroke="white" stroke-width="1"/>
-  <line x1="240" y1="1150" x2="310" y2="1150" stroke="white" stroke-width="1"/>
-  <rect x="5" y="20.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 180.0 L 6 186.0 L 14 186.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="186.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 346.0 L 6 352.0 L 14 352.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="352.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 512.0 L 6 518.0 L 14 518.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="518.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 678.0 L 6 684.0 L 14 684.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="684.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 844.0 L 6 850.0 L 14 850.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="850.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 1010.0 L 6 1016.0 L 14 1016.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="1016.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 1176.0 L 6 1182.0 L 14 1182.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="1182.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 1342.0 L 6 1348.0 L 14 1348.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="1348.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <path d="M 10 1508.0 L 6 1514.0 L 14 1514.0 Z" stroke="white" fill="none"/>
-  <rect x="5" y="1514.0" width="10" height="162.0" stroke="white" fill="none"/>
-  <circle cx="10" cy="10" r="6" stroke="white" fill="none"/>
-  <line x1="10" y1="10" x2="10" y2="2" stroke="white" stroke-width="1"/>
-  <path d="M 10 1690 L 4 1698 L 16 1698 Z" stroke="white" fill="none"/>
-  <circle cx="250" cy="1220" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1220" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1220" r="6" fill="white" stroke="white"/>
-  <circle cx="290" cy="1220" r="6" stroke="white" fill="none"/>
-  <circle cx="250" cy="1240" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1240" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1240" r="6" fill="white" stroke="white"/>
-  <circle cx="290" cy="1240" r="6" stroke="white" fill="none"/>
-  <circle cx="250" cy="1260" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1260" r="6" stroke="white" fill="none"/>
-  <circle cx="270" cy="1260" r="6" fill="white" stroke="white"/>
-  <circle cx="290" cy="1260" r="6" stroke="white" fill="none"/>
-  <line x1="320" y1="1240" x2="360" y2="1240" stroke="white" stroke-width="1"/>
-  <path d="M 350 1235 L 360 1240 L 350 1245" stroke="white" fill="none"/>
-  <rect x="374" y="1214" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="394" y="1214" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="414" y="1214" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="374" y="1234" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="377" y="1237" width="6" height="6" fill="white"/>
-  <rect x="394" y="1234" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="414" y="1234" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="417" y="1237" width="6" height="6" fill="white"/>
-  <rect x="374" y="1254" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="394" y="1254" width="12" height="12" stroke="white" fill="none"/>
-  <rect x="414" y="1254" width="12" height="12" stroke="white" fill="none"/>
-  <path d="M 250.00 1290.00 L 251.00 1290.90 L 252.00 1291.77 L 253.00 1292.61 L 254.00 1293.39 L 255.00 1294.09 L 256.00 1294.70 L 257.00 1295.20 L 258.00 1295.59 L 259.00 1295.85 L 260.00 1295.98 L 261.00 1295.98 L 262.00 1295.84 L 263.00 1295.57 L 264.00 1295.18 L 265.00 1294.67 L 266.00 1294.05 L 267.00 1293.35 L 268.00 1292.56 L 269.00 1291.72 L 270.00 1290.85 L 271.00 1289.95 L 272.00 1289.05 L 273.00 1288.18 L 274.00 1287.34 L 275.00 1286.57 L 276.00 1285.87 L 277.00 1285.27 L 278.00 1284.77 L 279.00 1284.39 L 280.00 1284.13 L 281.00 1284.01 L 282.00 1284.02 L 283.00 1284.17 L 284.00 1284.45 L 285.00 1284.85 L 286.00 1285.36 L 287.00 1285.98 L 288.00 1286.70 L 289.00 1287.48 L 290.00 1288.32 L 291.00 1289.20 L 292.00 1290.10 L 293.00 1291.00 L 294.00 1291.87 L 295.00 1292.70 L 296.00 1293.47 L 297.00 1294.16 L 298.00 1294.76 L 299.00 1295.25 L 300.00 1295.63 L 301.00 1295.88 L 302.00 1295.99 L 303.00 1295.97 L 304.00 1295.82 L 305.00 1295.54 L 306.00 1295.13 L 307.00 1294.60 L 308.00 1293.98 L 309.00 1293.26 L 310.00 1292.47 L 311.00 1291.63 L 312.00 1290.75 L 313.00 1289.85 L 314.00 1288.95 L 315.00 1288.08 L 316.00 1287.25 L 317.00 1286.49 L 318.00 1285.80 L 319.00 1285.21 L 320.00 1284.72 L 321.00 1284.35 L 322.00 1284.11 L 323.00 1284.01 L 324.00 1284.03 L 325.00 1284.19 L 326.00 1284.48 L 327.00 1284.90 L 328.00 1285.43 L 329.00 1286.06 L 330.00 1286.78 L 331.00 1287.57 L 332.00 1288.42 L 333.00 1289.30 L 334.00 1290.20 L 335.00 1291.10 L 336.00 1291.96 L 337.00 1292.79 L 338.00 1293.55 L 339.00 1294.24 L 340.00 1294.82 L 341.00 1295.30 L 342.00 1295.66 L 343.00 1295.90 L 344.00 1296.00 L 345.00 1295.96 L 346.00 1295.79 L 347.00 1295.50 L 348.00 1295.07 L 349.00 1294.54 L 350.00 1293.90" stroke="white" fill="none"/>
-  <rect x="20" y="1365" width="560" height="354" fill="white" fill-opacity="0"
-  stroke="white"/>
-  <text x="40" y="1385" fill="white" font-family="monospace" font-size="11">- DNA                – Genetic information</text>
-  <text x="40" y="1403" fill="white" font-family="monospace" font-size="11">- Human              – Intelligent lifeform</text>
-  <text x="40" y="1421" fill="white" font-family="monospace" font-size="11">- Binary Code        – Encoded length of DNA</text>
-  <text x="40" y="1439" fill="white" font-family="monospace" font-size="11">- Solar Day          – Planetary rotation and time</text>
-  <text x="40" y="1457" fill="white" font-family="monospace" font-size="11">- Pulsars            – Galactic position (Earth's coordinates)</text>
-  <text x="40" y="1475" fill="white" font-family="monospace" font-size="11">- Solar System       – 9 planets with Earth highlighted</text>
-  <text x="40" y="1493" fill="white" font-family="monospace" font-size="11">- Raster Image       – Visual data (symbolic)</text>
-  <text x="40" y="1511" fill="white" font-family="monospace" font-size="11">- Atoms 1-1          – Basic matter and structure</text>
-  <text x="40" y="1529" fill="white" font-family="monospace" font-size="11">- Analog Reader      – How to decode the message</text>
-  <text x="40" y="1547" fill="white" font-family="monospace" font-size="11">- Time Markers       – Day, month, year (visually)</text>
-  <text x="40" y="1565" fill="white" font-family="monospace" font-size="11">- Math &amp; Counting    – Representation of calculation</text>
-  <text x="40" y="1583" fill="white" font-family="monospace" font-size="11">- Element Matrix     – Structure and reconstruction of Gold/Aluminum</text>
-  <text x="40" y="1601" fill="white" font-family="monospace" font-size="11">- Energy Wave        – Reaction or transmission signal</text>
-  <text x="40" y="1619" fill="white" font-family="monospace" font-size="11">The Image is scientific in nature.</text>
-  <text x="20" y="1608.8" fill="white" font-family="monospace" font-size="10">------------------------------------------------------------------------------------------------------</text>
-  <text x="40" y="1637" fill="white" font-family="monospace" font-size="11">All symbols have been previously explained.</text>
-  <text x="40" y="1655" fill="white" font-family="monospace" font-size="11">The primary purpose of the plaque is to enable non-human intelligence to</text>
-  <text x="40" y="1673" fill="white" font-family="monospace" font-size="11">understand how a Solar day is calculated in a simple way.</text>
-  <text x="40" y="1691" fill="white" font-family="monospace" font-size="11">© markonikolic98.com | Marko Nikolić - Solar day: 10000</text>
-  <text x="300" y="150" text-anchor="middle" font-size="60"
-   font-family="monospace" fill="#ffffff"
-    opacity="0.05" transform="rotate(90, 90)">markonikolic98.com</text>
- 
-</svg>
+        .editor {
+            min-height: 500px;
+            padding: 1.5rem;
+            outline: none;
+            line-height: 1.75;
+            font-size: 1.125rem;
+            overflow-y: auto;
+        }
+        .editor:focus {
+            outline: 2px solid #3b82f6;
+            outline-offset: -2px;
+        }
 
-            
+        /* Modal styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 50;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal.show {
+            opacity: 1;
+            display: flex; /* Dodato da se modal vidi */
+        }
+        .modal-content {
+            background-color: #fff;
+            color: #1f2937;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            width: 100%;
+            max-width: 40rem;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        rich-text-editor.dark .modal-content {
+            background-color: #1f2937;
+            color: #d1d5db;
+        }
+        
+        /* Editor styling */
+        .editor h1, .editor h2, .editor h3 {
+            font-weight: bold;
+            margin: 1.5rem 0 1rem;
+        }
+        .editor h1 { font-size: 2.25rem; }
+        .editor h2 { font-size: 1.875rem; }
+        .editor h3 { font-size: 1.5rem; }
+        .editor p, .editor li { margin-bottom: 0.75rem; }
+        .editor b, .editor strong { font-weight: bold; }
+        .editor i, .editor em { font-style: italic; }
+        .editor u { text-decoration: underline; }
+        .editor ul, .editor ol { list-style-position: inside; padding-left: 1rem; }
+        .editor table { width: 100%; border-collapse: collapse; margin: 1rem 0; border: 1px solid #d1d5db; }
+        .editor th, .editor td { border: 1px solid #d1d5db; padding: 0.75rem; text-align: left; }
+        rich-text-editor.dark .editor table { border-color: #4b5563; }
+        rich-text-editor.dark .editor th, rich-text-editor.dark .editor td { border-color: #4b5563; }
+        .editor pre {
+            background-color: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-family: 'monospace';
+            color: #1f2937;
+            white-space: pre-wrap;
+        }
+        rich-text-editor.dark .editor pre {
+            background-color: #4b5563;
+            color: #d1d5db;
+        }
+        .editor pre code {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            font-family: 'monospace';
+            white-space: pre;
+            word-wrap: normal;
+            padding: 0;
+        }
+        rich-text-editor.dark .editor pre code {
+            background-color: #4b5563;
+            color: #d1d5db;
+        }
+        .editor code {
+            background-color: #f3f4f6;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-family: 'monospace';
+            white-space: pre-wrap;
+        }
+        rich-text-editor.dark .editor code {
+            background-color: #4b5563;
+        }
+
+        #gemini-modal-content textarea {
+            min-height: 150px;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border: 1px solid #e5e7eb;
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 0.375rem;
+            resize: vertical;
+        }
+        rich-text-editor.dark #gemini-modal-content textarea {
+            background-color: #4b5563;
+            color: #d1d5db;
+            border-color: #6b7280;
+        }
+        #copy-feedback {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background-color: #10b981;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 100;
+        }
+        #copy-feedback.show {
+            opacity: 1;
+        }
+        .hidden {
+            display: none;
+        }
+        .flex { display: flex; }
+        .justify-between { justify-content: space-between; }
+        .items-center { align-items: center; }
+        .pb-3 { padding-bottom: 0.75rem; }
+        .border-b { border-bottom: 1px solid; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .dark .border-gray-700 { border-color: #374151; }
+        .text-xl { font-size: 1.25rem; }
+        .font-bold { font-weight: 700; }
+        .text-gray-400 { color: #9ca3af; }
+        .hover\:text-gray-900:hover { color: #111827; }
+        .dark .hover\:text-gray-200:hover { color: #e5e7eb; }
+        .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .mt-4 { margin-top: 1rem; }
+        .flex-col { flex-direction: column; }
+        .gap-3 { gap: 0.75rem; }
+        .w-24 { width: 6rem; }
+        .p-2 { padding: 0.5rem; }
+        .border { border-width: 1px; }
+        .rounded { border-radius: 0.25rem; }
+        .dark\:bg-gray-800 { background-color: #1f2937; }
+        .dark\:border-gray-600 { border-color: #4b5563; }
+        .bg-green-500 { background-color: #22c55e; }
+        .text-white { color: #fff; }
+        .p-2 { padding: 0.5rem; }
+        .rounded { border-radius: 0.25rem; }
+        .hover\:bg-green-600:hover { background-color: #16a34a; }
+        .w-full { width: 100%; }
+        .h-64 { height: 16rem; }
+        .p-3 { padding: 0.75rem; }
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .text-gray-900 { color: #111827; }
+        .rounded-md { border-radius: 0.375rem; }
+        .resize-none { resize: none; }
+        .focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+        .dark\:bg-gray-800 { background-color: #1f2937; }
+        .dark\:text-gray-200 { color: #e5e7eb; }
+        .bg-blue-500 { background-color: #3b82f6; }
+        .hover\:bg-blue-600:hover { background-color: #2563eb; }
+        .text-center { text-align: center; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .animate-spin { animation: spin 1s linear infinite; }
+        .inline-block { display: inline-block; }
+        .w-8 { width: 2rem; }
+        .h-8 { height: 2rem; }
+        .border-4 { border-width: 4px; }
+        .border-t-4 { border-top-width: 4px; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .dark .border-gray-700 { border-color: #374151; }
+        .rounded-full { border-radius: 9999px; }
+        .mt-4 { margin-top: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        .flex-grow { flex-grow: 1; }
+        .bg-red-500 { background-color: #ef4444; }
+        .hover\:bg-red-600:hover { background-color: #dc2626; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .hidden { display: none; }
+        .sm\:block { display: block; }
+        .bg-violet-500 { background-color: #8b5cf6; }
+        .hover\:bg-violet-600:hover { background-color: #7c3aed; }
+        .bg-indigo-500 { background-color: #6366f1; }
+        .hover\:bg-indigo-600:hover { background-color: #4f46e5; }
+        .bg-gray-500 { background-color: #6b7280; }
+        .hover\:bg-gray-600:hover { background-color: #4b5563; }
+        .bg-gray-200 { background-color: #e5e7eb; }
+        .hover\:bg-gray-300:hover { background-color: #d1d5db; }
+        .dark .bg-gray-700 { background-color: #374151; }
+        .dark .text-gray-800 { color: #1f2937; }
+        .dark .hover\:bg-gray-600:hover { background-color: #4b5563; }
+        .dark .hover\:bg-gray-600:hover { background-color: #4b5563; }
+        .relative { position: relative; }
+        .inline { display: inline; }
+        .ml-2 { margin-left: 0.5rem; }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+    </head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 font-sans p-8 flex items-center justify-center min-h-screen transition-colors duration-300">
+
+<rich-text-editor></rich-text-editor>
+
 <script>
-  function downloadSVGAsPNG() {
-    const svg = document.getElementById('mySvg');
+class RichTextEditor extends HTMLElement {
+    constructor() {
+        super();
+        this.shadow = this.attachShadow({ mode: 'open' });
+        this.history = [];
+        this.historyIndex = -1;
+        this.isGenerating = false;
+        this.debounceTimeout = null;
+    }
 
-    // Podesi željenu rezoluciju (npr. 3000x8500 px radi visoke rezolucije)
-    const width = 3000; // 5x originalno (600*5=3000)
-    const height = 8500; // 5x originalno (1700*5=8500)
+    connectedCallback() {
+        const style = document.createElement('style');
+        style.textContent = `
+            /* Prilagođeni stilovi za Shadow DOM */
+            :host {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+                display: block;
+                width: 100%;
+                max-width: 1000px;
+                background-color: #fff;
+                color: #1f2937;
+                border-radius: 0.75rem;
+                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                overflow: hidden;
+                transition: all 0.3s ease;
+                border: 1px solid #e5e7eb;
+            }
+            
+            :host(.dark) {
+                background-color: #1f2937;
+                color: #d1d5db;
+                border-color: #374151;
+            }
 
-    // Kreiraj canvas na koju će se renderovati slika
-    const canvas = document.createElement('canvas');
-    canvas.width = width;
-    canvas.height = height;
+            .toolbar {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 1rem;
+                border-bottom: 1px solid #e5e7eb;
+                background-color: #f9fafb;
+            }
 
-    const ctx = canvas.getContext('2d');
+            :host(.dark) .toolbar {
+                border-color: #374151;
+                background-color: #374151;
+            }
 
-    // Dobavi SVG kao string
-    const svgData = new XMLSerializer().serializeToString(svg);
+            .toolbar button {
+                padding: 0.6rem;
+                border-radius: 0.5rem;
+                transition: all 0.2s ease;
+                color: inherit;
+                background-color: transparent;
+                border: 1px solid transparent;
+            }
+            .toolbar button:hover {
+                background-color: #e5e7eb;
+                border-color: #d1d5db;
+            }
+            :host(.dark) .toolbar button:hover {
+                background-color: #4b5563;
+                border-color: #6b7280;
+            }
+            .toolbar button:active {
+                transform: scale(0.95);
+            }
 
-    // Dodaj XML header da bi browser mogao da ga učita kao sliku
-    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-    const url = URL.createObjectURL(svgBlob);
+            .editor {
+                min-height: 500px;
+                padding: 1.5rem;
+                outline: none;
+                line-height: 1.75;
+                font-size: 1.125rem;
+                overflow-y: auto;
+            }
+            .editor:focus {
+                outline: 2px solid #3b82f6;
+                outline-offset: -2px;
+            }
 
-    // Kreiraj Image objekat da "učita" SVG u canvas
-    const img = new Image();
+            /* Modal styles */
+            .modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 50;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .modal.show {
+                opacity: 1;
+            }
+            .modal-content {
+                background-color: #fff;
+                color: #1f2937;
+                padding: 1.5rem;
+                border-radius: 0.75rem;
+                width: 100%;
+                max-width: 40rem;
+                transform: translateY(-20px);
+                transition: transform 0.3s ease;
+            }
+            .modal.show .modal-content {
+                transform: translateY(0);
+            }
+            :host(.dark) .modal-content {
+                background-color: #1f2937;
+                color: #d1d5db;
+            }
+            
+            /* Editor styling */
+            .editor h1, .editor h2, .editor h3 {
+                font-weight: bold;
+                margin: 1.5rem 0 1rem;
+            }
+            .editor h1 { font-size: 2.25rem; }
+            .editor h2 { font-size: 1.875rem; }
+            .editor h3 { font-size: 1.5rem; }
+            .editor p, .editor li { margin-bottom: 0.75rem; }
+            .editor b, .editor strong { font-weight: bold; }
+            .editor i, .editor em { font-style: italic; }
+            .editor u { text-decoration: underline; }
+            .editor ul, .editor ol { list-style-position: inside; padding-left: 1rem; }
+            .editor table { width: 100%; border-collapse: collapse; margin: 1rem 0; border: 1px solid #d1d5db; }
+            .editor th, .editor td { border: 1px solid #d1d5db; padding: 0.75rem; text-align: left; }
+            :host(.dark) .editor table { border-color: #4b5563; }
+            :host(.dark) .editor th, :host(.dark) .editor td { border-color: #4b5563; }
+            .editor pre {
+                background-color: #f3f4f6;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                overflow-x: auto;
+                font-family: 'monospace';
+                color: #1f2937;
+                white-space: pre-wrap;
+            }
+            :host(.dark) .editor pre {
+                background-color: #4b5563;
+                color: #d1d5db;
+            }
+            .editor pre code {
+                background-color: #f3f4f6;
+                color: #1f2937;
+                font-family: 'monospace';
+                white-space: pre;
+                word-wrap: normal;
+                padding: 0;
+            }
+            :host(.dark) .editor pre code {
+                background-color: #4b5563;
+                color: #d1d5db;
+            }
+            .editor code {
+                background-color: #f3f4f6;
+                padding: 0.25rem 0.5rem;
+                border-radius: 0.375rem;
+                font-family: 'monospace';
+                white-space: pre-wrap;
+            }
+            :host(.dark) .editor code {
+                background-color: #4b5563;
+            }
 
-    img.onload = function () {
-      // Kad se slika učita, nacrtaj je u canvas
-      // Skalira se da ispuni celu visoku rezoluciju
-      ctx.drawImage(img, 0, 0, width, height);
-      URL.revokeObjectURL(url);
+            #gemini-modal-content textarea {
+                min-height: 150px;
+                background-color: #f3f4f6;
+                color: #1f2937;
+                border: 1px solid #e5e7eb;
+            }
+            :host(.dark) #gemini-modal-content textarea {
+                background-color: #4b5563;
+                color: #d1d5db;
+                border-color: #6b7280;
+            }
+            #copy-feedback {
+                position: fixed;
+                top: 2rem;
+                right: 2rem;
+                background-color: #10b981;
+                color: white;
+                padding: 0.75rem 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+                z-index: 100;
+            }
+            #copy-feedback.show {
+                opacity: 1;
+            }
+        `;
+        this.shadow.appendChild(style);
 
-      // Generiši PNG iz canvas-a sa 100% kvalitetom
-      canvas.toBlob(function (blob) {
-        const a = document.createElement('a');
-        a.download = 'solar-placa-highres.png';
-        a.href = URL.createObjectURL(blob);
-        a.click();
-        URL.revokeObjectURL(a.href);
-      }, 'image/png', 1.0);
-    };
+        const mainContainer = document.createElement('div');
+        mainContainer.className = 'w-full h-full';
 
-    img.onerror = function (e) {
-      alert('Greška pri učitavanju SVG-a!');
-      URL.revokeObjectURL(url);
-    };
+        // Toolbar
+        const toolbar = document.createElement('div');
+        toolbar.id = 'toolbar';
+        toolbar.className = 'toolbar';
+        toolbar.innerHTML = `
+            <button id="bold" title="Podebljano"><b>B</b></button>
+            <button id="italic" title="Kurziv"><i>I</i></button>
+            <button id="underline" title="Podvučeno"><u>U</u></button>
+            <button id="heading1" title="Naslov H1">H1</button>
+            <button id="heading2" title="Naslov H2">H2</button>
+            <button id="ulist" title="Lista">UL</button>
+            <button id="olist" title="Numerisana lista">OL</button>
+            <button id="insertTable" title="Umetni tablicu">Tablica</button>
+            <button id="undo" title="Poništi">Poništi</button>
+            <button id="redo" title="Ponovi">Ponovi</button>
+            <button id="insertInlineCode" title="Umetni kod">Kod</button>
+            <button id="insertCodeBlock" title="Umetni blok koda">Blok koda</button>
+            
+            <div style="flex-grow: 1;"></div>
 
-    img.src = url;
-  }
+            <button id="summarizeBtn" title="Sažmi tekst" style="background-color: #8b5cf6; color: white; border-radius: 0.375rem; padding: 0.5rem 0.75rem; transition: all 0.2s ease;">
+                Sažmi
+            </button>
+            <button id="continueBtn" title="Nastavi pisanje" style="background-color: #6366f1; color: white; border-radius: 0.375rem; padding: 0.5rem 0.75rem; transition: all 0.2s ease;">
+                Nastavi
+            </button>
+            
+            <button id="copyMarkdown" title="Kopiraj Markdown" style="background-color: #3b82f6; color: white; border-radius: 0.375rem; padding: 0.5rem 0.75rem; transition: all 0.2s ease;">
+                Kopiraj
+            </button>
+            <button id="downloadMarkdown" title="Preuzmi kao Markdown fajl" style="background-color: #6b7280; color: white; border-radius: 0.375rem; padding: 0.5rem 0.75rem; transition: all 0.2s ease;">
+                Preuzmi
+            </button>
+            <button id="themeToggle" title="Prebaci temu" style="background-color: #e5e7eb; color: #1f2937; border-radius: 0.5rem; padding: 0.6rem; transition: all 0.2s ease;">
+                &#9728; </button>
+        `;
+        mainContainer.appendChild(toolbar);
 
-  document.getElementById('downloadBtn').addEventListener('click', downloadSVGAsPNG);
+        // Editor area
+        this.editor = document.createElement('div');
+        this.editor.id = 'editor-content';
+        this.editor.className = 'editor';
+        this.editor.setAttribute('contenteditable', 'true');
+        mainContainer.appendChild(this.editor);
+
+        this.shadow.appendChild(mainContainer);
+
+        // Table Modal
+        const tableModal = document.createElement('div');
+        tableModal.id = 'tableModal';
+        tableModal.className = 'modal';
+        tableModal.innerHTML = `
+            <div class="modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb;">
+                    <h3 style="font-size: 1.25rem; font-weight: bold;">Umetni tablicu</h3>
+                    <button id="closeTableModal" style="color: #9ca3af; background: none; border: none; cursor: pointer; font-size: 1.25rem;">
+                        &times;
+                    </button>
+                </div>
+                <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; align-items: center;">
+                        <label for="tableRows" style="width: 6rem;">Redovi:</label>
+                        <input type="number" id="tableRows" value="3" min="1" style="flex-grow: 1; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.25rem;">
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <label for="tableCols" style="width: 6rem;">Kolone:</label>
+                        <input type="number" id="tableCols" value="3" min="1" style="flex-grow: 1; padding: 0.5rem; border: 1px solid #e5e7eb; border-radius: 0.25rem;">
+                    </div>
+                    <button id="insertTableBtn" style="margin-top: 1rem; background-color: #22c55e; color: white; padding: 0.5rem; border-radius: 0.25rem; border: none; cursor: pointer;">
+                        Umetni
+                    </button>
+                </div>
+            </div>
+        `;
+        this.shadow.appendChild(tableModal);
+
+        // Markdown Modal
+        const markdownModal = document.createElement('div');
+        markdownModal.id = 'markdownModal';
+        markdownModal.className = 'modal';
+        markdownModal.innerHTML = `
+            <div class="modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb;">
+                    <h3 style="font-size: 1.25rem; font-weight: bold;">Markdown Sadržaj</h3>
+                    <button id="closeMarkdownModal" style="color: #9ca3af; background: none; border: none; cursor: pointer; font-size: 1.25rem;">
+                        &times;
+                    </button>
+                </div>
+                <textarea id="markdownOutput" style="width: 100%; height: 16rem; margin-top: 1rem; padding: 0.75rem; background-color: #f3f4f6; color: #111827; border-radius: 0.375rem; resize: none;"></textarea>
+                <button id="copyToClipboardBtn" style="margin-top: 1rem; width: 100%; background-color: #3b82f6; color: white; padding: 0.75rem; border-radius: 0.375rem; border: none; cursor: pointer;">
+                    Kopiraj u međuspremnik
+                </button>
+            </div>
+        `;
+        this.shadow.appendChild(markdownModal);
+
+        // Gemini Modal
+        const geminiModal = document.createElement('div');
+        geminiModal.id = 'geminiModal';
+        geminiModal.className = 'modal';
+        geminiModal.innerHTML = `
+            <div class="modal-content" id="gemini-modal-content">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 0.75rem; border-bottom: 1px solid #e5e7eb;">
+                    <h3 style="font-size: 1.25rem; font-weight: bold;" id="gemini-modal-title">AI rezultat</h3>
+                    <button id="closeGeminiModal" style="color: #9ca3af; background: none; border: none; cursor: pointer; font-size: 1.25rem;">
+                        &times;
+                    </button>
+                </div>
+                <div id="gemini-loading" class="text-center py-8">
+                    <div style="display: inline-block; width: 2rem; height: 2rem; border: 4px solid #e5e7eb; border-top: 4px solid #3b82f6; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <p style="margin-top: 1rem;">Generisanje...</p>
+                </div>
+                <div id="gemini-result-container" style="margin-top: 1rem; display: none;">
+                    <textarea id="gemini-output" style="width: 100%; min-height: 150px; padding: 0.75rem; border-radius: 0.375rem; border: 1px solid #e5e7eb;"></textarea>
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button id="insertGeminiBtn" style="flex-grow: 1; background-color: #22c55e; color: white; padding: 0.75rem; border-radius: 0.375rem; border: none; cursor: pointer;">Umetni</button>
+                        <button id="cancelGeminiBtn" style="flex-grow: 1; background-color: #ef4444; color: white; padding: 0.75rem; border-radius: 0.375rem; border: none; cursor: pointer;">Prekini</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        this.shadow.appendChild(geminiModal);
+
+        // Custom Alert/Feedback Message
+        const copyFeedback = document.createElement('div');
+        copyFeedback.id = 'copy-feedback';
+        copyFeedback.className = 'hidden';
+        this.shadow.appendChild(copyFeedback);
+
+        this.copyMarkdownBtn = this.shadow.getElementById('copyMarkdown');
+        this.insertTableBtn = this.shadow.getElementById('insertTable');
+        this.downloadMarkdownBtn = this.shadow.getElementById('downloadMarkdown');
+        this.themeToggleButton = this.shadow.getElementById('themeToggle');
+        this.summarizeBtn = this.shadow.getElementById('summarizeBtn');
+        this.continueBtn = this.shadow.getElementById('continueBtn');
+        this.insertCodeBlockBtn = this.shadow.getElementById('insertCodeBlock');
+
+        this.tableModal = tableModal;
+        this.markdownModal = markdownModal;
+        this.geminiModal = geminiModal;
+        this.copyFeedback = copyFeedback;
+
+        this.setupEventListeners();
+        this.saveState();
+        this.applyInitialTheme();
+        this.highlightCode();
+    }
+    
+    insertInlineCode() {
+        this.editor.focus();
+        const selection = this.shadow.getSelection();
+        if (!selection.rangeCount) return;
+        
+        const range = selection.getRangeAt(0);
+
+        const codeElement = document.createElement('code');
+        codeElement.textContent = 'unesite kod ovde';
+        
+        range.deleteContents();
+        range.insertNode(codeElement);
+        
+        const newRange = document.createRange();
+        newRange.selectNodeContents(codeElement);
+        newRange.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+        
+        this.saveState();
+    }
+
+    insertCodeBlock() {
+        this.editor.focus();
+        const selection = this.shadow.getSelection();
+        if (!selection.rangeCount) return;
+
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+
+        const preElement = document.createElement('pre');
+        const codeElement = document.createElement('code');
+        codeElement.textContent = 'unesite kod ovde';
+        preElement.appendChild(codeElement);
+        
+        // Ubacujemo novi element i prazan paragraf nakon njega
+        range.insertNode(preElement);
+        const paragraph = document.createElement('p');
+        range.insertNode(paragraph);
+
+        // Pomeramo kursor unutar code elementa
+        const newRange = document.createRange();
+        newRange.selectNodeContents(codeElement);
+        newRange.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(newRange);
+        
+        this.saveState();
+        this.highlightCode();
+    }
+
+    highlightCode() {
+        // Ova funkcija zavisi od lokalno ugrađene highlight.js biblioteke
+        if (typeof hljs !== 'undefined') {
+            const codeBlocks = this.shadow.querySelectorAll('pre code');
+            codeBlocks.forEach(block => {
+                if (!block.dataset.highlighted) {
+                    hljs.highlightElement(block);
+                    block.dataset.highlighted = 'true';
+                }
+            });
+        }
+    }
+
+    setupEventListeners() {
+        this.shadow.getElementById('bold').addEventListener('click', () => this.formatDoc('bold'));
+        this.shadow.getElementById('italic').addEventListener('click', () => this.formatDoc('italic'));
+        this.shadow.getElementById('underline').addEventListener('click', () => this.formatDoc('underline'));
+        this.shadow.getElementById('heading1').addEventListener('click', () => this.applyHeading('H1'));
+        this.shadow.getElementById('heading2').addEventListener('click', () => this.applyHeading('H2'));
+        this.shadow.getElementById('ulist').addEventListener('click', () => this.formatDoc('insertUnorderedList'));
+        this.shadow.getElementById('olist').addEventListener('click', () => this.formatDoc('insertOrderedList'));
+        this.shadow.getElementById('undo').addEventListener('click', () => this.formatDoc('undo'));
+        this.shadow.getElementById('redo').addEventListener('click', () => this.formatDoc('redo'));
+        this.shadow.getElementById('insertInlineCode').addEventListener('click', () => this.insertInlineCode());
+        this.insertCodeBlockBtn.addEventListener('click', () => this.insertCodeBlock());
+
+        this.copyMarkdownBtn.addEventListener('click', () => this.showMarkdownModal());
+        this.insertTableBtn.addEventListener('click', () => this.showTableModal());
+        this.downloadMarkdownBtn.addEventListener('click', () => this.downloadMarkdown());
+        this.themeToggleButton.addEventListener('click', () => this.toggleTheme());
+        this.summarizeBtn.addEventListener('click', () => this.callGeminiAPI('summarize'));
+        this.continueBtn.addEventListener('click', () => this.callGeminiAPI('continue'));
+        
+        this.shadow.getElementById('insertTableBtn').addEventListener('click', () => this.insertTable());
+        this.shadow.getElementById('copyToClipboardBtn').addEventListener('click', () => this.copyToClipboard());
+        this.shadow.getElementById('closeTableModal').addEventListener('click', () => this.tableModal.classList.remove('show'));
+        this.shadow.getElementById('closeMarkdownModal').addEventListener('click', () => this.markdownModal.classList.remove('show'));
+        this.shadow.getElementById('closeGeminiModal').addEventListener('click', () => this.closeGeminiModal());
+        this.shadow.getElementById('insertGeminiBtn').addEventListener('click', () => this.insertGeminiContent());
+        this.shadow.getElementById('cancelGeminiBtn').addEventListener('click', () => this.closeGeminiModal());
+        
+        this.editor.addEventListener('input', () => {
+            this.saveState();
+            clearTimeout(this.debounceTimeout);
+            this.debounceTimeout = setTimeout(() => this.highlightCode(), 500);
+        });
+        this.editor.addEventListener('keyup', (e) => this.checkMarkdownShortcuts(e));
+        this.editor.addEventListener('keydown', (e) => this.checkKeyboardShortcuts(e));
+        this.editor.addEventListener('paste', (e) => this.handlePaste(e));
+    }
+
+    formatDoc(command) {
+        this.editor.focus();
+        document.execCommand(command, false, null);
+    }
+
+    applyHeading(tag) {
+        this.editor.focus();
+        document.execCommand('formatBlock', false, tag);
+    }
+    
+    checkMarkdownShortcuts(e) {
+        const selection = this.shadow.getSelection();
+        if (!selection.rangeCount) return;
+
+        const range = selection.getRangeAt(0);
+        const textNode = range.startContainer;
+
+        if (textNode.nodeType !== Node.TEXT_NODE) return;
+
+        const text = textNode.textContent;
+        const cursorPosition = range.startOffset;
+
+        if (e.key === '`' && cursorPosition >= 2) {
+            const beforeCursor = text.slice(0, cursorPosition);
+            const lastBacktick = beforeCursor.lastIndexOf('`');
+
+            if (lastBacktick !== -1 && lastBacktick < cursorPosition - 1) {
+                const codeContent = beforeCursor.slice(lastBacktick + 1, cursorPosition - 1);
+                
+                const replaceRange = document.createRange();
+                replaceRange.setStart(textNode, lastBacktick);
+                replaceRange.setEnd(textNode, cursorPosition);
+                
+                replaceRange.deleteContents();
+                
+                const codeElem = document.createElement('code');
+                codeElem.textContent = codeContent;
+                replaceRange.insertNode(codeElem);
+
+                const newRange = document.createRange();
+                newRange.setStartAfter(codeElem);
+                newRange.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(newRange);
+
+                this.saveState();
+                return;
+            }
+        }
+        if ((e.key === ' ' || e.key === 'Enter') && text.slice(cursorPosition - 3, cursorPosition) === '```') {
+            range.setStart(textNode, cursorPosition - 3);
+            range.setEnd(textNode, cursorPosition);
+            range.deleteContents();
+
+            const pre = document.createElement('pre');
+            const code = document.createElement('code');
+            code.innerHTML = '';
+            pre.appendChild(code);
+            range.insertNode(pre);
+
+            const newRange = document.createRange();
+            newRange.setStart(code, 0);
+            newRange.collapse(true);
+            selection.removeAllRanges();
+            selection.addRange(newRange);
+
+            this.saveState();
+            this.highlightCode();
+        }
+    }
+
+    checkKeyboardShortcuts(e) {
+        if (e.key === 'Enter') {
+            const selection = this.shadow.getSelection();
+            if (!selection.rangeCount) return;
+
+            const parentNode = selection.anchorNode.parentNode;
+            if (parentNode.tagName === 'CODE' || parentNode.tagName === 'PRE') {
+                e.preventDefault();
+                const range = selection.getRangeAt(0);
+                const br = document.createElement('br');
+                range.deleteContents();
+                range.insertNode(br);
+                range.setStartAfter(br);
+                range.collapse(true);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                this.saveState();
+                this.highlightCode();
+                return;
+            }
+        }
+        if (e.ctrlKey || e.metaKey) {
+            switch (e.key.toLowerCase()) {
+                case 'b':
+                    e.preventDefault();
+                    this.formatDoc('bold');
+                    break;
+                case 'i':
+                    e.preventDefault();
+                    this.formatDoc('italic');
+                    break;
+                case 'u':
+                    e.preventDefault();
+                    this.formatDoc('underline');
+                    break;
+                case 'z':
+                    e.preventDefault();
+                    this.formatDoc('undo');
+                    break;
+                case 'y':
+                    e.preventDefault();
+                    this.formatDoc('redo');
+                    break;
+            }
+        }
+    }
+
+    handlePaste(e) {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+        document.execCommand('insertText', false, text);
+        this.saveState();
+        this.highlightCode();
+    }
+
+    saveState() {
+        const currentContent = this.editor.innerHTML;
+        if (this.history[this.historyIndex] !== currentContent) {
+            this.history = this.history.slice(0, this.historyIndex + 1);
+            this.history.push(currentContent);
+            this.historyIndex++;
+        }
+    }
+
+    // Markdown
+    showMarkdownModal() {
+        const htmlContent = this.editor.innerHTML;
+        const markdownContent = this.convertToMarkdown(htmlContent);
+        this.shadow.getElementById('markdownOutput').value = markdownContent;
+        this.markdownModal.style.display = 'flex';
+        setTimeout(() => this.markdownModal.classList.add('show'), 10);
+    }
+
+    downloadMarkdown() {
+        const htmlContent = this.editor.innerHTML;
+        const markdownContent = this.convertToMarkdown(htmlContent);
+        
+        const blob = new Blob([markdownContent], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'document.txt';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        this.showFeedback('Preuzeto!', 'bg-gray-500');
+    }
+
+    convertToMarkdown(html) {
+        let markdown = html.replace(/<br\s*\/?>/gi, '\n');
+        markdown = markdown.replace(/<\/div>/gi, '\n');
+        markdown = markdown.replace(/<p[^>]*>/gi, '\n');
+        markdown = markdown.replace(/<\/p>/gi, '\n');
+        markdown = markdown.replace(/<h1[^>]*>(.*?)<\/h1>/gi, '\n# $1\n');
+        markdown = markdown.replace(/<h2[^>]*>(.*?)<\/h2>/gi, '\n## $1\n');
+        markdown = markdown.replace(/<h3[^>]*>(.*?)<\/h3>/gi, '\n### $1\n');
+        markdown = markdown.replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**');
+        markdown = markdown.replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**');
+        markdown = markdown.replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*');
+        markdown = markdown.replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*');
+        markdown = markdown.replace(/<u[^>]*>(.*?)<\/u>/gi, '<u>$1</u>');
+
+        markdown = markdown.replace(/<ul>(.*?)<\/ul>/gis, (match, p1) => {
+            return p1.replace(/<li>(.*?)<\/li>/gis, '- $1\n');
+        });
+        markdown = markdown.replace(/<ol(.*?)<\/ol>/gis, (match, p1) => {
+            let count = 1;
+            return p1.replace(/<li>(.*?)<\/li>/gis, (liMatch, liContent) => `${count++}. ${liContent}\n`);
+        });
+
+        markdown = markdown.replace(/<table[^>]*>(.*?)<\/table>/gis, (match) => {
+            let table = '';
+            const rows = match.match(/<tr[^>]*>(.*?)<\/tr>/gis);
+            if (!rows) return '';
+
+            let header = [];
+            const headerCells = rows[0].match(/<th[^>]*>(.*?)<\/th>/gis);
+            if (headerCells) {
+                header = headerCells.map(cell => cell.replace(/<[^>]+>/g, '').trim());
+                table += '| ' + header.join(' | ') + ' |\n';
+                table += '|' + '--- |'.repeat(header.length).slice(0, -1) + '\n';
+                rows.shift();
+            }
+
+            rows.forEach(row => {
+                const cells = row.match(/<t[dh][^>]*>(.*?)<\/t[dh]>/gis);
+                if (cells) {
+                    const rowData = cells.map(cell => cell.replace(/<[^>]+>/g, '').trim());
+                    table += '| ' + rowData.join(' | ') + ' |\n';
+                }
+            });
+            return `\n${table}\n`;
+        });
+        
+        markdown = markdown.replace(/<code[^>]*>(.*?)<\/code>/gis, '`$1`');
+
+        markdown = markdown.replace(/<pre[^>]*><code[^>]*>(.*?)<\/code><\/pre>/gis, '```\n$1\n```');
+
+        markdown = markdown.replace(/<[^>]+>/g, '');
+        markdown = markdown.replace(/\n\s*\n/g, '\n\n');
+        return markdown.trim();
+    }
+    
+    // Modals
+    showTableModal() {
+        this.tableModal.style.display = 'flex';
+        setTimeout(() => this.tableModal.classList.add('show'), 10);
+    }
+
+    insertTable() {
+        const rows = this.shadow.getElementById('tableRows').value;
+        const cols = this.shadow.getElementById('tableCols').value;
+        if (!rows || !cols || rows < 1 || cols < 1) return;
+
+        let tableHtml = '<table><thead><tr>';
+        for (let i = 0; i < cols; i++) {
+            tableHtml += '<th>Header</th>';
+        }
+        tableHtml += '</tr></thead><tbody>';
+        for (let i = 0; i < rows; i++) {
+            tableHtml += '<tr>';
+            for (let j = 0; j < cols; j++) {
+                tableHtml += '<td></td>';
+            }
+            tableHtml += '</tr>';
+        }
+        tableHtml += '</tbody></table>';
+
+        this.editor.focus();
+        document.execCommand('insertHTML', false, tableHtml);
+        this.tableModal.classList.remove('show');
+        setTimeout(() => this.tableModal.style.display = 'none', 300);
+        this.saveState();
+    }
+
+    async copyToClipboard() {
+        const textarea = this.shadow.getElementById('markdownOutput');
+        const textToCopy = textarea.value;
+
+        try {
+            await navigator.clipboard.writeText(textToCopy);
+            this.showFeedback('Kopirano!', 'bg-green-500');
+        } catch (err) {
+            this.fallbackCopy(textarea);
+        }
+        this.markdownModal.classList.remove('show');
+        setTimeout(() => this.markdownModal.style.display = 'none', 300);
+    }
+
+    showFeedback(message, bgColor) {
+        this.copyFeedback.textContent = message;
+        this.copyFeedback.className = `fixed top-4 right-4 text-white p-3 rounded-md shadow-lg transition-opacity duration-300 ${bgColor}`;
+        
+        this.copyFeedback.classList.remove('hidden');
+        this.copyFeedback.classList.add('show');
+
+        setTimeout(() => {
+            this.copyFeedback.classList.remove('show');
+            this.copyFeedback.classList.add('hidden');
+        }, 2000);
+    }
+    
+    fallbackCopy(textarea) {
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            this.showFeedback('Kopirano! (preko fallback)', 'bg-yellow-500');
+        } catch (err) {
+            console.error('Neuspješno kopiranje: ', err);
+            this.showFeedback('Neuspješno kopiranje!', 'bg-red-500');
+        }
+    }
+
+    applyInitialTheme() {
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            this.classList.add('dark');
+            document.body.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            this.classList.remove('dark');
+            document.body.classList.remove('dark');
+        }
+    }
+
+    toggleTheme() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            this.classList.remove('dark');
+            document.body.classList.remove('dark');
+            localStorage.theme = 'light';
+        } else {
+            document.documentElement.classList.add('dark');
+            this.classList.add('dark');
+            document.body.classList.add('dark');
+            localStorage.theme = 'dark';
+        }
+    }
+
+    // --- Gemini AI funkcije ---
+
+    showGeminiModal(title) {
+        this.shadow.getElementById('gemini-modal-title').textContent = title;
+        this.shadow.getElementById('gemini-loading').style.display = 'block';
+        this.shadow.getElementById('gemini-result-container').style.display = 'none';
+        this.geminiModal.style.display = 'flex';
+        setTimeout(() => this.geminiModal.classList.add('show'), 10);
+    }
+
+    closeGeminiModal() {
+        this.geminiModal.classList.remove('show');
+        setTimeout(() => this.geminiModal.style.display = 'none', 300);
+    }
+
+    insertGeminiContent() {
+        const generatedText = this.shadow.getElementById('gemini-output').value;
+        this.closeGeminiModal();
+        this.editor.focus();
+        
+        const selection = this.shadow.getSelection();
+        if (!selection.rangeCount) return;
+
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        const textNode = document.createTextNode(generatedText);
+        range.insertNode(textNode);
+        
+        range.setStartAfter(textNode);
+        range.collapse(true);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        
+        this.saveState();
+        this.highlightCode();
+    }
+
+    async callGeminiAPI(task) {
+        if (this.isGenerating) return;
+
+        const selection = this.shadow.getSelection();
+        const selectedText = selection.toString().trim();
+        const editorContent = this.editor.innerText.trim();
+        
+        let prompt;
+        let title;
+
+        if (task === 'summarize') {
+            if (!selectedText) {
+                this.showFeedback('Odaberite tekst za sažimanje.', 'bg-red-500');
+                return;
+            }
+            prompt = `Sažmi sledeći tekst na srpskom jeziku:\n\n${selectedText}`;
+            title = 'Sažetak';
+        } else if (task === 'continue') {
+            if (!editorContent) {
+                this.showFeedback('Nema teksta za nastavak.', 'bg-red-500');
+                return;
+            }
+            prompt = `Nastavi sledeći tekst na srpskom jeziku, uzimajući u obzir kontekst:\n\n${editorContent}`;
+            title = 'Nastavak teksta';
+        }
+
+        this.showGeminiModal(title);
+        this.isGenerating = true;
+
+        let chatHistory = [];
+        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+        const payload = { contents: chatHistory };
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                const text = result.candidates[0].content.parts[0].text;
+                this.displayGeminiResult(text);
+            } else {
+                console.error("API response error:", result);
+                this.showFeedback('Greška u generisanju.', 'bg-red-500');
+                this.closeGeminiModal();
+            }
+        } catch (error) {
+            console.error("Fetch error:", error);
+            this.showFeedback('Greška u komunikaciji sa serverom.', 'bg-red-500');
+            this.closeGeminiModal();
+        } finally {
+            this.isGenerating = false;
+        }
+    }
+
+    displayGeminiResult(text) {
+        const loadingDiv = this.shadow.getElementById('gemini-loading');
+        const resultDiv = this.shadow.getElementById('gemini-result-container');
+        const textarea = this.shadow.getElementById('gemini-output');
+
+        loadingDiv.style.display = 'none';
+        textarea.value = text;
+        resultDiv.style.display = 'block';
+    }
+
+}
+
+customElements.define('rich-text-editor', RichTextEditor);
 </script>
-
 </body>
 </html>

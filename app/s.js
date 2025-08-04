@@ -2691,6 +2691,18 @@ hh_anim_start spj {
         document.body.appendChild(document.createElement('p-search'));
       });
 
+      router.on("contact", (params) => {
+        let cfb = document.querySelector("contact-form-box");
+
+        if (!cfb) {
+          cfb = document.createElement("contact-form-box");
+          document.body.appendChild(cfb); 
+        }
+        
+        cfb.style.opacity = '0';
+        setTimeout(() => cfb.open(), 500); 
+      });
+
       router.on("editor", (params) => {
         const id = params.get("id"),
         p = params.get("p"),
@@ -2758,14 +2770,8 @@ hh_anim_start spj {
         document.querySelectorAll("page-c").forEach((e) => e.remove());
         test_page("", "projects");
       });
-      router.on("contact", (params) => {
-        const id = params.get("id"),
-          p = params.get("p"),
-          c = params.get("c");
-        document.querySelectorAll("page-c").forEach((e) => e.remove());
-        if (p) {
-        }
-      });
+      
+      
       router.on("/", function () {
         const id = params.get("id"),
           p = params.get("p"),
@@ -12533,7 +12539,481 @@ class CustomScrollV2 extends HTMLElement {
   if (!customElements.get("solar-system")) {
     customElements.define("solar-system", SolarSystem);
   }
+  if (!customElements.get('custom-select')) {
+    customElements.define('custom-select', class extends HTMLElement {
+        constructor() {
+            super();
+            this.attachShadow({ mode: 'open' });
+
+            this._value = '';
+            this._label = '';
  
+            const style = document.createElement('style');
+            style.textContent = ` 
+                 :host {
+                    display: inline-block;
+                    position: relative;
+                    font-family: inherit;
+                    width: 250px;
+
+                    display: inline;
+    position: relative;
+    z-index: 33333;
+                }
+
+                :host, :host * {
+                  outline:none;
+                }
+
+                .select-container {
+                    position: relative;
+                    -webkit-user-select: none;
+                       -moz-user-select: none;
+                        -ms-user-select: none;
+                            user-select: none;
+                }
+              
+                .selected-display {
+                    background: trasparent;
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    cursor: pointer;
+                    display: -webkit-box;
+                    display: -ms-flexbox;
+                    display: flex;
+                    -webkit-box-pack: justify;
+                        -ms-flex-pack: justify;
+                            justify-content: space-between;
+                    -webkit-box-align: center;
+                        -ms-flex-align: center;
+                            align-items: center;
+                    -webkit-transition: background-color 0.2s;
+                    -o-transition: background-color 0.2s;
+                    transition: background-color 0.2s;
+                    border-radius: 4px;
+                    border-color: #ccc;
+                }
+
+                .selected-display:focus { 
+                    border-color: white;
+                }
+
+                .selected-display:hover {
+                    background-color: #ffffff26;
+                }
+                
+                .arrow-icon {
+                    margin-left: 10px;
+                    border: solid #666;
+                    border-width: 0 2px 2px 0;
+                    display: inline-block;
+                    padding: 3px;
+                    -webkit-transform: rotate(45deg);
+                        -ms-transform: rotate(45deg);
+                            transform: rotate(45deg);
+                    -webkit-transition: -webkit-transform 0.2s ease-in-out;
+                    transition: -webkit-transform 0.2s ease-in-out;
+                    -o-transition: transform 0.2s ease-in-out;
+                    transition: transform 0.2s ease-in-out;
+                    transition: transform 0.2s ease-in-out, -webkit-transform 0.2s ease-in-out;
+                }
+
+                .arrow-icon.open {
+                    -webkit-transform: rotate(-135deg);
+                        -ms-transform: rotate(-135deg);
+                            transform: rotate(-135deg);
+                }
+
+                .options-list {
+                      position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: transparent;
+    background-image: -o-linear-gradient(45deg, #000000c4, #000000c4);
+    background-image: -o-linear-gradient(45deg, #000000c4, #000000c4);
+    background-image: linear-gradient(45deg, #000000c4, #000000c4);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(5px);
+    border: 1px solid #ccc;
+    display: none;
+    max-height: 200px;
+    height: 200px;
+    overflow: hidden;
+    z-index: 10;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                .options-list.open {
+                    display: block;
+                }
+
+                .option-item {
+                    padding: 10px;
+                    cursor: pointer;
+                    -webkit-transition: background-color 0.2s;
+                    -o-transition: background-color 0.2s;
+                    transition: background-color 0.2s;
+                    border-bottom: 1px solid #eee;
+                    display: -webkit-inline-box;
+                    display: -ms-inline-flexbox;
+                    display: inline-flex
+;
+    width: 100%;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -ms-flex-line-pack: center;
+        align-content: center;
+
+                }
+
+                .option-item:last-child {
+                    border-bottom: none;
+                }
+
+                .option-item:hover, .option-item[aria-selected="true"] {
+                    background: #ffffff26;
+                }
+
+                .option-item:focus {
+                    outline: none;
+                    background: #ffffff26;
+                }
+
+            .option-item[disabled] {
+              display: none;
+            }
+                
+        /* Globalni stilovi za listu opcija (sada je izvan Shadow DOM-a) */
+        .custom-select-options-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 9999; /* Visok z-index da bude uvek iznad */
+            border-radius: 4px;
+            -webkit-box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 250px;
+            display: none;
+        }
+        
+        .custom-select-options-list.open {
+            display: block;
+        }
+
+        .custom-select-option-item {
+            padding: 10px;
+            cursor: pointer;
+            -webkit-transition: background-color 0.2s;
+            -o-transition: background-color 0.2s;
+            transition: background-color 0.2s;
+            border-bottom: 1px solid #eee;
+        }
+
+        .custom-select-option-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-select-option-item:hover, .custom-select-option-item[aria-selected="true"] {
+            background: #e9ecef;
+        }
+        
+        .custom-select-option-item:focus {
+            outline: none;
+        }
+
+        .option-item icon-i {
+    display: block;
+    width: 25px;
+    margin-bottom: -5px;
+}
+            `;
+            this.shadowRoot.appendChild(style);
+ 
+            const selectContainer = document.createElement('div');
+            selectContainer.className = 'select-container';
+            selectContainer.setAttribute('role', 'combobox');
+            selectContainer.setAttribute('aria-haspopup', 'listbox');
+            selectContainer.setAttribute('aria-expanded', 'false');
+            selectContainer.setAttribute('tabindex', '0');
+
+            const selectedDisplay = document.createElement('div');
+            selectedDisplay.className = 'selected-display';
+            selectedDisplay.id = 'selected-value';
+            selectedDisplay.setAttribute('role', 'button');
+            selectedDisplay.setAttribute('aria-labelledby', 'selected-value');
+            selectedDisplay.setAttribute('tabindex', '-1');
+
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'label';
+            labelSpan.textContent = 'Odaberite...';
+
+            const arrowIcon = document.createElement('i');
+            arrowIcon.className = 'arrow-icon';
+
+            selectedDisplay.appendChild(labelSpan);
+            selectedDisplay.appendChild(arrowIcon);
+            
+            const optionsList = document.createElement('custom-scroll');
+            optionsList.className = 'options-list';
+            optionsList.setAttribute('role', 'listbox');
+
+            selectContainer.appendChild(selectedDisplay);
+            selectContainer.appendChild(optionsList);
+
+            this.shadowRoot.appendChild(selectContainer);
+
+            // Čuvanje referenci na elemente
+            this._selectedDisplay = selectedDisplay;
+            this._optionsList = optionsList;
+            this._selectContainer = selectContainer;
+            this._labelSpan = labelSpan;
+            this._arrowIcon = arrowIcon;
+        }
+
+        static get observedAttributes() {
+            return ['value'];
+        }
+
+        attributeChangedCallback(name, oldValue, newValue) {
+            if (name === 'value' && oldValue !== newValue) {
+                this.value = newValue;
+            }
+        }
+
+        connectedCallback() {
+            this._updateOptionsFromChildren();
+            this._addEventListeners(); 
+            this._observer.observe(this, { childList: true, subtree: true });
+        }
+
+        disconnectedCallback() {
+            this._observer.disconnect();
+        }
+
+        _addEventListeners() {
+            this._selectedDisplay.addEventListener('click', this._toggleDropdown.bind(this));
+            this._selectContainer.addEventListener('keydown', this._handleKeydown.bind(this));
+            this._optionsList.addEventListener('click', this._selectOption.bind(this));
+            const ttt =  this._selectContainer;
+            document.addEventListener('click', (e) => {
+                if (!ttt.contains(e.target)) {
+                 }
+            });
+            
+        }
+
+        _toggleDropdown() {
+            const isOpen = this._optionsList.classList.contains('open');
+            console.log(isOpen);
+            if (isOpen) {
+              this._closeDropdown();
+            } else {
+                this._openDropdown();
+            }
+        }
+
+        _openDropdown() {
+            const _optionsList = this.shadowRoot.querySelector('.options-list');
+            _optionsList.classList.add('open');
+            console.log(this._optionsList);
+            this._arrowIcon.classList.add('open');
+            this._selectContainer.setAttribute('aria-expanded', 'true');
+            const selectedItem = this.shadowRoot.querySelector('[aria-selected="true"]');
+            if (selectedItem) {
+                selectedItem.focus();
+            }
+        }
+
+        _closeDropdown() {
+            this._optionsList.classList.remove('open');
+            this._arrowIcon.classList.remove('open');
+            this._selectContainer.setAttribute('aria-expanded', 'false');
+            this._selectedDisplay.focus();
+        }
+
+        _selectOption(e) {
+            const target = e.target.closest('.option-item');
+            if (target) {
+                this._setValue(target.dataset.value, target.textContent);
+                this._closeDropdown();
+                this.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+
+        _setValue(val, label) {
+            const oldVal = this._value;
+            if (oldVal !== val) {
+                const oldSelected = this.shadowRoot.querySelector(`[aria-selected="true"]`);
+                if (oldSelected) {
+                    oldSelected.setAttribute('aria-selected', 'false');
+                    oldSelected.setAttribute('tabindex', '-1');
+                }
+
+                const newSelected = this.shadowRoot.querySelector(`.option-item[data-value="${val}"]`);
+                if (newSelected) {
+                    newSelected.setAttribute('aria-selected', 'true');
+                    newSelected.setAttribute('tabindex', '0');
+                }
+
+                this._value = val;
+                this._label = label;
+                this._labelSpan.textContent = label;
+                this.setAttribute('value', val);
+            }
+        }
+
+        _handleKeydown(e) {
+            const isOpen = this._optionsList.classList.contains('open');
+            const focusedItem = this.shadowRoot.activeElement;
+            
+            switch (e.key) {
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    if (focusedItem && focusedItem.classList.contains('option-item')) {
+                        this._selectOption({ target: focusedItem });
+                    } else {
+                        this._toggleDropdown();
+                    }
+                    break;
+                case 'Escape':
+                    if (isOpen) {
+                        e.preventDefault();
+                        this._closeDropdown();
+                    }
+                    break;
+                case 'ArrowDown':
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (!isOpen) {
+                        this._openDropdown();
+                    } else {
+                        this._navigateOptions(e.key);
+                    }
+                    break;
+            }
+        }
+
+        _navigateOptions(direction) {
+            const items = Array.from(this.shadowRoot.querySelectorAll('.option-item'));
+            if (items.length === 0) return;
+
+            const currentFocusedIndex = items.findIndex(item => item === this.shadowRoot.activeElement);
+            let nextIndex;
+
+            if (direction === 'ArrowDown') {
+                nextIndex = (currentFocusedIndex + 1) % items.length;
+            } else if (direction === 'ArrowUp') {
+                nextIndex = (currentFocusedIndex - 1 + items.length) % items.length;
+            }
+            
+            if (nextIndex !== undefined) {
+                items[nextIndex].focus();
+            }
+        }
+
+        _updateOptionsFromChildren() {
+            const options = Array.from(this.querySelectorAll('option'));
+            
+            while (this._optionsList.firstChild) {
+                this._optionsList.removeChild(this._optionsList.firstChild);
+            }
+            
+            if (options.length > 0) {
+              
+                options.forEach(opt => {
+                    const div = document.createElement('div'),
+                    icon_i = document.createElement("icon-i");
+                    div.classList.add('option-item');
+                    if(opt.hasAttribute("data-i")){
+                      icon_i.setAttribute("class",opt.getAttribute("data-i"));
+                      div.appendChild(icon_i);
+                      }
+                    div.appendChild(document.createTextNode(opt.textContent));
+                    div.dataset.value = opt.value;
+                    
+                    if(opt.hasAttribute("disabled")){
+                      div.setAttribute("disabled", 1);
+                    }
+                
+                  
+
+                     div.setAttribute('role', 'option');
+                    div.setAttribute('tabindex', '-1');
+                    this._optionsList.appendChild(div);
+
+                    if (opt.hasAttribute('selected')) {
+                        this._setValue(opt.value, opt.textContent);
+                    }
+                });
+
+                if (!this._value && options.length > 0) {
+                    const first = options[0];
+                    this._setValue(first.value, first.textContent);
+                }
+            } else {
+                this._setValue('', 'Odaberite...');
+            }
+        }
+        
+        setOptionsFromJSON(data, selectedValue = null) {
+            while (this.firstChild) {
+                this.removeChild(this.firstChild);
+            }
+
+            if (!Array.isArray(data) || data.length === 0) {
+                this._updateOptionsFromChildren();
+                return;
+            }
+
+            data.forEach(item => {
+                const opt = document.createElement('option'),
+                ICON = document.createElement("icon-i");
+                opt.value = item.value;
+                if(item?.icon){
+                opt.setAttribute("data-i", item.icon);
+                }
+                if(item?.disabled){
+                opt.setAttribute("disabled",true);
+            }
+              ICON.setAttribute("class","bug");
+                opt.appendChild(ICON);
+                opt.textContent = item.label;
+                this.appendChild(opt);
+            });
+            
+            this._updateOptionsFromChildren();
+            
+            if (selectedValue) {
+                this.value = selectedValue;
+            } else if (data.length > 0) {
+                const firstOption = data[0];
+                this._setValue(firstOption.value, firstOption.label);
+            }
+        }
+
+        get value() {
+            return this._value;
+        }
+
+        set value(val) {
+            const option = this.querySelector(`option[value="${val}"]`);
+            if (option) {
+                this._setValue(val, option.textContent);
+            }
+        }
+
+        _observer = new MutationObserver(() => {
+            this._updateOptionsFromChildren();
+        });
+    });
+}
 if( ! customElements.get("contact-form-box")){
   customElements.define("contact-form-box", class   extends HTMLElement {
     constructor() {
@@ -12553,11 +13033,12 @@ el.addEventListener('change', () => {
       this.wrapper.querySelectorAll("input, textarea").forEach(function(e){e.value = ""});
       this.sendBtn.removeAttribute("class");
       this.sendBtn.textContent = "Send message";
+      this.wrapper.querySelector("custom-select").value = "NULL";
     }
     is_ready_or_not(){
 
     }
-    send(fld_name, fld_email, fld_msg, faef = false){
+    send(fld_name, fld_email, fld_msg,fld_typef, faef = false){
       const contanct_frm =  this.wrapper,
       fld_form =  this.wrapper.querySelector("custom-scroll"),
       aerjaer = this,    
@@ -12565,10 +13046,13 @@ el.addEventListener('change', () => {
       xhr = new XMLHttpRequest(),
       footer =  this.wrapper.querySelector("fotter"),
       inputs = this.wrapper.querySelectorAll("input"),
-      data = new FormData();
+      data = new FormData(); 
+      const fld_type = this.wrapper.querySelector("custom-select").value;
+   
     data.append("fn", window.btoa(fld_name));
     data.append("fe", window.btoa(fld_email));
     data.append("fm", window.btoa(fld_msg));
+    data.append("ft", window.btoa(fld_type));
     xhr.open("POST", "/contact", true);
     //xhr.setRequestHeader("Authorization", `Bearer ${window.stmp}`);
      xhr.onload = function () {
@@ -12697,6 +13181,11 @@ backdrop-filter: blur(2px);
         justify-content: center !important;
     }
 
+    .option-item[disabled] {
+        pointer-events: none;
+    background: #000000c7;
+    }
+
     .h5_div {
         align-items: center;
     align-content: center;
@@ -12708,6 +13197,7 @@ backdrop-filter: blur(2px);
     border-color: red;
     color: red;
     background: #ff00002e;
+    pointer-events:none;
 }
 
 .contanct_frm {
@@ -12724,6 +13214,31 @@ backdrop-filter: blur(2px);
 .contanct_frm input:not(:hover,:focus) {
     border-color: #ffffff42;
 }
+
+msg_loader {
+    background: #ff00002e;
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    display: block;
+    left: 0px;
+    top: 0px;
+    }
+    
+@keyframes shake {
+  0%   { border-color:#ffffff42;    }
+  25%  { border-color:red; }
+  50%  { border-color: #ff00002e;  }
+  75%  { border-color:red; }
+  100% { border-color:#ffffff42;    }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+
+
       `;
    
       this.wrapper.className = "contanct_frm";
@@ -12765,6 +13280,8 @@ closeIcon.addEventListener("click",()=> this.close());
       const msg = document.createElement("p");
       msg.className = "msg";
       form.appendChild(msg);
+
+     
   
       const createInputBlock = (labelText, id, type, placeholder) => {
         const label = document.createElement("label");
@@ -12790,11 +13307,45 @@ closeIcon.addEventListener("click",()=> this.close());
       messageLabel.setAttribute("for", "subject");
       messageLabel.className = "message_lenght";
       messageLabel.textContent = "Message";
+
+      const selectElement = document.createElement("custom-select");
+
+      const cityData = [
+        { value: 'NULL', disabled: true, label: 'Please select type of your message', icon: '' },
+        { value: 'project', icon: 'kanban', disabled: false, label: 'Project' },
+        { value: 'suggestion', icon: 'lightbulb', disabled: false, label: 'Suggestion' },
+        { value: 'bug', icon: 'bug', disabled: false, label: 'Report Bug on Website' },
+        { value: 'support', icon: 'tools', disabled: false, label: 'Technical Support' },
+        { value: 'login', icon: 'person-lock', disabled: false, label: 'Account / Login Issue' },
+        { value: 'feedback', icon: 'chat-left-dots', disabled: false, label: 'General Feedback' },
+        { value: 'business', icon: 'briefcase', disabled: false, label: 'Business / Partnership' },
+        { value: 'security', icon: 'shield-lock', disabled: false, label: 'Security Vulnerability' },
+        { value: 'api', icon: 'braces', disabled: false, label: 'API Access Request' },
+        { value: 'demo', icon: 'easel', disabled: false, label: 'Request a Demo' },
+        { value: 'billing', icon: 'receipt', disabled: false, label: 'Billing / Invoice Question' },
+        { value: 'career', icon: 'person-workspace', disabled: false, label: 'Career / Hiring Inquiry' }
+      ];
+    const defaultOption = document.createElement('option');
+    defaultOption.value = 'def'; 
+    defaultOption.textContent = 'Please select type of your message';
+    selectElement.appendChild(defaultOption);
+ /*
+    data.forEach(item => {
+        const optionElement = document.createElement('option');
+        optionElement.value = item.value;
+        optionElement.textContent = item.label;
+        selectElement.appendChild(optionElement);
+      
+
+      });*/
+      selectElement.setOptionsFromJSON(cityData, 'def');
+      form.appendChild(selectElement);
+ 
   
       const messageTextarea = document.createElement("textarea");
       messageTextarea.id = "subject";
       messageTextarea.name = "subject";
-      messageTextarea.placeholder = "Your message...";
+      messageTextarea.placeholder = "Your message... \n # Example - Header \n ``` Example ``` - Code";
       messageTextarea.style.height = "200px";
       form.appendChild(messageLabel);
       form.appendChild(messageTextarea);
@@ -12823,8 +13374,8 @@ closeIcon.addEventListener("click",()=> this.close());
       this.wrapper.appendChild(footer);
       this.shadowRoot.append(style, this.wrapper);
   
-      const num1 = Math.floor(Math.random() * 10);
-      const num2 = Math.floor(Math.random() * 10);
+      var num1 = Math.floor(Math.random() * 10),
+      num2 = Math.floor(Math.random() * 10);
       captchaInput.placeholder = `${num1} + ${num2} = ?`;
       captchaInput.addEventListener("keyup", ()=>{
         const result = num1 + num2;  
@@ -12840,158 +13391,83 @@ closeIcon.addEventListener("click",()=> this.close());
           footer.removeAttribute("style");
         }
       });
+
+      let timeoutc = null;
       const th = this,
-      sendBtn = this.sendBtn;
+      sendBtn = this.sendBtn,
+      sendBtn_reset = () =>  {
+
+        const interval = setInterval(() => {
+          progress += 1;
+          loader.style.width = progress + '%';
+        
+          if (progress >= 100) {
+            clearInterval(interval); 
+          }
+        }, 20); 
+      },
+      sendBtn_error = (sendBtn, message) => {
+        sendBtn.textContent = "";
+        const msg_loader = document.createElement("msg_loader");
+        sendBtn.appendChild(msg_loader);
+        sendBtn.appendChild(document.createTextNode(message));
+        sendBtn.classList.add("error");
+        
+        num1 = Math.floor(Math.random() * 10),
+        num2 = Math.floor(Math.random() * 10);
+        captchaInput.placeholder = `${num1} + ${num2} = ?`;
+        captchaInput.value = ""; 
+        captchaInput.setAttribute("style","opacity: 0.4; pointer-events: none;");
+        var progress = 0;
+        const interval = setInterval(() => {
+          progress += 1;
+          msg_loader.style.width = progress + '%';
+        
+          if (progress >= 100) {
+            clearInterval(interval);
+            if(progress > 99){ 
+            sendBtn.classList.remove("error");
+            sendBtn.textContent = "Send Message";
+            captchaInput.removeAttribute("style");
+          }
+          }
+        }, 100); 
+      };
       sendBtn.addEventListener("click", async () => {
         const name = nameInput.value.trim();
         const email = emailInput.value.trim();
+        const typem = selectElement.value.trim();
         const message = messageTextarea.value.trim();
         const captcha = parseInt(captchaInput.value);
-  
-        if (!name || !email || !message || isNaN(captcha)) {
-          sendBtn.textContent = "Please fill all fields correctly.\n And try again.";
-          sendBtn.classList.add("error");
+        if(typem == "NULL" || typem == "null"){
+          sendBtn_error(sendBtn, "Please select a message type.\n And try again.");
+          return;
+        }
+    
+        if (!name || !email || !message || isNaN(captcha)) { 
+          sendBtn_error(sendBtn, "Please fill all fields correctly.\n And try again.");
           return;
         }
   
-        if (captcha !== num1 + num2) {
-          sendBtn.classList.add("error");
-          sendBtn.textContent = "Wrong math answer!";
+        if (captcha !== num1 + num2) { 
+          sendBtn_error(sendBtn, "Wrong math answer!");
           return;
         }
   
-        const payload = { name, email, message };
+        const payload = { name, email, message, typem };
   
-        th.send(name,email,message,captcha);
+        th.send(name,email,message,captcha, typem);
       });
     }
   });
  
 
 }
+ 
 
-if(!customElements.get('custom-select')){
-customElements.define('custom-select', class extends HTMLElement {
-  constructor() {
-    super();
-    this.attachShadow({ mode: 'open' });
 
-    this._value = '';
-    this._label = '';
 
-    const style = `
-      <style>
-        .select {
-          position: relative;
-          user-select: none;
-          font-family: sans-serif;
-        }
 
-        .selected {
-          background: #f0f0f0;
-          padding: 10px;
-          border: 1px solid #ccc;
-          cursor: pointer;
-        }
-
-        .options {
-          position: absolute;
-          top: 100%;
-          left: 0;
-          right: 0;
-          background: white;
-          border: 1px solid #ccc;
-          display: none;
-          max-height: 150px;
-          overflow-y: auto;
-          z-index: 10;
-        }
-
-        .options.open {
-          display: block;
-        }
-
-        .options div {
-          padding: 10px;
-          cursor: pointer;
-        }
-
-        .options div:hover {
-          background: #eee;
-        }
-      </style>
-    `;
-
-    this.shadowRoot.innerHTML = `${style}
-      <div class="select">
-        <div class="selected">Select...</div>
-        <div class="options"></div>
-      </div>
-    `;
-  }
-
-  connectedCallback() {
-    this._selected = this.shadowRoot.querySelector('.selected');
-    this._options = this.shadowRoot.querySelector('.options');
-    this._selectBox = this.shadowRoot.querySelector('.select');
-
-    this._selected.addEventListener('click', () => {
-      this._options.classList.toggle('open');
-    });
-
-    // Close when clicked outside
-    document.addEventListener('click', (e) => {
-      if (!this.contains(e.target) && !this.shadowRoot.contains(e.target)) {
-        this._options.classList.remove('open');
-      }
-    });
-
-    // Init from <option> children
-    const options = Array.from(this.querySelectorAll('option'));
-    this._options.innerHTML = ''; // clear
-
-    options.forEach(opt => {
-      const div = document.createElement('div');
-      div.textContent = opt.textContent;
-      div.dataset.value = opt.value;
-      this._options.appendChild(div);
-
-      if (opt.hasAttribute('selected')) {
-        this._setValue(opt.value, opt.textContent);
-      }
-
-      div.addEventListener('click', () => {
-        this._setValue(opt.value, opt.textContent);
-        this._options.classList.remove('open');
-        this.dispatchEvent(new Event('change'));
-      });
-    });
-
-    // Ako ništa nije selected, koristi prvi
-    if (!this._value && options.length > 0) {
-      const first = options[0];
-      this._setValue(first.value, first.textContent);
-    }
-  }
-
-  _setValue(val, label) {
-    this._value = val;
-    this._label = label;
-    this._selected.textContent = label;
-  }
-
-  get value() {
-    return this._value;
-  }
-
-  set value(val) {
-    const option = this.querySelector(`option[value="${val}"]`);
-    if (option) {
-      this._setValue(val, option.textContent);
-    }
-  }
-});
-} 
 
   if (!customElements.get("pdf-viewer")) {
     customElements.define(
@@ -13845,6 +14321,8 @@ if (!customElements.get('monaco-editor-app')) {
       separator.id = "separator";
       const iframe = document.createElement("iframe");
       iframe.id = "preview"; 
+      iframe.sandbox = "allow-scripts allow-forms";
+
       const size_r = document.createElement("size_r");
       size_r.setAttribute("style", "display:none;");
       container.appendChild(size_r);

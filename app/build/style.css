@@ -2632,6 +2632,11 @@ div_not div_panel {
     padding: 10px;
 }
 
+.contanct_frm form:not(.actives),
+.contanct_frm custom-scroll:not(.actives){
+bottom: 0px !important;
+}
+
 .contanct_frm i.closec {
     position: absolute;
     right: 10px;

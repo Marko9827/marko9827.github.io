@@ -1924,9 +1924,10 @@ background:#caa85b">
             $fn = isset($_POST["fn"]) ? base64_decode($_POST["fn"]) : null;
             $fe = isset($_POST["fe"]) ? base64_decode($_POST["fe"]) : null;
             $fm = isset($_POST["fm"]) ? base64_decode($_POST["fm"]) : null;
+            $ft = isset($_POST["ft"]) ? base64_decode($_POST["ft"]) : null;
 
             echo json_encode($fn, $fe, $fm);
-            if ($fn && $fe && $fm) {
+            if ($fn && $fe && $fm && $ft) {
                 if (!is_dir(ROOTcontacts . "/data_s/data_f/")) {
                     mkdir(ROOTcontacts . "/data_s/data_f/", 0777, true);
                 }
@@ -1938,10 +1939,11 @@ background:#caa85b">
                     (object) [
                         'name' => $fn,
                         'message' => $fm,
+                        'type' => $ft,
                         'email' => $fe
                     ]
                 ];
-
+                
                 $far = base64_encode(json_encode($r));
                 $success = file_put_contents(ROOTcontacts . "/data_s/data_f/$filename", $far);
 

@@ -1021,6 +1021,7 @@ JS;
 
 
         # $js_static .=  
+        $js_static .=  self::minifyJS_code(file_get_contents(ROOT . "editor.js"));
         $js_static .=  self::minifyJS_code(file_get_contents(ROOT . "s.js"));
         $dir = dirname($f);
         if (!is_dir($dir)) {
@@ -1048,6 +1049,7 @@ JS;
 
     private function ALLOW($file_or_string = false)
     {
+    
         $allowedReferers = [
             'https://portfolio.localhost',
             'https://markonikolic98.com',
@@ -3186,7 +3188,7 @@ background:#caa85b">
         ]);
 
         $js_static .= "window.stmp = '$_SESSION[Bearer_token_temp]';";
-        $js_static .= file_get_contents(ROOT . "welcomer_f.js");
+        $js_static .= file_get_contents(ROOT . "welcomer_f.js"); 
 
         // ob_start();
         // $_SESSION['Bearer_token_temp'] = bin2/hex(random_bytes(30 / 2));

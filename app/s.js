@@ -13342,11 +13342,12 @@ closeIcon.addEventListener("click",()=> this.close());
       form.appendChild(selectElement);
  
   
-      const messageTextarea = document.createElement("textarea");
+      const messageTextarea = document.createElement("rich-text-editor");
+      /*"textarea");*/
       messageTextarea.id = "subject";
       messageTextarea.name = "subject";
       messageTextarea.placeholder = "Your message... \n # Example - Header \n ``` Example ``` - Code";
-      messageTextarea.style.height = "200px";
+      messageTextarea.style.height = "374px";
       form.appendChild(messageLabel);
       form.appendChild(messageTextarea);
   

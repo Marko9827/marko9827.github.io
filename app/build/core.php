@@ -15,7 +15,7 @@ define("SERVER_AJAXS", (string) $protocol . source_URL);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
 header("Access-Control-Allow-Headers: X-Requested-With, Content-Type");
- 
+
 
 
 /**
@@ -75,13 +75,13 @@ class portfolio_marko
 
     }
     public function page(string $page = "home")
-    {   
+    {
         header("Content-Type: text/html; charset=UTF-8");
         self::run($page);
     }
     private function run(string $page = "home")
     {
-        if(!empty($_GET['api'])){
+        if (!empty($_GET['api'])) {
             $page = $_GET['api'];
         }
         switch ($page) {
@@ -92,7 +92,7 @@ class portfolio_marko
                         'Content-Type: application/json',
                         'Authorization: Bearer 32M052k350QaeofkaeopfF',
                     ]
-                    ]);
+                ]);
                 header('Content-Type: application/javascript');
                 echo "window.portfolio = $r";
                 break;
@@ -262,8 +262,8 @@ class portfolio_marko
     ) {
         $ch = curl_init($r['url']);
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
-        curl_setopt($ch, CURLOPT_TIMEOUT, 6);  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 6);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -271,7 +271,7 @@ class portfolio_marko
         curl_setopt($ch, CURLOPT_HTTPHEADER, $r['headers']);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $r['data']);
         $response = curl_exec($ch);
-        if (curl_errno($ch)) { 
+        if (curl_errno($ch)) {
             echo curl_error($ch);
         } else {
             return $response;
@@ -280,6 +280,7 @@ class portfolio_marko
         curl_close($ch);
 
     }
+
     public function MetaTags()
     {
         $title = "Marko Nikolić";
@@ -287,9 +288,9 @@ class portfolio_marko
         $keywords = "Marko Nikolić, IT, developer, blog, portfolio";
         $ogImage = SITE_HOST . "/?mnps=image_og&v=" . time();
         $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
- 
+
         $r = json_decode($this->get_data([
-            "url" => "https://api.markonikolic98.com/app&id=A03429468246&json=all",
+            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
             "headers" => [
                 'Content-Type: application/json',
                 'Authorization: Bearer 32M052k350QaeofkaeopfF',
@@ -307,6 +308,33 @@ class portfolio_marko
                     $title = "Marko Nikolić > CV";
                     break;
 
+                case 'gallery':
+                    $title = "Gallery | Marko Nikoić";
+                    if (!empty($_GET['album'])) {
+                        $title = "Gallery > $_GET[album] | Marko Nikoić";
+                        if (!empty($_GET['id'])) {
+                            $gallery_tijemp = [];
+                            foreach ($r['data']['gallery']['gallery'] as $gallery_name) {
+                                if ($gallery_name['name'] == $_GET['album']) {
+
+                                    foreach ($gallery_name['gallery'] as $ider) {
+                                        if ($ider['ID'] == $_GET['id']) {
+
+                                            $title = "Gallery: $ider[title] - $_GET[album] | Marko Nikolić";
+                                            $description = "$ider[title] from $_GET[album] from my Gallery | Marko Nikolić IT, Scientist theories/news, Writing books... Is my personal website.";
+                                            $keywords = "Marko Nikolić, IT, developer, blog, portfolio, gallery, $_GET[albumb], $ider[title]";
+                                            $ogImage = "$ider[thumb]&for=og";
+                                        } else {
+                                            continue;
+                                        }
+                                    }
+                                } else {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    break; 
                 case 'visitcard':
                     $title = "Marko Nikolić > Visitcard";
                     break;
@@ -377,8 +405,8 @@ class portfolio_marko
         <meta property="og:url" content="<?= htmlspecialchars($canonicalUrl); ?>" />
         <meta property="og:title" content="<?= htmlspecialchars($title); ?>" />
         <meta property="og:description" content="<?= htmlspecialchars($description); ?>" />
-        <meta property="og:image" content="<?= htmlspecialchars($ogImage); ?>" />
-        <meta property="og:image:secure_url" content="<?= htmlspecialchars($ogImage); ?>" />
+        <meta property="og:image" content="<?= $ogImage; ?>" />
+        <meta property="og:image:secure_url" content="<?= $ogImage; ?>" />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1024" />
         <meta property="og:image:height" content="630" />
@@ -387,28 +415,28 @@ class portfolio_marko
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@markoni62595164" />
-        <meta name="twitter:creator" content="@markoni62595164" />
+        <meta name="twitter:site" content="@MarkoMakiN74384" />
+        <meta name="twitter:creator" content="@MarkoMakiN74384" />
         <meta name="twitter:title" content="<?= htmlspecialchars($title); ?>" />
         <meta name="twitter:description" content="<?= htmlspecialchars($description); ?>" />
-        <meta name="twitter:image" content="<?= htmlspecialchars($ogImage); ?>" />
+        <meta name="twitter:image" content="<?= $ogImage; ?>" />
 
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                                                                {
-                                                                                                                                                                                                                    "@context": "https://schema.org",
-                                                                                                                                                                                                                    "@type": "WebSite",
-                                                                                                                                                                                                                    "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                                                                    "name": "Marko Nikolić",
-                                                                                                                                                                                                                    "author": {
-                                                                                                                                                                                                                        "@type": "Person",
-                                                                                                                                                                                                                        "name": "Marko Nikolić"
-                                                                                                                                                                                                                    },
-                                                                                                                                                                                                                    "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                                                                    "inLanguage": "en-GB"
-                                                                                                                                                                                                                }
-                                                                                                                                                                                                            </script>
+                                                                                                                                                                                                                                                                    {
+                                                                                                                                                                                                                                                                        "@context": "https://schema.org",
+                                                                                                                                                                                                                                                                        "@type": "WebSite",
+                                                                                                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
+                                                                                                                                                                                                                                                                        "name": "Marko Nikolić",
+                                                                                                                                                                                                                                                                        "author": {
+                                                                                                                                                                                                                                                                            "@type": "Person",
+                                                                                                                                                                                                                                                                            "name": "Marko Nikolić"
+                                                                                                                                                                                                                                                                        },
+                                                                                                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
+                                                                                                                                                                                                                                                                        "inLanguage": "en-GB"
+                                                                                                                                                                                                                                                                    }
+                                                                                                                                                                                                                                                                </script>
         <?php
     }
 

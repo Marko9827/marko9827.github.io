@@ -1,4 +1,6 @@
- 
+<?php 
+$v = "1.0.1";
+?> 
 <!DOCTYPE html>
 <html id="themes_html" lang="en" data-location="<?= "GM213-3LOC4SE24"; ?>" class="no-js" prefix="og: https://ogp.me/ns#"
     data-rand="<?php echo $rand; ?>">
@@ -36,16 +38,10 @@
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
-    <script async src="./assets/static/js/jscode.js" nonce="<?php echo $nonce; ?>"
+    <script async src="./assets/static/js/jscode.js?v=<?php echo $v; ?>" nonce="<?php echo $nonce; ?>"
         type="text/javascript" charset="UTF-8"></script>
     <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
-
-    <?php if (!empty($_GET['p']) && $_GET['p'] == "editor") { ?>
-        <script defer src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js" nonce="<?php echo $nonce; ?>"></script>
-        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.7/require.min.js"
-            integrity="sha512-J5ha2LF4Le+PBQnI5+xAVJDR+sZG9uSgroy4n/A6TLjNkvYQbqZA8WHZdaOvJ0HiKkBC9Frmvs10rFDSHKmveQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <?php }
+<?php
     self::createLinkElements($this->data['allLinks']);
     self::createScriptElements($this->data['scripts']); 
     $this->token = bin2hex(random_bytes(64));
@@ -91,12 +87,9 @@
 
     <link async defer rel="stylesheet" href="./assets/static/css/style.css">
     
-    <link rel="stylesheet" href="https://cdn.markonikolic98.com/node_modules/bootstrap-icons/font/bootstrap-icons.css" >
-
-
 </head>
 
-<body onload="welcomer.run();">
+<body>
     <!-- (: SUDO :) -->
 </body> 
 </html>

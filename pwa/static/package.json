@@ -21,6 +21,7 @@
   "author": "marko nikolic linkedin.com/in/marko-nikolic-49385a283",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
     "bootstrap": "^4.6.2",
     "bootstrap-icons": "^1.13.1",
     "commonmark": "^0.30.0",

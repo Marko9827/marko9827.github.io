@@ -1,4 +1,9 @@
 {
+    "config": {  
+        "vendor-dir": "./m_dr_vendor",
+        "process-timeout": 0,
+        "platform-check": false 
+    },
     "require": {
         "mistralys/markdown-viewer": "^1.3",
         "league/commonmark": "^2.4",
@@ -6,6 +11,7 @@
         "guzzlehttp/psr7": "^2.6",
         "marcelklehr/link-preview": "^2.0",
         "guzzlehttp/guzzle": "^5.3",
-        "mongodb/mongodb": "^1.20"
+        "mongodb/mongodb": "^1.20",
+        "react/http": "^0.4.0"
     }
 }

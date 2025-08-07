@@ -1,10 +1,73 @@
  
 
   window.draggable = { style_left: "", style_top: "", enabled: false };
-  const CDN_URL = "cdn.markonikolic98.com";
-
-  const CDN_URL_BOOSTRAP_ICONS_STRCSS = "";
-  const CDN_CSS_MAIN = "";
+  const CDN_URL = "cdn.markonikolic98.com",
+  CDN_URL_BOOSTRAP_ICONS_STRCSS = "",
+  CDN_CSS_MAIN = "",
+   
+  svgToBase64Url = (svgString) => { 
+    const cleaned = svgString
+        .replace(/\n+/g, "")
+        .replace(/\t+/g, "")
+        .replace(/\s{2,}/g, " ")
+        .trim(); 
+    const base64 = btoa(unescape(encodeURIComponent(cleaned)));
+    return `data:image/svg+xml;base64,${base64}`;
+  },
+  svg_logo_backscr_img_svg = svgToBase64Url(`<svg id="logo_backscr_img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"
+                preserveAspectRatio="xMidYMid slice">
+                <defs>
+                    <radialGradient id="Gradient1" cx="50%" cy="50%" fx="0.441602%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="34s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 0, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 0, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient2" cx="50%" cy="50%" fx="2.68147%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="21.5s" values="0%;3%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient4" cx="50%" cy="50%" fx="4.56417%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="23s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0, 255, 0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0, 255, 0, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient5" cx="50%" cy="50%" fx="2.65405%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="24.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(0,0,255, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(0,0,255, 0)"></stop>
+                    </radialGradient>
+                    <radialGradient id="Gradient6" cx="50%" cy="50%" fx="0.981338%" fy="50%" r=".5">
+                        <animate attributeName="fx" dur="25.5s" values="0%;5%;0%" repeatCount="indefinite"></animate>
+                        <stop offset="0%" stop-color="rgba(255,0,0, 1)"></stop>
+                        <stop offset="100%" stop-color="rgba(255,0,0, 0)"></stop>
+                    </radialGradient>
+                </defs>
+                <rect x="13.744%" y="1.18473%" width="100%" height="100%" fill="url(#Gradient1)" transform="rotate(334.41 50 50)">
+                    <animate attributeName="x" dur="20s" values="25%;0%;25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="21s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="7s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="-2.17916%" y="35.4267%" width="100%" height="100%" fill="url(#Gradient2)"
+                    transform="rotate(255.072 50 50)">
+                    <animate attributeName="x" dur="23s" values="-25%;0%;-25%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="24s" values="0%;50%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="12s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+                <rect x="9.00483%" y="14.5733%" width="100%" height="100%" fill="url(#Gradient3)" transform="rotate(139.903 50 50)">
+                    <animate attributeName="x" dur="25s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animate attributeName="y" dur="12s" values="0%;25%;0%" repeatCount="indefinite"></animate>
+                    <animateTransform attributeName="transform" type="rotate" from="360 50 50" to="0 50 50" dur="9s"
+                        repeatCount="indefinite"></animateTransform>
+                </rect>
+            </svg>`);
 
     
   //`   @import url('https://${CDN_URL}/node_modules/@fortawesome/fontawesome-free/css/all.min.css'); @import url("https://${CDN_URL}/node_modules/bootstrap-icons/font/bootstrap-icons.css");`; 
@@ -16,7 +79,8 @@
   
      portfolio.data.menu = obj;
 
-  
+   
+
 
   const app_loader = { gallery_temp: 0 },
     welcomer = {
@@ -26,6 +90,20 @@
       cp: function () {
        
         
+      },
+      toblob: function (d) {
+        d.setAttribute("data-zoom-image", d.getAttribute("src"));
+        return;
+      },
+      loaded_img: function (aer, id = 0) {
+        const projects_afe = document.querySelector(
+          `#clavs grider_viewer project[id-int="${id}"]`
+        );
+        if (projects_afe) {
+           projects_afe.classList.add("section_loadet_img");
+        }
+        this.toblob(aer); 
+        aer.removeAttribute("onload"); 
       },
       lang: function () {
         var lang = "en";
@@ -2675,13 +2753,7 @@ hh_anim_start spj {
       this.run();
     }
 
-    test_category(n = "") {
-      const page = document.createElement("page-c");
-      document.body.appendChild(page);
-
-      page.box_creator(n);
-    }
-
+  
     run() {
       router.on("cv-pdf", (params) => {
         test_page("", "cv-pdf");
@@ -2732,29 +2804,43 @@ hh_anim_start spj {
           test_page("", "gallery");
           if(gallery_exist({
               gallery:album,
-              callback: function(val){
-                console.log(val);
+              callback: function(val){ 
                 const f = document.body.querySelector("page-c:last-child");
                 f.load(album,"gallery_name");
+                 
                 for(var i = 0; i < val['gallery'].length; i++){
                   if(val['gallery'][i]['ID'] == id){
                     const item = val['gallery'][i];
                   
                   const ImagePreview_src = document.createElement("image-preview");
                   if(item.type == "video"){
+                    const grid = document.createElement("page-c"),
+                    json_data = {
+                      img: item.img,
+                      thumb: item.thumb,
+                      gallery_name: album
+                    };
+                    grid.load(json_data,"video_page");
+                    
+                    // grid.setA
+                    document.body.appendChild(grid);
+                    /*
                     const videoplayerv2 = document.createElement("video-player-v2");
                     videoplayerv2.setAttribute("src",item.img);
                    setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
                     videoplayerv2.setAttribute("poster",item.thumb);
                     ImagePreview_src.srcDiv(videoplayerv2);
-                    videoplayerv2.play();
+                    videoplayerv2.play();*/
                   } else {
-                    ImagePreview_src.src(item.img);
+                    const ImagePreview_src = document.createElement("image-preview");
+                    // ImagePreview_src?.src(item.img);
+                    setTimeout(()=> {
+                    ImagePreview_src.setAttribute("src" , item.img)},100);
+                    document.body.appendChild(ImagePreview_src);
                   }
-                  document.body.appendChild(ImagePreview_src);
-                  }
+            
                 }
-           
+              }
               }
           }))
          
@@ -2799,11 +2885,7 @@ hh_anim_start spj {
 
       router.init();
 
-      window.pg = async function (n = "blog") {
-        if (n == "blog") {
-          router.go({ p: "blog" });
-        }
-      };
+      
 
       document.querySelectorAll("script").forEach(el => el.remove() ); 
     }
@@ -2822,7 +2904,7 @@ hh_anim_start spj {
     }
 
     trst() {}
-    img_load(t) {
+    #img_load(t) {
       t.classList.add("active");
       t.removeAttribute("style");
       t.removeAttribute("onload");
@@ -3104,7 +3186,7 @@ hh_anim_start spj {
 
       const spj = document.createElement("spj");
       const img = document.createElement("img");
-      img.src = "/svg_logo_backscr_img.svg";
+      img.src = svg_logo_backscr_img_svg;
       img.id = "logo_backscr_img";
       img.alt = "logo";
       img.loading = "lazy";
@@ -3274,8 +3356,8 @@ hh_anim_start spj {
         img.alt = "Card Link";
         img.style.opacity = "0";
         img.setAttribute("data-title", v.title);
-        img.setAttribute("onerror", "$(this).attr('style','display:none;');");
-        img.setAttribute("onload", "$(this).attr('style','');");
+        img.onerror = () => img.style.display = 'none';
+        img.onload = () => img.removeAttribute("style");
         
 
         if (v.visible === "yes") {
@@ -3865,7 +3947,7 @@ hh_anim_start spj {
 #clavs .grider_viewer project img {
     position: absolute;
     left: 0px;
-    top: 34px;
+    top: 35px;
     right: 0px;
     bottom: 0px;}
 
@@ -4345,7 +4427,7 @@ ta_f icon-i {
 
 
 #clavs .grider_viewer project fiv .bi-info-circle, #clavs .grider_viewer project fiv .bi-info-circle {
-          margin-top: 1px;
+          margin-top: 0px;
 }
 
 div#clavs .br_ta ta_f {
@@ -4392,7 +4474,7 @@ div#clavs .br_ta ta_f {
       },
     };
 
-    async storeOneImage(albumName, item) {
+    async #storeOneImage(albumName, item) {
       const db = await this.openDB();
       const tx = db.transaction(this.storeName, "readwrite");
       const store = tx.objectStore(this.storeName);
@@ -4422,7 +4504,7 @@ div#clavs .br_ta ta_f {
       return urlr;
     }
 
-    async loaded_img(aer, id = 0) {
+    async #loaded_img(aer, id = 0) {
       const projects_afe = document.querySelector(
         `#clavs grider_viewer project[id-int="${id}"]`
       );
@@ -4433,7 +4515,7 @@ div#clavs .br_ta ta_f {
       aer.removeAttribute("onload");
     }
 
-    async call_albums(
+    async #call_albums(
       varr = { where: null, name: "", arr: [], callback: function () {} },
       type = "albums"
     ) {
@@ -4463,6 +4545,9 @@ div#clavs .br_ta ta_f {
       }
       if (varr.type == "albums") {
         for (let i = 0; i < arr.length; i++) {
+          if(!arr[i]["gallery"].length > 0){
+            continue;
+          }
           const project = document.createElement("project");
 
           project.setAttribute("id-int", i);
@@ -4480,7 +4565,10 @@ div#clavs .br_ta ta_f {
           p_open.appendChild(p_open_icon);
           p_open.appendChild(document.createTextNode(" Open Album"));
           const name = arr[i]["name"];
-          const image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+          let image = svg_logo_backscr_img_svg;
+          try{
+            image = `${arr[i]["gallery"][0]["img"]}&album=${arr[i]["name"]}&v=${i}`;
+          }catch(Ex) {  }
           let is_live = null;
           if (arr[i]["live"] == "T") {
             is_live = document.createElement("span_live");
@@ -4525,6 +4613,7 @@ div#clavs .br_ta ta_f {
           project.appendChild(grider_box);
           varr.where.appendChild(project);
           if (arr[i]["live"] == "T") grider_box.appendChild(is_live);
+          
           if (
             arr[i]["gallery"][0]["type"] == "video" ||
             arr[i]["gallery"][0]["type"] == "video_post"
@@ -4534,11 +4623,12 @@ div#clavs .br_ta ta_f {
             video.setAttribute("muted", "");
             video.setAttribute("playsinline", "");
             video.setAttribute("loop", "");
-            video.setAttribute("style", "pointer-events:none;");
-            video.setAttribute(
+            video.setAttribute("style", "pointer-events:none; display:none;");
+            /*video.setAttribute(
               "onloadedmetadata",
               `welcomer.loaded_img(this,${i});`
-            );
+            );*/
+            video.addEventListener("loadedmetadata", welcomer.loaded_img(this, i));
             video.setAttribute("src", arr[i]["gallery"][0]["thumb"]);
             grider_box.appendChild(video);
           }
@@ -4599,18 +4689,30 @@ div#clavs .br_ta ta_f {
           i_click.addEventListener("click", () => {
             const ImagePreview_src = document.createElement("image-preview");
             if(item.type == "video"){
+              const grid = document.createElement("page-c"),
+              json_data = {
+                img: item.img,
+                thumb: item.thumb,
+                gallery_name: albumName
+              };
+              grid.load(json_data,"video_page");
+              // grid.setA
+              document.body.appendChild(grid);
+              /*
               const videoplayerv2 = document.createElement("video-player-v2");
               videoplayerv2.setAttribute("src",item.img);
               setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
               videoplayerv2.setAttribute("poster",item.thumb);
               ImagePreview_src.srcDiv(videoplayerv2);
               
-              videoplayerv2.play();
+              videoplayerv2.play();*/
             } else {
+              document.body.appendChild(ImagePreview_src);
               ImagePreview_src.src(item.img);
             }
-            document.body.appendChild(ImagePreview_src);
+         
             router.setURL({ p: "gallery", album: varr.name, id :item.ID});
+            console.log(albumName);
           });
 
           fiv.appendChild(i_click);
@@ -4732,7 +4834,7 @@ div#clavs .br_ta ta_f {
  
     }
 
-    removeDuplicateIdElements(parentElement) {
+    #removeDuplicateIdElements(parentElement) {
       if (!parentElement || !(parentElement instanceof Element)) {
         console.error("Neispravan parentElement");
         return;
@@ -4752,7 +4854,7 @@ div#clavs .br_ta ta_f {
         }
       });
     }
-    remove_duplicates(arr) {
+    #remove_duplicates(arr) {
       const uniqueTags = [...new Set(arr)];
 
       return uniqueTags;
@@ -4767,7 +4869,7 @@ div#clavs .br_ta ta_f {
       return ret_arr;
     }
 
-    blogloader_img(id = "") {
+    #blogloader_img(id = "") {
       var arr = portfolio.data.blog;
       for (var i = 0; i < arr.length; i++) {
         if (arr[i].id == id) {
@@ -4783,13 +4885,13 @@ div#clavs .br_ta ta_f {
       }
     }
 
-    isimagec(arr = [], what = "image") {
+    #isimagec(arr = [], what = "image") {
       var is_image = false;
       is_image = arr.indexOf(what) !== -1;
       return is_image;
     }
 
-    blogljoad_posts_category_cbc(tt_category_name = "") {
+    #blogljoad_posts_category_cbc(tt_category_name = "") {
       var div_not_i = 0;
       if (tt_category_name == "All" || tt_category_name == "all") {
         div_not_i = portfolio.data.blog.length;
@@ -4806,7 +4908,7 @@ div#clavs .br_ta ta_f {
       return div_not_i;
     }
 
-    category_tempator(
+    #category_tempator(
       d = { me: null, where: "", data: [], name: "", nest: false }
     ) {
       const br_ta = this.blog_br_ta;
@@ -4833,8 +4935,8 @@ div#clavs .br_ta ta_f {
       ta_all.setAttribute("data-category", "All");
       ta_all.textContent = "All ";
       const span_count = document.createElement("span");
-      span_count.textContent = this.blogljoad_posts_category_cbc
-        ? this.blogljoad_posts_category_cbc("All")
+      span_count.textContent = this.#blogljoad_posts_category_cbc
+        ? this.#blogljoad_posts_category_cbc("All")
         : "";
       ta_all.appendChild(span_count);
 
@@ -4842,7 +4944,7 @@ div#clavs .br_ta ta_f {
         this.blog_br_ta
           .querySelectorAll("ta_f")
           .forEach((el) => el.classList.remove("active"));
-        this.box_creator("All");
+        this.#box_creator("All");
         if (d.nest) {
           const url = `${window.location.origin}/?p=blog&c=${d.me.getAttribute(
             "data-scn"
@@ -4893,8 +4995,8 @@ div#clavs .br_ta ta_f {
         }
 
         const span = document.createElement("span");
-        span.textContent = this.blogljoad_posts_category_cbc
-          ? this.blogljoad_posts_category_cbc(re)
+        span.textContent = this.#blogljoad_posts_category_cbc
+          ? this.#blogljoad_posts_category_cbc(re)
           : "";
 
         ta_item.appendChild(addIcon);
@@ -4925,7 +5027,7 @@ div#clavs .br_ta ta_f {
             .forEach((el) => el.classList.remove("active"));
           ta_item.classList.add("active");
 
-          thiss.box_creator(re, false);
+          thiss.#box_creator(re, false);
 
           const lower = re.toLowerCase();
           if (lower !== "all") {
@@ -4972,13 +5074,13 @@ div#clavs .br_ta ta_f {
       // setTimeout(() => .br_ta.removeAttribute("style"), 100);
     }
 
-    img_load(t) {
+    #img_load(t) {
       t.classList.add("active");
       t.removeAttribute("style");
       t.removeAttribute("onload");
     }
 
-    box_creator(tt_category_name = "All", cat = false, type = "blog") {
+    #box_creator(tt_category_name = "All", cat = false, type = "blog") {
       this.grider_viewer.querySelectorAll("project").forEach((e) => {
         e.remove();
       });
@@ -5062,7 +5164,7 @@ div#clavs .br_ta ta_f {
           grider_box.appendChild(p_open);
         }
         // === p_image button (ako je image) ===
-        if (fthis.isimagec(v?.category, "image")) {
+        if (fthis.#isimagec(v?.category, "image")) {
           const p_image = document.createElement("p_open");
           p_image.className = "open_img";
           p_image.setAttribute(
@@ -5195,7 +5297,7 @@ div#clavs .br_ta ta_f {
       this.#header({
         title: "Marko Nikolić > Blog",
         searchPlaceholder: "Search ...",
-        logo: "/svg_logo_backscr_img.svg",
+        logo: svg_logo_backscr_img_svg,
         buttonsRight: [
           {
             icon: "search",
@@ -5235,54 +5337,20 @@ div#clavs .br_ta ta_f {
       });
     }
 
-    decodeEntities(encodedString) {
+    #decodeEntities(encodedString) {
       const textarea = document.createElement("textarea");
       textarea.innerHTML = encodedString;
       return textarea.value;
     }
-    exit() {
+    #exit() {
       this.remove();
     }
     #header(
       config = {
-        title: "Blog",
-        searchPlaceholder: "Search ...",
-        logo: "/svg_logo_backscr_img.svg",
+        title: "",
+        searchPlaceholder: "",
+        logo: svg_logo_backscr_img_svg,
         buttonsRight: [
-          {
-            icon: "search",
-            onclick: () => {
-              const p_search = document.createElement("p-search");
-              this.wrapper.appendChild(p_search);
-            },
-          },
-
-          {
-            icon: "bi bi-share",
-            onclick: () => {
-              const Uri = this.div_header.getAttribute("data-url"),
-                title = this.div_header_span.textContent;
-
-              if (navigator.share) {
-                navigator
-                  .share({
-                    title: title,
-                    text: `Shared from - ${window.location.origin}`,
-                    url: `${Uri}`,
-                  })
-                  .then(() => {})
-                  .catch((error) => {});
-              }
-            },
-          },
-          {
-            icon: "bi bi-x-lg close_btnf",
-            onclick: () => {
-              router.setURL({});
-              document.title = "Marko Nikolić";
-              this.remove();
-            },
-          },
         ],
       }
     ) {
@@ -5387,7 +5455,7 @@ div#clavs .br_ta ta_f {
         this.#header({
           title: "Marko Nikolić > Editor (BETA)",
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon:"bi bi-arrow-left-short",
@@ -5438,7 +5506,7 @@ div#clavs .br_ta ta_f {
         this.#header({
           title: "Marko Nikolić > CV",
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "bi bi-share",
@@ -5475,12 +5543,43 @@ div#clavs .br_ta ta_f {
           iframe.style.setProperty("margin-top", "49px", "important");
         }
       }
-
+       
+      if (type == "video_page"){
+        const tt = this;
+        // grid.setA
+        const videoplayerv2 = document.createElement("video-player-v2");
+        videoplayerv2.setAttribute("src",id.img);
+        setTimeout(()=> {
+          videoplayerv2.setAttribute("style","height: 100%;width: 100%;position: absolute;left: 0px;top: 40px;width: 100%;height: calc(100% - 60px);z-index: 333333;pointer-events: unset;");
+          // this.grider_viewer.setAttribute("style","display: block; opacity: 1; margin-top: 0px !important;");
+   
+          tt.#header({
+            title: "Gallery > Video",
+            searchPlaceholder: "Search ...",
+            logo: svg_logo_backscr_img_svg,
+            buttonsRight: [
+              {
+                icon: "bi bi-x-lg close_btnf",
+                onclick: () => { 
+                  this.remove();
+                },
+              }
+            ],
+          }); 
+         },100);
+        videoplayerv2.setAttribute("poster",id.thumb); 
+        videoplayerv2.play();
+        this.shadowRoot.querySelector("#clavs").appendChild(videoplayerv2);
+        this.shadowRoot.querySelector('div.bra').style.display = 'none';
+        router.setURL({ p: "gallery", album: id.gallery_name, id :id.ID});
+     
+        return;
+      } 
       if (type == "gallery_name_url") {
         this.#header({
           title: "Gallery > " + id,
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "bi bi-arrow-left-short",
@@ -5525,11 +5624,11 @@ div#clavs .br_ta ta_f {
           }
         });
 
-        this.call_albums({
+        this.#call_albums({
           where: this.grider_viewer,
           name: id,
           arr: gallery_name["name"],
-          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
+          callback: () =>  this.#removeDuplicateIdElements(this.grider_viewer),
           type: "gallery",
         });
         
@@ -5539,7 +5638,7 @@ div#clavs .br_ta ta_f {
         this.#header({
           title: "Gallery > " + id,
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "bi bi-arrow-left-short",
@@ -5585,11 +5684,11 @@ div#clavs .br_ta ta_f {
           }
         });
 
-        this.call_albums({
+        this.#call_albums({
           where: this.grider_viewer,
           name: id,
           arr: gallery_name["name"],
-          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
+          callback: () =>  this.#removeDuplicateIdElements(this.grider_viewer),
           type: "gallery",
         });
         
@@ -5600,7 +5699,7 @@ div#clavs .br_ta ta_f {
         this.#header({
           title: "Marko Nikolić > Gallery",
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo:  svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "bi bi-share",
@@ -5630,11 +5729,11 @@ div#clavs .br_ta ta_f {
           ],
         });
 
-        this.call_albums({
+        this.#call_albums({
           where: this.grider_viewer,
           name: "",
           arr: portfolio.data.gallery.gallery,
-          callback: () =>  this.removeDuplicateIdElements(this.grider_viewer),
+          callback: () =>  this.#removeDuplicateIdElements(this.grider_viewer),
 
           type: "albums",
         });
@@ -5651,7 +5750,7 @@ div#clavs .br_ta ta_f {
         this.#header({
           title: "Marko Nikolić > Projects",
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "bi bi-share",
@@ -5681,7 +5780,7 @@ div#clavs .br_ta ta_f {
           ],
         });
 
-        this.box_creator("all", true, "projects");
+        this.#box_creator("all", true, "projects");
 
         this.grider_viewer.style.setProperty("margin-top", "60px", "important");
 
@@ -5698,10 +5797,10 @@ div#clavs .br_ta ta_f {
         document.title = "Marko Nikolić > Blog";
         this.grider_viewer.removeAttribute("style");
 
-        this.box_creator(id, true);
-        const fsvt = this.remove_duplicates(this.category_tijemp);
+        this.#box_creator(id, true);
+        const fsvt = this.#remove_duplicates(this.category_tijemp);
 
-        this.category_tempator({
+        this.#category_tempator({
           me: "all",
           where: this.wrapper,
           data: fsvt,
@@ -5748,13 +5847,13 @@ div#clavs .br_ta ta_f {
           id: id,
         });
 
-        const res = this.decodeEntities(f.page || "");
+        const res = this.#decodeEntities(f.page || "");
         this.gallery_temp = f.gallery || {};
 
         this.#header({
           title: f.title,
           searchPlaceholder: "Search ...",
-          logo: "/svg_logo_backscr_img.svg",
+          logo: svg_logo_backscr_img_svg,
           buttonsRight: [
             {
               icon: "search",
@@ -5810,7 +5909,7 @@ div#clavs .br_ta ta_f {
                 } else {
                   document.title = "Marko Nikolić";
                 }
-                tthis.exit();
+                tthis.#exit();
               },
             },
           ],
@@ -5831,7 +5930,7 @@ div#clavs .br_ta ta_f {
       }
     }
 
-    history(url = "") {
+    #history(url = "") {
       const ar = {},
         v = "";
 
@@ -6707,10 +6806,10 @@ div#clavs .br_ta ta_f {
       this._selectedText = this._ui_lang["select_option"];
       this._customTemplate = null;
       this.selected = "";
-      this._toggleDropdown = this._toggleDropdown.bind(this);
-      this._documentClickHandler = this._documentClickHandler.bind(this);
-      this._optionClickHandler = this._optionClickHandler.bind(this);
-      this._searchHandler = this._searchHandler.bind(this);
+      this.#_toggleDropdown = this.#_toggleDropdown.bind(this);
+      this.#_documentClickHandler = this.#_documentClickHandler.bind(this);
+      this.#_optionClickHandler = this.#_optionClickHandler.bind(this);
+      this.#_searchHandler = this.#_searchHandler.bind(this);
     }
     static get observedAttributes() {
       return ["data", "data-ajax"];
@@ -6742,14 +6841,14 @@ div#clavs .br_ta ta_f {
           this._data = null;
         }
         this.render();
-        this._addEventListeners();
+        this.#_addEventListeners();
       } else {
         this.render();
-        this._addEventListeners();
+        this.#_addEventListeners();
       }
     }
     disconnectedCallback() {
-      this._removeEventListeners();
+      this.#_removeEventListeners();
     }
     _fetchData(url) {
       fetch(url)
@@ -6762,7 +6861,7 @@ div#clavs .br_ta ta_f {
         .then((json) => {
           this._data = json;
           this.render();
-          this._addEventListeners();
+          this.#_addEventListeners();
         })
         .catch((error) => {
           console.error("Error fetching AJAX data:", error);
@@ -6775,11 +6874,11 @@ div#clavs .br_ta ta_f {
     setData(data) {
       this._data = data;
       this.render();
-      this._addEventListeners();
+      this.#_addEventListeners();
     }
     selectByID(id = "") {}
     render() {
-      this._removeEventListeners();
+      this.#_removeEventListeners();
       if (this._data && this._data.selected) {
         let selectedValue = this._data.selected;
         let found = false;
@@ -6790,7 +6889,7 @@ div#clavs .br_ta ta_f {
                 if (option.value === selectedValue) {
                   this._selectedText = option.text;
 
-                  this._optionClickHandler(event);
+                  this.#_optionClickHandler(event);
 
                   found = true;
                 }
@@ -6988,40 +7087,40 @@ div#clavs .br_ta ta_f {
       this._headerEl = header;
       this._optionsEl = optionsContainer;
       this._searchInputEl = searchInput;
-      this._addEventListeners();
+      this.#_addEventListeners();
     }
-    _addEventListeners() {
+    #_addEventListeners() {
       if (this._headerEl) {
-        this._headerEl.addEventListener("click", this._toggleDropdown);
+        this._headerEl.addEventListener("click", this.#_toggleDropdown);
       }
       if (this._optionsEl) {
-        this._optionsEl.addEventListener("click", this._optionClickHandler);
+        this._optionsEl.addEventListener("click", this.#_optionClickHandler);
       }
       if (this._searchInputEl) {
-        this._searchInputEl.addEventListener("keyup", this._searchHandler);
+        this._searchInputEl.addEventListener("keyup", this.#_searchHandler);
       }
-      document.addEventListener("click", this._documentClickHandler);
+      document.addEventListener("click", this.#_documentClickHandler);
     }
-    _removeEventListeners() {
+    #_removeEventListeners() {
       if (this._headerEl) {
-        this._headerEl.removeEventListener("click", this._toggleDropdown);
+        this._headerEl.removeEventListener("click", this.#_toggleDropdown);
       }
       if (this._optionsEl) {
-        this._optionsEl.removeEventListener("click", this._optionClickHandler);
+        this._optionsEl.removeEventListener("click", this.#_optionClickHandler);
       }
       if (this._searchInputEl) {
-        this._searchInputEl.removeEventListener("keyup", this._searchHandler);
+        this._searchInputEl.removeEventListener("keyup", this.#_searchHandler);
       }
-      document.removeEventListener("click", this._documentClickHandler);
+      document.removeEventListener("click", this.#_documentClickHandler);
     }
-    _toggleDropdown(e) {
+    #_toggleDropdown(e) {
       e.stopPropagation();
       if (this._optionsEl) {
         this._optionsEl.style.display =
           this._optionsEl.style.display === "block" ? "none" : "block";
       }
     }
-    _documentClickHandler(e) {
+    #_documentClickHandler(e) {
       const path = e.composedPath();
       if (!path.includes(this) && this._optionsEl) {
         this._optionsEl.style.display = "none";
@@ -7073,7 +7172,7 @@ div#clavs .br_ta ta_f {
       }
     }
 
-    _optionClickHandler(e) {
+    #_optionClickHandler(e) {
       e.stopPropagation();
       const optionElem = e.target.closest(".option");
       if (optionElem) {
@@ -7101,7 +7200,7 @@ div#clavs .br_ta ta_f {
       }
     }
 
-    _searchHandler(e) {
+    #_searchHandler(e) {
       const query = e.target.value.toLowerCase();
       const groups = this.shadowRoot.querySelectorAll(
         ".dropdown-options .group"
@@ -7725,7 +7824,7 @@ i_list {
       const imgLogo = document.createElement("img");
       imgLogo.classList.add("logo_backscr_img");
       imgLogo.alt = "logo";
-      imgLogo.src = "/svg_logo_backscr_img.svg";
+      imgLogo.src = svg_logo_backscr_img_svg;
 
       const div_close = document.createElement("icon-i");
       div_close.title = "Close Search";
@@ -8041,7 +8140,7 @@ i_list {
       divHeader.setAttribute("data-url", "editor");
 
       const logoImg = document.createElement("img");
-      logoImg.setAttribute("src", "/svg_logo_backscr_img.svg");
+      logoImg.setAttribute("src",  svg_logo_backscr_img_svg);
       logoImg.setAttribute("loading", "lazy");
       logoImg.setAttribute("id", "logo_backscr_img");
       logoImg.setAttribute("alt", "Loading");
@@ -8267,7 +8366,7 @@ i_list {
       divHeader.setAttribute("data-url", "editor");
 
       const logoImg = document.createElement("img");
-      logoImg.setAttribute("src", "/svg_logo_backscr_img.svg");
+      logoImg.setAttribute("src",svg_logo_backscr_img_svg);
       logoImg.setAttribute("loading", "lazy");
       logoImg.setAttribute("id", "logo_backscr_img");
       logoImg.setAttribute("alt", "Loading");
@@ -8510,7 +8609,7 @@ i_list {
     }
   }
   class ImageZoomPan {
-    svgMaker(svgg = [], pathv = []) {
+    #svgMaker(svgg = [], pathv = []) {
       const svg = document.createElement("svg"),
         path = document.createElement("path");
       for (var i = 0; i < svgg.length; i++) {
@@ -8522,7 +8621,7 @@ i_list {
       svg.appendChild(path);
       return svg;
     }
-    svg(name = "") {
+    #svg(name = "") {
       var svgContent = "";
       if (name == "plus") {
         svgContent = `
@@ -8594,21 +8693,20 @@ i_list {
           (this.separator1 = document.createElement("separator")),
           (this.controls_close = document.createElement("img"));
         this.controls.id = "controls";
-        this.controls_top.src = this.svg("plus");
+        this.controls_top.src = this.#svg("plus");
         this.controls_top.setAttribute("class", "top_control");
-        this.controls_bottom.src = this.svg("minus");
+        this.controls_bottom.src = this.#svg("minus");
         this.controls_bottom.setAttribute("class", "bottom_control");
         this.controls_top.alt = "Zoom in";
         this.controls_bottom.alt = "Zoom out";
-        this.controls_rotate.src = this.svg("rotate");
+        this.controls_rotate.src = this.#svg("rotate");
         this.controls_rotate.setAttribute("class", "bottom_rotate");
         this.controls_rotate.alt = "Rotate";
         this.controls_precent.setAttribute("class", "precent_control");
         this.controls_precent.textContent = "100%";
-        this.controls_close.src = this.svg("close");
+        this.controls_close.src = this.#svg("close");
         this.controls_close.setAttribute("class", "close_control");
-
-        /*
+         /*
      controls.appendChild(this.svgMaker([
        {
          "key":"xmlns",
@@ -8625,7 +8723,8 @@ i_list {
         this.controls.appendChild(this.separator);
         this.controls.appendChild(this.controls_rotate);
         this.container.appendChild(this.controls);
-
+        const tt = this;
+        this.controls_close.addEventListener("click", (e)=> { e.preventDefault(); tt.remove(); });
         this.controls_top.addEventListener("click", function (e) {
           e.preventDefault();
           const box = this.image;
@@ -8693,11 +8792,11 @@ i_list {
       document.addEventListener("keydown", this.ctrl_key.bind(this));
       //
       // Mouse events
-      this.container.addEventListener("mousedown", this.startDrag.bind(this));
-      window.addEventListener("mouseup", this.stopDrag.bind(this));
-      this.container.addEventListener("mousemove", this.dragImage.bind(this));
+      this.container.addEventListener("mousedown", this.#startDrag.bind(this));
+      window.addEventListener("mouseup", this.#stopDrag.bind(this));
+      this.container.addEventListener("mousemove", this.#dragImage.bind(this));
 
-      this.container.addEventListener("wheel", this.zoomImage.bind(this));
+      this.container.addEventListener("wheel", this.#zoomImage.bind(this));
 
       this.container.addEventListener(
         "touchstart",
@@ -8715,22 +8814,22 @@ i_list {
       );
     }
 
-    startDrag(e) {
+    #startDrag(e) {
       this.isDragging = true;
       this.startX = e.clientX - this.translateX;
       this.startY = e.clientY - this.translateY;
       this.container.style.cursor = "grabbing";
-      this.shadowRoot.querySelector("#controls").style.opacity = 0.4;
+      /* this.controls.style.opacity = 0.4;*/
     }
 
-    stopDrag() {
+    #stopDrag() {
       this.isDragging = false;
       this.container.style.cursor = "grab";
-      this.shadowRoot.querySelector("#controls").style.opacity = 1;
+      /*this.controls.style.opacity = 1;*/
  
     }
 
-    dragImage(e) {
+    #dragImage(e) {
       if (!this.isDragging) return;
 
       this.translateX = e.clientX - this.startX;
@@ -8739,7 +8838,7 @@ i_list {
       this.updateTransform();
     }
 
-    zoomImage(e) {
+    #zoomImage(e) {
       if (e.deltaY < 0) {
         this.scale += 0.1;
       } else {
@@ -8884,7 +8983,7 @@ i_list {
   }
 
   class ImagePreview extends HTMLElement {
-    svgMaker(svgg = [], pathv = []) {
+    #svgMaker(svgg = [], pathv = []) {
       const svg = document.createElement("svg"),
         path = document.createElement("path");
       for (var i = 0; i < svgg.length; i++) {
@@ -8896,7 +8995,7 @@ i_list {
       svg.appendChild(path);
       return svg;
     }
-    svg(name = "") {
+    #svg(name = "") {
       var svgContent = "";
       if (name == "plus") {
         svgContent = `
@@ -9218,14 +9317,14 @@ div#controls img:hover {
         separator1 = document.createElement("separator"),
         controls_close = document.createElement("img");
       controls.id = "controls";
-      controls_top.src = this.svg("plus");
+      controls_top.src = this.#svg("plus");
       controls_top.setAttribute("class", "top_control");
-      controls_bottom.src = this.svg("minus");
+      controls_bottom.src = this.#svg("minus");
       controls_bottom.setAttribute("class", "bottom_control");
       controls_top.alt = "Zoom in";
       controls_bottom.alt = "Zoom out";
 
-      controls_rotate.src = this.svg("rotate");
+      controls_rotate.src = this.#svg("rotate");
       controls_rotate.setAttribute("class", "bottom_rotate");
       controls_rotate.alt = "Rotate";
 
@@ -9233,8 +9332,10 @@ div#controls img:hover {
 
       controls_precent.textContent = "100%";
 
-      controls_close.src = this.svg("close");
+      controls_close.src = this.#svg("close");
       controls_close.setAttribute("class", "close_control");
+      const ttt = this;
+      controls_close.addEventListener("click", (e) => { e.preventDefault(); ttt.remove(); });
 
       /*
     controls.appendChild(this.svgMaker([
@@ -9284,13 +9385,13 @@ div#controls img:hover {
     }
 
     init() {
-      this.container.addEventListener("mousedown", this.startDrag.bind(this));
-      window.addEventListener("mouseup", this.stopDrag.bind(this));
-      this.container.addEventListener("mousemove", this.dragImage.bind(this));
-      this.container.addEventListener("wheel", this.zoomImage.bind(this));
+      this.container.addEventListener("mousedown", this.#startDrag.bind(this));
+      window.addEventListener("mouseup", this.#stopDrag.bind(this));
+      this.container.addEventListener("mousemove", this.#dragImage.bind(this));
+      this.container.addEventListener("wheel", this.#zoomImage.bind(this));
     }
 
-    startDrag(e) {
+    #startDrag(e) {
       const box = this.image;
       if (box.classList.contains("rotation_manual")) {
         box.classList.remove("rotation_manual");
@@ -9301,12 +9402,12 @@ div#controls img:hover {
       this.container.style.cursor = "grabbing";
     }
 
-    stopDrag() {
+    #stopDrag() {
       this.isDragging = false;
       this.container.style.cursor = "grab";
     }
 
-    dragImage(e) {
+    #dragImage(e) {
       const box = this.image;
       if (box.classList.contains("rotation_manual")) {
         box.classList.remove("rotation_manual");
@@ -9316,7 +9417,7 @@ div#controls img:hover {
       const y = e.clientY - this.startY;
       this.image.style.transform = `translate(${x}px, ${y}px) scale(${this.scale})`;
     }
-    zoom_plus(e) {
+    #zoom_plus(e) {
       e.preventDefault();
       if (e.deltaY < 0) {
         this.scale += 0.1;
@@ -9327,7 +9428,7 @@ div#controls img:hover {
       this.scale = Math.min(Math.max(1, this.scale), 3);
       this.image.style.transform = `scale(${this.scale})`;
     }
-    zoomImage(e) {
+    #zoomImage(e) {
       e.preventDefault();
       if (e.deltaY < 0) {
         this.scale += 0.1;
@@ -9338,16 +9439,16 @@ div#controls img:hover {
       this.scale = Math.min(Math.max(1, this.scale), 3);
       this.image.style.transform = `scale(${this.scale})`;
     }
-    increaseScale(e) {
+    #increaseScale(e) {
       e.preventDefault();
       this.scale += 0.1;
     }
 
-    decreaseScale(e) {
+    #decreaseScale(e) {
       e.preventDefault();
       this.scale -= 0.1;
     }
-    getHostAttribute(attrName) {
+    #getHostAttribute(attrName) {
       return this.getAttribute(attrName);
     }
     ld() {}
@@ -9363,6 +9464,14 @@ div#controls img:hover {
           this.shadowRoot.querySelector("span.precent_control")
         );
         this.controller = controller;
+        const thisi = this;
+
+        this.shadowRoot
+        .querySelector("img.close_control")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+          thisi.remove();
+        });
 
         this.shadowRoot
           .querySelector("img.top_control")
@@ -9437,6 +9546,12 @@ div#controls img:hover {
           tttt.controller.reset();
          });
 
+         this.shadowRoot
+         .querySelector("img.close_control")
+         .addEventListener("click", function (e) {
+           e.preventDefault();
+           tttt.remove();
+         });
         this.shadowRoot
           .querySelector("img.top_control")
           .addEventListener("click", function (e) {
@@ -9495,7 +9610,23 @@ div#controls img:hover {
       }
     }
     connectedCallback() {
-      const src = this.getAttribute("src");
+      const tt = this;
+      const observer = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+          if (mutation.type === 'attributes' && mutation.attributeName === 'src') {
+            // Logika koja se pokreće kada se promeni atribut 'my-attribute'
+            // console.log('Atribut "my-attribute" je promenjen!');
+            const newValue = this.getAttribute('src');
+            tt.src(newValue);
+
+          }
+        }
+      });
+    
+      observer.observe(this, {
+        attributes: true // Pratimo promene atributa
+      });
+      /*const src = this.getAttribute("src");
       this.src = src;
       this.shadowRoot
         .querySelector("img.close_control")
@@ -9507,7 +9638,7 @@ div#controls img:hover {
           .querySelector(".zoomWindow")
           .setAttribute("style", `background-image:url(${src});`);
       } else {
-      }
+      }*/
     }
   }
   class CustomViewer extends HTMLElement {
@@ -9553,7 +9684,7 @@ div#controls img:hover {
     static get observedAttributes() {
       return ["src"];
     }
-    getHostAttribute(attrName) {
+    #getHostAttribute(attrName) {
       return this.getAttribute(attrName);
     }
     updateVideoSrc(src = "") {
@@ -9623,7 +9754,7 @@ div#controls img:hover {
   }
 
   class PostContent extends HTMLElement {
-    zoom() {
+    #zoom() {
       const ImagePreview_src = document.createElement("image-preview");
       var htmls = this.div_content.innerHTML;
       //  htmls = htmls.querySelector('dnm_footer').remove();
@@ -9631,9 +9762,9 @@ div#controls img:hover {
       document.body.appendChild(ImagePreview_src);
     }
 
-    simpleMode(t = false) {}
+    #simpleMode(t = false) {}
 
-    anim(container, text) {
+    #anim(container, text) {
       const t = this;
       container.addEventListener("click", (e) => {
         const x = e.clientX - container.offsetLeft;
@@ -9651,11 +9782,11 @@ div#controls img:hover {
           });
         }
 
-        t.hightxy(x, y, c, t);
+        t.#hightxy(x, y, c, t);
       });
     }
 
-    hightxy(x, y, container, textElement) {
+    #hightxy(x, y, container, textElement) {
       const textRect = textElement.getBoundingClientRect();
       const containerRect = container.getBoundingClientRect();
 
@@ -9695,7 +9826,7 @@ div#controls img:hover {
       }
     }
 
-    parseMe(id) {
+    #parseMe(id) {
       var data = [];
       portfolio.data.blog.forEach(function (et) {
         if (et["id"] == id) {
@@ -9705,7 +9836,7 @@ div#controls img:hover {
       });
       this.post_data = data;
     }
-    foreach_data_hashs(el, data) {
+    #foreach_data_hashs(el, data) {
       const tag = document.createElement("tag");
       tag.textContent = "#" + data;
       el.appendChild(tag);
@@ -9723,7 +9854,7 @@ div#controls img:hover {
 
       const urlParamsf = new URLSearchParams(window.location.search);
       if (urlParamsf.has("id")) {
-        this.parseMe(urlParamsf.get("id"));
+        this.#parseMe(urlParamsf.get("id"));
         try{
         for (var i = 0; i < this.post_data["category"].length; i++) {
           const tag = document.createElement("tag");
@@ -9966,12 +10097,12 @@ div#controls img:hover {
     class ImageZoomPan {
       constructor(containerId, imageId, percentDisplayId) {*/
     }
-    img_load(t) {
+    #img_load(t) {
       t.classList.add("active");
       t.removeAttribute("style");
       t.removeAttribute("onload");
     }
-    HTML_PARSE(html) {
+    #HTML_PARSE(html) {
       const parser = new DOMParser();
       const html2 = parser.parseFromString(html, "text/html");
       return html2.body.cloneNode(true);
@@ -9985,11 +10116,11 @@ div#controls img:hover {
       const div_content = this.shadowRoot.querySelector("div_content");
       // div_content.innerHTML = `${data}`;
       div_content.textContent = "";
-      div_content.appendChild(this.HTML_PARSE(data));
+      div_content.appendChild(this.#HTML_PARSE(data));
       const tags = this.shadowRoot.querySelector("tags");
       const urlParamsf = new URLSearchParams(window.location.search);
       if (urlParamsf.has("id")) {
-        this.parseMe(urlParamsf.get("id")); 
+        this.#parseMe(urlParamsf.get("id")); 
         try{
           tags.textContent = "";
         for (var i = 0; i < this.post_data["category"].length; i++) {
@@ -10076,7 +10207,7 @@ div#controls img:hover {
       ui: true,
     });*/
     }
-    styleTemplate() {
+    #styleTemplate() {
       return `<style nonce="${window.stmp}" type="text/css">${window.atob(
         portfolio.data.blog_style_bundle
       )}::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--cdn_white);}::-webkit-scrollbar-thumb:hover{background:transparent;}</style>`;
@@ -10157,7 +10288,7 @@ div#controls img:hover {
       } else {
       }
     }
-    getHostAttribute(attrName) {
+    #getHostAttribute(attrName) {
       return this.getAttribute(attrName);
     }
     updateVideoSrc(src = "") {
@@ -10239,7 +10370,7 @@ div#controls img:hover {
       } else {
       }
     }
-    getHostAttribute(attrName) {
+    #getHostAttribute(attrName) {
       return this.getAttribute(attrName);
     }
     updateVideoSrc(src = "") {
@@ -12788,7 +12919,7 @@ class CustomScrollV2 extends HTMLElement {
 
         connectedCallback() {
             this._updateOptionsFromChildren();
-            this._addEventListeners(); 
+            this.#_addEventListeners(); 
             this._observer.observe(this, { childList: true, subtree: true });
         }
 
@@ -12796,10 +12927,10 @@ class CustomScrollV2 extends HTMLElement {
             this._observer.disconnect();
         }
 
-        _addEventListeners() {
-            this._selectedDisplay.addEventListener('click', this._toggleDropdown.bind(this));
-            this._selectContainer.addEventListener('keydown', this._handleKeydown.bind(this));
-            this._optionsList.addEventListener('click', this._selectOption.bind(this));
+        #_addEventListeners() {
+            this._selectedDisplay.addEventListener('click', this.#_toggleDropdown.bind(this));
+            this._selectContainer.addEventListener('keydown', this.#_handleKeydown.bind(this));
+            this._optionsList.addEventListener('click', this.#_selectOption.bind(this));
             const ttt =  this._selectContainer;
             document.addEventListener('click', (e) => {
                 if (!ttt.contains(e.target)) {
@@ -12808,17 +12939,17 @@ class CustomScrollV2 extends HTMLElement {
             
         }
 
-        _toggleDropdown() {
+        #_toggleDropdown() {
             const isOpen = this._optionsList.classList.contains('open');
             console.log(isOpen);
             if (isOpen) {
-              this._closeDropdown();
+              this.#_closeDropdown();
             } else {
-                this._openDropdown();
+                this.#_openDropdown();
             }
         }
 
-        _openDropdown() {
+        #_openDropdown() {
             const _optionsList = this.shadowRoot.querySelector('.options-list');
             _optionsList.classList.add('open');
             console.log(this._optionsList);
@@ -12830,23 +12961,23 @@ class CustomScrollV2 extends HTMLElement {
             }
         }
 
-        _closeDropdown() {
+        #_closeDropdown() {
             this._optionsList.classList.remove('open');
             this._arrowIcon.classList.remove('open');
             this._selectContainer.setAttribute('aria-expanded', 'false');
             this._selectedDisplay.focus();
         }
 
-        _selectOption(e) {
+        #_selectOption(e) {
             const target = e.target.closest('.option-item');
             if (target) {
-                this._setValue(target.dataset.value, target.textContent);
-                this._closeDropdown();
+                this.#_setValue(target.dataset.value, target.textContent);
+                this.#_closeDropdown();
                 this.dispatchEvent(new Event('change', { bubbles: true }));
             }
         }
 
-        _setValue(val, label) {
+        #_setValue(val, label) {
             const oldVal = this._value;
             if (oldVal !== val) {
                 const oldSelected = this.shadowRoot.querySelector(`[aria-selected="true"]`);
@@ -12868,7 +12999,7 @@ class CustomScrollV2 extends HTMLElement {
             }
         }
 
-        _handleKeydown(e) {
+        #_handleKeydown(e) {
             const isOpen = this._optionsList.classList.contains('open');
             const focusedItem = this.shadowRoot.activeElement;
             
@@ -12877,30 +13008,30 @@ class CustomScrollV2 extends HTMLElement {
                 case ' ':
                     e.preventDefault();
                     if (focusedItem && focusedItem.classList.contains('option-item')) {
-                        this._selectOption({ target: focusedItem });
+                        this.#_selectOption({ target: focusedItem });
                     } else {
-                        this._toggleDropdown();
+                        this.#_toggleDropdown();
                     }
                     break;
                 case 'Escape':
                     if (isOpen) {
                         e.preventDefault();
-                        this._closeDropdown();
+                        this.#_closeDropdown();
                     }
                     break;
                 case 'ArrowDown':
                 case 'ArrowUp':
                     e.preventDefault();
                     if (!isOpen) {
-                        this._openDropdown();
+                        this.#_openDropdown();
                     } else {
-                        this._navigateOptions(e.key);
+                        this.#_navigateOptions(e.key);
                     }
                     break;
             }
         }
 
-        _navigateOptions(direction) {
+        #_navigateOptions(direction) {
             const items = Array.from(this.shadowRoot.querySelectorAll('.option-item'));
             if (items.length === 0) return;
 
@@ -12949,16 +13080,16 @@ class CustomScrollV2 extends HTMLElement {
                     this._optionsList.appendChild(div);
 
                     if (opt.hasAttribute('selected')) {
-                        this._setValue(opt.value, opt.textContent);
+                        this.#_setValue(opt.value, opt.textContent);
                     }
                 });
 
                 if (!this._value && options.length > 0) {
                     const first = options[0];
-                    this._setValue(first.value, first.textContent);
+                    this.#_setValue(first.value, first.textContent);
                 }
             } else {
-                this._setValue('', 'Odaberite...');
+                this.#_setValue('', 'Odaberite...');
             }
         }
         
@@ -12994,7 +13125,7 @@ class CustomScrollV2 extends HTMLElement {
                 this.value = selectedValue;
             } else if (data.length > 0) {
                 const firstOption = data[0];
-                this._setValue(firstOption.value, firstOption.label);
+                this.#_setValue(firstOption.value, firstOption.label);
             }
         }
 
@@ -13005,7 +13136,7 @@ class CustomScrollV2 extends HTMLElement {
         set value(val) {
             const option = this.querySelector(`option[value="${val}"]`);
             if (option) {
-                this._setValue(val, option.textContent);
+                this.#_setValue(val, option.textContent);
             }
         }
 
@@ -13029,16 +13160,16 @@ el.addEventListener('change', () => {
   console.log('Novo izabrano:', el.value);
 });*/
     }
-    reset(){
+    #reset(){
       this.wrapper.querySelectorAll("input, textarea").forEach(function(e){e.value = ""});
       this.sendBtn.removeAttribute("class");
       this.sendBtn.textContent = "Send message";
       this.wrapper.querySelector("custom-select").value = "NULL";
     }
-    is_ready_or_not(){
+    #is_ready_or_not(){
 
     }
-    send(fld_name, fld_email, fld_msg,fld_typef, faef = false){
+    #send(fld_name, fld_email, fld_msg,fld_typef, faef = false){
       const contanct_frm =  this.wrapper,
       fld_form =  this.wrapper.querySelector("custom-scroll"),
       aerjaer = this,    
@@ -13080,7 +13211,7 @@ el.addEventListener('change', () => {
         span.onclick = () => { 
           fld_form.classList.remove("send_yes");
           restm.textContent = "";
-          aerjaer.reset();
+          aerjaer.#reset();
         };
         footer.removeAttribute("style");
         restm.appendChild(span);
@@ -13128,7 +13259,7 @@ el.addEventListener('change', () => {
     close(){
       this.wrapper.removeAttribute("style");
       this.wrapper.querySelector("input");
-      this.reset();
+      this.#reset();
     }
 
     open(){
@@ -13457,7 +13588,7 @@ closeIcon.addEventListener("click",()=> this.close());
   
         const payload = { name, email, message, typem };
   
-        th.send(name,email,message,captcha, typem);
+        th.#send(name,email,message,captcha, typem);
       });
     }
   });

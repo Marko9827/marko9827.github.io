@@ -15073,6 +15073,20 @@ border-bottom-right-radius: 10px;
     }
 
 
+    img#loader {
+    
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 333;
+    width: 20px;
+    top: 10px;
+    margin: auto;
+    left: 10px;
+
+}
+
 `;
 
 function hasAudio(videoElement) {
@@ -15230,10 +15244,13 @@ function hasAudio(videoElement) {
     // controlsRow.appendChild(timeDiv);
     controlsRow.appendChild(right);
     controls.appendChild(controlsRow);
-
+    const loader = document.createElement("img");
+    loader.id = "loader";
+    loader.src = svgToBase64Url(`<svg class="Vjideo_sjpinner Vjideo_sjpinner_center" xmlns="http://www.w3.org/2000/svg" height="50" width="50" viewBox="0 0 50 50" style=" width: 60px; height: 60px; "><style xmlns="http://www.w3.org/2000/svg" type="text/css">.Vjideo_sjpinner { -webkit-animation: rotate 2s linear infinite; transition: .3s; animation: rotate 2s linear infinite; z-index: 23333333; position: fixed; top: 35px; left: 35px; margin: -35px 0 0 -35px; width: 50px; height: 50px; pointer-events: none !important } .Vjideo_sjpinner .path { stroke: white; stroke-linecap: round; -webkit-animation: dash 1.5s ease-in-out infinite; animation: dash 1.5s ease-in-out infinite; -webkit-filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)) !important; enable-background: new 0 0 512 512 !important } @-webkit-keyframes rotate { 100% { transform: rotate(360deg) } } @keyframes rotate { 100% { transform: rotate(360deg) } } @-webkit-keyframes dash { 0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0 } 50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35 } 100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124 } } @keyframes dash { 0% { stroke-dasharray: 1, 150; stroke-dashoffset: 0 } 50% { stroke-dasharray: 90, 150; stroke-dashoffset: -35 } 100% { stroke-dasharray: 90, 150; stroke-dashoffset: -124 } }</style><circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="5"></circle></svg>`);
     this.shadowRoot.appendChild(root);
     // root.appendChild(link);
     root.appendChild(style);
+    root.appendChild(loader);
     root.appendChild(video);
     root.appendChild(feedback);
     root.appendChild(controls);
@@ -15271,6 +15288,19 @@ function hasAudio(videoElement) {
       currentTime.textContent = formatTime(video.currentTime);
       progress.value = video.currentTime / video.duration;
     });
+
+
+    video.addEventListener('waiting', () => {
+      loader.style.display = 'block';
+  });
+   
+  video.addEventListener('loadeddata', () => {
+      loader.style.display = 'none';
+  });
+   
+  video.addEventListener('playing', () => {
+      loader.style.display = 'none';
+  });
 
     progress.addEventListener('seek', e => {
       video.currentTime = e.detail * video.duration;
@@ -15342,6 +15372,7 @@ function hasAudio(videoElement) {
     [...this.attributes].forEach(attr => this.removeAttribute(attr.name));
 
   }
+ 
 })
 }
 

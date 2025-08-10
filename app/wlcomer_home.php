@@ -265,7 +265,11 @@ header("Content-Type: text/html; charset=UTF-8");
     <meta name="msapplication-tap-highlight" content="no">
     <!-- #region -->
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>">
-    <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script>
+    <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script> 
+   
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+   
+   
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script src="<?php echo "https://" . source_URL . "/mainc"; ?>" nonce="<?php echo $nonce; ?>"></script>
     <script async src="<?php echo "https://" . source_URL . "/main"; ?>" nonce="<?php echo $nonce; ?>"

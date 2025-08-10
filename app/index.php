@@ -1189,14 +1189,15 @@ JS;
 
 
         # $js_static .=  
+        $js_static .= self::minifyJS_code(file_get_contents(ROOT . "video.js"));
         $js_static .= self::minifyJS_code(file_get_contents(ROOT . "editor.js"));
         $js_static .= self::minifyJS_code(file_get_contents(ROOT . "s.js"));
         $dir = dirname($f);
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        $data = self::protect_js_dna($js_static);
-        // $data =  self::minifyJS_code($js_static) ;
+        // $data = self::protect_js_dna($js_static);
+        $data =  self::minifyJS_code($js_static) ;
         unlink($f);
         file_put_contents($f, $data);
 

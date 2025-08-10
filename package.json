@@ -27,6 +27,7 @@
     "commonmark": "^0.30.0",
     "ez-plus": "^1.2.1",
     "gpu-info-nv": "^1.0.3",
+    "hls.js": "^1.6.9",
     "jquery-zoom": "^1.7.21",
     "marked": "^13.0.2",
     "monaco": "^1.201704190613.0",

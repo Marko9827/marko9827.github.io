@@ -488,8 +488,7 @@ if (!customElements.get('video-player-v2')) {
 
       this.playBtn.addEventListener('click', () => {
         if (video.paused) {
-          if (this.getAttribute('data-stream') && !this._hls && !video.src) {
-            // If it's a stream and not yet loaded, load it now and play
+          if (this.getAttribute('data-stream') && !this._hls && !video.src) { 
             this._setStream(this.getAttribute('data-stream'));
           }
           video.play();

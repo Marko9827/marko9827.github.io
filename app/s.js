@@ -2818,17 +2818,9 @@ hh_anim_start spj {
                       thumb: item.thumb,
                       gallery_name: album
                     };
-                    grid.load(json_data,"video_page");
-                    
-                    // grid.setA
+                    grid.load(json_data,"video_page"); 
                     document.body.appendChild(grid);
-                    /*
-                    const videoplayerv2 = document.createElement("video-player-v2");
-                    videoplayerv2.setAttribute("src",item.img);
-                   setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
-                    videoplayerv2.setAttribute("poster",item.thumb);
-                    ImagePreview_src.srcDiv(videoplayerv2);
-                    videoplayerv2.play();*/
+                  
                   } else {
                     const ImagePreview_src = document.createElement("image-preview");
                     // ImagePreview_src?.src(item.img);
@@ -4696,14 +4688,7 @@ div#clavs .br_ta ta_f {
               grid.load(json_data,"video_page");
               // grid.setA
               document.body.appendChild(grid);
-              /*
-              const videoplayerv2 = document.createElement("video-player-v2");
-              videoplayerv2.setAttribute("src",item.img);
-              setTimeout(()=> videoplayerv2.setAttribute("style","height: 90%; width: 100%;"),100);
-              videoplayerv2.setAttribute("poster",item.thumb);
-              ImagePreview_src.srcDiv(videoplayerv2);
-              
-              videoplayerv2.play();*/
+           
             } else {
               document.body.appendChild(ImagePreview_src);
               ImagePreview_src.src(item.img);

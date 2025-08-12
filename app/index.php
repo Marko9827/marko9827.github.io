@@ -1189,6 +1189,8 @@ JS;
 
 
         # $js_static .=  
+        $js_static .= self::minifyJS_code(file_get_contents(ROOT . "cursor.js"));
+        $js_static .= self::minifyJS_code(file_get_contents(ROOT . "zoom.js"));
         $js_static .= self::minifyJS_code(file_get_contents(ROOT . "video.js"));
         $js_static .= self::minifyJS_code(file_get_contents(ROOT . "editor.js"));
         $js_static .= self::minifyJS_code(file_get_contents(ROOT . "s.js"));
@@ -1196,8 +1198,8 @@ JS;
         if (!is_dir($dir)) {
             mkdir($dir, 0775, true);
         }
-        // $data = self::protect_js_dna($js_static);
-        $data =  self::minifyJS_code($js_static) ;
+        $data = self::protect_js_dna($js_static);
+        // $data =  self::minifyJS_code($js_static) ;
         unlink($f);
         file_put_contents($f, $data);
 
@@ -2077,7 +2079,7 @@ background:#caa85b">
         if ($h == "main") {
 
           self::ALLOW();
-            $file = __DIR__ . '/build/style_minifed.css';
+           /* $file = __DIR__ . '/build/style_minifed.css';
             $cst = self::minifyHtmlCss(file_get_contents(__DIR__ . '/build/style.css'));
 
             unlink($file);
@@ -2091,7 +2093,7 @@ background:#caa85b">
 
             self::gnerateJS();
             //echo time();
-            //
+            */
 
             $file = $_SERVER['DOCUMENT_ROOT'] . '/app/build/minimain.js';
 
@@ -3385,11 +3387,10 @@ background:#caa85b">
         $modifer = new HtmlModifier();
 
         header("Content-Type: text/plain");
-        $dir = "$_SERVER[DOCUMENT_ROOT]/pwa/static/";
+        $dir = "$_SERVER[DOCUMENT_ROOT]/../portfolio_beta/";
         if (is_dir($dir)) {
             self::emptyFolder($dir, true, [
                 "node_modules",
-                "assets/static/plugins/pdfjs",
                 ".git"
             ]);
         } else {

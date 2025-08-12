@@ -87,7 +87,7 @@ class portfolio_marko
         switch ($page) {
             case "feedjson":
                 $r = $this->get_data([
-                    "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+                    "url" => "https://api.localhost/app&id=A03429468246&json=all",
                     "headers" => [
                         'Content-Type: application/json',
                         'Authorization: Bearer 32M052k350QaeofkaeopfF',

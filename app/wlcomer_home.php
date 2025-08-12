@@ -16,7 +16,8 @@ function generate_nonce()
     // return bin2hex(random_bytes(16));
 }
 $_SESSION["Bearer_token_temp"] = base64_encode("$_SERVER[HTTP_HOST]");
-
+$nonce = base64_encode(random_bytes(16));
+ 
 //generate_nonce();
 define("NONCE", "$_SESSION[Bearer_token_temp]");
 
@@ -196,7 +197,11 @@ default-src 'none';
     upgrade-insecure-requests; 
     block-all-mixed-content;";
 //"default-src * data: blob:  $cdn_urls; script-src 'self'";
- $csp = "";
+$host = "https://$_SERVER[HTTP_HOST]";
+$scripts = "https://cdn.jsdelivr.net/npm/hls.js@latest $host/mainc $host/feedjson $host/main";
+ 
+$csp = "";
+ 
 header("Content-Security-Policy:  $csp");
 
 
@@ -244,11 +249,12 @@ header("Content-Type: text/html; charset=UTF-8");
 
     if (!empty($csp)) {
 
+        /*
         ?>
         <!-- <meta name="trusted-types" content="script-src-attr 'none'; require-trusted-types-for 'script'; trusted-types 'allow-duplicates' default jSecure highcharts dompurify" data-disposition="enforce" data-sanitizer="jSecure"  > -->
 
         <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>">
-    <?php } ?>
+    <?php */ } ?>
     <link rel='dns-prefetch' href='https://fonts.googleapis.com' crossorigin="use-credentials" />
     <link rel='dns-prefetch' href='https://cdn.eronelit.com' />
     <link rel='dns-prefetch' href='https://api.markonikolic98.com' />
@@ -267,7 +273,7 @@ header("Content-Type: text/html; charset=UTF-8");
     <link rel="canonical" href="<?php echo "https://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>">
     <script src="<?php echo $POLIFY; ?>" nonce="<?php echo $nonce; ?>"></script> 
    
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" nonce="<?php echo $nonce; ?>" ></script>
    
    
     <script src="<?php echo "https://" . source_URL . "/feedjson"; ?>" nonce="<?php echo $nonce; ?>"></script>
@@ -276,8 +282,7 @@ header("Content-Type: text/html; charset=UTF-8");
         type="text/javascript" charset="UTF-8">
         </script>
  
-    <!-- <meta http-equiv="Content-Security-Policy" content="<?php echo $csp; ?>"> -->
-  
+ 
 
     <?php
     

@@ -2754,7 +2754,12 @@ hh_anim_start spj {
   
     run() {
       router.on("cv-pdf", (params) => {
-        test_page("", "cv-pdf");
+        // test_page("", "cv-pdf");
+        const ImagePreview_src = document.createElement("image-preview");
+      
+          document.body.appendChild(ImagePreview_src);
+          ImagePreview_src.src(item.img);
+
       });
 
       router.on("search", (params) => {
@@ -13908,8 +13913,7 @@ customElements.define('progress-bar', class   extends HTMLElement {
     width: 100%;
     height: 6px;
     background: rgba(255,255,255,0.3);
-    border-radius: 3px;
-    cursor: pointer;
+    border-radius: 3px; 
     position: relative;
   }
   .fill {

@@ -26,16 +26,20 @@ class portfolio_marko
 {
 
     private $data = "",
-    $urlCdn = "",
-    $rand = "",
-    $cdn_urls = "",
-    $fonts = "",
-    $nonce_h = "",
-    $nonce = null,
-    $createScripts = [],
-    $script_nonce = null,
-    $csp,
-    $nonce_f = "";
+        $urlCdn = "",
+        $rand = "",
+        $cdn_urls = "",
+        $fonts = "",
+        $nonce_h = "",
+        $nonce = null,
+        $createScripts = [],
+        $script_nonce = null,
+        $csp,
+        $nonce_f = "",
+        $conf = [
+            "url" => "https://api.localhost/app&id=A03429468246&json=all",
+            "token" => "32M052k350QaeofkaeopfF"
+        ];
 
     public function __construct()
     {
@@ -72,12 +76,51 @@ class portfolio_marko
         //"default-src * data: blob:  $cdn_urls; script-src 'self'";
         $this->csp = "";
         header("Content-Security-Policy:   $this->csp");
-
     }
     public function page(string $page = "home")
     {
         header("Content-Type: text/html; charset=UTF-8");
         self::run($page);
+    }
+    private function ALLOW($file_or_string = false)
+    {
+
+        $allowedReferers = [
+            'https://portfolio.localhost',
+            'https://portfolio2.localhost',
+            'https://markonikolic98.com',
+            'https://ark.markonikolic98.com',
+        ];
+
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+
+        $allowed = false;
+
+        foreach ($allowedReferers as $allowedHost) {
+            if (strpos($referer, $allowedHost) === 0) {
+                $allowed = true;
+                break;
+            }
+        }
+
+        if (!$allowed) {
+            self::error_page(404);
+            exit();
+        }
+        $file_or_string = false;
+        if ($file_or_string) {
+            $lastModified = filemtime($file_or_string);
+
+
+
+            if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+                $ifModifiedSince = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
+                if ($ifModifiedSince >= $lastModified) {
+                    header('HTTP/1.1 304 Not Modified');
+                    exit;
+                }
+            }
+        }
     }
     private function run(string $page = "home")
     {
@@ -85,16 +128,40 @@ class portfolio_marko
             $page = $_GET['api'];
         }
         switch ($page) {
+            case "mainc":
+                $f = __DIR__ . '/icons.json';
+                self::ALLOW($f);
+                header('Content-Type: application/javascript');
+                include $f;
+                break;
             case "feedjson":
+                self::ALLOW();
+
                 $r = $this->get_data([
-                    "url" => "https://api.localhost/app&id=A03429468246&json=all",
+                    "url" => $this->conf['token'],
                     "headers" => [
                         'Content-Type: application/json',
-                        'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                        'Authorization: Bearer ' . $this->conf['token'],
                     ]
                 ]);
-                header('Content-Type: application/javascript');
-                echo "window.portfolio = $r";
+
+                header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+                header("Cache-Control: post-check=0, pre-check=0", false);
+                header("Pragma: no-cache");
+
+                header("content-type: text/javascript");
+
+                #  echo "window.portfolio = $r;";
+                # header("content-type: text/javascript");
+                echo "var portfolio = $r; \n \n";
+                if (strpos($_SERVER['HTTP_HOST'], ".localhost")) {
+                    echo "portfolio.host = 'https://api.localhost'; \n \n";
+                }
+
+                $css = file_get_contents(__DIR__ . '/../assets/static/css/style.css');
+
+                echo "const mainss_import = `$css`;";
+                exit();
                 break;
             case "home":
                 include "$_SERVER[DOCUMENT_ROOT]/pages/page.php";
@@ -230,7 +297,6 @@ class portfolio_marko
     {
         $data = json_decode(file_get_contents("$_SERVER[DOCUMENT_ROOT]/app/json_data.json"), true);
         foreach ($data['scripts'] as $val) {
-
         }
     }
     /**
@@ -260,8 +326,9 @@ class portfolio_marko
         ],
         $testMode = true
     ) {
-        $ch = curl_init($r['url']);
+        return file_get_contents("$_SERVER[DOCUMENT_ROOT]/data/feed.json");
 
+        $ch = curl_init($r['url']);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, 6);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
@@ -278,7 +345,6 @@ class portfolio_marko
         }
 
         curl_close($ch);
-
     }
 
     public function MetaTags()
@@ -290,10 +356,10 @@ class portfolio_marko
         $canonicalUrl = SITE_HOST . $_SERVER['REQUEST_URI'];
 
         $r = json_decode($this->get_data([
-            "url" => "https://api.eronelit.com/app&id=A03429468246&json=all",
+            "url" => $this->conf['url'],
             "headers" => [
                 'Content-Type: application/json',
-                'Authorization: Bearer 32M052k350QaeofkaeopfF',
+                'Authorization: Bearer ' . $this->conf['token'],
             ]
         ]), true);
 
@@ -334,7 +400,7 @@ class portfolio_marko
                             }
                         }
                     }
-                    break; 
+                    break;
                 case 'visitcard':
                     $title = "Marko Nikolić > Visitcard";
                     break;
@@ -388,7 +454,7 @@ class portfolio_marko
                     break;
             }
         }
-        ?>
+?>
 
         <title><?= htmlspecialchars($title) ?></title>
         <link rel="icon" href="/?mnps=image-favicon?<?= time(); ?>" type="image/ico" />
@@ -424,20 +490,20 @@ class portfolio_marko
         <link rel="manifest" href="/manifest.webmanifest">
 
         <script type="application/ld+json">
-                                                                                                                                                                                                                                                                    {
-                                                                                                                                                                                                                                                                        "@context": "https://schema.org",
-                                                                                                                                                                                                                                                                        "@type": "WebSite",
-                                                                                                                                                                                                                                                                        "url": "https://<?= SITE_HOST; ?>",
-                                                                                                                                                                                                                                                                        "name": "Marko Nikolić",
-                                                                                                                                                                                                                                                                        "author": {
-                                                                                                                                                                                                                                                                            "@type": "Person",
-                                                                                                                                                                                                                                                                            "name": "Marko Nikolić"
-                                                                                                                                                                                                                                                                        },
-                                                                                                                                                                                                                                                                        "description": "<?= htmlspecialchars($description); ?>",
-                                                                                                                                                                                                                                                                        "inLanguage": "en-GB"
-                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                </script>
-        <?php
+            {
+                "@context": "https://schema.org",
+                "@type": "WebSite",
+                "url": "https://<?= SITE_HOST; ?>",
+                "name": "Marko Nikolić",
+                "author": {
+                    "@type": "Person",
+                    "name": "Marko Nikolić"
+                },
+                "description": "<?= htmlspecialchars($description); ?>",
+                "inLanguage": "en-GB"
+            }
+        </script>
+<?php
     }
 
 
@@ -562,8 +628,5 @@ class portfolio_marko
 
         return $output;
     }
-
-
-
 }
 ?>

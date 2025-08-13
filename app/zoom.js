@@ -1020,3 +1020,262 @@ div#controls img:hover {
 if (!customElements.get("image-preview")) {
   customElements.define("image-preview", ImagePreview);
 }
+
+
+ 
+
+ 
+(() => {
+
+  /*  
+  <deep-tiles
+  tiles="/tiles/{z}/{x}_{y}.jpg"
+  width="12000"
+  height="8000"
+  max-level="6"
+  tile-size="512"
+  style="display:block;width:100%;height:70vh;background:#111">
+</deep-tiles>
+  */
+  if (customElements.get('deep-tiles')) return;
+
+  class DeepTiles extends HTMLElement {
+    static get observedAttributes() {
+      return ['tiles','width','height','max-level','tile-size'];
+    }
+    constructor(){
+      super();
+      this.attachShadow({mode:'open'});
+      this._style = document.createElement('style');
+      this._style.textContent = `
+        :host{position:relative;display:block;contain:content;user-select:none;touch-action:none}
+        .viewport{position:absolute;inset:0;overflow:hidden;cursor:grab}
+        .stage{position:absolute;left:0;top:0;will-change:transform}
+        .tile{position:absolute;image-rendering:auto}
+        .ui{position:absolute;right:.5rem;top:.5rem;display:flex;gap:.25rem;z-index:10}
+        .btn{background:#0009;border:1px solid #fff4;color:#fff;padding:.25rem .5rem;border-radius:.5rem}
+        .btn:hover{background:#000c}
+      `;
+      this.shadowRoot.append(this._style);
+
+      this._vp = document.createElement('div');
+      this._vp.className='viewport';
+      this._stage = document.createElement('div');
+      this._stage.className='stage';
+      this._vp.append(this._stage);
+
+      const ui=document.createElement('div'); ui.className='ui';
+      const btnIn=document.createElement('button'); btnIn.className='btn'; btnIn.textContent='+';
+      const btnOut=document.createElement('button'); btnOut.className='btn'; btnOut.textContent='-';
+      ui.append(btnOut,btnIn);
+      this.shadowRoot.append(this._vp, ui);
+
+      // state
+      this._cfg = { tileSize: 256, maxLevel: 0, imgW: 0, imgH: 0, pattern:'' };
+      this._level = 0;             // 0 = najsitniji, maxLevel = najdetaljniji
+      this._center = { x:0, y:0 };  // u koordinatama slike na tekućem nivou
+      this._drag = null;
+      this._cache = new Map();      // "z/x/y" -> <img>
+      this._inView = new Set();     // trenutno renderovani ključevi
+      this._ro = new ResizeObserver(()=>this._render());
+      this._ro.observe(this);
+
+      // events
+      this._vp.addEventListener('wheel', (e)=>this._onWheel(e), {passive:false});
+      this._vp.addEventListener('mousedown', (e)=>this._startDrag(e));
+      window.addEventListener('mousemove', (e)=>this._onDrag(e));
+      window.addEventListener('mouseup',   ()=>this._endDrag());
+      btnIn.addEventListener('click', ()=>this._zoomBy(+1));
+      btnOut.addEventListener('click',()=>this._zoomBy(-1));
+      this._vp.addEventListener('dblclick',(e)=>this._zoomBy(+1, e));
+
+      // prevent image drag ghost
+      this.addEventListener('dragstart', e=>e.preventDefault());
+    }
+
+    // attrs
+    attributeChangedCallback(){ this._initFromAttrs(); this._fitOnce(); this._render(); }
+    connectedCallback(){ this._initFromAttrs(); this._fitOnce(); this._render(); }
+
+    get tiles(){ return this.getAttribute('tiles')||''; }
+    get width(){ return parseInt(this.getAttribute('width')||'0',10); }
+    get height(){ return parseInt(this.getAttribute('height')||'0',10); }
+    get maxLevel(){ return parseInt(this.getAttribute('max-level')||'0',10); }
+    get tileSize(){ return parseInt(this.getAttribute('tile-size')||'256',10); }
+
+    _initFromAttrs(){
+      const w=this.width, h=this.height, ml=this.maxLevel, ts=this.tileSize;
+      if (!w||!h) return;
+      this._cfg = {imgW:w, imgH:h, maxLevel:ml, tileSize:ts, pattern:this.tiles};
+      // stage dimenzije se menjaju po nivou
+    }
+
+    // izračun širine/visine na nivou z (0..max)
+    _levelSize(z){
+      const {imgW,imgH,maxLevel}=this._cfg;
+      const scale = 1 / Math.pow(2, (maxLevel - z)); // polovi se ka manjim nivoima
+      return { w: Math.max(1, Math.ceil(imgW*scale)), h: Math.max(1, Math.ceil(imgH*scale)) };
+    }
+
+    _fitOnce(){
+      if (this._fitted || !this._cfg.imgW) return;
+      this._fitted = true;
+      // nađi najmanji z koji staje u viewport po obe ose
+      const vp = this._vp.getBoundingClientRect();
+      let best = 0;
+      for (let z=0; z<=this._cfg.maxLevel; z++){
+        const s=this._levelSize(z);
+        if (s.w <= vp.width && s.h <= vp.height) { best = z; break; }
+        best = z; // ako nijedan ne staje, ostaje najveći (najdetaljniji) i pan
+      }
+      this._level = best;
+      const s=this._levelSize(this._level);
+      this._center = { x: s.w/2, y: s.h/2 };
+    }
+
+    _onWheel(e){
+      e.preventDefault();
+      const dir = e.deltaY>0 ? -1 : +1;
+      this._zoomBy(dir, e);
+    }
+
+    _startDrag(e){
+      e.preventDefault();
+      this._vp.style.cursor='grabbing';
+      this._drag = { x:e.clientX, y:e.clientY, start:{...this._center} };
+    }
+    _onDrag(e){
+      if (!this._drag) return;
+      const dx = e.clientX - this._drag.x;
+      const dy = e.clientY - this._drag.y;
+      this._center = { x: this._drag.start.x - dx, y: this._drag.start.y - dy };
+      this._clampCenter(); this._render();
+    }
+    _endDrag(){
+      if (!this._drag) return;
+      this._drag=null; this._vp.style.cursor='grab';
+    }
+
+    _zoomBy(step, evt){
+      const oldZ = this._level;
+      let z = Math.max(0, Math.min(this._cfg.maxLevel, oldZ + step));
+      if (z===oldZ) return;
+
+      // zadržaj fokus oko pokazivača (ili centra)
+      const vp = this._vp.getBoundingClientRect();
+      const focus = evt ? {x: evt.clientX - vp.left, y: evt.clientY - vp.top}
+                        : {x: vp.width/2, y: vp.height/2};
+
+      // koordinate u starom nivou
+      const oldSize = this._levelSize(oldZ);
+      const stagePos = this._stage.getBoundingClientRect();
+      const offX = stagePos.left - vp.left;
+      const offY = stagePos.top - vp.top;
+      const imgX = focus.x - offX;   // u pikselima nivoa oldZ
+      const imgY = focus.y - offY;
+
+      // proporcija između nivoa
+      const newSize = this._levelSize(z);
+      const u = imgX / oldSize.w;
+      const v = imgY / oldSize.h;
+      // novi centar tako da isti tačka ostane pod fokusom
+      const newOffX = focus.x - u*newSize.w;
+      const newOffY = focus.y - v*newSize.h;
+      this._level = z;
+      this._center = { x: newSize.w/2 - newOffX + 0, y: newSize.h/2 - newOffY + 0 };
+      this._clampCenter(); this._render(true);
+    }
+
+    _clampCenter(){
+      const s=this._levelSize(this._level);
+      const vp=this._vp.getBoundingClientRect();
+      const halfW=vp.width/2, halfH=vp.height/2;
+      const minX = Math.min(halfW, s.w - halfW);
+      const minY = Math.min(halfH, s.h - halfH);
+      // Ako je slika manja od vp, centriraj
+      if (s.w <= vp.width) this._center.x = s.w/2;
+      else this._center.x = Math.max(halfW, Math.min(s.w - halfW, this._center.x));
+      if (s.h <= vp.height) this._center.y = s.h/2;
+      else this._center.y = Math.max(halfH, Math.min(s.h - halfH, this._center.y));
+    }
+
+    _render(force=false){
+      if (!this.isConnected || !this._cfg.imgW) return;
+      const vp=this._vp.getBoundingClientRect();
+      const lvl=this._level, ts=this._cfg.tileSize;
+      const {w:W,h:H} = this._levelSize(lvl);
+
+      // pozicija stage (da centar padne u sredinu viewporta)
+      const left = Math.round(vp.width/2 - this._center.x);
+      const top  = Math.round(vp.height/2 - this._center.y);
+
+      this._stage.style.width = W+'px';
+      this._stage.style.height = H+'px';
+      this._stage.style.transform = `translate(${left}px,${top}px)`;
+
+      // vidljivi opseg u koordinatama nivoa
+      const x0 = Math.max(0, Math.floor(-left / ts));
+      const y0 = Math.max(0, Math.floor(-top  / ts));
+      const x1 = Math.min(Math.ceil((vp.width  - left)/ts), Math.ceil(W/ts));
+      const y1 = Math.min(Math.ceil((vp.height - top )/ts), Math.ceil(H/ts));
+
+      const need = new Set();
+      for (let ty=y0; ty<y1; ty++){
+        for (let tx=x0; tx<x1; tx++){
+          const key = `${lvl}/${tx}/${ty}`;
+          need.add(key);
+          if (!this._inView.has(key) || force){
+            const img = this._getTile(lvl, tx, ty);
+            img.style.left = (tx*ts)+'px';
+            img.style.top  = (ty*ts)+'px';
+            img.width = Math.min(ts, W - tx*ts);
+            img.height= Math.min(ts, H - ty*ts);
+            if (!img.parentNode) this._stage.append(img);
+          }
+        }
+      }
+      // ukloni tile-ove koji više nisu u view
+      this._inView.forEach(key=>{
+        if (!need.has(key)){
+          const img = this._cache.get(key);
+          if (img && img.parentNode) img.parentNode.removeChild(img);
+          this._inView.delete(key);
+        }
+      });
+      // markiraj nove
+      need.forEach(k=>this._inView.add(k));
+
+      // prosta LRU: drži do 512 tile-ova u kešu
+      if (this._cache.size > 512){
+        const del = this._cache.keys().next().value;
+        const n = this._cache.get(del);
+        if (n && n.parentNode) n.parentNode.removeChild(n);
+        this._cache.delete(del);
+      }
+    }
+
+    _getTile(z,x,y){
+      const key=`${z}/${x}/${y}`;
+      let img=this._cache.get(key);
+      if (img) return img;
+      img = new Image();
+      img.decoding='async';
+      img.fetchPriority='low';
+      img.className='tile';
+      img.draggable=false;
+      img.alt='';
+      img.src = this._tileUrl(z,x,y);
+      this._cache.set(key, img);
+      return img;
+    }
+
+    _tileUrl(z,x,y){
+      // pattern npr: /tiles/{z}/{x}_{y}.jpg
+      return this._cfg.pattern
+        .replace('{z}', z)
+        .replace('{x}', x)
+        .replace('{y}', y);
+    }
+  }
+  customElements.define('deep-tiles', DeepTiles);
+})(); 

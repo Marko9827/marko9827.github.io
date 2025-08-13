@@ -3,6 +3,7 @@
         "davidanson.vscode-markdownlint",
         "cweijan.vscode-office",
         "christian-kohler.npm-intellisense",
-        "vstirbu.vscode-mermaid-preview"
+        "vstirbu.vscode-mermaid-preview",
+        "ms-dotnettools.dotnet-interactive-vscode"
     ]
 }

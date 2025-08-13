@@ -5,7 +5,8 @@
   "main": "composer.js",
   "scripts": {
     "start": "php -S localhost:3001 -dev",
-    "test": "test"
+    "test": "test",
+    "dev": "symfony serve --port=8000 --cert=server/localhost.pem --key=server/localhost-key.pem"
   },
   "repository": {
     "type": "git",

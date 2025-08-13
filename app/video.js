@@ -252,8 +252,7 @@ if (!customElements.get("video-player-v2")) {
                           border-radius: 10px;
                           min-height: 250px;
                           align-items: center;
-                          overflow: hidden;
-                          cursor: default;
+                          overflow: hidden; 
                         }
                         video {
                            width: 100%;
@@ -299,6 +298,9 @@ if (!customElements.get("video-player-v2")) {
                           opacity: 1;
                           pointer-events: all;
                         }
+                        :host:not([data-fullscreen]) c-c {
+                          opacity:0 !important;
+                        }
                         :host([data-fullscreen]) .controls.visible {
                           opacity: 1;
                           pointer-events: all;
@@ -330,7 +332,7 @@ if (!customElements.get("video-player-v2")) {
                           border: none;
                           color: white;
                           font-size: 1.4em;
-                          cursor: pointer;
+                          
                           position: relative;
                           padding: 4px;
                         }
@@ -377,7 +379,7 @@ if (!customElements.get("video-player-v2")) {
                           height: 6px;
                           background: rgba(255,255,255,0.3);
                           border-radius: 3px;
-                          cursor: pointer;
+                          
                           position: relative;
                         }
                         .progress-bar-container {
@@ -466,8 +468,7 @@ if (!customElements.get("video-player-v2")) {
                           background: none;
                           border: none;
                           color: white;
-                          padding: 8px;
-                          cursor: pointer;
+                          padding: 8px; 
                           font-size: 1em;
                           text-align: right;
                         }
@@ -491,8 +492,7 @@ if (!customElements.get("video-player-v2")) {
                           padding: 8px 0;
                           z-index: 100;
                           display: none;
-                          min-width: 150px;
-                          cursor: default;
+                          min-width: 150px; 
                         }
                         .context-menu.show {
                             display: block;
@@ -502,8 +502,7 @@ if (!customElements.get("video-player-v2")) {
                           justify-content: space-between;
                           align-items: center;
                           color: white;
-                          padding: 10px 16px;
-                          cursor: pointer;
+                          padding: 10px 16px; 
                           font-size: 14px;
                           white-space: nowrap;
                         }
@@ -762,7 +761,7 @@ if (!customElements.get("video-player-v2")) {
                             Preko celog ekrana
                         </div>
                     `;
-
+         
         this.shadowRoot.append(
           style,
           root,
@@ -771,6 +770,7 @@ if (!customElements.get("video-player-v2")) {
           this.controlsElement,
           this.loader
         );
+        this.shadowRoot.appendChild(document.createElement("c-c"));
         /*, this.contextMenu);*/
         this.video.addEventListener("contextmenu", (e) => e.preventDefault());
 
@@ -970,11 +970,13 @@ if (!customElements.get("video-player-v2")) {
         const isFullscreen =
           document.fullscreenElement === this.playerContainer;
         if (isFullscreen) {
-          this.setAttribute("data-fullscreen", "");
-          this.controlsElement.classList.add("visible");
-        } else {
+          this.setAttribute("data-fullscreen", "1");
+          this.controlsElement.classList.add("visible"); 
+          
+         } else {
           this.removeAttribute("data-fullscreen");
           this.controlsElement.classList.remove("visible");
+           
           clearTimeout(this._controlsTimeout);
         }
       }
@@ -1169,9 +1171,13 @@ if (!customElements.get("video-player-v2")) {
 
       _toggleFullscreen() {
         if (!document.fullscreenElement) {
-          this.requestFullscreen();
+          
+          this.requestFullscreen(); 
+          this.setAttribute("data-fullscreen", "1");
         } else {
-          document.exitFullscreen();
+          document.exitFullscreen(); 
+                  this.setAttribute("data-fullscreen", "1");
+
         }
         this.contextMenu.classList.remove("show");
       }

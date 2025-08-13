@@ -1,8 +1,23 @@
 {
-    "config": {  
+    "name": "marko/marko9827.github.io",
+    "description": "My portfolio website",
+    "type": "project",
+    "license": "MIT",
+    "scripts": {
+        "dev": "symfony server:start --port=8000 --cert=server/localhost.pem --key=server/localhost-key.pem"
+    },
+  
+    "authors": [
+        {
+            "name": "Marko Nikolic",
+            "email": "marko.supergun@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "config": {
         "vendor-dir": "./m_dr_vendor",
         "process-timeout": 0,
-        "platform-check": false 
+        "platform-check": false
     },
     "require": {
         "mistralys/markdown-viewer": "^1.3",
@@ -14,4 +29,4 @@
         "mongodb/mongodb": "^1.20",
         "react/http": "^0.4.0"
     }
-}
+} 

@@ -1,57 +1,101 @@
 {
+    "id": "/",
     "short_name": "Marko Nikolic - portfolio",
     "name": "Marko Nikolic - portfolio",
+    "description": "Personal portfolio of Marko Nikolic showcasing projects, design, and development work.",
     "orientation": "portrait",
     "lang": "en",
+    "categories": ["portfolio", "personal", "developer", "design"],
     "prefer_related_applications": false,
     "icons": [
         {
-            "src": "/pwa/128.icon.svg",
-            "type": "image/svg+xml",
+            "src": "/pwa/128.icon.png",
+            "type": "image/png",
             "sizes": "128x128",
-            "purpose": "any maskable"
+            "purpose": "maskable"
         },
         {
-            "src": "/pwa/192.icon.svg",
-            "type": "image/svg+xml",
+            "src": "/pwa/128.icon.png",
+            "type": "image/png",
+            "sizes": "128x128",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/192.icon.png",
+            "type": "image/png",
             "sizes": "192x192",
-            "purpose": "any maskable"
+            "purpose": "maskable"
         },
         {
-            "src": "/pwa/512.icon.svg",
-            "type": "image/svg+xml",
+            "src": "/pwa/192.icon.png",
+            "type": "image/png",
+            "sizes": "192x192",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/512.icon.png",
+            "type": "image/png",
             "sizes": "512x512",
-            "purpose": "any maskable"
+            "purpose": "maskable"
         },
         {
-            "src": "/pwa/510.icon.svg",
-            "type": "image/svg+xml",
+            "src": "/pwa/512.icon.png",
+            "type": "image/png",
+            "sizes": "512x512",
+            "purpose": "any"
+        },
+        {
+            "src": "/pwa/510.icon.png",
+            "type": "image/png",
             "sizes": "510x510",
-            "purpose": "any maskable"
+            "purpose": "maskable"
+        },
+        {
+            "src": "/pwa/510.icon.png",
+            "type": "image/png",
+            "sizes": "510x510",
+            "purpose": "any"
         }
     ],
-    "start_url": "/",
-    "background_color": "#fff",
-    "display_override": [
-        "fullscreen",
-        "minimal-ui"
-    ],
+    "start_url": "/?source=pwa",
+    "background_color": "#ffffff",
+    "display_override": ["fullscreen", "standalone", "minimal-ui"],
     "display": "standalone",
     "scope": "/",
-    "theme_color": "#fff",
+    "theme_color": "#ffffff",
     "shortcuts": [
         {
             "name": "Marko Nikolic - portfolio",
-            "short_name": "Marko Nikolic - portfolio",
-            "description": "Marko Nikolic - portfolio",
+            "short_name": "Portfolio",
+            "description": "Go to today's featured projects",
             "url": "/today?source=pwa",
             "icons": [
                 {
-                    "src": "/pwa/192.icon.svg",
-                    "type": "image/svg+xml",
+                    "src": "/pwa/192.icon.png",
+                    "type": "image/png",
                     "sizes": "192x192"
                 }
             ]
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/pwa/screenshot1.png",
+            "sizes": "1920x890",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "/pwa/screenshot2.png",
+            "sizes": "1920x890",
+            "type": "image/png",
+            "form_factor": "wide"
+        }
+    ],
+    "protocol_handlers": [
+        {
+            "protocol": "web+portfolio",
+            "url": "/?project=%s"
         }
     ]
 }

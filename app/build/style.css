@@ -5609,3 +5609,7 @@ grider_viewer.grider_viewer_f {
     display: -ms-flexbox;
     display: flex;
 }
+
+* {
+    cursor: none !important;
+}

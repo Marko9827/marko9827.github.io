@@ -1,10 +1,13 @@
-<?php 
- 
+<?php
 
-define("ROOT","$_SERVER[DOCUMENT_ROOT]/app/");
-include "$_SERVER[DOCUMENT_ROOT]/vendor/autoload.php";
-include "$_SERVER[DOCUMENT_ROOT]/app/index.php";
+$incl = __DIR__ . './backend/core.php';
+if (!file_exists($incl)) {
+    $incl = __DIR__ . '/backend/core.php';
+}
 
-$r = new \portfolio\portfolio_marko();
+include $incl;
 
+$core = new \portfolio_marko();
+
+$core->page("home");
 exit();

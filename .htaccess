@@ -1,7 +1,5 @@
 Options All -Indexes
- 
-RewriteEngine on
-RewriteRule ^data_s/?$ - [F]
+  
 
 
 RewriteEngine on
@@ -30,36 +28,11 @@ RedirectMatch 404 ^/*.php
     deny from all
 </Files>
  
- 
-<Files *.sql>
-    order allow,deny
-    deny from all
-</Files>
+  
 <Files *.json>
     order allow,deny
     deny from all
-</Files>
-<Files *.css>
-    order allow,deny
-    deny from all
-</Files>
-<Files *.pdf>
-    order allow,deny
-    deny from all
-</Files>
-<Files *.png>
-    order allow,deny
-    deny from all
-</Files>
-<Files *.jpg>
-    order allow,deny
-    deny from all
-</Files>
- 
-<Files *.mp4>
-    order allow,deny
-    deny from all
-</Files>
+</Files> 
 <ifmodule mod_php5.c>
     php_value zlib.output_compression 16386
 </ifmodule>
@@ -78,10 +51,7 @@ php_flag expose_php Off
     order allow,deny
     deny from all
 </Files> 
-
-<FilesMatch "\.js$">
-   # Require all denied
-</FilesMatch>
+ 
  
 ErrorDocument 404 /ERROR_PG.php?ERROR=404
 ErrorDocument 403 /ERROR_PG.php?ERROR=403
@@ -2084,7 +2054,7 @@ RewriteRule ^(php\\.ini|\\.htaccess) - [NC,F]
 #Enable PHP short open tags
 php_value short_open_tag 1
 
-<FilesMatch "\.(ini|psd|log|css|sh|gitignore|md|java|css|mp4|sql|htaccess)$">
+<FilesMatch "\.(ini|psd|log|sh|gitignore|md|java|sql|htaccess)$">
 Order allow,deny
 Deny from all
 
@@ -2095,21 +2065,8 @@ Deny from all
 AddType application/javascript .js
 
 <ifModule mod_headers.c>
-  # Header alawys set Content-Security-Policy "style-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com; img-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost; font-src 'self' data: fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com; connect-src 'self' *.eronelit.com api.localhost; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' *.eronelit.com; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"
-# Header always set Content-Security-Policy "object-src 'none';  base-uri 'self'; script-src 'nonce-y9tjrrJPHOnp+1b4o9Nw5Q==' 'strict-dynamic' 'report-sample'   'unsafe-inline' https: http:;report-uri https://api.localhost/csp-report"; 
-# Header always set Content-Security-Policy " default-src 'self';font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;script-src 'self' ;script-src-elem 'self' 'nonce-1/52bQ+ietzJ/on2C38yuQ==' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;media-src 'self' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;style-src 'self' ;style-src-elem 'self' 'nonce-1/52bQ+ietzJ/on2C38yuQ==' fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;img-src 'self' data: fonts.gstatic.com cdnjs.cloudflare.com *.eronelit.com *.localhost fonts.googleapis.com;form-action 'self';base-uri 'self';object-src 'none';report-uri https://api.localhost/csp-report;"
-#"upgrade-insecure-requests;"
-
-#   Header set Content-Security-Policy "script-src 'self' *.eronelit.com; frame-ancestors 'self' https://*.eronelit.com; style-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost fonts.gstatic.com fonts.googleapis.com; img-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost; font-src 'self' data: fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com; connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost  data:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self' *.eronelit.com; worker-src 'self' *.eronelit.com; upgrade-insecure-requests; block-all-mixed-content;"
- 
- #Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-eval'  https://code.jquery.com/jquery-1.12.4.min.js   https: api.eronelit.com cdn.eronelit.com cdn.markonikolic98.com api.markonikolic98.com api.localhost 'unsafe-inline'; style-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https: fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com;img-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https: ;media-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https:;font-src 'self' data: fonts.gstatic.com api.eronelit.com api.markonikolic98.com cdn.markonikolic98.com cdn.eronelit.com api.localhost fonts.googleapis.com;connect-src 'self' www.google-analytics.com *.eronelit.com *.localhost *.markonikolic98.com data:;frame-src 'self';object-src 'none';manifest-src 'self';base-uri 'none';frame-ancestors 'self' ;form-action 'self' *.eronelit.com *.markonikolic98.com; worker-src 'self' *.eronelit.com *.markonikolic98.com; upgrade-insecure-requests; block-all-mixed-content;"
 
 
-
-   # Header set Content-Security-Policy "default-src 'none'; script-src 'self' 'unsafe-eval'  https: api.markonikolic98.com cdn.eronelit.com cdn.markonikolic98.com api.markonikolic98.com api.localhost 'unsafe-inline'; style-src 'self' 'unsafe-inline' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https: fonts.gstatic.com api.eronelit.com cdn.eronelit.com api.localhost fonts.googleapis.com;img-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https: ;media-src 'self' blob: data: api.eronelit.com cdn.eronelit.com api.localhost https:;font-src 'self' data: fonts.gstatic.com api.eronelit.com api.markonikolic98.com cdn.markonikolic98.com cdn.eronelit.com api.localhost fonts.googleapis.com;connect-src 'self' blob: data: www.google-analytics.com *.eronelit.com *.localhost *.markonikolic98.com data:; object-src 'none';manifest-src 'self';base-uri 'none'; form-action 'self' *.eronelit.com *.markonikolic98.com; worker-src 'self' *.eronelit.com *.markonikolic98.com; frame-src 'self' https://cdn.eronelit.com https://cdn.markonikolic98.com https://linkedin.com ;  upgrade-insecure-requests; block-all-mixed-content;"
- 
-
- 
 Header set Access-Control-Allow-Origin "*"
 Header set Referrer-Policy "origin"
 Header set X-Download-Options "noopen" 
@@ -2149,4 +2106,16 @@ AddDefaultCharset UTF-8
  
 
  Header set X-Powered-By "EronelitCloud"
+ 
+
+ RewriteEngine On
+ RewriteCond %{HTTPS} !=on
+ RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+ 
+ 
+ <IfModule mod_mime.c>
+  AddType application/javascript .mjs
+</IfModule>
+
+
  
